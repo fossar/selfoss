@@ -1,0 +1,39 @@
+#AddHandler php53-cgi .php
+
+# Enable rewrite engine and route requests to framework
+RewriteEngine On
+#RewriteBase /selfoss
+
+# rule for spouts
+RewriteRule !spouts/([^/]+)/(.*)$ - [C]
+RewriteRule spouts/([^/]+)/(.*)$ plugins/$1/$2 [L]
+
+# rule for favicons
+RewriteRule !data/icons/(.*)$ - [C]
+RewriteRule icons/(.*)$ data/icons/$1 [L]
+
+# rule for thumbnails
+RewriteRule !data/thumbnails/(.*)$ - [C]
+RewriteRule thumbnails/(.*)$ data/thumbnails/$1 [L]
+
+# rule for front controller
+RewriteCond %{QUERY_STRING} ^(.*)$
+RewriteRule !.(js|ico|gif|jpg|png|css|asc|txt|eot|woff|ttf|ttf|svg)$ index.php?%1
+
+# rule for files
+RewriteRule !icons/ - [C]
+RewriteRule !thumbnails - [C]
+RewriteRule !public - [C]
+RewriteRule !spouts - [C]
+RewriteRule !index.php - [C]
+RewriteRule (.*) public/$1 [L]
+
+# Disable ETags
+Header Unset ETag
+FileETag none
+
+# Default expires header if none specified (stay in browser cache for 7 days)
+<IfModule mod_expires.c>
+ExpiresActive On
+ExpiresDefault A604800
+</IfModule>

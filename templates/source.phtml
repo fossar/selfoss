@@ -1,0 +1,37 @@
+<ul <?PHP echo isset($this->source) && isset($this->source['id']) ? 'id="source' . $this->source['id'] . '"' : ''; ?>
+    class="source <?PHP echo (isset($this->even) && $this->even===true) ? 'even' : '' ?>">
+    <li><label>Title:</label> <input type="text" id="title" value="<?PHP echo isset($this->source) ? $this->source['title'] : ''; ?>" /></li>
+    <li><label>Type:</label> 
+        <select class="source-spout" id="spout">
+            <option value="">please select source</option>
+            <?PHP foreach($this->spouts as $spouttype=>$spout) : ?>
+            <option value="<?PHP echo $spouttype; ?>" <?PHP echo isset($this->source) && $spouttype==$this->source['spout'] ? 'selected="selected"' : ''; ?>>
+                <?PHP echo $spout->name; ?>
+            </option>
+            <?PHP endforeach; ?>
+        </select>
+        <?PHP if(isset($this->source) && trim($this->source['params'])!='[]') : ?>
+        <span class="source-showparams">options &darr;</span>
+        <?php endif; ?>
+    </li>
+    <li class="source-params">
+    <?PHP
+        if(isset($this->source) && isset($this->spouts[$this->source['spout']])) {
+            if($this->spouts[$this->source['spout']]->params!==false) {
+                $this->spout = $this->spouts[$this->source['spout']];
+                $this->params = json_decode(html_entity_decode($this->source['params']), true);
+                echo $this->render('templates/source_params.phtml');
+            }
+        }
+    ?>
+    </li>
+    <?PHP if(isset($this->source) && isset($this->source['error'])) : ?>
+    <li class="source-error">
+        <?PHP echo $this->source['error']; ?>
+    </li>
+    <?PHP endif; ?>
+    <li class="source-action">
+        <span class="source-save">save</span> 
+        <span class="source-separator">|</span> <span class="source-delete">delete</span>
+    </li>
+</ul>
