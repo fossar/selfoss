@@ -3,6 +3,7 @@ http://selfoss.aditu.de
 tobias.zeising@aditu.de
 Version 1.0beta
 License: GPLv3
+Icon Source: http://blog.artcore-illustrations.de/aicons/
 
 
 -------
