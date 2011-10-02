@@ -1,0 +1,57 @@
+<!doctype html>  
+
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ --> 
+<!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html lang="en" class="no-js ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html lang="en" class="no-js ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
+<head>
+    <base href="<?PHP echo $this->base; ?>" /> 
+
+    <meta charset="utf-8">
+
+    <!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame 
+       Remove this if you use the .htaccess -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>selfoss</title>
+    <meta name="description" content="selfoss">
+    <meta name="author" content="Tobias Zeising">
+
+    <!--  Mobile viewport optimized: j.mp/bplateviewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Place favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+    <!-- CSS : implied media="all" -->
+    <link rel="stylesheet" href="css/style.css?v=2">
+
+    <!-- All JavaScript at the bottom, except for Modernizr which enables HTML5 elements & feature detects -->
+    <script src="js/modernizr-1.6.min.js"></script>
+    
+</head>
+<body>
+
+    <a id="about" href="http://selfoss.aditu.de">selfoss <?PHP echo \F3::get('version'); ?></a>
+
+    <form action="<?PHP echo $this->base; ?>?login=1" method="post">
+    <ul id="login">
+        <li><h1>selfoss login</h1></li>
+        <li><label>Username:</label> <input type="text" name="username" /></li>
+        <li><label>Password:</label> <input type="password" name="password" /></li>
+        <?PHP if(isset($this->error)) : ?>
+        <li class="error"><label></label><?PHP echo $this->error; ?></li>
+        <?PHP endif; ?>
+        <li><label></label> <input type="submit" value="login" /></li>
+    </ul>
+    </form>
+    
+    <!-- Grab Google CDN's jQuery. fall back to local if necessary -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.js"></script>
+    <script>!window.jQuery && document.write(unescape('%3Cscript src="js/jquery-1.6.1.min.js"%3E%3C/script%3E'))</script>
+    <script>if($(window).width()<600) $('body, html').addClass('mobile');</script>
+</body>
+</html>

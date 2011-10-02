@@ -1,0 +1,26 @@
+<ul>
+<?PHP
+foreach($this->spout->params as $spoutParamName => $spoutParam) {
+    $checked = '';
+    
+    $value = $spoutParam['default'];
+    if(isset($this->params) && isset($this->params[$spoutParamName])) {
+        $value = $this->params[$spoutParamName];
+        if($spoutParam["type"]=="checkbox" && $value=='1')
+            $checked = 'checked="checked"';
+    }
+    
+    if( $spoutParam["type"]=="text" 
+        || $spoutParam["type"]=="password"
+        || $spoutParam["type"]=="checkbox")
+        echo '<li>
+                <label>'.$spoutParam['title'].':</label>
+                <input type="'.$spoutParam["type"].'" 
+                       id="'.$spoutParamName.'" 
+                       name="'.$spoutParamName.'" 
+                       value="'.$value.'" 
+                       '.$checked.' />
+              </li>';
+}
+?>
+</ul>

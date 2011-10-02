@@ -1,0 +1,37 @@
+<?PHP
+    $title = $this->item['title'];
+    //$content = html_entity_decode($this->item['content']);
+    $content = str_replace('&#34;', '"', $this->item['content']);
+    $this->viewHelper = new \helpers\ViewHelper();
+    if(isset($this->search)) {
+        $title = $this->viewHelper->highlight($title, $this->search);
+        $content = $this->viewHelper->highlight($content, $this->search);
+    }
+    $title = $this->viewHelper->lazyimg($title);
+    $content = $this->viewHelper->lazyimg($content);
+?>
+<div id="entry<?PHP echo $this->item['id']; ?>"
+     class="entry
+            <?PHP echo isset($this->even) && $this->even==1 ? 'even' : ''; ?> 
+            <?PHP echo $this->item['unread']==1 ? 'unread' : ''; ?>">
+    <a href="<?PHP echo $this->item['link']; ?>" class="entry-icon">
+        <?PHP if(strlen(trim($this->item['icon']))>0) : ?>
+        <img src="<?PHP echo 'icons/'.$this->item['icon']; ?>" alt="<?PHP echo $this->item['sourcetitle']; ?>" />
+        <?PHP endif; ?>
+    </a>
+    <a href="<?PHP echo $this->item['link']; ?>" class="entry-source"><?PHP echo $this->item['sourcetitle']; ?></a>
+    <div class="entry-datetime">
+        <?PHP echo $this->item['datetime']; ?>
+    </div>
+    <div class="entry-starr <?PHP echo $this->item['starred']==1 ? 'active' : ''; ?>"></div>
+    
+    <h2 class="entry-title"><?PHP echo $title; ?></h2>
+    <?PHP if(isset($this->item['thumbnail']) && strlen(trim($this->item['thumbnail']))>0) : ?>
+    <div class="entry-thumbnail">
+        <a href="<?PHP echo $this->item['link']; ?>"><img src="<?PHP echo 'thumbnails/'.$this->item['thumbnail']; ?>" alt="<?PHP echo $this->item['title']; ?>" /></a>
+    </div>
+    <?PHP endif; ?>
+    <div class="entry-content">
+        <?PHP echo $content; ?>
+    </div>
+</div>
