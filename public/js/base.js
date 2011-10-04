@@ -269,6 +269,7 @@ var selfoss = {
                             parent.find('.source-save').html('save');
                             parent.find('.source-action').removeClass('saved');
                         }, 10000);
+                        parent.attr('id', 'source'+id);
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
                         parent.find('.source-action').removeClass('loading');
@@ -387,7 +388,6 @@ var selfoss = {
      */
     fixSourcesEvenOdd: function() {
         $('.source').each(function(index, item) {
-        console.info(index);
             if(index%2==0)
                 $(item).addClass('even');
             else
