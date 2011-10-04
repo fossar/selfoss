@@ -122,13 +122,15 @@ class Sources {
             $this->view->jsonError(array('title' => 'no data for title given'));
         if(!isset($data['spout']))
             $this->view->jsonError(array('spout' => 'no data for spout given'));
-
+        
         $title = $data['title'];
         $spout = $data['spout'];
 
         unset($data['title']);
         unset($data['spout']);
 
+        $spout = str_replace("\\\\", "\\", $spout);
+        
         $validation = $sourcesModel->validate($title, $spout, $data);
         if($validation!==true)
             $this->view->error( json_encode($validation) );
