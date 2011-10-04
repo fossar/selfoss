@@ -26,8 +26,8 @@ class Sources extends Database {
                         ':spout'  => $spout,
                         ':params' => htmlentities(json_encode($params))
                     ));
-        
-        \DB::sql('SELECT MAX(id) as lastid FROM sources');
+ 
+        \DB::sql('SELECT LAST_INSERT_ID() as lastid');
         $res = \F3::get('DB->result');
         return $res[0]['lastid'];
     }
