@@ -35,7 +35,7 @@ class Index {
                 else if(!isset($_POST['password']))
                     $view->error = 'no password given';
                 else {
-                    if(\F3::get('auth')->login($_POST['username'], md5(\F3::get('salt') . $_POST['password']))===false)
+                    if(\F3::get('auth')->login($_POST['username'], $_POST['password'])===false)
                         $view->error = 'invalid username/password';
                 }
             }
