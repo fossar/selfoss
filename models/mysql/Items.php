@@ -1,6 +1,6 @@
 <?PHP
 
-namespace models;
+namespace models\mysql;
 
 /**
  * Class for accessing persistent saved items
