@@ -1,6 +1,6 @@
 <?PHP
 
-namespace models\mysql;
+namespace models;
     
 /**
  * Base class for database access
