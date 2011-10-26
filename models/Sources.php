@@ -2,7 +2,96 @@
 
 namespace models;
 
+/**
+ * Class for accessing persistent saved sources
+ *
+ * @package    models\mysql
+ * @copyright  Copyright (c) Tobias Zeising (http://www.aditu.de)
+ * @license    GPLv3 (http://www.gnu.org/licenses/gpl-3.0.html)
+ * @author     Harald Lapp <harald.lapp@gmail.com>
+ */
+
 class Sources extends Database {
+    /**
+     * Instance of backend specific sources class
+     *
+     * @var     object
+     */
+    private $backend = null;
+    
+    /**
+     * Constructor.
+     *
+     * @return void
+     */
+    public function __construct() {
+        $db_type = \F3::get('db_type');
+        
+        $this->backend = new $db_type\Sources();
+        
+        parent::__construct();
+    }
+
+
+    /**
+     * add new source
+     *
+     * @return int new id
+     * @param string $title
+     * @param string $spout the source type
+     * @param mixed $params depends from spout
+     */
+    public function add($title, $spout, $params) {
+        return $this->backend->add($title, $spout, $params);
+    }
+    
+    
+    /**
+     * edit source
+     *
+     * @return void
+     * @param int $id the source id
+     * @param string $title new title
+     * @param string $spout new spout
+     * @param mixed $params the new params
+     */
+    public function edit($id, $title, $spout, $params) {
+        $this->backend->edit($id, $title, $spout, $params);
+    }
+    
+    
+    /**
+     * delete source
+     *
+     * @return void
+     * @param int $id
+     */
+    public function delete($id) {
+        $this->backend->delete($id);
+    }
+    
+    
+    /**
+     * save error message
+     *
+     * @return void
+     * @param int $id the source id
+     * @param string $error error message
+     */
+    public function error($id, $error="") {
+        $this->backend->error($id, $error);
+    }
+    
+    
+    /**
+     * returns all sources
+     *
+     * @return mixed all sources
+     */
+    public function get() {
+        return $this->backend->get();
+    }
+
     /**
      * validate new data for a given source
      *
@@ -11,6 +100,8 @@ class Sources extends Database {
      * @param string $title
      * @param string $spout
      * @param mixed $params
+     * 
+     * @author Tobias Zeising
      */
     public function validate($title, $spout, $params) {
         $result = array();
