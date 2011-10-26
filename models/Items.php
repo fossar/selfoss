@@ -24,9 +24,9 @@ class Items extends Database {
      * @return void
      */
     public function __construct() {
-        $db_type = \F3::get('db_type');
+        $class = 'models\\' . \F3::get('db_type') . '\\Items';
         
-        $this->backend = new $db_type\Items();
+        $this->backend = new $class();
         
         parent::__construct();
     }

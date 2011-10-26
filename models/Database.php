@@ -25,9 +25,9 @@ class Database {
      * @return void
      */
     public function __construct() {
-        $db_type = \F3::get('db_type');
+        $class = 'models\\' . \F3::get('db_type') . '\\Database';
         
-        $this->backend = new $db_type\Database();
+        $this->backend = new $class();
     }
     
     /**
@@ -37,8 +37,8 @@ class Database {
      * @return void
      */
     public static function optimize() {
-        $db_type = \F3::get('db_type');
-
-        $db_type\Database::optimize();
+        $class = 'models\\' . \F3::get('db_type') . '\\Database';
+        
+        $class::optimize();
     }
 }
