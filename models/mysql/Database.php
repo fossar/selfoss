@@ -29,11 +29,11 @@ class Database {
         if(self::$initialized===false) {
             // establish database connection
             \F3::set('DB',
-						new \DB(
-							'mysql:host=' . \F3::get('db_host') . ';port=' . \F3::get('db_port') . ';dbname='.\F3::get('db_database'),
-							\F3::get('db_username'),
-							\F3::get('db_password')
-						));
+                        new \DB(
+                            'mysql:host=' . \F3::get('db_host') . ';port=' . \F3::get('db_port') . ';dbname='.\F3::get('db_database'),
+                            \F3::get('db_username'),
+                            \F3::get('db_password')
+                        ));
             
             // create tables if necessary
             @\DB::sql('SHOW TABLES');
