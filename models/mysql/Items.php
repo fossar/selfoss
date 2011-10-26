@@ -28,7 +28,7 @@ class Items extends Database {
      */
     public function mark($lastid) {
         \DB::sql('UPDATE items SET unread=0 WHERE id>=:id',
-					array(':id' => $lastid));
+                    array(':id' => $lastid));
     }
     
     
@@ -40,7 +40,7 @@ class Items extends Database {
      */
     public function starr($id) {
         \DB::sql('UPDATE items SET starred=1 WHERE id=:id', 
-					array(':id' => $id));
+                    array(':id' => $id));
     }
     
     
@@ -52,7 +52,7 @@ class Items extends Database {
      */
     public function unstarr($id) {
         \DB::sql('UPDATE items SET starred=0 WHERE id=:id',
-					array(':id' => $id));
+                    array(':id' => $id));
     }
     
     
@@ -86,18 +86,18 @@ class Items extends Database {
                     :uid,
                     :link
                   )',
-				 array(
-					':datetime'    => $values['datetime'],
-					':title'       => $values['title'],
-					':content'     => $values['content'],
-					':thumbnail'   => $values['thumbnail'],
-					':icon'        => $values['icon'],
-					':unread'      => 1,
-					':starred'     => 0,
-					':source'      => $values['source'],
-					':uid'         => $values['uid'],
-					':link'        => $values['link']
-				 ));
+                 array(
+                    ':datetime'    => $values['datetime'],
+                    ':title'       => $values['title'],
+                    ':content'     => $values['content'],
+                    ':thumbnail'   => $values['thumbnail'],
+                    ':icon'        => $values['icon'],
+                    ':unread'      => 1,
+                    ':starred'     => 0,
+                    ':source'      => $values['source'],
+                    ':uid'         => $values['uid'],
+                    ':link'        => $values['link']
+                 ));
     }
     
     
@@ -219,13 +219,13 @@ class Items extends Database {
             $icons[] = $icon['icon'];
         return $icons;
     }
-	
-	
+    
+    
     /**
      * return all thumbnails
      *
      * @return bool true if thumbnail is still in use
-	 * @param string $thumbnail name
+     * @param string $thumbnail name
      */
     public function hasThumbnail($thumbnail) {
         \DB::sql('SELECT count(*) AS amount
@@ -244,7 +244,7 @@ class Items extends Database {
      * return all icons
      *
      * @return bool true if icon is still in use
-	 * @param string $icon file
+     * @param string $icon file
      */
     public function hasIcon($icon) {
         \DB::sql('SELECT count(*) AS amount
