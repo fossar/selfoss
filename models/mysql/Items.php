@@ -8,6 +8,8 @@ namespace models\mysql;
  * @package    models
  * @copyright  Copyright (c) Tobias Zeising (http://www.aditu.de)
  * @license    GPLv3 (http://www.gnu.org/licenses/gpl-3.0.html)
+ * @author     Tobias Zeising
+ * @author     Harald Lapp <harald.lapp@gmail.com>
  */
 class Items extends Database {
 
@@ -120,14 +122,11 @@ class Items extends Database {
      * cleanup old items
      *
      * @return void
-     * @param int $days delete all items older than this value
+     * @param DateTime $date date to delete all items older than this value
      */
-    public function cleanup($days) {
-        $minDate = new \DateTime();
-        $minDate->sub(new \DateInterval('P'.$days.'D'));
-        
+    public function cleanup(\DateTime $date) {
         \DB::sql('DELETE FROM items WHERE starred=0 AND datetime<:date',
-                    array(':date' => $minDate->format('Y-m-d').' 00:00:00'));
+                    array(':date' => $date->format('Y-m-d').' 00:00:00'));
     }
     
     
@@ -138,16 +137,6 @@ class Items extends Database {
      * @param mixed $options search, offset and filter params
      */
     public function get($options = array()) {
-        $options = array_merge(
-            array(
-                'starred' => false,
-                'offset'  => 0,
-                'search'  => false,
-                'items'   => \F3::get('items_perpage')
-            ),
-            $options
-        );
-        
         $params = array();
         $where = '';
         
