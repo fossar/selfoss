@@ -12,7 +12,7 @@ namespace models;
  */
 class Items extends Database {
     /**
-     * Instance of backend specific database access class
+     * Instance of backend specific items class
      *
      * @var     object
      */
