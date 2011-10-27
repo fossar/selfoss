@@ -3,7 +3,7 @@
 namespace models\mysql;
 
 /**
- * Class for accessing persistent saved sources
+ * Class for accessing persistent saved sources -- mysql
  *
  * @package    models\mysql
  * @copyright  Copyright (c) Tobias Zeising (http://www.aditu.de)

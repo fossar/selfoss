@@ -3,7 +3,7 @@
 namespace models\mysql;
 
 /**
- * Class for accessing persistent saved items
+ * Class for accessing persistent saved items -- mysql
  *
  * @package    models
  * @copyright  Copyright (c) Tobias Zeising (http://www.aditu.de)
