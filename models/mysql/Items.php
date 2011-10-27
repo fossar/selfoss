@@ -161,7 +161,7 @@ class Items extends Database {
                     items.id, datetime, items.title AS title, content, unread, starred, source, thumbnail, icon, uid, link, sources.title as sourcetitle
                    FROM items, sources 
                    WHERE items.source=sources.id '.$where.' 
-                   ORDER BY id DESC 
+                   ORDER BY items.id DESC 
                    LIMIT ' . $options['offset'] . ', ' . \F3::get('items_perpage'), $params);
         return \F3::get('DB->result');
     }
