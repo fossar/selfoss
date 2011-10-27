@@ -3,7 +3,7 @@
 namespace models\mysql;
     
 /**
- * Base class for database access
+ * Base class for database access -- mysql
  *
  * @package    models
  * @copyright  Copyright (c) Tobias Zeising (http://www.aditu.de)
