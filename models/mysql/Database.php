@@ -5,7 +5,7 @@ namespace models\mysql;
 /**
  * Base class for database access -- mysql
  *
- * @package    models
+ * @package    models\mysql
  * @copyright  Copyright (c) Tobias Zeising (http://www.aditu.de)
  * @license    GPLv3 (http://www.gnu.org/licenses/gpl-3.0.html)
  */

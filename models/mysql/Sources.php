@@ -5,7 +5,7 @@ namespace models\mysql;
 /**
  * Class for accessing persistent saved sources -- mysql
  *
- * @package    models\mysql
+ * @package    models
  * @copyright  Copyright (c) Tobias Zeising (http://www.aditu.de)
  * @license    GPLv3 (http://www.gnu.org/licenses/gpl-3.0.html)
  */
