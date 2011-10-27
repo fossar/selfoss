@@ -25,7 +25,7 @@ class Sources extends Database {
      * @return void
      */
     public function __construct() {
-        $class = 'models\\' . \F3::get('db_type') . '\\Sources'
+        $class = 'models\\' . \F3::get('db_type') . '\\Sources';
         
         $this->backend = new $class();
         
