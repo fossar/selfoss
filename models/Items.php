@@ -131,7 +131,7 @@ class Items extends Database {
      * @return bool
      */
     public function hasMore() {
-        return $this->hasMore;
+        return $this->backend->hasMore();
     }
     
     
