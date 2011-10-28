@@ -47,6 +47,10 @@ class Database {
             
             if (!in_array($db_database . '.items', $list)) {
                 $mdb->createCollection('items');
+                
+                $col = $mdb->selectCollection('items');
+                $col->ensureIndex(array('title'   => 1));
+                $col->ensureIndex(array('content' => 1));
             }
             
             // just initialize once
