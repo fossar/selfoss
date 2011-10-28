@@ -243,4 +243,23 @@ class Items extends Database {
         $res = \F3::get('DB->result');
         return $res[0]['amount']>0;
     }
+    
+    /**
+     * test if the value of a specified field is valid
+     *
+     * @return  bool
+     * @param   string      $name
+     * @param   mixed       $value
+     */
+    public function isValid($name, $value) {
+        $return = false;
+        
+        switch ($name) {
+        case 'id':
+            $return = is_numeric($value);
+            break;
+        }
+        
+        return $return;
+    }
 }

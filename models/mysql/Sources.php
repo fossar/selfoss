@@ -98,4 +98,23 @@ class Sources extends Database {
             $ret[$i]['spout_obj'] = $spoutLoader->get( $ret[$i]['spout'] );
         return $ret;
     }
+    
+    /**
+     * test if the value of a specified field is valid
+     *
+     * @return  bool
+     * @param   string      $name
+     * @param   mixed       $value
+     */
+    public function isValid($name, $value) {
+        $return = false;
+        
+        switch ($name) {
+        case 'id':
+            $return = is_numeric($value);
+            break;
+        }
+        
+        return $return;
+    }
 }
