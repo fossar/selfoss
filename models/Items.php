@@ -51,7 +51,7 @@ class Items extends Database {
      * @param int $id the item
      */
     public function starr($id) {
-        $this->backend->starr($lastid);
+        $this->backend->starr($id);
     }
     
     
@@ -62,7 +62,7 @@ class Items extends Database {
      * @param int $id the item
      */
     public function unstarr($id) {
-        $this->backend->unstarr($lastid);
+        $this->backend->unstarr($id);
     }
     
     
