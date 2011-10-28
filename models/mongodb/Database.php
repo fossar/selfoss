@@ -30,9 +30,9 @@ class Database {
             // establish database connection
             \F3::set('DB',
                 new \MongoDB(
-                    new Mongo('mongodb://' . \F3::get('db_host') . ':' . \F3::get('db_port')),
                     \F3::get('db_database')
                 )
+                new \Mongo('mongodb://' . \F3::get('db_host') . ':' . \F3::get('db_port')),
             );
 
             // just initialize once
