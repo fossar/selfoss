@@ -175,4 +175,15 @@ class Items extends Database {
     public function hasIcon($icon) {
         return $this->backend->hasIcon($icon);
     }
+    
+    /**
+     * test if the value of a specified field is valid
+     *
+     * @return  bool
+     * @param   string      $name
+     * @param   mixed       $value
+     */
+    public function isValid($name, $value) {
+        return $this->backend->isValid($name, $value);
+    }
 }

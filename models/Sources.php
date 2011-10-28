@@ -170,4 +170,15 @@ class Sources extends Database {
             return $result;
         return true;
     }
+    
+    /**
+     * test if the value of a specified field is valid
+     *
+     * @return  bool
+     * @param   string      $name
+     * @param   mixed       $value
+     */
+    public function isValid($name, $value) {
+        return $this->backend->isValid($name, $value);
+    }
 }
