@@ -36,10 +36,12 @@ class Items {
      */
     public function mark() {
         $lastid = \F3::get('PARAMS["item"]');
-        if(!is_numeric($lastid))
-            $this->view->error('invalid id');
 
         $itemModel = new \models\Items();
+        
+        if (!$itemModel->isValid('id', $lastid))
+            $this->view->error('invalid id');
+        
         $itemModel->mark($lastid);
         $this->view->jsonSuccess(array('success' => true));
     }
@@ -52,10 +54,12 @@ class Items {
      */
     public function starr() {
         $id = \F3::get('PARAMS["item"]');
-        if(!is_numeric($id))
-            $this->view->error('invalid id');
 
         $itemModel = new \models\Items();
+        
+        if (!$itemModel->isValid('id', $id))
+            $this->view->error('invalid id');
+
         $itemModel->starr($id);
         $this->view->jsonSuccess(array('success' => true));
     }
@@ -68,10 +72,12 @@ class Items {
      */
     public function unstarr() {
         $id = \F3::get('PARAMS["item"]');
-        if(!is_numeric($id))
-            $this->view->error('invalid id');
 
         $itemModel = new \models\Items();
+        
+        if (!$itemModel->isValid('id', $id))
+            $this->view->error('invalid id');
+
         $itemModel->unstarr($id);
         $this->view->jsonSuccess(array('success' => true));
     }

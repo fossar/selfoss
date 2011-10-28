@@ -99,10 +99,12 @@ class Sources {
      */
     public function remove() {
         $id = \F3::get('PARAMS["id"]');
-        if(!is_numeric($id))
+        
+        $sourceModel = new \models\Sources();
+        
+        if (!$sourceModel->isValid('id', $id))
             $this->view->error('invalid id given');
 
-        $sourceModel = new \models\Sources();
         $sourceModel->delete($id);
     }
     
@@ -137,7 +139,8 @@ class Sources {
 
         // add/edit source
         $id = \F3::get('PARAMS["id"]');
-        if(!is_numeric($id))
+        
+        if (!$sourcesModel->isValid('id', $id))
             $id = $sourcesModel->add($title, $spout, $data);
         else
             $sourcesModel->edit($id, $title, $spout, $data);
