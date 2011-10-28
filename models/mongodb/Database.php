@@ -11,7 +11,6 @@ namespace models\mongodb;
  * @author      Harald Lapp <harald.lapp@gmail.com>
  */
 class Database {
-
     /**
      * indicates whether database connection was
      * initialized
@@ -47,7 +46,7 @@ class Database {
             }
             
             if (!in_array($db_database . '.items', $list)) {
-                $mdb->createCollection('list');
+                $mdb->createCollection('items');
             }
             
             // just initialize once
