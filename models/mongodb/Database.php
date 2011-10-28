@@ -28,13 +28,28 @@ class Database {
     public function __construct() {
         if (self::$initialized === false) {
             // establish database connection
-            \F3::set('DB',
-                new \MongoDB(
-                    \F3::get('db_database')
-                )
+            $db_database = \F3::get('db_database');
+            
+            $mdb = new \MongoDB(
                 new \Mongo('mongodb://' . \F3::get('db_host') . ':' . \F3::get('db_port')),
+                $db_database
             );
+            
+            \F3::set('DB', $mdb);
 
+            // create collections if necessary -- this seems to be required for F3::M2,
+            // but as it seems there is no built-in functionality for this
+            $list = $mdb->listCollections();
+            foreach ($list as &$tmp) $tmp = (string)$tmp;
+            
+            if (!in_array($db_database . '.sources', $list)) {
+                $mdb->createCollection('sources');
+            }
+            
+            if (!in_array($db_database . '.items', $list)) {
+                $mdb->createCollection('list');
+            }
+            
             // just initialize once
             $initialized = true;
         }
