@@ -6,7 +6,7 @@ ini_set('error_log', '/www/htdocs/w00827bf/aditu.de/public/selfossp/data/logs/ph
 require __DIR__.'/libs/f3/base.php';
 
 F3::set('DEBUG',3);
-F3::set('version','1.0beta');
+F3::set('version','1.0beta2');
 F3::set('AUTOLOAD',__dir__.'|libs/f3/|libs/|libs/WideImage/|models/|libs/twitteroauth|libs/FeedWriter');
 F3::set('cache',__dir__.'/data/cache');
 

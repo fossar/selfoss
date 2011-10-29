@@ -26,7 +26,7 @@ class Database {
      * @return void
      */
     public function __construct() {
-        if(self::$initialized===false) {
+        if(self::$initialized===false && \F3::get('db_file')=="mysql") {
             // establish database connection
             \F3::set('DB',
                         new \DB(
