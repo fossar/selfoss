@@ -27,11 +27,7 @@ class Sources extends Database {
                         ':params' => htmlentities(json_encode($params))
                     ));
  
-        $lastInsertStatement = 'last_insert_rowid()';
-        if(\F3::get('db_file')=="mysql")
-            $lastInsertStatement = 'LAST_INSERT_ID()';
-        
-        \DB::sql('SELECT '.$lastInsertStatement.' as lastid');
+        \DB::sql('SELECT LAST_INSERT_ID() as lastid');
         $res = \F3::get('DB->result');
         return $res[0]['lastid'];
     }
