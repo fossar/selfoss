@@ -38,6 +38,9 @@ class Image {
         $html = @file_get_contents($url);
         $shortcutIcon = $this->parseShortcutIcon($html);
         if($shortcutIcon!==false) {
+            if(substr($shortcutIcon,0,4)!='http')
+                $shortcutIcon = $url . $shortcutIcon;
+                
             $faviconAsPng = $this->loadImage($shortcutIcon, $width, $height);
             if($faviconAsPng!==false) {
                 $this->faviconUrl = $shortcutIcon;
@@ -76,7 +79,6 @@ class Image {
         $tmp = 'data/cache/' . md5($url);
         file_put_contents($tmp, $data);
         $imgInfo = @getimagesize($tmp); 
-        
         if(strtolower($imgInfo['mime'])=='image/vnd.microsoft.icon')
             $type = 'ico';
         elseif(strtolower($imgInfo['mime'])=='image/png')
