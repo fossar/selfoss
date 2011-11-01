@@ -15,7 +15,7 @@
             <?PHP echo isset($this->even) && $this->even==1 ? 'even' : ''; ?> 
             <?PHP echo $this->item['unread']==1 ? 'unread' : ''; ?>">
     <a href="<?PHP echo $this->item['link']; ?>" class="entry-icon">
-        <?PHP if(strlen(trim($this->item['icon']))>0) : ?>
+        <?PHP if(strlen(trim($this->item['icon']))>0 && $this->item['icon']!="0") : ?>
         <img src="<?PHP echo 'icons/'.$this->item['icon']; ?>" alt="<?PHP echo $this->item['sourcetitle']; ?>" />
         <?PHP endif; ?>
     </a>
