@@ -1,0 +1,111 @@
+body {
+    background:url(bg.gif);
+    font-family:Verdana,Arial,Helvetica,sans-serif;
+    color:#3e3e3e;
+}
+
+h1, h2, h3 {
+    font-family:"Trebuchet MS",Arial,Helvetica,sans-serif;
+}
+
+.wrapper-dark {
+    background:url(bgdark.png);
+}
+
+    .wrapper-dark h1 {
+        color:#000000;
+    }
+
+#header-teaser,
+#screenshots,
+#documentation,
+#download,
+#about {
+    position:relative;
+    left:50%;
+    width:800px;
+    margin-left:-400px;
+}
+
+
+/************ header **************/
+
+#header-name {
+    position:relative;
+    left:50%;
+    margin-left:-400px;
+    display:block;
+    background:url(name.png);
+    width:253px;
+    height:100px;
+    
+}
+
+    #header-name span {
+        display:none;
+    }
+    
+#header-navigation {
+    position:absolute;
+    left:50%;
+    top:40px;
+    margin-left:-50px;
+    font-family:"Trebuchet MS",Arial,Helvetica,sans-serif;
+    font-size:18px;
+    font-weight:bold;
+    list-style:none;
+}
+
+    #header-navigation li {
+        float:left;
+        margin-left:30px;
+        cursor:pointer;
+    }
+
+#header-fork {
+    position:absolute;
+    left:100%;
+    margin-left:-149px;
+    top:0;
+    background:url(git.png);
+    width:149px;
+    height:149px;
+}
+    
+#header-logo {
+    position:absolute;
+    display:block;
+    background:url(logo.png);
+    width:177px;
+    height:209px;
+    left:50%;
+    margin-left:250px;
+    top:200px;
+}
+    
+#header-teaser {
+    width:600px;
+    margin-top:50px;
+}
+
+    #header-teaser h1 {
+        text-shadow:0px 1px 1px rgba(0, 0, 0, 0.35);
+    }
+    
+    #header-teaser h2 {
+        margin-top:40px;
+        border-bottom:1px solid #d5d5d5;
+        width:300px;
+    }
+    
+    #header-teaser ul {
+        margin-top:20px;
+        width:500px;
+        margin-bottom:40px;
+    }
+    
+        #header-teaser li {
+            font-family:'DroidSans', Helvetica;
+            margin-bottom:10px;
+            font-size:16px;
+        }
