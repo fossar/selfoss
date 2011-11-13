@@ -52,3 +52,23 @@ UPDATE
 4. Leere den Cache des Browsers
 5. Datenbankzugriff in der config.ini konfigurieren (die alte Datenbank für die neue Version verwenden)
 
+
+
+
+-----
+
+Special thanks to the great programmers of this libraries which will be used in selfoss:
+
+* FatFree PHP Framework: http://fatfree.sourceforge.net/
+* Elastic CSS Framework: http://elasticss.com/
+* HTML5 Boilerplate.com: http://html5boilerplate.com/
+* SimplePie: http://simplepie.org/
+* jQuery: http://jquery.com/
+* WideImage: http://wideimage.sourceforge.net/
+* iScroll: http://cubiq.org/iscroll
+* htmLawed: http://www.bioinformatics.org/phplabware/internal_utilities/htmLawed/
+* PHP Universal Feed Generator: http://www.ajaxray.com/blog/2008/03/08/php-universal-feed-generator-supports-rss-10-rss-20-and-atom/
+* twitteroauth: https://github.com/abraham/twitteroauth
+* floIcon: http://www.phpclasses.org/package/3906-PHP-Read-and-write-images-from-ICO-files.html
+* modernizr: http://www.modernizr.com/
+* keyboard shortcuts: http://www.openjs.com/scripts/events/keyboard_shortcuts/
