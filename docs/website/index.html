@@ -48,9 +48,9 @@
                 <li>web based rss reader</li>
                 <li>universal aggregator</li>
                 <li>open source and free</li>
-                <li>easy extensible by an open plugin system (write your own data connectors)</li>
+                <li>easy extendable with an open plugin system (write your own data connectors)</li>
                 <li>mobile support (Android, iOS, iPad)</li>
-                <li>use selfoss as own live stream and aggregate all your posts, tweets, feeds at one place</li>
+                <li>use selfoss to live stream and collect all your posts, tweets, feeds in one place</li>
                 <li>lightweight PHP application with less than 2 MB</li>
                 <li>supports MySQL, Sqlite and MongoDB Databases</li>
             </ul>
@@ -86,7 +86,7 @@
                     <li>MySQL, SqLite or MongoDB</li>
                     <li>Apache Webserver (ngnix and lighttpd also possible)</li>
                 </ul>
-                selfoss supports all modern browsers, including Mozilla Firefox, Safari, Google Chrome, Opera and the Internet Explorer.
+                selfoss supports all modern browsers, including Mozilla Firefox, Safari, Google Chrome, Opera and Internet Explorer.
             </div>
             
             <h2>Installation</h2>
@@ -97,6 +97,7 @@
                     <li>Upload all files of this folder (IMPORTANT: also upload the invisible .htaccess files)</li>
                     <li>Make the directories data/cache, data/icons, data/logs, data/thumbnails writeable</li>
                     <li>Insert database access data in config.ini</li>
+                    <li>You don't have to install the database, it will be created automatically</li>
                     <li>Create cronjob for updating feeds and point it to http://yoururl.com/update via wget or curl.</li>
                 </ol>
                 
@@ -104,7 +105,7 @@
             
             <h2>Configuration</h2>
             <div class="documentation-entry">
-                <p>selfoss offers following configuration parameters. You can set the config parameters in the <code>config.ini</code> file.</p>
+                <p>selfoss offers the following configuration parameters. You can set the config parameters in the <code>config.ini</code> file.</p>
                 
                 <table border="1" cellspacing="0" cellpadding="5">
                     <tr>
@@ -125,7 +126,7 @@
                     </tr>
                     <tr>
                         <td class="documentation-first-column">db_database</td>
-                        <td>database sheme</td>
+                        <td>name of the database</td>
                     </tr>
                     <tr>
                         <td class="documentation-first-column">db_username</td>
@@ -141,11 +142,11 @@
                     </tr>
                     <tr>
                         <td class="documentation-first-column">logger_level</td>
-                        <td>set logging level; the log file will be found on /data/logs/default.logfollowing logging levels are available: DEBUG, INFO, NOTICE, WARNING, ERROR, NONEuse this for troubleshooting on updating feeds (but be aware that the log file can become very large)</td>
+                        <td>set logging level; the log file will be found on /data/logs/default.logfollowing logging levels are available: DEBUG, INFO, NOTICE, WARNING, ERROR, NONE use this for troubleshooting on updating feeds (but be aware that the log file can become very large)</td>
                     </tr>
                     <tr>
                         <td class="documentation-first-column">items_perpage</td>
-                        <td>amount of entries per page on your stream</td>
+                        <td>number of entries per page on your stream</td>
                     </tr>
                     <tr>
                         <td class="documentation-first-column">items_lifetime</td>
@@ -217,7 +218,7 @@
                     </tr>
                     <tr>
                         <td class="documentation-first-column">s</td>
-                        <td>starr/unstarr current selected entry</td>
+                        <td>mark and unmark current selected entry</td>
                     </tr>
                     <tr>
                         <td class="documentation-first-column">v</td>
@@ -229,29 +230,29 @@
             <h2>Extend</h2>
             <div class="documentation-entry">
                 <p>
-                    You can easily add own data sources. Spouts (thats how we call the plugins) fetch the content from the different sources. Some spouts are included:
+                    You can easily add your own data sources. Spouts (aka plugins) fetch the content from the different sources. Some spouts are included:
                 </p>
                 <ul>
                     <li>RSS Feeds</li>
                     <li>Images from a RSS Feed</li>
                     <li>Images from deviantArt Users</li>
-                    <li>Images from thumblr</li>
+                    <li>Images from tumblr</li>
                     <li>Your twitter timeline</li>
                     <li>Tweets of a twitter user</li>
                     <li>heise News</li>
                 </ul>
                 <p>
-                    If you want to get the newest entries of a own source (e.g. an IMAP Email Account, Log Files or any data from a own application), you can include a new spout in your selfoss stream by writing just one php class (saved in one php file).
+                    If you want to get the newest entries from your own source (e.g. an IMAP Email Account, Log Files or any data from your own application), you can include a new spout in your selfoss stream by writing just one php class (saved in one php file).
                 </p>
                 <p>
-                    A german speaking tutorial how to add own data sources can be found on <a href="http://blog.aditu.de/2011/10/17/selfoss-eigene-datenquellen-erstellen/">http://blog.aditu.de</a>.
+                    A german speaking tutorial on how to add own data sources can be found on <a href="http://blog.aditu.de/2011/10/17/selfoss-eigene-datenquellen-erstellen/">http://blog.aditu.de</a>.
                 
                     Create a new php file under <code>/spouts/your_spouts/your_spout.php</code> (choose a name for <code>your_spouts</code> and <code>your_spout</code>). The easiest way is to copy the <code><a href="https://github.com/SSilence/selfoss/blob/master/spouts/rss/feed.php">/spouts/rss/feed.php</a></code> and to modify this file.
                 </p>
                 
                 <h3>Member Variables</h3>
                 <p>
-                    Set the <code>$name</code> and <code>$description</code> variable with the name and description of your spout. The <code>$params</code> contains the definition of the input fields which a user have to fill for adding a new source of your spout (e.g. username and password for accessing the source data).
+                    Set the <code>$name</code> and <code>$description</code> variable with the name and description of your spout. The <code>$params</code> contain the definition of the input fields which a user will have to fill to add a new source of your spout (e.g. username and password for accessing the source data).
                 </p>
                 <p>A simple example for the member variables of a spout for accessing an IMAP email account:</p>
                     
@@ -290,7 +291,7 @@
                 <h3>Methods</h3>
                 
                 <p>
-                    Your source have to implement a few methods. Following UML diagramm shows the inheritance structure:
+                    Your source will have to implement a few methods. Following UML diagram shows the inheritance structure:
                 </p>
                 
                 <p>
@@ -303,26 +304,26 @@
                 
                 <ul>
                     <li>
-                        A <code>load($params)</code> function will be executed by selfoss when the content will be updated (the http://your-selfoss-url.com/update will be executed). This <code>load</code> function has one parameter <code>$params</code> which contains the user defined parameters (e.g. username, password or anything which user have to configure (as you can define in the members variable <code>$params</code>). This function contains your source code for fetching the data (e.g. loading the emails from an IMAP email account).
+                        A <code>load($params)</code> function will be executed by selfoss when the content will be updated (the http://your-selfoss-url.com/update will be executed). This <code>load</code> function has one parameter <code>$params</code> which contains the user defined parameters (e.g. username, password or anything which the user has configured (as you can define in the members variable <code>$params</code>). This function contains your source code for fetching the data (e.g. loading the emails from an IMAP email account).
                     </li>
                     <li>
-                        You have to impelement the <code>Iterable</code> interface. selfoss will use it to iterate over all single entries of your source (e.g. the emails which was fetched by the load function). See <a href="http://www.php.net/manual/en/language.oop5.iterations.php">php.net manual (OOP5 iterators)</a> for more informations about this iterator functions.
+                        You have to implement the <code>Iterable</code> interface. selfoss will use it to iterate over all single entries of your source (e.g. the emails which were fetched by the load function). See <a href="http://www.php.net/manual/en/language.oop5.iterations.php">php.net manual (OOP5 iterators)</a> for more informations about this iterator functions.
                     </li>
                     <li>
-                        selfoss iterates over all the entries by using the iterable interface. During this iteration, selfoss will receive all information about the entries by using the functions defined by the abstract class <code>\spouts\spout</code> (e.g. it will geth the email subject by executing the <code>getTitle()</code> method).
+                        selfoss iterates over all the entries by using the iterable interface. selfoss will receive all information about the entries by using the functions defined by the abstract class <code>\spouts\spout</code> (e.g. it will get the email subject by executing the <code>getTitle()</code> method).
                     </li>
                 </ul>
                 
                 <h3>Thumbnails</h3>
                 
                 <p>
-                    If you would like to show thumbnails instead of text, you have to implement the optional method <code>getThumbnail()</code>. This method have to return the url of the image. selfoss will load and generate the thumbnail automatically. See <code><a href="https://github.com/SSilence/selfoss/blob/master/spouts/rss/images.php">\spouts\rss\images.php</a></code> for getting an example. This spout searches for an image in a rss feed and returns it.
+                    If you would like to show thumbnails instead of text, you have to implement the optional method <code>getThumbnail()</code>. This method have to return the url of the image. selfoss will load and generate the thumbnail automatically. See <code><a href="https://github.com/SSilence/selfoss/blob/master/spouts/rss/images.php">\spouts\rss\images.php</a></code> for an example. This spout searches for an image in an rss feed and returns it.
                 </p>
                 
                 <h3>Your Spouts</h3>
                 
                 <p>
-                    Feel free to send us your own spouts. We are really happy about new sources we can add to further versions of selfoss.
+                    Feel free to send us your own spouts. We are really happy about new sources we can add to further versions of selfoss. You can send them by email to <a href="tobias.zeising@aditu.de">tobias.zeising@aditu.de</a>.
                 </p>
             </div>
             
@@ -365,7 +366,7 @@
             </p>
             
             <p>
-                Selfoss is named by the wonderfull waterfall in Iceland (see <a href="http://en.wikipedia.org/wiki/Selfoss_(waterfall)">Wikipedia</a>). Many single waterfalls produce one big downfall. This seems to be a good metaphor for the many sources from the web which will be shown in one stream.
+                Selfoss is named by the wonderfull waterfall in Iceland (see <a href="http://en.wikipedia.org/wiki/Selfoss_(waterfall)">Wikipedia</a>). Many single waterfalls converge to produce one big fall. This seems to be a good metaphor for the many sources from the web which will be shown in one stream.
             </p>
         </div>
     </div>
