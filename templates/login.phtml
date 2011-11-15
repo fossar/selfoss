@@ -27,7 +27,7 @@
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
     <!-- CSS : implied media="all" -->
-    <link rel="stylesheet" href="css/style.css?v=2">
+    <link rel="stylesheet" href="all.css">
 
     <!-- All JavaScript at the bottom, except for Modernizr which enables HTML5 elements & feature detects -->
     <script src="js/modernizr-1.6.min.js"></script>
@@ -37,6 +37,7 @@
 
     <a id="about" href="http://selfoss.aditu.de">selfoss <?PHP echo \F3::get('version'); ?></a>
 
+    <?PHP if(!isset($this->password)) : ?>
     <form action="<?PHP echo $this->base; ?>?login=1" method="post">
     <ul id="login">
         <li><h1>selfoss login</h1></li>
@@ -48,6 +49,19 @@
         <li><label></label> <input type="submit" value="login" /></li>
     </ul>
     </form>
+    
+    <?PHP else : ?>
+    <form action="<?PHP echo $this->base; ?>password" method="post">
+    <ul id="login">
+        <li><h1>hash generator</h1></li>
+        <li><label>Password:</label> <input type="password" name="password" /></li>
+        <?PHP if(isset($this->hash)) : ?>
+        <li class="error"><label>&nbsp;</label>Generated Passwort (insert this in config.ini): <input type="text" value="<?PHP echo $this->hash; ?>" /></li>
+        <?PHP endif; ?>
+        <li><label></label> <input type="submit" value="generate password" /></li>
+    </ul>
+    </form>
+    <?PHP endif; ?>
     
     <!-- Grab Google CDN's jQuery. fall back to local if necessary -->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.js"></script>

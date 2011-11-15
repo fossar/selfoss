@@ -95,7 +95,7 @@
                 
                 <ol>
                     <li>Upload all files of this folder (IMPORTANT: also upload the invisible .htaccess files)</li>
-                    <li>Make the directories data/cache, data/icons, data/logs, data/thumbnails writeable</li>
+                    <li>Make the directories data/cache, data/icons, data/logs, data/thumbnails and public/ writeable</li>
                     <li>Insert database access data in config.ini</li>
                     <li>You don't have to install the database, it will be created automatically</li>
                     <li>Create cronjob for updating feeds and point it to http://yoururl.com/update via wget or curl.</li>
@@ -158,11 +158,15 @@
                     </tr>
                     <tr>
                         <td class="documentation-first-column">username</td>
-                        <td>username for optional login</td>
+                        <td>username for optional login. Just set username and password for enabling login.</td>
                     </tr>
                     <tr>
                         <td class="documentation-first-column">password</td>
-                        <td>password for optional login</td>
+                        <td>password hash for optional login. You can generate a password hash by using following page of your selfoss installation. http://your_selfoss_url.com/password</td>
+                    </tr>
+                    <tr>
+                        <td class="documentation-first-column">salt</td>
+                        <td>salt</td>
                     </tr>
                     <tr>
                         <td class="documentation-first-column">public</td>

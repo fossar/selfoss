@@ -29,6 +29,8 @@ class View {
                       ($_SERVER["SERVER_PORT"]!="80" ? ':'.$_SERVER["SERVER_PORT"] . '' : '') . 
                       $subdir . 
                       '/';
+                      
+        $this->genMinifiedJsAndCss();
     }
 
     
@@ -79,4 +81,32 @@ class View {
     public function jsonSuccess($data) {
         die(json_encode($data));
     }
+    
+    
+    
+    /**
+     * generate minified css and js
+     *
+     * @return void
+     */
+    public function genMinifiedJsAndCss() {
+        // minify js
+        $targetJs = \F3::get('BASEDIR').'/public/all.js';
+        if(!file_exists($targetJs)) {
+            $js = "";
+            foreach(\F3::get('js') as $file)
+                $js = $js . "\n" . \JSMin::minify(file_get_contents(\F3::get('BASEDIR').'/'.$file));
+            
+            file_put_contents($targetJs, $js);
+        }
+    
+        // minify css
+        $targetCss = \F3::get('BASEDIR').'/public/all.css';
+        if(!file_exists($targetCss)) {
+            $css = \Web::minify(\F3::get('BASEDIR').'/',\F3::get('css'), false);
+            file_put_contents($targetCss, $css);
+        }
+    }
+    
+    
 }

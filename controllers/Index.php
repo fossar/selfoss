@@ -85,6 +85,20 @@ class Index {
     
     
     /**
+     * password hash generator
+     *
+     * @return void
+     */
+    public function password() {
+        $view = new \helpers\View();
+        $view->password = true;
+        if(isset($_POST['password']))
+            $view->hash = hash("sha512", \F3::get('salt') . $_POST['password']);
+        echo $view->render('templates/login.phtml');
+    }
+    
+    
+    /**
      * rss feed
      *
      * @return void
@@ -110,7 +124,7 @@ class Index {
             if($newestEntryDate===false)
                 $newestEntryDate = $item['datetime'];
             $newItem = $feedWriter->createNewItem();
-            $newItem->setTitle(html_entity_decode(utf8_decode($item['title'])));
+            $newItem->setTitle(str_replace('&', '&amp;', html_entity_decode(utf8_decode($item['title']))));
             @$newItem->setLink($item['link']);
             $newItem->setDate($item['datetime']);
             $newItem->setDescription(str_replace('&#34;', '"', $item['content']));
