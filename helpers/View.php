@@ -16,6 +16,8 @@ class View {
      * set global view vars
      */
     function __construct() {
+        $this->genMinifiedJsAndCss();
+    
 		if(strlen(trim(\F3::get('base_url')))>0) {
 			$this->base = \F3::get('base_url');
 			return;
@@ -29,8 +31,6 @@ class View {
                       ($_SERVER["SERVER_PORT"]!="80" ? ':'.$_SERVER["SERVER_PORT"] . '' : '') . 
                       $subdir . 
                       '/';
-                      
-        $this->genMinifiedJsAndCss();
     }
 
     
@@ -96,14 +96,15 @@ class View {
             $js = "";
             foreach(\F3::get('js') as $file)
                 $js = $js . "\n" . \JSMin::minify(file_get_contents(\F3::get('BASEDIR').'/'.$file));
-            
             file_put_contents($targetJs, $js);
         }
     
         // minify css
         $targetCss = \F3::get('BASEDIR').'/public/all.css';
         if(!file_exists($targetCss)) {
-            $css = \Web::minify(\F3::get('BASEDIR').'/',\F3::get('css'), false);
+            $css = "";
+            foreach(\F3::get('css') as $file)
+                $css = $css . "\n" . \CssMin::minify(file_get_contents(\F3::get('BASEDIR').'/'.$file));
             file_put_contents($targetCss, $css);
         }
     }
