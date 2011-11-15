@@ -73,3 +73,4 @@ Special thanks to the great programmers of this libraries which will be used in 
 * modernizr: http://www.modernizr.com/
 * keyboard shortcuts: http://www.openjs.com/scripts/events/keyboard_shortcuts/
 * jsmin: https://github.com/rgrove/jsmin-php/blob/master/jsmin.php
+* cssmin: http://code.google.com/p/cssmin/
