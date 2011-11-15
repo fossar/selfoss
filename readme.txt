@@ -13,7 +13,7 @@ english
 INSTALLATION
 
 1. upload all files of this folder (IMPORTANT: also upload the invisible .htaccess files)
-2. make the directories data/cache, data/icons, data/logs, data/thumbnails writeable
+2. make the directories data/cache, data/icons, data/logs, data/thumbnails and public/ writeable
 3. insert database access data in config.ini
 4. create cronjob for updating feeds and point it to http://<selfoss url>/update via wget or curl.
 
@@ -36,7 +36,7 @@ deutsch
 INSTALLATION
 
 1. lade alle Dateien dieses Ordners hoch (WICHTIG: auch die unsichtbaren .htaccess Dateien hochladen)
-2. setze die Schreibrechte für die Verzeichnisse data/cache, data/icons, data/logs, data/thumbnails 
+2. setze die Schreibrechte für die Verzeichnisse data/cache, data/icons, data/logs, data/thumbnails und public/
 3. setze deine Datenbankzugriffsdaten in config.ini
 4. erzeuge einen cronjob für das Aktualisieren der Feeds auf http://<selfoss url>/update mittels wget or curl.
 
@@ -72,3 +72,4 @@ Special thanks to the great programmers of this libraries which will be used in 
 * floIcon: http://www.phpclasses.org/package/3906-PHP-Read-and-write-images-from-ICO-files.html
 * modernizr: http://www.modernizr.com/
 * keyboard shortcuts: http://www.openjs.com/scripts/events/keyboard_shortcuts/
+* jsmin: https://github.com/rgrove/jsmin-php/blob/master/jsmin.php

@@ -34,6 +34,45 @@ FileETag none
 
 # Default expires header if none specified (stay in browser cache for 7 days)
 <IfModule mod_expires.c>
-ExpiresActive On
-ExpiresDefault A604800
+    ExpiresActive On
+    ExpiresDefault A604800
+
+    ExpiresByType application/javascript "access plus 2 hours"
+    ExpiresByType application/x-javascript "access plus 2 hours"
+    ExpiresByType text/javascript "access plus 2 hours"
+    ExpiresByType text/x-javascript "access plus 2 hours"
+    ExpiresByType text/css "access plus 2 hours"
+    ExpiresByType image/gif "access plus 2 hours"
+    ExpiresByType image/jpg "access plus 2 hours"
+    ExpiresByType image/png "access plus 2 hours"
+    ExpiresByType image/x-icon "access plus 2 hours"
+</IfModule>
+
+# set compression
+<IfModule mod_header.c>
+    <IfModule mod_deflate.c>
+        # Insert filter
+        SetOutputFilter DEFLATE
+
+        # Netscape 4.x has some problems...
+        BrowserMatch ^Mozilla/4 gzip-only-text/html
+
+        # Netscape 4.06-4.08 have some more problems
+        BrowserMatch ^Mozilla/4\.0[678] no-gzip
+
+        # MSIE masquerades as Netscape, but it is fine
+        # BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+
+        # NOTE: Due to a bug in mod_setenvif up to Apache 2.0.48
+        # the above regex won't work. You can use the following
+        # workaround to get the desired effect:
+        BrowserMatch \bMSI[E] !no-gzip !gzip-only-text/html
+
+        # Don't compress images
+        SetEnvIfNoCase Request_URI \
+        \.(?:gif|jpe?g|png)$ no-gzip dont-vary
+
+        # Make sure proxies don't deliver the wrong content
+        Header append Vary User-Agent env=!dont-vary
+    </IfModule>
 </IfModule>

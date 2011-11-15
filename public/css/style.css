@@ -195,7 +195,7 @@ html {
 }
  
 body {
-    background:url(../images/bg.gif) repeat;
+    background:url(images/bg.gif) repeat;
 }
 
 #about {
@@ -275,7 +275,7 @@ nav {
         width:220px;
         padding-top:40px;
         padding-left:100px;
-        background:url(../images/icons.png) 230px -15px no-repeat;
+        background:url(images/icons.png) 230px -15px no-repeat;
     }
 
 
@@ -290,11 +290,11 @@ nav,
 }
 
     .stream-left {
-        background:url(../images/stream-left.png) repeat-y;
+        background:url(images/stream-left.png) repeat-y;
     }
     
     .stream-right {
-        background:url(../images/stream-right.png) repeat-y;
+        background:url(images/stream-right.png) repeat-y;
     }
     
     .stream-middle {
@@ -302,17 +302,17 @@ nav,
     }
     
     #stream-top-left {
-        background:url(../images/stream-top-left.png) repeat-y;
+        background:url(images/stream-top-left.png) repeat-y;
         height:7px;
     }
     
     #stream-top-right {
-        background:url(../images/stream-top-right.png) repeat-y;
+        background:url(images/stream-top-right.png) repeat-y;
         height:7px;
     }
     
     #stream-top-middle {
-        background:url(../images/stream-top-middle.png) repeat-x;
+        background:url(images/stream-top-middle.png) repeat-x;
         height:7px;
     }
     
@@ -341,7 +341,7 @@ nav,
         }
         
         .stream-more.loading {
-            background:url(../images/ajax-loader-big.gif) center center no-repeat;
+            background:url(images/ajax-loader-big.gif) center center no-repeat;
         }
         
         .stream-more.loading span {
@@ -427,13 +427,13 @@ nav,
     }
     
         .loggedin .entry-starr {
-            background:url(../images/icons.png) -76px -139px no-repeat;
+            background:url(images/icons.png) -76px -139px no-repeat;
             cursor:pointer;
         }
     
         .entry-starr.active,
         .loggedin .entry-starr:hover {
-            background:url(../images/icons.png) -21px -139px no-repeat;
+            background:url(images/icons.png) -21px -139px no-repeat;
         }
     
     .entry-title {
@@ -534,7 +534,7 @@ nav,
             height:11px;
             top:8px;
             padding:0;
-            background:url(../images/ajax-loader.gif) no-repeat;
+            background:url(images/ajax-loader.gif) no-repeat;
         }
         
         .source .source-action.loading span {
@@ -561,7 +561,7 @@ nav,
     }
     
         .source .source-params.loading {
-            background:url(../images/ajax-loader.gif) 85px bottom no-repeat;
+            background:url(images/ajax-loader.gif) 85px bottom no-repeat;
             height:20px;
         }
         
@@ -570,7 +570,7 @@ nav,
         }
     
     .source-add {
-        background:url(../images/icons.png) -21px -334px no-repeat;
+        background:url(images/icons.png) -21px -334px no-repeat;
         padding-left:20px;
         margin-top:10px;
         margin-left:5px;
@@ -600,17 +600,17 @@ nav {
 }
 
     #nav-left {
-        background:url(../images/nav-left.png);
+        background:url(images/nav-left.png);
         height:50px;
     }
     
     #nav-right {
-        background:url(../images/nav-right.png);
+        background:url(images/nav-right.png);
         height:50px;
     }
     
     #nav-middle {
-        background:url(../images/nav-middle.png) repeat-x;
+        background:url(images/nav-middle.png) repeat-x;
         height:50px;
     }
     
@@ -638,37 +638,37 @@ nav {
     }
     
         .nav-login a {
-            background:url(../images/icons.png) -76px -409px no-repeat;
+            background:url(images/icons.png) -76px -409px no-repeat;
         }
         
             .nav-login a:hover {
-                background:url(../images/icons.png) -20px -409px no-repeat;
+                background:url(images/icons.png) -20px -409px no-repeat;
             }
         
         .nav-logout a {
-            background:url(../images/icons.png) -76px -364px no-repeat;
+            background:url(images/icons.png) -76px -364px no-repeat;
         }
             
             .nav-logout a:hover {
-                background:url(../images/icons.png) -20px -364px no-repeat;
+                background:url(images/icons.png) -20px -364px no-repeat;
             }
     
         .nav-settings a {
-            background:url(../images/icons.png) -76px -177px no-repeat;
+            background:url(images/icons.png) -76px -177px no-repeat;
         }
     
             .nav-settings a:hover,
             .nav-settings a.active {
-                background:url(../images/icons.png) -21px -177px no-repeat;
+                background:url(images/icons.png) -21px -177px no-repeat;
             }
     
         .nav-favorites a {
-            background:url(../images/icons.png) -76px -227px no-repeat;
+            background:url(images/icons.png) -76px -227px no-repeat;
         }
     
             .nav-favorites a.active,
             .nav-favorites:hover {
-                background:url(../images/icons.png) -21px -227px no-repeat;
+                background:url(images/icons.png) -21px -227px no-repeat;
             }
     
     .nav-search {
@@ -676,7 +676,7 @@ nav {
     }
     
         .nav-search #search {
-            background:url(../images/icons.png) -21px -291px no-repeat;
+            background:url(images/icons.png) -21px -291px no-repeat;
             width:162px;
             height:26px;
             border:0;
@@ -700,7 +700,7 @@ nav {
 
     .nav-logo {
         position:absolute;
-        background:url(../images/icons.png) -21px -15px no-repeat;
+        background:url(images/icons.png) -21px -15px no-repeat;
         width:64px;
         height:75px;
         top:-40px;
@@ -745,7 +745,7 @@ body.mobile #nav-right {
 }
 
 body.mobile .nav-logo {
-    background:url(../images/icons.png) -102px -15px no-repeat;
+    background:url(images/icons.png) -102px -15px no-repeat;
     width:38px;
     height:46px;
     margin-left:-35px;
@@ -795,7 +795,7 @@ body.mobile #login {
         height:40px;
         width:220px;
         padding-left:0;
-        background:url(../images/icons.png) 138px -15px no-repeat;
+        background:url(images/icons.png) 138px -15px no-repeat;
     }
     
     
