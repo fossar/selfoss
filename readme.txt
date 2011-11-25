@@ -5,10 +5,10 @@ Version 1.1
 License: GPLv3
 Icon Source: http://blog.artcore-illustrations.de/aicons/
 
-----
 
-
+------------
 INSTALLATION
+------------
 
 1. upload all files of this folder (IMPORTANT: also upload the invisible .htaccess files)
 2. make the directories data/cache, data/icons, data/logs, data/thumbnails and public/ writeable
@@ -16,20 +16,31 @@ INSTALLATION
 4. create cronjob for updating feeds and point it to http://<selfoss url>/update via wget or curl.
 
 
-----
-
+------
 UPDATE
+------
 
 1. backup your database and your "data" folder
 2. (IMPORTANT: don't delete the "data" folder) delete all old files and folders excluding the folder "data"
 3. upload all new files and folders excluding the data folder (IMPORTANT: also upload the invisible .htaccess files)
 4. Clean your browser cache
-5. insert darabase access data in config.ini (use your old database connection)
+5. insert your current database connection and your individual configuration in config.ini. Important: we change the config.ini and add new options in newer versions. You have to update the config.ini too.
 
 
------
+---------
+CHANGELOG
+---------
 
+Version 1.1
+* hash password (you can set the salt in the config.ini and you can generate a password with following URL: http://your_selfoss_url.com/password)
+* remove unused CSS
+* minify JavaScript and CSS
+* code optimization and smaller bugfixes
+
+
+-------
 CREDITS
+-------
 
 Special thanks to the great programmers of this libraries which will be used in selfoss:
 
