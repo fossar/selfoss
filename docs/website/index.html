@@ -100,7 +100,19 @@
                     <li>You don't have to install the database, it will be created automatically</li>
                     <li>Create cronjob for updating feeds and point it to http://yoururl.com/update via wget or curl.</li>
                 </ol>
-                
+            </div>
+            
+            <h2>Update</h2>
+            <div class="documentation-entry">
+                <p>Read carefully following instructions before you update your selfoss installation:</p>
+
+                <ol>
+                    <li>Backup your database and your "data" folder</li>
+                    <li><b>IMPORTANT: don't delete the "data" folder</b>. Delete all old files and folders excluding the folder "data".</li>
+                    <li>Upload all new files and folders excluding the data folder (IMPORTANT: also upload the invisible .htaccess files).</li>
+                    <li>Clean your browser cache.</li>
+                    <li>Insert your current database connection and your individual configuration in config.ini. Important: we change the config.ini and add new options in newer versions. You have to update the config.ini too.</li>
+                </ol>
             </div>
             
             <h2>Configuration</h2>
