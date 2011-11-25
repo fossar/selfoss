@@ -34,7 +34,8 @@ CHANGELOG
 Version 1.1
 * hash password (you can set the salt in the config.ini and you can generate a password with following URL: http://your_selfoss_url.com/password)
 * remove unused CSS
-* minify JavaScript and CSS
+* minify JavaScript and CSS and collect them all in one all.js and all.css file
+* activate caching and compression in .htaccess (if supported by current apache installation)
 * code optimization and smaller bugfixes
 
 
