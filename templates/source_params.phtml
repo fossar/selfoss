@@ -21,6 +21,20 @@ foreach($this->spout->params as $spoutParamName => $spoutParam) {
                        value="'.$value.'" 
                        '.$checked.' />
               </li>';
+
+    else if($spoutParam["type"]=="select") {
+        $options = '';
+        foreach($spoutParam["values"] as $optionName => $optionTitle) {
+            $selected = ($optionName==$value) ? 'selected="selected"' : '';
+            $options .= "\n".'<option value="'.$optionName.'" '.$selected.'>'.$optionTitle.'</option>';
+        }
+
+        echo '<li>
+                <label>'.$spoutParam['title'].':</label>
+                <select id="'.$spoutParamName.'" name="'.$spoutParamName.'" size="1">'.$options.'
+                </select>
+            </li>';
+    }
 }
 ?>
 </ul>
