@@ -1,0 +1,4 @@
+/data/cache/*.spc
+/data/logs/*.log
+/data/sqlite/*.db
+/public/all.*
