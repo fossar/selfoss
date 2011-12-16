@@ -8,7 +8,7 @@ namespace models;
  * @package    models\mysql
  * @copyright  Copyright (c) Tobias Zeising (http://www.aditu.de)
  * @license    GPLv3 (http://www.gnu.org/licenses/gpl-3.0.html)
- * @author     Harald Lapp <harald.lapp@gmail.com>
+ * @author     Harald Lapp <harald.lapp@gmail.com>, Daniel Seither <post@tiwoc.de>
  */
 
 class Sources extends Database {
@@ -163,6 +163,23 @@ class Sources extends Database {
                     else if($validate=='notempty' && strlen(trim($value))==0)
                         $result[$id] = 'empty value for '.$spout->params[$id]['title'].' not allowed';
                 }
+
+            }
+
+            // select: user sent value which is not a predefined option?
+            foreach($params as $id=>$value) {
+                if($spout->params[$id]['type']!="select")
+                    continue;
+
+                $values = $spout->params[$id]['values'];
+
+                $found = false;
+                foreach($values as $optionName => $optionTitle) {
+                    if($optionName==$value)
+                        $found = true;
+                }
+                if($found==false)
+                    $result[$id] = 'param '.$spout->params[$id]['title'].' was not set to a predefined value';
             }
         }
     
