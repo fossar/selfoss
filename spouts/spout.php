@@ -33,8 +33,12 @@ abstract class spout implements \Iterator {
      * config params
      * array of arrays with name, type, default value, required, validation type
      *
-     * - Values for type: text, password, checkbox
+     * - Values for type: text, password, checkbox, select
      * - Values for validation: alpha, email, numeric, int, alnum, notempty
+     *
+     * When type is "select", a new entry "values" must be supplied, holding
+     * key/value pairs of internal names (key) and displayed labels (value).
+     * See /spouts/rss/heise for an example.
      * 
      * e.g.
      * array(
