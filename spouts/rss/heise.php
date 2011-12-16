@@ -9,7 +9,8 @@ namespace spouts\rss;
  * @subpackage news
  * @copyright  Copyright (c) Tobias Zeising (http://www.aditu.de)
  * @license    GPLv3 (http://www.gnu.org/licenses/gpl-3.0.html)
- * @author     Tobias Zeising, Daniel Seither <post@tiwoc.de>
+ * @author     Tobias Zeising <tobias.zeising@aditu.de>
+ * @author     Daniel Seither <post@tiwoc.de>
  */
 class heise extends feed {
 
@@ -60,20 +61,20 @@ class heise extends feed {
             "title"      => "Section",
             "type"       => "select",
             "values"     => array(
-                "main" => "Hauptseite",
-                "ct" => "c't",
-                "ix" => "iX",
-                "tr" => "Technology Review",
-                "mac" => "Mac &amp; i",
-                "mobil" => "mobil",
-                "sec" => "Security",
-                "net" => "Netze",
-                "open" => "Open Source",
-                "dev" => "Developer",
-                "tp" => "Telepolis",
+                "main"   => "Hauptseite",
+                "ct"     => "c't",
+                "ix"     => "iX",
+                "tr"     => "Technology Review",
+                "mac"    => "Mac &amp; i",
+                "mobil"  => "mobil",
+                "sec"    => "Security",
+                "net"    => "Netze",
+                "open"   => "Open Source",
+                "dev"    => "Developer",
+                "tp"     => "Telepolis",
                 "resale" => "Resale",
-                "foto" => "Foto",
-                "autos" => "Autos"
+                "foto"   => "Foto",
+                "autos"  => "Autos"
             ),
             "default"    => "main",
             "required"   => true,
@@ -86,20 +87,20 @@ class heise extends feed {
      * addresses of feeds for the sections
      */
     private $feedUrls = array(
-        "main" => "http://www.heise.de/newsticker/heise-atom.xml",
-        "ct" => "http://www.heise.de/ct/rss/artikel-atom.xml",
-        "ix" => "http://www.heise.de/ix/news/news-atom.xml",
-        "tr" => "http://www.heise.de/tr/news-atom.xml",
-        "mac" => "http://www.heise.de/mac-and-i/news-atom.xml",
-        "mobil" => "http://www.heise.de/mobil/newsticker/heise-atom.xml",
-        "sec" => "http://www.heise.de/security/news/news-atom.xml",
-        "net" => "http://www.heise.de/netze/rss/netze-atom.xml",
-        "open" => "http://www.heise.de/open/news/news-atom.xml",
-        "dev" => "http://www.heise.de/developer/rss/news-atom.xml",
-        "tp" => "http://www.heise.de/tp/news-atom.xml",
+        "main"   => "http://www.heise.de/newsticker/heise-atom.xml",
+        "ct"     => "http://www.heise.de/ct/rss/artikel-atom.xml",
+        "ix"     => "http://www.heise.de/ix/news/news-atom.xml",
+        "tr"     => "http://www.heise.de/tr/news-atom.xml",
+        "mac"    => "http://www.heise.de/mac-and-i/news-atom.xml",
+        "mobil"  => "http://www.heise.de/mobil/newsticker/heise-atom.xml",
+        "sec"    => "http://www.heise.de/security/news/news-atom.xml",
+        "net"    => "http://www.heise.de/netze/rss/netze-atom.xml",
+        "open"   => "http://www.heise.de/open/news/news-atom.xml",
+        "dev"    => "http://www.heise.de/developer/rss/news-atom.xml",
+        "tp"     => "http://www.heise.de/tp/news-atom.xml",
         "resale" => "http://www.heise.de/resale/rss/resale-atom.xml",
-        "foto" => "http://www.heise.de/foto/rss/news-atom.xml",
-        "autos" => "http://www.heise.de/autos/rss/news-atom.xml",
+        "foto"   => "http://www.heise.de/foto/rss/news-atom.xml",
+        "autos"  => "http://www.heise.de/autos/rss/news-atom.xml",
     );
 
 
