@@ -30,7 +30,12 @@ class Authentication {
      * start session and check login
      */
     public function __construct() {
-        session_set_cookie_params(time()+(3600*24*365), "/");
+        // session cookie will be valid for one month
+        session_set_cookie_params(time()+(3600*24*30), "/");
+        
+        // session will be valid for this day
+        @ini_set('session.gc_maxlifetime', time()+(3600*24));
+        
         session_name();
         if(session_id()=="")
             session_start();
