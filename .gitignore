@@ -1,4 +1,4 @@
-/data/cache/*.spc
-/data/logs/*.log
-/data/sqlite/*.db
-/public/all.*
+/www/data/cache/*.spc
+/www/data/logs/*.log
+/www/data/sqlite/*.db
+/www/public/all.*

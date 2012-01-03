@@ -143,10 +143,13 @@ class Items extends Database {
         if($options['starred']!==false)
             $where .= ' AND starred=1 ';
             
-        if($options['search']!==false) {
+        if($options['search']!==false && strlen($options['search'])>0) {
             $params[':search'] = $params[':search2'] = array("%".$options['search']."%", \PDO::PARAM_STR);
             $where .= ' AND (items.title LIKE :search OR items.content LIKE :search2) ';
         }
+        
+        if(!is_numeric($options['items']) || $options['items']>200)
+            $options['items'] = \F3::get('items_perpage');
         
         // first check whether more items are available
         \DB::sql('SELECT items.id
@@ -162,7 +165,7 @@ class Items extends Database {
                    FROM items, sources 
                    WHERE items.source=sources.id '.$where.' 
                    ORDER BY items.id DESC 
-                   LIMIT ' . $options['offset'] . ', ' . \F3::get('items_perpage'), $params);
+                   LIMIT ' . $options['offset'] . ', ' . $options['items'], $params);
         return \F3::get('DB->result');
     }
     
