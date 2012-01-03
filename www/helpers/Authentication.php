@@ -42,6 +42,14 @@ class Authentication {
         if(isset($_SESSION['loggedin']) && $_SESSION['loggedin']===true)
             $this->loggedin = true;
         $this->enabled = strlen(trim(\F3::get('username')))!=0 && strlen(trim(\F3::get('password')))!=0;
+        
+        // autologin if request contains unsername and password
+        if( $this->enabled===true 
+            && $this->loggedin===false
+            && isset($_REQUEST['username'])
+            && isset($_REQUEST['password'])) {
+            $this->login($_REQUEST['username'], $_REQUEST['password']);
+        }
     }
     
     

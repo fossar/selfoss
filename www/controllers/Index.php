@@ -52,7 +52,6 @@ class Index {
         $options = array();
         if(count($_GET)>0)
             $options = $_GET;
-        $options['items'] = \F3::get('items_perpage');
         
         // load entries
         $itemModel = new \models\Items();
