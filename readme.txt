@@ -31,6 +31,12 @@ UPDATE
 CHANGELOG
 ---------
 
+Version 1.2
+* new json API for external software
+* support for Android selfoss app
+* improved heise spout
+* some smaller bugfixes (e.g. increased session timeout)
+
 Version 1.1
 * hash password (you can set the salt in the config.ini and you can generate a password with following URL: http://your_selfoss_url.com/password)
 * remove unused CSS
@@ -60,3 +66,8 @@ Special thanks to the great programmers of this libraries which will be used in 
 * keyboard shortcuts: http://www.openjs.com/scripts/events/keyboard_shortcuts/
 * jsmin: https://github.com/rgrove/jsmin-php/blob/master/jsmin.php
 * cssmin: http://code.google.com/p/cssmin/
+
+Libraries used for the Android App:
+
+* phonegap: http://www.phonegap.com
+* jQuery Mobile: http://jquerymobile.com/
