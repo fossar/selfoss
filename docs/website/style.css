@@ -125,7 +125,8 @@ img {
 }
 
 #header-download,
-#header-donate {
+#header-donate,
+#header-android {
     position:absolute;
     display:block;
     background:url(images/button-download.png);
@@ -173,6 +174,21 @@ img {
         width:230px;
         margin-top:5px;
     }
+
+#header-android {
+    top:560px;
+    margin-left:255px;
+    background:url(images/android.png) left center no-repeat;
+}
+
+    #header-android span {
+        display:block;
+        color:#333333;
+        font-size:14px;
+        margin-top:10px;
+        margin-left:70px;
+        width:100px;
+    }
     
 #header-teaser {
     width:600px;
@@ -207,6 +223,7 @@ img {
 
 #screenshots {
     height:210px;
+    width:900px;
 }
 
     #screenshots ul {
@@ -215,8 +232,8 @@ img {
     
     #screenshots li {
         list-style:none;
-        margin-right:30px;
-        margin-left:0;
+        margin-right:36px;
+        margin-left:-6px;
         float:left;
     }
     
