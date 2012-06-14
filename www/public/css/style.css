@@ -452,6 +452,7 @@ nav,
 
     .entry-content {
         display:none;
+        overflow: auto;
         margin-top:10px;
         padding:10px;
         padding-top:0;
@@ -463,6 +464,10 @@ nav,
     
         .entry-content p {
             margin-top:10px;
+        }
+
+        .entry-content * {
+            max-width: 100%;
         }
     
     .entry-thumbnail {
