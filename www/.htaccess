@@ -9,8 +9,8 @@ RewriteRule !spouts/([^/]+)/(.*)$ - [C]
 RewriteRule spouts/([^/]+)/(.*)$ plugins/$1/$2 [L]
 
 # rule for favicons
-RewriteRule !data/icons/(.*)$ - [C]
-RewriteRule icons/(.*)$ data/icons/$1 [L]
+RewriteRule !data/favicons/(.*)$ - [C]
+RewriteRule favicons/(.*)$ data/favicons/$1 [L]
 
 # rule for thumbnails
 RewriteRule !data/thumbnails/(.*)$ - [C]
@@ -21,7 +21,7 @@ RewriteCond %{QUERY_STRING} ^(.*)$
 RewriteRule !.(js|ico|gif|jpg|png|css|asc|txt|eot|woff|ttf|ttf|svg)$ index.php?%1
 
 # rule for files
-RewriteRule !icons/ - [C]
+RewriteRule !favicons/ - [C]
 RewriteRule !thumbnails - [C]
 RewriteRule !public - [C]
 RewriteRule !spouts - [C]
