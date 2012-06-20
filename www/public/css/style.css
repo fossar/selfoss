@@ -469,6 +469,10 @@ nav,
         .entry-content * {
             max-width: 100%;
         }
+
+        .entry-content.open {
+            display:block;
+        }
     
     .entry-thumbnail {
         margin:10px;
