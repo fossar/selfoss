@@ -21,8 +21,10 @@ class Index {
         $view = new \helpers\View();
 
         // logout
-        if(isset($_GET['logout']))
+        if(isset($_GET['logout'])) {
             \F3::get('auth')->logout();
+            \F3::reroute(\F3::get('base_url'));
+        }
 
         // show login?
         if( 
@@ -44,6 +46,8 @@ class Index {
             // show login
             if(count($_POST)==0 || isset($view->error))
                 die($view->render('templates/login.phtml'));
+            else
+                \F3::reroute(\F3::get('base_url'));
                 
         }
 
