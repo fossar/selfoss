@@ -150,7 +150,7 @@ class ContentLoader {
                     $iconAsPng = $imageHelper->loadImage($icon, 30, 30);
                     if($iconAsPng!==false) {
                         file_put_contents(
-                            'data/icons/' . md5($icon) . '.png', 
+                            'data/favicons/' . md5($icon) . '.png', 
                             $iconAsPng
                         );
                         $newItem['icon'] = md5($icon) . '.png';
@@ -228,7 +228,7 @@ class ContentLoader {
             $itemPath = 'data/thumbnails/';
         } else if($type=='icons') {
             $checker = function($file) { return \F3::get('im')->hasIcon($file);};
-            $itemPath = 'data/icons/';
+            $itemPath = 'data/favicons/';
         }
 		
 		foreach(scandir($itemPath) as $file) {
