@@ -486,11 +486,11 @@ var selfoss = {
             }
             
             // if distance between top border of "current"
-            // and bottom border of the viewport is more than 50,
+            // and bottom border of the viewport is more than -70,
             // which means that "current" is out of view.
             //
-            // I took 50 because of the bar at the bottom.
-            if((current.offset().top - $(window).height()) > 50) {
+            // I took -70 because of the bar at the bottom.
+            if((current.offset().top - $(window).height()) > -70) {
                 scroll(20);
                 return;
             }
