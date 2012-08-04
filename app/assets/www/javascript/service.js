@@ -80,7 +80,7 @@ selfoss.service = {
                     
                     if(response[i].icon.length!=0 && response[i].icon!='0') {
                         var image = new Image();
-                        image.src = baseUrl + 'icons/' + response[i].icon
+                        image.src = baseUrl + 'favicons/' + response[i].icon
                         response[i].icon = image;
                     }
                     
