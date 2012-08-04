@@ -23,13 +23,23 @@ UPDATE
 1. backup your database and your "data" folder
 2. (IMPORTANT: don't delete the "data" folder) delete all old files and folders excluding the folder "data"
 3. upload all new files and folders excluding the data folder (IMPORTANT: also upload the invisible .htaccess files)
-4. Clean your browser cache
-5. insert your current database connection and your individual configuration in config.ini. Important: we change the config.ini and add new options in newer versions. You have to update the config.ini too.
+4. Rename your folder /data/icons into /data/favicons
+5. Delete the files /public/all.css and /public/all.js
+6. Clean your browser cache
+7. insert your current database connection and your individual configuration in config.ini. Important: we change the config.ini and add new options in newer versions. You have to update the config.ini too.
 
 
 ---------
 CHANGELOG
 ---------
+
+Version 1.3
+* search will now also search in the source title (for filtering by source)
+* data/icons renamed in data/favicons for preventing mod_rewrite problems on apache
+* improved scrolling for very long entries (thanks untitaker)
+* Using more restrictive styles on entry content (thanks untitaker)
+* redirect to base url on login/logout (thanks untitaker)
+* improved base url handling
 
 Version 1.2
 * new json API for external software

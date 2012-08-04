@@ -144,8 +144,8 @@ class Items extends Database {
             $where .= ' AND starred=1 ';
             
         if($options['search']!==false && strlen($options['search'])>0) {
-            $params[':search'] = $params[':search2'] = array("%".$options['search']."%", \PDO::PARAM_STR);
-            $where .= ' AND (items.title LIKE :search OR items.content LIKE :search2) ';
+            $params[':search'] = $params[':search2'] = $params[':search3'] = array("%".$options['search']."%", \PDO::PARAM_STR);
+            $where .= ' AND (items.title LIKE :search OR items.content LIKE :search2 OR sources.title LIKE :search3) ';
         }
         
         if(!is_numeric($options['items']) || $options['items']>200)
@@ -153,13 +153,12 @@ class Items extends Database {
         
         // first check whether more items are available
         \DB::sql('SELECT items.id
-                   FROM items
-                   WHERE 1=1 '.$where.' 
+                   FROM items, sources
+                   WHERE items.source=sources.id '.$where.' 
                    LIMIT ' . ($options['offset']+$options['items']) . ', 1', $params);
         $result = \F3::get('DB->result');
         $this->hasMore = count($result);
 
-        // fetch items
         \DB::sql('SELECT 
                     items.id, datetime, items.title AS title, content, unread, starred, source, thumbnail, icon, uid, link, sources.title as sourcetitle
                    FROM items, sources 
