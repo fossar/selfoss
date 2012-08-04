@@ -20,6 +20,9 @@ class View {
     
 		if(strlen(trim(\F3::get('base_url')))>0) {
 			$this->base = \F3::get('base_url');
+            $length = strlen($this->base);
+            if($length>0 && substr($this->base, $length-1, 1)!="/")
+                $this->base .= '/';
 			return;
 		}
 		

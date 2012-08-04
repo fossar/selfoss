@@ -407,6 +407,10 @@ nav,
         top:5px;
     }
     
+    .entry-source .found {
+        color:#333;
+    }
+    
     .entry-source {
         left:40px;
     }
