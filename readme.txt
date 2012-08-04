@@ -11,7 +11,7 @@ INSTALLATION
 ------------
 
 1. upload all files of this folder (IMPORTANT: also upload the invisible .htaccess files)
-2. make the directories data/cache, data/icons, data/logs, data/thumbnails and public/ writeable
+2. make the directories data/cache, data/favicons, data/logs, data/thumbnails and public/ writeable
 3. insert database access data in config.ini
 4. create cronjob for updating feeds and point it to http://<selfoss url>/update via wget or curl.
 
