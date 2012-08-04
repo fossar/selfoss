@@ -468,34 +468,57 @@ var selfoss = {
     shortcuts_nextprev: function(direction, open) {
         if(typeof direction == "undefined" || (direction!="next" && direction!="prev"))
             direction = "next";
-        
+       
+        // helper functions
+        var scroll = function(value) {
+            // scroll down (negative value) and up (positive value)
+            $('#wrapper').scrollTop($('#wrapper').scrollTop()+value);
+        } 
         // select current        
-        var current = $('.entry.selected');
+        var old = $('.entry.selected');
         
-        // remove active
-        $('.entry.selected').removeClass('selected');
-        
-        if(current.length!=0)
-           current.find('.entry-content').removeClass('open').hide();
-        
-        // select next/prev
+        // select next/prev and save it to "current"
         if(direction=="next") {
-            if(current.length==0) {
+            if(old.length==0) {
                 current = $('.entry:eq(0)');
             } else {
-                current = current.next().length==0 ? current : current.next();
+                current = old.next().length==0 ? old : old.next();
+            }
+            
+            // if distance between top border of "current"
+            // and bottom border of the viewport is more than -70,
+            // which means that "current" is out of view.
+            //
+            // I took -70 because of the bar at the bottom.
+            if((current.offset().top - $(window).height()) > -70) {
+                scroll(20);
+                return;
             }
         } else {
-            if(current.length==0) {
+            if(old.length==0) {
                 return;
-            } else {
-                current = current.prev().length!=0 ? current.prev() : current;
+            }
+            else {
+                current = old.prev().length==0 ? old : old.prev();
+            }
+            
+            // if distance between the top border of "current"
+            // and top border of the viewport is negative,
+            // which means "current" is out of view.
+            if(current.offset().top < 0) {
+                scroll(-20);
+                return;
             }
         }
+
+        // remove active
+        old.removeClass('selected');
+        old.find('.entry-content').removeClass('open');
         
         if(current.length==0)
             return;
-        
+
+
         current.addClass('selected');
             
         // show content on message
@@ -510,8 +533,7 @@ var selfoss = {
         if(open && current.find('.entry-thumbnail').length==0) {
             var content = current.find('.entry-content');
             content.lazyLoadImages();
-            if(content.is(':visible')==false)
-                content.show();
+            content.addClass('open');
         }
         
         // scroll to element
