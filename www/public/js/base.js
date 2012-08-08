@@ -440,12 +440,12 @@ var selfoss = {
         var options = {"disable_in_input": true};
         
         // next
-        shortcut.add('Space', function() { selfoss.shortcuts_nextprev('next', true); return false; }, options);
+        shortcut.add('Space', function() { selfoss.shortcuts_nextprev('next', true, false); return false; }, options);
         shortcut.add('n', function() { selfoss.shortcuts_nextprev('next', false); return false; }, options);
         shortcut.add('j', function() { selfoss.shortcuts_nextprev('next', true); return false; }, options);
         
         // prev
-        shortcut.add('Shift+Space', function() { selfoss.shortcuts_nextprev('prev', true); return false; }, options);
+        shortcut.add('Shift+Space', function() { selfoss.shortcuts_nextprev('prev', true, false); return false; }, options);
         shortcut.add('p', function() { selfoss.shortcuts_nextprev('prev', false); return false; }, options);
         shortcut.add('k', function() { selfoss.shortcuts_nextprev('prev', true); return false; }, options);
         
@@ -465,9 +465,12 @@ var selfoss = {
      * get next/prev item
      * @param direction
      */
-    shortcuts_nextprev: function(direction, open) {
+    shortcuts_nextprev: function(direction, open, scrollInsideArticles) {
         if(typeof direction == "undefined" || (direction!="next" && direction!="prev"))
             direction = "next";
+       
+        if(typeof scrollInsideArticles == "undefined")
+            scrollInsideArticles = true;
        
         // helper functions
         var scroll = function(value) {
@@ -490,8 +493,8 @@ var selfoss = {
             // which means that "current" is out of view.
             //
             // I took -70 because of the bar at the bottom.
-            if((current.offset().top - $(window).height()) > -70) {
-                scroll(20);
+            if(scrollInsideArticles && (current.offset().top - $(window).height()) > -70) {
+                scroll(50);
                 return;
             }
         } else {
@@ -505,8 +508,8 @@ var selfoss = {
             // if distance between the top border of "current"
             // and top border of the viewport is negative,
             // which means "current" is out of view.
-            if(current.offset().top < 0) {
-                scroll(-20);
+            if(scrollInsideArticles && current.offset().top < 0) {
+                scroll(-50);
                 return;
             }
         }
