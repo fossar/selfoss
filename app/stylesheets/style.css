@@ -3,12 +3,23 @@
     margin-top:0px;
 }
 
+#login input,
+#login .ui-select {
+    margin-bottom:10px;
+}
+
 #header-search {
     padding:5px;
 }
 
 #header-search .ui-input-clear {
-    right:5px;
+    margin-right:5px;
+}
+
+#header-search .ui-input-clear .ui-icon {
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 .ui-btn-active {
@@ -65,7 +76,7 @@
     border:0;
     font-weight:normal;
     text-decoration:underline;
-    margin:5px;
+    padding:5px;
 }
 
 #content-showimages-header {

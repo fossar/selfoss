@@ -5,7 +5,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1"> 
 
-    <link rel="stylesheet" href="javascript/jquery-mobile/jquery.mobile-1.0.min.css" />
+    <link rel="stylesheet"  href="javascript/jquery-mobile/jquery.mobile-1.1.1.min.css" />
     <link rel="stylesheet" href="stylesheets/style.css" />
 </head> 
 <body> 
@@ -49,9 +49,9 @@
         <div data-role="header" data-theme="c">
             <div class="ui-content" id="header-search">
                 <input type="search" name="search" id="search" value="" />
-                <div style="position:absolute;top:8px;left:100%;margin-left:-70px;">
+                <!--<div style="position:absolute;top:15px;left:100%;margin-left:-75px;">
                     <a href="" id="search-submit" data-role="button">search</a>
-                </div>
+                </div>-->
             </div>
         </div>
         <div data-role="content" id="stream-content">
@@ -78,11 +78,10 @@
             <a href="" data-icon="star" id="content-starred">starr</a>
             <h1 class="content-title"></h1>
         </div>
-        
-        <div data-role="header" data-position="fixed" id="content-showimages-header">
+        <div id="content-showimages-header">
             <div href="" id="content-showimages">touch here for loading the images</div>
-        </div> 
-        
+        </div>
+
         <div data-role="content">
             <h3 class="content-title"></h3>
             <div id="content-content">
@@ -105,7 +104,7 @@
             </p> 
             <h3>selfoss</h3>
             <p>
-                Version: 0.9<br />
+                Version: 1.3<br />
                 <a href="http://selfoss.aditu.de">http://selfoss.aditu.de</a><br />
             </p>
             <p>
@@ -124,9 +123,9 @@
 
     
     <!-- javascripts -->
-    <script type="text/javascript" src="javascript/phonegap-1.3.0.js"></script>
-    <script type="text/javascript" src="javascript/jquery-mobile/jquery-1.7.1.js"></script>
-    <script type="text/javascript" src="javascript/jquery-mobile/jquery.mobile-1.0.min.js"></script>
+    <script type="text/javascript" src="javascript/cordova-2.0.0.js"></script>
+    <script type="text/javascript" src="javascript/jquery-mobile/jquery-1.8.1.min.js"></script>
+    <script type="text/javascript" src="javascript/jquery-mobile/jquery.mobile-1.1.1.min.js"></script>
     <script type="text/javascript" src="javascript/base.js"></script>
     <script type="text/javascript" src="javascript/helpers.js"></script>
     <script type="text/javascript" src="javascript/service.js"></script>
