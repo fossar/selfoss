@@ -45,4 +45,28 @@ class ViewHelper {
         return preg_replace("/<img([^<]+)src=(['\"])([^\"']*)(['\"])([^<]*)>/i","<img$1ref='$3'$5>",$content);
     }
     
+	
+	/** 
+     * format given date as "x days ago"
+     *
+     * @return string with replaced formateddate
+     * @param 
+     */
+	public function dateago($datestr) {
+		$date = new \DateTime($datestr);
+		$now = new \DateTime();
+		$ageInSeconds = $now->getTimestamp() - $date->getTimestamp();
+		$ageInMinutes = $ageInSeconds / 60;
+		$ageInHours = $ageInMinutes / 60;
+		$ageInDays = $ageInHours / 24;
+		
+		if($ageInMinutes<1)
+			return round($ageInSeconds, 0) . " seconds ago";
+		if($ageInHours<1)
+			return round($ageInMinutes, 0) . " minutes ago";
+		if($ageInDays<1)
+			return round($ageInHours, 0) . " hours ago";
+		
+		return $datestr;
+	}
 }

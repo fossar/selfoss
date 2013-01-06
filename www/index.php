@@ -22,15 +22,15 @@ F3::set('auth', new \helpers\Authentication());
 
 // define js and css files
 F3::set('js', array(
-    'public/js/jquery-1.6.1.min.js',
-    'public/js/elastic.js',
-    'public/js/iscroll.js',
+    'public/js/jquery-1.8.3.min.js',
+    'public/js/lazy-image-loader.js',
+    'public/js/spectrum.js',
     'public/js/shortcut-2.01.B.js',
     'public/js/base.js'
 ));
 
 F3::set('css', array(
-    'public/css/elastic.css',
+    'public/css/spectrum.css',
     'public/css/style.css'
 ));
 
@@ -47,14 +47,14 @@ F3::route('GET /api/login',    'controllers\Api->login');
 F3::route('GET /api/logout',    'controllers\Api->logout');
     
 if(\F3::get('auth')->isLoggedin()===true) {
-    F3::route('GET /mark/@item',    'controllers\Items->mark');
-    F3::route('GET /starr/@item',   'controllers\Items->starr');
-    F3::route('GET /unstarr/@item', 'controllers\Items->unstarr');
+    F3::route('POST /mark/@item',    'controllers\Items->mark');
+    F3::route('POST /starr/@item',   'controllers\Items->starr');
+    F3::route('POST /unstarr/@item', 'controllers\Items->unstarr');
     F3::route('GET /source/params', 'controllers\Sources->params');
     F3::route('GET /sources',       'controllers\Sources->show');
-    F3::route('POST /source',       'controllers\Sources->add');
-    F3::route('PUT /source/@id',    'controllers\Sources->write');
-    F3::route('PUT /source',        'controllers\Sources->write');
+    F3::route('GET /source',        'controllers\Sources->add');
+    F3::route('POST /source/@id',   'controllers\Sources->write');
+    F3::route('POST /source',        'controllers\Sources->write');
     F3::route('DELETE /source/@id', 'controllers\Sources->remove');
     
     F3::route('POST /api/items',         'controllers\Api->items');

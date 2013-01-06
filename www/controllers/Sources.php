@@ -41,23 +41,19 @@ class Sources {
         $spoutLoader = new \helpers\SpoutLoader();
         $this->view->spouts = $spoutLoader->all();
 
+		$itemModel = new \models\Items();
+		
         // load sources
         $sourcesModel = new \models\Sources();
-        $sourcesHtml = "";
+        $sourcesHtml = '<div class="source-add"> add source</div>';
         $i=0;
         foreach($sourcesModel->get() as $source) {
             $this->view->source = $source;
-            $this->view->even = ($i++)%2==0;
+			$this->view->source['icon'] = $itemModel->getLastIcon($source['id']);
             $sourcesHtml .= $this->view->render('templates/source.phtml');
         }
-
-        $sourcesHtml .= '<div class="source-add"> add source</div>';
-
-        $this->view->content = $sourcesHtml;
-        $this->view->sources = true;
-        $this->view->publicMode = \F3::get('auth')->isLoggedin()!==true && \F3::get('public')==1;
-        $this->view->loggedin = \F3::get('auth')->isLoggedin()===true;
-        echo $this->view->render('templates/home.phtml');
+		
+        echo $sourcesHtml;
     }
     
     

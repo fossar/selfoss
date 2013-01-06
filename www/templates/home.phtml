@@ -1,21 +1,11 @@
 <!doctype html>  
-
-<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ --> 
-<!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]-->
-<!--[if IE 7 ]>    <html lang="en" class="no-js ie7"> <![endif]-->
-<!--[if IE 8 ]>    <html lang="en" class="no-js ie8"> <![endif]-->
-<!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
 <head>
     <base href="<?PHP echo $this->base; ?>" /> 
 
     <meta charset="utf-8">
 
-    <!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame 
-       Remove this if you use the .htaccess -->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-
     <title>selfoss</title>
+	
     <meta name="description" content="selfoss">
     <meta name="author" content="Tobias Zeising">
 
@@ -32,14 +22,60 @@
     <!-- all css definitions -->
     <link rel="stylesheet" href="all.css">
 
-    <!-- All JavaScript at the bottom, except for Modernizr which enables HTML5 elements & feature detects -->
-    <script src="js/modernizr-1.6.min.js"></script>
-    
 </head>
-<body class="<?PHP if($this->publicMode===true) : ?>publicmode<?PHP endif; ?>
- <?PHP echo $this->loggedin ? "loggedin" : "notloggedin"; ?>">
+<body class="<?PHP if($this->publicMode===true) : ?>publicmode<?PHP endif; ?> <?PHP echo $this->loggedin ? "loggedin" : "notloggedin"; ?>">
 
-    <a id="about" href="http://selfoss.aditu.de">selfoss <?PHP echo \F3::get('version'); ?></a>
+    <!-- navigation -->
+	<div id="nav">
+		<div id="nav-logo"></div>
+		<div id="nav-mark">mark as read</div>
+		
+		<ul id="nav-filter">
+			<li class="active">newest <span></span></li>
+			<li>unread <span></span></li>
+			<li>starred <span></span></li>
+		</ul>
+		
+		<hr>
+		
+		<h2>Tags</h2>
+		<ul id="nav-tags">
+			<li>news <div class="color" style="background-color:#044476"></div></li>
+			<li class="active">photography <div class="color" style="background-color:#004b18"></div></li>
+			<li>downloads <div class="color" style="background-color:#e8641b"></div></li>
+			<li>mobile <div class="color" style="background-color:#960014"></div></li>
+			<li>ein sehr langer Tag der zu lang ist <div class="color" style="background-color:#e10052"></div></li>
+		</ul>
+		
+		<hr>
+		
+		<div id="nav-settings"></div>
+		<div id="nav-logout"></div>
+	</div>
+	
+	
+	<!-- content -->
+	<div id="content">
+		<?PHP echo $this->content; ?>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<?PHP /*
+	
+	<a id="about" href="http://selfoss.aditu.de">selfoss <?PHP echo \F3::get('version'); ?></a>
 
     <!-- nav -->
     <nav class="columns on-3">
@@ -109,7 +145,7 @@
                 <div class="stream-right column fixed full-height" style="width:8px"></div>
             </div>
         </div>
-    </div>
+    </div>*/ ?>
 
     <script src="all.js"></script>
     <script>selfoss.init();</script>

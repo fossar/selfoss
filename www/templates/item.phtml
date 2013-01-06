@@ -11,29 +11,44 @@
     }
     $title = $this->viewHelper->lazyimg($title);
     $content = $this->viewHelper->lazyimg($content);
+	$date = $this->viewHelper->dateago($this->item['datetime']);
 ?>
 <div id="entry<?PHP echo $this->item['id']; ?>"
      class="entry
             <?PHP echo isset($this->even) && $this->even==1 ? 'even' : ''; ?> 
             <?PHP echo $this->item['unread']==1 ? 'unread' : ''; ?>">
-    <a href="<?PHP echo $this->item['link']; ?>" class="entry-icon">
+    
+	
+	<!-- starr -->
+	<div class="entry-starr <?PHP echo $this->item['starred']==1 ? 'active' : ''; ?>"></div>
+	
+	<!-- icon -->
+	<a href="<?PHP echo $this->item['link']; ?>" class="entry-icon">
         <?PHP if(strlen(trim($this->item['icon']))>0 && $this->item['icon']!="0") : ?>
         <img src="<?PHP echo 'favicons/'.$this->item['icon']; ?>" alt="<?PHP echo $sourcetitle ?>" />
         <?PHP endif; ?>
     </a>
+	
+	<!-- title -->
+	<h2 class="entry-title"><?PHP echo $title; ?></h2>
+	
+	<!-- source -->
     <a href="<?PHP echo $this->item['link']; ?>" class="entry-source"><?PHP echo $sourcetitle ?></a>
-    <div class="entry-datetime">
-        <?PHP echo $this->item['datetime']; ?>
+	
+	<!-- datetime -->
+	<div class="entry-datetime">
+        &bullet; <?PHP echo $date; ?>
     </div>
-    <div class="entry-starr <?PHP echo $this->item['starred']==1 ? 'active' : ''; ?>"></div>
-    
-    <h2 class="entry-title"><?PHP echo $title; ?></h2>
-    <?PHP if(isset($this->item['thumbnail']) && strlen(trim($this->item['thumbnail']))>0) : ?>
+	
+	<!-- thumbnail -->
+	<?PHP if(isset($this->item['thumbnail']) && strlen(trim($this->item['thumbnail']))>0) : ?>
     <div class="entry-thumbnail">
         <a href="<?PHP echo $this->item['link']; ?>"><img src="<?PHP echo 'thumbnails/'.$this->item['thumbnail']; ?>" alt="<?PHP echo $this->item['title']; ?>" /></a>
     </div>
     <?PHP endif; ?>
-    <div class="entry-content">
+    
+	<!-- content -->
+	<div class="entry-content">
         <?PHP echo $content; ?>
     </div>
 </div>

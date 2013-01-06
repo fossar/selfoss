@@ -95,21 +95,21 @@ class View {
     public function genMinifiedJsAndCss() {
         // minify js
         $targetJs = \F3::get('BASEDIR').'/public/all.js';
-        if(!file_exists($targetJs)) {
+        //if(!file_exists($targetJs)) {
             $js = "";
             foreach(\F3::get('js') as $file)
                 $js = $js . "\n" . \JSMin::minify(file_get_contents(\F3::get('BASEDIR').'/'.$file));
             file_put_contents($targetJs, $js);
-        }
+        //}
     
         // minify css
         $targetCss = \F3::get('BASEDIR').'/public/all.css';
-        if(!file_exists($targetCss)) {
+        //if(!file_exists($targetCss)) {
             $css = "";
             foreach(\F3::get('css') as $file)
                 $css = $css . "\n" . \CssMin::minify(file_get_contents(\F3::get('BASEDIR').'/'.$file));
             file_put_contents($targetCss, $css);
-        }
+        //}
     }
     
     

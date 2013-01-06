@@ -264,4 +264,24 @@ class Items extends Database {
         
         return $return;
     }
+	
+	
+	/**
+     * returns the icon of the last fetched item.
+     *
+     * @return bool|string false if none was found
+     * @param number $sourceid id of the source
+     */
+    public function getLastIcon($sourceid) {
+		if(is_numeric($sourceid)===false)
+			return false;
+		
+        \DB::sql('SELECT icon FROM items WHERE source=:sourceid LIMIT 0,1',
+                    array(':sourceid' => $sourceid));
+        $res = \F3::get('DB->result');
+		if(count($res)==1)
+			return $res[0]['icon'];
+			
+		return false;
+    }
 }
