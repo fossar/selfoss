@@ -186,4 +186,15 @@ class Items extends Database {
     public function isValid($name, $value) {
         return $this->backend->isValid($name, $value);
     }
+	
+	
+	/**
+     * returns the icon of the last fetched item.
+     *
+     * @return bool|string false if none was found
+     * @param number $sourceid id of the source
+     */
+    public function getLastIcon($sourceid) {
+		return $this->backend->getLastIcon($sourceid);
+	}
 }
