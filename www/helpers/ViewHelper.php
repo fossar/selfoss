@@ -25,7 +25,7 @@ class ViewHelper {
             return $content;
         
         if(!is_array($searchWords))
-            $searchWords = array($searchWords);
+            $searchWords = explode(" ", $searchWords);
         
         foreach($searchWords as $word)
             $content = preg_replace('/(?!<[^<>])('.$word.')(?![^<>]*>)/i','<span class=found>$0</span>',$content);

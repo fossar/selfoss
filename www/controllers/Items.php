@@ -36,8 +36,12 @@ class Items {
      * @return void
      */
     public function mark() {
-        $lastid = \F3::get('PARAMS["item"]');
-
+		if(isset($_POST['item']))
+			$lastid = \F3::get('PARAMS["item"]');
+		else if(isset($_POST['ids'])) {
+			$lastid = $_POST['ids'];
+		}
+		
         $itemModel = new \models\Items();
         
         if (!$itemModel->isValid('id', $lastid))
@@ -47,6 +51,24 @@ class Items {
         $this->view->jsonSuccess(array('success' => true));
     }
     
+	
+	/**
+     * mark items as unread
+     *
+     * @return void
+     */
+    public function unmark() {
+        $lastid = \F3::get('PARAMS["item"]');
+
+        $itemModel = new \models\Items();
+        
+        if (!$itemModel->isValid('id', $lastid))
+            $this->view->error('invalid id');
+        
+        $itemModel->unmark($lastid);
+        $this->view->jsonSuccess(array('success' => true));
+    }
+	
     
     /**
      * starr item

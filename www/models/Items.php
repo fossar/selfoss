@@ -32,15 +32,23 @@ class Items extends Database {
     }
 
     /**
-     * mark items as read
-     * all items with id bigger than given
-     * id will be marked
+     * mark item as read
      *
      * @return void
-     * @param int $lastid
+     * @param int $id
      */
-    public function mark($lastid) {
-        $this->backend->mark($lastid);
+    public function mark($id) {
+        $this->backend->mark($id);
+    }
+	
+	/**
+     * mark item as unread
+     *
+     * @return void
+     * @param int $id
+     */
+    public function unmark($id) {
+        $this->backend->unmark($id);
     }
     
     

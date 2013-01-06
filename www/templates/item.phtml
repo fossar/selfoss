@@ -15,12 +15,8 @@
 ?>
 <div id="entry<?PHP echo $this->item['id']; ?>"
      class="entry
-            <?PHP echo isset($this->even) && $this->even==1 ? 'even' : ''; ?> 
             <?PHP echo $this->item['unread']==1 ? 'unread' : ''; ?>">
     
-	
-	<!-- starr -->
-	<div class="entry-starr <?PHP echo $this->item['starred']==1 ? 'active' : ''; ?>"></div>
 	
 	<!-- icon -->
 	<a href="<?PHP echo $this->item['link']; ?>" class="entry-icon">
@@ -49,6 +45,13 @@
     
 	<!-- content -->
 	<div class="entry-content">
-        <?PHP echo $content; ?>
+		<?PHP echo $content; ?>
     </div>
+	
+	<!-- toolbar -->
+	<ul class="entry-toolbar">
+		<li class="entry-starr <?PHP echo $this->item['starred']==1 ? 'active' : ''; ?>"><?PHP echo $this->item['starred']==1 ? 'unstar' : 'star'; ?></li>
+		<li class="entry-unread <?PHP echo $this->item['unread']==1 ? 'active' : ''; ?>"><?PHP echo $this->item['unread']==1 ? 'mark as read' : 'mark as unread'; ?></li>
+		<li class="entry-loadimages">load images</li>
+	</ul>
 </div>

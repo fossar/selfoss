@@ -48,6 +48,8 @@ F3::route('GET /api/logout',    'controllers\Api->logout');
     
 if(\F3::get('auth')->isLoggedin()===true) {
     F3::route('POST /mark/@item',    'controllers\Items->mark');
+    F3::route('POST /mark',    	 	 'controllers\Items->mark');
+    F3::route('POST /unmark/@item',  'controllers\Items->unmark');
     F3::route('POST /starr/@item',   'controllers\Items->starr');
     F3::route('POST /unstarr/@item', 'controllers\Items->unstarr');
     F3::route('GET /source/params', 'controllers\Sources->params');

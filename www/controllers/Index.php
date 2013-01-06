@@ -26,6 +26,7 @@ class Index {
             \F3::reroute(\F3::get('base_url'));
         }
 
+		
         // show login?
         if( 
             isset($_GET['login']) || (\F3::get('auth')->isLoggedin()!==true && \F3::get('public')!=1)
@@ -51,36 +52,44 @@ class Index {
                 
         }
 
+		
+		
 
         // parse params
         $options = array();
         if(count($_GET)>0)
             $options = $_GET;
         
+		// parse params for view
+		if(isset($_GET['type']) && $_GET['type']=='starred')
+            $view->starred = true;
+		else if(isset($_GET['type']) && $_GET['type']=='unread')
+            $view->unread = true;
+		// todo: add tag
+		if(isset($_GET['search']))
+            $view->search = $_GET['search'];
+			
+			
         // load entries
         $itemModel = new \models\Items();
         $sourcesHtml = "";
-        $i=0;
-        if(isset($_GET['starred']))
-            $view->starred = true;
-        if(isset($_GET['search']))
-            $view->search = $_GET['search'];
         foreach($itemModel->get($options) as $item) {
             $view->item = $item;
-            $view->even = ($i++)%2==0;
             $sourcesHtml .= $view->render('templates/item.phtml');
         }
 
-        if(strlen($sourcesHtml)==0)
+        if(strlen($sourcesHtml)==0) {
             $sourcesHtml = '<div class="stream-empty">no entries found</div>';
-        else {
+        } else {
             if($itemModel->hasMore())
                 $sourcesHtml .= '<div class="stream-more"><span>more</span></div>';
         }
 
-        if(isset($options['offset']) && $options['offset']>0)
+		// just show items html
+        if(isset($options['ajax']))
             die($sourcesHtml);
 
+		// show as full html page	
         $view->content = $sourcesHtml;
         $view->publicMode = \F3::get('auth')->isLoggedin()!==true && \F3::get('public')==1;
         $view->loggedin = \F3::get('auth')->isLoggedin()===true;

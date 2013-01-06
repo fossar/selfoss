@@ -20,17 +20,38 @@ class Items extends Database {
      */
     private $hasMore = false;
 
+	
     /**
-     * mark items as read
-     * all items with id bigger than given
-     * id will be marked
+     * mark item as read
      *
      * @return void
-     * @param int $lastid
+     * @param int $id
      */
-    public function mark($lastid) {
-        \DB::sql('UPDATE items SET unread=0 WHERE id>=:id',
-                    array(':id' => $lastid));
+    public function mark($id) {
+		if($this->isValid('id', $id)===false)
+			return;
+		
+		if(is_array($id))
+			$id = implode(",", $id);
+		
+		// i used string concatenation after validating $id
+		\DB::sql('UPDATE items SET unread=0 WHERE id IN (' . $id . ')');
+    }
+	
+    /**
+     * mark item as unread
+     *
+     * @return void
+     * @param int $id
+     */
+    public function unmark($id) {
+		if(is_array($id)) {
+			$id = implode(",", $id);
+		} else if(!is_numeric($id)) {
+			return;
+		}
+        \DB::sql('UPDATE items SET unread=1 WHERE id IN (:id)',
+                    array(':id' => $id));
     }
     
     
@@ -140,11 +161,14 @@ class Items extends Database {
         $params = array();
         $where = '';
         
-        if($options['starred']!==false)
+		if(isset($options['type']) && $options['type']=='starred')
             $where .= ' AND starred=1 ';
-            
-        if($options['search']!==false && strlen($options['search'])>0) {
-            $params[':search'] = $params[':search2'] = $params[':search3'] = array("%".$options['search']."%", \PDO::PARAM_STR);
+        else if(isset($options['type']) && $options['type']=='unread')
+            $where .= ' AND unread=1 ';
+		
+		if($options['search']!==false && strlen($options['search'])>0) {
+			$search = str_replace(" ", "%", trim($options['search']));
+            $params[':search'] = $params[':search2'] = $params[':search3'] = array("%".$search."%", \PDO::PARAM_STR);
             $where .= ' AND (items.title LIKE :search OR items.content LIKE :search2 OR sources.title LIKE :search3) ';
         }
         
@@ -159,6 +183,7 @@ class Items extends Database {
         $result = \F3::get('DB->result');
         $this->hasMore = count($result);
 
+		// get items from database
         \DB::sql('SELECT 
                     items.id, datetime, items.title AS title, content, unread, starred, source, thumbnail, icon, uid, link, sources.title as sourcetitle
                    FROM items, sources 
@@ -259,6 +284,16 @@ class Items extends Database {
         switch ($name) {
         case 'id':
             $return = is_numeric($value);
+			
+			if(is_array($value)) {
+				$return = true;
+				foreach($value as $id) {
+					if(is_numeric($id)===false) {
+						$return = false;
+						break;
+					}
+				}
+			}
             break;
         }
         

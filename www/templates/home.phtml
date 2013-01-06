@@ -31,9 +31,9 @@
 		<div id="nav-mark">mark as read</div>
 		
 		<ul id="nav-filter">
-			<li class="active">newest <span></span></li>
-			<li>unread <span></span></li>
-			<li>starred <span></span></li>
+			<li class="nav-filter-newest active">newest <span></span></li>
+			<li class="nav-filter-unread">unread <span></span></li>
+			<li class="nav-filter-starred">starred <span></span></li>
 		</ul>
 		
 		<hr>
@@ -53,20 +53,20 @@
 		<div id="nav-logout"></div>
 	</div>
 	
+	<!-- search -->
+	<div id="search">
+		<input type="text" id="search-term"></input>
+		<div id="search-remove"></div>
+		<div id="search-button"></div>
+	</div>
+	
+	<ul id="search-list">
+	</ul>
 	
 	<!-- content -->
 	<div id="content">
 		<?PHP echo $this->content; ?>
 	</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	
