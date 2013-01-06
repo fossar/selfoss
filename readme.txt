@@ -1,7 +1,7 @@
 selfoss
 http://selfoss.aditu.de
 tobias.zeising@aditu.de
-Version 1.3
+Version 2.0 beta
 License: GPLv3
 Icon Source: http://blog.artcore-illustrations.de/aicons/
 
@@ -33,6 +33,10 @@ UPDATE
 CHANGELOG
 ---------
 
+Version 2.0
+* new userinterface
+* support of tags
+
 Version 1.3
 * search will now also search in the source title (for filtering by source)
 * data/icons renamed in data/favicons for preventing mod_rewrite problems on apache
@@ -62,22 +66,13 @@ CREDITS
 Special thanks to the great programmers of this libraries which will be used in selfoss:
 
 * FatFree PHP Framework: http://fatfree.sourceforge.net/
-* Elastic CSS Framework: http://elasticss.com/
-* HTML5 Boilerplate.com: http://html5boilerplate.com/
 * SimplePie: http://simplepie.org/
 * jQuery: http://jquery.com/
 * WideImage: http://wideimage.sourceforge.net/
-* iScroll: http://cubiq.org/iscroll
 * htmLawed: http://www.bioinformatics.org/phplabware/internal_utilities/htmLawed/
 * PHP Universal Feed Generator: http://www.ajaxray.com/blog/2008/03/08/php-universal-feed-generator-supports-rss-10-rss-20-and-atom/
 * twitteroauth: https://github.com/abraham/twitteroauth
 * floIcon: http://www.phpclasses.org/package/3906-PHP-Read-and-write-images-from-ICO-files.html
-* modernizr: http://www.modernizr.com/
 * keyboard shortcuts: http://www.openjs.com/scripts/events/keyboard_shortcuts/
 * jsmin: https://github.com/rgrove/jsmin-php/blob/master/jsmin.php
 * cssmin: http://code.google.com/p/cssmin/
-
-Libraries used for the Android App:
-
-* phonegap: http://www.phonegap.com
-* jQuery Mobile: http://jquerymobile.com/
