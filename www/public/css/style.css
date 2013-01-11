@@ -357,6 +357,11 @@ input {
 	-moz-border-radius-bottomright: 4px;
 	border-top-right-radius: 4px;
 	border-bottom-right-radius: 4px;
+	
+	transition: left 0.5s ease-in-out ;
+	-webkit-transition: left 0.5s ease-in-out ;
+	-o-transition: left 0.5s ease-in-out ;
+	-moz-transition: left 0.5s ease-in-out ;
 }
 	
 	#search.active {
@@ -613,7 +618,12 @@ input {
 		min-width:70px;
 	}
 	
-.source-edit-delete.loading,
+	.source-edit-form  .source-edit-form-help {
+		color:#999;
+		font-size:0.75em;
+	}
+	
+.source-edit-delete.loadi1ng,
 .source-action.loading {
 	background:url(images/ajax-loader.gif) right center no-repeat;
 	padding-right:25px;
@@ -637,7 +647,8 @@ input {
 .source-add {
 	cursor:pointer;
 	font-size:0.85em;
-	margin-left:5px;
+	text-align:right;
+	margin-right:55px;
 }
 
 .source-new .source-edit-form {

@@ -41,15 +41,15 @@ class Sources {
         $spoutLoader = new \helpers\SpoutLoader();
         $this->view->spouts = $spoutLoader->all();
 
-		$itemModel = new \models\Items();
+		$itemDao = new \daos\Items();
 		
         // load sources
-        $sourcesModel = new \models\Sources();
+        $sourcesDao = new \daos\Sources();
         $sourcesHtml = '<div class="source-add"> add source</div>';
         $i=0;
-        foreach($sourcesModel->get() as $source) {
+        foreach($sourcesDao->get() as $source) {
             $this->view->source = $source;
-			$this->view->source['icon'] = $itemModel->getLastIcon($source['id']);
+			$this->view->source['icon'] = $itemDao->getLastIcon($source['id']);
             $sourcesHtml .= $this->view->render('templates/source.phtml');
         }
 		
@@ -97,12 +97,12 @@ class Sources {
     public function remove() {
         $id = \F3::get('PARAMS["id"]');
         
-        $sourceModel = new \models\Sources();
+        $sourceDao = new \daos\Sources();
         
-        if (!$sourceModel->isValid('id', $id))
+        if (!$sourceDao->isValid('id', $id))
             $this->view->error('invalid id given');
 
-        $sourceModel->delete($id);
+        $sourceDao->delete($id);
     }
     
     
@@ -112,7 +112,7 @@ class Sources {
      * @return void
      */
     public function write() {
-        $sourcesModel = new \models\Sources();
+        $sourcesDao = new \daos\Sources();
 
         // validate
         parse_str(\F3::get('REQBODY'),$data);
@@ -124,23 +124,25 @@ class Sources {
         
         $title = $data['title'];
         $spout = $data['spout'];
+		$tags = $data['tags'];
 
         unset($data['title']);
         unset($data['spout']);
+        unset($data['tags']);
 
         $spout = str_replace("\\\\", "\\", $spout);
         
-        $validation = $sourcesModel->validate($title, $spout, $data);
+        $validation = $sourcesDao->validate($title, $spout, $data);
         if($validation!==true)
             $this->view->error( json_encode($validation) );
 
         // add/edit source
         $id = \F3::get('PARAMS["id"]');
         
-        if (!$sourcesModel->isValid('id', $id))
-            $id = $sourcesModel->add($title, $spout, $data);
+        if (!$sourcesDao->isValid('id', $id))
+            $id = $sourcesDao->add($title, $tags, $spout, $data);
         else
-            $sourcesModel->edit($id, $title, $spout, $data);
+            $sourcesDao->edit($id, $title, $tags, $spout, $data);
             
         $this->view->jsonSuccess(
             array(

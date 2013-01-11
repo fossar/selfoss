@@ -1,11 +1,11 @@
 <?PHP
 
-namespace models\mongodb;
+namespace daos\mongodb;
     
 /**
  * Base class for database access -- mongodb
  *
- * @package     models
+ * @package     daos
  * @copyright   Copyright (c) Harald Lapp (http://octris.org/)
  * @license     GPLv3 (http://www.gnu.org/licenses/gpl-3.0.html)
  * @author      Harald Lapp <harald.lapp@gmail.com>

@@ -1,11 +1,11 @@
 <?PHP
 
-namespace models;
+namespace daos;
     
 /**
  * Base class for database access
  *
- * @package    models
+ * @package    daos
  * @copyright  Copyright (c) Tobias Zeising (http://www.aditu.de)
  * @license    GPLv3 (http://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Harald Lapp <harald.lapp@gmail.com>
@@ -25,7 +25,7 @@ class Database {
      * @return void
      */
     public function __construct() {
-        $class = 'models\\' . \F3::get('db_type') . '\\Database';
+        $class = 'daos\\' . \F3::get('db_type') . '\\Database';
         
         $this->backend = new $class();
     }
@@ -37,7 +37,7 @@ class Database {
      * @return void
      */
     public static function optimize() {
-        $class = 'models\\' . \F3::get('db_type') . '\\Database';
+        $class = 'daos\\' . \F3::get('db_type') . '\\Database';
         
         $class::optimize();
     }

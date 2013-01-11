@@ -1,11 +1,11 @@
 <?PHP
 
-namespace models\mysql;
+namespace daos\mysql;
     
 /**
  * Base class for database access -- mysql
  *
- * @package    models
+ * @package    daos
  * @copyright  Copyright (c) Tobias Zeising (http://www.aditu.de)
  * @license    GPLv3 (http://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
@@ -66,12 +66,30 @@ class Database {
                     CREATE TABLE sources (
                         id INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
                         title TEXT NOT NULL ,
+                        tags TEXT NOT NULL ,
                         spout TEXT NOT NULL ,
                         params TEXT NOT NULL ,
                         error TEXT 
                     ) ENGINE = MYISAM;
                 ');    
-                
+            
+			// version 1
+			if(!in_array('version', $tables)) {
+                \DB::sql('
+                    CREATE TABLE version (
+                        version INT
+                    ) ENGINE = MYISAM;
+                ');
+				
+				\DB::sql('
+                    INSERT INTO sources (version) VALUES (2);
+                ');
+				
+				\DB::sql('
+					ALTER TABLE sources ADD tags TEXT;
+                ');
+			}
+			
             // just initialize once
             $initialized = true;
         }

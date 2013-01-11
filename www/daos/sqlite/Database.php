@@ -1,11 +1,11 @@
 <?PHP
 
-namespace models\sqlite;
+namespace daos\sqlite;
     
 /**
  * Base class for database access -- sqlite
  *
- * @package     models
+ * @package     daos
  * @copyright   Copyright (c) Harald Lapp (harald.lapp@gmail.com)
  * @license     GPLv3 (http://www.gnu.org/licenses/gpl-3.0.html)
  * @author      Harald Lapp (harald.lapp@gmail.com)
@@ -75,13 +75,31 @@ class Database {
                     CREATE TABLE sources (
                         id          INTEGER PRIMARY KEY AUTOINCREMENT,
                         title       TEXT NOT NULL,
+                        tags        TEXT NOT NULL,
                         spout       TEXT NOT NULL,
                         params      TEXT NOT NULL,
                         error       TEXT 
                     );
                 ');
             }
-                
+            
+			// version 1
+			if(!in_array('version', $tables)) {
+                \DB::sql('
+                    CREATE TABLE version (
+                        version INT
+                    );
+                ');
+				
+				\DB::sql('
+                    INSERT INTO version (version) VALUES (2);
+                ');
+				
+				\DB::sql('
+					ALTER TABLE sources ADD tags TEXT;
+                ');
+			}
+			
             // just initialize once
             $initialized = true;
         }

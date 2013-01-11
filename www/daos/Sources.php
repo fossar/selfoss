@@ -1,11 +1,11 @@
 <?PHP
 
-namespace models;
+namespace daos;
 
 /**
  * Class for accessing persistent saved sources
  *
- * @package    models\mysql
+ * @package    daos\mysql
  * @copyright  Copyright (c) Tobias Zeising (http://www.aditu.de)
  * @license    GPLv3 (http://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Harald Lapp <harald.lapp@gmail.com>
@@ -26,7 +26,7 @@ class Sources extends Database {
      * @return void
      */
     public function __construct() {
-        $class = 'models\\' . \F3::get('db_type') . '\\Sources';
+        $class = 'daos\\' . \F3::get('db_type') . '\\Sources';
         
         $this->backend = new $class();
         
@@ -39,11 +39,12 @@ class Sources extends Database {
      *
      * @return int new id
      * @param string $title
+     * @param string $tags
      * @param string $spout the source type
      * @param mixed $params depends from spout
      */
-    public function add($title, $spout, $params) {
-        return $this->backend->add($title, $spout, $params);
+    public function add($title, $tags, $spout, $params) {
+        return $this->backend->add($title, $tags, $spout, $params);
     }
     
     
@@ -52,12 +53,13 @@ class Sources extends Database {
      *
      * @return void
      * @param int $id the source id
-     * @param string $title new title
-     * @param string $spout new spout
-     * @param mixed $params the new params
+     * @param string $title
+     * @param string $tags
+     * @param string $spout
+     * @param mixed $params params
      */
-    public function edit($id, $title, $spout, $params) {
-        $this->backend->edit($id, $title, $spout, $params);
+    public function edit($id, $title, $tags, $spout, $params) {
+        $this->backend->edit($id, $title, $tags, $spout, $params);
     }
     
     
