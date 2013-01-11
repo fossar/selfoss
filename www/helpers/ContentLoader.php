@@ -28,8 +28,8 @@ class ContentLoader {
      * @return void
      */
     public function update() {
-        $sourcesModel = new \models\Sources();
-        foreach($sourcesModel->get() as $source) {
+        $sourcesDao = new \daos\Sources();
+        foreach($sourcesDao->get() as $source) {
             $this->fetch($source);
         }
         $this->cleanup();
@@ -69,8 +69,8 @@ class ContentLoader {
             );
         } catch(\exception $e) {
             \F3::get('logger')->log('error loading feed content: ' . $e->getMessage(), \ERROR);
-            $sourceModel = new \models\Sources();
-            $sourceModel->error($source['id'], date('Y-m-d H:i:s') . 'error loading feed content: ' . $e->getMessage());
+            $sourceDao = new \daos\Sources();
+            $sourceDao->error($source['id'], date('Y-m-d H:i:s') . 'error loading feed content: ' . $e->getMessage());
             return;
         }
         
@@ -81,7 +81,7 @@ class ContentLoader {
         
         // insert new items in database
         \F3::get('logger')->log('start item fetching', \DEBUG);
-        $itemsModel = new \models\Items();
+        $itemsDao = new \daos\Items();
         $imageHelper = new \helpers\Image();
         $lasticon = false;
         foreach ($spout as $item) {
@@ -93,7 +93,7 @@ class ContentLoader {
             }
             
             // item already in database?
-            if($itemsModel->exists($item->getId())===true)
+            if($itemsDao->exists($item->getId())===true)
                 continue;
             
             // insert new item
@@ -164,7 +164,7 @@ class ContentLoader {
             }
             
             // insert new item
-            $itemsModel->add($newItem);
+            $itemsDao->add($newItem);
             \F3::get('logger')->log('item inserted', \DEBUG);
             
             \F3::get('logger')->log('Memory usage: '.memory_get_usage(), \DEBUG);
@@ -177,8 +177,8 @@ class ContentLoader {
         
         // remove previous error
         if(strlen(trim($source['error']))!=0) {
-            $sourceModel = new \models\Sources();
-            $sourceModel->error($source['id'], '');
+            $sourceDao = new \daos\Sources();
+            $sourceDao->error($source['id'], '');
         }
     }
     
@@ -192,8 +192,8 @@ class ContentLoader {
         // cleanup old items
         if(\F3::get('items_lifetime')) {
             \F3::get('logger')->log('cleanup old items', \DEBUG);
-            $itemsModel = new \models\Items();
-            $itemsModel->cleanup(\F3::get('items_lifetime'));
+            $itemsDao = new \daos\Items();
+            $itemsDao->cleanup(\F3::get('items_lifetime'));
             \F3::get('logger')->log('cleanup old items finished', \DEBUG);
         }
         
@@ -209,7 +209,7 @@ class ContentLoader {
         
         // optimize database
         \F3::get('logger')->log('optimize database', \DEBUG);
-        \models\Database::optimize();
+        \daos\Database::optimize();
         \F3::get('logger')->log('optimize database finished', \DEBUG);
     }
     
@@ -221,8 +221,8 @@ class ContentLoader {
      * @param string $type thumbnails or icons
      */
     protected function cleanupFiles($type) {
-		$itemsModel = new \models\Items();
-		\F3::set('im', $itemsModel);
+		$itemsDao = new \daos\Items();
+		\F3::set('im', $itemsDao);
 		if($type=='thumbnails') {
             $checker = function($file) { return \F3::get('im')->hasThumbnail($file);};
             $itemPath = 'data/thumbnails/';

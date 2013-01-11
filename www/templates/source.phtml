@@ -14,6 +14,11 @@
 		<!-- title -->
 		<li><label>Title:</label> <input type="text" id="title" value="<?PHP echo isset($this->source) ? $this->source['title'] : 'new unsaved source'; ?>" /></li>
 		
+		<!-- tags -->
+		<li><label>Tags:</label>
+			<input type="text" id="tags" value="<?PHP echo isset($this->source) ? $this->source['tags'] : ''; ?>" /> <span class="source-edit-form-help">comma separated</span>
+		</li>
+		
 		<!-- type -->
 		<li><label>Type:</label> 
 			<select class="source-spout" id="spout">

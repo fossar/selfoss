@@ -42,12 +42,12 @@ class Items {
 			$lastid = $_POST['ids'];
 		}
 		
-        $itemModel = new \models\Items();
+        $itemDao = new \daos\Items();
         
-        if (!$itemModel->isValid('id', $lastid))
+        if (!$itemDao->isValid('id', $lastid))
             $this->view->error('invalid id');
         
-        $itemModel->mark($lastid);
+        $itemDao->mark($lastid);
         $this->view->jsonSuccess(array('success' => true));
     }
     
@@ -60,12 +60,12 @@ class Items {
     public function unmark() {
         $lastid = \F3::get('PARAMS["item"]');
 
-        $itemModel = new \models\Items();
+        $itemDao = new \daos\Items();
         
-        if (!$itemModel->isValid('id', $lastid))
+        if (!$itemDao->isValid('id', $lastid))
             $this->view->error('invalid id');
         
-        $itemModel->unmark($lastid);
+        $itemDao->unmark($lastid);
         $this->view->jsonSuccess(array('success' => true));
     }
 	
@@ -78,12 +78,12 @@ class Items {
     public function starr() {
         $id = \F3::get('PARAMS["item"]');
 
-        $itemModel = new \models\Items();
+        $itemDao = new \daos\Items();
         
-        if (!$itemModel->isValid('id', $id))
+        if (!$itemDao->isValid('id', $id))
             $this->view->error('invalid id');
 
-        $itemModel->starr($id);
+        $itemDao->starr($id);
         $this->view->jsonSuccess(array('success' => true));
     }
     
@@ -96,12 +96,12 @@ class Items {
     public function unstarr() {
         $id = \F3::get('PARAMS["item"]');
 
-        $itemModel = new \models\Items();
+        $itemDao = new \daos\Items();
         
-        if (!$itemModel->isValid('id', $id))
+        if (!$itemDao->isValid('id', $id))
             $this->view->error('invalid id');
 
-        $itemModel->unstarr($id);
+        $itemDao->unstarr($id);
         $this->view->jsonSuccess(array('success' => true));
     }
     

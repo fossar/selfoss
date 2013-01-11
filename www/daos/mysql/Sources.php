@@ -1,11 +1,11 @@
 <?PHP
 
-namespace models\mysql;
+namespace daos\mysql;
 
 /**
  * Class for accessing persistent saved sources -- mysql
  *
- * @package    models
+ * @package    daos
  * @copyright  Copyright (c) Tobias Zeising (http://www.aditu.de)
  * @license    GPLv3 (http://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
@@ -17,13 +17,15 @@ class Sources extends Database {
      *
      * @return int new id
      * @param string $title
+     * @param string $tags
      * @param string $spout the source type
      * @param mixed $params depends from spout
      */
-    public function add($title, $spout, $params) {
-        \DB::sql('INSERT INTO sources (title, spout, params) VALUES (:title, :spout, :params)',
+    public function add($title, $tags, $spout, $params) {
+        \DB::sql('INSERT INTO sources (title, tags, spout, params) VALUES (:title, :tags, :spout, :params)',
                     array(
                         ':title'  => $title,
+                        ':tags'   => $tags,
                         ':spout'  => $spout,
                         ':params' => htmlentities(json_encode($params))
                     ));
@@ -40,13 +42,15 @@ class Sources extends Database {
      * @return void
      * @param int $id the source id
      * @param string $title new title
+     * @param string $tags new tags
      * @param string $spout new spout
      * @param mixed $params the new params
      */
-    public function edit($id, $title, $spout, $params) {
-        \DB::sql('UPDATE sources SET title=:title, spout=:spout, params=:params WHERE id=:id',
+    public function edit($id, $title, $tags, $spout, $params) {
+        \DB::sql('UPDATE sources SET title=:title, tags=:tags, spout=:spout, params=:params WHERE id=:id',
                     array(
                         ':title'  => $title,
+                        ':tags'  => $tags,
                         ':spout'  => $spout,
                         ':params' => htmlentities(json_encode($params)),
                         ':id'     => $id
@@ -92,7 +96,7 @@ class Sources extends Database {
      * @return mixed all sources
      */
     public function get() {
-        \DB::sql('SELECT id, title, spout, params, error FROM sources ORDER BY title ASC');
+        \DB::sql('SELECT id, title, tags, spout, params, error FROM sources ORDER BY title ASC');
         $ret = \F3::get('DB->result');
         $spoutLoader = new \helpers\SpoutLoader();
         for($i=0;$i<count($ret);$i++)

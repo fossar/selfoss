@@ -1,11 +1,11 @@
 <?PHP
 
-namespace models\mysql;
+namespace daos\mysql;
 
 /**
  * Class for accessing persistent saved items -- mysql
  *
- * @package    models
+ * @package    daos
  * @copyright  Copyright (c) Tobias Zeising (http://www.aditu.de)
  * @license    GPLv3 (http://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Tobias Zeising <tobias.zeising@aditu.de>

@@ -71,9 +71,9 @@ class Index {
 			
 			
         // load entries
-        $itemModel = new \models\Items();
+        $itemDao = new \daos\Items();
         $sourcesHtml = "";
-        foreach($itemModel->get($options) as $item) {
+        foreach($itemDao->get($options) as $item) {
             $view->item = $item;
             $sourcesHtml .= $view->render('templates/item.phtml');
         }
@@ -81,7 +81,7 @@ class Index {
         if(strlen($sourcesHtml)==0) {
             $sourcesHtml = '<div class="stream-empty">no entries found</div>';
         } else {
-            if($itemModel->hasMore())
+            if($itemDao->hasMore())
                 $sourcesHtml .= '<div class="stream-more"><span>more</span></div>';
         }
 
@@ -132,8 +132,8 @@ class Index {
         // get items
         $newestEntryDate = false;
         $lastid = -1;
-        $itemModel = new \models\Items();
-        foreach($itemModel->get($options) as $item) {
+        $itemDao = new \daos\Items();
+        foreach($itemDao->get($options) as $item) {
             if($newestEntryDate===false)
                 $newestEntryDate = $item['datetime'];
             $newItem = $feedWriter->createNewItem();
@@ -151,7 +151,7 @@ class Index {
         
         // mark as read
         if(\F3::get('rss_mark_as_read')==1 && $lastid!=-1)
-            $itemModel->mark($lastid);
+            $itemDao->mark($lastid);
         
         $feedWriter->genarateFeed();
     }

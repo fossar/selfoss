@@ -75,8 +75,8 @@ class Api {
         $options['offset'] = isset($options['offset']) ? (int)($options['offset']) : 0;
         $options['items'] = isset($options['items']) ? (int)($options['items']) : \F3::get('items_perpage');
         
-        $itemModel = new \models\Items();
-        $items = $itemModel->get($options);
+        $itemDao = new \daos\Items();
+        $items = $itemDao->get($options);
         
         if(isset($options['ids']) && is_array($options['ids'])) {
             $itemsWithoutIds = array();
