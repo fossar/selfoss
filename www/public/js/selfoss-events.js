@@ -14,6 +14,34 @@ selfoss.events = {
      * initialize navigation events
      */
 	navigation: function() {
+		// init colorpicker
+		$(".color").spectrum({
+			showPaletteOnly: true,
+			color: 'blanchedalmond',
+			palette: [
+				['#ffccc9', '#ffce93', '#fffc9e', '#ffffc7', '#9aff99', '#96fffb', '#cdffff' , '#cbcefb', '#fffe65', '#cfcfcf', '#fd6864', '#fe996b','#fcff2f', '#67fd9a', '#38fff8', '#68fdff', '#9698ed', '#c0c0c0', '#fe0000', '#f8a102', '#ffcc67', '#f8ff00', '#34ff34', '#68cbd0', '#34cdf9', '#6665cd', '#9b9b9b', '#cb0000', '#f56b00', '#ffcb2f', '#ffc702', '#32cb00', '#00d2cb', '#3166ff', '#6434fc', '#656565', '#9a0000', '#ce6301', '#cd9934', '#999903', '#009901', '#329a9d', '#3531ff', '#6200c9', '#343434', '#680100', '#963400', '#986536', '#646809', '#036400', '#34696d', '#00009b', '#303498', '#000000', '#330001', '#643403', '#663234', '#343300', '#013300', '#003532', '#010066', '#340096']
+			],
+			change: function(color) {
+				$(this).css('backgroundColor', color.toHexString());
+				
+				$.ajax({
+					url: $('base').attr('href') + 'tagset',
+					type: 'POST',
+					data: {
+						tag: $(this).prev().html(),
+						color: color.toHexString()
+					},
+					success: function() {
+						
+					},
+					error: function(jqXHR, textStatus, errorThrown) {
+						alert('Can not save new color: ' + errorThrown);
+					}
+				});
+				
+			}
+		});
+			
 		// filter
 		$('#nav-filter > li').unbind('click').click(function () {
 			if($(this).hasClass('nav-filter-newest'))
@@ -348,6 +376,9 @@ selfoss.events = {
 					
 					// show all links for new items
 					parent.removeClass('source-new');
+					
+					// reload tags
+					selfoss.reloadTags();
 				},
 				error: function(jqXHR, textStatus, errorThrown) {
 					selfoss.showErrors(parent, $.parseJSON(jqXHR.responseText));
@@ -381,6 +412,9 @@ selfoss.events = {
 					parent.fadeOut('fast', function() {
 						$(this).remove();
 					});
+					
+					// reload tags
+					selfoss.reloadTags();
 				},
 				error: function(jqXHR, textStatus, errorThrown) {
 					parent.find('.source-edit-delete').removeClass('loading');

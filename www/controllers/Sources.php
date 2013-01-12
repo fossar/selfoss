@@ -36,7 +36,6 @@ class Sources {
      * @return void
      */
     public function show() {
-
         // get available spouts
         $spoutLoader = new \helpers\SpoutLoader();
         $this->view->spouts = $spoutLoader->all();
@@ -91,7 +90,7 @@ class Sources {
     
     
     /**
-     * render spouts params
+     * delete source
      *
      * @return void
      */
@@ -104,6 +103,10 @@ class Sources {
             $this->view->error('invalid id given');
 
         $sourceDao->delete($id);
+		
+		// cleanup tags
+		$tagsDao = new \daos\Tags();
+		$tagsDao->cleanup($sourcesDao->getAllTags());
     }
     
     
@@ -147,9 +150,12 @@ class Sources {
         
 		// autocolor tags
 		$tagsDao = new \daos\Tags();
-		$tags = preg_split(",",$tags);
+		$tags = explode(",",$tags);
 		foreach($tags as $tag)
 			$tagsDao->autocolorTag(trim($tag)); 
+		
+		// cleanup tags
+		$tagsDao->cleanup($sourcesDao->getAllTags());
 		
         $this->view->jsonSuccess(
             array(

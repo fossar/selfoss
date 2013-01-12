@@ -45,9 +45,10 @@ F3::route('GET /feed',      'controllers\Index->rss');
 F3::route('GET /password',  'controllers\Index->password');
 F3::route('POST /password', 'controllers\Index->password');
 F3::route('GET /update',    'controllers\Items->update');
+F3::route('GET /tags',    	'controllers\Tags->tags');
 
-F3::route('GET /api/login',    'controllers\Api->login');
-F3::route('GET /api/logout',    'controllers\Api->logout');
+F3::route('GET /api/login',  'controllers\Api->login');
+F3::route('GET /api/logout', 'controllers\Api->logout');
     
 if(\F3::get('auth')->isLoggedin()===true) {
     F3::route('POST /mark/@item',    'controllers\Items->mark');
@@ -55,14 +56,15 @@ if(\F3::get('auth')->isLoggedin()===true) {
     F3::route('POST /unmark/@item',  'controllers\Items->unmark');
     F3::route('POST /starr/@item',   'controllers\Items->starr');
     F3::route('POST /unstarr/@item', 'controllers\Items->unstarr');
-    F3::route('GET /source/params', 'controllers\Sources->params');
-    F3::route('GET /sources',       'controllers\Sources->show');
-    F3::route('GET /source',        'controllers\Sources->add');
-    F3::route('POST /source/@id',   'controllers\Sources->write');
+    F3::route('GET /source/params',  'controllers\Sources->params');
+    F3::route('GET /sources',        'controllers\Sources->show');
+    F3::route('GET /source',         'controllers\Sources->add');
+    F3::route('POST /source/@id',    'controllers\Sources->write');
     F3::route('POST /source',        'controllers\Sources->write');
-    F3::route('DELETE /source/@id', 'controllers\Sources->remove');
-    
-    F3::route('POST /api/items',         'controllers\Api->items');
+    F3::route('DELETE /source/@id',  'controllers\Sources->remove');
+    F3::route('POST /tagset',    		 'controllers\Tags->tagset');
+	
+    F3::route('POST /api/items',        'controllers\Api->items');
     F3::route('GET /api/items',         'controllers\Api->items');
     F3::route('GET /api/mark/@item',    'controllers\Api->mark');
     F3::route('GET /api/starr/@item',   'controllers\Api->starr');

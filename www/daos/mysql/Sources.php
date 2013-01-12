@@ -123,4 +123,19 @@ class Sources extends Database {
         
         return $return;
     }
+	
+	
+	/**
+     * returns all tags
+     *
+     * @return mixed all sources
+     */
+    public function getAllTags() {
+        \DB::sql('SELECT tags FROM sources');
+        $tags = array();
+		foreach(\F3::get('DB->result') as $res)
+			$tags = array_merge($tags, explode(",",$res['tags']));
+		$tags = array_unique($tags);
+		return $tags;
+    }
 }
