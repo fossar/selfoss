@@ -9,6 +9,7 @@ namespace daos;
  * @copyright  Copyright (c) Tobias Zeising (http://www.aditu.de)
  * @license    GPLv3 (http://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Harald Lapp <harald.lapp@gmail.com>
+ * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class Items extends Database {
     /**
@@ -18,6 +19,7 @@ class Items extends Database {
      */
     private $backend = null;
     
+	
     /**
      * Constructor.
      *
@@ -25,78 +27,26 @@ class Items extends Database {
      */
     public function __construct() {
         $class = 'daos\\' . \F3::get('db_type') . '\\Items';
-        
         $this->backend = new $class();
-        
         parent::__construct();
     }
-
-    /**
-     * mark item as read
-     *
-     * @return void
-     * @param int $id
-     */
-    public function mark($id) {
-        $this->backend->mark($id);
-    }
+	
 	
 	/**
-     * mark item as unread
-     *
-     * @return void
-     * @param int $id
-     */
-    public function unmark($id) {
-        $this->backend->unmark($id);
+	 * pass any method call to the backend.
+	 * 
+	 * @return methods return value
+	 * @param string $name name of the function
+	 * @param array $args arguments
+	 */
+	public function __call($name, $args) {
+        if(method_exists($this->backend, $name))
+			return call_user_func_array(array($this->backend, $name), $args);
+		else
+			\F3::get('logger')->log('Unimplemented method for ' . \F3::get('db_type') . ': ' . $name, \ERROR);
     }
-    
-    
-    /**
-     * starr item
-     *
-     * @return void
-     * @param int $id the item
-     */
-    public function starr($id) {
-        $this->backend->starr($id);
-    }
-    
-    
-    /**
-     * unstarr item
-     *
-     * @return void
-     * @param int $id the item
-     */
-    public function unstarr($id) {
-        $this->backend->unstarr($id);
-    }
-    
-    
-    /**
-     * add new item
-     *
-     * @return void
-     * @param mixed $values
-     */
-    public function add($values) {
-        $this->backend->add($values);
-    }
-    
-    
-    /**
-     * checks whether an item with given
-     * uid exists or not
-     *
-     * @return bool
-     * @param string $uid
-     */
-    public function exists($uid) {
-        return $this->backend->exists($uid);
-    }
-    
-    
+	
+	
     /**
      * cleanup old items
      *
@@ -130,79 +80,4 @@ class Items extends Database {
         
         return $this->backend->get($options);
     }
-    
-    
-    /**
-     * returns whether more items for last given
-     * get call are available
-     *
-     * @return bool
-     */
-    public function hasMore() {
-        return $this->backend->hasMore();
-    }
-    
-    
-    /**
-     * return all thumbnails
-     *
-     * @return string[] array with thumbnails
-     */
-    public function getThumbnails() {
-        return $this->backend->getThumbnails();
-    }
-    
-    
-    /**
-     * return all icons
-     *
-     * @return string[] array with all icons
-     */
-    public function getIcons() {
-        return $this->backend->getIcons();
-    }
-    
-    
-    /**
-     * return all thumbnails
-     *
-     * @return bool true if thumbnail is still in use
-     * @param string $thumbnail name
-     */
-    public function hasThumbnail($thumbnail) {
-        return $this->backend->hasThumbnail($thumbnail);
-    }
-    
-    
-    /**
-     * return all icons
-     *
-     * @return bool true if icon is still in use
-     * @param string $icon file
-     */
-    public function hasIcon($icon) {
-        return $this->backend->hasIcon($icon);
-    }
-    
-    /**
-     * test if the value of a specified field is valid
-     *
-     * @return  bool
-     * @param   string      $name
-     * @param   mixed       $value
-     */
-    public function isValid($name, $value) {
-        return $this->backend->isValid($name, $value);
-    }
-	
-	
-	/**
-     * returns the icon of the last fetched item.
-     *
-     * @return bool|string false if none was found
-     * @param number $sourceid id of the source
-     */
-    public function getLastIcon($sourceid) {
-		return $this->backend->getLastIcon($sourceid);
-	}
 }

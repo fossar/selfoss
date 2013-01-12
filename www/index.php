@@ -2,7 +2,7 @@
 
 require __DIR__.'/libs/f3/base.php';
 
-F3::set('DEBUG',0);
+F3::set('DEBUG',1);
 F3::set('version','1.3');
 F3::set('AUTOLOAD',__dir__.'|libs/f3/|libs/|libs/WideImage/|daos/|libs/twitteroauth|libs/FeedWriter');
 F3::set('cache',__dir__.'/data/cache');
@@ -24,9 +24,12 @@ F3::set('auth', new \helpers\Authentication());
 F3::set('js', array(
     'public/js/jquery-1.8.3.min.js',
     'public/js/lazy-image-loader.js',
+    'public/js/color-by-brightness.js',
     'public/js/spectrum.js',
     'public/js/shortcut-2.01.B.js',
-    'public/js/base.js'
+    'public/js/selfoss-base.js',
+    'public/js/selfoss-events.js',
+    'public/js/selfoss-shortcuts.js'
 ));
 
 F3::set('css', array(

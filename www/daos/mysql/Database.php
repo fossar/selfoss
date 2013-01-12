@@ -86,6 +86,13 @@ class Database {
                 ');
 				
 				\DB::sql('
+                    CREATE TABLE tag (
+                        tag         TEXT NOT NULL,
+                        color       VARCHAR(7) NOT NULL
+                    );
+                ');
+				
+				\DB::sql('
 					ALTER TABLE sources ADD tags TEXT;
                 ');
 			}

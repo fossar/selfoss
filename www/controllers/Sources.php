@@ -47,6 +47,7 @@ class Sources {
         $sourcesDao = new \daos\Sources();
         $sourcesHtml = '<div class="source-add"> add source</div>';
         $i=0;
+		
         foreach($sourcesDao->get() as $source) {
             $this->view->source = $source;
 			$this->view->source['icon'] = $itemDao->getLastIcon($source['id']);
@@ -143,7 +144,13 @@ class Sources {
             $id = $sourcesDao->add($title, $tags, $spout, $data);
         else
             $sourcesDao->edit($id, $title, $tags, $spout, $data);
-            
+        
+		// autocolor tags
+		$tagsDao = new \daos\Tags();
+		$tags = preg_split(",",$tags);
+		foreach($tags as $tag)
+			$tagsDao->autocolorTag(trim($tag)); 
+		
         $this->view->jsonSuccess(
             array(
                 'success' => true,
