@@ -88,7 +88,11 @@ class Index {
 		// just show items html
         if(isset($options['ajax']))
             die($sourcesHtml);
-
+		
+		// load tags
+		$tagsController = new \controllers\Tags();
+		$view->tags = $tagsController->renderTags();
+		
 		// show as full html page	
         $view->content = $sourcesHtml;
         $view->publicMode = \F3::get('auth')->isLoggedin()!==true && \F3::get('public')==1;

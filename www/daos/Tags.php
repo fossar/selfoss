@@ -26,7 +26,7 @@ class Tags extends Database {
      * @return void
      */
     public function __construct() {
-        $class = 'daos\\' . \F3::get('db_type') . '\\Sources';
+        $class = 'daos\\' . \F3::get('db_type') . '\\Tags';
         $this->backend = new $class();
         parent::__construct();
     }

@@ -97,7 +97,7 @@ class Database {
                 ');
 				
 				\DB::sql('
-                    CREATE TABLE tag (
+                    CREATE TABLE tags (
                         tag         TEXT NOT NULL,
                         color       TEXT NOT NULL
                     );
