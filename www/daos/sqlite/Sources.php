@@ -35,19 +35,4 @@ class Sources extends \daos\mysql\Sources {
         $res = \F3::get('DB->result');
         return $res[0]['lastid'];
     }
-
-    
-    /**
-     * returns all sources
-     *
-     * @return mixed all sources
-     */
-    public function get() {
-        \DB::sql('SELECT id, title, tags, spout, params, error FROM sources ORDER BY lower(title) ASC');
-        $ret = \F3::get('DB->result');
-        $spoutLoader = new \helpers\SpoutLoader();
-        for($i=0;$i<count($ret);$i++)
-            $ret[$i]['spout_obj'] = $spoutLoader->get( $ret[$i]['spout'] );
-        return $ret;
-    }
 }

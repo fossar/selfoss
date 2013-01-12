@@ -34,7 +34,8 @@ class Tags {
      * @return void
      */
     public function tags() {
-		echo $this->renderTags();
+		$tagsDao = new \daos\Tags();
+		echo $this->renderTags($tagsDao->get());
 	}
 	
     /**
@@ -61,11 +62,9 @@ class Tags {
      *
      * @return void
      */
-    public function renderTags() {
-		$tagsDao = new \daos\Tags();
+    public function renderTags($tags) {
 		$html = "";
-		
-		foreach($tagsDao->get() as $tag) {
+		foreach($tags as $tag) {
             $this->view->tag = $tag['tag'];
             $this->view->color = $tag['color'];
             $html .= $this->view->render('templates/tag.phtml');

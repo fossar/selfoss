@@ -96,7 +96,7 @@ class Sources extends Database {
      * @return mixed all sources
      */
     public function get() {
-        \DB::sql('SELECT id, title, tags, spout, params, error FROM sources ORDER BY title ASC');
+        \DB::sql('SELECT id, title, tags, spout, params, error FROM sources ORDER BY lower(title) ASC');
         $ret = \F3::get('DB->result');
         $spoutLoader = new \helpers\SpoutLoader();
         for($i=0;$i<count($ret);$i++)
