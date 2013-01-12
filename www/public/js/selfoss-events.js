@@ -32,7 +32,7 @@ selfoss.events = {
 						color: color.toHexString()
 					},
 					success: function() {
-						
+						selfoss.reloadList();
 					},
 					error: function(jqXHR, textStatus, errorThrown) {
 						alert('Can not save new color: ' + errorThrown);
@@ -174,7 +174,7 @@ selfoss.events = {
      */
 	entries: function() {
 		// set color of all tags
-		$('.tag').colorByBrightness();
+		$('.entry-tags-tag').colorByBrightness();
 		
 		// select entry
 		$('.entry').unbind('click').click(function() {
@@ -202,7 +202,7 @@ selfoss.events = {
 		$(window).unbind('scroll').scroll(function() {
 			var content = $('#content');
 			if($('.stream-more').length > 0 
-			   && $('.stream-more').position().top < content.height() + content.scrollTop() 
+			   && $('.stream-more').position().top < $(window).height() + $(window).scrollTop() 
 			   && $('.stream-more').hasClass('loading')==false)
 				$('.stream-more').click();
 		});

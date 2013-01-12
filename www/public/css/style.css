@@ -462,7 +462,9 @@ input {
 	}
 
 	.entry-icon,
-	.entry-title {
+	.entry-title,
+	.entry-tags,
+	.entry-tags-tag {
 		display:inline;
 		margin-right:5px;
 	}
@@ -475,6 +477,16 @@ input {
 		.entry.unread  .entry-title {
 			color:#333333;
 		}
+	
+	.entry-tags-tag {
+		-moz-border-radius:4px;
+		-webkit-border-radius:4px;
+		-khtml-border-radius:4px;
+		border-radius:4px;
+		padding:2px;
+		font-size:0.8em;
+		
+	}
 	
 	.entry-content {
 		display:none;

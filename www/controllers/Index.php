@@ -12,13 +12,30 @@ namespace controllers;
  */
 class Index {
 
+	/**
+     * view helper
+     *
+     * @var helpers_View
+     */
+    protected $view;
+
+    
+    /**
+     * initialize controller
+     *
+     * @return void
+     */
+    public function __construct() {
+        $this->view = new \helpers\View();
+    }
+	
     /**
      * home site
      *
      * @return void
      */
     public function home() {
-        $view = new \helpers\View();
+        $this->view = new \helpers\View();
 
         // logout
         if(isset($_GET['logout'])) {
@@ -26,35 +43,9 @@ class Index {
             \F3::reroute(\F3::get('base_url'));
         }
 
+		// check login
+		$this->login();
 		
-        // show login?
-        if( 
-            isset($_GET['login']) || (\F3::get('auth')->isLoggedin()!==true && \F3::get('public')!=1)
-           ) {
-
-            // login?
-            if(count($_POST)>0) {
-                if(!isset($_POST['username']))
-                    $view->error = 'no username given';
-                else if(!isset($_POST['password']))
-                    $view->error = 'no password given';
-                else {
-                    if(\F3::get('auth')->login($_POST['username'], $_POST['password'])===false)
-                        $view->error = 'invalid username/password';
-                }
-            }
-            
-            // show login
-            if(count($_POST)==0 || isset($view->error))
-                die($view->render('templates/login.phtml'));
-            else
-                \F3::reroute(\F3::get('base_url'));
-                
-        }
-
-		
-		
-
         // parse params
         $options = array();
         if(count($_GET)>0)
@@ -62,42 +53,33 @@ class Index {
         
 		// parse params for view
 		if(isset($_GET['type']) && $_GET['type']=='starred')
-            $view->starred = true;
+            $this->view->starred = true;
 		else if(isset($_GET['type']) && $_GET['type']=='unread')
-            $view->unread = true;
+            $this->view->unread = true;
 		// todo: add tag
 		if(isset($_GET['search']))
-            $view->search = $_GET['search'];
-			
-			
-        // load entries
-        $itemDao = new \daos\Items();
-        $sourcesHtml = "";
-        foreach($itemDao->get($options) as $item) {
-            $view->item = $item;
-            $sourcesHtml .= $view->render('templates/item.phtml');
-        }
-
-        if(strlen($sourcesHtml)==0) {
-            $sourcesHtml = '<div class="stream-empty">no entries found</div>';
-        } else {
-            if($itemDao->hasMore())
-                $sourcesHtml .= '<div class="stream-more"><span>more</span></div>';
-        }
+            $this->view->search = $_GET['search'];
+		
+		// load tags
+		$tagsDao = new \daos\Tags();
+		$tags = $tagsDao->get();
+		
+        // load items
+		$itemsHtml = $this->loadItems($options, $tags);
 
 		// just show items html
         if(isset($options['ajax']))
-            die($sourcesHtml);
+            die($itemsHtml);
 		
-		// load tags
+		// show tags
 		$tagsController = new \controllers\Tags();
-		$view->tags = $tagsController->renderTags();
+		$this->view->tags = $tagsController->renderTags($tags);
 		
 		// show as full html page	
-        $view->content = $sourcesHtml;
-        $view->publicMode = \F3::get('auth')->isLoggedin()!==true && \F3::get('public')==1;
-        $view->loggedin = \F3::get('auth')->isLoggedin()===true;
-        echo $view->render('templates/home.phtml');
+        $this->view->content = $itemsHtml;
+        $this->view->publicMode = \F3::get('auth')->isLoggedin()!==true && \F3::get('public')==1;
+        $this->view->loggedin = \F3::get('auth')->isLoggedin()===true;
+        echo $this->view->render('templates/home.phtml');
     }
     
     
@@ -107,11 +89,11 @@ class Index {
      * @return void
      */
     public function password() {
-        $view = new \helpers\View();
-        $view->password = true;
+        $this->view = new \helpers\View();
+        $this->view->password = true;
         if(isset($_POST['password']))
-            $view->hash = hash("sha512", \F3::get('salt') . $_POST['password']);
-        echo $view->render('templates/login.phtml');
+            $this->view->hash = hash("sha512", \F3::get('salt') . $_POST['password']);
+        echo $this->view->render('templates/login.phtml');
     }
     
     
@@ -124,8 +106,7 @@ class Index {
         $feedWriter = new \FeedWriter(\RSS2);
         $feedWriter->setTitle(\F3::get('rss_title'));
         
-        $view = new \helpers\View();
-        $feedWriter->setLink($view->base);
+        $feedWriter->setLink($this->view->base);
         
         // set options
         $options = array();
@@ -159,4 +140,85 @@ class Index {
         
         $feedWriter->genarateFeed();
     }
+	
+	
+	/**
+     * check and show login
+     *
+     * @return void
+     */
+	private function login() {
+        if( 
+            isset($_GET['login']) || (\F3::get('auth')->isLoggedin()!==true && \F3::get('public')!=1)
+           ) {
+
+            // login?
+            if(count($_POST)>0) {
+                if(!isset($_POST['username']))
+                    $this->view->error = 'no username given';
+                else if(!isset($_POST['password']))
+                    $this->view->error = 'no password given';
+                else {
+                    if(\F3::get('auth')->login($_POST['username'], $_POST['password'])===false)
+                        $this->view->error = 'invalid username/password';
+                }
+            }
+            
+            // show login
+            if(count($_POST)==0 || isset($this->view->error))
+                die($this->view->render('templates/login.phtml'));
+            else
+                \F3::reroute(\F3::get('base_url'));
+        }
+	}
+	
+	
+	/**
+     * load items
+     *
+     * @return html with items
+     */
+	private function loadItems($options, $tags) {
+		$tagColors = $this->convertTagsToAssocArray($tags);
+		
+	    $itemDao = new \daos\Items();
+        $itemsHtml = "";
+        foreach($itemDao->get($options) as $item) {
+		
+			// parse tags and assign tag colors
+			$itemsTags = explode(",",$item['tags']);
+			$item['tags'] = array();
+			foreach($itemsTags as $tag) {
+				$tag = trim($tag);
+				if(strlen($tag)>0 && isset($tagColors[$tag]))
+					$item['tags'][$tag] = $tagColors[$tag];
+			}
+			
+            $this->view->item = $item;
+            $itemsHtml .= $this->view->render('templates/item.phtml');
+        }
+
+        if(strlen($itemsHtml)==0) {
+            $itemsHtml = '<div class="stream-empty">no entries found</div>';
+        } else {
+            if($itemDao->hasMore())
+                $itemsHtml .= '<div class="stream-more"><span>more</span></div>';
+        }
+		
+		return $itemsHtml;
+	}
+	
+	
+	/**
+     * return tag => color array
+     *
+     * @return tag color array
+	 * @param array $tags
+     */
+	private function convertTagsToAssocArray($tags) {
+		$assocTags = array();
+		foreach($tags as $tag)
+			$assocTags[$tag['tag']] = $tag['color'];
+		return $assocTags;
+	}
 }
