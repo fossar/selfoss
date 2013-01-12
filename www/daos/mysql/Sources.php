@@ -104,6 +104,7 @@ class Sources extends Database {
         return $ret;
     }
     
+	
     /**
      * test if the value of a specified field is valid
      *

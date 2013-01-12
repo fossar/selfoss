@@ -20,7 +20,6 @@ class ViewHelper {
         * @param array|string $searchWords words for highlighting
       */
     public function highlight($content, $searchWords) {
-        
         if(strlen(trim($searchWords))==0)
             return $content;
         

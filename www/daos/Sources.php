@@ -10,6 +10,7 @@ namespace daos;
  * @license    GPLv3 (http://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Harald Lapp <harald.lapp@gmail.com>
  * @author     Daniel Seither <post@tiwoc.de>
+ * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 
 class Sources extends Database {
@@ -20,6 +21,7 @@ class Sources extends Database {
      */
     private $backend = null;
     
+	
     /**
      * Constructor.
      *
@@ -27,74 +29,26 @@ class Sources extends Database {
      */
     public function __construct() {
         $class = 'daos\\' . \F3::get('db_type') . '\\Sources';
-        
         $this->backend = new $class();
-        
         parent::__construct();
     }
-
-
-    /**
-     * add new source
-     *
-     * @return int new id
-     * @param string $title
-     * @param string $tags
-     * @param string $spout the source type
-     * @param mixed $params depends from spout
-     */
-    public function add($title, $tags, $spout, $params) {
-        return $this->backend->add($title, $tags, $spout, $params);
+	
+	
+	/**
+	 * pass any method call to the backend.
+	 * 
+	 * @return methods return value
+	 * @param string $name name of the function
+	 * @param array $args arguments
+	 */
+	public function __call($name, $args) {
+        if(method_exists($this->backend, $name))
+			return call_user_func_array(array($this->backend, $name), $args);
+		else
+			\F3::get('logger')->log('Unimplemented method for ' . \F3::get('db_type') . ': ' . $name, \ERROR);
     }
-    
-    
-    /**
-     * edit source
-     *
-     * @return void
-     * @param int $id the source id
-     * @param string $title
-     * @param string $tags
-     * @param string $spout
-     * @param mixed $params params
-     */
-    public function edit($id, $title, $tags, $spout, $params) {
-        $this->backend->edit($id, $title, $tags, $spout, $params);
-    }
-    
-    
-    /**
-     * delete source
-     *
-     * @return void
-     * @param int $id
-     */
-    public function delete($id) {
-        $this->backend->delete($id);
-    }
-    
-    
-    /**
-     * save error message
-     *
-     * @return void
-     * @param int $id the source id
-     * @param string $error error message
-     */
-    public function error($id, $error="") {
-        $this->backend->error($id, $error);
-    }
-    
-    
-    /**
-     * returns all sources
-     *
-     * @return mixed all sources
-     */
-    public function get() {
-        return $this->backend->get();
-    }
-
+	
+	
     /**
      * validate new data for a given source
      *
@@ -189,16 +143,5 @@ class Sources extends Database {
         if(count($result)>0)
             return $result;
         return true;
-    }
-    
-    /**
-     * test if the value of a specified field is valid
-     *
-     * @return  bool
-     * @param   string      $name
-     * @param   mixed       $value
-     */
-    public function isValid($name, $value) {
-        return $this->backend->isValid($name, $value);
     }
 }

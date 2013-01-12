@@ -9,6 +9,7 @@ namespace daos\sqlite;
  * @copyright   Copyright (c) Harald Lapp (harald.lapp@gmail.com)
  * @license     GPLv3 (http://www.gnu.org/licenses/gpl-3.0.html)
  * @author      Harald Lapp (harald.lapp@gmail.com)
+ * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class Database {
     /**
@@ -82,7 +83,7 @@ class Database {
                     );
                 ');
             }
-            
+                 
 			// version 1
 			if(!in_array('version', $tables)) {
                 \DB::sql('
@@ -93,6 +94,13 @@ class Database {
 				
 				\DB::sql('
                     INSERT INTO version (version) VALUES (2);
+                ');
+				
+				\DB::sql('
+                    CREATE TABLE tag (
+                        tag         TEXT NOT NULL,
+                        color       TEXT NOT NULL
+                    );
                 ');
 				
 				\DB::sql('
