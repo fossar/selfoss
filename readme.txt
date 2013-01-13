@@ -77,3 +77,4 @@ Special thanks to the great programmers of this libraries which will be used in 
 * jsmin: https://github.com/rgrove/jsmin-php/blob/master/jsmin.php
 * cssmin: http://code.google.com/p/cssmin/
 * Spectrum Colorpicker: https://github.com/bgrins/spectrum
+* jQuery custom content scroller: http://manos.malihu.gr/jquery-custom-content-scroller/
