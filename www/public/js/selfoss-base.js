@@ -139,7 +139,6 @@ var selfoss = {
 			}
 		});
 	}
-
 };
 
 selfoss.init();

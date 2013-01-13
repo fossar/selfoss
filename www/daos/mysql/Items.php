@@ -330,4 +330,44 @@ class Items extends Database {
 			
 		return false;
     }
+	
+	
+	/**
+     * returns the amount of entries in database
+     *
+     * @return int amount of entries in database
+     */
+    public function numberOfItems() {
+		\DB::sql('SELECT count(*) AS amount FROM items');
+        $res = \F3::get('DB->result');
+        return $res[0]['amount'];
+	}
+	
+	
+	/**
+     * returns the amount of entries in database which are unread
+     *
+     * @return int amount of entries in database which are unread
+     */
+    public function numberOfUnread() {
+		\DB::sql('SELECT count(*) AS amount
+                   FROM items 
+                   WHERE unread=1');
+        $res = \F3::get('DB->result');
+        return $res[0]['amount'];
+	}
+	
+	
+	/**
+     * returns the amount of entries in database which are starred
+     *
+     * @return int amount of entries in database which are starred
+     */
+    public function numberOfStarred() {
+		\DB::sql('SELECT count(*) AS amount
+                   FROM items 
+                   WHERE starred=1');
+        $res = \F3::get('DB->result');
+        return $res[0]['amount'];
+	}
 }

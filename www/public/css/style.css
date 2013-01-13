@@ -63,6 +63,7 @@ table {
 
 }
 
+/*
 @font-face {
     font-family: 'OpenSansLightItalic';
     src: url('css/OpenSans-LightItalic-webfont.eot');
@@ -72,8 +73,7 @@ table {
          url('css/OpenSans-LightItalic-webfont.svg#OpenSansLightItalic') format('svg');
     font-weight: normal;
     font-style: normal;
-
-}
+}*/
 
 @font-face {
     font-family: 'OpenSansRegular';
@@ -87,6 +87,7 @@ table {
 
 }
 
+/*
 @font-face {
     font-family: 'OpenSansItalic';
     src: url('css/OpenSans-Italic-webfont.eot');
@@ -96,8 +97,8 @@ table {
          url('css/OpenSans-Italic-webfont.svg#OpenSansItalic') format('svg');
     font-weight: normal;
     font-style: normal;
-
 }
+*/
 
 @font-face {
     font-family: 'OpenSansSemibold';
@@ -111,6 +112,7 @@ table {
 
 }
 
+/*
 @font-face {
     font-family: 'OpenSansSemiboldItalic';
     src: url('css/OpenSans-SemiboldItalic-webfont.eot');
@@ -120,8 +122,8 @@ table {
          url('css/OpenSans-SemiboldItalic-webfont.svg#OpenSansSemiboldItalic') format('svg');
     font-weight: normal;
     font-style: normal;
-
 }
+*/
 
 @font-face {
     font-family: 'OpenSansBold';
@@ -135,6 +137,7 @@ table {
 
 }
 
+/*
 @font-face {
     font-family: 'OpenSansBoldItalic';
     src: url('css/OpenSans-BoldItalic-webfont.eot');
@@ -144,7 +147,6 @@ table {
          url('css/OpenSans-BoldItalic-webfont.svg#OpenSansBoldItalic') format('svg');
     font-weight: normal;
     font-style: normal;
-
 }
 
 @font-face {
@@ -168,9 +170,8 @@ table {
          url('css/OpenSans-ExtraBoldItalic-webfont.svg#OpenSansExtraboldItalic') format('svg');
     font-weight: normal;
     font-style: normal;
-
 }
-
+*/
 	
 
  /* Primary Styles
@@ -267,6 +268,11 @@ input {
 			background:#272325;
 			color:#d7d7d7;
 			font-size:1em;
+		}
+		
+		#nav-filter span {
+			font-size:0.55em;
+			color:#777;
 		}
 	
 	#nav h2 {

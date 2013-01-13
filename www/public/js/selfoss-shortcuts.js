@@ -121,7 +121,7 @@ selfoss.shortcuts = {
 			if(next.height() > viewportHeight) {
                 $(document).scrollTop(next.position().top);
             } else {
-                $(document).scrollTop(windowScrollTop + next.height());
+                $(document).scrollTop(viewportScrollTop + next.height());
 			}
 		}
 		
