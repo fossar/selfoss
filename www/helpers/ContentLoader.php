@@ -209,7 +209,8 @@ class ContentLoader {
         
         // optimize database
         \F3::get('logger')->log('optimize database', \DEBUG);
-        \daos\Database::optimize();
+        $database = new \daos\Database();
+		$database->optimize();
         \F3::get('logger')->log('optimize database finished', \DEBUG);
     }
     

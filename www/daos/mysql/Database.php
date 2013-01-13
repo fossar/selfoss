@@ -109,7 +109,7 @@ class Database {
      *
      * @return void
      */
-    public static function optimize() {
+    public function optimize() {
         @\F3::sql("OPTIMIZE TABLE `sources`, `items`");
     }
 }

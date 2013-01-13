@@ -284,9 +284,8 @@ input {
 		font-weight:bold;
 	}
 
-	#nav-tags {
+	#nav-tags-wrapper  {
 		overflow:hidden;
-		overflow-y:scroll;
 	}
 	
 		#nav-tags li {
@@ -479,6 +478,8 @@ input {
 	.entry-title {
 		cursor:pointer;
 		color:#999999;
+		padding-top:7px;
+		padding-bottom:7px;
 	}
 	
 		.entry.unread  .entry-title {
@@ -684,8 +685,81 @@ input {
 
 /* mobile version */
 
+/* ipad and tablet */
 @media screen and (max-width:1024px) {
    
+	#content {
+		margin-left:165px;
+		margin-top:0;
+		margin-right:0;
+		padding:0;
+	}
+	
+	#search {
+		width:305px;
+		top:-46px;
+		left:100%;
+		margin-left:-370px;
+		transition: top 0.5s ease-in-out ;
+		-webkit-transition: top 0.5s ease-in-out ;
+		-o-transition: top 0.5s ease-in-out ;
+		-moz-transition: top 0.5s ease-in-out ;
+		-webkit-border-bottom-right-radius:0;
+		-moz-border-radius-bottomright:0;
+		border-bottom-right-radius:0;
+		-webkit-border-bottom-left-radius:4px;
+		-moz-border-radius-bottomleft:4px;
+		border-bottom-left-radius:4px;
+	}
+	
+		#search.active {
+			top:0px;
+			left:100%;
+		}
+	
+		#search-term {
+			
+		}
+	
+		#search-button,
+		#search-remove {
+			
+		}
+		
+		#search-button {
+			top:42px;
+			left:100%;
+			margin-left:-50px;
+			padding:10px;
+			background-color:rgba(61, 109, 105, 0.4);
+			-webkit-border-bottom-left-radius: 4px;
+			-webkit-border-bottom-right-radius: 4px;
+			-moz-border-radius-bottomleft: 4px;
+			-moz-border-radius-bottomright: 4px;
+			border-bottom-left-radius: 4px;
+			border-bottom-right-radius: 4px;
+		}
+	
+	#search-list {
+		height:35px;
+		margin-left:157px;
+	}
+	
+   .entry {
+		margin:0;
+		padding:7px;
+		-moz-border-radius:0px;
+		-webkit-border-radius:0px;
+		-khtml-border-radius:0px;
+		border-radius:0px;
+		font-size:1.0em;
+		border-top:1px solid #ccc;
+	}
+	
+	.entry-toolbar {
+		margin-left:-7px;
+	}
+	
 	.entry-toolbar .entry-loadimages {
 		display:block;
 	}
@@ -695,6 +769,16 @@ input {
 		-moz-column-count: 1;
 		-webkit-column-count: 1;
 		column-count: 1;
+	}
+	
+	.entry.selected.unread,
+	.entry.unread {
+		border-right:5px solid #5f9490;
+		border-left:0;
+	}
+	
+	.entry.selected {
+		border:1px solid #5f9490;
 	}
 	
  }

@@ -29,4 +29,13 @@ class Database {
         $class = 'daos\\' . \F3::get('db_type') . '\\Database';
         $this->backend = new $class();
     }
+	
+	/**
+     * optimize database by database own optimize statement
+     *
+     * @return  void
+     */
+    public function optimize() {
+		$this->backend->optimize();
+    }
 }

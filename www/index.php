@@ -3,7 +3,7 @@
 require __DIR__.'/libs/f3/base.php';
 
 F3::set('DEBUG',1);
-F3::set('version','1.3');
+F3::set('version','2.0');
 F3::set('AUTOLOAD',__dir__.'|libs/f3/|libs/|libs/WideImage/|daos/|libs/twitteroauth|libs/FeedWriter');
 F3::set('cache',__dir__.'/data/cache');
 F3::set('BASEDIR',__dir__);
@@ -23,6 +23,9 @@ F3::set('auth', new \helpers\Authentication());
 // define js and css files
 F3::set('js', array(
     'public/js/jquery-1.8.3.min.js',
+    'public/js/jquery-ui-1.9.1.custom.min.js',
+    'public/js/jquery.mCustomScrollbar.min.js',
+    'public/js/jquery.mousewheel.js',
     'public/js/lazy-image-loader.js',
     'public/js/color-by-brightness.js',
     'public/js/spectrum.js',
@@ -33,6 +36,7 @@ F3::set('js', array(
 ));
 
 F3::set('css', array(
+    'public/css/jquery.mCustomScrollbar.css',
     'public/css/spectrum.css',
     'public/css/style.css'
 ));
