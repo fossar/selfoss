@@ -7,8 +7,17 @@ selfoss.events = {
 		selfoss.events.navigation();
 		selfoss.events.entries();
 		selfoss.events.search();
+		
+		// window resize
+		$(window).bind("resize", selfoss.events.resize);
+		selfoss.events.resize();
 	},
 	
+	resize: function() {
+		var start = $('#nav-tags li:first').position().top;
+		var windowHeight = $(window).height();
+		$('#nav-tags').height(windowHeight - start - 100);
+	},
 	
 	/**
      * initialize navigation events

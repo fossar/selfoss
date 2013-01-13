@@ -15,7 +15,7 @@ $.fn.colorByBrightness = function() {
 		var g = parseInt(color[1]);
 		var b = parseInt(color[2]);
 		var yiq = ((r*299)+(g*587)+(b*114))/1000;
-		var newColor = (yiq >= 128) ? 'black' : 'white';
+		var newColor = (yiq >= 128) ? '#555' : '#EEE';
 		item.css("color", newColor);
 	});
 }
