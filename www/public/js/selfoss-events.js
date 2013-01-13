@@ -257,6 +257,7 @@ selfoss.events = {
 				var id = parent.attr('id').substr(5);
 				var starr = $(this).hasClass('active')==false;
 				
+				// update button
 				var setButton = function(starr) {
 					if(starr) {
 						button.addClass('active');
@@ -268,11 +269,25 @@ selfoss.events = {
 				};
 				setButton(starr);
 				
+				// update statistics in main menue
+				var updateStats = function(starr) {
+					var starred = parseInt($('.nav-filter-starred span').html());
+					if(starr) {
+						starred++;
+					} else {
+						starred--;
+					}
+					$('.nav-filter-starred span').html(starred);
+				};
+				updateStats(starr);
+				
 				$.ajax({
 					url: $('base').attr('href') + (starr ? 'starr/' : 'unstarr/') + id,
 					type: 'POST',
 					error: function(jqXHR, textStatus, errorThrown) {
+						// rollback ui changes
 						setButton(!starr);
+						updateStats(!starr);
 						alert('Can not starr/unstarr item: '+errorThrown);
 					}
 				});
@@ -284,6 +299,8 @@ selfoss.events = {
 				var parent = $(this).parents('.entry');
 				var id = parent.attr('id').substr(5);
 				var unread = $(this).hasClass('active')==true;
+				
+				// update button
 				var setButton = function(unread) {
 					if(unread) {
 						button.removeClass('active');
@@ -295,13 +312,26 @@ selfoss.events = {
 						parent.addClass('unread');
 					}
 				};
-				
 				setButton(unread);
+				
+				// update statistics in main menue
+				var updateStats = function(unread) {
+					var unreadstats = parseInt($('.nav-filter-unread span').html());
+					if(unread) {
+						unreadstats--;
+					} else {
+						unreadstats++;
+					}
+					$('.nav-filter-unread span').html(unreadstats);
+				};
+				updateStats(unread);
 				
 				$.ajax({
 					url: $('base').attr('href') + (unread ? 'mark/' : 'unmark/') + id,
 					type: 'POST',
 					error: function(jqXHR, textStatus, errorThrown) {
+						// rollback ui changes
+						updateStats(!unread);
 						setButton(!unread);
 						alert('Can not mark/unmark item: '+errorThrown);
 					}

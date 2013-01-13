@@ -41,7 +41,11 @@ class Index extends BaseController {
 		$tagsController = new \controllers\Tags();
 		$this->view->tags = $tagsController->renderTags($tags);
 		
-		// show as full html page	
+		// show as full html page
+		$itemsDao = new \daos\Items();
+		$this->view->statsAll = $itemsDao->numberOfItems();
+		$this->view->statsUnread = $itemsDao->numberOfUnread();
+		$this->view->statsStarred = $itemsDao->numberOfStarred();
         $this->view->content = $itemsHtml;
         $this->view->publicMode = \F3::get('auth')->isLoggedin()!==true && \F3::get('public')==1;
         $this->view->loggedin = \F3::get('auth')->isLoggedin()===true;

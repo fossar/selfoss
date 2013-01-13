@@ -18,7 +18,7 @@ class Items extends BaseController {
      * @return void
      */
     public function mark() {
-		if(isset($_POST['item']))
+		if(\F3::get('PARAMS["item"]')!=null)
 			$lastid = \F3::get('PARAMS["item"]');
 		else if(isset($_POST['ids'])) {
 			$lastid = $_POST['ids'];
@@ -96,7 +96,22 @@ class Items extends BaseController {
     public function update() {
         $loader = new \helpers\ContentLoader();
         $loader->update();
-
         echo "finished";
+    }
+	
+	
+	/**
+     * returns current stats
+     *
+     * @return void
+     */
+    public function stats() {
+		$itemDao = new \daos\Items();
+		$return = array(
+			'all' 	  => $itemsDao->numberOfItems(),
+			'unread'  => $itemsDao->numberOfUnread(),
+			'starred' => $itemsDao->numberOfStarred()
+		);
+		$this->view->jsonSuccess($return);
     }
 }
