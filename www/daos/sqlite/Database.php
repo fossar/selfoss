@@ -119,6 +119,6 @@ class Database {
      *
      * @return  void
      */
-    public static function optimize() {
+    public function optimize() {
     }
 }
