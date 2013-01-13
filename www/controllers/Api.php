@@ -10,27 +10,10 @@ namespace controllers;
  * @license    GPLv3 (http://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
-class Api {
-
-    /**
-     * view helper
-     *
-     * @var helpers_View
-     */
-    protected $view;
+class Api extends BaseController {
 
     
     /**
-     * initialize controller
-     *
-     * @return void
-     */
-    public function __construct() {
-        $this->view = new \helpers\View();
-    }
-
-    
-     /**
      * login for api json access
      *
      * @return void

@@ -58,6 +58,19 @@ selfoss.events = {
 			selfoss.reloadList();
 		});
 		
+		// tag
+		$('#nav-tags > li').unbind('click').click(function () {
+			$('#nav-tags > li').removeClass('active');
+			$(this).addClass('active');
+			
+			selfoss.filter.tag = '';
+			if($(this).hasClass('nav-tags-all')==false)
+				selfoss.filter.tag = $(this).find('span').html();
+				
+			selfoss.filter.offset = 0;
+			selfoss.reloadList();
+		});
+		
 		// only loggedin users
 		if($('body').hasClass('loggedin')==true) {
 			// mark as read

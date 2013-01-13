@@ -10,24 +10,7 @@ namespace controllers;
  * @license    GPLv3 (http://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
-class Index {
-
-	/**
-     * view helper
-     *
-     * @var helpers_View
-     */
-    protected $view;
-
-    
-    /**
-     * initialize controller
-     *
-     * @return void
-     */
-    public function __construct() {
-        $this->view = new \helpers\View();
-    }
+class Index extends BaseController {
 	
     /**
      * home site
@@ -35,31 +18,14 @@ class Index {
      * @return void
      */
     public function home() {
-        $this->view = new \helpers\View();
-
-        // logout
-        if(isset($_GET['logout'])) {
-            \F3::get('auth')->logout();
-            \F3::reroute(\F3::get('base_url'));
-        }
-
 		// check login
-		$this->login();
+		$this->authentication();
 		
         // parse params
         $options = array();
         if(count($_GET)>0)
             $options = $_GET;
         
-		// parse params for view
-		if(isset($_GET['type']) && $_GET['type']=='starred')
-            $this->view->starred = true;
-		else if(isset($_GET['type']) && $_GET['type']=='unread')
-            $this->view->unread = true;
-		// todo: add tag
-		if(isset($_GET['search']))
-            $this->view->search = $_GET['search'];
-		
 		// load tags
 		$tagsDao = new \daos\Tags();
 		$tags = $tagsDao->get();
@@ -95,64 +61,26 @@ class Index {
             $this->view->hash = hash("sha512", \F3::get('salt') . $_POST['password']);
         echo $this->view->render('templates/login.phtml');
     }
-    
-    
-    /**
-     * rss feed
-     *
-     * @return void
-     */
-    public function rss() {
-        $feedWriter = new \FeedWriter(\RSS2);
-        $feedWriter->setTitle(\F3::get('rss_title'));
-        
-        $feedWriter->setLink($this->view->base);
-        
-        // set options
-        $options = array();
-        if(count($_GET)>0)
-            $options = $_GET;
-        $options['items'] = \F3::get('rss_max_items');
-        
-        // get items
-        $newestEntryDate = false;
-        $lastid = -1;
-        $itemDao = new \daos\Items();
-        foreach($itemDao->get($options) as $item) {
-            if($newestEntryDate===false)
-                $newestEntryDate = $item['datetime'];
-            $newItem = $feedWriter->createNewItem();
-            $newItem->setTitle(str_replace('&', '&amp;', html_entity_decode(utf8_decode($item['title']))));
-            @$newItem->setLink($item['link']);
-            $newItem->setDate($item['datetime']);
-            $newItem->setDescription(str_replace('&#34;', '"', $item['content']));
-            $feedWriter->addItem($newItem);
-            $lastid = $item['id'];
-        }
-        
-        if($newestEntryDate===false)
-            $newestEntryDate = date(\DATE_ATOM , time());
-        $feedWriter->setChannelElement('updated', $newestEntryDate);
-        
-        // mark as read
-        if(\F3::get('rss_mark_as_read')==1 && $lastid!=-1)
-            $itemDao->mark($lastid);
-        
-        $feedWriter->genarateFeed();
-    }
 	
 	
 	/**
-     * check and show login
+     * check and show login/logout
      *
      * @return void
      */
-	private function login() {
+	private function authentication() {
+		// logout
+        if(isset($_GET['logout'])) {
+            \F3::get('auth')->logout();
+            \F3::reroute(\F3::get('base_url'));
+        }
+		
+		// login
         if( 
             isset($_GET['login']) || (\F3::get('auth')->isLoggedin()!==true && \F3::get('public')!=1)
            ) {
 
-            // login?
+            // authenticate?
             if(count($_POST)>0) {
                 if(!isset($_POST['username']))
                     $this->view->error = 'no username given';

@@ -66,7 +66,7 @@ class Database {
                     CREATE TABLE sources (
                         id INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
                         title TEXT NOT NULL ,
-                        tags TEXT NOT NULL ,
+                        tags TEXT,
                         spout TEXT NOT NULL ,
                         params TEXT NOT NULL ,
                         error TEXT 

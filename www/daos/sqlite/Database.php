@@ -76,7 +76,7 @@ class Database {
                     CREATE TABLE sources (
                         id          INTEGER PRIMARY KEY AUTOINCREMENT,
                         title       TEXT NOT NULL,
-                        tags        TEXT NOT NULL,
+                        tags        TEXT,
                         spout       TEXT NOT NULL,
                         params      TEXT NOT NULL,
                         error       TEXT 

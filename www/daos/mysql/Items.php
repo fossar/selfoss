@@ -161,17 +161,28 @@ class Items extends Database {
         $params = array();
         $where = '';
         
+		// only starred
 		if(isset($options['type']) && $options['type']=='starred')
             $where .= ' AND starred=1 ';
+			
+		// only unread
         else if(isset($options['type']) && $options['type']=='unread')
             $where .= ' AND unread=1 ';
 		
-		if($options['search']!==false && strlen($options['search'])>0) {
+		// search
+		if(isset($options['search']) && strlen($options['search'])>0) {
 			$search = str_replace(" ", "%", trim($options['search']));
             $params[':search'] = $params[':search2'] = $params[':search3'] = array("%".$search."%", \PDO::PARAM_STR);
             $where .= ' AND (items.title LIKE :search OR items.content LIKE :search2 OR sources.title LIKE :search3) ';
         }
         
+		// tag filter
+		if(isset($options['tag']) && strlen($options['tag'])>0) {
+            $params[':tag'] = array("%".$options['tag']."%", \PDO::PARAM_STR);
+            $where .= ' AND (sources.tags LIKE :tag) ';
+        }
+		
+		// set limit
         if(!is_numeric($options['items']) || $options['items']>200)
             $options['items'] = \F3::get('items_perpage');
         
