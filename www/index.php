@@ -40,7 +40,7 @@ F3::set('css', array(
 // define routes
 F3::route('GET /',          'controllers\Index->home');
 F3::route('POST /',         'controllers\Index->home');
-F3::route('GET /rss',       'controllers\Index->rss');
+F3::route('GET /rss',       'controllers\Rss->rss');
 F3::route('GET /feed',      'controllers\Index->rss');
 F3::route('GET /password',  'controllers\Index->password');
 F3::route('POST /password', 'controllers\Index->password');

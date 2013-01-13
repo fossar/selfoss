@@ -121,13 +121,14 @@ var selfoss = {
 	 * @return void
 	 */
 	reloadTags: function() {
-		$('#nav-tags').addClass('loading').html("");
+		$('#nav-tags').addClass('loading');
+		$('#nav-tags li:not(:first)').remove();
 		
 		$.ajax({
 			url: $('base').attr('href')+'tags',
 			type: 'GET',
 			success: function(data) {
-				$('#nav-tags').html(data);
+				$('#nav-tags').append(data);
 				selfoss.events.navigation();
 			},
 			error: function(jqXHR, textStatus, errorThrown) {
