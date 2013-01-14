@@ -76,16 +76,38 @@ var selfoss = {
 	
 	
 	/**
-	 * returns true if we are on a mobile device
+	 * indicates whether a mobile device is host
 	 *
 	 * @return true if device resolution smaller equals 1024
 	 */
 	isMobile: function() {
+		return selfoss.isTablet() || selfoss.isSmartphone();
+	},
+	
+	
+	/**
+	 * indicates whether a tablet is the device or not
+	 *
+	 * @return true if device resolution smaller equals 1024
+	 */
+	isTablet: function() {
 		if($(window).width()<=1024)
             return true;
 		return false;
 	},
 
+	
+	/**
+	 * indicates whether a tablet is the device or not
+	 *
+	 * @return true if device resolution smaller equals 1024
+	 */
+	isSmartphone: function() {
+		if($(window).width()<=480)
+            return true;
+		return false;
+	},
+	
 	
 	/**
 	 * refresh current items.

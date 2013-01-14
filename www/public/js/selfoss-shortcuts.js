@@ -5,14 +5,6 @@ selfoss.shortcuts = {
 	 * init shortcuts
 	 */
 	init: function() { 
-		selfoss.shortcuts.shortcuts();
-	},
-	
-	
-	/**
-     * register shortcuts
-     */
-    shortcuts: function() {  
         var options = {"disable_in_input": true};
         
         // next

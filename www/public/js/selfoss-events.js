@@ -9,17 +9,28 @@ selfoss.events = {
 		selfoss.events.search();
 		
 		// window resize
+		$("#nav-tags-wrapper").mCustomScrollbar();
 		$(window).bind("resize", selfoss.events.resize);
 		selfoss.events.resize();
-		$("#nav-tags-wrapper").mCustomScrollbar();
 	},
 	
+	
+	/**
+     * set automatically the height of the tags and set scrollbar for div scrolling
+     */
 	resize: function() {
-		var start = $('#nav-tags-wrapper').position().top;
-		var windowHeight = $(window).height();
-		$('#nav-tags-wrapper').height(windowHeight - start - 100);
-		$("#nav-tags-wrapper").mCustomScrollbar("update");
+		// only set height if smartphone is false
+		if(selfoss.isSmartphone()==false) {
+			var start = $('#nav-tags-wrapper').position().top;
+			var windowHeight = $(window).height();
+			$('#nav-tags-wrapper').height(windowHeight - start - 100);
+			$("#nav-tags-wrapper").mCustomScrollbar("update");
+		} else {
+			$('#nav-tags-wrapper').height("auto");
+			$("#nav-tags-wrapper").mCustomScrollbar("disable",selfoss.isSmartphone());
+		}
 	},
+	
 	
 	/**
      * initialize navigation events
@@ -225,6 +236,15 @@ selfoss.events = {
 				content.lazyLoadImages();
 		});
 
+		// click on source
+		$('.entry-source').unbind('click').click(function(e) {
+			if(selfoss.isSmartphone()) {
+				$(this).parent().find('.entry-title').click();
+				e.preventDefault();
+				return false;
+			};
+		});
+		
 		// scroll load more
 		$(window).unbind('scroll').scroll(function() {
 			var content = $('#content');

@@ -24,7 +24,7 @@
 
 </head>
 <body class="<?PHP if($this->publicMode===true) : ?>publicmode<?PHP endif; ?> <?PHP echo $this->loggedin ? "loggedin" : "notloggedin"; ?>">
-
+	
     <!-- navigation -->
 	<div id="nav">
 		<div id="nav-logo"></div>
@@ -52,11 +52,15 @@
 		<div id="nav-logout"></div>
 	</div>
 	
+	<!-- menue open for smartphone -->
+	
+	
 	<!-- search -->
 	<div id="search">
 		<input type="text" id="search-term"></input>
 		<div id="search-remove"></div>
 		<div id="search-button"></div>
+		<div id="search-shownav"></div>
 	</div>
 	
 	<ul id="search-list">
