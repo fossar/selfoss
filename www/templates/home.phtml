@@ -25,6 +25,9 @@
 </head>
 <body class="<?PHP if($this->publicMode===true) : ?>publicmode<?PHP endif; ?> <?PHP echo $this->loggedin ? "loggedin" : "notloggedin"; ?>">
 	
+	<!-- menue open for smartphone -->
+	<div id="nav-showhide"></div>
+	
     <!-- navigation -->
 	<div id="nav">
 		<div id="nav-logo"></div>
@@ -48,12 +51,15 @@
 		
 		<hr>
 		
+		<!-- navigation search input just for smartphone version -->
+		<div id="nav-search">
+			<input type="text" id="nav-search-term"></input> <input type="button" id="nav-search-button" value="search" />
+			<hr>
+		</div>
+		
 		<div id="nav-settings"></div>
 		<div id="nav-logout"></div>
 	</div>
-	
-	<!-- menue open for smartphone -->
-	
 	
 	<!-- search -->
 	<div id="search">
@@ -70,6 +76,9 @@
 	<div id="content">
 		<?PHP echo $this->content; ?>
 	</div>
+	
+	<!-- mobile view entry -->
+	<div id="fullscreen-entry"></div>
 	
     <script src="all.js"></script>
 </body>

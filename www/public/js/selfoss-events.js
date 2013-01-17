@@ -78,6 +78,9 @@ selfoss.events = {
 			
 			selfoss.filter.offset = 0;
 			selfoss.reloadList();
+			
+			if(selfoss.isSmartphone())
+				$('#nav-showhide').click();
 		});
 		
 		// tag
@@ -91,6 +94,24 @@ selfoss.events = {
 				
 			selfoss.filter.offset = 0;
 			selfoss.reloadList();
+			
+			if(selfoss.isSmartphone())
+				$('#nav-showhide').click();
+		});
+		
+		// show hide navigation for mobile version
+		$('#nav-showhide').unbind('click').click(function () {
+			var navHeight = $('#nav').height();
+			var scrollTop = $(window).scrollTop();
+			if($('#nav').is(':visible')) {
+				$('#nav').animate({top:-navHeight}, 500, "swing", function() { $(this).hide(); });
+				$('body').css({ overflow:"auto", height:"auto", width:"auto"});
+			} else {
+				$('#nav').css({"top":scrollTop-navHeight, "height": $(window).height()});
+				$('#nav').show();
+				$('#nav').animate({top:scrollTop});
+				$('body').css({ overflow:"hidden", height:"100%", width:"100%"});
+			}
 		});
 		
 		// only loggedin users
@@ -110,6 +131,9 @@ selfoss.events = {
 					},
 					success: function() {
 						$('.entry').removeClass('unread');
+						
+						if(selfoss.isSmartphone())
+							$('#nav-showhide').click();
 					},
 					error: function(jqXHR, textStatus, errorThrown) {
 						alert('Can not mark all visible item: ' + errorThrown);
@@ -119,6 +143,9 @@ selfoss.events = {
 			
 			// show sources
 			$('#nav-settings').unbind('click').click(function () {
+				if(selfoss.isSmartphone())
+					$('#nav-showhide').click();
+				
 				$('#content').addClass('loading').html("");
 				$.ajax({
 					url: $('base').attr('href')+'sources',
@@ -143,9 +170,8 @@ selfoss.events = {
      * initialize search events
      */
 	search: function() {
-		var executeSearch = function() {
+		var executeSearch = function(term) {
 			// show words in top of the page
-			var term = $('#search-term').val();
 			var words = term.split(" ");
 			$('#search-list').html('');
 			$.each(words, function(index, item) {
@@ -168,7 +194,12 @@ selfoss.events = {
 				$('#search').addClass('active');
 				return;
 			}
-			executeSearch();
+			executeSearch($('#search-term').val());
+		});
+		
+		$('#nav-search-button').unbind('click').click(function () {
+			executeSearch($('#nav-search-term').val());
+			$('#nav-showhide').click();
 		});
 		
 		$('#search-term').unbind('keypress').keypress(function(e) {
@@ -185,7 +216,7 @@ selfoss.events = {
 			});
 			newterm = $.trim(newterm);
 			$('#search-term').val(newterm);
-			executeSearch();
+			executeSearch($('#search-term').val());
 		});
 		
 		$('#search-remove').unbind('click').click(function () {
@@ -220,20 +251,39 @@ selfoss.events = {
 		// show/hide entry
 		$('.entry-title').unbind('click').click(function() {
 			var parent = $(this).parent();
-			var content = parent.find('.entry-content');
-			if(content.is(':visible')) {
-				parent.find('.entry-toolbar').hide();
-				//content.slideUp('fast');
-				content.hide();
-			} else {
-				//content.slideDown('fast', function() { parent.find('.entry-toolbar').show(); });
-				content.show();
-				parent.find('.entry-toolbar').show();
-			}
 			
-			// load images not on mobile devices
-			if(selfoss.isMobile()==false)
-				content.lazyLoadImages();
+			if(selfoss.isSmartphone()) {
+				$('body').css({ overflow:"hidden", height:"100%", width:"100%"});
+				var fullscreen = $('#fullscreen-entry');
+				fullscreen.html('<div id="entrr'+parent.attr('id').substr(5)+'" class="entry">'+parent.html()+'</div>');
+				fullscreen.css({"top": $(window).scrollTop(), "height": $(window).height()});
+				fullscreen.show();
+				
+				selfoss.events.entries();
+				
+				fullscreen.find('.entry-title').click(function() {
+					$('body').css({ overflow:"auto", height:"auto", width:"auto"});
+					fullscreen.hide();
+				});
+				
+				
+			} else {
+				var content = parent.find('.entry-content');
+				
+				if(content.is(':visible')) {
+					parent.find('.entry-toolbar').hide();
+					//content.slideUp('fast');
+					content.hide();
+				} else {
+					//content.slideDown('fast', function() { parent.find('.entry-toolbar').show(); });
+					content.show();
+					parent.find('.entry-toolbar').show();
+				}
+				
+				// load images not on mobile devices
+				if(selfoss.isMobile()==false)
+					content.lazyLoadImages();
+			}
 		});
 
 		// click on source

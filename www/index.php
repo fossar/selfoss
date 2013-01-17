@@ -38,6 +38,8 @@ F3::set('js', array(
 F3::set('css', array(
     'public/css/jquery.mCustomScrollbar.css',
     'public/css/spectrum.css',
+    'public/css/reset.css',
+    'public/css/fonts.css',
     'public/css/style.css'
 ));
 
