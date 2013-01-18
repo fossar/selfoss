@@ -271,7 +271,6 @@ input {
 		background:url(images/ajax-loader-big.gif) center center no-repeat;
 		min-height:100%
 	}
-	
 
 .entry ,
 .source {
@@ -384,26 +383,43 @@ input {
 			margin-left:10px;
 			padding-left:20px;
 			cursor:pointer;
+			background-size:16px 16px;
+			background-repeat:no-repeat;
+			background-position: left center;
 		}
 		
 		.entry-toolbar .entry-starr {
-			background:url(images/unstarred.png) left center no-repeat;
+			background-image:url(images/unstarred.png);
 		}
 		
 		.entry-toolbar .entry-starr.active {
-			background:url(images/starred.png) left center no-repeat;
+			background-image:url(images/starred.png);
 		}
 		
 		.entry-toolbar .entry-unread {
-			background:url(images/read.png) left center no-repeat;
+			background-image:url(images/read.png);
 		}
 		
 		.entry-toolbar .entry-unread.active {
-			background:url(images/unread.png) left center no-repeat;
+			background-image:url(images/unread.png);
 		}
+		
 		.entry-toolbar .entry-loadimages {
 			display:none;
-			background:url(images/arrow-down.png) left center no-repeat;
+			background-image:url(images/arrow-down.png);
+		}
+		
+		.entry-toolbar .entry-close {
+			display:none;
+			width:32px;
+			height:32px;
+			margin:0;
+			position:absolute;
+			left:100%;
+			top:0;
+			margin-left:-60px;
+			background:url(images/close.png) center center no-repeat;
+			background-size: 28px 28px;
 		}
 		
 	
@@ -525,15 +541,32 @@ input {
 /* ipad and smartphone */
 @media screen and (max-width:1024px) {
 
-	.entry {
+	.entry,
+	.source {
 		margin:0;
 		padding:7px;
 		-moz-border-radius:0px;
 		-webkit-border-radius:0px;
 		-khtml-border-radius:0px;
 		border-radius:0px;
-		font-size:1.05em;
-		border-top:1px solid #ccc;
+		/*border-top:1px solid #ccc;*/
+		border:0;
+		background:url(images/entry-bg.png) bottom repeat-x #fff;
+	}
+	
+	.source-showparams,
+	.source-delete,
+	.source-save,
+	.source-cancel {
+		color:#333;
+		border:0;
+		background:#ededed;
+		-webkit-border-radius:4px;
+		-moz-border-radius:4px;
+		border-radius:4px;
+		cursor:pointer;
+		padding:5px;
+		font-size:1.1em;
 	}
 	
 	#nav-tags .color {
@@ -588,9 +621,9 @@ input {
 		margin-left:-7px;
 	}
 	
-	.entry-toolbar .entry-loadimages {
-		display:block;
-	}
+		.entry-toolbar .entry-loadimages {
+			display:block;
+		}
    
 	.entry-content {
 		display:none;
@@ -608,11 +641,16 @@ input {
 	.entry.selected {
 		background:#ededed;
 	}
+	
+	.source-add { 
+		margin-left:20px;
+		text-align:left;
+	}
 }
 
 
 /* smartphone */
-@media only screen and (max-width: 480px) {
+@media only screen and (max-width: 641px) {
 
 	#nav {
 		display:none;
@@ -620,9 +658,10 @@ input {
 		left:0;
 		top:0;
 		width:100%;
+		height:auto !important;
 		margin:0;
 		border:0;
-		overflow-y:scroll;
+		overflow-x:hidden;
 	}
 		
 		#nav-search {
@@ -632,7 +671,7 @@ input {
 		
 			#nav-search-term {
 				background:#ccc;
-				width:60%;
+				width:50%;
 				margin-left:10px;
 			}
 			
@@ -686,12 +725,18 @@ input {
 		#search {
 			display:none;
 		}
-		
+	
+	#search-list  {
+		margin-left:10px;
+	}
+	
 	#content {
 		margin:0;
 		padding:0;
+		width:100%;
 	}
 	
+		.source,
 		.entry {
 			margin:0;
 			padding:7px;
@@ -699,16 +744,33 @@ input {
 			-webkit-border-radius:0px;
 			-khtml-border-radius:0px;
 			border-radius:0px;
-			font-size:1.05em;
+			font-size:0.8em;
 			border-top:1px solid #ccc;
 		}
+		
+		.entry-source,
+		.entry-datetime {
+			color:#3d6d69;
+		}
 
+		.source-showparams,
+		.source-delete,
+		.source-save,
+		.source-cancel {
+			font-size:1.3em;
+		}
+		
+		.source-edit-form-help {
+			display:none;
+		}
+		
+		.entry-content {
+			line-height:1.5em;
+			font-size:1.1em;
+		}
+		
 	.sp-container {
 		z-index:100;
-	}
-	
-	#search-list {
-		margin-left:10px;
 	}
 	
 	#fullscreen-entry {
@@ -718,26 +780,44 @@ input {
 		margin:0;
 		border:0;
 		width:100%;
-		overflow-y:scroll;
-		overflow-x:visible;
+		overflow-x: hidden;
 		background:#ffffff;
+		z-index:22;
 	}
-
+	
+		#fullscreen-entry .entry {
+			padding-top:50px;
+		}
+	
+		#fullscreen-entry .entry-title {
+			padding-top:40px;
+		}
+		
 		#fullscreen-entry .entry-content,
 		#fullscreen-entry .entry-toolbar {
 			display:block;
 		}
 		
 		#fullscreen-entry .entry-toolbar {
-			font-size:0.7em;
-			margin-bottom:20px;
+			position:fixed;
+			top:0;
+			left:0;
+			width:100%;
+			margin:0;
+			
+			font-size:0.8em;
+			margin-bottom:0;
 		}
+		
+			#fullscreen-entry .entry-close {
+				display:block;
+			}
 }
 
 
 
 /* tablet */
-@media screen and (min-width: 481px) and (max-width:1024px) {
+@media screen and (min-width: 641px) and (max-width:1024px) {
    
 	#nav {
 		width:160px;

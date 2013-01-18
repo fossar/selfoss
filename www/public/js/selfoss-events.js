@@ -12,6 +12,12 @@ selfoss.events = {
 		$("#nav-tags-wrapper").mCustomScrollbar();
 		$(window).bind("resize", selfoss.events.resize);
 		selfoss.events.resize();
+		
+		if(selfoss.isSmartphone()){
+			$('#nav').height($(window).height());
+			$("#nav").html("<div>"+$("#nav").html()+"</div>");
+			$("#nav").mCustomScrollbar();
+		}
 	},
 	
 	
@@ -101,16 +107,21 @@ selfoss.events = {
 		
 		// show hide navigation for mobile version
 		$('#nav-showhide').unbind('click').click(function () {
-			var navHeight = $('#nav').height();
-			var scrollTop = $(window).scrollTop();
 			if($('#nav').is(':visible')) {
-				$('#nav').animate({top:-navHeight}, 500, "swing", function() { $(this).hide(); });
-				$('body').css({ overflow:"auto", height:"auto", width:"auto"});
+				$('#content').show();
+				$(window).scrollTop($('#nav').data('scrollTop'));
+				$('#nav').fadeOut(500);
 			} else {
-				$('#nav').css({"top":scrollTop-navHeight, "height": $(window).height()});
-				$('#nav').show();
-				$('#nav').animate({top:scrollTop});
-				$('body').css({ overflow:"hidden", height:"100%", width:"100%"});
+				var scrollTop = $(window).scrollTop();
+				$('#nav').css("top", scrollTop);
+				$('#nav').fadeIn(500, function() {
+					$(window).scrollTop(0);
+					$('#nav').css({"top":0});
+					selfoss.events.navigation();
+					selfoss.events.search();
+				});
+				$('#content').fadeOut(500);
+				$('#nav').data('scrollTop', scrollTop);
 			}
 		});
 		
@@ -189,6 +200,7 @@ selfoss.events = {
 				$('#search-list').show();
 		}
 		
+		// search button shows search input or executes search
 		$('#search-button').unbind('click').click(function () {
 			if($('#search').hasClass('active')==false) {
 				$('#search').addClass('active');
@@ -197,16 +209,19 @@ selfoss.events = {
 			executeSearch($('#search-term').val());
 		});
 		
+		// navigation search button for mobile navigation
 		$('#nav-search-button').unbind('click').click(function () {
 			executeSearch($('#nav-search-term').val());
 			$('#nav-showhide').click();
 		});
 		
+		// keypress enter in search inputfield
 		$('#search-term').unbind('keypress').keypress(function(e) {
 			if(e.which == 13)
 				$('#search-button').click();
 		});
 		
+		// search term list in top of the page
 		$('#search-list li').unbind('click').click(function () {
 			var term = $('#search-term').val();
 			term = term.replace($(this).html(), "").split(" ");
@@ -219,6 +234,7 @@ selfoss.events = {
 			executeSearch($('#search-term').val());
 		});
 		
+		// remove button of search
 		$('#search-remove').unbind('click').click(function () {
 			if(selfoss.filter.search=='') {
 				$('#search').removeClass('active');
@@ -239,43 +255,58 @@ selfoss.events = {
      * initialize events for entries
      */
 	entries: function() {
-		// set color of all tags
-		$('.entry-tags-tag').colorByBrightness();
-		
-		// select entry
+		// select entry on click
 		$('.entry').unbind('click').click(function() {
-			$('.entry.selected').removeClass('selected');
-			$(this).addClass('selected');
+			if(selfoss.isSmartphone()==false) {
+				$('.entry.selected').removeClass('selected');
+				$(this).addClass('selected');
+			}
 		});
-
+		
 		// show/hide entry
-		$('.entry-title').unbind('click').click(function() {
-			var parent = $(this).parent();
+		$('.entry').unbind('click').click(function() {
+			var parent = $(this);
 			
+			// prevent event on fullscreen touch
+			if(parent.hasClass('fullscreen'))
+				return;
+			
+ 			// show entry in popup
 			if(selfoss.isSmartphone()) {
-				$('body').css({ overflow:"hidden", height:"100%", width:"100%"});
+				// save scroll position and hide content
+				var scrollTop = $(window).scrollTop();
+				var content = $('#content');
+				content.hide();
+				$(window).scrollTop(0);
+				
+				// show fullscreen
 				var fullscreen = $('#fullscreen-entry');
-				fullscreen.html('<div id="entrr'+parent.attr('id').substr(5)+'" class="entry">'+parent.html()+'</div>');
-				fullscreen.css({"top": $(window).scrollTop(), "height": $(window).height()});
+				fullscreen.html('<div id="entrr'+parent.attr('id').substr(5)+'" class="entry fullscreen">'+parent.html()+'</div>');
 				fullscreen.show();
 				
-				selfoss.events.entries();
+				// set events for fullscreen
+				selfoss.events.entriesToolbar(fullscreen);
 				
-				fullscreen.find('.entry-title').click(function() {
-					$('body').css({ overflow:"auto", height:"auto", width:"auto"});
+				// set color of all tags by background color
+				fullscreen.find('.entry-tags-tag').colorByBrightness();
+		
+				// set events for closing fullscreen
+				fullscreen.find('.entry, .entry-close').click(function(e) {
+					if(e.target.tagName.toLowerCase()=="a")
+						return;
+					content.show();
+					$(window).scrollTop(scrollTop);
 					fullscreen.hide();
 				});
 				
-				
+			// open entry content
 			} else {
 				var content = parent.find('.entry-content');
 				
 				if(content.is(':visible')) {
 					parent.find('.entry-toolbar').hide();
-					//content.slideUp('fast');
 					content.hide();
 				} else {
-					//content.slideDown('fast', function() { parent.find('.entry-toolbar').show(); });
 					content.show();
 					parent.find('.entry-toolbar').show();
 				}
@@ -283,20 +314,18 @@ selfoss.events = {
 				// load images not on mobile devices
 				if(selfoss.isMobile()==false)
 					content.lazyLoadImages();
-			}
+			} 
 		});
 
-		// click on source
-		$('.entry-source').unbind('click').click(function(e) {
-			if(selfoss.isSmartphone()) {
-				$(this).parent().find('.entry-title').click();
-				e.preventDefault();
-				return false;
-			};
-		});
+		// no source click
+		if(selfoss.isSmartphone())
+			$('.entry-source').unbind('click').click(function(e) {e.preventDefault(); return false });
 		
 		// scroll load more
 		$(window).unbind('scroll').scroll(function() {
+			if($('#content').is(':visible')==false)
+				return;
+		
 			var content = $('#content');
 			if($('.stream-more').length > 0 
 			   && $('.stream-more').position().top < $(window).height() + $(window).scrollTop() 
@@ -325,21 +354,35 @@ selfoss.events = {
 			});
 		});
 		
+		// set color of all tags by background color
+		$('.entry-tags-tag').colorByBrightness();
+	},
+	
+	
+	/**
+     * toolbar of an single entry
+     */
+	entriesToolbar: function(parent) {
+		if(typeof parent == "undefined")
+			parent = $('#content');
+		
 		// load images
-		$('.entry-loadimages').unbind('click').click(function() {
+		parent.find('.entry-loadimages').unbind('click').click(function() {
 			$(this).parents('.entry').lazyLoadImages();
 			$(this).fadeOut();
+			return false;
 		});
 		
 		
 		// only loggedin users
 		if($('body').hasClass('loggedin')==true) {
+		
 			// starr/unstarr
-			$('.entry-starr').unbind('click').click(function() {
-				var button = $(this);
+			parent.find('.entry-starr').unbind('click').click(function() {
 				var parent = $(this).parents('.entry');
 				var id = parent.attr('id').substr(5);
 				var starr = $(this).hasClass('active')==false;
+				var button = $("#entry"+id+" .entry-starr, #entrr"+id+" .entry-starr");
 				
 				// update button
 				var setButton = function(starr) {
@@ -375,14 +418,16 @@ selfoss.events = {
 						alert('Can not starr/unstarr item: '+errorThrown);
 					}
 				});
+				
+				return false;
 			});
 			
 			// read/unread
-			$('.entry-unread').unbind('click').click(function() {
-				var button = $(this);
-				var parent = $(this).parents('.entry');
-				var id = parent.attr('id').substr(5);
+			parent.find('.entry-unread').unbind('click').click(function() {
+				var id = $(this).parents('.entry').attr('id').substr(5);
 				var unread = $(this).hasClass('active')==true;
+				var button = $("#entry"+id+" .entry-unread, #entrr"+id+" .entry-unread");
+				var parent = $("#entry"+id+", #entrr"+id);
 				
 				// update button
 				var setButton = function(unread) {
@@ -420,6 +465,8 @@ selfoss.events = {
 						alert('Can not mark/unmark item: '+errorThrown);
 					}
 				});
+				
+				return false;
 			});
 		}
 	},
