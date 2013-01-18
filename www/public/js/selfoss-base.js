@@ -103,7 +103,7 @@ var selfoss = {
 	 * @return true if device resolution smaller equals 1024
 	 */
 	isSmartphone: function() {
-		if($(window).width()<=480)
+		if($(window).width()<=640)
             return true;
 		return false;
 	},
