@@ -26,7 +26,10 @@
 <body class="<?PHP if($this->publicMode===true) : ?>publicmode<?PHP endif; ?> <?PHP echo $this->loggedin ? "loggedin" : "notloggedin"; ?>">
 	
 	<!-- menue open for smartphone -->
-	<div id="nav-showhide"></div>
+	<div id="nav-mobile">
+		<div id="nav-mobile-logo"></div>
+		<div id="nav-mobile-settings"></div>
+	</div>
 	
     <!-- navigation -->
 	<div id="nav">
@@ -57,8 +60,18 @@
 			<hr>
 		</div>
 		
-		<div id="nav-settings"></div>
-		<div id="nav-logout"></div>
+		<?PHP if($this->loggedin===true) : ?>
+		<div id="nav-settings" <?PHP if(\F3::get('auth')->enabled()===false) : ?>class="nologin"<?PHP endif; ?>></div>
+		<?PHP endif; ?>
+		
+		<?PHP if($this->loggedin===true && \F3::get('auth')->enabled()===true) : ?>
+        <div id="nav-logout"></div>
+        <?PHP endif; ?>
+		
+		<?PHP if($this->loggedin===false) : ?>
+        <div id="nav-login"></div>
+        <?PHP endif; ?>
+		
 	</div>
 	
 	<!-- search -->
@@ -79,7 +92,7 @@
 	
 	<!-- fullscreen popup -->
 	<div id="fullscreen-entry"></div>
-	<div id="nav-test">sdafsdaf<br />asdlkjads<br/>lkjklj</div>
+	
     <script src="all.js"></script>
 </body>
 </html>
