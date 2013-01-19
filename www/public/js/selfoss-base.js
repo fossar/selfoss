@@ -126,6 +126,7 @@ var selfoss = {
 				$(document).scrollTop(0);
 				selfoss.events.entries();
 				selfoss.events.search();
+				location.hash = "";
 			},
 			error: function(jqXHR, textStatus, errorThrown) {
 				alert('Load list error: '+errorThrown);
