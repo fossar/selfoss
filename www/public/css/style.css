@@ -145,7 +145,8 @@ input {
 	}
 	
 	#nav-settings,
-	#nav-logout {
+	#nav-logout,
+	#nav-login {
 		position:absolute;
 		top:100%;
 		margin-top:-70px;
@@ -159,6 +160,10 @@ input {
 		cursor:pointer;
 	}
 	
+	#nav-settings.nologin {
+		width:140px;
+	}
+	
 	#nav-settings {
 		background:url(images/nav-sources.png) no-repeat center center #272325;
 	}
@@ -166,9 +171,14 @@ input {
 	#nav-logout {
 		background:url(images/nav-logout.png) no-repeat center center #272325;
 		left:85px;
+	}	
+	
+	#nav-login {
+		background:url(images/nav-login.png) no-repeat center center #272325;
+		width:140px;
 	}
 	
-	#nav-showhide {
+	#nav-mobile {
 		display:none;
 	}
 	
@@ -529,11 +539,65 @@ input {
 }
 
 
+/* login */
 
+#login {
+	position:absolute;
+	left:50%;
+	top:50%;
+	margin-left:-100px;
+	margin-top:-100px;
+}
+
+	#login h1 {
+		background:url(images/logo.png) left center no-repeat;
+		font-family:'OpenSansSemibold', Arial, sans-serif;
+		padding-top:10px;
+		padding-left:40px;
+		font-size:1.4em;
+		margin-bottom:20px;
+	}
+	
+	#login label {
+		display:inline-block;
+		width:100px;
+	}
+
+	#login .error {
+		color:#ff0000;
+	}
+	
+	#login .button input {
+		margin-left:7px;
+		padding:5px;
+		font-size:1.2em;
+	}
+
+/* public mode */
+
+body.publicmode.notloggedin #nav-mark {
+	height:3px;
+	padding:0;
+	overflow:hidden;
+	cursor:auto;
+}
+
+body.publicmode.notloggedin .entry-starr,
+body.publicmode.notloggedin .entry-unread {
+	display:none;
+}
 
 
 /* mobile version */
 
+/* only desktop */
+@media screen and (min-width: 1024px) {
+
+	body.publicmode.notloggedin  .entry-toolbar {
+		display:none !important;
+	}
+
+}
 
 /* desktop and tablet */
 @media screen and (min-width: 641px) {
@@ -664,14 +728,55 @@ input {
 /* smartphone */
 @media only screen and (max-width: 641px) {
 
+	#login .button input {
+		margin-left:3px;
+	}
+	
+	#login .button label {
+		display:none;
+	}
+
+	#nav-mobile {
+		position:relative;
+		display:block;
+		background:#191718;
+		border-bottom:3px solid #3d6d69;
+		width:100%;
+		height:50px;
+	}
+	
+		#nav-mobile-logo {
+			position:absolute;
+			width:96px;
+			height:40px;
+			left:50%;
+			top:5px;
+			margin-left:-48px;
+			background:url(images/nav-mobile-logo.png) no-repeat;
+			background-size:96px 40px;
+		}
+
+		#nav-mobile-settings {
+			position:absolute;
+			width:29px;
+			height:29px;
+			left:100%;
+			top:10px;
+			margin-left:-48px;
+			background:url(images/nav-mobile-settings.png) no-repeat;
+			background-size:29px 29px;
+		}
+		
 	#nav {
 		display:none;
-		position:absolute;
+		position:relative;
+		left:0;
 		width:100%;
 		margin:0;
 		border:0;
 		overflow-x:hidden;
 		clear:both;
+		border-bottom:3px solid #3d6d69;
 	}
 		
 		#nav-search {
@@ -696,7 +801,8 @@ input {
 			}
 		
 		#nav-settings,
-		#nav-logout {
+		#nav-logout,
+		#nav-login {
 			position:relative;
 			top:0;
 			left:0;
@@ -708,30 +814,11 @@ input {
 			float:left;
 		}
 		
+		#nav-login,
 		#nav-logout {
 			left:70px;
 		}
 		
-		#nav-showhide {
-			position:fixed;
-			display:block;
-			left:100%;
-			top:0;
-			margin-left:-80px;
-			width:28px;
-			height:16px;
-			background:url(images/menue.png) center center no-repeat rgba(25, 23, 24, 0.3);
-			padding:10px;
-			z-index:20;
-			-webkit-border-bottom-left-radius: 4px;
-			-webkit-border-bottom-right-radius: 4px;
-			-moz-border-radius-bottomleft: 4px;
-			-moz-border-radius-bottomright: 4px;
-			border-bottom-left-radius: 4px;
-			border-bottom-right-radius: 4px;
-			cursor:pointer;
-		}
-	
 		#search {
 			display:none;
 		}

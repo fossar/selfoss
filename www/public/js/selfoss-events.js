@@ -30,7 +30,7 @@ selfoss.events = {
      */
 	hashChange: function() {
 		// return to main page
-		if(location.hash.trim().length==0) {
+		if(location.hash.length==0) {
 			// from entry popup
 			if(selfoss.events.lasthash=="#show" && $('#fullscreen-entry').is(':visible')) {
 				$('#fullscreen-entry .entry-close').click();
@@ -43,9 +43,29 @@ selfoss.events = {
 				
 			// from navigation
 			if(selfoss.events.lasthash=="#nav" && $('#nav').is(':visible')) {
-				$('#nav-showhide').click();
+				$('#nav-mobile-settings').click();
 			}
 		}
+		
+		// load sources
+		if(location.hash=="#sources") {
+			$('#content').addClass('loading').html("");
+			$.ajax({
+				url: $('base').attr('href')+'sources',
+				type: 'GET',
+				success: function(data) {
+					$('#content').html(data);
+					selfoss.events.sources();
+				},
+				error: function(jqXHR, textStatus, errorThrown) {
+					alert('Load sources error: '+errorThrown);
+				},
+				complete: function(jqXHR, textStatus) {
+					$('#content').removeClass('loading');
+				}
+			});
+		}
+		
 		selfoss.events.lasthash = location.hash;
 	},
 	
@@ -116,7 +136,7 @@ selfoss.events = {
 			selfoss.reloadList();
 			
 			if(selfoss.isSmartphone())
-				$('#nav-showhide').click();
+				$('#nav-mobile-settings').click();
 		});
 		
 		// tag
@@ -132,41 +152,35 @@ selfoss.events = {
 			selfoss.reloadList();
 			
 			if(selfoss.isSmartphone())
-				$('#nav-showhide').click();
+				$('#nav-mobile-settings').click();
 		});
 		
 		// show hide navigation for mobile version
-		$('#nav-showhide').unbind('click').click(function () {
+		$('#nav-mobile-settings').unbind('click').click(function () {
 			var nav = $('#nav');
 			
 			// show
 			if(nav.is(':visible')==false) {
-				var scrollTop = $(window).scrollTop();
-				nav.css('top', scrollTop);
-				nav.css('marginTop', -nav.height());
-				nav.show();
-				nav.animate({marginTop: 0}, 600, "swing", function() {
-					$('#content').hide();
-					$(window).scrollTop(0);
-					nav.css({"top":0});
-					selfoss.events.navigation();
-					selfoss.events.search();
-					nav.data('scrollTop', scrollTop);
+				nav.slideDown(400, function() {
 					location.hash = "nav";
+					$(window).scrollTop(0);
 				});
 				
 			// hide
 			} else {
-				$('#content').show();
-				var scrollTop = nav.data('scrollTop');
-				nav.css('top', scrollTop);
-				$(window).scrollTop(scrollTop);
-				nav.animate({top: scrollTop-nav.height()}, 600, "swing", function() {
-					nav.hide();
-					location.hash = "";
+				nav.slideUp(400, function() {
+					if(location.hash=="#nav") {
+						location.hash = "";
+					}
+					$(window).scrollTop(0);
 				});
 			}
 			
+		});
+		
+		// login
+		$('#nav-login').unbind('click').click(function () {
+			window.location.href = $('base').attr('href')+"?login=1";
 		});
 		
 		// only loggedin users
@@ -188,7 +202,7 @@ selfoss.events = {
 						$('.entry').removeClass('unread');
 						
 						if(selfoss.isSmartphone())
-							$('#nav-showhide').click();
+							$('#nav-mobile-settings').click();
 					},
 					error: function(jqXHR, textStatus, errorThrown) {
 						alert('Can not mark all visible item: ' + errorThrown);
@@ -201,23 +215,13 @@ selfoss.events = {
 				location.hash = "sources";
 				
 				if(selfoss.isSmartphone())
-					$('#nav-showhide').click();
-				
-				$('#content').addClass('loading').html("");
-				$.ajax({
-					url: $('base').attr('href')+'sources',
-					type: 'GET',
-					success: function(data) {
-						$('#content').html(data);
-						selfoss.events.sources();
-					},
-					error: function(jqXHR, textStatus, errorThrown) {
-						alert('Load sources error: '+errorThrown);
-					},
-					complete: function(jqXHR, textStatus) {
-						$('#content').removeClass('loading');
-					}
-				});
+					$('#nav-mobile-settings').click();
+			});
+			
+			
+			// logout
+			$('#nav-logout').unbind('click').click(function () {
+				window.location.href = $('base').attr('href')+"?logout=1";
 			});
 		}
 	},
@@ -258,7 +262,7 @@ selfoss.events = {
 		// navigation search button for mobile navigation
 		$('#nav-search-button').unbind('click').click(function () {
 			executeSearch($('#nav-search-term').val());
-			$('#nav-showhide').click();
+			$('#nav-mobile-settings').click();
 		});
 		
 		// keypress enter in search inputfield
@@ -301,17 +305,14 @@ selfoss.events = {
      * initialize events for entries
      */
 	entries: function() {
-		// select entry on click
-		$('.entry').unbind('click').click(function() {
-			if(selfoss.isSmartphone()==false) {
-				$('.entry.selected').removeClass('selected');
-				$(this).addClass('selected');
-			}
-		});
-		
 		// show/hide entry
 		$('.entry').unbind('click').click(function() {
 			var parent = $(this);
+			
+			if(selfoss.isSmartphone()==false) {
+				$('.entry.selected').removeClass('selected');
+				parent.addClass('selected');
+			}
 			
 			// prevent event on fullscreen touch
 			if(parent.hasClass('fullscreen'))
@@ -324,8 +325,8 @@ selfoss.events = {
 				// save scroll position and hide content
 				var scrollTop = $(window).scrollTop();
 				var content = $('#content');
-				content.hide();
 				$(window).scrollTop(0);
+				content.hide();
 				
 				// show fullscreen
 				var fullscreen = $('#fullscreen-entry');
@@ -343,9 +344,9 @@ selfoss.events = {
 					if(e.target.tagName.toLowerCase()=="a")
 						return;
 					content.show();
+					location.hash = "";
 					$(window).scrollTop(scrollTop);
 					fullscreen.hide();
-					location.hash = "";
 				});
 				
 			// open entry content
@@ -368,7 +369,7 @@ selfoss.events = {
 
 		// no source click
 		if(selfoss.isSmartphone())
-			$('.entry-source').unbind('click').click(function(e) {e.preventDefault(); return false });
+			$('.entry-source, .entry-icon').unbind('click').click(function(e) {e.preventDefault(); return false });
 		
 		// scroll load more
 		$(window).unbind('scroll').scroll(function() {

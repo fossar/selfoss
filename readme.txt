@@ -36,6 +36,7 @@ CHANGELOG
 Version 2.0
 * new userinterface
 * support of tags
+* improved interface for mobile devices
 
 Version 1.3
 * search will now also search in the source title (for filtering by source)
@@ -68,6 +69,7 @@ Special thanks to the great programmers of this libraries which will be used in 
 * FatFree PHP Framework: http://fatfree.sourceforge.net/
 * SimplePie: http://simplepie.org/
 * jQuery: http://jquery.com/
+* jQuery UI: http://jqueryui.com/
 * WideImage: http://wideimage.sourceforge.net/
 * htmLawed: http://www.bioinformatics.org/phplabware/internal_utilities/htmLawed/
 * PHP Universal Feed Generator: http://www.ajaxray.com/blog/2008/03/08/php-universal-feed-generator-supports-rss-10-rss-20-and-atom/
