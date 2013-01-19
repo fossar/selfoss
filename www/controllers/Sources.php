@@ -83,12 +83,13 @@ class Sources extends BaseController {
         
         if (!$sourceDao->isValid('id', $id))
             $this->view->error('invalid id given');
-
+		
         $sourceDao->delete($id);
 		
 		// cleanup tags
 		$tagsDao = new \daos\Tags();
-		$tagsDao->cleanup($sourcesDao->getAllTags());
+		$allTags = $sourceDao->getAllTags();
+		$tagsDao->cleanup($allTags);
     }
     
     
@@ -101,7 +102,7 @@ class Sources extends BaseController {
         $sourcesDao = new \daos\Sources();
 
         // validate
-        parse_str(\F3::get('REQBODY'),$data);
+        parse_str(\F3::get('BODY'),$data);
 
         if(!isset($data['title']))
             $this->view->jsonError(array('title' => 'no data for title given'));

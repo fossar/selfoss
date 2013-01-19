@@ -21,11 +21,11 @@ class Tags extends Database {
      */
     public function saveTagColor($tag, $color) {
 		if($this->hasTag($tag)===true) {
-			\DB::sql('UPDATE tags SET color=:color WHERE tag=:tag',
+			\F3::get('db')->exec('UPDATE tags SET color=:color WHERE tag=:tag',
                     array(':tag'   => $tag,
 						  ':color' => $color));
 		} else {
-			\DB::sql('INSERT INTO tags (
+			\F3::get('db')->exec('INSERT INTO tags (
                     tag, 
                     color
                   ) VALUES (
@@ -68,11 +68,10 @@ class Tags extends Database {
      * @return array of all tags
      */
     public function get() {
-		\DB::sql('SELECT 
+		return \F3::get('db')->exec('SELECT 
                     tag, color
                    FROM tags 
                    ORDER BY LOWER(tag);');
-        return \F3::get('DB->result');
 	}
 	
 	
@@ -98,9 +97,8 @@ class Tags extends Database {
      * @return boolean true if color is used by an tag
      */
     private function isColorUsed($color) {
-		\DB::sql('SELECT COUNT(*) AS amount FROM tags WHERE color=:color',
+		$res = \F3::get('db')->exec('SELECT COUNT(*) AS amount FROM tags WHERE color=:color',
                     array(':color' => $color));
-        $res = \F3::get('DB->result');
         return $res[0]['amount']>0;
 	}
 	
@@ -111,9 +109,8 @@ class Tags extends Database {
      * @return boolean true if color is used by an tag
      */
     private function hasTag($tag) {
-		\DB::sql('SELECT COUNT(*) AS amount FROM tags WHERE tag=:tag',
+		$res = \F3::get('db')->exec('SELECT COUNT(*) AS amount FROM tags WHERE tag=:tag',
                     array(':tag' => $tag));
-        $res = \F3::get('DB->result');
         return $res[0]['amount']>0;
 	}
 	
@@ -125,7 +122,7 @@ class Tags extends Database {
      * @param string $tag
      */
     public function delete($tag) {
-        \DB::sql('DELETE FROM tags WHERE tag=:tag',
+        \F3::get('db')->exec('DELETE FROM tags WHERE tag=:tag',
                     array(':tag' => $tag));
     }
 	

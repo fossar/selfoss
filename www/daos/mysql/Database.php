@@ -19,7 +19,7 @@ class Database {
      */
     static private $initialized = false;
 
-
+	
     /**
      * establish connection and
      * create undefined tables
@@ -29,22 +29,21 @@ class Database {
     public function __construct() {
         if(self::$initialized===false && \F3::get('db_type')=="mysql") {
             // establish database connection
-            \F3::set('DB',
-                        new \DB(
-                            'mysql:host=' . \F3::get('db_host') . ';port=' . \F3::get('db_port') . ';dbname='.\F3::get('db_database'),
-                            \F3::get('db_username'),
-                            \F3::get('db_password')
-                        ));
-            
+			\F3::set('db', new DB\SQL(
+				'mysql:host=' . \F3::get('db_host') . ';port=' . \F3::get('db_port') . ';dbname='.\F3::get('db_database'),
+				\F3::get('db_username'),
+				\F3::get('db_password')
+			));
+
             // create tables if necessary
-            @\DB::sql('SHOW TABLES');
+            $result = @$this->db->exec('SHOW TABLES');
             $tables = array();
-            foreach(\F3::get('DB->result') as $table)
+            foreach($result as $table)
                 foreach($table as $key=>$value)
                     $tables[] = $value;
             
             if(!in_array('items', $tables))
-                \DB::sql('
+                \F3::get('db')->exec('
                     CREATE TABLE items (
                         id INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
                         datetime DATETIME NOT NULL ,
@@ -62,7 +61,7 @@ class Database {
                 ');
                 
             if(!in_array('sources', $tables))
-                \DB::sql('
+                \F3::get('db')->exec('
                     CREATE TABLE sources (
                         id INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
                         title TEXT NOT NULL ,
@@ -75,24 +74,24 @@ class Database {
             
 			// version 1
 			if(!in_array('version', $tables)) {
-                \DB::sql('
+                \F3::get('db')->exec('
                     CREATE TABLE version (
                         version INT
                     ) ENGINE = MYISAM;
                 ');
 				
-				\DB::sql('
+				\F3::get('db')->exec('
                     INSERT INTO sources (version) VALUES (2);
                 ');
 				
-				\DB::sql('
+				\F3::get('db')->exec('
                     CREATE TABLE tags (
                         tag         TEXT NOT NULL,
                         color       VARCHAR(7) NOT NULL
                     );
                 ');
 				
-				\DB::sql('
+				\F3::get('db')->exec('
 					ALTER TABLE sources ADD tags TEXT;
                 ');
 			}
@@ -110,6 +109,6 @@ class Database {
      * @return void
      */
     public function optimize() {
-        @\F3::sql("OPTIMIZE TABLE `sources`, `items`");
+        @\F3::get('db')->exec("OPTIMIZE TABLE `sources`, `items`");
     }
 }

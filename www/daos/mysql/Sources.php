@@ -22,7 +22,7 @@ class Sources extends Database {
      * @param mixed $params depends from spout
      */
     public function add($title, $tags, $spout, $params) {
-        \DB::sql('INSERT INTO sources (title, tags, spout, params) VALUES (:title, :tags, :spout, :params)',
+        \F3::get('db')->exec('INSERT INTO sources (title, tags, spout, params) VALUES (:title, :tags, :spout, :params)',
                     array(
                         ':title'  => $title,
                         ':tags'   => $tags,
@@ -30,8 +30,7 @@ class Sources extends Database {
                         ':params' => htmlentities(json_encode($params))
                     ));
  
-        \DB::sql('SELECT LAST_INSERT_ID() as lastid');
-        $res = \F3::get('DB->result');
+        $res = \F3::get('db')->exec('SELECT LAST_INSERT_ID() as lastid');
         return $res[0]['lastid'];
     }
     
@@ -47,7 +46,7 @@ class Sources extends Database {
      * @param mixed $params the new params
      */
     public function edit($id, $title, $tags, $spout, $params) {
-        \DB::sql('UPDATE sources SET title=:title, tags=:tags, spout=:spout, params=:params WHERE id=:id',
+        \F3::get('db')->exec('UPDATE sources SET title=:title, tags=:tags, spout=:spout, params=:params WHERE id=:id',
                     array(
                         ':title'  => $title,
                         ':tags'  => $tags,
@@ -65,11 +64,11 @@ class Sources extends Database {
      * @param int $id
      */
     public function delete($id) {
-        \DB::sql('DELETE FROM sources WHERE id=:id',
+        \F3::get('db')->exec('DELETE FROM sources WHERE id=:id',
                     array(':id' => $id));
         
         // delete items of this source
-        \DB::sql('DELETE FROM items WHERE source=:id',
+        \F3::get('db')->exec('DELETE FROM items WHERE source=:id',
                     array(':id' => $id));
     }
     
@@ -82,7 +81,7 @@ class Sources extends Database {
      * @param string $error error message
      */
     public function error($id, $error="") {
-        \DB::sql('UPDATE sources SET error=:error WHERE id=:id',
+        \F3::get('db')->exec('UPDATE sources SET error=:error WHERE id=:id',
                     array(
                         ':id'    => $id,
                         ':error' => $error
@@ -96,8 +95,7 @@ class Sources extends Database {
      * @return mixed all sources
      */
     public function get() {
-        \DB::sql('SELECT id, title, tags, spout, params, error FROM sources ORDER BY lower(title) ASC');
-        $ret = \F3::get('DB->result');
+        $ret = \F3::get('db')->exec('SELECT id, title, tags, spout, params, error FROM sources ORDER BY lower(title) ASC');
         $spoutLoader = new \helpers\SpoutLoader();
         for($i=0;$i<count($ret);$i++)
             $ret[$i]['spout_obj'] = $spoutLoader->get( $ret[$i]['spout'] );
@@ -131,9 +129,9 @@ class Sources extends Database {
      * @return mixed all sources
      */
     public function getAllTags() {
-        \DB::sql('SELECT tags FROM sources');
-        $tags = array();
-		foreach(\F3::get('DB->result') as $res)
+		$result = \F3::get('db')->exec('SELECT tags FROM sources');
+		$tags = array();
+		foreach($result as $res)
 			$tags = array_merge($tags, explode(",",$res['tags']));
 		$tags = array_unique($tags);
 		return $tags;

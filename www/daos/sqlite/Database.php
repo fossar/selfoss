@@ -19,6 +19,7 @@ class Database {
      */
     static private $initialized = false;
 
+	
     /**
      * establish connection and create undefined tables
      *
@@ -34,21 +35,20 @@ class Database {
             }
             
             // establish database connection
-            \F3::set('DB',
-                new \DB(
+            \F3::set('db', new \DB\SQL(
                     'sqlite:' . $db_file
                 )
             );
             
             // create tables if necessary
-            @\DB::sql('SELECT name FROM sqlite_master WHERE type = "table"');
+            $result = @\F3::get('db')->exec('SELECT name FROM sqlite_master WHERE type = "table"');
             $tables = array();
-            foreach(\F3::get('DB->result') as $table)
+            foreach($result as $table)
                 foreach($table as $key=>$value)
                     $tables[] = $value;
             
             if(!in_array('items', $tables)) {
-                \DB::sql('
+                \F3::get('db')->exec('
                     CREATE TABLE items (
                         id          INTEGER PRIMARY KEY AUTOINCREMENT,
                         datetime    DATETIME NOT NULL,
@@ -64,7 +64,7 @@ class Database {
                     );
                 ');
                 
-                \DB::sql('
+                \F3::get('db')->exec('
                     CREATE INDEX source ON items (
                         source
                     );
@@ -72,7 +72,7 @@ class Database {
             }
                  
             if(!in_array('sources', $tables)) {
-                \DB::sql('
+                \F3::get('db')->exec('
                     CREATE TABLE sources (
                         id          INTEGER PRIMARY KEY AUTOINCREMENT,
                         title       TEXT NOT NULL,
@@ -86,24 +86,24 @@ class Database {
                  
 			// version 1
 			if(!in_array('version', $tables)) {
-                \DB::sql('
+                \F3::get('db')->exec('
                     CREATE TABLE version (
                         version INT
                     );
                 ');
 				
-				\DB::sql('
+				\F3::get('db')->exec('
                     INSERT INTO version (version) VALUES (2);
                 ');
 				
-				\DB::sql('
+				\F3::get('db')->exec('
                     CREATE TABLE tags (
                         tag         TEXT NOT NULL,
                         color       TEXT NOT NULL
                     );
                 ');
 				
-				\DB::sql('
+				\F3::get('db')->exec('
 					ALTER TABLE sources ADD tags TEXT;
                 ');
 			}
