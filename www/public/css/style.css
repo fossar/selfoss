@@ -149,7 +149,7 @@ input {
 	#nav-login {
 		position:absolute;
 		top:100%;
-		margin-top:-70px;
+		margin-top:-80px;
 		left:20px;
 		width:55px;
 		height:55px;
@@ -180,6 +180,16 @@ input {
 	
 	#nav-mobile {
 		display:none;
+	}
+	
+	#nav-copyright {
+		position:absolute;
+		top:100%;
+		margin-top:-25px;
+		margin-left:20px;
+		font-size:0.6em;
+		color:#555;
+		text-decoration:none;
 	}
 	
 
@@ -471,7 +481,7 @@ input {
 	display:inline;
 	color:#aaa;
 	text-decoration:none;
-	font-size:0.7em;
+	font-size:0.8em;
 }
 
 	.source-edit-delete span,
@@ -645,6 +655,14 @@ body.publicmode.notloggedin .entry-unread {
 		font-size:1.1em;
 	}
 	
+	#nav-settings.nologin {
+		width:120px;
+	}
+	
+	#nav-login {
+		width:120px;
+	}
+	
 	#nav-tags .color {
 		width:20px;
 		height:20px;
@@ -804,7 +822,7 @@ body.publicmode.notloggedin .entry-unread {
 		#nav-logout,
 		#nav-login {
 			position:relative;
-			top:0;
+			top:10px;
 			left:0;
 			margin-left:20px;
 			margin-bottom:20px;
@@ -817,6 +835,12 @@ body.publicmode.notloggedin .entry-unread {
 		#nav-login,
 		#nav-logout {
 			left:70px;
+		}
+		
+		#nav-copyright {
+			margin-top:-20px;
+			margin-left:-60px;
+			left:100%;
 		}
 		
 		#search {

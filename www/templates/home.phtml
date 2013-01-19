@@ -8,6 +8,7 @@
 	
     <meta name="description" content="selfoss">
     <meta name="author" content="Tobias Zeising">
+    <meta name="version" content="<?PHP echo \F3::get('version'); ?>">
 
     <!--  Mobile viewport optimized: j.mp/bplateviewport -->
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
@@ -23,7 +24,7 @@
     <link rel="stylesheet" href="all.css">
 
 </head>
-<body class="<?PHP if($this->publicMode===true) : ?>publicmode<?PHP endif; ?> <?PHP echo $this->loggedin ? "loggedin" : "notloggedin"; ?>">
+<body class="<?PHP if($this->publicMode===true) : ?>publicmode<?PHP endif; ?> <?PHP echo $this->loggedin ? "loggedin" : "notloggedin"; ?> <?PHP if(\F3::get('initial_open')==1) : ?>initial_open<?PHP endif; ?>">
 	
 	<!-- menue open for smartphone -->
 	<div id="nav-mobile">
@@ -72,6 +73,7 @@
         <div id="nav-login"></div>
         <?PHP endif; ?>
 		
+		<a id="nav-copyright" href="http://selfoss.aditu.de">selfoss <?PHP echo \F3::get('version'); ?></a>
 	</div>
 	
 	<!-- search -->
