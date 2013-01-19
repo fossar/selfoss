@@ -304,7 +304,7 @@ selfoss.events = {
 	/**
      * initialize events for entries
      */
-	entries: function() {
+	entries: function(e) {
 		// show/hide entry
 		$('.entry').unbind('click').click(function() {
 			var parent = $(this);
@@ -358,6 +358,7 @@ selfoss.events = {
 					content.hide();
 				} else {
 					content.show();
+					selfoss.events.entriesToolbar(parent);
 					parent.find('.entry-toolbar').show();
 				}
 				
@@ -416,6 +417,13 @@ selfoss.events = {
 		if(typeof parent == "undefined")
 			parent = $('#content');
 		
+		// prevent close on links
+		parent.find('a').unbind('click').click(function(e) {
+			window.open($(this).attr('href'));
+			e.preventDefault();
+			return false;
+		});
+		
 		// load images
 		parent.find('.entry-loadimages').unbind('click').click(function() {
 			$(this).parents('.entry').lazyLoadImages();
@@ -426,7 +434,6 @@ selfoss.events = {
 		
 		// only loggedin users
 		if($('body').hasClass('loggedin')==true) {
-		
 			// starr/unstarr
 			parent.find('.entry-starr').unbind('click').click(function() {
 				var parent = $(this).parents('.entry');
