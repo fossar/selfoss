@@ -16,12 +16,6 @@ selfoss.events = {
 		$(window).bind("resize", selfoss.events.resize);
 		selfoss.events.resize();
 		
-		if(selfoss.isSmartphone()){
-			$('#nav').height($(window).height());
-			$("#nav").html("<div>"+$("#nav").html()+"</div>");
-			$("#nav").mCustomScrollbar();
-		}
-		
 		// hash change event
 		window.onhashchange = selfoss.events.hashChange;
 		
@@ -38,16 +32,19 @@ selfoss.events = {
 		// return to main page
 		if(location.hash.trim().length==0) {
 			// from entry popup
-			if(selfoss.events.lasthash=="#show")
+			if(selfoss.events.lasthash=="#show" && $('#fullscreen-entry').is(':visible')) {
 				$('#fullscreen-entry .entry-close').click();
+			}
 				
 			// from sources
-			if(selfoss.events.lasthash=="#sources")
+			if(selfoss.events.lasthash=="#sources") {
 				$('#nav-filter li:first').click();
+			}
 				
 			// from navigation
-			if(selfoss.events.lasthash=="#nav")	
+			if(selfoss.events.lasthash=="#nav" && $('#nav').is(':visible')) {
 				$('#nav-showhide').click();
+			}
 		}
 		selfoss.events.lasthash = location.hash;
 	},
@@ -65,7 +62,6 @@ selfoss.events = {
 			$("#nav-tags-wrapper").mCustomScrollbar("update");
 			$('#nav').show();
 		} else {
-			$('#nav').hide();
 			$('#nav-tags-wrapper').height("auto");
 			$("#nav-tags-wrapper").mCustomScrollbar("disable",selfoss.isSmartphone());
 		}
@@ -141,24 +137,36 @@ selfoss.events = {
 		
 		// show hide navigation for mobile version
 		$('#nav-showhide').unbind('click').click(function () {
-			if($('#nav').is(':visible')) {
-				$('#content').show();
-				$(window).scrollTop($('#nav').data('scrollTop'));
-				$('#nav').fadeOut(500);
-				location.hash = "";
-			} else {
+			var nav = $('#nav');
+			
+			// show
+			if(nav.is(':visible')==false) {
 				var scrollTop = $(window).scrollTop();
-				$('#nav').css("top", scrollTop);
-				$('#nav').fadeIn(500, function() {
+				nav.css('top', scrollTop);
+				nav.css('marginTop', -nav.height());
+				nav.show();
+				nav.animate({marginTop: 0}, 600, "swing", function() {
+					$('#content').hide();
 					$(window).scrollTop(0);
-					$('#nav').css({"top":0});
+					nav.css({"top":0});
 					selfoss.events.navigation();
 					selfoss.events.search();
+					nav.data('scrollTop', scrollTop);
+					location.hash = "nav";
 				});
-				$('#content').fadeOut(500);
-				$('#nav').data('scrollTop', scrollTop);
-				location.hash = "nav";
+				
+			// hide
+			} else {
+				$('#content').show();
+				var scrollTop = nav.data('scrollTop');
+				nav.css('top', scrollTop);
+				$(window).scrollTop(scrollTop);
+				nav.animate({top: scrollTop-nav.height()}, 600, "swing", function() {
+					nav.hide();
+					location.hash = "";
+				});
 			}
+			
 		});
 		
 		// only loggedin users

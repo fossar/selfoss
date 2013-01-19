@@ -2,12 +2,14 @@
 
 html {
 	height: 100%;
+	overflow-x: hidden;
 }
  
 body {
 	font:18px/27px 'OpenSansLight', Arial, sans-serif;
 	background:url(images/bg.gif) repeat;
 	height: 100%;
+	position:relative;
 }
 
 select,
@@ -24,16 +26,10 @@ input {
 /* navigation */
 
 #nav {
-	position:fixed;
-	width:180px;
 	background:#191718;
 	border-right:5px solid #3d6d69;
-	min-height: 100%;
-	height:auto;
-	height:100%;
-	overflow: hidden;
-	float:left;
 	z-index:10;
+	overflow-x:hidden;
 }
 
 	#nav hr {
@@ -538,6 +534,22 @@ input {
 
 /* mobile version */
 
+
+/* desktop and tablet */
+@media screen and (min-width: 641px) {
+
+	#nav {
+		position:fixed;
+		width:180px;
+		overflow: hidden;
+		float:left;
+		min-height: 100%;
+		height:auto;
+		height:100%;
+	}
+	
+}
+
 /* ipad and smartphone */
 @media screen and (max-width:1024px) {
 
@@ -655,13 +667,11 @@ input {
 	#nav {
 		display:none;
 		position:absolute;
-		left:0;
-		top:0;
 		width:100%;
-		height:auto !important;
 		margin:0;
 		border:0;
 		overflow-x:hidden;
+		clear:both;
 	}
 		
 		#nav-search {
@@ -831,6 +841,4 @@ input {
 	}
 	
  }
-
- 
  
