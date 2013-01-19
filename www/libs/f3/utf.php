@@ -1,99 +1,85 @@
 <?php
 
-/**
-	Unicode-aware string functions for the PHP Fat-Free Framework
+/*
+	Copyright (c) 2009-2012 F3::Factory/Bong Cosca, All rights reserved.
 
-	The contents of this file are subject to the terms of the GNU General
-	License Version 3.0. You may not use this file except in
-	compliance with the license. Any of the license terms and conditions
-	can be waived if you get permission from the copyright holder.
+	This file is part of the Fat-Free Framework (http://fatfree.sf.net).
 
-	Copyright (c) 2009-2011 F3::Factory
-	Bong Cosca <bong.cosca@yahoo.com>
+	THE SOFTWARE AND DOCUMENTATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF
+	ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+	IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR
+	PURPOSE.
 
-		@package Unicode
-		@version 2.0.5
-**/
+	Please see the license.txt file for more information.
+*/
 
-//! Unicode-aware string functions
-class UTF extends Base {
-
-	/*
-		IMPORTANT: All string arguments of methods in this class must be
-		encoded in UTF-8 to function properly
-	*/
+//! Unicode string manager
+class UTF extends Prefab {
 
 	/**
 		Find position of first occurrence of a string (case-insensitive)
-			@return mixed
-			@param $stack string
-			@param $needle string
-			@param $ofs int
-			@public
+		@return int|FALSE
+		@param $stack string
+		@param $needle string
+		@param $ofs int
 	**/
-	static function stripos($stack,$needle,$ofs=0) {
-		return self::strpos($stack,$needle,$ofs,TRUE);
+	function stripos($stack,$needle,$ofs=0) {
+		return $this->strpos($stack,$needle,$ofs,TRUE);
 	}
 
 	/**
 		Get string length
-			@return int
-			@param $str string
-			@public
+		@return int
+		@param $str string
 	**/
-	static function strlen($str) {
-		preg_match_all('/./us',$str,$matches);
-		return count($matches[0]);
+	function strlen($str) {
+		preg_match_all('/./us',$str,$parts);
+		return count($parts[0]);
 	}
 
 	/**
 		Find position of first occurrence of a string
-			@return mixed
-			@param $stack string
-			@param $needle string
-			@param $ofs int
-			@param $case boolean
-			@public
+		@return int|FALSE
+		@param $stack string
+		@param $needle string
+		@param $ofs int
+		@param $case bool
 	**/
-	static function strpos($stack,$needle,$ofs=0,$case=FALSE) {
-		preg_match('/^(.*?)'.preg_quote($needle,'/').'/'.($case?'i':'').'us',
-			self::substr($stack,$ofs),$match);
-		return isset($match[1])?self::strlen($match[1]):FALSE;
+	function strpos($stack,$needle,$ofs=0,$case=FALSE) {
+		preg_match('/^(.*?)'.preg_quote($needle,'/').'/us'.($case?'i':''),
+			$this->substr($stack,$ofs),$match);
+		return isset($match[1])?$this->strlen($match[1]):FALSE;
 	}
 
 	/**
 		Finds position of last occurrence of a string (case-insensitive)
-			@return mixed
-			@param $stack string
-			@param $needle string
-			@param $ofs int
-			@public
+		@return int|FALSE
+		@param $stack string
+		@param $needle string
+		@param $ofs int
 	**/
-	static function strripos($stack,$needle,$ofs=0) {
-		return self::strrpos($stack,$needle,$ofs,TRUE);
+	function strripos($stack,$needle,$ofs=0) {
+		return $this->strrpos($stack,$needle,$ofs,TRUE);
 	}
 
 	/**
 		Find position of last occurrence of a string
-			@return mixed
-			@param $stack string
-			@param $needle string
-			@param $ofs int
-			@param $case boolean
-			@public
+		@return int|FALSE
+		@param $stack string
+		@param $needle string
+		@param $ofs int
+		@param $case bool
 	**/
-	static function strrpos($stack,$needle,$ofs=0,$case=FALSE) {
+	function strrpos($stack,$needle,$ofs=0,$case=FALSE) {
 		if (!$needle)
 			return FALSE;
-		$len=self::strlen($stack);
-		$ptr=$ofs;
-		while ($ptr<$len) {
-			$sub=self::substr($stack,$ptr);
+		$len=$this->strlen($stack);
+		for ($ptr=$ofs;$ptr<$len;$ptr+=$this->strlen($match[0])) {
+			$sub=$this->substr($stack,$ptr);
 			if (!$sub || !preg_match('/^(.*?)'.
-				preg_quote($needle,'/').'/'.($case?'i':'').'us',$sub,$match))
+				preg_quote($needle,'/').'/us'.($case?'i':''),$sub,$match))
 				break;
-			$ofs=$ptr+self::strlen($match[1]);
-			$ptr+=self::strlen($match[0]);
+			$ofs=$ptr+$this->strlen($match[1]);
 		}
 		return $sub?$ofs:FALSE;
 	}
@@ -101,66 +87,91 @@ class UTF extends Base {
 	/**
 		Returns part of haystack string from the first occurrence of
 		needle to the end of haystack (case-insensitive)
-			@return mixed
-			@param $stack string
-			@param $needle string
-			@param $before boolean
-			@public
+		@return string|FALSE
+		@param $stack string
+		@param $needle string
+		@param $before bool
 	**/
-	static function stristr($stack,$needle,$before=FALSE) {
+	function stristr($stack,$needle,$before=FALSE) {
 		return strstr($stack,$needle,$before,TRUE);
 	}
 
 	/**
 		Returns part of haystack string from the first occurrence of
 		needle to the end of haystack
-			@return mixed
-			@param $stack string
-			@param $needle string
-			@param $before boolean
-			@param $case boolean
-			@public
+		@return string|FALSE
+		@param $stack string
+		@param $needle string
+		@param $before bool
+		@param $case bool
 	**/
-	static function strstr($stack,$needle,$before=FALSE,$case=FALSE) {
+	function strstr($stack,$needle,$before=FALSE,$case=FALSE) {
 		if (!$needle)
 			return FALSE;
-		preg_match('/^(.*?)'.preg_quote($needle,'/').'/'.($case?'i':'').'us',
+		preg_match('/^(.*?)'.preg_quote($needle,'/').'/us'.($case?'i':''),
 			$stack,$match);
 		return isset($match[1])?
-			($before?$match[1]:self::substr($stack,self::strlen($match[1]))):
+			($before?
+				$match[1]:
+				$this->substr($stack,$this->strlen($match[1]))):
 			FALSE;
 	}
 
 	/**
 		Return part of a string
-			@return mixed
-			@param $str string
-			@param $start int
-			@param $len int
-			@public
+		@return string|FALSE
+		@param $str string
+		@param $start int
+		@param $len int
 	**/
-	static function substr($str,$start,$len=0) {
+	function substr($str,$start,$len=0) {
 		if ($start<0) {
-			$start=self::strlen($str)+$start;
-			$len=$start;
+			$len=-$start;
+			$start=$this->strlen($str)+$start;
 		}
 		if (!$len)
-			$len=self::strlen($str);
+			$len=$this->strlen($str)-$start;
 		return preg_match('/^.{'.$start.'}(.{0,'.$len.'})/us',$str,$match)?
 			$match[1]:FALSE;
 	}
 
 	/**
 		Count the number of substring occurrences
-			@return int
-			@param $stack string
-			@param $needle string
-			@public
+		@return int
+		@param $stack string
+		@param $needle string
 	**/
-	static function substr_count($stack,$needle) {
+	function substr_count($stack,$needle) {
 		preg_match_all('/'.preg_quote($needle,'/').'/us',$stack,
 			$matches,PREG_SET_ORDER);
 		return count($matches);
+	}
+
+	/**
+		Strip whitespaces from the beginning of a string
+		@return string
+		@param $str string
+	**/
+	function ltrim($str) {
+		return preg_replace('/^[\pZ\pC]+/u','',$str);
+	}
+
+	/**
+		Strip whitespaces from the end of a string
+		@return string
+		@param $str string
+	**/
+	function rtrim($str) {
+		return preg_replace('/[\pZ\pC]+$/u','',$str);
+	}
+
+	/**
+		Strip whitespaces from the beginning and end of a string
+		@return string
+		@param $str string
+	**/
+	function trim($str) {
+		return preg_replace('/^[\pZ\pC]+|[\pZ\pC]+$/u','',$str);
 	}
 
 }

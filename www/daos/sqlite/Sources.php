@@ -23,7 +23,7 @@ class Sources extends \daos\mysql\Sources {
      * @param mixed $params depends from spout
      */
     public function add($title, $tags, $spout, $params) {
-        \DB::sql('INSERT INTO sources (title, tags, spout, params) VALUES (:title, :tags, :spout, :params)',
+        \F3::get('db')->exec('INSERT INTO sources (title, tags, spout, params) VALUES (:title, :tags, :spout, :params)',
                     array(
                         ':title'  => $title,
                         ':tags'  => $tags,
@@ -31,8 +31,7 @@ class Sources extends \daos\mysql\Sources {
                         ':params' => htmlentities(json_encode($params))
                     ));
         
-        \DB::sql('SELECT last_insert_rowid() as lastid');
-        $res = \F3::get('DB->result');
+        $res = \F3::get('db')->exec('SELECT last_insert_rowid() as lastid');
         return $res[0]['lastid'];
     }
 }

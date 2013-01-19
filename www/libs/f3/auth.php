@@ -1,244 +1,225 @@
 <?php
 
-/**
-	Authentication plugin for the PHP Fat-Free Framework
+/*
+	Copyright (c) 2009-2012 F3::Factory/Bong Cosca, All rights reserved.
 
-	The contents of this file are subject to the terms of the GNU General
-	Public License Version 3.0. You may not use this file except in
-	compliance with the license. Any of the license terms and conditions
-	can be waived if you get permission from the copyright holder.
+	This file is part of the Fat-Free Framework (http://fatfree.sf.net).
 
-	Copyright (c) 2009-2011 F3::Factory
-	Bong Cosca <bong.cosca@yahoo.com>
+	THE SOFTWARE AND DOCUMENTATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF
+	ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+	IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR
+	PURPOSE.
 
-		@package Auth
-		@version 2.0.5
-**/
+	Please see the license.txt file for more information.
+*/
 
-//! Plugin for various user authentication methods
-class Auth extends Base {
+//! Authorization/authentication plug-in
+class Auth extends Prefab {
 
-	//@{ Locale-specific error/exception messages
+	//@{ Error messages
 	const
-		TEXT_AuthSetup='Invalid AUTH variable configuration',
-		TEXT_IMAPConnect='Unable to connect to IMAP server %s',
-		TEXT_LDAPConnect='Unable to connect to LDAP server %s',
-		TEXT_LDAPBind='LDAP bind failure';
+		E_LDAP='LDAP connection failure',
+		E_SMTP='SMTP connection failure';
 	//@}
 
-	/**
-		Authenticate against SQL database;
-			AUTH global array elements:
-				db:<database-id> (default:'DB'),
-				table:<table-name>,
-				id:<userID-field>,
-				pw:<password-field>
-			@return mixed
-			@param $id string
-			@param $pw string
-			@public
-	**/
-	static function sql($id,$pw) {
-		$auth=&self::$vars['AUTH'];
-		foreach (array('table','id','pw') as $param)
-			if (!isset($auth[$param])) {
-				trigger_error(self::TEXT_AuthSetup);
-				return FALSE;
-			}
-		if (!isset($auth['db']))
-			$auth['db']=self::ref('DB');
-		$axon=new Axon($auth['table'],self::ref('AUTH.db'));
-		$axon->load(
-			array(
-				self::ref('AUTH.id').'=:id AND '.
-				self::ref('AUTH.pw').'=:pw',
-				array(':id'=>$id,':pw'=>$pw)
-			)
-		);
-		return $axon->dry()?FALSE:$axon;
-	}
+	private
+		//! Auth storage
+		$storage,
+		//! Mapper object
+		$mapper,
+		//! Storage options
+		$args;
 
 	/**
-		Authenticate against NoSQL database (MongoDB);
-			AUTH global array elements:
-				db:<database-id> (default:'DB'),
-				collection:<collection-name>,
-				id:<userID-field>,
-				pw:<password-field>
-			@return mixed
-			@param $id string
-			@param $pw string
-			@public
+		Jig storage handler
+		@return bool
+		@param $id string
+		@param $pw string
+		@param $realm string
 	**/
-	static function nosql($id,$pw) {
-		$auth=&self::$vars['AUTH'];
-		foreach (array('collection','id','pw') as $param)
-			if (!isset($auth[$param])) {
-				trigger_error(self::TEXT_AuthSetup);
-				return FALSE;
-			}
-		if (!isset($auth['db']))
-			$auth['db']=self::ref('DB');
-		$m2=new M2($auth['collection'],self::ref('AUTH.db'));
-		$m2->load(
-			array(
-				self::ref('AUTH.id')=>$id,
-				self::ref('AUTH.pw')=>$pw
-			)
-		);
-		return $m2->dry()?FALSE:$m2;
-	}
-
-	/**
-		Authenticate against Jig-mapped flat-file database;
-			AUTH global array elements:
-				db:<database-id> (default:'DB'),
-				table:<table-name>,
-				id:<userID-field>,
-				pw:<password-field>
-			@return mixed
-			@param $id string
-			@param $pw string
-			@public
-	**/
-	static function jig($id,$pw) {
-		$auth=&self::$vars['AUTH'];
-		foreach (array('table','id','pw') as $param)
-			if (!isset($auth[$param])) {
-				trigger_error(self::TEXT_AuthSetup);
-				return FALSE;
-			}
-		if (!isset($auth['db']))
-			$auth['db']=self::ref('DB');
-		$jig=new Jig($auth['table'],self::ref('AUTH.db'));
-		$jig->load(
-			array(
-				self::ref('AUTH.id')=>$id,
-				self::ref('AUTH.pw')=>$pw
-			)
-		);
-		return $jig->dry()?FALSE:$jig;
-	}
-
-	/**
-		Authenticate against IMAP server;
-			AUTH global array elements:
-				server:<IMAP-server>,
-				port:<TCP-port> (default:143)
-			@return boolean
-			@param $id string
-			@param $pw string
-			@public
-	**/
-	static function imap($id,$pw) {
-		// IMAP extension required
-		if (!extension_loaded('imap')) {
-			// Unable to continue
-			trigger_error(sprintf(self::TEXT_PHPExt,'imap'));
-			return;
-		}
-		$auth=self::$vars['AUTH'];
-		if (!isset($auth['server'])) {
-			trigger_error(self::TEXT_AuthSetup);
-			return FALSE;
-		}
-		if (!isset($auth['port']))
-			$auth['port']=143;
-		$ic=@fsockopen($auth['server'],$auth['port']);
-		if (!is_resource($ic)) {
-			// Connection failed
-			trigger_error(sprintf(self::TEXT_IMAPConnect,$auth['server']));
-			return FALSE;
-		}
-		$ibox='{'.$auth['server'].':'.$auth['port'].'}INBOX';
-		$mbox=@imap_open($ibox,$id,$pw);
-		$ok=is_resource($mbox);
-		if (!$ok) {
-			$mbox=@imap_open($ibox,$id.'@'.$auth['server'],$pw);
-			$ok=is_resource($mbox);
-		}
-		imap_close($mbox);
-		return $ok;
-	}
-
-	/**
-		Authenticate via LDAP;
-			AUTH global array elements:
-				dc:<domain-controller>,
-				rdn:<connection-DN>,
-				pw:<connection-password>
-			@return boolean
-			@param $id string
-			@param $pw string
-			@public
-	**/
-	static function ldap($id,$pw) {
-		// LDAP extension required
-		if (!extension_loaded('ldap')) {
-			// Unable to continue
-			trigger_error(sprintf(self::TEXT_PHPExt,'ldap'));
-			return;
-		}
-		$auth=self::$vars['AUTH'];
-		if (!isset($auth['dc'])) {
-			trigger_error(self::TEXT_AuthSetup);
-			return FALSE;
-		}
-		$dc=@ldap_connect($auth['dc']);
-		if (!$dc) {
-			// Connection failed
-			trigger_error(sprintf(self::TEXT_LDAPConnect,$auth['dc']));
-			return FALSE;
-		}
-		ldap_set_option($dc,LDAP_OPT_PROTOCOL_VERSION,3);
-		ldap_set_option($dc,LDAP_OPT_REFERRALS,0);
-		if (!@ldap_bind($dc,$auth['rdn'],$auth['pw'])) {
-			// Bind failed
-			trigger_error(self::TEXT_LDAPBind);
-			return FALSE;
-		}
-		$result=ldap_search($dc,$auth['base_dn'],'uid='.$id);
-		if (ldap_count_entries($dc,$result)!=1)
-			// Didn't return a single record
-			return FALSE;
-		// Bind using credentials
-		$info=ldap_get_entries($dc,$result);
-		if (!@ldap_bind($dc,$info[0]['dn'],$pw))
-			// Bind failed
-			return FALSE;
-		@ldap_unbind($dc);
-		// Verify user ID
-		return $info[0]['uid'][0]==$id;
-	}
-
-	/**
-		Basic HTTP authentication
-			@return boolean
-			@param $auth mixed
-			@param $realm string
-			@public
-	**/
-	static function basic($auth,$realm=NULL) {
-		if (is_null($realm))
-			$realm=$_SERVER['REQUEST_URI'];
-		if (isset($_SERVER['PHP_AUTH_USER']))
-			return call_user_func(
-				array('self',$auth),
-				$_SERVER['PHP_AUTH_USER'],$_SERVER['PHP_AUTH_PW']
+	protected function _jig($id,$pw,$realm) {
+		return (bool)
+			call_user_func_array(
+				array($this->mapper,'findone'),
+				array(
+					array_merge(
+						array(
+							'@'.$this->args['id'].'==? AND '.
+							'@'.$this->args['pw'].'==?'.
+							(isset($this->args['realm'])?
+								(' AND @'.$this->args['realm'].'==?'):''),
+							$id,$pw
+						),
+						(isset($this->args['realm'])?array($realm):array())
+					)
+				)
 			);
-		if (PHP_SAPI!='cli')
-			header(HTTP_WebAuth.': Basic realm="'.$realm.'"',TRUE,401);
-		return FALSE;
 	}
 
 	/**
-		Class initializer
-			@public
+		MongoDB storage handler
+		@return bool
+		@param $id string
+		@param $pw string
+		@param $realm string
 	**/
-	static function onload() {
-		if (!isset(self::$vars['AUTH']))
-			// Authentication setup options
-			self::$vars['AUTH']=NULL;
+	protected function _mongo($id,$pw,$realm) {
+		return (bool)
+			$this->mapper->findone(
+				array(
+					$this->args['id']=>$id,
+					$this->args['pw']=>$pw
+				)+
+				(isset($this->args['realm'])?
+					array($this->args['realm']=>$realm):array())
+			);
+	}
+
+	/**
+		SQL storage handler
+		@return bool
+		@param $id string
+		@param $pw string
+		@param $realm string
+	**/
+	protected function _sql($id,$pw,$realm) {
+		return (bool)
+			call_user_func_array(
+				array($this->mapper,'findone'),
+				array(
+					array_merge(
+						array(
+							$this->args['id'].'=? AND '.
+							$this->args['pw'].'=?'.
+							(isset($this->args['realm'])?
+								(' AND '.$this->args['realm'].'=?'):''),
+							$id,$pw
+						),
+						(isset($this->args['realm'])?array($realm):array())
+					)
+				)
+			);
+	}
+
+	/**
+		LDAP storage handler
+		@return bool
+		@param $id string
+		@param $pw string
+	**/
+	protected function _ldap($id,$pw) {
+		$dc=@ldap_connect($this->args['dc']);
+		if ($dc &&
+			ldap_set_option($dc,LDAP_OPT_PROTOCOL_VERSION,3) &&
+			ldap_set_option($dc,LDAP_OPT_REFERRALS,0) &&
+			ldap_bind($dc,$this->args['rdn'],$this->args['pw']) &&
+			($result=ldap_search($dc,$this->args['base_dn'],
+				'uid='.$id)) &&
+			ldap_count_entries($dc,$result) &&
+			($info=ldap_get_entries($dc,$result)) &&
+			@ldap_bind($dc,$info[0]['dn'],$pw) &&
+			@ldap_close($dc)) {
+			return $info[0]['uid'][0]==$id;
+		}
+		user_error(self::E_LDAP);
+	}
+
+	/**
+		SMTP storage handler
+		@return bool
+		@param $id string
+		@param $pw string
+	**/
+	protected function _smtp($id,$pw) {
+		$socket=@fsockopen(
+			(strtolower($this->args['scheme'])=='ssl'?
+				'ssl://':'').$this->args['host'],
+				$this->args['port']);
+		$dialog=function($cmd=NULL) use($socket) {
+			if (!is_null($cmd))
+				fputs($socket,$cmd."\r\n");
+			$reply='';
+			while (!feof($socket) &&
+				($info=stream_get_meta_data($socket)) &&
+				!$info['timed_out'] && $str=fgets($socket,4096)) {
+				$reply.=$str;
+				if (preg_match('/(?:^|\n)\d{3} .+\r\n/s',
+					$reply))
+					break;
+			}
+			return $reply;
+		};
+		if ($socket) {
+			stream_set_blocking($socket,TRUE);
+			$dialog();
+			$fw=Base::instance();
+			$dialog('EHLO '.$fw->get('HOST'));
+			if (strtolower($this->args['scheme'])=='tls') {
+				$dialog('STARTTLS');
+				stream_socket_enable_crypto(
+					$socket,TRUE,STREAM_CRYPTO_METHOD_TLS_CLIENT);
+				$dialog('EHLO '.$fw->get('HOST'));
+			}
+			// Authenticate
+			$dialog('AUTH LOGIN');
+			$dialog(base64_encode($id));
+			$reply=$dialog(base64_encode($pw));
+			$dialog('QUIT');
+			fclose($socket);
+			return (bool)preg_match('/^235 /',$reply);
+		}
+		user_error(self::E_SMTP);
+	}
+
+	/**
+		Login auth mechanism
+		@return bool
+		@param $id string
+		@param $pw string
+		@param $realm string
+	**/
+	function login($id,$pw,$realm=NULL) {
+		return $this->{'_'.$this->storage}($id,$pw,$realm);
+	}
+
+	/**
+		HTTP basic auth mechanism
+		@return bool
+		@param $func callback
+	**/
+	function basic($func=NULL) {
+		$fw=Base::instance();
+		$realm=$fw->get('REALM');
+		if (isset($_SERVER['PHP_AUTH_USER'],$_SERVER['PHP_AUTH_PW']) &&
+			$this->login(
+				$_SERVER['PHP_AUTH_USER'],
+				$func?
+					$func($_SERVER['PHP_AUTH_PW']):
+					$_SERVER['PHP_AUTH_PW'],
+				$realm
+			))
+			return TRUE;
+		if (PHP_SAPI!='cli')
+			header('WWW-Authenticate: Basic realm="'.$realm.'"');
+		$fw->error(401);
+	}
+
+	/**
+		Instantiate class
+		@return object
+		@param $storage string|object
+		@param $args array
+	**/
+	function __construct($storage,array $args=NULL) {
+		if (is_object($storage) && is_a($storage,'DB\Cursor')) {
+			$ref=new ReflectionClass(get_class($storage));
+			$this->storage=basename(dirname($ref->getfilename()));
+			$this->mapper=$storage;
+			unset($ref);
+		}
+		else
+			$this->storage=$storage;
+		$this->args=$args;
 	}
 
 }
