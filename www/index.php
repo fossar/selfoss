@@ -23,7 +23,7 @@ F3::set('auth', new \helpers\Authentication());
 // define js and css files
 F3::set('js', array(
     'public/js/jquery-1.8.3.min.js',
-    'public/js/jquery-ui-1.9.1.custom.min.js',
+    'public/js/jquery-ui-1.10.0.custom.js',
     'public/js/jquery.mCustomScrollbar.min.js',
     'public/js/jquery.mousewheel.js',
     'public/js/lazy-image-loader.js',

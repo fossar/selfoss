@@ -1,5 +1,8 @@
 selfoss.events = {
 
+	/* last hash before hash change */
+	lasthash: "",
+
 	/**
      * init events when page loads first time
      */
@@ -18,6 +21,35 @@ selfoss.events = {
 			$("#nav").html("<div>"+$("#nav").html()+"</div>");
 			$("#nav").mCustomScrollbar();
 		}
+		
+		// hash change event
+		window.onhashchange = selfoss.events.hashChange;
+		
+		// remove given hash (we just use it for history support)
+		if(location.hash.trim().length!=0)
+			location.hash = "";
+	},
+	
+	
+	/**
+     * handle History change
+     */
+	hashChange: function() {
+		// return to main page
+		if(location.hash.trim().length==0) {
+			// from entry popup
+			if(selfoss.events.lasthash=="#show")
+				$('#fullscreen-entry .entry-close').click();
+				
+			// from sources
+			if(selfoss.events.lasthash=="#sources")
+				$('#nav-filter li:first').click();
+				
+			// from navigation
+			if(selfoss.events.lasthash=="#nav")	
+				$('#nav-showhide').click();
+		}
+		selfoss.events.lasthash = location.hash;
 	},
 	
 	
@@ -31,7 +63,9 @@ selfoss.events = {
 			var windowHeight = $(window).height();
 			$('#nav-tags-wrapper').height(windowHeight - start - 100);
 			$("#nav-tags-wrapper").mCustomScrollbar("update");
+			$('#nav').show();
 		} else {
+			$('#nav').hide();
 			$('#nav-tags-wrapper').height("auto");
 			$("#nav-tags-wrapper").mCustomScrollbar("disable",selfoss.isSmartphone());
 		}
@@ -111,6 +145,7 @@ selfoss.events = {
 				$('#content').show();
 				$(window).scrollTop($('#nav').data('scrollTop'));
 				$('#nav').fadeOut(500);
+				location.hash = "";
 			} else {
 				var scrollTop = $(window).scrollTop();
 				$('#nav').css("top", scrollTop);
@@ -122,6 +157,7 @@ selfoss.events = {
 				});
 				$('#content').fadeOut(500);
 				$('#nav').data('scrollTop', scrollTop);
+				location.hash = "nav";
 			}
 		});
 		
@@ -154,6 +190,8 @@ selfoss.events = {
 			
 			// show sources
 			$('#nav-settings').unbind('click').click(function () {
+				location.hash = "sources";
+				
 				if(selfoss.isSmartphone())
 					$('#nav-showhide').click();
 				
@@ -273,6 +311,8 @@ selfoss.events = {
 			
  			// show entry in popup
 			if(selfoss.isSmartphone()) {
+				location.hash = "show";
+				
 				// save scroll position and hide content
 				var scrollTop = $(window).scrollTop();
 				var content = $('#content');
@@ -297,6 +337,7 @@ selfoss.events = {
 					content.show();
 					$(window).scrollTop(scrollTop);
 					fullscreen.hide();
+					location.hash = "";
 				});
 				
 			// open entry content
