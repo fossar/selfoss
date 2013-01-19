@@ -34,9 +34,9 @@ CHANGELOG
 ---------
 
 Version 2.0
-* new userinterface
 * support of tags
-* improved interface for mobile devices
+* new user interface
+* new interface for mobile devices
 
 Version 1.3
 * search will now also search in the source title (for filtering by source)
