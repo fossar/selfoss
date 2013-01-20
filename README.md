@@ -1,12 +1,12 @@
 selfoss
+=======
+
+Copyright (c) 2013 Tobias Zeising, tobias.zeising@aditu.de
 http://selfoss.aditu.de
-tobias.zeising@aditu.de
+Licensed under the GPLv3 license
 Version 2.0 beta
-License: GPLv3
-Icon Source: http://blog.artcore-illustrations.de/aicons/
 
 
-------------
 INSTALLATION
 ------------
 
@@ -16,7 +16,6 @@ INSTALLATION
 4. create cronjob for updating feeds and point it to http://<selfoss url>/update via wget or curl.
 
 
-------
 UPDATE
 ------
 
@@ -29,7 +28,6 @@ UPDATE
 7. insert your current database connection and your individual configuration in config.ini. Important: we change the config.ini and add new options in newer versions. You have to update the config.ini too.
 
 
----------
 CHANGELOG
 ---------
 
@@ -62,7 +60,6 @@ Version 1.1
 * code optimization and smaller bugfixes
 
 
--------
 CREDITS
 -------
 
@@ -82,3 +79,6 @@ Special thanks to the great programmers of this libraries which will be used in 
 * cssmin: http://code.google.com/p/cssmin/
 * Spectrum Colorpicker: https://github.com/bgrins/spectrum
 * jQuery custom content scroller: http://manos.malihu.gr/jquery-custom-content-scroller/
+
+
+Icon Source: http://blog.artcore-illustrations.de/aicons/
