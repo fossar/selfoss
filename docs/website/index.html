@@ -9,13 +9,11 @@
     <meta name="keywords" content="selfoss rss reader webbased mashup aggregator tobias zeising aditu" />
     <meta name="description" content="selfoss the web based open source rss reader and multi source mashup aggregator" />
     <meta name="robots" content="all" />
-    <meta name="google-site-verification" content="L9zWeqhugrUl3irtUt-piY7LS8quAtmDvb3YKenlOV4" />
     
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
-    <link rel="apple-touch-icon" href="stylesheets/images/iphone.png" />
     
     <link type="text/css" rel="stylesheet" media="screen, handheld, projection, tv" href="style.css" />
-    <link rel="stylesheet" type="text/css" href="javascript/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="javascript/fancybox/jquery.fancybox.css" media="screen" />
 </head>
 <body>
 
@@ -26,21 +24,19 @@
         <ul id="header-navigation">
             <li class="screenshots">screenshots</li>
             <li class="documentation">documentation</li>
-            <li class="download">download</li>
             <li class="about">about</li>
+            <li class="download"><a href="selfoss-2.0.zip">download</a></li>
         </ul>
         
         <a id="header-fork" href="https://github.com/SSilence/selfoss"></a>
         
         <div id="header-logo"></div>
         
-        <a id="header-download" href="selfoss-1.3.zip"><span>download selfoss 1.3</span></a>
+        <a id="header-download" href="selfoss-2.0.zip"><span>download selfoss 2.0</span></a>
         
         <a id="header-donate" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LR67F3T9DMSC8"><span>donate</span></a>
         
         <div id="header-donate-tooltipp"><span>selfoss is completely free!<br />But if you like selfoss then feel free to donate the programmer a beer</span></div>
-        
-        <a id="header-android" href="https://market.android.com/details?id=de.aditu.selfoss"><span>download free android app</span></a>
         
         <div id="header-teaser">
             <h1>The new multipurpose rss reader, live stream, mashup, aggregation web application</h1>
@@ -53,10 +49,9 @@
                 <li>open source and free</li>
                 <li>easy extendable with an open plugin system (write your own data connectors)</li>
                 <li>mobile support (Android, iOS, iPad)</li>
-                <li>free <a href="https://market.android.com/details?id=de.aditu.selfoss">Android App</a></li>
                 <li>use selfoss to live stream and collect all your posts, tweets, feeds in one place</li>
                 <li>lightweight PHP application with less than 2 MB</li>
-                <li>supports MySQL, Sqlite and MongoDB Databases</li>
+                <li>supports MySQL and Sqlite Databases</li>
             </ul>
         </div>
     </div>
@@ -88,7 +83,7 @@
                 <p>selfoss is not a hosted service. It has to be installed on your own webserver. This webserver must fulfill the following requirements (which are available from most providers)</p>
                 <ul>
                     <li>PHP 5.3 or higher</li>
-                    <li>MySQL, SqLite or MongoDB</li>
+                    <li>MySQL or Sqlite</li>
                     <li>Apache Webserver (ngnix and lighttpd also possible)</li>
                 </ul>
                 selfoss supports all modern browsers, including Mozilla Firefox, Safari, Google Chrome, Opera and Internet Explorer.
@@ -100,8 +95,8 @@
                 
                 <ol>
                     <li>Upload all files of this folder (IMPORTANT: also upload the invisible .htaccess files)</li>
-                    <li>Make the directories data/cache, data/favicons, data/logs, data/thumbnails and public/ writeable</li>
-                    <li>Insert database access data in config.ini</li>
+                    <li>Make the directories data/cache, data/favicons, data/logs, data/thumbnails, data/sqlite and public/ writeable</li>
+                    <li>Insert database access data in config.ini (you have not to change anything if you would like to use sqlite)</li>
                     <li>You don't have to install the database, it will be created automatically</li>
                     <li>Create cronjob for updating feeds and point it to http://yoururl.com/update via wget or curl.</li>
                 </ol>
@@ -369,45 +364,30 @@
                 
                 <p>You are allowed to use, modifiy or study this program completely for free. If you need any other licence than GPLv3 then feel free to contact me!</p>
             </div>
+			
+			<h2  id="about">About</h2>
+			<div class="documentation-entry">
+                <p>
+					selfoss is a project of <a href="http://www.aditu.de">Tobias Zeising</a> (<a href="mailto:tobias.zeising@aditu.de">tobias.zeising@aditu.de</a>).
+				</p>
+				
+				<p>
+					More information about selfoss can be found on my german speaking blog <a href="http://blog.aditu.de">http://blog.aditu.de</a>.
+					The icon was created by <a href="http://blog.artcore-illustrations.de/aicons/">Nadja (ArtCore)</a>, thanks for licensing it as CC.
+					Thanks to <a href="http://phpblogger.de/">Harald</a> for the SqLite and MongoDB database interface.
+				</p>
+				
+				<p>
+					Selfoss is named by the wonderfull waterfall in Iceland (see <a href="http://en.wikipedia.org/wiki/Selfoss_(waterfall)">Wikipedia</a>). Many single waterfalls converge to produce one big fall. This seems to be a good metaphor for the many sources from the web which will be shown in one stream.
+				</p>
+				
+				<p>
+					FancyBox on this page is from <a href="http://www.fancyapps.com/fancybox/">fancyapps.com</a>.
+				</p>
+            </div>
         </div>
     </div>
         
-        
-    <!-- Downloads -->
-    <div class="wrapper-dark">
-        <div id="download">
-            <h1>Download</h1>
-            
-            <ul>
-                <li><a href="selfoss-1.3.zip"><img src="images/zip.png" alt="download icon zip"/><br />selfoss-1.3.zip<br/>(446 kB)</a></li>
-                <li><a href="selfoss-1.3.tar.gz"><img src="images/tar.png" alt="download icon tar"/><br />selfoss-1.3.tar.gz<br/>(354 kB)</a></li>
-                <li><a href="selfoss-1.3.apk"><img src="images/market.png" alt="download icon market"/><br />selfoss-1.3.apk<br/>(387 kB)</a></li>
-            </ul>
-            
-        </div>
-    </div>
-    
-    
-    <!-- About -->
-    <div class="wrapper-bright">
-        <div id="about">
-            <h1>About</h1>
-            <p>
-                selfoss is a project of <a href="http://www.aditu.de">Tobias Zeising</a> (<a href="mailto:tobias.zeising@aditu.de">tobias.zeising@aditu.de</a>).
-            </p>
-            
-            <p>
-                More information about selfoss can be found on my german speaking blog <a href="http://blog.aditu.de">http://blog.aditu.de</a>.
-                The icon was created by <a href="http://blog.artcore-illustrations.de/aicons/">Nadja (ArtCore)</a>, thanks for licensing it as CC.
-                Thanks to <a href="http://phpblogger.de/">Harald</a> for the SqLite and MongoDB database interface.
-            </p>
-            
-            <p>
-                Selfoss is named by the wonderfull waterfall in Iceland (see <a href="http://en.wikipedia.org/wiki/Selfoss_(waterfall)">Wikipedia</a>). Many single waterfalls converge to produce one big fall. This seems to be a good metaphor for the many sources from the web which will be shown in one stream.
-            </p>
-        </div>
-    </div>
-
     
     <div id="footer">
         <p>
@@ -424,19 +404,10 @@
         </p>
     </div>
 
-
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
-    <script>
-        !window.jQuery && document.write('<script src="javascript/jquery-1.4.3.min.js"><\/script>');
-    </script>
-    <script type="text/javascript" src="javascript/fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
-    <script type="text/javascript" src="javascript/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
-    <script type="text/javascript" src="javascript/jquery.scrollTo-1.4.2-min.js"></script>
+    <script type="text/javascript" src="javascript/jquery-1.9.0.min.js"></script>
+    <script type="text/javascript" src="javascript/fancybox/jquery.mousewheel-3.0.6.pack.js"></script>
+    <script type="text/javascript" src="javascript/fancybox/jquery.fancybox.pack.js"></script>
     <script type="text/javascript" src="javascript/base.js"></script>
-    
-    <script type="text/javascript">
-        selfoss.init();
-    </script>
     
     
     <!-- Piwik --> 

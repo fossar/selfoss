@@ -11,8 +11,8 @@ INSTALLATION
 ------------
 
 1. upload all files of this folder (IMPORTANT: also upload the invisible .htaccess files)
-2. make the directories data/cache, data/favicons, data/logs, data/thumbnails and public/ writeable
-3. insert database access data in config.ini
+2. make the directories data/cache, data/favicons, data/logs, data/thumbnails, data/sqlite and public/ writeable
+3. insert database access data in config.ini (you have not to change anything if you would like to use sqlite)
 4. create cronjob for updating feeds and point it to http://<selfoss url>/update via wget or curl.
 
 
@@ -37,6 +37,8 @@ Version 2.0
 * support of tags
 * new user interface
 * new interface for mobile devices
+* mongodb database interface temporarily removed
+* libs and third party plugins updated
 
 Version 1.3
 * search will now also search in the source title (for filtering by source)

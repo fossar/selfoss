@@ -25,6 +25,7 @@ p {
 
 a {
     color:#365c5a;
+    color:#365c5a;
 }
 
 code {
@@ -45,6 +46,7 @@ img {
 
 .wrapper-dark {
     background:url(images/bgdark.png);
+	color:#ffffff;
 }
 
     .wrapper-dark h1 {
@@ -53,15 +55,13 @@ img {
     }
     
     .wrapper-dark a {
-        color:#fff;
+        color:#bbb;
     }
     
     
 #header-teaser,
 #screenshots,
-#documentation,
-#download,
-#about {
+#documentation {
     position:relative;
     left:50%;
     width:800px;
@@ -102,7 +102,12 @@ img {
         margin-left:30px;
         cursor:pointer;
     }
-
+	
+	#header-navigation a {
+		text-decoration:none;
+		color:#3e3e3e;
+	}
+	
 #header-fork {
     position:absolute;
     left:100%;
@@ -125,13 +130,12 @@ img {
 }
 
 #header-download,
-#header-donate,
-#header-android {
+#header-donate {
     position:absolute;
     display:block;
     background:url(images/button-download.png);
-    width:220px;
-    height:51px;
+    width:211px;
+    height:42px;
     left:50%;
     top:440px;
     margin-left:240px;
@@ -143,8 +147,8 @@ img {
         display:block;
         font-family:"Trebuchet MS",Arial,Helvetica,sans-serif;
         color:#ffffff;
-        font-size:18px;
-        margin-top:13px;
+        font-size:16px;
+        margin-top:10px;
         text-align:center;
         width:100%;
     }
@@ -175,21 +179,7 @@ img {
         margin-top:5px;
     }
 
-#header-android {
-    top:560px;
-    margin-left:255px;
-    background:url(images/android.png) left center no-repeat;
-}
-
-    #header-android span {
-        display:block;
-        color:#333333;
-        font-size:14px;
-        margin-top:10px;
-        margin-left:70px;
-        width:100px;
-    }
-    
+   
 #header-teaser {
     width:600px;
     margin-top:50px;
@@ -280,30 +270,6 @@ img {
         font-family:"Courier New", Courier, monospace;
     }
     
-    
-    
-/************ download **************/
-
-#download {
-    height:200px;
-}
-
-    #download li {
-        float:left;
-        text-align:center;
-        list-style:none;
-        margin-right:20px;
-    }
-    
-    #download a {
-        text-decoration:none;
-    }
-    
-        #download a:hover {
-            text-decoration:underline;
-        }
-
-
 
     
 /************ footer **************/
