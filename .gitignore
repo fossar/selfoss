@@ -1,3 +1,7 @@
+/www/data/favicons/*.png
+/www/data/favicons/*.jpg
+/www/data/thumbnails/*.png
+/www/data/thumbnails/*.jpg
 /www/data/cache/*.spc
 /www/data/logs/*.log
 /www/data/sqlite/*.db

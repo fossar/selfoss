@@ -60,7 +60,7 @@ $f3->route('GET /api/logout', 'controllers\Api->logout');
     
 if($f3->get('auth')->isLoggedin()===true) {
     $f3->route('POST /mark/@item',    'controllers\Items->mark');
-    $f3->route('POST /mark',    	 	 'controllers\Items->mark');
+    $f3->route('POST /mark',    	  'controllers\Items->mark');
     $f3->route('POST /unmark/@item',  'controllers\Items->unmark');
     $f3->route('POST /starr/@item',   'controllers\Items->starr');
     $f3->route('POST /unstarr/@item', 'controllers\Items->unstarr');
@@ -70,7 +70,7 @@ if($f3->get('auth')->isLoggedin()===true) {
     $f3->route('POST /source/@id',    'controllers\Sources->write');
     $f3->route('POST /source',        'controllers\Sources->write');
     $f3->route('DELETE /source/@id',  'controllers\Sources->remove');
-    $f3->route('POST /tagset',    		 'controllers\Tags->tagset');
+    $f3->route('POST /tagset',    	  'controllers\Tags->tagset');
 	
     $f3->route('POST /api/items',        'controllers\Api->items');
     $f3->route('GET /api/items',         'controllers\Api->items');

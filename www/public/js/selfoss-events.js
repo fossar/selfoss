@@ -671,8 +671,8 @@ selfoss.events = {
 			}
 			params.addClass('loading');
 			$.ajax({
-				url: $('base').attr('href')+'source/params/',
-				data: { spout: val},
+				url: $('base').attr('href')+'source/params',
+				data: { spout: val },
 				type: 'GET',
 				success: function(data) {
 					params.removeClass('loading').html(data);
