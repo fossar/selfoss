@@ -4,9 +4,9 @@
 
 $f3 = require(__DIR__.'/libs/f3/base.php');
 
-$f3->set('DEBUG',1);
+$f3->set('DEBUG',0);
 $f3->set('version','2.0b');
-$f3->set('AUTOLOAD',__dir__.'/;libs/f3/;libs/;libs/WideImage/;daos/;libs/twitteroauth;libs/FeedWriter');
+$f3->set('AUTOLOAD',__dir__.'/;libs/f3/;libs/;libs/WideImage/;daos/;libs/twitteroauth;libs/FeedWriter/');
 $f3->set('cache',__dir__.'/data/cache');
 $f3->set('BASEDIR',__dir__);
 
@@ -49,7 +49,7 @@ $f3->set('css', array(
 $f3->route('GET /',          'controllers\Index->home');
 $f3->route('POST /',         'controllers\Index->home');
 $f3->route('GET /rss',       'controllers\Rss->rss');
-$f3->route('GET /feed',      'controllers\Index->rss');
+$f3->route('GET /feed',      'controllers\Rss->rss');
 $f3->route('GET /password',  'controllers\Index->password');
 $f3->route('POST /password', 'controllers\Index->password');
 $f3->route('GET /update',    'controllers\Items->update');
