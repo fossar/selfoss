@@ -60,8 +60,10 @@ class Sources extends BaseController {
         if(!isset($_GET['spout']))
             $this->view->error('no spout type given');
         
-        $spoutLoader = new \helpers\SpoutLoader();
-        $this->view->spout = $spoutLoader->get($_GET['spout']);
+		$spoutLoader = new \helpers\SpoutLoader();
+        
+		$spout = str_replace("\\\\", "\\", $_GET['spout']);
+		$this->view->spout = $spoutLoader->get($spout);
         
         if($this->view->spout===false)
             $this->view->error('invalid spout type given');
