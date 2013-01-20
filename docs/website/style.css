@@ -129,6 +129,17 @@ img {
     top:200px;
 }
 
+#header-just-updated {
+	position:absolute;
+    background:url(images/justupdated.png);
+    width:138px;
+    height:52px;
+    left:50%;
+    top:460px;
+    margin-left:470px;
+    text-decoration:none;
+}
+
 #header-download,
 #header-donate {
     position:absolute;
@@ -212,7 +223,7 @@ img {
 /************ Screenshots **************/
 
 #screenshots {
-    height:210px;
+    height:240px;
     width:900px;
 }
 
