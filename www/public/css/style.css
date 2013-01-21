@@ -792,7 +792,7 @@ body.publicmode.notloggedin .entry-unread {
 		width:100%;
 		margin:0;
 		border:0;
-		overflow-x:hidden;
+		overflow:hidden;
 		clear:both;
 		border-bottom:3px solid #3d6d69;
 	}
@@ -912,6 +912,7 @@ body.publicmode.notloggedin .entry-unread {
 	
 		#fullscreen-entry .entry-title {
 			padding-top:40px;
+			color:#333333;
 		}
 		
 		#fullscreen-entry .entry-content,

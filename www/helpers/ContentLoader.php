@@ -91,6 +91,11 @@ class ContentLoader {
                 \F3::get('logger')->log('item "' . $item->getTitle() . '" (' . $item->getDate() . ') older than '.\F3::get('items_lifetime').' days', \DEBUG);
                 continue;
             }
+			
+			// date in future? Set current date
+			$now = new \DateTime();
+			if($itemDate > $now)
+				$itemDate = $now;
             
             // item already in database?
             if($itemsDao->exists($item->getId())===true)

@@ -94,6 +94,7 @@ selfoss.shortcuts = {
 				content.lazyLoadImages();
             content.show();
 			current.find('.entry-toolbar').show();
+			selfoss.events.entriesToolbar(current);
         }
         
         // scroll to element
