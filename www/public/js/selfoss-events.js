@@ -188,7 +188,7 @@ selfoss.events = {
 			// mark as read
 			$('#nav-mark').unbind('click').click(function () {
 				var ids = new Array();
-				$('.entry').each(function(index, item) {
+				$('.entry.unread').each(function(index, item) {
 					ids.push( $(item).attr('id').substr(5) );
 				});
 				
@@ -200,6 +200,9 @@ selfoss.events = {
 					},
 					success: function() {
 						$('.entry').removeClass('unread');
+						
+						var unreadstats = parseInt($('.nav-filter-unread span').html());
+						$('.nav-filter-unread span').html( (unreadstats - ids.length) );
 						
 						if(selfoss.isSmartphone())
 							$('#nav-mobile-settings').click();
@@ -306,8 +309,9 @@ selfoss.events = {
      */
 	entries: function(e) {
 		// show/hide entry
-		$('.entry').unbind('click').click(function() {
-			var parent = $(this);
+		var target = selfoss.isMobile() ? '.entry' : '.entry-title';
+		$(target).unbind('click').click(function() {
+			var parent = target == '.entry' ? $(this) : $(this).parent();
 			
 			if(selfoss.isSmartphone()==false) {
 				$('.entry.selected').removeClass('selected');
@@ -321,6 +325,15 @@ selfoss.events = {
  			// show entry in popup
 			if(selfoss.isSmartphone()) {
 				location.hash = "show";
+				
+				// hide nav
+				if($('#nav').is(':visible')) {
+					var scrollTop = $(window).scrollTop();
+					scrollTop = scrollTop - $('#nav').height();
+					scrollTop = scrollTop<0 ? 0 : scrollTop;
+					$(window).scrollTop(scrollTop);
+					$('#nav').hide();
+				}
 				
 				// save scroll position and hide content
 				var scrollTop = $(window).scrollTop();

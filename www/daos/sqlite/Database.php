@@ -70,7 +70,8 @@ class Database {
                     );
                 ');
             }
-                 
+            
+			$isNewestSourcesTable = false;
             if(!in_array('sources', $tables)) {
                 \F3::get('db')->exec('
                     CREATE TABLE sources (
@@ -82,6 +83,7 @@ class Database {
                         error       TEXT 
                     );
                 ');
+				$isNewestSourcesTable = true;
             }
                  
 			// version 1
@@ -103,9 +105,11 @@ class Database {
                     );
                 ');
 				
-				\F3::get('db')->exec('
-					ALTER TABLE sources ADD tags TEXT;
-                ');
+				if($isNewestSourcesTable===false) {
+					\F3::get('db')->exec('
+						ALTER TABLE sources ADD tags TEXT;
+					');
+				}
 			}
 			
             // just initialize once

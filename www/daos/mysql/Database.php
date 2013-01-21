@@ -29,14 +29,14 @@ class Database {
     public function __construct() {
         if(self::$initialized===false && \F3::get('db_type')=="mysql") {
             // establish database connection
-			\F3::set('db', new DB\SQL(
+			\F3::set('db', new \DB\SQL(
 				'mysql:host=' . \F3::get('db_host') . ';port=' . \F3::get('db_port') . ';dbname='.\F3::get('db_database'),
 				\F3::get('db_username'),
 				\F3::get('db_password')
 			));
-
+			
             // create tables if necessary
-            $result = @$this->db->exec('SHOW TABLES');
+            $result = @\F3::get('db')->exec('SHOW TABLES');
             $tables = array();
             foreach($result as $table)
                 foreach($table as $key=>$value)
@@ -59,8 +59,9 @@ class Database {
                         INDEX (source)
                     ) ENGINE = MYISAM;
                 ');
-                
-            if(!in_array('sources', $tables))
+            
+			$isNewestSourcesTable = false;
+            if(!in_array('sources', $tables)) {
                 \F3::get('db')->exec('
                     CREATE TABLE sources (
                         id INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
@@ -70,9 +71,11 @@ class Database {
                         params TEXT NOT NULL ,
                         error TEXT 
                     ) ENGINE = MYISAM;
-                ');    
+                ');
+				$isNewestSourcesTable = true;
+			}
             
-			// version 1
+			// version 1 or new
 			if(!in_array('version', $tables)) {
                 \F3::get('db')->exec('
                     CREATE TABLE version (
@@ -81,7 +84,7 @@ class Database {
                 ');
 				
 				\F3::get('db')->exec('
-                    INSERT INTO sources (version) VALUES (2);
+                    INSERT INTO version (version) VALUES (2);
                 ');
 				
 				\F3::get('db')->exec('
@@ -91,9 +94,11 @@ class Database {
                     );
                 ');
 				
-				\F3::get('db')->exec('
-					ALTER TABLE sources ADD tags TEXT;
-                ');
+				if($isNewestSourcesTable===false) {
+					\F3::get('db')->exec('
+						ALTER TABLE sources ADD tags TEXT;
+					');
+				}
 			}
 			
             // just initialize once
