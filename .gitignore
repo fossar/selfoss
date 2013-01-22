@@ -6,3 +6,4 @@
 /www/data/logs/*.log
 /www/data/sqlite/*.db
 /www/public/all.*
+/bin/*.*

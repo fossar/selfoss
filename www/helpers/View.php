@@ -12,6 +12,12 @@ namespace helpers;
  */
 class View {
 
+	/**
+     * current base url
+     * @var string
+     */
+	public $base = '';
+
     /**
      * set global view vars
      */

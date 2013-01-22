@@ -359,6 +359,7 @@ input {
 		column-rule: 1px solid rgba(204, 204, 204, 0.4);
 		font-size:0.85em;
 		margin-top:20px;
+		line-height: 1.7em;
 	}
 		
 		.entry-content img {
@@ -536,8 +537,7 @@ input {
 .source-add {
 	cursor:pointer;
 	font-size:0.85em;
-	text-align:right;
-	margin-right:55px;
+	margin-left:20px;
 }
 
 .source-new .source-edit-form {
@@ -664,9 +664,9 @@ body.publicmode.notloggedin .entry-unread {
 	}
 	
 	#nav-tags .color {
-		width:20px;
-		height:20px;
-		top:10px;
+		width:25px;
+		height:25px;
+		top:6px;
 		margin-left:-40px;
 	}
 	
@@ -913,6 +913,7 @@ body.publicmode.notloggedin .entry-unread {
 		#fullscreen-entry .entry-title {
 			padding-top:40px;
 			color:#333333;
+			font-size:1.3em;
 		}
 		
 		#fullscreen-entry .entry-content,
