@@ -30,6 +30,10 @@ class Index extends BaseController {
 		$tagsDao = new \daos\Tags();
 		$tags = $tagsDao->get();
 		
+		// get search param
+		if(isset($options['search']) && strlen($options['search'])>0)
+			$this->view->search = $options['search'];
+		
         // load items
 		$itemsHtml = $this->loadItems($options, $tags);
 
@@ -76,7 +80,7 @@ class Index extends BaseController {
 		// logout
         if(isset($_GET['logout'])) {
             \F3::get('auth')->logout();
-            \F3::reroute(\F3::get('base_url'));
+            \F3::reroute($this->view->base);
         }
 		
 		// login
@@ -100,7 +104,7 @@ class Index extends BaseController {
             if(count($_POST)==0 || isset($this->view->error))
                 die($this->view->render('templates/login.phtml'));
             else
-                \F3::reroute(\F3::get('base_url'));
+                \F3::reroute($this->view->base);
         }
 	}
 	
