@@ -1,10 +1,10 @@
 selfoss.shortcuts = {
 
 
-	/**
-	 * init shortcuts
-	 */
-	init: function() { 
+    /**
+     * init shortcuts
+     */
+    init: function() { 
         var options = {"disable_in_input": true};
         
         // next
@@ -22,22 +22,22 @@ selfoss.shortcuts = {
             $('.entry.selected .entry-starr').click();
         }, options);
         
-		// mark/unmark
-		shortcut.add('m', function() {
+        // mark/unmark
+        shortcut.add('m', function() {
             $('.entry.selected .entry-unread').click();
         }, options);
-		
+        
         // open target
         shortcut.add('v', function() {
             window.open($('.entry.selected .entry-source').attr('href'));
         }, options);
-		
-		// mark all as read
+        
+        // mark all as read
         shortcut.add('Ctrl+m', function() {
             $('#nav-mark').click();
         }, options);
     },
-	
+    
     
     /**
      * get next/prev item
@@ -76,7 +76,7 @@ selfoss.shortcuts = {
         old.removeClass('selected');
         old.find('.entry-content').hide();
         old.find('.entry-toolbar').hide();
-		
+        
         if(current.length==0)
             return;
 
@@ -90,40 +90,40 @@ selfoss.shortcuts = {
         if(open && current.find('.entry-thumbnail').length==0) {
             var content = current.find('.entry-content');
             // load images not on mobile devices
-			if(selfoss.isMobile()==false)
-				content.lazyLoadImages();
+            if(selfoss.isMobile()==false)
+                content.lazyLoadImages();
             content.show();
-			current.find('.entry-toolbar').show();
-			selfoss.events.entriesToolbar(current);
+            current.find('.entry-toolbar').show();
+            selfoss.events.entriesToolbar(current);
         }
         
         // scroll to element
         selfoss.shortcuts.autoscroll(current);
     },
-	
-	
-	/**
+    
+    
+    /**
      * autoscroll
      */
     autoscroll: function(next) {
-		var viewportHeight = $(window).height();
-		var viewportScrollTop = $(window).scrollTop();
-		
-		// scroll down
-		if(viewportScrollTop + viewportHeight < next.position().top + next.height() + 80) {
-			if(next.height() > viewportHeight) {
-				$(window).scrollTop(next.position().top);
-			} else {
-				var marginTop = (viewportHeight-next.height())/2;
-				var scrollTop = next.position().top-marginTop;
-				$(window).scrollTop(scrollTop);
-			}
-		}
-		
-		// scroll up
-		if(next.position().top <= viewportScrollTop) {
-			$(window).scrollTop(next.position().top);
-		}
+        var viewportHeight = $(window).height();
+        var viewportScrollTop = $(window).scrollTop();
+        
+        // scroll down
+        if(viewportScrollTop + viewportHeight < next.position().top + next.height() + 80) {
+            if(next.height() > viewportHeight) {
+                $(window).scrollTop(next.position().top);
+            } else {
+                var marginTop = (viewportHeight-next.height())/2;
+                var scrollTop = next.position().top-marginTop;
+                $(window).scrollTop(scrollTop);
+            }
+        }
+        
+        // scroll up
+        if(next.position().top <= viewportScrollTop) {
+            $(window).scrollTop(next.position().top);
+        }
     },
-	
+    
 }

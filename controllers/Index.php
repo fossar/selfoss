@@ -11,45 +11,45 @@ namespace controllers;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class Index extends BaseController {
-	
+    
     /**
      * home site
      *
      * @return void
      */
     public function home() {
-		// check login
-		$this->authentication();
-		
+        // check login
+        $this->authentication();
+        
         // parse params
         $options = array();
         if(count($_GET)>0)
             $options = $_GET;
         
-		// load tags
-		$tagsDao = new \daos\Tags();
-		$tags = $tagsDao->get();
-		
-		// get search param
-		if(isset($options['search']) && strlen($options['search'])>0)
-			$this->view->search = $options['search'];
-		
+        // load tags
+        $tagsDao = new \daos\Tags();
+        $tags = $tagsDao->get();
+        
+        // get search param
+        if(isset($options['search']) && strlen($options['search'])>0)
+            $this->view->search = $options['search'];
+        
         // load items
-		$itemsHtml = $this->loadItems($options, $tags);
+        $itemsHtml = $this->loadItems($options, $tags);
 
-		// just show items html
+        // just show items html
         if(isset($options['ajax']))
             die($itemsHtml);
-		
-		// show tags
-		$tagsController = new \controllers\Tags();
-		$this->view->tags = $tagsController->renderTags($tags);
-		
-		// show as full html page
-		$itemsDao = new \daos\Items();
-		$this->view->statsAll = $itemsDao->numberOfItems();
-		$this->view->statsUnread = $itemsDao->numberOfUnread();
-		$this->view->statsStarred = $itemsDao->numberOfStarred();
+        
+        // show tags
+        $tagsController = new \controllers\Tags();
+        $this->view->tags = $tagsController->renderTags($tags);
+        
+        // show as full html page
+        $itemsDao = new \daos\Items();
+        $this->view->statsAll = $itemsDao->numberOfItems();
+        $this->view->statsUnread = $itemsDao->numberOfUnread();
+        $this->view->statsStarred = $itemsDao->numberOfStarred();
         $this->view->content = $itemsHtml;
         $this->view->publicMode = \F3::get('auth')->isLoggedin()!==true && \F3::get('public')==1;
         $this->view->loggedin = \F3::get('auth')->isLoggedin()===true;
@@ -69,21 +69,21 @@ class Index extends BaseController {
             $this->view->hash = hash("sha512", \F3::get('salt') . $_POST['password']);
         echo $this->view->render('templates/login.phtml');
     }
-	
-	
-	/**
+    
+    
+    /**
      * check and show login/logout
      *
      * @return void
      */
-	private function authentication() {
-		// logout
+    private function authentication() {
+        // logout
         if(isset($_GET['logout'])) {
             \F3::get('auth')->logout();
             \F3::reroute($this->view->base);
         }
-		
-		// login
+        
+        // login
         if( 
             isset($_GET['login']) || (\F3::get('auth')->isLoggedin()!==true && \F3::get('public')!=1)
            ) {
@@ -106,30 +106,30 @@ class Index extends BaseController {
             else
                 \F3::reroute($this->view->base);
         }
-	}
-	
-	
-	/**
+    }
+    
+    
+    /**
      * load items
      *
      * @return html with items
      */
-	private function loadItems($options, $tags) {
-		$tagColors = $this->convertTagsToAssocArray($tags);
-		
-	    $itemDao = new \daos\Items();
+    private function loadItems($options, $tags) {
+        $tagColors = $this->convertTagsToAssocArray($tags);
+        
+        $itemDao = new \daos\Items();
         $itemsHtml = "";
         foreach($itemDao->get($options) as $item) {
-		
-			// parse tags and assign tag colors
-			$itemsTags = explode(",",$item['tags']);
-			$item['tags'] = array();
-			foreach($itemsTags as $tag) {
-				$tag = trim($tag);
-				if(strlen($tag)>0 && isset($tagColors[$tag]))
-					$item['tags'][$tag] = $tagColors[$tag];
-			}
-			
+        
+            // parse tags and assign tag colors
+            $itemsTags = explode(",",$item['tags']);
+            $item['tags'] = array();
+            foreach($itemsTags as $tag) {
+                $tag = trim($tag);
+                if(strlen($tag)>0 && isset($tagColors[$tag]))
+                    $item['tags'][$tag] = $tagColors[$tag];
+            }
+            
             $this->view->item = $item;
             $itemsHtml .= $this->view->render('templates/item.phtml');
         }
@@ -140,21 +140,21 @@ class Index extends BaseController {
             if($itemDao->hasMore())
                 $itemsHtml .= '<div class="stream-more"><span>more</span></div>';
         }
-		
-		return $itemsHtml;
-	}
-	
-	
-	/**
+        
+        return $itemsHtml;
+    }
+    
+    
+    /**
      * return tag => color array
      *
      * @return tag color array
-	 * @param array $tags
+     * @param array $tags
      */
-	private function convertTagsToAssocArray($tags) {
-		$assocTags = array();
-		foreach($tags as $tag)
-			$assocTags[$tag['tag']] = $tag['color'];
-		return $assocTags;
-	}
+    private function convertTagsToAssocArray($tags) {
+        $assocTags = array();
+        foreach($tags as $tag)
+            $assocTags[$tag['tag']] = $tag['color'];
+        return $assocTags;
+    }
 }

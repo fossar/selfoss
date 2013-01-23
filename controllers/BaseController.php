@@ -12,7 +12,7 @@ namespace controllers;
  */
 class BaseController {
 
-	/**
+    /**
      * view helper
      *
      * @var helpers_View
@@ -28,5 +28,4 @@ class BaseController {
     public function __construct() {
         $this->view = new \helpers\View();
     }
-	
 }

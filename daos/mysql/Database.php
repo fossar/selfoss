@@ -19,7 +19,7 @@ class Database {
      */
     static private $initialized = false;
 
-	
+    
     /**
      * establish connection and
      * create undefined tables
@@ -29,12 +29,12 @@ class Database {
     public function __construct() {
         if(self::$initialized===false && \F3::get('db_type')=="mysql") {
             // establish database connection
-			\F3::set('db', new \DB\SQL(
-				'mysql:host=' . \F3::get('db_host') . ';port=' . \F3::get('db_port') . ';dbname='.\F3::get('db_database'),
-				\F3::get('db_username'),
-				\F3::get('db_password')
-			));
-			
+            \F3::set('db', new \DB\SQL(
+                'mysql:host=' . \F3::get('db_host') . ';port=' . \F3::get('db_port') . ';dbname='.\F3::get('db_database'),
+                \F3::get('db_username'),
+                \F3::get('db_password')
+            ));
+            
             // create tables if necessary
             $result = @\F3::get('db')->exec('SHOW TABLES');
             $tables = array();
@@ -60,7 +60,7 @@ class Database {
                     ) ENGINE = MYISAM;
                 ');
             
-			$isNewestSourcesTable = false;
+            $isNewestSourcesTable = false;
             if(!in_array('sources', $tables)) {
                 \F3::get('db')->exec('
                     CREATE TABLE sources (
@@ -72,35 +72,35 @@ class Database {
                         error TEXT 
                     ) ENGINE = MYISAM;
                 ');
-				$isNewestSourcesTable = true;
-			}
+                $isNewestSourcesTable = true;
+            }
             
-			// version 1 or new
-			if(!in_array('version', $tables)) {
+            // version 1 or new
+            if(!in_array('version', $tables)) {
                 \F3::get('db')->exec('
                     CREATE TABLE version (
                         version INT
                     ) ENGINE = MYISAM;
                 ');
-				
-				\F3::get('db')->exec('
+                
+                \F3::get('db')->exec('
                     INSERT INTO version (version) VALUES (2);
                 ');
-				
-				\F3::get('db')->exec('
+                
+                \F3::get('db')->exec('
                     CREATE TABLE tags (
                         tag         TEXT NOT NULL,
                         color       VARCHAR(7) NOT NULL
                     );
                 ');
-				
-				if($isNewestSourcesTable===false) {
-					\F3::get('db')->exec('
-						ALTER TABLE sources ADD tags TEXT;
-					');
-				}
-			}
-			
+                
+                if($isNewestSourcesTable===false) {
+                    \F3::get('db')->exec('
+                        ALTER TABLE sources ADD tags TEXT;
+                    ');
+                }
+            }
+            
             // just initialize once
             $initialized = true;
         }

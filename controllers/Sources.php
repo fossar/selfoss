@@ -22,19 +22,19 @@ class Sources extends BaseController {
         $spoutLoader = new \helpers\SpoutLoader();
         $this->view->spouts = $spoutLoader->all();
 
-		$itemDao = new \daos\Items();
-		
+        $itemDao = new \daos\Items();
+        
         // load sources
         $sourcesDao = new \daos\Sources();
         $sourcesHtml = '<div class="source-add"> add source</div>';
         $i=0;
-		
+        
         foreach($sourcesDao->get() as $source) {
             $this->view->source = $source;
-			$this->view->source['icon'] = $itemDao->getLastIcon($source['id']);
+            $this->view->source['icon'] = $itemDao->getLastIcon($source['id']);
             $sourcesHtml .= $this->view->render('templates/source.phtml');
         }
-		
+        
         echo $sourcesHtml;
     }
     
@@ -60,10 +60,10 @@ class Sources extends BaseController {
         if(!isset($_GET['spout']))
             $this->view->error('no spout type given');
         
-		$spoutLoader = new \helpers\SpoutLoader();
+        $spoutLoader = new \helpers\SpoutLoader();
         
-		$spout = str_replace("\\\\", "\\", $_GET['spout']);
-		$this->view->spout = $spoutLoader->get($spout);
+        $spout = str_replace("\\\\", "\\", $_GET['spout']);
+        $this->view->spout = $spoutLoader->get($spout);
         
         if($this->view->spout===false)
             $this->view->error('invalid spout type given');
@@ -85,13 +85,13 @@ class Sources extends BaseController {
         
         if (!$sourceDao->isValid('id', $id))
             $this->view->error('invalid id given');
-		
+        
         $sourceDao->delete($id);
-		
-		// cleanup tags
-		$tagsDao = new \daos\Tags();
-		$allTags = $sourceDao->getAllTags();
-		$tagsDao->cleanup($allTags);
+        
+        // cleanup tags
+        $tagsDao = new \daos\Tags();
+        $allTags = $sourceDao->getAllTags();
+        $tagsDao->cleanup($allTags);
     }
     
     
@@ -113,7 +113,7 @@ class Sources extends BaseController {
         
         $title = $data['title'];
         $spout = $data['spout'];
-		$tags = $data['tags'];
+        $tags = $data['tags'];
 
         unset($data['title']);
         unset($data['spout']);
@@ -133,15 +133,15 @@ class Sources extends BaseController {
         else
             $sourcesDao->edit($id, $title, $tags, $spout, $data);
         
-		// autocolor tags
-		$tagsDao = new \daos\Tags();
-		$tags = explode(",",$tags);
-		foreach($tags as $tag)
-			$tagsDao->autocolorTag(trim($tag)); 
-		
-		// cleanup tags
-		$tagsDao->cleanup($sourcesDao->getAllTags());
-		
+        // autocolor tags
+        $tagsDao = new \daos\Tags();
+        $tags = explode(",",$tags);
+        foreach($tags as $tag)
+            $tagsDao->autocolorTag(trim($tag)); 
+        
+        // cleanup tags
+        $tagsDao->cleanup($sourcesDao->getAllTags());
+        
         $this->view->jsonSuccess(
             array(
                 'success' => true,

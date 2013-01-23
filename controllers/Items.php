@@ -18,12 +18,12 @@ class Items extends BaseController {
      * @return void
      */
     public function mark() {
-		if(\F3::get('PARAMS["item"]')!=null)
-			$lastid = \F3::get('PARAMS["item"]');
-		else if(isset($_POST['ids'])) {
-			$lastid = $_POST['ids'];
-		}
-		
+        if(\F3::get('PARAMS["item"]')!=null)
+            $lastid = \F3::get('PARAMS["item"]');
+        else if(isset($_POST['ids'])) {
+            $lastid = $_POST['ids'];
+        }
+        
         $itemDao = new \daos\Items();
         
         if (!$itemDao->isValid('id', $lastid))
@@ -33,8 +33,8 @@ class Items extends BaseController {
         $this->view->jsonSuccess(array('success' => true));
     }
     
-	
-	/**
+    
+    /**
      * mark items as unread
      *
      * @return void
@@ -50,7 +50,7 @@ class Items extends BaseController {
         $itemDao->unmark($lastid);
         $this->view->jsonSuccess(array('success' => true));
     }
-	
+    
     
     /**
      * starr item
@@ -98,20 +98,20 @@ class Items extends BaseController {
         $loader->update();
         echo "finished";
     }
-	
-	
-	/**
+    
+    
+    /**
      * returns current stats
      *
      * @return void
      */
     public function stats() {
-		$itemDao = new \daos\Items();
-		$return = array(
-			'all' 	  => $itemsDao->numberOfItems(),
-			'unread'  => $itemsDao->numberOfUnread(),
-			'starred' => $itemsDao->numberOfStarred()
-		);
-		$this->view->jsonSuccess($return);
+        $itemDao = new \daos\Items();
+        $return = array(
+            'all'       => $itemsDao->numberOfItems(),
+            'unread'  => $itemsDao->numberOfUnread(),
+            'starred' => $itemsDao->numberOfStarred()
+        );
+        $this->view->jsonSuccess($return);
     }
 }

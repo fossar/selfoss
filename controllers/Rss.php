@@ -11,7 +11,7 @@ namespace controllers;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class Rss extends BaseController {
-	
+    
     /**
      * rss feed
      *
@@ -55,5 +55,5 @@ class Rss extends BaseController {
         
         $feedWriter->genarateFeed();
     }
-	
+    
 }
