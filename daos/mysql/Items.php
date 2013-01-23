@@ -20,7 +20,7 @@ class Items extends Database {
      */
     private $hasMore = false;
 
-	
+    
     /**
      * mark item as read
      *
@@ -28,16 +28,17 @@ class Items extends Database {
      * @param int $id
      */
     public function mark($id) {
-		if($this->isValid('id', $id)===false)
-			return;
-		
-		if(is_array($id))
-			$id = implode(",", $id);
-		
-		// i used string concatenation after validating $id
-		\F3::get('db')->exec('UPDATE items SET unread=0 WHERE id IN (' . $id . ')');
+        if($this->isValid('id', $id)===false)
+            return;
+        
+        if(is_array($id))
+            $id = implode(",", $id);
+        
+        // i used string concatenation after validating $id
+        \F3::get('db')->exec('UPDATE items SET unread=0 WHERE id IN (' . $id . ')');
     }
-	
+    
+    
     /**
      * mark item as unread
      *
@@ -45,11 +46,11 @@ class Items extends Database {
      * @param int $id
      */
     public function unmark($id) {
-		if(is_array($id)) {
-			$id = implode(",", $id);
-		} else if(!is_numeric($id)) {
-			return;
-		}
+        if(is_array($id)) {
+            $id = implode(",", $id);
+        } else if(!is_numeric($id)) {
+            return;
+        }
         \F3::get('db')->exec('UPDATE items SET unread=1 WHERE id IN (:id)',
                     array(':id' => $id));
     }
@@ -160,28 +161,28 @@ class Items extends Database {
         $params = array();
         $where = '';
         
-		// only starred
-		if(isset($options['type']) && $options['type']=='starred')
+        // only starred
+        if(isset($options['type']) && $options['type']=='starred')
             $where .= ' AND starred=1 ';
-			
-		// only unread
+            
+        // only unread
         else if(isset($options['type']) && $options['type']=='unread')
             $where .= ' AND unread=1 ';
-		
-		// search
-		if(isset($options['search']) && strlen($options['search'])>0) {
-			$search = str_replace(" ", "%", trim($options['search']));
+        
+        // search
+        if(isset($options['search']) && strlen($options['search'])>0) {
+            $search = str_replace(" ", "%", trim($options['search']));
             $params[':search'] = $params[':search2'] = $params[':search3'] = array("%".$search."%", \PDO::PARAM_STR);
             $where .= ' AND (items.title LIKE :search OR items.content LIKE :search2 OR sources.title LIKE :search3) ';
         }
         
-		// tag filter
-		if(isset($options['tag']) && strlen($options['tag'])>0) {
+        // tag filter
+        if(isset($options['tag']) && strlen($options['tag'])>0) {
             $params[':tag'] = array("%".$options['tag']."%", \PDO::PARAM_STR);
             $where .= ' AND (sources.tags LIKE :tag) ';
         }
-		
-		// set limit
+        
+        // set limit
         if(!is_numeric($options['items']) || $options['items']>200)
             $options['items'] = \F3::get('items_perpage');
         
@@ -192,7 +193,7 @@ class Items extends Database {
                    LIMIT ' . ($options['offset']+$options['items']) . ', 1', $params);
         $this->hasMore = count($result);
 
-		// get items from database
+        // get items from database
         return \F3::get('db')->exec('SELECT 
                     items.id, datetime, items.title AS title, content, unread, starred, source, thumbnail, icon, uid, link, sources.title as sourcetitle, sources.tags as tags
                    FROM items, sources 
@@ -290,75 +291,75 @@ class Items extends Database {
         switch ($name) {
         case 'id':
             $return = is_numeric($value);
-			
-			if(is_array($value)) {
-				$return = true;
-				foreach($value as $id) {
-					if(is_numeric($id)===false) {
-						$return = false;
-						break;
-					}
-				}
-			}
+            
+            if(is_array($value)) {
+                $return = true;
+                foreach($value as $id) {
+                    if(is_numeric($id)===false) {
+                        $return = false;
+                        break;
+                    }
+                }
+            }
             break;
         }
         
         return $return;
     }
-	
-	
-	/**
+    
+    
+    /**
      * returns the icon of the last fetched item.
      *
      * @return bool|string false if none was found
      * @param number $sourceid id of the source
      */
     public function getLastIcon($sourceid) {
-		if(is_numeric($sourceid)===false)
-			return false;
-		
+        if(is_numeric($sourceid)===false)
+            return false;
+        
         $res = \F3::get('db')->exec('SELECT icon FROM items WHERE source=:sourceid AND icon!=0 ORDER BY ID DESC LIMIT 0,1',
                     array(':sourceid' => $sourceid));
-		if(count($res)==1)
-			return $res[0]['icon'];
-			
-		return false;
+        if(count($res)==1)
+            return $res[0]['icon'];
+            
+        return false;
     }
-	
-	
-	/**
+    
+    
+    /**
      * returns the amount of entries in database
      *
      * @return int amount of entries in database
      */
     public function numberOfItems() {
-		$res = \F3::get('db')->exec('SELECT count(*) AS amount FROM items');
+        $res = \F3::get('db')->exec('SELECT count(*) AS amount FROM items');
         return $res[0]['amount'];
-	}
-	
-	
-	/**
+    }
+    
+    
+    /**
      * returns the amount of entries in database which are unread
      *
      * @return int amount of entries in database which are unread
      */
     public function numberOfUnread() {
-		$res = \F3::get('db')->exec('SELECT count(*) AS amount
+        $res = \F3::get('db')->exec('SELECT count(*) AS amount
                    FROM items 
                    WHERE unread=1');
         return $res[0]['amount'];
-	}
-	
-	
-	/**
+    }
+    
+    
+    /**
      * returns the amount of entries in database which are starred
      *
      * @return int amount of entries in database which are starred
      */
     public function numberOfStarred() {
-		$res = \F3::get('db')->exec('SELECT count(*) AS amount
+        $res = \F3::get('db')->exec('SELECT count(*) AS amount
                    FROM items 
                    WHERE starred=1');
         return $res[0]['amount'];
-	}
+    }
 }

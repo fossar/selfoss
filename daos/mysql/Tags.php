@@ -12,7 +12,7 @@ namespace daos\mysql;
  */
 class Tags extends Database {
 
-	/**
+    /**
      * save given tag color
      *
      * @return void
@@ -20,12 +20,12 @@ class Tags extends Database {
      * @param string $color
      */
     public function saveTagColor($tag, $color) {
-		if($this->hasTag($tag)===true) {
-			\F3::get('db')->exec('UPDATE tags SET color=:color WHERE tag=:tag',
+        if($this->hasTag($tag)===true) {
+            \F3::get('db')->exec('UPDATE tags SET color=:color WHERE tag=:tag',
                     array(':tag'   => $tag,
-						  ':color' => $color));
-		} else {
-			\F3::get('db')->exec('INSERT INTO tags (
+                          ':color' => $color));
+        } else {
+            \F3::get('db')->exec('INSERT INTO tags (
                     tag, 
                     color
                   ) VALUES (
@@ -36,86 +36,86 @@ class Tags extends Database {
                     ':tag'   => $tag,
                     ':color' => $color,
                  ));
-		}
-	}
-	
-	
-	/**
+        }
+    }
+    
+    
+    /**
      * save given tag with random color
      *
      * @return void
-	 * @param string $tag
+     * @param string $tag
      */
     public function autocolorTag($tag) {
-		// tag color allready defined
-		if($this->hasTag($tag))
-			return;
-		
-		// get unused random color
-		while(true) {
-			$color = $this->randomColor();
-			if($this->isColorUsed($color)===false)
-				break;
-		}
-		
-		$this->saveTagColor($tag, $color);
-	}
-	
-	
-	/**
+        // tag color allready defined
+        if($this->hasTag($tag))
+            return;
+        
+        // get unused random color
+        while(true) {
+            $color = $this->randomColor();
+            if($this->isColorUsed($color)===false)
+                break;
+        }
+        
+        $this->saveTagColor($tag, $color);
+    }
+    
+    
+    /**
      * returns all tags with color
      *
      * @return array of all tags
      */
     public function get() {
-		return \F3::get('db')->exec('SELECT 
+        return \F3::get('db')->exec('SELECT 
                     tag, color
                    FROM tags 
                    ORDER BY LOWER(tag);');
-	}
-	
-	
-	/**
+    }
+    
+    
+    /**
      * remove all unused tag color definitions
      *
      * @return void
-	 * @param array $tags available tags
+     * @param array $tags available tags
      */
     public function cleanup($tags) {
-		$tagsInDb = $this->get();
-		foreach($tagsInDb as $tag) {
-			if(in_array($tag['tag'], $tags)===false) {
-				$this->delete($tag['tag']);
-			}
-		}
-	}
-	
-	
-	/**
+        $tagsInDb = $this->get();
+        foreach($tagsInDb as $tag) {
+            if(in_array($tag['tag'], $tags)===false) {
+                $this->delete($tag['tag']);
+            }
+        }
+    }
+    
+    
+    /**
      * returns whether a color is used or not
      *
      * @return boolean true if color is used by an tag
      */
     private function isColorUsed($color) {
-		$res = \F3::get('db')->exec('SELECT COUNT(*) AS amount FROM tags WHERE color=:color',
+        $res = \F3::get('db')->exec('SELECT COUNT(*) AS amount FROM tags WHERE color=:color',
                     array(':color' => $color));
         return $res[0]['amount']>0;
-	}
-	
-	
-	/**
+    }
+    
+    
+    /**
      * check whether tag color is defined.
      *
      * @return boolean true if color is used by an tag
      */
     private function hasTag($tag) {
-		$res = \F3::get('db')->exec('SELECT COUNT(*) AS amount FROM tags WHERE tag=:tag',
+        $res = \F3::get('db')->exec('SELECT COUNT(*) AS amount FROM tags WHERE tag=:tag',
                     array(':tag' => $tag));
         return $res[0]['amount']>0;
-	}
-	
-	
-	/**
+    }
+    
+    
+    /**
      * delete tag
      *
      * @return void
@@ -125,23 +125,23 @@ class Tags extends Database {
         \F3::get('db')->exec('DELETE FROM tags WHERE tag=:tag',
                     array(':tag' => $tag));
     }
-	
-	
-	/**
+    
+    
+    /**
      * generate random color
      *
      * @return string random color in format #123456
      */
-	private function randomColor() {
-		return "#" . $this->randomColorPart() . $this->randomColorPart() . $this->randomColorPart();
-	}
-	
-	/**
+    private function randomColor() {
+        return "#" . $this->randomColorPart() . $this->randomColorPart() . $this->randomColorPart();
+    }
+    
+    /**
      * generate random number between 0-255 in hex
      *
      * @return string random color part
      */
-	private function randomColorPart() {
-		return str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT);
-	}
+    private function randomColorPart() {
+        return str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT);
+    }
 }

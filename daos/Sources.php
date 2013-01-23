@@ -12,7 +12,6 @@ namespace daos;
  * @author     Daniel Seither <post@tiwoc.de>
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
-
 class Sources extends Database {
     /**
      * Instance of backend specific sources class
@@ -21,7 +20,7 @@ class Sources extends Database {
      */
     private $backend = null;
     
-	
+    
     /**
      * Constructor.
      *
@@ -32,23 +31,23 @@ class Sources extends Database {
         $this->backend = new $class();
         parent::__construct();
     }
-	
-	
-	/**
-	 * pass any method call to the backend.
-	 * 
-	 * @return methods return value
-	 * @param string $name name of the function
-	 * @param array $args arguments
-	 */
-	public function __call($name, $args) {
+    
+    
+    /**
+     * pass any method call to the backend.
+     * 
+     * @return methods return value
+     * @param string $name name of the function
+     * @param array $args arguments
+     */
+    public function __call($name, $args) {
         if(method_exists($this->backend, $name))
-			return call_user_func_array(array($this->backend, $name), $args);
-		else
-			\F3::get('logger')->log('Unimplemented method for ' . \F3::get('db_type') . ': ' . $name, \ERROR);
+            return call_user_func_array(array($this->backend, $name), $args);
+        else
+            \F3::get('logger')->log('Unimplemented method for ' . \F3::get('db_type') . ': ' . $name, \ERROR);
     }
-	
-	
+    
+    
     /**
      * validate new data for a given source
      *

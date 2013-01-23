@@ -91,11 +91,11 @@ class ContentLoader {
                 \F3::get('logger')->log('item "' . $item->getTitle() . '" (' . $item->getDate() . ') older than '.\F3::get('items_lifetime').' days', \DEBUG);
                 continue;
             }
-			
-			// date in future? Set current date
-			$now = new \DateTime();
-			if($itemDate > $now)
-				$itemDate = $now;
+            
+            // date in future? Set current date
+            $now = new \DateTime();
+            if($itemDate > $now)
+                $itemDate = $now;
             
             // item already in database?
             if($itemsDao->exists($item->getId())===true)
@@ -215,7 +215,7 @@ class ContentLoader {
         // optimize database
         \F3::get('logger')->log('optimize database', \DEBUG);
         $database = new \daos\Database();
-		$database->optimize();
+        $database->optimize();
         \F3::get('logger')->log('optimize database finished', \DEBUG);
     }
     
@@ -227,24 +227,24 @@ class ContentLoader {
      * @param string $type thumbnails or icons
      */
     protected function cleanupFiles($type) {
-		$itemsDao = new \daos\Items();
-		\F3::set('im', $itemsDao);
-		if($type=='thumbnails') {
+        $itemsDao = new \daos\Items();
+        \F3::set('im', $itemsDao);
+        if($type=='thumbnails') {
             $checker = function($file) { return \F3::get('im')->hasThumbnail($file);};
             $itemPath = 'data/thumbnails/';
         } else if($type=='icons') {
             $checker = function($file) { return \F3::get('im')->hasIcon($file);};
             $itemPath = 'data/favicons/';
         }
-		
-		foreach(scandir($itemPath) as $file) {
-			if(is_file($itemPath . $file)) {
-				$inUsage = $checker($file);
-				if($inUsage===false) {
+        
+        foreach(scandir($itemPath) as $file) {
+            if(is_file($itemPath . $file)) {
+                $inUsage = $checker($file);
+                if($inUsage===false) {
                     unlink($itemPath . $file);
-				}
+                }
             }
-		}
+        }
     }
     
 }

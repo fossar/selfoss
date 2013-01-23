@@ -357,7 +357,7 @@ input {
 		column-count: 3;
 		column-gap: 2em;
 		column-rule: 1px solid rgba(204, 204, 204, 0.4);
-		font-size:0.85em;
+		font-size:0.95em;
 		margin-top:20px;
 		line-height: 1.7em;
 	}
@@ -887,7 +887,7 @@ body.publicmode.notloggedin .entry-unread {
 		
 		.entry-content {
 			line-height:1.5em;
-			font-size:1.1em;
+			font-size:0.95em;
 		}
 		
 	.sp-container {

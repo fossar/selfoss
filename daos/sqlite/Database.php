@@ -9,17 +9,18 @@ namespace daos\sqlite;
  * @copyright   Copyright (c) Harald Lapp (harald.lapp@gmail.com)
  * @license     GPLv3 (http://www.gnu.org/licenses/gpl-3.0.html)
  * @author      Harald Lapp (harald.lapp@gmail.com)
- * @author     Tobias Zeising <tobias.zeising@aditu.de>
+ * @author      Tobias Zeising <tobias.zeising@aditu.de>
  */
 class Database {
+
     /**
      * indicates whether database connection was initialized
      *
-     * @var     bool
+     * @var bool
      */
     static private $initialized = false;
 
-	
+    
     /**
      * establish connection and create undefined tables
      *
@@ -71,7 +72,7 @@ class Database {
                 ');
             }
             
-			$isNewestSourcesTable = false;
+            $isNewestSourcesTable = false;
             if(!in_array('sources', $tables)) {
                 \F3::get('db')->exec('
                     CREATE TABLE sources (
@@ -83,35 +84,35 @@ class Database {
                         error       TEXT 
                     );
                 ');
-				$isNewestSourcesTable = true;
+                $isNewestSourcesTable = true;
             }
                  
-			// version 1
-			if(!in_array('version', $tables)) {
+            // version 1
+            if(!in_array('version', $tables)) {
                 \F3::get('db')->exec('
                     CREATE TABLE version (
                         version INT
                     );
                 ');
-				
-				\F3::get('db')->exec('
+                
+                \F3::get('db')->exec('
                     INSERT INTO version (version) VALUES (2);
                 ');
-				
-				\F3::get('db')->exec('
+                
+                \F3::get('db')->exec('
                     CREATE TABLE tags (
                         tag         TEXT NOT NULL,
                         color       TEXT NOT NULL
                     );
                 ');
-				
-				if($isNewestSourcesTable===false) {
-					\F3::get('db')->exec('
-						ALTER TABLE sources ADD tags TEXT;
-					');
-				}
-			}
-			
+                
+                if($isNewestSourcesTable===false) {
+                    \F3::get('db')->exec('
+                        ALTER TABLE sources ADD tags TEXT;
+                    ');
+                }
+            }
+            
             // just initialize once
             $initialized = true;
         }

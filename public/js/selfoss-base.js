@@ -7,38 +7,38 @@
  */
 var selfoss = {
 
-	/**
+    /**
      * current filter settings
      * @var mixed
      */
-	filter: {
-		offset: 0,
-		itemsPerPage: 0,
-		search: '',
-		type: 'newest',
-		tag: '',
-		ajax: true
-	},
+    filter: {
+        offset: 0,
+        itemsPerPage: 0,
+        search: '',
+        type: 'newest',
+        tag: '',
+        ajax: true
+    },
 
-	
-	/**
+    
+    /**
      * initialize application
      */
-	init: function() {
-		jQuery(document).ready(function() {
-			// set items per page
-			selfoss.filter.itemsPerPage = $('.entry').length;
-			
-			// init events
-			selfoss.events.init();
-			
-			// init shortcut handler
-			selfoss.shortcuts.init();
-		});
-	},
-	
-	
-	/**
+    init: function() {
+        jQuery(document).ready(function() {
+            // set items per page
+            selfoss.filter.itemsPerPage = $('.entry').length;
+            
+            // init events
+            selfoss.events.init();
+            
+            // init shortcut handler
+            selfoss.shortcuts.init();
+        });
+    },
+    
+    
+    /**
      * returns an array of id value pairs of all form elements in given element
      *
      * @return void
@@ -58,9 +58,9 @@ var selfoss = {
         
         return values;
     },
-	
-	
-	/**
+    
+    
+    /**
      * insert error messages in form
      *
      * @return void
@@ -73,95 +73,95 @@ var selfoss = {
             form.find('#'+key).addClass('error').parent('li').append('<span class="error">'+val+'</span>');
         });
     },
-	
-	
-	/**
-	 * indicates whether a mobile device is host
-	 *
-	 * @return true if device resolution smaller equals 1024
-	 */
-	isMobile: function() {
-		return selfoss.isTablet() || selfoss.isSmartphone();
-	},
-	
-	
-	/**
-	 * indicates whether a tablet is the device or not
-	 *
-	 * @return true if device resolution smaller equals 1024
-	 */
-	isTablet: function() {
-		if($(window).width()<=1024)
+    
+    
+    /**
+     * indicates whether a mobile device is host
+     *
+     * @return true if device resolution smaller equals 1024
+     */
+    isMobile: function() {
+        return selfoss.isTablet() || selfoss.isSmartphone();
+    },
+    
+    
+    /**
+     * indicates whether a tablet is the device or not
+     *
+     * @return true if device resolution smaller equals 1024
+     */
+    isTablet: function() {
+        if($(window).width()<=1024)
             return true;
-		return false;
-	},
+        return false;
+    },
 
-	
-	/**
-	 * indicates whether a tablet is the device or not
-	 *
-	 * @return true if device resolution smaller equals 1024
-	 */
-	isSmartphone: function() {
-		if($(window).width()<=640)
+    
+    /**
+     * indicates whether a tablet is the device or not
+     *
+     * @return true if device resolution smaller equals 1024
+     */
+    isSmartphone: function() {
+        if($(window).width()<=640)
             return true;
-		return false;
-	},
-	
-	
-	/**
-	 * refresh current items.
-	 *
-	 * @return void
-	 */
-	reloadList: function() {
-		$('#content').addClass('loading').html("");
-		
-		$.ajax({
-			url: $('base').attr('href'),
-			type: 'GET',
-			data: selfoss.filter,
-			success: function(data) {
-				$('#content').html(data);
-				$(document).scrollTop(0);
-				selfoss.events.entries();
-				selfoss.events.search();
-				location.hash = "";
-			},
-			error: function(jqXHR, textStatus, errorThrown) {
-				alert('Load list error: '+errorThrown);
-			},
-			complete: function(jqXHR, textStatus) {
-				$('#content').removeClass('loading');
-			}
-		});
-	},
-	
-	
-	/**
-	 * refresh current tags.
-	 *
-	 * @return void
-	 */
-	reloadTags: function() {
-		$('#nav-tags').addClass('loading');
-		$('#nav-tags li:not(:first)').remove();
-		
-		$.ajax({
-			url: $('base').attr('href')+'tags',
-			type: 'GET',
-			success: function(data) {
-				$('#nav-tags').append(data);
-				selfoss.events.navigation();
-			},
-			error: function(jqXHR, textStatus, errorThrown) {
-				alert('Load tags error: '+errorThrown);
-			},
-			complete: function(jqXHR, textStatus) {
-				$('#nav-tags').removeClass('loading');
-			}
-		});
-	}
+        return false;
+    },
+    
+    
+    /**
+     * refresh current items.
+     *
+     * @return void
+     */
+    reloadList: function() {
+        $('#content').addClass('loading').html("");
+        
+        $.ajax({
+            url: $('base').attr('href'),
+            type: 'GET',
+            data: selfoss.filter,
+            success: function(data) {
+                $('#content').html(data);
+                $(document).scrollTop(0);
+                selfoss.events.entries();
+                selfoss.events.search();
+                location.hash = "";
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                alert('Load list error: '+errorThrown);
+            },
+            complete: function(jqXHR, textStatus) {
+                $('#content').removeClass('loading');
+            }
+        });
+    },
+    
+    
+    /**
+     * refresh current tags.
+     *
+     * @return void
+     */
+    reloadTags: function() {
+        $('#nav-tags').addClass('loading');
+        $('#nav-tags li:not(:first)').remove();
+        
+        $.ajax({
+            url: $('base').attr('href')+'tags',
+            type: 'GET',
+            success: function(data) {
+                $('#nav-tags').append(data);
+                selfoss.events.navigation();
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                alert('Load tags error: '+errorThrown);
+            },
+            complete: function(jqXHR, textStatus) {
+                $('#nav-tags').removeClass('loading');
+            }
+        });
+    }
 };
 
 selfoss.init();

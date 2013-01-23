@@ -102,7 +102,7 @@ class Sources extends Database {
         return $ret;
     }
     
-	
+    
     /**
      * test if the value of a specified field is valid
      *
@@ -121,19 +121,19 @@ class Sources extends Database {
         
         return $return;
     }
-	
-	
-	/**
+    
+    
+    /**
      * returns all tags
      *
      * @return mixed all sources
      */
     public function getAllTags() {
-		$result = \F3::get('db')->exec('SELECT tags FROM sources');
-		$tags = array();
-		foreach($result as $res)
-			$tags = array_merge($tags, explode(",",$res['tags']));
-		$tags = array_unique($tags);
-		return $tags;
+        $result = \F3::get('db')->exec('SELECT tags FROM sources');
+        $tags = array();
+        foreach($result as $res)
+            $tags = array_merge($tags, explode(",",$res['tags']));
+        $tags = array_unique($tags);
+        return $tags;
     }
 }

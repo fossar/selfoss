@@ -12,11 +12,11 @@ namespace helpers;
  */
 class View {
 
-	/**
+    /**
      * current base url
      * @var string
      */
-	public $base = '';
+    public $base = '';
 
     /**
      * set global view vars
@@ -24,14 +24,14 @@ class View {
     function __construct() {
         $this->genMinifiedJsAndCss();
     
-		if(strlen(trim(\F3::get('base_url')))>0) {
-			$this->base = \F3::get('base_url');
+        if(strlen(trim(\F3::get('base_url')))>0) {
+            $this->base = \F3::get('base_url');
             $length = strlen($this->base);
             if($length>0 && substr($this->base, $length-1, 1)!="/")
                 $this->base .= '/';
-			return;
-		}
-		
+            return;
+        }
+        
         $lastSlash = strrpos($_SERVER['SCRIPT_NAME'], '/');
         $subdir = $lastSlash!==false ? substr($_SERVER['SCRIPT_NAME'], 0, $lastSlash) : '';
         $this->base = 'http' . 
@@ -99,11 +99,7 @@ class View {
      * @return void
      */
     public function genMinifiedJsAndCss() {
-        if(\F3::get('DEBUG')!=0) {
-			
-		}
-		
-		// minify js
+        // minify js
         $targetJs = \F3::get('BASEDIR').'/public/all.js';
         if(!file_exists($targetJs) || \F3::get('DEBUG')!=0) {
             $js = "";
@@ -122,30 +118,30 @@ class View {
         }
     }
     
-	
-	/**
+    
+    /**
      * minifies javascript if DEBUG mode is disabled
      *
      * @return minified javascript
-	 * @param javascript to minify
+     * @param javascript to minify
      */
-	private function minifyJs($content) {
-		if(\F3::get('DEBUG')!=0) 
-			return $content;
-		return \JSMin::minify($content);
-	}
-	
-	
-	/**
+    private function minifyJs($content) {
+        if(\F3::get('DEBUG')!=0) 
+            return $content;
+        return \JSMin::minify($content);
+    }
+    
+    
+    /**
      * minifies css if DEBUG mode is disabled
      *
      * @return minified css
-	 * @param css to minify
+     * @param css to minify
      */
-	private function minifyCss($content) {
-		if(\F3::get('DEBUG')!=0) 
-			return $content;
-		return \CssMin::minify($content);
-	}
+    private function minifyCss($content) {
+        if(\F3::get('DEBUG')!=0) 
+            return $content;
+        return \CssMin::minify($content);
+    }
     
 }
