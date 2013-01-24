@@ -47,6 +47,9 @@ class Tags extends Database {
      * @param string $tag
      */
     public function autocolorTag($tag) {
+        if(strlen(trim($tag))==0)
+            return;
+        
         // tag color allready defined
         if($this->hasTag($tag))
             return;
