@@ -406,9 +406,10 @@ selfoss.events = {
             $.ajax({
                 url: $('base').attr('href'),
                 type: 'GET',
+                dataType: 'json',
                 data: selfoss.filter,
                 success: function(data) {
-                    $('.stream-more').replaceWith(data);
+                    $('.stream-more').replaceWith(data.entries);
                     selfoss.events.entries();
                 },
                 error: function(jqXHR, textStatus, errorThrown) {

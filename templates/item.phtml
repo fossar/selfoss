@@ -11,53 +11,53 @@
     }
     $title = $this->viewHelper->lazyimg($title);
     $content = $this->viewHelper->lazyimg($content);
-	$date = $this->viewHelper->dateago($this->item['datetime']);
+    $date = $this->viewHelper->dateago($this->item['datetime']);
 ?>
 <div id="entry<?PHP echo $this->item['id']; ?>"
      class="entry
             <?PHP echo $this->item['unread']==1 ? 'unread' : ''; ?>">
     
-	<!-- icon -->
-	<a href="<?PHP echo $this->item['link']; ?>" class="entry-icon">
+    <!-- icon -->
+    <a href="<?PHP echo $this->item['link']; ?>" class="entry-icon">
         <?PHP if(strlen(trim($this->item['icon']))>0 && $this->item['icon']!="0") : ?>
         <img src="<?PHP echo 'favicons/'.$this->item['icon']; ?>" alt="<?PHP echo $sourcetitle ?>" />
         <?PHP endif; ?>
     </a>
-	
-	<!-- title -->
-	<h2 class="entry-title"><?PHP echo $title; ?></h2>
-	
-	<div class="entry-tags">
-		<?PHP foreach($this->item['tags'] as $tag => $color) : ?>
-			<div class="entry-tags-tag" style="background-color:<?PHP echo $color; ?>"><?PHP echo $tag; ?></div>
-		<?PHP endforeach; ?>
-	</div>
-	
-	<!-- source -->
+    
+    <!-- title -->
+    <h2 class="entry-title"><?PHP echo $title; ?></h2>
+    
+    <div class="entry-tags">
+        <?PHP foreach($this->item['tags'] as $tag => $color) : ?>
+            <div class="entry-tags-tag" style="background-color:<?PHP echo $color; ?>"><?PHP echo $tag; ?></div>
+        <?PHP endforeach; ?>
+    </div>
+    
+    <!-- source -->
     <a href="<?PHP echo $this->item['link']; ?>" class="entry-source" target="_blank"><?PHP echo $sourcetitle ?></a>
-	
-	<!-- datetime -->
-	<div class="entry-datetime">
+    
+    <!-- datetime -->
+    <div class="entry-datetime">
         &bullet; <?PHP echo $date; ?>
     </div>
-	
-	<!-- thumbnail -->
-	<?PHP if(isset($this->item['thumbnail']) && strlen(trim($this->item['thumbnail']))>0) : ?>
+    
+    <!-- thumbnail -->
+    <?PHP if(isset($this->item['thumbnail']) && strlen(trim($this->item['thumbnail']))>0) : ?>
     <div class="entry-thumbnail">
         <a href="<?PHP echo $this->item['link']; ?>"><img src="<?PHP echo 'thumbnails/'.$this->item['thumbnail']; ?>" alt="<?PHP echo $this->item['title']; ?>" /></a>
     </div>
     <?PHP endif; ?>
     
-	<!-- content -->
-	<div class="entry-content">
-		<?PHP echo $content; ?>
+    <!-- content -->
+    <div class="entry-content">
+        <?PHP echo $content; ?>
     </div>
-	
-	<!-- toolbar -->
-	<ul class="entry-toolbar">
-		<li class="entry-starr <?PHP echo $this->item['starred']==1 ? 'active' : ''; ?>"><?PHP echo $this->item['starred']==1 ? 'unstar' : 'star'; ?></li>
-		<li class="entry-unread <?PHP echo $this->item['unread']==1 ? 'active' : ''; ?>"><?PHP echo $this->item['unread']==1 ? 'mark as read' : 'mark as unread'; ?></li>
-		<li class="entry-loadimages">load images</li>
-		<li class="entry-close"></li>
-	</ul>
+    
+    <!-- toolbar -->
+    <ul class="entry-toolbar">
+        <li class="entry-starr <?PHP echo $this->item['starred']==1 ? 'active' : ''; ?>"><?PHP echo $this->item['starred']==1 ? 'unstar' : 'star'; ?></li>
+        <li class="entry-unread <?PHP echo $this->item['unread']==1 ? 'active' : ''; ?>"><?PHP echo $this->item['unread']==1 ? 'mark as read' : 'mark as unread'; ?></li>
+        <li class="entry-loadimages">load images</li>
+        <li class="entry-close"></li>
+    </ul>
 </div>
