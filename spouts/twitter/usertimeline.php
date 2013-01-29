@@ -221,7 +221,7 @@ class usertimeline extends \spouts\spout {
      * @return string content
      */
     public function getContent() {
-        return htmlentities($this->formatLinks($this->getTitle()));
+        return $this->formatLinks($this->getTitle());
     }
     
     

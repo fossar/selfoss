@@ -3,7 +3,7 @@
 namespace spouts\twitter;
 
 /**
- * Spout for fetching an rss feed
+ * Spout for fetching the twitter timeline of your twitter account
  *
  * @package    spouts
  * @subpackage rss
@@ -83,9 +83,7 @@ class hometimeline extends \spouts\twitter\usertimeline {
     
     
     /**
-     * loads content for given source
-     * I supress all Warnings of SimplePie for ensuring
-     * working plugin in PHP Strict mode
+     * loads content for given twitter user
      *
      * @return void
      * @param mixed $params the params of this source
@@ -104,5 +102,4 @@ class hometimeline extends \spouts\twitter\usertimeline {
         
         $this->htmlUrl = 'http://twitter.com/';
     }
-    
 }

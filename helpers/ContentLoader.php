@@ -238,7 +238,7 @@ class ContentLoader {
         }
         
         foreach(scandir($itemPath) as $file) {
-            if(is_file($itemPath . $file)) {
+            if(is_file($itemPath . $file) && $file!=".htaccess") {
                 $inUsage = $checker($file);
                 if($inUsage===false) {
                     unlink($itemPath . $file);

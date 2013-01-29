@@ -37,6 +37,7 @@ Version 2.0
 * new interface for mobile devices
 * mongodb database interface temporarily removed
 * libs and third party plugins updated
+* new spout for mmo-spy.de and golem.de with full text
 
 Version 1.3
 * search will now also search in the source title (for filtering by source)
