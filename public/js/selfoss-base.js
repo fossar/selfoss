@@ -120,9 +120,14 @@ var selfoss = {
         $.ajax({
             url: $('base').attr('href'),
             type: 'GET',
+            dataType: 'json',
             data: selfoss.filter,
             success: function(data) {
-                $('#content').html(data);
+                $('.nav-filter-newest span').html(data.all);
+                $('.nav-filter-unread span').html(data.unread);
+                $('.nav-filter-starred span').html(data.starred);
+                
+                $('#content').html(data.entries);
                 $(document).scrollTop(0);
                 selfoss.events.entries();
                 selfoss.events.search();

@@ -36,21 +36,29 @@ class Index extends BaseController {
         
         // load items
         $itemsHtml = $this->loadItems($options, $tags);
-
-        // just show items html
-        if(isset($options['ajax']))
-            die($itemsHtml);
+        $this->view->content = $itemsHtml;
         
-        // show tags
-        $tagsController = new \controllers\Tags();
-        $this->view->tags = $tagsController->renderTags($tags);
-        
-        // show as full html page
+        // load stats
         $itemsDao = new \daos\Items();
         $this->view->statsAll = $itemsDao->numberOfItems();
         $this->view->statsUnread = $itemsDao->numberOfUnread();
         $this->view->statsStarred = $itemsDao->numberOfStarred();
-        $this->view->content = $itemsHtml;
+        
+        // ajax call = only send entries and statistics not full template
+        if(isset($options['ajax'])) {
+            $this->view->jsonSuccess(array(
+                "entries" => $this->view->content,
+                "all"     => $this->view->statsAll,
+                "unread"  => $this->view->statsUnread,
+                "starred" => $this->view->statsStarred
+            ));
+        }
+        
+        // load tags
+        $tagsController = new \controllers\Tags();
+        $this->view->tags = $tagsController->renderTags($tags);
+        
+        // show as full html page
         $this->view->publicMode = \F3::get('auth')->isLoggedin()!==true && \F3::get('public')==1;
         $this->view->loggedin = \F3::get('auth')->isLoggedin()===true;
         echo $this->view->render('templates/home.phtml');
