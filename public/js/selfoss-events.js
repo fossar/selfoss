@@ -376,8 +376,9 @@ selfoss.events = {
                 }
                 
                 // load images not on mobile devices
-                if(selfoss.isMobile()==false)
+                if(selfoss.isMobile()==false) {
                     content.lazyLoadImages();
+                }
             } 
         });
 

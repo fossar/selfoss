@@ -49,7 +49,7 @@
     <?PHP endif; ?>
     
     <!-- content -->
-    <div class="entry-content">
+    <div class="entry-content <?PHP if(strlen(strip_tags($content))<500) : ?>entry-content-short<?PHP endif; ?>">
         <?PHP echo $content; ?>
     </div>
     
