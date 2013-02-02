@@ -4,7 +4,7 @@ selfoss
 Copyright (c) 2013 Tobias Zeising, tobias.zeising@aditu.de  
 http://selfoss.aditu.de  
 Licensed under the GPLv3 license  
-Version 2.0 beta
+Version 2.0
 
 
 INSTALLATION
@@ -80,6 +80,5 @@ Special thanks to the great programmers of this libraries which will be used in 
 * cssmin: http://code.google.com/p/cssmin/
 * Spectrum Colorpicker: https://github.com/bgrins/spectrum
 * jQuery custom content scroller: http://manos.malihu.gr/jquery-custom-content-scroller/
-
 
 Icon Source: http://blog.artcore-illustrations.de/aicons/
