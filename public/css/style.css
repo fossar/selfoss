@@ -361,6 +361,9 @@ input {
         margin-top:20px;
         line-height: 1.7em;
     }
+        .entry-content a {
+            color:#3d6d69;
+        }
         
         .entry-content img {
             max-width:99%;
