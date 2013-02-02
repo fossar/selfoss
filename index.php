@@ -1,11 +1,9 @@
 <?php
 
-//require __DIR__.'/libs/f3/base.php';
-
 $f3 = require(__DIR__.'/libs/f3/base.php');
 
 $f3->set('DEBUG',0);
-$f3->set('version','2.0b');
+$f3->set('version','2.0');
 $f3->set('AUTOLOAD',__dir__.'/;libs/f3/;libs/;libs/WideImage/;daos/;libs/twitteroauth/;libs/FeedWriter/');
 $f3->set('cache',__dir__.'/data/cache');
 $f3->set('BASEDIR',__dir__);
@@ -53,14 +51,14 @@ $f3->route('GET /feed',      'controllers\Rss->rss');
 $f3->route('GET /password',  'controllers\Index->password');
 $f3->route('POST /password', 'controllers\Index->password');
 $f3->route('GET /update',    'controllers\Items->update');
-$f3->route('GET /tags',    	'controllers\Tags->tags');
+$f3->route('GET /tags',        'controllers\Tags->tags');
 
 $f3->route('GET /api/login',  'controllers\Api->login');
 $f3->route('GET /api/logout', 'controllers\Api->logout');
     
 if($f3->get('auth')->isLoggedin()===true) {
     $f3->route('POST /mark/@item',    'controllers\Items->mark');
-    $f3->route('POST /mark',    	  'controllers\Items->mark');
+    $f3->route('POST /mark',          'controllers\Items->mark');
     $f3->route('POST /unmark/@item',  'controllers\Items->unmark');
     $f3->route('POST /starr/@item',   'controllers\Items->starr');
     $f3->route('POST /unstarr/@item', 'controllers\Items->unstarr');
@@ -70,8 +68,8 @@ if($f3->get('auth')->isLoggedin()===true) {
     $f3->route('POST /source/@id',    'controllers\Sources->write');
     $f3->route('POST /source',        'controllers\Sources->write');
     $f3->route('DELETE /source/@id',  'controllers\Sources->remove');
-    $f3->route('POST /tagset',    	  'controllers\Tags->tagset');
-	
+    $f3->route('POST /tagset',          'controllers\Tags->tagset');
+    
     $f3->route('POST /api/items',        'controllers\Api->items');
     $f3->route('GET /api/items',         'controllers\Api->items');
     $f3->route('GET /api/mark/@item',    'controllers\Api->mark');
