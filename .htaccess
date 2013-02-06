@@ -4,10 +4,6 @@
 RewriteEngine On
 #RewriteBase /selfoss
 
-# rule for spouts
-RewriteRule !spouts/([^/]+)/(.*)$ - [C]
-RewriteRule spouts/([^/]+)/(.*)$ plugins/$1/$2 [L]
-
 # rule for favicons
 RewriteRule !data/favicons/(.*)$ - [C]
 RewriteRule favicons/(.*)$ data/favicons/$1 [L]
@@ -24,7 +20,6 @@ RewriteRule !.(js|ico|gif|jpg|png|css|asc|txt|eot|woff|ttf|ttf|svg)$ index.php?%
 RewriteRule !favicons/ - [C]
 RewriteRule !thumbnails - [C]
 RewriteRule !public - [C]
-RewriteRule !spouts - [C]
 RewriteRule !index.php - [C]
 RewriteRule (.*) public/$1 [L]
 
