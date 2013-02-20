@@ -56,7 +56,7 @@ class Tags extends Database {
         
         // get unused random color
         while(true) {
-            $color = Color::randomColor();
+            $color = \helpers\Color::randomColor();
             if($this->isColorUsed($color)===false)
                 break;
         }
