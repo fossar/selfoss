@@ -56,7 +56,7 @@ class Tags extends Database {
         
         // get unused random color
         while(true) {
-            $color = $this->randomColor();
+            $color = Color::randomColor();
             if($this->isColorUsed($color)===false)
                 break;
         }
@@ -127,24 +127,5 @@ class Tags extends Database {
     public function delete($tag) {
         \F3::get('db')->exec('DELETE FROM tags WHERE tag=:tag',
                     array(':tag' => $tag));
-    }
-    
-    
-    /**
-     * generate random color
-     *
-     * @return string random color in format #123456
-     */
-    private function randomColor() {
-        return "#" . $this->randomColorPart() . $this->randomColorPart() . $this->randomColorPart();
-    }
-    
-    /**
-     * generate random number between 0-255 in hex
-     *
-     * @return string random color part
-     */
-    private function randomColorPart() {
-        return str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT);
     }
 }
