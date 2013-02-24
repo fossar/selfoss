@@ -186,7 +186,7 @@ class Basket {
 	function checkout() {
 		if (isset($_SESSION[$this->key])) {
 			$out=$_SESSION[$this->key];
-			unset($id,$item,$_SESSION[$this->key]);
+			unset($_SESSION[$this->key]);
 			return $out;
 		}
 		return array();
@@ -199,10 +199,7 @@ class Basket {
 	**/
 	function __construct($key='basket') {
 		$this->key=$key;
-		$id=session_id();
 		@session_start();
-		if (!$id)
-			session_regenerate_id(TRUE);
 		Base::instance()->sync('SESSION');
 		$this->reset();
 	}
