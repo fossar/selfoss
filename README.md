@@ -31,6 +31,9 @@ UPDATE
 CHANGELOG
 ---------
 
+Version 2.1-SNAPSHOT
+* update fat free php Framework to 3.0.5
+
 Version 2.1
 * security bugfix
 
