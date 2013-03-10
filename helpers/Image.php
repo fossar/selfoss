@@ -89,7 +89,7 @@ class Image {
         elseif(strtolower($imgInfo['mime'])=='image/gif')
             $type = 'gif';
         else {
-            unlink($tmp);
+            @unlink($tmp);
             return false;
         }
         
@@ -98,7 +98,7 @@ class Image {
             $ico = new \floIcon();
             $ico->readICO($tmp);
             if(count($ico->images)==0) {
-                unlink($tmp);
+                @unlink($tmp);
                 return false;
             }
             ob_start();
@@ -108,7 +108,7 @@ class Image {
         }
         
         // parse image for saving it later
-        unlink($tmp);
+        @unlink($tmp);
         try {
             $wideImage = \WideImage::load($data);
         } catch(\Exception $e) {
