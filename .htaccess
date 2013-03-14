@@ -24,8 +24,10 @@ RewriteRule !index.php - [C]
 RewriteRule (.*) public/$1 [L]
 
 # Disable ETags
-Header Unset ETag
-FileETag none
+<IfModule mod_headers.c>
+    Header Unset ETag
+    FileETag none
+</IfModule>
 
 # Default expires header if none specified (stay in browser cache for 7 days)
 <IfModule mod_expires.c>
