@@ -535,6 +535,11 @@ selfoss.events = {
                         updateStats(!unread);
                         setButton(!unread);
                         alert('Can not mark/unmark item: '+errorThrown);
+                    },
+                    success: function() {
+                        if ($(".nav-filter-unread").hasClass("active") && unread) {
+                            parent.hide();
+                        }
                     }
                 });
                 
