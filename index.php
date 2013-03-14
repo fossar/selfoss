@@ -29,7 +29,7 @@ $f3->set('js', array(
     'public/js/lazy-image-loader.js',
     'public/js/color-by-brightness.js',
     'public/js/spectrum.js',
-    'public/js/shortcut-2.01.B.js',
+    'public/js/jquery.hotkeys.js',
     'public/js/selfoss-base.js',
     'public/js/selfoss-events.js',
     'public/js/selfoss-shortcuts.js'
