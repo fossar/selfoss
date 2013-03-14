@@ -26,7 +26,7 @@ class Sources extends BaseController {
         
         // load sources
         $sourcesDao = new \daos\Sources();
-        $sourcesHtml = '<div class="source-add"> add source</div>';
+        $sourcesHtml = '<div class="source-add"> add source</div> <a class="source-opml" href="opml">or import from opml file or google reader</a>';
         $i=0;
         
         foreach($sourcesDao->get() as $source) {

@@ -547,6 +547,15 @@ input {
     cursor:pointer;
     font-size:0.85em;
     margin-left:20px;
+    float:left;
+}
+
+.source-opml {
+    font-size:0.60em;
+    text-decoration:none;
+    color:#777;
+    margin-left:10px;
+    clear:both;
 }
 
 .source-new .source-edit-form {

@@ -568,7 +568,7 @@ selfoss.events = {
                 url: $('base').attr('href')+'source',
                 type: 'GET',
                 success: function(response) {
-                    sourceAdd.after(response);
+                    $('.source-opml').after(response);
                     selfoss.events.sources();
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
