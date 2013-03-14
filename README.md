@@ -15,6 +15,8 @@ INSTALLATION
 3. insert database access data in config.ini (you have not to change anything if you would like to use sqlite)
 4. create cronjob for updating feeds and point it to http://<selfoss url>/update via wget or curl.
 
+For further questions or on any problem use our support forum: http://selfoss.aditu.de/forum
+
 
 UPDATE
 ------
@@ -26,6 +28,8 @@ UPDATE
 5. Delete the files /public/all.css and /public/all.js
 6. Clean your browser cache
 7. insert your current database connection and your individual configuration in config.ini. Important: we change the config.ini and add new options in newer versions. You have to update the config.ini too.
+
+For further questions or on any problem use our support forum: http://selfoss.aditu.de/forum
 
 
 OPML Import
