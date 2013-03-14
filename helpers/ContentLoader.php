@@ -119,6 +119,7 @@ class ContentLoader {
             $title = htmLawed($item->getTitle(), array("deny_attribute" => "*", "elements" => "-*"));
             \F3::get('logger')->log('item content sanitized', \DEBUG);
             
+            $icon = $item->getIcon();
             $newItem = array(
                     'title'        => $title,
                     'content'      => $content,
@@ -126,7 +127,7 @@ class ContentLoader {
                     'datetime'     => $item->getDate(),
                     'uid'          => $item->getId(),
                     'thumbnail'    => $item->getThumbnail(),
-                    'icon'         => $item->getIcon()!==false ? $item->getIcon() : "",
+                    'icon'         => $icon!==false ? $icon : "",
                     'link'         => htmLawed($item->getLink(), array("deny_attribute" => "*", "elements" => "-*"))
             );
             
