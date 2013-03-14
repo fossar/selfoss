@@ -1,3 +1,7 @@
+#opmlbody {
+    height:auto;
+}
+
 #opml {
     margin-left: auto;
     margin-right: auto;
@@ -34,7 +38,7 @@
 
 #opml .button input {
     margin-left:7px;
-    padding:5px;
+    padding:9px;
     margin-top: 30px;
     font-size:1.2em;
 }
@@ -46,4 +50,5 @@
 
 #opml input {
     margin-top: 30px;
+    background:white;
 }

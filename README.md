@@ -28,11 +28,18 @@ UPDATE
 7. insert your current database connection and your individual configuration in config.ini. Important: we change the config.ini and add new options in newer versions. You have to update the config.ini too.
 
 
+OPML Import
+-----------
+
+Visit the page http://<selfoss url>/opml for importing your OPML File. If you are a user of the google reader then use https://www.google.com/takeout/ to get all your feeds in an opml file.
+
+
 CHANGELOG
 ---------
 
-Version 2.2-SNAPSHOT
+Version 2.2
 * update fat free php Framework to 3.0.5
+* new opml import page (thanks a lot to Michael Moore)
 
 Version 2.1
 * security bugfix
