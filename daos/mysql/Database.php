@@ -57,7 +57,7 @@ class Database {
                         uid VARCHAR(255) NOT NULL,
                         link TEXT NOT NULL,
                         INDEX (source)
-                    ) ENGINE = MYISAM;
+                    ) ENGINE = MYISAM DEFAULT CHARSET=utf8;
                 ');
             
             $isNewestSourcesTable = false;
@@ -70,7 +70,7 @@ class Database {
                         spout TEXT NOT NULL ,
                         params TEXT NOT NULL ,
                         error TEXT 
-                    ) ENGINE = MYISAM;
+                    ) ENGINE = MYISAM DEFAULT CHARSET=utf8;
                 ');
                 $isNewestSourcesTable = true;
             }
@@ -80,7 +80,7 @@ class Database {
                 \F3::get('db')->exec('
                     CREATE TABLE version (
                         version INT
-                    ) ENGINE = MYISAM;
+                    ) ENGINE = MYISAM DEFAULT CHARSET=utf8;
                 ');
                 
                 \F3::get('db')->exec('
@@ -91,7 +91,7 @@ class Database {
                     CREATE TABLE tags (
                         tag         TEXT NOT NULL,
                         color       VARCHAR(7) NOT NULL
-                    );
+                    ) DEFAULT CHARSET=utf8;
                 ');
                 
                 if($isNewestSourcesTable===false) {
