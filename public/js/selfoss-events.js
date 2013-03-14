@@ -206,6 +206,9 @@ selfoss.events = {
                         
                         if(selfoss.isSmartphone())
                             $('#nav-mobile-settings').click();
+
+                        if ($(".nav-filter-unread").hasClass("active"))
+                            $('.nav-filter-unread').click();
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
                         alert('Can not mark all visible item: ' + errorThrown);
