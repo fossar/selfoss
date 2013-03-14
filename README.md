@@ -31,7 +31,7 @@ UPDATE
 OPML Import
 -----------
 
-Visit the page http://<selfoss url>/opml for importing your OPML File. If you are a user of the google reader then use https://www.google.com/takeout/ to get all your feeds in an opml file.
+Visit the page http://<selfoss url>/opml for importing your OPML File. If you are a user of the google reader then use https://www.google.com/takeout/ to get all your feeds in one opml file.
 
 
 CHANGELOG
@@ -39,6 +39,7 @@ CHANGELOG
 
 Version 2.3-SNAPSHOT
 * new shortcut library jquery hotkeys (thanks a lot to Sigill)
+* new shortcut for mark as read and switch to next in one step (thanks a lot to Sigill)
 * prevent error on png conversion
 * items will be saved in mysql databases also no icon is available
 
