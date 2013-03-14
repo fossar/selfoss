@@ -40,7 +40,8 @@ $f3->set('css', array(
     'public/css/spectrum.css',
     'public/css/reset.css',
     'public/css/fonts.css',
-    'public/css/style.css'
+    'public/css/style.css',
+    'public/css/opml.css'
 ));
 
 // define routes
@@ -80,6 +81,8 @@ if($f3->get('auth')->isLoggedin()===true) {
     $f3->route('GET /api/mark/@item',    'controllers\Api->mark');
     $f3->route('GET /api/starr/@item',   'controllers\Api->starr');
     $f3->route('GET /api/unstarr/@item', 'controllers\Api->unstarr');
+    $f3->route('GET /opml',           'controllers\Opml->show');
+    $f3->route('POST /opml',           'controllers\Opml->add');
 }
 
 // dispatch
