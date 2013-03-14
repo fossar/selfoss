@@ -232,7 +232,6 @@ class feed extends \spouts\spout {
         $htmlUrl = $this->getHtmlUrl();
         if($htmlUrl && $imageHelper->fetchFavicon($htmlUrl))
             $this->faviconUrl = $imageHelper->getFaviconUrl();
-        
         return $this->faviconUrl;
     }
     

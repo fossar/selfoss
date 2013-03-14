@@ -102,7 +102,7 @@ class Image {
                 return false;
             }
             ob_start();
-            imagepng($ico->images[count($ico->images)-1]->getImageResource());
+            @imagepng($ico->images[count($ico->images)-1]->getImageResource());
             $data = ob_get_contents();
             ob_end_clean();
         }
