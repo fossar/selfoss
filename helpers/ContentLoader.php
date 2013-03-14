@@ -123,7 +123,7 @@ class ContentLoader {
                     "keep_bad"       => 0,
                     "comment"        => 1,
                     "cdata"          => 1,
-                    "elements"       => 'div,p,ul,li,a,img,h1,h2,h3,h4,ol,br,table,tr,td'
+                    "elements"       => 'div,p,ul,li,a,img,h1,h2,h3,h4,ol,br,table,tr,td,iframe'
                 )
             );
             $title = htmLawed($item->getTitle(), array("deny_attribute" => "*", "elements" => "-*"));
