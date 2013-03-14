@@ -4,7 +4,7 @@ selfoss
 Copyright (c) 2013 Tobias Zeising, tobias.zeising@aditu.de  
 http://selfoss.aditu.de  
 Licensed under the GPLv3 license  
-Version 2.2
+Version 2.3-SNAPSHOT
 
 
 INSTALLATION
@@ -36,6 +36,11 @@ Visit the page http://<selfoss url>/opml for importing your OPML File. If you ar
 
 CHANGELOG
 ---------
+
+Version 2.3-SNAPSHOT
+* new shortcut library jquery hotkeys (thanks a lot to Sigill)
+* prevent error on png conversion
+* items will be saved in mysql databases also no icon is available
 
 Version 2.2
 * update fat free php Framework to 3.0.5
@@ -88,7 +93,7 @@ Special thanks to the great programmers of this libraries which will be used in 
 * PHP Universal Feed Generator: http://www.ajaxray.com/blog/2008/03/08/php-universal-feed-generator-supports-rss-10-rss-20-and-atom/
 * twitteroauth: https://github.com/abraham/twitteroauth
 * floIcon: http://www.phpclasses.org/package/3906-PHP-Read-and-write-images-from-ICO-files.html
-* keyboard shortcuts: http://www.openjs.com/scripts/events/keyboard_shortcuts/
+* jQuery hotkeys: https://github.com/tzuryby/jquery.hotkeys
 * jsmin: https://github.com/rgrove/jsmin-php/blob/master/jsmin.php
 * cssmin: http://code.google.com/p/cssmin/
 * Spectrum Colorpicker: https://github.com/bgrins/spectrum

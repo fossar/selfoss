@@ -5,8 +5,6 @@ selfoss.shortcuts = {
      * init shortcuts
      */
     init: function() { 
-        var options = {"disable_in_input": true};
-        
         // next
         $(document).bind('keydown', 'space', function() { selfoss.shortcuts.nextprev('next', true, false); return false; });
         $(document).bind('keydown', 'n', function() { selfoss.shortcuts.nextprev('next', false); return false; });
