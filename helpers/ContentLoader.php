@@ -126,7 +126,7 @@ class ContentLoader {
                     'datetime'     => $item->getDate(),
                     'uid'          => $item->getId(),
                     'thumbnail'    => $item->getThumbnail(),
-                    'icon'         => $item->getIcon(),
+                    'icon'         => $item->getIcon()!==false ? $item->getIcon() : "",
                     'link'         => htmLawed($item->getLink(), array("deny_attribute" => "*", "elements" => "-*"))
             );
             
