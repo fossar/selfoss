@@ -8,34 +8,34 @@ selfoss.shortcuts = {
         var options = {"disable_in_input": true};
         
         // next
-        shortcut.add('Space', function() { selfoss.shortcuts.nextprev('next', true, false); return false; }, options);
-        shortcut.add('n', function() { selfoss.shortcuts.nextprev('next', false); return false; }, options);
-        shortcut.add('j', function() { selfoss.shortcuts.nextprev('next', true); return false; }, options);
+        $(document).bind('keydown', 'space', function() { selfoss.shortcuts.nextprev('next', true, false); return false; });
+        $(document).bind('keydown', 'n', function() { selfoss.shortcuts.nextprev('next', false); return false; });
+        $(document).bind('keydown', 'j', function() { selfoss.shortcuts.nextprev('next', true); return false; });
         
         // prev
-        shortcut.add('Shift+Space', function() { selfoss.shortcuts.nextprev('prev', true); return false; }, options);
-        shortcut.add('p', function() { selfoss.shortcuts.nextprev('prev', false); return false; }, options);
-        shortcut.add('k', function() { selfoss.shortcuts.nextprev('prev', true); return false; }, options);
+        $(document).bind('keydown', 'shift+space', function() { selfoss.shortcuts.nextprev('prev', true); return false; });
+        $(document).bind('keydown', 'p', function() { selfoss.shortcuts.nextprev('prev', false); return false; });
+        $(document).bind('keydown', 'k', function() { selfoss.shortcuts.nextprev('prev', true); return false; });
         
         // star/unstar
-        shortcut.add('s', function() {
+        $(document).bind('keydown', 's', function() {
             $('.entry.selected .entry-starr').click();
-        }, options);
+        });
         
         // mark/unmark
-        shortcut.add('m', function() {
+        $(document).bind('keydown', 'm', function() {
             $('.entry.selected .entry-unread').click();
-        }, options);
+        });
         
         // open target
-        shortcut.add('v', function() {
+        $(document).bind('keydown', 'v', function() {
             window.open($('.entry.selected .entry-source').attr('href'));
-        }, options);
+        });
         
         // mark all as read
-        shortcut.add('Ctrl+m', function() {
+        $(document).bind('keydown', 'ctrl+m', function() {
             $('#nav-mark').click();
-        }, options);
+        });
     },
     
     
