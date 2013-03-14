@@ -1,0 +1,43 @@
+<!doctype html>  
+<head>
+    <base href="<?PHP echo $this->base; ?>" /> 
+
+    <meta charset="utf-8">
+
+    <title>selfoss</title>
+    
+    <meta name="description" content="selfoss">
+    <meta name="author" content="Tobias Zeising">
+
+    <!--  Mobile viewport optimized: j.mp/bplateviewport -->
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
+
+    <!-- Place favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+    <!-- all css definitions -->
+    <link rel="stylesheet" href="all.css">
+    </head>
+    <body>
+
+	<form method="post" enctype="multipart/form-data">
+	    <ul id="opml">
+		<li><h1>Upload an OPML File</h1></li>
+		<li>
+		    <p>
+			Coming from Google Reader? Use <a href='https://www.google.com/takeout/'>Google Takeout</a> to export
+			your Google Reader subscriptions into a .zip file. In that file, find the file named Reader/subscriptions.xml.
+		    </p>
+		</li>
+		<?php
+		    if(isset($this->msg))
+			echo '<li class="msg '.$this->msgclass.'"><p>'.$this->msg.'</p><li>';
+		?>
+		<li class="center"><label>Opml.xml:</label> <input type="file" name="opml" /></li>
+		<li class="button"><label>&nbsp;</label><input type="submit" value="Deliver my OPML!" /></li>
+	    </ul>
+	</form>
+	<script src="all.js"></script>
+    </body>
+</html>
