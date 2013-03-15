@@ -51,6 +51,8 @@ Version 2.3-SNAPSHOT
 * default charset on mysql is utf8
 * fix source management bug in lighttpd
 * new readability support (thanks a lot to oxman)
+* link to opml import added
+* Use IfMoudule to avoid errors in Etags settings (thanks to vincebusam)
 
 Version 2.2
 * update fat free php Framework to 3.0.5
