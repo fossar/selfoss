@@ -24,7 +24,7 @@
             <select class="source-spout" id="spout">
                 <option value="">please select source</option>
                 <?PHP foreach($this->spouts as $spouttype=>$spout) : ?>
-                <option value="<?PHP echo $spouttype; ?>" <?PHP echo isset($this->source) && $spouttype==$this->source['spout'] ? 'selected="selected"' : ''; ?>>
+                <option value="<?PHP echo str_replace("\\", "_", $spouttype); ?>" <?PHP echo isset($this->source) && $spouttype==$this->source['spout'] ? 'selected="selected"' : ''; ?>>
                     <?PHP echo $spout->name; ?>
                 </option>
                 <?PHP endforeach; ?>
