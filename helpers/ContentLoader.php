@@ -19,6 +19,9 @@ class ContentLoader {
         // include htmLawed
         if(!function_exists('htmLawed'))
             require('libs/htmLawed.php');
+        // include readability
+        if(!function_exists('readability'))
+            require('libs/readability.php');
     }
     
     
@@ -101,12 +104,19 @@ class ContentLoader {
             if($itemsDao->exists($item->getId())===true)
                 continue;
             
+            if(\F3::get('readability_key')!==null && strlen(trim(\F3::get('readability_key')))>0) {
+                $content = readability(\F3::get('readability_key'), $item->getLink());
+                \F3::get('logger')->log('item content readability', \DEBUG);
+            } else {
+                $content = $item->getContent();
+            }
+            
             // insert new item
             \F3::get('logger')->log('start insertion of new item "'.$item->getTitle().'"', \DEBUG);
             
             // sanitize content html
             $content = htmLawed(
-                $item->getContent(), 
+                $content, 
                 array(
                     "safe"           => 1,
                     "deny_attribute" => '* -alt -title -src -href',

@@ -49,6 +49,8 @@ Version 2.3-SNAPSHOT
 * support of PostgreSQL Database (thanks a lot to volkadav)
 * now updates by command line are possible (thanks a lot to Jeppe Toustrup)
 * default charset on mysql is utf8
+* fix source management bug in lighttpd
+* new readability support (thanks a lot to oxman)
 
 Version 2.2
 * update fat free php Framework to 3.0.5
