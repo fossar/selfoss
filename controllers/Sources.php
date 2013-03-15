@@ -62,7 +62,7 @@ class Sources extends BaseController {
         
         $spoutLoader = new \helpers\SpoutLoader();
         
-        $spout = str_replace("\\\\", "\\", $_GET['spout']);
+        $spout = str_replace("_", "\\", $_GET['spout']);
         $this->view->spout = $spoutLoader->get($spout);
         
         if($this->view->spout===false)
@@ -119,7 +119,7 @@ class Sources extends BaseController {
         unset($data['spout']);
         unset($data['tags']);
 
-        $spout = str_replace("\\\\", "\\", $spout);
+        $spout = str_replace("_", "\\", $spout);
         
         $validation = $sourcesDao->validate($title, $spout, $data);
         if($validation!==true)
