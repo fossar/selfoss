@@ -13,7 +13,7 @@ INSTALLATION
 1. upload all files of this folder (IMPORTANT: also upload the invisible .htaccess files)
 2. make the directories data/cache, data/favicons, data/logs, data/thumbnails, data/sqlite and public/ writeable
 3. insert database access data in config.ini (you have not to change anything if you would like to use sqlite)
-4. create cronjob for updating feeds and point it to http://<selfoss url>/update via wget or curl.
+4. create cronjob for updating feeds and point it to http://<selfoss url>/update via wget or curl. You can also execute the update.php from commandline.
 
 For further questions or on any problem use our support forum: http://selfoss.aditu.de/forum
 
@@ -46,6 +46,9 @@ Version 2.3-SNAPSHOT
 * new shortcut for mark as read and switch to next in one step (thanks a lot to Sigill)
 * prevent error on png conversion
 * items will be saved in mysql databases also no icon is available
+* support of PostgreSQL Database (thanks a lot to volkadav)
+* now updates by command line are possible (thanks a lot to Jeppe Toustrup)
+* default charset on mysql is utf8
 
 Version 2.2
 * update fat free php Framework to 3.0.5

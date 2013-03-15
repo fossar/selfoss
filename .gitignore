@@ -7,3 +7,4 @@
 /data/sqlite/*.db
 /public/all.*
 /_bin/*.*
+/_docs/website/forum

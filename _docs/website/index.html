@@ -85,10 +85,13 @@
                 <p>selfoss is not a hosted service. It has to be installed on your own webserver. This webserver must fulfill the following requirements (which are available from most providers)</p>
                 <ul>
                     <li>PHP 5.3 or higher</li>
-                    <li>MySQL or Sqlite</li>
+                    <li>MySQL, PostgreSQL or Sqlite</li>
                     <li>Apache Webserver (ngnix and lighttpd also possible)</li>
                 </ul>
-                selfoss supports all modern browsers, including Mozilla Firefox, Safari, Google Chrome, Opera and Internet Explorer. selfoss also supports mobile browsers on iPad, iPhone, Android and other devices.
+                
+                <p>Ensure that you have mod_rewrite and mod_headers enabled.</p>
+                
+                <p>selfoss supports all modern browsers, including Mozilla Firefox, Safari, Google Chrome, Opera and Internet Explorer. selfoss also supports mobile browsers on iPad, iPhone, Android and other devices.</p>
             </div>
             
             <h2>Installation</h2>
@@ -100,7 +103,7 @@
                     <li>Make the directories data/cache, data/favicons, data/logs, data/thumbnails, data/sqlite and public/ writeable</li>
                     <li>Insert database access data in config.ini (you have not to change anything if you would like to use sqlite)</li>
                     <li>You don't have to install the database, it will be created automatically</li>
-                    <li>Create cronjob for updating feeds and point it to http://yoururl.com/update via wget or curl.</li>
+                    <li>Create cronjob for updating feeds and point it to http://yoururl.com/update via wget or curl. You can also execute the update.php from commandline.</li>
                 </ol>
                 
                 For further questions or on any problem use our <a href="forum">support forum</a>.
@@ -140,7 +143,7 @@
                     </tr>
                     <tr>
                         <td class="documentation-first-column">db_type</td>
-                        <td>database type (sqlite or mysql)</td>
+                        <td>database type (sqlite, mysql or pgsql)</td>
                     </tr>
                     <tr>
                         <td class="documentation-first-column">db_file</td>
@@ -164,7 +167,7 @@
                     </tr>
                     <tr>
                         <td class="documentation-first-column">db_port</td>
-                        <td>port for database connections</td>
+                        <td>port for database connections (3306 for mysql, 5432 for PostgreSQL</td>
                     </tr>
                     <tr>
                         <td class="documentation-first-column">logger_level</td>
