@@ -19,4 +19,5 @@ $f3->set(
 );
 
 $loader = new \helpers\ContentLoader();
+$loader->setage($argv[1]);
 $loader->update();

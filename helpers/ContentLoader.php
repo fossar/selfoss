@@ -22,9 +22,14 @@ class ContentLoader {
         // include readability
         if(!function_exists('readability'))
             require('libs/readability.php');
+        $this->age = 0;
     }
     
     
+    public function setage($age) {
+        $this->age = $age;
+    }
+
     /**
      * updates all sources
      *
@@ -33,7 +38,17 @@ class ContentLoader {
     public function update() {
         $sourcesDao = new \daos\Sources();
         foreach($sourcesDao->get() as $source) {
-            $this->fetch($source);
+            if ($this->age == 0) {
+                $this->fetch($source);
+                continue;
+            }
+            $itemDao = new \daos\Items();
+            foreach ($itemDao->get(array('source' => $source['id'])) as $item) {
+                if ($item['datetime'] > date('Y-m-d H:i:s',time()-$this->age)) {
+                    $this->fetch($source);
+                    break;
+                }
+            }
         }
         $this->cleanup();
     }
