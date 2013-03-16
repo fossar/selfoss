@@ -13,7 +13,7 @@ INSTALLATION
 1. upload all files of this folder (IMPORTANT: also upload the invisible .htaccess files)
 2. make the directories data/cache, data/favicons, data/logs, data/thumbnails, data/sqlite and public/ writeable
 3. insert database access data in config.ini (you have not to change anything if you would like to use sqlite)
-4. create cronjob for updating feeds and point it to http://<selfoss url>/update via wget or curl. You can also execute the update.php from commandline.
+4. create cronjob for updating feeds and point it to http://yourselfossurl.com/update via wget or curl. You can also execute the update.php from commandline.
 
 For further questions or on any problem use our support forum: http://selfoss.aditu.de/forum
 
@@ -35,7 +35,7 @@ For further questions or on any problem use our support forum: http://selfoss.ad
 OPML Import
 -----------
 
-Visit the page http://<selfoss url>/opml for importing your OPML File. If you are a user of the google reader then use https://www.google.com/takeout/ to get all your feeds in one opml file.
+Visit the page http://yourselfossurl.com/opml for importing your OPML File. If you are a user of the google reader then use https://www.google.com/takeout/ to get all your feeds in one opml file.
 
 
 CHANGELOG
@@ -49,10 +49,10 @@ Version 2.3-SNAPSHOT
 * support of PostgreSQL Database (thanks a lot to volkadav)
 * now updates by command line are possible (thanks a lot to Jeppe Toustrup)
 * default charset on mysql is utf8
-* fix source management bug in lighttpd
 * new readability support (thanks a lot to oxman)
 * link to opml import added
 * Use IfMoudule to avoid errors in Etags settings (thanks to vincebusam)
+* Allow tag filtering to not include partial matches (thanks to WalterWeight and bsweeney)
 
 Version 2.2
 * update fat free php Framework to 3.0.5
