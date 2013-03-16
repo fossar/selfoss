@@ -178,8 +178,12 @@ class Items extends Database {
         
         // tag filter
         if(isset($options['tag']) && strlen($options['tag'])>0) {
-            $params[':tag'] = array("%".$options['tag']."%", \PDO::PARAM_STR);
-            $where .= ' AND (sources.tags LIKE :tag) ';
+            $params[':tag'] = array( "%,".$options['tag'].",%" , \PDO::PARAM_STR );
+            if ( \F3::get( 'db_type' ) == 'mysql' ) {
+              $where .= " AND ( CONCAT( ',' , sources.tags , ',' ) LIKE :tag ) ";
+            } else {
+              $where .= " AND ( (',' || sources.tags || ',') LIKE :tag ) ";
+            }
         }
         
         // set limit
