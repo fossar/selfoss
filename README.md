@@ -4,7 +4,7 @@ selfoss
 Copyright (c) 2013 Tobias Zeising, tobias.zeising@aditu.de  
 http://selfoss.aditu.de  
 Licensed under the GPLv3 license  
-Version 2.3-SNAPSHOT
+Version 2.3
 
 
 INSTALLATION
@@ -41,7 +41,7 @@ Visit the page http://yourselfossurl.com/opml for importing your OPML File. If y
 CHANGELOG
 ---------
 
-Version 2.3-SNAPSHOT
+Version 2.3
 * new shortcut library jquery hotkeys (thanks a lot to Sigill)
 * new shortcut for mark as read and switch to next in one step (thanks a lot to Sigill)
 * prevent error on png conversion
