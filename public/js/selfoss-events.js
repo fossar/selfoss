@@ -38,7 +38,7 @@ selfoss.events = {
                 
             // from sources
             if(selfoss.events.lasthash=="#sources") {
-                $('#nav-filter li:first').click();
+                $('#nav-filter li.active').click();
             }
                 
             // from navigation
