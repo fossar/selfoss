@@ -15,7 +15,7 @@ var selfoss = {
         offset: 0,
         itemsPerPage: 0,
         search: '',
-        type: 'newest',
+        type: $('#nav-filter li.active').attr('id').replace('nav-filter-', ''),
         tag: '',
         ajax: true
     },
