@@ -187,6 +187,8 @@ selfoss.events = {
         if($('body').hasClass('loggedin')==true) {
             // mark as read
             $('#nav-mark').unbind('click').click(function () {
+		if (! confirm("Mark all read?  Really?"))
+		    return;
                 var ids = new Array();
                 $('.entry.unread').each(function(index, item) {
                     ids.push( $(item).attr('id').substr(5) );
