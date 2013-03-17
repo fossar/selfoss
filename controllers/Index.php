@@ -33,7 +33,16 @@ class Index extends BaseController {
         // get search param
         if(isset($options['search']) && strlen($options['search'])>0)
             $this->view->search = $options['search'];
-        
+
+	  // if type is not provided, does the user have a preferred
+	  // start type?
+	  if(!isset($options['type']) && \F3::get('homepage')) {
+            $options['type'] = \F3::get('homepage');
+		$this->view->startFilter = $options['type'];
+        } else {
+		$this->view->startFilter = 'newest';
+	  }
+
         // load items
         $itemsHtml = $this->loadItems($options, $tags);
         $this->view->content = $itemsHtml;
