@@ -38,7 +38,7 @@ selfoss.events = {
                 
             // from sources
             if(selfoss.events.lasthash=="#sources") {
-                $('#nav-filter li:first').click();
+                $('#nav-filter li.active').click();
             }
                 
             // from navigation
@@ -193,6 +193,10 @@ selfoss.events = {
                 $('.entry.unread').each(function(index, item) {
                     ids.push( $(item).attr('id').substr(5) );
                 });
+
+                if(ids.length === 0){
+                    return;
+                }
                 
                 $.ajax({
                     url: $('base').attr('href') + 'mark',
@@ -456,6 +460,12 @@ selfoss.events = {
             return false;
         });
         
+        // open in new window
+        parent.find('.entry-newwindow').unbind('click').click(function(e) {
+            window.open($(this).parents(".entry").children("a").eq(0).attr("href"));
+            e.preventDefault();
+            return false;
+        });
         
         // only loggedin users
         if($('body').hasClass('loggedin')==true) {

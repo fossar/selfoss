@@ -22,11 +22,11 @@ class Index extends BaseController {
         $this->authentication();
         
         // parse params
-        if (\F3::get('homepage')!='') {
+        $options = array();
+        if (\F3::get('homepage')!='')
             $options = array( 'type' => \F3::get('homepage') );
-        }else{
-            $options = array();
-        }
+        
+        // use ajax given params?
         if(count($_GET)>0)
             $options = $_GET;
         
