@@ -48,7 +48,7 @@ class Database {
                         id INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
                         datetime DATETIME NOT NULL ,
                         title TEXT NOT NULL ,
-                        content TEXT NOT NULL ,
+                        content LONGTEXT NOT NULL ,
                         thumbnail TEXT ,
                         icon TEXT ,
                         unread BOOL NOT NULL ,
