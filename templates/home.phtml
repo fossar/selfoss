@@ -38,9 +38,9 @@
         <div id="nav-mark">mark as read</div>
         
         <ul id="nav-filter">
-            <li class="nav-filter-newest active">newest <span><?PHP echo $this->statsAll; ?></span></li>
-            <li class="nav-filter-unread">unread <span><?PHP echo $this->statsUnread; ?></span></li>
-            <li class="nav-filter-starred">starred <span><?PHP echo $this->statsStarred; ?></span></li>
+            <li class="nav-filter-newest<?PHP if ($this->startFilter == 'newest') { echo ' active'; } ?>">newest <span><?PHP echo $this->statsAll; ?></span></li>
+            <li class="nav-filter-unread<?PHP if ($this->startFilter == 'unread') { echo ' active'; } ?>">unread <span><?PHP echo $this->statsUnread; ?></span></li>
+            <li class="nav-filter-starred<?PHP if ($this->startFilter == 'starred') { echo ' active'; } ?>">starred <span><?PHP echo $this->statsStarred; ?></span></li>
         </ul>
         
         <hr>
