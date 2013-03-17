@@ -375,6 +375,14 @@ selfoss.events = {
                     content.show();
                     selfoss.events.entriesToolbar(parent);
                     parent.find('.entry-toolbar').show();
+
+		    if (selfoss.isMobile()) {
+			var unreadButton =
+			    parent.find('.entry-toolbar').find('.entry-unread');
+			if (unreadButton.hasClass('active')==true) {
+			    unreadButton.click();
+			}
+		    }
                 }
                 
                 // load images not on mobile devices
