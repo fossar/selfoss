@@ -43,7 +43,7 @@ class Logger {
         NOTICE  => "Notice",
         WARNING => "Warning",
         ERROR   => "Error",
-	NONE	=> "None"
+        NONE    => "None"
     );
     
     

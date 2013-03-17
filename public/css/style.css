@@ -361,6 +361,7 @@ input {
         margin-top:20px;
         line-height: 1.7em;
     }
+    
         .entry-content a {
             color:#3d6d69;
         }
@@ -433,6 +434,10 @@ input {
         .entry-toolbar .entry-loadimages {
             display:none;
             background-image:url(images/arrow-down.png);
+        }
+        
+        .entry-toolbar .entry-newwindow {
+            background-image:url(images/open.png);
         }
         
         .entry-toolbar .entry-close {
