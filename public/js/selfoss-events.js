@@ -191,6 +191,10 @@ selfoss.events = {
                 $('.entry.unread').each(function(index, item) {
                     ids.push( $(item).attr('id').substr(5) );
                 });
+
+		if(ids.length === 0){
+		    return;
+		}
                 
                 $.ajax({
                     url: $('base').attr('href') + 'mark',
