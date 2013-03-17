@@ -380,6 +380,7 @@ selfoss.events = {
                     selfoss.events.entriesToolbar(parent);
                     parent.find('.entry-toolbar').show();
 
+		    // Mark the item as read immediately if mobile
 		    if (selfoss.isMobile()) {
 			var unreadButton =
 			    parent.find('.entry-toolbar').find('.entry-unread');
