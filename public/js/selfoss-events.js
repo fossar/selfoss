@@ -446,6 +446,12 @@ selfoss.events = {
             return false;
         });
         
+        // open in new window
+        parent.find('.entry-newwindow').unbind('click').click(function(e) {
+            window.open($(this).parents(".entry").children("a").eq(0).attr("href"));
+            e.preventDefault();
+            return false;
+        });
         
         // only loggedin users
         if($('body').hasClass('loggedin')==true) {
