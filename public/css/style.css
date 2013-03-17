@@ -737,6 +737,10 @@ body.publicmode.notloggedin .entry-unread {
             display:block;
         }
    
+    .entry-newwindow {
+        display:none;
+    }
+
     .entry-content {
         display:none;
         -moz-column-count: 1;
