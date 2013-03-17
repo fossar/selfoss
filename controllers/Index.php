@@ -23,6 +23,10 @@ class Index extends BaseController {
         
         // parse params
         $options = array();
+        if (\F3::get('homepage')!='')
+            $options = array( 'type' => \F3::get('homepage') );
+        
+        // use ajax given params?
         if(count($_GET)>0)
             $options = $_GET;
         
@@ -33,15 +37,6 @@ class Index extends BaseController {
         // get search param
         if(isset($options['search']) && strlen($options['search'])>0)
             $this->view->search = $options['search'];
-        
-        // if type is not provided, does the user have a preferred
-        // start type?
-        if(!isset($options['type']) && \F3::get('homepage')) {
-            $options['type'] = \F3::get('homepage');
-            $this->view->startFilter = $options['type'];
-        } else {
-            $this->view->startFilter = 'newest';
-        } 
         
         // load items
         $itemsHtml = $this->loadItems($options, $tags);

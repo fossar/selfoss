@@ -29,6 +29,9 @@ var selfoss = {
             // set items per page
             selfoss.filter.itemsPerPage = $('.entry').length;
             
+            // initialize type by homepage config param
+            selfoss.filter.type = $('#nav-filter li.active').attr('id').replace('nav-filter-', '');
+            
             // init events
             selfoss.events.init();
             
