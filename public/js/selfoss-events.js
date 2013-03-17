@@ -228,7 +228,16 @@ selfoss.events = {
             
             // logout
             $('#nav-logout').unbind('click').click(function () {
-                window.location.href = $('base').attr('href')+"?logout=1";
+                $.ajax({
+                    url: $('base').attr('href')+'api/logout',
+                    type: 'GET',
+                    success: function() {
+                        location.reload();
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        alert('Logout error: '+errorThrown);
+                    }
+                });
             });
         }
     },
