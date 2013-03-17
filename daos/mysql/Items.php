@@ -366,4 +366,28 @@ class Items extends Database {
                    WHERE starred=1');
         return $res[0]['amount'];
     }
+
+    public function numberOfItemsForTag($tag) {
+        $res = \F3::get('db')->exec('SELECT count(*) AS amount
+                   FROM items,sources
+                   WHERE items.source=source.id AND source.tags LIKE :tag',
+				    array(':tag'   => $tag));
+	return $res[0]['amount'];
+    }
+
+    public function numberOfUnreadForTag($tag) {
+        $res = \F3::get('db')->exec('SELECT count(*) AS amount
+                   FROM items, sources
+                   WHERE items.source=sources.id AND sources.tags LIKE :tag AND unread=1',
+				    array(':tag' => $tag));
+	return $res[0]['amount'];
+    }
+
+    public function numberOfStarredForTag($tag) {
+        $res = \F3::get('db')->exec('SELECT count(*) AS amount
+                   FROM items,sources
+                   WHERE items.source=source.id AND source.tags LIKE :tag AND starred=1',
+				    array(':tag'   => $tag));
+	return $res[0]['amount'];
+    }
 }
