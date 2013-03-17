@@ -96,7 +96,7 @@ class Image {
         // convert ico to png
         if($type=='ico') {
             $ico = new \floIcon();
-            $ico->readICO($tmp);
+            @$ico->readICO($tmp);
             if(count($ico->images)==0) {
                 @unlink($tmp);
                 return false;
