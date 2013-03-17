@@ -41,6 +41,13 @@ Visit the page http://yourselfossurl.com/opml for importing your OPML File. If y
 CHANGELOG
 ---------
 
+Version 2.4-SNAPSHOT
+* prevent error on icons parsing error
+* new homepage parameter (thanks a lot to Jean Baptiste Favre)
+* new button for open an articles source
+* no error message if no unread item is available and mark all as read was pressed
+* improve logger
+
 Version 2.3
 * new shortcut library jquery hotkeys (thanks a lot to Sigill)
 * new shortcut for mark as read and switch to next in one step (thanks a lot to Sigill)
