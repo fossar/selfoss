@@ -8,12 +8,12 @@ selfoss.shortcuts = {
         // next
         $(document).bind('keydown', 'space', function() { selfoss.shortcuts.nextprev('next', true, false); return false; });
         $(document).bind('keydown', 'n', function() { selfoss.shortcuts.nextprev('next', false); return false; });
-        $(document).bind('keydown', 'j', function() { selfoss.shortcuts.nextprev('next', true); return false; });
+        $(document).bind('keydown', 't', function() { selfoss.shortcuts.nextprev('next', true); return false; });
         
         // prev
         $(document).bind('keydown', 'shift+space', function() { selfoss.shortcuts.nextprev('prev', true); return false; });
         $(document).bind('keydown', 'p', function() { selfoss.shortcuts.nextprev('prev', false); return false; });
-        $(document).bind('keydown', 'k', function() { selfoss.shortcuts.nextprev('prev', true); return false; });
+        $(document).bind('keydown', 'shift+t', function() { selfoss.shortcuts.nextprev('prev', true); return false; });
         
         // star/unstar
         $(document).bind('keydown', 's', function() {
@@ -36,14 +36,14 @@ selfoss.shortcuts = {
         });
 
         // throw (mark as read & open next)
-        $(document).bind('keydown', 't', function() {
+        $(document).bind('keydown', 'j', function() {
             $('.entry.selected.unread .entry-unread').click();
             selfoss.shortcuts.nextprev('next', true);
             return false;
         });
 
         // throw (mark as read & open previous)
-        $(document).bind('keydown', 'Shift+t', function() {
+        $(document).bind('keydown', 'k', function() {
             $('.entry.selected.unread .entry-unread').click();
             selfoss.shortcuts.nextprev('prev', true);
             return false;
@@ -118,24 +118,7 @@ selfoss.shortcuts = {
      * autoscroll
      */
     autoscroll: function(next) {
-        var viewportHeight = $(window).height();
-        var viewportScrollTop = $(window).scrollTop();
-        
-        // scroll down
-        if(viewportScrollTop + viewportHeight < next.position().top + next.height() + 80) {
-            if(next.height() > viewportHeight) {
-                $(window).scrollTop(next.position().top);
-            } else {
-                var marginTop = (viewportHeight-next.height())/2;
-                var scrollTop = next.position().top-marginTop;
-                $(window).scrollTop(scrollTop);
-            }
-        }
-        
-        // scroll up
-        if(next.position().top <= viewportScrollTop) {
-            $(window).scrollTop(next.position().top);
-        }
+        $(window).scrollTop(next.position().top);
     },
     
 }
