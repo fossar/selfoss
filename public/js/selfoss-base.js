@@ -81,7 +81,7 @@ var selfoss = {
      * @return true if device resolution smaller equals 1024
      */
     isMobile: function() {
-        return selfoss.isTablet() || selfoss.isSmartphone();
+        return (/iPhone|iPod|iPad|Android|BlackBerry/).test(navigator.userAgent);
     },
     
     
