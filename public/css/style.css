@@ -440,6 +440,10 @@ input {
             background-image:url(images/open.png);
         }
         
+        .entry-toolbar .entry-sharelink {
+            background-image:url("http://ssl.gstatic.com/images/icons/gplus-16.png");
+        }
+        
         .entry-toolbar .entry-close {
             display:none;
             width:32px;
