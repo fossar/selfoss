@@ -468,6 +468,13 @@ selfoss.events = {
             e.preventDefault();
             return false;
         });
+        
+        parent.find('.entry-sharefacebook').unbind('click').click(function(e) {
+            window.open("https://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent($(this).parents(".entry").children("a").eq(0).attr("href"))+"&t="+encodeURIComponent($(this).parents(".entry").children(".entry-title").html()));
+            e.preventDefault();
+            return false;
+        });
+
         
         // only loggedin users
         if($('body').hasClass('loggedin')==true) {
