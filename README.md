@@ -47,6 +47,10 @@ Version 2.4-SNAPSHOT
 * new button for open an articles source
 * no error message if no unread item is available and mark all as read was pressed
 * improve logger
+* readability is now available as spout instead as global parameter
+* new share buttons for google+, twitter and facebook
+* mysql use longtext for articles content
+* improved detection of mobile devices
 
 Version 2.3
 * new shortcut library jquery hotkeys (thanks a lot to Sigill)
