@@ -76,6 +76,8 @@ class Tags extends Database {
                    FROM tags 
                    ORDER BY LOWER(tag);');
 
+	$tags = array();
+
         foreach($res as $tag) {
             $tags[] = array('tag' => $tag['tag'],
                           'color' => $tag['color'],
