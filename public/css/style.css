@@ -996,3 +996,40 @@ body.publicmode.notloggedin .entry-unread {
     
  }
  
+ /* Navigation bar */
+@media screen and (max-width:1024px) {
+        #actionbar{
+                display:block;
+                background: #191718;
+                border-top: 3px solid #3D6D69;
+                position: fixed;
+                bottom:0;
+                height: 50px;
+                width: 100%;
+                z-index:199;
+        }
+
+        .actioninput{
+                font: 18px/27px 'OpenSansRegular', Arial, sans-serif;
+                color:#D7D7D7;
+                border:none;
+                background:#272325;
+                height:100%;
+                width:49%;
+        }
+
+        .next{
+                float:left;
+        }
+
+        .prev{
+                float:right;
+        }
+
+}
+@media screen and (min-width:1024px) {
+        #actionbar{
+                display:none;
+        }
+}
+
