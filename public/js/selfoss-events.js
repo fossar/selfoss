@@ -155,6 +155,22 @@ selfoss.events = {
                 $('#nav-mobile-settings').click();
         });
         
+        // Event for the action bar
+        $('#prev').unbind('click').click(function(e) {
+            $('.entry.selected.unread .entry-unread').click();
+            selfoss.shortcuts.nextprev('prev', true);
+            e.preventDefault();
+            return false;
+        });
+
+        $('#next').unbind('click').click(function(e) {
+            $('.entry.selected.unread .entry-unread').click();
+            selfoss.shortcuts.nextprev('next', true);
+            e.preventDefault();
+            return false;
+        });
+
+        
         // show hide navigation for mobile version
         $('#nav-mobile-settings').unbind('click').click(function () {
             var nav = $('#nav');
@@ -456,6 +472,25 @@ selfoss.events = {
             e.preventDefault();
             return false;
         });
+        
+        parent.find('.entry-sharelink').unbind('click').click(function(e) {
+            window.open("https://plus.google.com/share?url="+encodeURIComponent($(this).parents(".entry").children("a").eq(0).attr("href")));
+            e.preventDefault();
+            return false;
+        });
+        
+        parent.find('.entry-sharetwitter').unbind('click').click(function(e) {
+            window.open("https://twitter.com/intent/tweet?source=webclient&text="+encodeURIComponent($(this).parents(".entry").children(".entry-title").html())+" "+encodeURIComponent($(this).parents(".entry").children("a").eq(0).attr("href")));
+            e.preventDefault();
+            return false;
+        });
+        
+        parent.find('.entry-sharefacebook').unbind('click').click(function(e) {
+            window.open("https://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent($(this).parents(".entry").children("a").eq(0).attr("href"))+"&t="+encodeURIComponent($(this).parents(".entry").children(".entry-title").html()));
+            e.preventDefault();
+            return false;
+        });
+
         
         // only loggedin users
         if($('body').hasClass('loggedin')==true) {

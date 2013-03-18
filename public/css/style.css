@@ -440,6 +440,20 @@ input {
             background-image:url(images/open.png);
         }
         
+        .entry-toolbar .entry-sharelink {
+            background-image:url("http://ssl.gstatic.com/images/icons/gplus-16.png");
+        }
+        
+        .entry-toolbar .entry-sharetwitter {
+            background-image:url("https://twitter.com/favicon.ico");
+        }
+        
+        .entry-toolbar .entry-sharefacebook {
+            background-image:url("http://facebook.com/favicon.ico");
+        }
+
+
+        
         .entry-toolbar .entry-close {
             display:none;
             width:32px;
@@ -982,3 +996,40 @@ body.publicmode.notloggedin .entry-unread {
     
  }
  
+ /* Navigation bar */
+@media screen and (max-width:1024px) {
+        #actionbar{
+                display:block;
+                background: #191718;
+                border-top: 3px solid #3D6D69;
+                position: fixed;
+                bottom:0;
+                height: 50px;
+                width: 100%;
+                z-index:199;
+        }
+
+        .actioninput{
+                font: 18px/27px 'OpenSansRegular', Arial, sans-serif;
+                color:#D7D7D7;
+                border:none;
+                background:#272325;
+                height:100%;
+                width:49%;
+        }
+
+        .next{
+                float:left;
+        }
+
+        .prev{
+                float:right;
+        }
+
+}
+@media screen and (min-width:1024px) {
+        #actionbar{
+                display:none;
+        }
+}
+
