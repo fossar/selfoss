@@ -145,7 +145,7 @@ class Tags extends Database {
      * @return int amount of entries in database which are unread for this tag
      */
     public function numberOfUnread($tag) {
-        $res = \F3::get('db')->exec('SELECT COUNT(title) unread FROM items WHERE source IN (SELECT id FROM sources WHERE tags LIKE \'%'.$tag.'%\');');
+        $res = \F3::get('db')->exec('SELECT COUNT(title) unread FROM items WHERE unread=1 AND source IN (SELECT id FROM sources WHERE tags LIKE \'%'.$tag.'%\');');
         return $res[0]['unread'];
     }
 
