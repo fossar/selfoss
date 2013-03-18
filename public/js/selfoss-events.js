@@ -462,6 +462,12 @@ selfoss.events = {
             e.preventDefault();
             return false;
         });
+        
+        parent.find('.entry-sharetwitter').unbind('click').click(function(e) {
+            window.open("https://twitter.com/intent/tweet?source=webclient&text="+encodeURIComponent($(this).parents(".entry").children(".entry-title").html())+" "+encodeURIComponent($(this).parents(".entry").children("a").eq(0).attr("href")));
+            e.preventDefault();
+            return false;
+        });
         
         // only loggedin users
         if($('body').hasClass('loggedin')==true) {
