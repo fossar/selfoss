@@ -155,6 +155,22 @@ selfoss.events = {
                 $('#nav-mobile-settings').click();
         });
         
+        // Event for the action bar
+        $('#prev').unbind('click').click(function(e) {
+            $('.entry.selected.unread .entry-unread').click();
+            selfoss.shortcuts.nextprev('prev', true);
+            e.preventDefault();
+            return false;
+        });
+
+        $('#next').unbind('click').click(function(e) {
+            $('.entry.selected.unread .entry-unread').click();
+            selfoss.shortcuts.nextprev('next', true);
+            e.preventDefault();
+            return false;
+        });
+
+        
         // show hide navigation for mobile version
         $('#nav-mobile-settings').unbind('click').click(function () {
             var nav = $('#nav');
