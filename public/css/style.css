@@ -447,6 +447,11 @@ input {
         .entry-toolbar .entry-sharetwitter {
             background-image:url("https://twitter.com/favicon.ico");
         }
+        
+        .entry-toolbar .entry-sharefacebook {
+            background-image:url("http://facebook.com/favicon.ico");
+        }
+
 
         
         .entry-toolbar .entry-close {
