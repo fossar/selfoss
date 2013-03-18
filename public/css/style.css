@@ -444,6 +444,11 @@ input {
             background-image:url("http://ssl.gstatic.com/images/icons/gplus-16.png");
         }
         
+        .entry-toolbar .entry-sharetwitter {
+            background-image:url("https://twitter.com/favicon.ico");
+        }
+
+        
         .entry-toolbar .entry-close {
             display:none;
             width:32px;
