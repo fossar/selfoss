@@ -51,6 +51,12 @@
     <!-- content -->
     <div class="entry-content <?PHP if(strlen(strip_tags($content))<500) : ?>entry-content-short<?PHP endif; ?>">
         <?PHP echo $content; ?>
+        
+        <ul class="entry-smartphone-share">
+            <li class="entry-sharegoogle">google</li>
+            <li class="entry-sharetwitter">twitter</li>
+            <li class="entry-sharefacebook">facebook</li>
+        </ul>
     </div>
     
     <!-- toolbar -->
@@ -59,6 +65,9 @@
         <li class="entry-unread <?PHP echo $this->item['unread']==1 ? 'active' : ''; ?>"><?PHP echo $this->item['unread']==1 ? 'mark as read' : 'mark as unread'; ?></li>
         <li class="entry-newwindow">open</li>
         <li class="entry-loadimages">load images</li>
+        <li class="entry-sharegoogle entry-share">google</li>
+        <li class="entry-sharetwitter entry-share">twitter</li>
+        <li class="entry-sharefacebook entry-share">facebook</li>
         <li class="entry-close"></li>
     </ul>
 </div>
