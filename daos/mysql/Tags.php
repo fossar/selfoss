@@ -71,10 +71,18 @@ class Tags extends Database {
      * @return array of all tags
      */
     public function get() {
-        return \F3::get('db')->exec('SELECT 
+        $res = \F3::get('db')->exec('SELECT 
                     tag, color
                    FROM tags 
                    ORDER BY LOWER(tag);');
+
+        foreach($res as $tag) {
+            $tags[] = array('tag' => $tag['tag'],
+                          'color' => $tag['color'],
+                          'unread' => $this->numberOfUnread($tag['tag']));
+        }
+
+        return $tags;
     }
     
     
@@ -128,4 +136,15 @@ class Tags extends Database {
         \F3::get('db')->exec('DELETE FROM tags WHERE tag=:tag',
                     array(':tag' => $tag));
     }
+
+    /**
+     * returns the amount of entries in database which are unread for this tag
+     *
+     * @return int amount of entries in database which are unread for this tag
+     */
+    public function numberOfUnread($tag) {
+        $res = \F3::get('db')->exec('SELECT COUNT(title) unread FROM items WHERE source IN (SELECT id FROM sources WHERE tags LIKE \'%'.$tag.'%\');');
+        return $res[0]['unread'];
+    }
+
 }

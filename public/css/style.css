@@ -139,6 +139,11 @@ input {
             -khtml-border-radius:2px;
             border-radius:2px;
         }
+
+       #nav-tags .tags-unread {
+            font-size:0.8em;
+            color:#777;
+        }
     
     #nav-search {
         display:none;
