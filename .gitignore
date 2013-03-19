@@ -8,3 +8,4 @@
 /public/all.*
 /_bin/*.*
 /_docs/website/forum
+config.ini
