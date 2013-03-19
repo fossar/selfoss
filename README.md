@@ -10,12 +10,21 @@ Version 2.4-SNAPSHOT
 INSTALLATION
 ------------
 
-1. upload all files of this folder (IMPORTANT: also upload the invisible .htaccess files)
-2. make the directories data/cache, data/favicons, data/logs, data/thumbnails, data/sqlite and public/ writeable
-3. insert database access data in config.ini (you have not to change anything if you would like to use sqlite)
-4. create cronjob for updating feeds and point it to http://yourselfossurl.com/update via wget or curl. You can also execute the update.php from commandline.
+1. Upload all files of this folder (IMPORTANT: also upload the invisible .htaccess files)
+2. Make the directories data/cache, data/favicons, data/logs, data/thumbnails, data/sqlite and public/ writeable
+3. Insert database access data in config.ini (see below -- you have not to change anything if you would like to use sqlite)
+3. You don't have to install the database, it will be created automatically
+4. Create cronjob for updating feeds and point it to http://yourselfossurl.com/update via wget or curl. You can also execute the update.php from commandline.
 
 For further questions or on any problem use our support forum: http://selfoss.aditu.de/forum
+
+CONFIGURATION
+-------------
+
+1. Copy defaults.ini to config.ini
+2. Edit config.ini and delete any lines you do not wish to override
+3. Do not delete the [globals] line
+4. See http://selfoss.aditu.de/ for examples
 
 
 UPDATE

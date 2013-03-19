@@ -8,8 +8,12 @@ $f3->set('AUTOLOAD',__dir__.'/;libs/f3/;libs/;libs/WideImage/;daos/;libs/twitter
 $f3->set('cache',__dir__.'/data/cache');
 $f3->set('BASEDIR',__dir__);
 
-// read config
-$f3->config('config.ini');
+// read defaults
+$f3->config('defaults.ini');
+// read config, if it exists
+if(file_exists('config.ini')){
+    $f3->config('config.ini');
+}
 
 // init logger
 $f3->set(
