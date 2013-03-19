@@ -30,7 +30,14 @@ class Items extends BaseController {
             $this->view->error('invalid id');
         
         $itemDao->mark($lastid);
-        $this->view->jsonSuccess(array('success' => true));
+        
+        // get new tag list with updated count values
+        $tagController = new \controllers\Tags();
+        $renderedTags = $tagController->tagsListAsString();
+        $this->view->jsonSuccess(array(
+            'success' => true,
+            'tags' => $renderedTags
+        ));
     }
     
     

@@ -18,8 +18,17 @@ class Tags extends BaseController {
      * @return void
      */
     public function tags() {
+        echo $this->tagsListAsString();
+    }
+    
+    /**
+     * returns all tags
+     *
+     * @return void
+     */
+    public function tagsListAsString() {
         $tagsDao = new \daos\Tags();
-        echo $this->renderTags($tagsDao->get());
+        return $this->renderTags($tagsDao->get());
     }
     
     /**
@@ -52,7 +61,7 @@ class Tags extends BaseController {
         foreach($tags as $tag) {
             $this->view->tag = $tag['tag'];
             $this->view->color = $tag['color'];
-	    $this->view->unread = $itemsDao->numberOfUnreadForTag($tag['tag']);
+            $this->view->unread = $itemsDao->numberOfUnreadForTag($tag['tag']);
             $html .= $this->view->render('templates/tag.phtml');
         }
         

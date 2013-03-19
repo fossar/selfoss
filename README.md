@@ -60,6 +60,8 @@ Version 2.4-SNAPSHOT
 * new share buttons for google+, twitter and facebook
 * mysql use longtext for articles content
 * improved detection of mobile devices
+* allow more tags in articles content
+* show unread items per tag in taglist (thanks a lot to Fedor Bezrukov)
 
 Version 2.3
 * new shortcut library jquery hotkeys (thanks a lot to Sigill)
@@ -113,6 +115,8 @@ Version 1.1
 
 CREDITS
 -------
+
+Very special thanks to all contributors of pull requests here on github. Your improvements are awesome!!!
 
 Special thanks to the great programmers of this libraries which will be used in selfoss:
 
