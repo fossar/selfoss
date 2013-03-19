@@ -565,6 +565,7 @@ selfoss.events = {
                 setButton(unread);
                 
                 // update statistics in main menue
+                //   and the currently active tag
                 var updateStats = function(unread) {
                     var unreadstats = parseInt($('.nav-filter-unread span').html());
                     if(unread) {
@@ -573,6 +574,26 @@ selfoss.events = {
                         unreadstats++;
                     }
                     $('.nav-filter-unread span').html(unreadstats);
+
+		    // Iterate over elements tags
+                    $('#entry'+id+' .entry-tags-tag').each( function(index) {
+			var tag = $(this).html();
+			var tagscountel = $('#nav-tags>li>span').filter(function(i){
+			    return $(this).html()==tag; }).next();
+			var unreadstats;
+			if (tagscountel.html()=='')
+			    unreadstats = 0;
+			else
+			    unreadstats = parseInt(tagscountel.html());
+			if (unread)
+			    unreadstats--;
+			else
+			    unreadstats++;
+			if (unreadstats>0)
+			    tagscountel.html(unreadstats);
+			else
+			    tagscountel.html('');		    
+		    } )
                 };
                 updateStats(unread);
                 
