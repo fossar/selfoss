@@ -367,17 +367,23 @@ class Items extends Database {
         return $res[0]['amount'];
     }
 
+    
+    /**
+     * returns the amount of entries in database per tag
+     *
+     * @return int amount of entries in database per tag
+     */
     public function numberOfUnreadForTag($tag) {
-      $select = 'SELECT count(*) AS amount FROM items, sources';
-      $where = ' WHERE items.source=sources.id AND unread=1';
-      if ( \F3::get( 'db_type' ) == 'mysql' ) {
-	$where .= " AND ( CONCAT( ',' , sources.tags , ',' ) LIKE :tag ) ";
-      } else {
-	$where .= " AND ( (',' || sources.tags || ',') LIKE :tag ) ";
-      }
-      $res = \F3::get('db')->exec( $select . $where,
-				   array(':tag' => "%,".$tag.",%"));
-      return $res[0]['amount'];
+        $select = 'SELECT count(*) AS amount FROM items, sources';
+        $where = ' WHERE items.source=sources.id AND unread=1';
+        if ( \F3::get( 'db_type' ) == 'mysql' ) {
+            $where .= " AND ( CONCAT( ',' , sources.tags , ',' ) LIKE :tag ) ";
+        } else {
+            $where .= " AND ( (',' || sources.tags || ',') LIKE :tag ) ";
+        }
+        $res = \F3::get('db')->exec( $select . $where,
+            array(':tag' => "%,".$tag.",%"));
+        return $res[0]['amount'];
     }
 
 }

@@ -1,1 +1,5 @@
-<li><span><?PHP echo $this->tag; ?></span> <div class="color" style="background-color:<?PHP echo $this->color; ?>;color:red;text-align:center;text-shadow:black 0.1em 0.1em 0.2em;"><?PHP if ($this->unread>0) echo $this->unread; ?></div></li>
+<li>
+    <span class="tag"><?PHP echo $this->tag; ?></span>
+    <span class="unread"><?PHP if ($this->unread>0) echo $this->unread; ?></span>
+    <div class="color" style="background-color:<?PHP echo $this->color; ?>"></div>
+</li>

@@ -201,10 +201,11 @@ selfoss.events = {
                 $.ajax({
                     url: $('base').attr('href') + 'mark',
                     type: 'POST',
+                    dataType: 'json',
                     data: {
                         ids: ids
                     },
-                    success: function() {
+                    success: function(response) {
                         $('.entry').removeClass('unread');
                         
                         var unreadstats = parseInt($('.nav-filter-unread span').html());
@@ -212,6 +213,18 @@ selfoss.events = {
                         
                         if(selfoss.isSmartphone())
                             $('#nav-mobile-settings').click();
+                            
+                        // update tags
+                        var currentTag = $('#nav-tags li').index($('#nav-tags .active'));
+                        $('#nav-tags li:not(:first)').remove();
+                        $('#nav-tags').append(response.tags);
+                        selfoss.events.navigation();
+                        $('#nav-tags li:eq('+currentTag+')').addClass('active');
+                        
+                        // update mark as read button for every entry
+                        var button = $('.entry-unread');
+                        button.removeClass('active');
+                        button.html('mark as unread');
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
                         alert('Can not mark all visible item: ' + errorThrown);
@@ -564,8 +577,7 @@ selfoss.events = {
                 };
                 setButton(unread);
                 
-                // update statistics in main menue
-                //   and the currently active tag
+                // update statistics in main menue and the currently active tag
                 var updateStats = function(unread) {
                     var unreadstats = parseInt($('.nav-filter-unread span').html());
                     if(unread) {
@@ -575,25 +587,29 @@ selfoss.events = {
                     }
                     $('.nav-filter-unread span').html(unreadstats);
 
-		    // Iterate over elements tags
+                    // Iterate over elements tags
                     $('#entry'+id+' .entry-tags-tag').each( function(index) {
-			var tag = $(this).html();
-			var tagscountel = $('#nav-tags>li>span').filter(function(i){
-			    return $(this).html()==tag; }).next();
-			var unreadstats;
-			if (tagscountel.html()=='')
-			    unreadstats = 0;
-			else
-			    unreadstats = parseInt(tagscountel.html());
-			if (unread)
-			    unreadstats--;
-			else
-			    unreadstats++;
-			if (unreadstats>0)
-			    tagscountel.html(unreadstats);
-			else
-			    tagscountel.html('');		    
-		    } )
+                        var tag = $(this).html();
+                        
+                        var tagsCountEl = $('#nav-tags > li > span.tag').filter(function(i){
+                            return $(this).html()==tag; }
+                        ).next();
+                        
+                        var unreadstats = 0;
+                        if (tagsCountEl.html()!='')
+                            unreadstats = parseInt(tagsCountEl.html());
+                        
+                        if (unread)
+                            unreadstats--;
+                        else
+                            unreadstats++;
+                        
+                        if (unreadstats>0)
+                            tagsCountEl.html(unreadstats);
+                        else
+                            tagsCountEl.html('');
+                        
+                    } );
                 };
                 updateStats(unread);
                 
