@@ -101,13 +101,44 @@
                 <ol>
                     <li>Upload all files of this folder (IMPORTANT: also upload the invisible .htaccess files)</li>
                     <li>Make the directories data/cache, data/favicons, data/logs, data/thumbnails, data/sqlite and public/ writeable</li>
-                    <li>Insert database access data in config.ini (you have not to change anything if you would like to use sqlite)</li>
+                    <li>Insert database access data in config.ini (see below &mdash; you have not to change anything if you would like to use sqlite)</li>
                     <li>You don't have to install the database, it will be created automatically</li>
                     <li>Create cronjob for updating feeds and point it to http://yoururl.com/update via wget or curl. You can also execute the update.php from commandline.</li>
                 </ol>
                 
                 For further questions or on any problem use our <a href="forum">support forum</a>.
             </div>
+
+	    <h2>Configuration</h2>
+	    <div class="documentation-entry">
+		<p>Configuration is optional. Any settings in config.ini will override the settings in defaults.ini. To customize settings follow these instructions:</p>
+		<ol>
+		    <li>Copy defaults.ini to config.ini.</li>
+		    <li>Edit config.ini and delete any lines you do not wish to override.</li>
+		    <li>Do not delete the <code>[globals]</code> line.</li>
+		</ol>
+		<p>Sample config.ini file which provides password protection:</p>
+<pre>
+<code>
+[globals]
+username=secretagent
+password=5d95c032abce4865d49ee225d28a8a939ea39a924a158f0056ebb1880d9
+salt=1291929@9394$95%939201098*61234324(@#$(!*@#981923123
+</code>
+</pre>
+		<p>Sample config.ini file with a MySQL database connection:</p>
+<pre>
+<code>
+[globals]
+db_type=mysql
+db_host=localhost
+db_database=selfoss
+db_username=secretagent
+db_password=life0fD4ng3r
+db_port=3306
+</code>
+</pre>
+	    </div>
             
             <h2>Update</h2>
             <div class="documentation-entry">
@@ -120,7 +151,6 @@
                     <li>Rename your folder /data/icons into /data/favicons</li>
                     <li>Delete the files /public/all.css and /public/all.js</li>
                     <li>Clean your browser cache.</li>
-                    <li>Insert your current database connection and your individual configuration in config.ini. Important: we change the config.ini and add new options in newer versions. You have to update the config.ini too.</li>
                 </ol>
                 
                 For further questions or on any problem use our <a href="forum">support forum</a>.
