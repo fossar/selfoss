@@ -11,6 +11,9 @@ $f3->set('BASEDIR',__dir__);
 
 // read config
 $f3->config('config.ini');
+if(file_exists('config.ini')){
+    $f3->config('config.ini');
+}
 
 // init logger
 $f3->set(
