@@ -13,6 +13,7 @@ selfoss.events = {
         
         // window resize
         $("#nav-tags-wrapper").mCustomScrollbar();
+        $("#nav-sources-wrapper").mCustomScrollbar();
         $(window).bind("resize", selfoss.events.resize);
         selfoss.events.resize();
         
@@ -78,12 +79,15 @@ selfoss.events = {
         if(selfoss.isSmartphone()==false) {
             var start = $('#nav-tags-wrapper').position().top;
             var windowHeight = $(window).height();
-            $('#nav-tags-wrapper').height(windowHeight - start - 100);
+            $('#nav-tags-wrapper').height((windowHeight - start - 100)/2);
             $("#nav-tags-wrapper").mCustomScrollbar("update");
+            $('#nav-sources-wrapper').height((windowHeight - start - 100)/2);
+            $("#nav-sources-wrapper").mCustomScrollbar("update");
             $('#nav').show();
         } else {
             $('#nav-tags-wrapper').height("auto");
             $("#nav-tags-wrapper").mCustomScrollbar("disable",selfoss.isSmartphone());
+	    // TODO fix sources!
         }
     },
     
@@ -142,11 +146,29 @@ selfoss.events = {
         // tag
         $('#nav-tags > li').unbind('click').click(function () {
             $('#nav-tags > li').removeClass('active');
+            $('#nav-sources > li').removeClass('active');
             $(this).addClass('active');
             
+            selfoss.filter.source = '';
             selfoss.filter.tag = '';
             if($(this).hasClass('nav-tags-all')==false)
                 selfoss.filter.tag = $(this).find('span').html();
+                
+            selfoss.filter.offset = 0;
+            selfoss.reloadList();
+            
+            if(selfoss.isSmartphone())
+                $('#nav-mobile-settings').click();
+        });
+
+        // source
+        $('#nav-sources > li').unbind('click').click(function () {
+            $('#nav-tags > li').removeClass('active');
+            $('#nav-sources > li').removeClass('active');
+            $(this).addClass('active');
+            
+            selfoss.filter.tag = '';
+            selfoss.filter.source = $(this).attr('id').substr(6);
                 
             selfoss.filter.offset = 0;
             selfoss.reloadList();
@@ -586,6 +608,8 @@ selfoss.events = {
                         unreadstats++;
                     }
                     $('.nav-filter-unread span').html(unreadstats);
+
+		    // TODO -- update unread count on souruces (save sourceid in item)
 
                     // Iterate over elements tags
                     $('#entry'+id+' .entry-tags-tag').each( function(index) {

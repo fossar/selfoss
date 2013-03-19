@@ -146,6 +146,50 @@ input {
             color: #777;
         }
     
+    #nav-sources-wrapper  {
+        overflow:hidden;
+    }
+    
+        #nav-sources li {
+            position:relative;
+            font: 18px/27px 'OpenSansLight', Arial, sans-serif;
+            color:#b9b9b9;
+            cursor:pointer;
+/*            padding:5px; */
+            padding-left:25px;
+            padding-right:30px;
+            font-size:0.7em;
+            
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            -o-text-overflow: ellipsis;
+        }
+        
+        #nav-sources li.active {
+            background:#272325;
+            color:#d7d7d7;
+        }
+        
+        #nav-sources .color {
+            position:absolute;
+            left:100%;
+            top:14px;
+            width:10px;
+            height:10px;
+            margin-left:-30px;
+            -moz-border-radius:2px;
+            -webkit-border-radius:2px;
+            -khtml-border-radius:2px;
+            border-radius:2px;
+        }
+        
+        #nav-sources .unread {
+            font-size:0.9em;
+            vertical-align:sub;
+            color: #777;
+        }
+    
     #nav-search {
         display:none;
     }

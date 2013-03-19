@@ -17,6 +17,7 @@ var selfoss = {
         search: '',
         type: 'newest',
         tag: '',
+        source: '',
         ajax: true
     },
 
