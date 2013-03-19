@@ -10,7 +10,7 @@ $f3->set('cache',__dir__.'/data/cache');
 $f3->set('BASEDIR',__dir__);
 
 // read config
-$f3->config('config.ini');
+$f3->config('defaults.ini');
 if(file_exists('config.ini')){
     $f3->config('config.ini');
 }
