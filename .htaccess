@@ -23,6 +23,12 @@ RewriteRule !public - [C]
 RewriteRule !index.php - [C]
 RewriteRule (.*) public/$1 [L]
 
+# deny requests for config files
+<FilesMatch ".(ini)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
 # Disable ETags
 <IfModule mod_headers.c>
     Header Unset ETag
