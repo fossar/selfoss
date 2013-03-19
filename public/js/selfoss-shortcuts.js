@@ -48,6 +48,21 @@ selfoss.shortcuts = {
             selfoss.shortcuts.nextprev('prev', true);
             return false;
         });
+        
+        // Shortcut for the swipe version
+        // Swipe left go to the next item in the list and mark as read
+        Hammer("body").on("swipeleft", function() {
+            $('.entry.selected.unread .entry-unread').click();
+            selfoss.shortcuts.nextprev('next', true);
+        });
+
+        // Swipe right go to the previous item in the list and mark as read
+        Hammer("body").on("swiperight", function() {
+            $('.entry.selected.unread .entry-unread').click();
+            selfoss.shortcuts.nextprev('prev', true);
+        });
+
+        
     },
     
     
