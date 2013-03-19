@@ -213,9 +213,11 @@ selfoss.events = {
                             $('#nav-mobile-settings').click();
                             
                         // update tags
+                        var currentTag = $('#nav-tags li').index($('#nav-tags .active'));
                         $('#nav-tags li:not(:first)').remove();
                         $('#nav-tags').append(response.tags);
                         selfoss.events.navigation();
+                        $('#nav-tags li:eq('+currentTag+')').addClass('active');
                         
                         // update mark as read button for every entry
                         var button = $('.entry-unread');
