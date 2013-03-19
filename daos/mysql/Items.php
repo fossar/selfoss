@@ -367,27 +367,17 @@ class Items extends Database {
         return $res[0]['amount'];
     }
 
-    public function numberOfItemsForTag($tag) {
-        $res = \F3::get('db')->exec('SELECT count(*) AS amount
-                   FROM items,sources
-                   WHERE items.source=source.id AND source.tags LIKE :tag',
-				    array(':tag'   => $tag));
-	return $res[0]['amount'];
-    }
-
     public function numberOfUnreadForTag($tag) {
-        $res = \F3::get('db')->exec('SELECT count(*) AS amount
-                   FROM items, sources
-                   WHERE items.source=sources.id AND sources.tags LIKE :tag AND unread=1',
-				    array(':tag' => $tag));
-	return $res[0]['amount'];
+      $select = 'SELECT count(*) AS amount FROM items, sources';
+      $where = ' WHERE items.source=sources.id AND unread=1';
+      if ( \F3::get( 'db_type' ) == 'mysql' ) {
+	$where .= " AND ( CONCAT( ',' , sources.tags , ',' ) LIKE :tag ) ";
+      } else {
+	$where .= " AND ( (',' || sources.tags || ',') LIKE :tag ) ";
+      }
+      $res = \F3::get('db')->exec( $select . $where,
+				   array(':tag' => "%,".$tag.",%"));
+      return $res[0]['amount'];
     }
 
-    public function numberOfStarredForTag($tag) {
-        $res = \F3::get('db')->exec('SELECT count(*) AS amount
-                   FROM items,sources
-                   WHERE items.source=source.id AND source.tags LIKE :tag AND starred=1',
-				    array(':tag'   => $tag));
-	return $res[0]['amount'];
-    }
 }
