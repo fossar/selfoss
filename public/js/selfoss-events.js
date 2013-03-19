@@ -368,6 +368,12 @@ selfoss.events = {
                     fullscreen.hide();
                 });
                 
+		// Mark as read immediately on the phone
+		var unreadButton =
+                    fullscreen.find('.entry-toolbar').find('.entry-unread');
+		if (unreadButton.hasClass('active')==true) {
+                    unreadButton.click();
+		}
             // open entry content
             } else {
                 var content = parent.find('.entry-content');
