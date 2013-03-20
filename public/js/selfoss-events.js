@@ -89,5 +89,5 @@ selfoss.events = {
             $('#nav-tags-wrapper').height("auto");
             $("#nav-tags-wrapper").mCustomScrollbar("disable",selfoss.isSmartphone());
         }
-    }    
+    }
 };
