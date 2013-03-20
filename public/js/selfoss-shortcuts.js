@@ -50,19 +50,29 @@ selfoss.shortcuts = {
         });
         
         // Shortcut for the swipe version
-        // Swipe left go to the next item in the list and mark as read
-        Hammer("body").on("swipeleft", function() {
-            $('.entry.selected.unread .entry-unread').click();
-            selfoss.shortcuts.nextprev('next', true);
-        });
+         if(selfoss.isSmartphone()){
+                // Event for swipe.
+                // Swipe left go to the next item in the list and mark as read
+                Hammer("body").on("swipeleft", function() {
+                    $('.entry.selected.unread .entry-unread').click();
+                    selfoss.shortcuts.nextprev('next', true);
+                    var fullscreen = $('#fullscreen-entry');
+                    fullscreen.html('<div id="entrr'+$(".selected").attr('id').substr(5)+'" class="entry fullscreen">'+$(".selected").html()+'</div>');
+                    selfoss.events.entriesToolbar(fullscreen);
+                    fullscreen.find('.entry-tags-tag').colorByBrightness();
+                });
 
-        // Swipe right go to the previous item in the list and mark as read
-        Hammer("body").on("swiperight", function() {
-            $('.entry.selected.unread .entry-unread').click();
-            selfoss.shortcuts.nextprev('prev', true);
-        });
-
-        
+                // Swipe right go to the previous item in the list and mark as read
+                Hammer("body").on("swiperight", function() {
+                    $('.entry.selected.unread .entry-unread').click();
+                    selfoss.shortcuts.nextprev('prev', true);
+                    var fullscreen = $('#fullscreen-entry');
+                    fullscreen.html('<div id="entrr'+$(".selected").attr('id').substr(5)+'" class="entry fullscreen">'+$(".selected").html()+'</div>');
+                    selfoss.events.entriesToolbar(fullscreen);
+                    fullscreen.find('.entry-tags-tag').colorByBrightness();
+                });
+        };
+    
     },
     
     
