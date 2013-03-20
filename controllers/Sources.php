@@ -142,10 +142,20 @@ class Sources extends BaseController {
         // cleanup tags
         $tagsDao->cleanup($sourcesDao->getAllTags());
         
+        // get new tag list with updated count values
+        $tagController = new \controllers\Tags();
+        $renderedTags = $tagController->tagsListAsString();
+        
+        // get new sources list
+        $sourcesController = new \controllers\Sources();
+        $renderedSources = $sourcesController->sourcesListAsString();
+        
         $this->view->jsonSuccess(
             array(
                 'success' => true,
-                'id' => $id
+                'id'      => $id,
+                'tags'    => $renderedTags,
+                'sources' => $renderedSources
             )
         );
     }

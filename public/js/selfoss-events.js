@@ -12,7 +12,11 @@ selfoss.events = {
         selfoss.events.search();
         
         // window resize
-        $("#nav-tags-wrapper").mCustomScrollbar();
+        $("#nav-tags-wrapper").mCustomScrollbar({
+            advanced:{
+                updateOnContentResize: true
+            }
+        });
         $(window).bind("resize", selfoss.events.resize);
         selfoss.events.resize();
         
@@ -743,8 +747,13 @@ selfoss.events = {
                     // show all links for new items
                     parent.removeClass('source-new');
                     
-                    // reload tags
-                    selfoss.reloadTags();
+                    // update tags
+                    $('#nav-tags li:not(:first)').remove();
+                    $('#nav-tags').append(response.tags);
+                    
+                    // update sources
+                    $('#nav-sources li').remove();
+                    $('#nav-sources').append(response.sources);
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     selfoss.showErrors(parent, $.parseJSON(jqXHR.responseText));
