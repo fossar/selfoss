@@ -185,10 +185,10 @@ class Items extends Database {
               $where .= " AND ( (',' || sources.tags || ',') LIKE :tag ) ";
             }
         }
-	// source filter
+        // source filter
         elseif(isset($options['source']) && strlen($options['source'])>0) {
-	  $params[':source'] = array($options['source'], \PDO::PARAM_INT);
-	  $where .= " AND items.source=:source ";
+            $params[':source'] = array($options['source'], \PDO::PARAM_INT);
+            $where .= " AND items.source=:source ";
         }
         
         // set limit
@@ -391,6 +391,7 @@ class Items extends Database {
         return $res[0]['amount'];
     }
 
+    
     /**
      * returns the amount of unread entries in database per source
      *
@@ -398,7 +399,7 @@ class Items extends Database {
      */
     public function numberOfUnreadForSource($sourceid) {
         $res = \F3::get('db')->exec(
-	    'SELECT count(*) AS amount FROM items WHERE source=:source AND unread=1',
+            'SELECT count(*) AS amount FROM items WHERE source=:source AND unread=1',
             array(':source' => $sourceid));
         return $res[0]['amount'];
     }

@@ -156,10 +156,12 @@ selfoss.events = {
             if(selfoss.isSmartphone())
                 $('#nav-mobile-settings').click();
         });
-	$('#nav-tags-title').unbind('click').click(function () {
-	    var s = $('#nav-tags').toggle("slow");
-	});
-
+        
+        // hide/show tags
+        $('#nav-tags-title').unbind('click').click(function () {
+            var s = $('#nav-tags').toggle("slow");
+        });
+        
         // source
         $('#nav-sources > li').unbind('click').click(function () {
             $('#nav-tags > li').removeClass('active');
@@ -175,9 +177,11 @@ selfoss.events = {
             if(selfoss.isSmartphone())
                 $('#nav-mobile-settings').click();
         });
-	$('#nav-sources-title').unbind('click').click(function () {
-	    var s = $('#nav-sources').toggle("slow");
-	});
+        
+        // hide/show sources
+        $('#nav-sources-title').unbind('click').click(function () {
+            var s = $('#nav-sources').toggle("slow");
+        });
         
         // show hide navigation for mobile version
         $('#nav-mobile-settings').unbind('click').click(function () {
@@ -230,9 +234,11 @@ selfoss.events = {
                     success: function(response) {
                         $('.entry').removeClass('unread');
                         
+                        // update unread stats
                         var unreadstats = parseInt($('.nav-filter-unread span').html());
                         $('.nav-filter-unread span').html( (unreadstats - ids.length) );
                         
+                        // hide nav on smartphone
                         if(selfoss.isSmartphone())
                             $('#nav-mobile-settings').click();
                             
@@ -240,8 +246,17 @@ selfoss.events = {
                         var currentTag = $('#nav-tags li').index($('#nav-tags .active'));
                         $('#nav-tags li:not(:first)').remove();
                         $('#nav-tags').append(response.tags);
+                        if(currentTag>=0)
+                            $('#nav-tags li:eq('+currentTag+')').addClass('active');
+                        
+                        // update sources
+                        var currentSource = $('#nav-sources li').index($('#nav-sources .active'));
+                        $('#nav-sources li').remove();
+                        $('#nav-sources').append(response.sources);
+                        if(currentSource>=0)
+                            $('#nav-sources li:eq('+currentSource+')').addClass('active');
+                        
                         selfoss.events.navigation();
-                        $('#nav-tags li:eq('+currentTag+')').addClass('active');
                         
                         // update mark as read button for every entry
                         var button = $('.entry-unread');
@@ -586,6 +601,7 @@ selfoss.events = {
                 
                 // update statistics in main menue and the currently active tag
                 var updateStats = function(unread) {
+                    // update all unread counter
                     var unreadstats = parseInt($('.nav-filter-unread span').html());
                     if(unread) {
                         unreadstats--;
@@ -594,9 +610,18 @@ selfoss.events = {
                     }
                     $('.nav-filter-unread span').html(unreadstats);
 
-		    // TODO -- update unread count on souruces (save sourceid in item)
-
-                    // Iterate over elements tags
+                    // update unread count on souruces
+                    var sourceId = $('#entry'+id+' .entry-source').attr('class').substr(25);
+                    var sourceNav = $('#source'+sourceId+' .unread');
+                    var sourceCount = parseInt(sourceNav.html());
+                    if(typeof sourceCount != "number")
+                        sourceCount = 0;
+                    sourceCount = unread ? sourceCount-1 : sourceCount+1;
+                    if(sourceCount<=0)
+                        sourceCount = "";
+                    sourceNav.html(sourceCount);
+                    
+                    // update unread on tags
                     $('#entry'+id+' .entry-tags-tag').each( function(index) {
                         var tag = $(this).html();
                         
