@@ -15,6 +15,20 @@ $f3->config('defaults.ini');
 if(file_exists('config.ini'))
     $f3->config('config.ini');
 
+// language select
+$f3->config('public/lang/en'); //load defaults
+// read language if exists 
+if(file_exists('public/lang/'.$f3->get('language'))){
+	$f3->config('public/lang/'.$f3->get('language'));
+}
+
+// language select
+$f3->config('public/lang/en'); //load defaults
+// read language if exists 
+if(file_exists('public/lang/'.$f3->get('language'))){
+	$f3->config('public/lang/'.$f3->get('language'));
+}
+
 // init logger
 $f3->set(
     'logger', 
