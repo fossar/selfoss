@@ -34,6 +34,10 @@ class Index extends BaseController {
         $tagsDao = new \daos\Tags();
         $tags = $tagsDao->get();
         
+        // load sources
+        $sourcesDao = new \daos\Sources();
+        $sources = $sourcesDao->get();
+        
         // get search param
         if(isset($options['search']) && strlen($options['search'])>0)
             $this->view->search = $options['search'];
@@ -61,6 +65,10 @@ class Index extends BaseController {
         // load tags
         $tagsController = new \controllers\Tags();
         $this->view->tags = $tagsController->renderTags($tags);
+        
+        // prepare sources display list
+        $sourcesController = new \controllers\Sources();
+        $this->view->sources = $sourcesController->renderSources($sources);
         
         // show as full html page
         $this->view->publicMode = \F3::get('auth')->isLoggedin()!==true && \F3::get('public')==1;
