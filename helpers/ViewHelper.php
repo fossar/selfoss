@@ -60,11 +60,11 @@ class ViewHelper {
         $ageInDays = $ageInHours / 24;
         
         if($ageInMinutes<1)
-            return round($ageInSeconds, 0) . " seconds ago";
+            return str_replace('%s', round($ageInSeconds, 0), \F3::get('lang_seconds'));
         if($ageInHours<1)
-            return round($ageInMinutes, 0) . " minutes ago";
+            return str_replace('%s', round($ageInMinutes, 0), \F3::get('lang_minutes'));
         if($ageInDays<1)
-            return round($ageInHours, 0) . " hours ago";
+            return str_replace('%s', round($ageInHours, 0), \F3::get('lang_timestamp'));
         
         return $datestr;
     }
