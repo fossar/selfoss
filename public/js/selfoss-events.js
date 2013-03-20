@@ -209,6 +209,9 @@ selfoss.events = {
                             
                             parent = $('#entry'+this);
 
+                            $("#entry"+this+" .entry-unread, #entry"+this+" .entrr-unread").removeClass('active');
+                            $("#entry"+this+" .entry-unread, #entry"+this+" .entrr-unread").html('mark as unread');
+
                             parent.find('.entry-tags-tag').each(function() {
                                 var unreadtagstats = parseInt($("#nav-tags li:contains('"+this.innerText+"') .tags-unread")[0].innerText) - 1;
 
@@ -475,7 +478,7 @@ selfoss.events = {
                 var parent = $(this).parents('.entry');
                 var id = parent.attr('id').substr(5);
                 var starr = $(this).hasClass('active')==false;
-                var button = $("#entry"+id+" .entry-starr, #entrr"+id+" .entry-starr");
+                var button = $("#entry"+id+" .entry-starr, #entry"+id+" .entrr-starr");
                 
                 // update button
                 var setButton = function(starr) {
