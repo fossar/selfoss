@@ -204,7 +204,18 @@ selfoss.events = {
                     },
                     success: function() {
                         $('.entry').removeClass('unread');
-                        
+                  
+                        jQuery.each(ids,function() {
+                            
+                            parent = $('#entry'+this);
+
+                            parent.find('.entry-tags-tag').each(function() {
+                                var unreadtagstats = parseInt($("#nav-tags li:contains('"+this.innerText+"') .tags-unread")[0].innerText) - 1;
+
+                                $("#nav-tags li:contains('"+this.innerText+"') .tags-unread")[0].innerText = unreadtagstats;
+                            });
+                        });  
+    
                         var unreadstats = parseInt($('.nav-filter-unread span').html());
                         $('.nav-filter-unread span').html( (unreadstats - ids.length) );
 
