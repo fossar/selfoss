@@ -31,6 +31,13 @@
     <?PHP echo \F3::get('auto_mark_as_read')==1 ? "auto_mark_as_read" : ""; ?>
 ">
     
+<!-- language settings for jQuery -->
+<span id="lang<?PHP echo '" data-mark="'.\F3::get('lang_mark').
+'" data-unmark="'.\F3::get('lang_unmark').
+'" data-star="'.\F3::get('lang_star').
+'" data-unstar="'.\F3::get('lang_unstar').
+'" data-source_warn="'.\F3::get('lang_source_warn'); ?> "></span> 
+
     <!-- menue open for smartphone -->
     <div id="nav-mobile">
         <div id="nav-mobile-logo"></div>
@@ -51,19 +58,22 @@
         
         <hr>
         
-        <h2><?PHP echo \F3::get('lang_tags') ?></h2>
         <div id="nav-tags-wrapper">
-            <ul id="nav-tags">
-                <li class="active nav-tags-all"><?PHP echo \F3::get('lang_alltags')?></li>
-                <?PHP echo $this->tags; ?>
-            </ul>
+        <h2 id="nav-tags-title"><?PHP echo \F3::get('lang_tags') ?></h2>
+        <ul id="nav-tags">
+            <li class="active nav-tags-all"><?PHP echo \F3::get('lang_alltags')?></li>
+            <?PHP echo $this->tags; ?>
+        </ul>
+        <h2 id="nav-sources-title"><?PHP echo \F3::get('lang_sources') ?></h2>
+        <ul id="nav-sources">
+            <?PHP echo $this->sources; ?>
         </div>
         
         <hr>
         
         <!-- navigation search input just for smartphone version -->
         <div id="nav-search">
-            <input type="text" id="nav-search-term"></input> <input type="button" id="nav-search-button" value="<?PHP \F3::get('lang_searchbutton')?>" />
+            <input type="text" id="nav-search-term"></input> <input type="button" id="nav-search-button" value="<?PHP echo \F3::get('lang_searchbutton')?>" />
             <hr>
         </div>
         
