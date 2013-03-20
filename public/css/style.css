@@ -94,6 +94,7 @@ input {
         }
     
     #nav h2 {
+        cursor:pointer;
         color:#494949;
         text-transform:uppercase;
         font:18px/27px 'OpenSansBold', Arial, sans-serif;
@@ -111,7 +112,7 @@ input {
             font: 18px/27px 'OpenSansLight', Arial, sans-serif;
             color:#b9b9b9;
             cursor:pointer;
-            padding:5px;
+/*            padding:5px; */
             padding-left:25px;
             padding-right:30px;
             font-size:0.7em;
@@ -171,20 +172,11 @@ input {
             color:#d7d7d7;
         }
         
-        #nav-sources .color {
-            position:absolute;
-            left:100%;
-            top:14px;
-            width:10px;
-            height:10px;
-            margin-left:-30px;
-            -moz-border-radius:2px;
-            -webkit-border-radius:2px;
-            -khtml-border-radius:2px;
-            border-radius:2px;
-        }
-        
         #nav-sources .unread {
+	    position:absolute;
+	    left:100%;
+	    top:0px;
+	    margin-left: -30px;
             font-size:0.9em;
             vertical-align:sub;
             color: #777;
