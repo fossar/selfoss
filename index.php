@@ -39,14 +39,18 @@ $f3->set('js', array(
     'public/js/selfoss-shortcuts.js'
 ));
 
-$f3->set('css', array(
+$css = array(
     'public/css/jquery.mCustomScrollbar.css',
     'public/css/spectrum.css',
     'public/css/reset.css',
     'public/css/fonts.css',
     'public/css/style.css',
     'public/css/opml.css'
-));
+);
+if(file_exists('public/css/user-style.css')){
+    $css[] = 'public/css/user-style.css';
+}
+$f3->set('css', $css);
 
 // define routes
 
