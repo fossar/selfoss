@@ -61,10 +61,10 @@
     
     <!-- toolbar -->
     <ul class="entry-toolbar">
-        <li class="entry-starr <?PHP echo $this->item['starred']==1 ? 'active' : ''; ?>"><?PHP echo $this->item['starred']==1 ? 'unstar' : 'star'; ?></li>
-        <li class="entry-unread <?PHP echo $this->item['unread']==1 ? 'active' : ''; ?>"><?PHP echo $this->item['unread']==1 ? 'mark as read' : 'mark as unread'; ?></li>
-        <li class="entry-newwindow">open</li>
-        <li class="entry-loadimages">load images</li>
+        <li class="entry-starr <?PHP echo $this->item['starred']==1 ? 'active' : ''; ?>"><?PHP echo $this->item['starred']==1 ? \F3::get('lang_unstar') : \F3::get('lang_star'); ?></li>
+        <li class="entry-unread <?PHP echo $this->item['unread']==1 ? 'active' : ''; ?>"><?PHP echo $this->item['unread']==1 ? \F3::get('lang_mark') : \F3::get('lang_unmark'); ?></li>
+		<li class="entry-newwindow"><?PHP echo \F3::get('lang_open')?></li>
+		<li class="entry-loadimages"><?PHP echo \F3::get('lang_load_img')?> </li>
         <li class="entry-sharegoogle entry-share">google</li>
         <li class="entry-sharetwitter entry-share">twitter</li>
         <li class="entry-sharefacebook entry-share">facebook</li>
