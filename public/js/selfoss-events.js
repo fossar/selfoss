@@ -15,7 +15,7 @@ selfoss.events = {
         $("#nav-tags-wrapper").mCustomScrollbar();
         $(window).bind("resize", selfoss.events.resize);
         selfoss.events.resize();
-        
+
         // hash change event
         window.onhashchange = selfoss.events.hashChange;
         
@@ -78,12 +78,13 @@ selfoss.events = {
         if(selfoss.isSmartphone()==false) {
             var start = $('#nav-tags-wrapper').position().top;
             var windowHeight = $(window).height();
-            $('#nav-tags-wrapper').height(windowHeight - start - 100);
+            $('#nav-tags-wrapper').height(windowHeight-start-100);
             $("#nav-tags-wrapper").mCustomScrollbar("update");
             $('#nav').show();
         } else {
             $('#nav-tags-wrapper').height("auto");
             $("#nav-tags-wrapper").mCustomScrollbar("disable",selfoss.isSmartphone());
+	    // TODO fix sources!
         }
     },
     
@@ -142,8 +143,10 @@ selfoss.events = {
         // tag
         $('#nav-tags > li').unbind('click').click(function () {
             $('#nav-tags > li').removeClass('active');
+            $('#nav-sources > li').removeClass('active');
             $(this).addClass('active');
             
+            selfoss.filter.source = '';
             selfoss.filter.tag = '';
             if($(this).hasClass('nav-tags-all')==false)
                 selfoss.filter.tag = $(this).find('span').html();
@@ -154,6 +157,28 @@ selfoss.events = {
             if(selfoss.isSmartphone())
                 $('#nav-mobile-settings').click();
         });
+	$('#nav-tags-title').unbind('click').click(function () {
+	    var s = $('#nav-tags').toggle("slow");
+	});
+
+        // source
+        $('#nav-sources > li').unbind('click').click(function () {
+            $('#nav-tags > li').removeClass('active');
+            $('#nav-sources > li').removeClass('active');
+            $(this).addClass('active');
+            
+            selfoss.filter.tag = '';
+            selfoss.filter.source = $(this).attr('id').substr(6);
+                
+            selfoss.filter.offset = 0;
+            selfoss.reloadList();
+            
+            if(selfoss.isSmartphone())
+                $('#nav-mobile-settings').click();
+        });
+	$('#nav-sources-title').unbind('click').click(function () {
+	    var s = $('#nav-sources').toggle("slow");
+	});
         
         // show hide navigation for mobile version
         $('#nav-mobile-settings').unbind('click').click(function () {
@@ -187,6 +212,8 @@ selfoss.events = {
         if($('body').hasClass('loggedin')==true) {
             // mark as read
             $('#nav-mark').unbind('click').click(function () {
+		if (! confirm("Mark all read?  Really?"))
+		    return;
                 var ids = new Array();
                 $('.entry.unread').each(function(index, item) {
                     ids.push( $(item).attr('id').substr(5) );
@@ -379,6 +406,12 @@ selfoss.events = {
                     fullscreen.hide();
                 });
                 
+		// Mark as read immediately on the phone
+		var unreadButton =
+                    fullscreen.find('.entry-toolbar').find('.entry-unread');
+		if (unreadButton.hasClass('active')==true) {
+                    unreadButton.click();
+		}
             // open entry content
             } else {
                 var content = parent.find('.entry-content');
@@ -390,6 +423,15 @@ selfoss.events = {
                     content.show();
                     selfoss.events.entriesToolbar(parent);
                     parent.find('.entry-toolbar').show();
+
+		    // Mark the item as read immediately if mobile
+		    if (selfoss.isMobile()) {
+			var unreadButton =
+			    parent.find('.entry-toolbar').find('.entry-unread');
+			if (unreadButton.hasClass('active')==true) {
+			    unreadButton.click();
+			}
+		    }
                 }
                 
                 // load images not on mobile devices
@@ -569,6 +611,8 @@ selfoss.events = {
                         unreadstats++;
                     }
                     $('.nav-filter-unread span').html(unreadstats);
+
+		    // TODO -- update unread count on souruces (save sourceid in item)
 
                     // Iterate over elements tags
                     $('#entry'+id+' .entry-tags-tag').each( function(index) {
