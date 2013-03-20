@@ -112,7 +112,7 @@ input {
             font: 18px/27px 'OpenSansLight', Arial, sans-serif;
             color:#b9b9b9;
             cursor:pointer;
-/*            padding:5px; */
+            padding:5px;
             padding-left:25px;
             padding-right:30px;
             font-size:0.7em;
