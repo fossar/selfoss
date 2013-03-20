@@ -706,6 +706,7 @@ selfoss.events = {
         
         // delete source
         $('.source-delete').unbind('click').click(function() {
+			//TODO irgendwie $f3->get(lang_warn) auslesen
             var answer = confirm('really delete this source?');
             if(answer==false)
                 return;
