@@ -26,7 +26,9 @@ class Sources extends BaseController {
         
         // load sources
         $sourcesDao = new \daos\Sources();
-        $sourcesHtml = '<div class="source-add"> add source</div> <a class="source-opml" href="opml">or import from opml file or google reader</a>';
+		echo '<div class="source-add">'. \F3::get('lang_source_add') .
+			'</div> <a class="source-opml" href="opml">'. \F3::get('lang_source_opml');
+		$sourcesHtml = '</a>';
         $i=0;
         
         foreach($sourcesDao->get() as $source) {
