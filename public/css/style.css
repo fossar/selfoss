@@ -139,6 +139,12 @@ input {
             -khtml-border-radius:2px;
             border-radius:2px;
         }
+        
+        #nav-tags .unread {
+            font-size:0.9em;
+            vertical-align:sub;
+            color: #777;
+        }
     
     #nav-search {
         display:none;
