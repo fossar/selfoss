@@ -145,6 +145,10 @@ input {
         overflow:hidden;
     }
     
+        #nav-sources {
+            display:none;
+        }
+    
         #nav-sources li {
             position:relative;
             font: 18px/27px 'OpenSansLight', Arial, sans-serif;
