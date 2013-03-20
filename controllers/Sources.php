@@ -161,11 +161,22 @@ class Sources extends BaseController {
         foreach($sources as $source) {
             $this->view->source = $source['title'];
             $this->view->sourceid = $source['id'];
-	    $this->view->unread = $itemsDao->numberOfUnreadForSource($source['id']);
+            $this->view->unread = $itemsDao->numberOfUnreadForSource($source['id']);
             $html .= $this->view->render('templates/source-nav.phtml');
         }
         
         return $html;
     }
 
+    /**
+     * load all available sources and return all Sources suitable 
+     * for navigation panel
+     *
+     * @return htmltext
+     */
+    public function sourcesListAsString() {
+        $sourcesDao = new \daos\Sources();
+        $sources = $sourcesDao->get();
+        return $this->renderSources($sources);
+    }
 }

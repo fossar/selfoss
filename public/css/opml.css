@@ -10,7 +10,7 @@
 }
 
 #opml h1 {
-    background:url(images/logo.png) left center no-repeat;                                        
+    background:url(images/logo.png) left center no-repeat;
     font-family:'OpenSansSemibold', Arial, sans-serif;
     padding-top:10px;
     padding-left:40px;
@@ -44,7 +44,7 @@
 }
 
 #opml label {
-    display: inline-block
+    display: inline-block;
     width: 100px;
 }
 

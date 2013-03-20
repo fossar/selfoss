@@ -34,9 +34,15 @@ class Items extends BaseController {
         // get new tag list with updated count values
         $tagController = new \controllers\Tags();
         $renderedTags = $tagController->tagsListAsString();
+        
+        // get new sources list
+        $sourcesController = new \controllers\Sources();
+        $renderedSources = $sourcesController->sourcesListAsString();
+        
         $this->view->jsonSuccess(array(
             'success' => true,
-            'tags' => $renderedTags
+            'tags'    => $renderedTags,
+            'sources' => $renderedSources
         ));
     }
     

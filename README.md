@@ -62,6 +62,7 @@ Version 2.4-SNAPSHOT
 * improved detection of mobile devices
 * allow more tags in articles content
 * show unread items per tag in taglist (thanks a lot to Fedor Bezrukov)
+* show list of sources for filtering (thanks a lot to Fedor Bezrukov)
 
 Version 2.3
 * new shortcut library jquery hotkeys (thanks a lot to Sigill)

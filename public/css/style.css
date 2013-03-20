@@ -141,12 +141,6 @@ input {
             border-radius:2px;
         }
         
-        #nav-tags .unread {
-            font-size:0.9em;
-            vertical-align:sub;
-            color: #777;
-        }
-    
     #nav-sources-wrapper  {
         overflow:hidden;
     }
@@ -156,7 +150,6 @@ input {
             font: 18px/27px 'OpenSansLight', Arial, sans-serif;
             color:#b9b9b9;
             cursor:pointer;
-/*            padding:5px; */
             padding-left:25px;
             padding-right:30px;
             font-size:0.7em;
@@ -172,16 +165,12 @@ input {
             color:#d7d7d7;
         }
         
-        #nav-sources .unread {
-	    position:absolute;
-	    left:100%;
-	    top:0px;
-	    margin-left: -30px;
-            font-size:0.9em;
-            vertical-align:sub;
-            color: #777;
-        }
-    
+    #nav .unread {
+        font-size:0.9em;
+        vertical-align:sub;
+        color: #777;
+    }
+        
     #nav-search {
         display:none;
     }
