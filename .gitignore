@@ -9,3 +9,4 @@
 /_bin/*.*
 /_docs/website/forum
 config.ini
+/public/css/user-style.css
