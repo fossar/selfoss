@@ -77,7 +77,7 @@ class Image {
             return false;
         
         // get image type
-        $tmp = 'data/cache/' . md5($url);
+        $tmp = \F3::get('cache') . '/' . md5($url);
         file_put_contents($tmp, $data);
         $imgInfo = @getimagesize($tmp); 
         if(strtolower($imgInfo['mime'])=='image/vnd.microsoft.icon')
