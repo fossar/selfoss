@@ -126,6 +126,10 @@ class Opml extends BaseController {
 
         if($xml['type'] == 'rss')
             $spout = 'spouts\rss\feed';
+        else {
+            \F3::get('logger')->log('opml import: invalid type (only rss supported) ' . $title, \DEBUG);
+            return $title;
+        }
         
         // validate new item
         $validation = $this->sourcesDao->validate($title, 'spouts\rss\feed', $data);
