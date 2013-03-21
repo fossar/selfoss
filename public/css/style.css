@@ -146,6 +146,20 @@ input {
             vertical-align:sub;
             color: #777;
         }
+
+        #nav-tags li span.unread {
+            background-color: #E74C3C;
+            border-radius: 30px;
+            color: white;
+            font-size: 10px;
+            font-weight: 500;
+            line-height: 16px;
+            min-width: 8px;
+            padding: 0 4px 0 5px;
+            margin-top: 6px;
+            position: absolute;
+            margin-left: 5px;
+        }
     
     #nav-sources-wrapper  {
         overflow:hidden;
