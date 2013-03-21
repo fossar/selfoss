@@ -204,24 +204,10 @@ selfoss.events = {
                     },
                     success: function() {
                         $('.entry').removeClass('unread');
-                  
-                        jQuery.each(ids,function() {
-                            
-                            parent = $('#entry'+this);
-
-                            $("#entry"+this+" .entry-unread, #entry"+this+" .entrr-unread").removeClass('active');
-                            $("#entry"+this+" .entry-unread, #entry"+this+" .entrr-unread").html('mark as unread');
-
-                            parent.find('.entry-tags-tag').each(function() {
-                                var unreadtagstats = parseInt($("#nav-tags li:contains('"+this.innerText+"') .tags-unread")[0].innerText) - 1;
-
-                                $("#nav-tags li:contains('"+this.innerText+"') .tags-unread")[0].innerText = unreadtagstats;
-                            });
-                        });  
-    
+                        
                         var unreadstats = parseInt($('.nav-filter-unread span').html());
                         $('.nav-filter-unread span').html( (unreadstats - ids.length) );
-
+                        
                         if(selfoss.isSmartphone())
                             $('#nav-mobile-settings').click();
                     },
@@ -478,7 +464,7 @@ selfoss.events = {
                 var parent = $(this).parents('.entry');
                 var id = parent.attr('id').substr(5);
                 var starr = $(this).hasClass('active')==false;
-                var button = $("#entry"+id+" .entry-starr, #entry"+id+" .entrr-starr");
+                var button = $("#entry"+id+" .entry-starr, #entrr"+id+" .entry-starr");
                 
                 // update button
                 var setButton = function(starr) {
@@ -520,7 +506,6 @@ selfoss.events = {
             
             // read/unread
             parent.find('.entry-unread').unbind('click').click(function() {
-
                 var id = $(this).parents('.entry').attr('id').substr(5);
                 var unread = $(this).hasClass('active')==true;
                 var button = $("#entry"+id+" .entry-unread, #entrr"+id+" .entry-unread");
@@ -539,24 +524,9 @@ selfoss.events = {
                     }
                 };
                 setButton(unread);
-               
-                // update statistics in main menu and tags menu
+                
+                // update statistics in main menue
                 var updateStats = function(unread) {
-
-                    parent.find('.entry-tags-tag').each(function() {
-
-                        var unreadtagstats = parseInt($("#nav-tags li:contains('"+$(this)[0].innerText+"') .tags-unread").not('.nav-tags-all')[0].innerText);
-
-                        if(unread) {
-                            unreadtagstats--;
-                        } else {
-                            unreadtagstats++;
-                        }
-
-                        $("#nav-tags li:contains('"+$(this)[0].innerText+"') .tags-unread").not('.nav-tags-all')[0].innerText = unreadtagstats;
-
-                    });
-
                     var unreadstats = parseInt($('.nav-filter-unread span').html());
                     if(unread) {
                         unreadstats--;

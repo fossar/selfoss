@@ -50,7 +50,6 @@ class Tags extends BaseController {
         $html = "";
         foreach($tags as $tag) {
             $this->view->tag = $tag['tag'];
-            $this->view->unread = $tag['unread'];
             $this->view->color = $tag['color'];
             $html .= $this->view->render('templates/tag.phtml');
         }
