@@ -106,7 +106,7 @@ selfoss.events = {
                     url: $('base').attr('href') + 'tagset',
                     type: 'POST',
                     data: {
-                        tag: $(this).prev().html(),
+                        tag: $(this).parent().find('.tag').html(),
                         color: color.toHexString()
                     },
                     success: function() {
