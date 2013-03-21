@@ -63,6 +63,7 @@ Version 2.4-SNAPSHOT
 * allow more tags in articles content
 * show unread items per tag in taglist (thanks a lot to Fedor Bezrukov)
 * show list of sources for filtering (thanks a lot to Fedor Bezrukov)
+* use more eye catching unread stats in main navigation
 
 Version 2.3
 * new shortcut library jquery hotkeys (thanks a lot to Sigill)
