@@ -133,7 +133,7 @@ class Items extends Database {
      * @param string $uid
      */
     public function exists($uid) {
-        $res = \F3::get('db')->exec('SELECT COUNT(*) AS amount FROM items WHERE uid=:uid',
+        $res = \F3::get('db')->exec('SELECT COUNT(1) AS amount FROM items WHERE uid=:uid',
                     array(':uid' => $uid));
         return $res[0]['amount']>0;
     }
@@ -262,7 +262,7 @@ class Items extends Database {
      * @param string $thumbnail name
      */
     public function hasThumbnail($thumbnail) {
-        $res = \F3::get('db')->exec('SELECT count(*) AS amount
+        $res = \F3::get('db')->exec('SELECT count(1) AS amount
                    FROM items 
                    WHERE thumbnail=:thumbnail',
                   array(':thumbnail' => $thumbnail));
@@ -280,7 +280,7 @@ class Items extends Database {
      * @param string $icon file
      */
     public function hasIcon($icon) {
-        $res = \F3::get('db')->exec('SELECT count(*) AS amount
+        $res = \F3::get('db')->exec('SELECT count(1) AS amount
                    FROM items 
                    WHERE icon=:icon',
                   array(':icon' => $icon));
@@ -342,8 +342,8 @@ class Items extends Database {
      * @return int amount of entries in database
      */
     public function numberOfItems() {
-        $res = \F3::get('db')->exec('SELECT count(*) AS amount FROM items');
-        return $res[0]['amount'];
+        $res = \F3::get('db')->exec('SELECT count(1) AS amount FROM items');
+        return $res[0]['amount']>0;
     }
     
     
@@ -353,10 +353,10 @@ class Items extends Database {
      * @return int amount of entries in database which are unread
      */
     public function numberOfUnread() {
-        $res = \F3::get('db')->exec('SELECT count(*) AS amount
+        $res = \F3::get('db')->exec('SELECT count(1) AS amount
                    FROM items 
                    WHERE unread=1');
-        return $res[0]['amount'];
+        return $res[0]['amount']>0;
     }
     
     
@@ -366,10 +366,10 @@ class Items extends Database {
      * @return int amount of entries in database which are starred
      */
     public function numberOfStarred() {
-        $res = \F3::get('db')->exec('SELECT count(*) AS amount
+        $res = \F3::get('db')->exec('SELECT count(1) AS amount
                    FROM items 
                    WHERE starred=1');
-        return $res[0]['amount'];
+        return $res[0]['amount']>0;
     }
 
     
@@ -379,7 +379,7 @@ class Items extends Database {
      * @return int amount of entries in database per tag
      */
     public function numberOfUnreadForTag($tag) {
-        $select = 'SELECT count(*) AS amount FROM items, sources';
+        $select = 'SELECT count(1) AS amount FROM items, sources';
         $where = ' WHERE items.source=sources.id AND unread=1';
         if ( \F3::get( 'db_type' ) == 'mysql' ) {
             $where .= " AND ( CONCAT( ',' , sources.tags , ',' ) LIKE :tag ) ";
@@ -398,7 +398,7 @@ class Items extends Database {
      */
     public function numberOfUnreadForSource($sourceid) {
         $res = \F3::get('db')->exec(
-	    'SELECT count(*) AS amount FROM items WHERE source=:source AND unread=1',
+	    'SELECT count(1) AS amount FROM items WHERE source=:source AND unread=1',
             array(':source' => $sourceid));
         return $res[0]['amount'];
     }
