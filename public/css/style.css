@@ -348,6 +348,9 @@ input {
     .entry.selected.unread,
     .entry.unread {
         border-left:3px solid #5f9490;
+        border-bottom: 1px solid #5F9490;
+        border-right: 1px solid #5F9490;
+        border-top: 1px solid #5F9490;
     }
 
     .entry.selected {
