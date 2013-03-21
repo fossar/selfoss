@@ -239,8 +239,12 @@ selfoss.events = {
                         $('.entry').removeClass('unread');
                         
                         // update unread stats
-                        var unreadstats = parseInt($('.nav-filter-unread span').html());
-                        $('.nav-filter-unread span').html( (unreadstats - ids.length) );
+                        var unreadstats = parseInt($('.nav-filter-unread span').html()) - ids.length;
+                        $('.nav-filter-unread span').html(unreadstats);
+                        $('.nav-filter-unread span').removeClass('unread');
+                        if(unreadstats>0)
+                            $('.nav-filter-unread span').addClass('unread');
+                            
                         
                         // hide nav on smartphone
                         if(selfoss.isSmartphone())
@@ -613,7 +617,10 @@ selfoss.events = {
                         unreadstats++;
                     }
                     $('.nav-filter-unread span').html(unreadstats);
-
+                    $('.nav-filter-unread span').removeClass('unread');
+                    if(unreadstats>0)
+                        $('.nav-filter-unread span').addClass('unread');
+                        
                     // update unread count on souruces
                     var sourceId = $('#entry'+id+' .entry-source').attr('class').substr(25);
                     var sourceNav = $('#source'+sourceId+' .unread');
