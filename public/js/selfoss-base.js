@@ -17,6 +17,7 @@ var selfoss = {
         search: '',
         type: 'newest',
         tag: '',
+        source: '',
         ajax: true
     },
 
@@ -84,6 +85,11 @@ var selfoss = {
      * @return true if device resolution smaller equals 1024
      */
     isMobile: function() {
+        // first check useragent
+        if((/iPhone|iPod|iPad|Android|BlackBerry/).test(navigator.userAgent))
+            return true;
+        
+        // otherwise check resolution
         return selfoss.isTablet() || selfoss.isSmartphone();
     },
     

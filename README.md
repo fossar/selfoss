@@ -10,12 +10,21 @@ Version 2.4-SNAPSHOT
 INSTALLATION
 ------------
 
-1. upload all files of this folder (IMPORTANT: also upload the invisible .htaccess files)
-2. make the directories data/cache, data/favicons, data/logs, data/thumbnails, data/sqlite and public/ writeable
-3. insert database access data in config.ini (you have not to change anything if you would like to use sqlite)
-4. create cronjob for updating feeds and point it to http://yourselfossurl.com/update via wget or curl. You can also execute the update.php from commandline.
+1. Upload all files of this folder (IMPORTANT: also upload the invisible .htaccess files)
+2. Make the directories data/cache, data/favicons, data/logs, data/thumbnails, data/sqlite and public/ writeable
+3. Insert database access data in config.ini (see below -- you have not to change anything if you would like to use sqlite)
+3. You don't have to install the database, it will be created automatically
+4. Create cronjob for updating feeds and point it to http://yourselfossurl.com/update via wget or curl. You can also execute the update.php from commandline.
 
 For further questions or on any problem use our support forum: http://selfoss.aditu.de/forum
+
+CONFIGURATION
+-------------
+
+1. Copy defaults.ini to config.ini
+2. Edit config.ini and delete any lines you do not wish to override
+3. Do not delete the [globals] line
+4. See http://selfoss.aditu.de/ for examples
 
 
 UPDATE
@@ -47,6 +56,12 @@ Version 2.4-SNAPSHOT
 * new button for open an articles source
 * no error message if no unread item is available and mark all as read was pressed
 * improve logger
+* readability is now available as spout instead as global parameter
+* new share buttons for google+, twitter and facebook
+* mysql use longtext for articles content
+* improved detection of mobile devices
+* allow more tags in articles content
+* show unread items per tag in taglist (thanks a lot to Fedor Bezrukov)
 
 Version 2.3
 * new shortcut library jquery hotkeys (thanks a lot to Sigill)
@@ -100,6 +115,8 @@ Version 1.1
 
 CREDITS
 -------
+
+Very special thanks to all contributors of pull requests here on github. Your improvements are awesome!!!
 
 Special thanks to the great programmers of this libraries which will be used in selfoss:
 

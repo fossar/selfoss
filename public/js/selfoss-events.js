@@ -142,8 +142,10 @@ selfoss.events = {
         // tag
         $('#nav-tags > li').unbind('click').click(function () {
             $('#nav-tags > li').removeClass('active');
+            $('#nav-sources > li').removeClass('active');
             $(this).addClass('active');
             
+            selfoss.filter.source = '';
             selfoss.filter.tag = '';
             if($(this).hasClass('nav-tags-all')==false)
                 selfoss.filter.tag = $(this).find('span').html();
@@ -154,6 +156,28 @@ selfoss.events = {
             if(selfoss.isSmartphone())
                 $('#nav-mobile-settings').click();
         });
+	$('#nav-tags-title').unbind('click').click(function () {
+	    var s = $('#nav-tags').toggle("slow");
+	});
+
+        // source
+        $('#nav-sources > li').unbind('click').click(function () {
+            $('#nav-tags > li').removeClass('active');
+            $('#nav-sources > li').removeClass('active');
+            $(this).addClass('active');
+            
+            selfoss.filter.tag = '';
+            selfoss.filter.source = $(this).attr('id').substr(6);
+                
+            selfoss.filter.offset = 0;
+            selfoss.reloadList();
+            
+            if(selfoss.isSmartphone())
+                $('#nav-mobile-settings').click();
+        });
+	$('#nav-sources-title').unbind('click').click(function () {
+	    var s = $('#nav-sources').toggle("slow");
+	});
         
         // show hide navigation for mobile version
         $('#nav-mobile-settings').unbind('click').click(function () {
@@ -199,10 +223,11 @@ selfoss.events = {
                 $.ajax({
                     url: $('base').attr('href') + 'mark',
                     type: 'POST',
+                    dataType: 'json',
                     data: {
                         ids: ids
                     },
-                    success: function() {
+                    success: function(response) {
                         $('.entry').removeClass('unread');
                         
                         var unreadstats = parseInt($('.nav-filter-unread span').html());
@@ -210,6 +235,18 @@ selfoss.events = {
                         
                         if(selfoss.isSmartphone())
                             $('#nav-mobile-settings').click();
+                            
+                        // update tags
+                        var currentTag = $('#nav-tags li').index($('#nav-tags .active'));
+                        $('#nav-tags li:not(:first)').remove();
+                        $('#nav-tags').append(response.tags);
+                        selfoss.events.navigation();
+                        $('#nav-tags li:eq('+currentTag+')').addClass('active');
+                        
+                        // update mark as read button for every entry
+                        var button = $('.entry-unread');
+                        button.removeClass('active');
+                        button.html('mark as unread');
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
                         alert('Can not mark all visible item: ' + errorThrown);
@@ -457,6 +494,28 @@ selfoss.events = {
             return false;
         });
         
+        // share with google plus
+        parent.find('.entry-sharegoogle').unbind('click').click(function(e) {
+            window.open("https://plus.google.com/share?url="+encodeURIComponent($(this).parents(".entry").children("a").eq(0).attr("href")));
+            e.preventDefault();
+            return false;
+        });
+        
+        // share with twitter
+        parent.find('.entry-sharetwitter').unbind('click').click(function(e) {
+            window.open("https://twitter.com/intent/tweet?source=webclient&text="+encodeURIComponent($(this).parents(".entry").children(".entry-title").html())+" "+encodeURIComponent($(this).parents(".entry").children("a").eq(0).attr("href")));
+            e.preventDefault();
+            return false;
+        });
+        
+        // share with facebook
+        parent.find('.entry-sharefacebook').unbind('click').click(function(e) {
+            window.open("https://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent($(this).parents(".entry").children("a").eq(0).attr("href"))+"&t="+encodeURIComponent($(this).parents(".entry").children(".entry-title").html()));
+            e.preventDefault();
+            return false;
+        });
+        
+        
         // only loggedin users
         if($('body').hasClass('loggedin')==true) {
             // starr/unstarr
@@ -525,7 +584,7 @@ selfoss.events = {
                 };
                 setButton(unread);
                 
-                // update statistics in main menue
+                // update statistics in main menue and the currently active tag
                 var updateStats = function(unread) {
                     var unreadstats = parseInt($('.nav-filter-unread span').html());
                     if(unread) {
@@ -534,6 +593,32 @@ selfoss.events = {
                         unreadstats++;
                     }
                     $('.nav-filter-unread span').html(unreadstats);
+
+		    // TODO -- update unread count on souruces (save sourceid in item)
+
+                    // Iterate over elements tags
+                    $('#entry'+id+' .entry-tags-tag').each( function(index) {
+                        var tag = $(this).html();
+                        
+                        var tagsCountEl = $('#nav-tags > li > span.tag').filter(function(i){
+                            return $(this).html()==tag; }
+                        ).next();
+                        
+                        var unreadstats = 0;
+                        if (tagsCountEl.html()!='')
+                            unreadstats = parseInt(tagsCountEl.html());
+                        
+                        if (unread)
+                            unreadstats--;
+                        else
+                            unreadstats++;
+                        
+                        if (unreadstats>0)
+                            tagsCountEl.html(unreadstats);
+                        else
+                            tagsCountEl.html('');
+                        
+                    } );
                 };
                 updateStats(unread);
                 
