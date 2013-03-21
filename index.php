@@ -10,10 +10,10 @@ $f3->set('BASEDIR',__dir__);
 
 // read defaults
 $f3->config('defaults.ini');
+
 // read config, if it exists
-if(file_exists('config.ini')){
+if(file_exists('config.ini'))
     $f3->config('config.ini');
-}
 
 // init logger
 $f3->set(
@@ -36,6 +36,11 @@ $f3->set('js', array(
     'public/js/jquery.hotkeys.js',
     'public/js/selfoss-base.js',
     'public/js/selfoss-events.js',
+    'public/js/selfoss-events-navigation.js',
+    'public/js/selfoss-events-search.js',
+    'public/js/selfoss-events-entries.js',
+    'public/js/selfoss-events-entriestoolbar.js',
+    'public/js/selfoss-events-sources.js',
     'public/js/selfoss-shortcuts.js'
 ));
 
