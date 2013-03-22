@@ -1,5 +1,7 @@
 <?php
 
+ini_set('max_execution_time', 300);
+
 $f3 = require(__DIR__.'/libs/f3/base.php');
 
 $f3->set('DEBUG',0);
