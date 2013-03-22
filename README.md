@@ -64,6 +64,7 @@ Version 2.4-SNAPSHOT
 * show unread items per tag in taglist (thanks a lot to Fedor Bezrukov)
 * show list of sources for filtering (thanks a lot to Fedor Bezrukov)
 * use more eye catching unread stats in main navigation
+* show source title in selfoss RSS feed (thanks a lot to Darkwing1)
 
 Version 2.3
 * new shortcut library jquery hotkeys (thanks a lot to Sigill)

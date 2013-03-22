@@ -42,16 +42,19 @@ class Rss extends BaseController {
             if($newestEntryDate===false)
                 $newestEntryDate = $item['datetime'];
             $newItem = $feedWriter->createNewItem();
+            
             // get Source Name
             if ($item['source'] != $lastSourceId){
-               foreach($sourceDao->get() as $source) {
-                  if ($source['id'] == $item['source']){
-                     $lastSourceId = $source['id'];
-                     $lastSourceName = $source['title'];
-                     break;
-            }  }  }
+                foreach($sourceDao->get() as $source) {
+                    if ($source['id'] == $item['source']) {
+                        $lastSourceId = $source['id'];
+                        $lastSourceName = $source['title'];
+                        break;
+                    }  
+                }  
+            }
 
-            $newItem->setTitle(str_replace('&', '&amp;', html_entity_decode(utf8_decode($lastSourceName.":".$item['title']))));
+            $newItem->setTitle(str_replace('&', '&amp;', html_entity_decode(utf8_decode($item['title'] . " (" . $lastSourceName . ")"))));
             @$newItem->setLink($item['link']);
             $newItem->setDate($item['datetime']);
             $newItem->setDescription(str_replace('&#34;', '"', $item['content']));
