@@ -54,6 +54,13 @@ selfoss.events.entriesToolbar = function(parent) {
         return false;
     });
 	
+	// share with e-mail
+	parent.find('.entry-shareemail').unbind('click').click(function(e) {
+		document.location.href = "mailto:?body="+encodeURIComponent($(this).parents(".entry").children("a").eq(0).attr("href"))+"&subject="+encodeURIComponent($(this).parents(".entry").children(".entry-title").html());
+        e.preventDefault();
+        return false;
+    });
+	
     // only loggedin users
     if($('body').hasClass('loggedin')==true) {
         // starr/unstarr

@@ -506,8 +506,12 @@ input {
             background-image:url(images/facebook.ico);
         }
 		
-		 .entry-sharepocket {
+		.entry-sharepocket {
             background-image:url(https://getpocket.com/favicon.ico);
+        }
+		
+		.entry-shareemail {
+            background-image:url(images/mail.png);
         }
         
         .entry-toolbar .entry-close {
