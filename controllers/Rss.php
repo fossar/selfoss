@@ -22,7 +22,12 @@ class Rss extends BaseController {
         $feedWriter->setTitle(\F3::get('rss_title'));
         
         $feedWriter->setLink($this->view->base);
-        
+
+        // get sources
+        $sourceDao = new \daos\Sources();
+        $lastSourceId = 0;
+        $lastSourceName = "";
+
         // set options
         $options = array();
         if(count($_GET)>0)
@@ -37,7 +42,16 @@ class Rss extends BaseController {
             if($newestEntryDate===false)
                 $newestEntryDate = $item['datetime'];
             $newItem = $feedWriter->createNewItem();
-            $newItem->setTitle(str_replace('&', '&amp;', html_entity_decode(utf8_decode($item['title']))));
+            // get Source Name
+            if ($item['source'] != $lastSourceId){
+               foreach($sourceDao->get() as $source) {
+                  if ($source['id'] == $item['source']){
+                     $lastSourceId = $source['id'];
+                     $lastSourceName = $source['title'];
+                     break;
+            }  }  }
+
+            $newItem->setTitle(str_replace('&', '&amp;', html_entity_decode(utf8_decode($lastSourceName.":".$item['title']))));
             @$newItem->setLink($item['link']);
             $newItem->setDate($item['datetime']);
             $newItem->setDescription(str_replace('&#34;', '"', $item['content']));
