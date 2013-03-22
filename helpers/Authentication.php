@@ -66,11 +66,9 @@ class Authentication {
     
     
     /**
-     * login user
+     * login without a user
      *
-     * @return bool
-     * @param string $username
-     * @param string $password
+     * @return void
      */
     public function loginWithoutUser() {
         $this->loggedin = true;

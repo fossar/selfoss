@@ -22,8 +22,11 @@ class Image {
     /**
      * fetch favicon
      *
-     * @return bool
+     * @return mixed
      * @param string $url source url
+     * @param bool $isHtmlUrl
+     * @param int|bool $width
+     * @param int|bool $height
      */
     public function fetchFavicon($url, $isHtmlUrl=false, $width=false, $height=false) {
         // try given url
@@ -65,10 +68,10 @@ class Image {
     /**
      * load image
      *
-     * @return bool
+     * @return mixed
      * @param string $url source url
-     * @param int $width
-     * @param int $height
+     * @param int|bool $width
+     * @param int|bool $height
      */
     public function loadImage($url, $width=false, $height=false) {
         // load image
