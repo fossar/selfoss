@@ -48,8 +48,8 @@ class ViewHelper {
     /** 
      * format given date as "x days ago"
      *
-     * @return string with replaced formateddate
-     * @param 
+     * @return string with replaced formatted date
+     * @param $datestr
      */
     public function dateago($datestr) {
         $date = new \DateTime($datestr);
