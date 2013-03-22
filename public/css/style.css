@@ -417,6 +417,7 @@ input {
         
         .entry-content img {
             max-width:99%;
+            height: auto;
         }
         
         .entry-content.entry-content-short {
@@ -1065,3 +1066,12 @@ body.publicmode.notloggedin .entry-unread {
     
  }
  
+.alttextdiv {
+    border-style: solid;
+    border-width: 1px;
+    border-color: black;
+}
+
+.mobileimgdiv {
+    overflow-x: scroll;
+}
