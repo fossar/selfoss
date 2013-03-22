@@ -119,7 +119,7 @@ class Items extends BaseController {
      * @return void
      */
     public function stats() {
-        $itemDao = new \daos\Items();
+        $itemsDao = new \daos\Items();
         $return = array(
             'all'     => $itemsDao->numberOfItems(),
             'unread'  => $itemsDao->numberOfUnread(),
