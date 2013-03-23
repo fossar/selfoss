@@ -17,6 +17,7 @@ var selfoss = {
         search: '',
         type: 'newest',
         tag: '',
+        source: '',
         ajax: true
     },
 
@@ -142,6 +143,8 @@ var selfoss = {
                 location.hash = "";
             },
             error: function(jqXHR, textStatus, errorThrown) {
+                if (textStatus == "parsererror")
+                    location.reload();
                 alert('Load list error: '+errorThrown);
             },
             complete: function(jqXHR, textStatus) {

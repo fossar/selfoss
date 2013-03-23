@@ -12,7 +12,6 @@ namespace controllers;
  */
 class Api extends BaseController {
 
-    
     /**
      * login for api json access
      *
@@ -79,37 +78,5 @@ class Api extends BaseController {
         $this->view->jsonSuccess($items);
     }
     
-    
-    /**
-     * mark items as read
-     *
-     * @return void
-     */
-    public function mark() {
-        $itemController = new \controllers\Items();
-        $itemController->mark();
-    }
-    
-    
-    /**
-     * starr item
-     *
-     * @return void
-     */
-    public function starr() {
-        $itemController = new \controllers\Items();
-        $itemController->starr();
-    }
-    
-    
-    /**
-     * unstarr item
-     *
-     * @return void
-     */
-    public function unstarr() {
-        $itemController = new \controllers\Items();
-        $itemController->unstarr();
-    }
  
 }

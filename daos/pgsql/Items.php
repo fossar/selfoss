@@ -42,6 +42,11 @@ class Items extends \daos\mysql\Items {
             $params[':tag'] = array( "%,".$options['tag'].",%" , \PDO::PARAM_STR );
             $where .= " AND ( (',' || sources.tags || ',') LIKE :tag ) ";
         }
+        // source filter
+        elseif(isset($options['source']) && strlen($options['source'])>0) {
+            $params[':source'] = array($options['source'], \PDO::PARAM_INT);
+            $where .= " AND items.source=:source ";
+        }
         
         // set limit
         if(!is_numeric($options['items']) || $options['items']>200)
@@ -141,7 +146,39 @@ class Items extends \daos\mysql\Items {
                    WHERE starred=true');
         return $res[0]['amount'];
     }
-
+    
+    /**
+     * returns the amount of entries in database per tag
+     *
+     * @return int amount of entries in database per tag
+     */
+    public function numberOfUnreadForTag($tag) {
+        $select = 'SELECT count(*) AS amount FROM items, sources';
+        $where = ' WHERE items.source=sources.id AND unread=true';
+        if ( \F3::get( 'db_type' ) == 'mysql' ) {
+            $where .= " AND ( CONCAT( ',' , sources.tags , ',' ) LIKE :tag ) ";
+        } else {
+            $where .= " AND ( (',' || sources.tags || ',') LIKE :tag ) ";
+        }
+        $res = \F3::get('db')->exec( $select . $where,
+            array(':tag' => "%,".$tag.",%"));
+        return $res[0]['amount'];
+    }
+    
+    
+    /**
+     * returns the amount of unread entries in database per source
+     *
+     * @return int amount of entries in database per tag
+     */
+    public function numberOfUnreadForSource($sourceid) {
+        $res = \F3::get('db')->exec(
+            'SELECT count(*) AS amount FROM items WHERE source=:source AND unread=true',
+            array(':source' => $sourceid));
+        return $res[0]['amount'];
+    }
+    
+    
     /**
      * returns the icon of the last fetched item.
      *

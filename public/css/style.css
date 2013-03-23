@@ -92,8 +92,23 @@ input {
             font-size:0.55em;
             color:#777;
         }
+        
+        #nav-filter #nav-filter-unread span.unread {
+            background-color: #E74C3C;
+            border-radius: 30px;
+            color: white;
+            font-size: 10px;
+            font-weight: 500;
+            line-height: 16px;
+            min-width: 8px;
+            padding: 0 5px 0 5px;
+            margin-top: 6px;
+            position: absolute;
+            margin-left: 5px;
+        }
     
     #nav h2 {
+        cursor:pointer;
         color:#494949;
         text-transform:uppercase;
         font:18px/27px 'OpenSansBold', Arial, sans-serif;
@@ -139,7 +154,41 @@ input {
             -khtml-border-radius:2px;
             border-radius:2px;
         }
+        
+    #nav-sources-wrapper  {
+        overflow:hidden;
+    }
     
+        #nav-sources {
+            display:none;
+        }
+    
+        #nav-sources li {
+            position:relative;
+            font: 18px/27px 'OpenSansLight', Arial, sans-serif;
+            color:#b9b9b9;
+            cursor:pointer;
+            padding-left:25px;
+            padding-right:30px;
+            font-size:0.7em;
+            
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            -o-text-overflow: ellipsis;
+        }
+        
+        #nav-sources li.active {
+            background:#272325;
+            color:#d7d7d7;
+        }
+        
+    #nav .unread {
+        font-size:0.9em;
+        vertical-align:sub;
+        color: #777;
+    }
+        
     #nav-search {
         display:none;
     }

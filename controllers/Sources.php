@@ -142,11 +142,51 @@ class Sources extends BaseController {
         // cleanup tags
         $tagsDao->cleanup($sourcesDao->getAllTags());
         
+        // get new tag list with updated count values
+        $tagController = new \controllers\Tags();
+        $renderedTags = $tagController->tagsListAsString();
+        
+        // get new sources list
+        $sourcesController = new \controllers\Sources();
+        $renderedSources = $sourcesController->sourcesListAsString();
+        
         $this->view->jsonSuccess(
             array(
                 'success' => true,
-                'id' => $id
+                'id'      => $id,
+                'tags'    => $renderedTags,
+                'sources' => $renderedSources
             )
         );
+    }
+
+    /**
+     * return all Sources suitable for navigation panel
+     *
+     * @return htmltext
+     */
+    public function renderSources($sources) {
+        $html = "";
+        $itemsDao = new \daos\Items();
+        foreach($sources as $source) {
+            $this->view->source = $source['title'];
+            $this->view->sourceid = $source['id'];
+            $this->view->unread = $itemsDao->numberOfUnreadForSource($source['id']);
+            $html .= $this->view->render('templates/source-nav.phtml');
+        }
+        
+        return $html;
+    }
+
+    /**
+     * load all available sources and return all Sources suitable 
+     * for navigation panel
+     *
+     * @return htmltext
+     */
+    public function sourcesListAsString() {
+        $sourcesDao = new \daos\Sources();
+        $sources = $sourcesDao->get();
+        return $this->renderSources($sources);
     }
 }

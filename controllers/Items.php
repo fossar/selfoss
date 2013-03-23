@@ -30,7 +30,20 @@ class Items extends BaseController {
             $this->view->error('invalid id');
         
         $itemDao->mark($lastid);
-        $this->view->jsonSuccess(array('success' => true));
+        
+        // get new tag list with updated count values
+        $tagController = new \controllers\Tags();
+        $renderedTags = $tagController->tagsListAsString();
+        
+        // get new sources list
+        $sourcesController = new \controllers\Sources();
+        $renderedSources = $sourcesController->sourcesListAsString();
+        
+        $this->view->jsonSuccess(array(
+            'success' => true,
+            'tags'    => $renderedTags,
+            'sources' => $renderedSources
+        ));
     }
     
     
@@ -106,7 +119,7 @@ class Items extends BaseController {
      * @return void
      */
     public function stats() {
-        $itemDao = new \daos\Items();
+        $itemsDao = new \daos\Items();
         $return = array(
             'all'     => $itemsDao->numberOfItems(),
             'unread'  => $itemsDao->numberOfUnread(),
