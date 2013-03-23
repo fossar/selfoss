@@ -81,7 +81,8 @@ class Database {
                         tags        TEXT,
                         spout       TEXT NOT NULL,
                         params      TEXT NOT NULL,
-                        error       TEXT 
+                        error       TEXT,
+                        lastupdate  INTEGER
                     );
                 ');
                 $isNewestSourcesTable = true;
@@ -96,7 +97,7 @@ class Database {
                 ');
                 
                 \F3::get('db')->exec('
-                    INSERT INTO version (version) VALUES (2);
+                    INSERT INTO version (version) VALUES (3);
                 ');
                 
                 \F3::get('db')->exec('
@@ -109,6 +110,19 @@ class Database {
                 if($isNewestSourcesTable===false) {
                     \F3::get('db')->exec('
                         ALTER TABLE sources ADD tags TEXT;
+                    ');
+                }
+            }
+            else{
+                $version = @\F3::get('db')->exec('SELECT version FROM version ORDER BY version DESC LIMIT 0, 1');
+                $version = $version[0]['version'];
+
+                if($version == "2"){
+                    \F3::get('db')->exec('
+                        ALTER TABLE sources ADD lastupdate INT;
+                    ');
+                    \F3::get('db')->exec('
+                        INSERT INTO version (version) VALUES (3);
                     ');
                 }
             }
