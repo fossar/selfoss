@@ -53,25 +53,77 @@
         <?PHP echo $content; ?>
         
         <ul class="entry-smartphone-share">
-            <li class="entry-sharegoogle">google</li>
-            <li class="entry-sharetwitter">twitter</li>
-            <li class="entry-sharefacebook">facebook</li>
-			<li class="entry-sharepocket">pocket</li>
-			<li class="entry-shareemail">email</li>
+			<?php if(\F3::get('sharegoogle')!="" || \F3::get('sharegoogle')!="Hide") : ?>
+				<li title="google" class="entry-sharegoogle"><?php echo \F3::get('sharegoogle')=="ImageText" ? 'google': '&nbsp;'; ?></li>
+			<?php endif; ?>
+			
+			<?php if(\F3::get('sharetwitter')!="" || \F3::get('sharetwitter')!="Hide") : ?>
+				<li title="twitter" class="entry-sharetwitter"><?php echo \F3::get('sharetwitter')=="ImageText" ? 'twitter': '&nbsp;'; ?></li>
+			<?php endif; ?>
+			
+			<?php if(\F3::get('sharefacebook')!="" || \F3::get('sharefacebook')!="Hide") : ?>
+				<li title="facebook" class="entry-sharefacebook"><?php echo \F3::get('sharefacebook')=="ImageText" ? 'facebook': '&nbsp;'; ?></li>
+			<?php endif; ?>
+			
+			<?php if(\F3::get('sharepocket')!="" || \F3::get('sharepocket')!="Hide") : ?>
+				<li title="pocket" class="entry-sharepocket"><?php echo \F3::get('sharepocket')=="ImageText" ? 'pocket': '&nbsp;'; ?></li>
+			<?php endif; ?>
+			
+			<?php if(\F3::get('shareemail')!="" || \F3::get('shareemail')!="Hide") : ?>
+				<li title="email" class="entry-shareemail"><?php echo \F3::get('shareemail')=="ImageText" ? 'email': '&nbsp;'; ?></li>
+			<?php endif; ?>
         </ul>
     </div>
     
     <!-- toolbar -->
     <ul class="entry-toolbar">
-        <li class="entry-starr <?PHP echo $this->item['starred']==1 ? 'active' : ''; ?>"><?PHP echo $this->item['starred']==1 ? 'unstar' : 'star'; ?></li>
-        <li class="entry-unread <?PHP echo $this->item['unread']==1 ? 'active' : ''; ?>"><?PHP echo $this->item['unread']==1 ? 'mark as read' : 'mark as unread'; ?></li>
-        <li class="entry-newwindow">open</li>
-        <li class="entry-loadimages">load images</li>
-        <li class="entry-sharegoogle entry-share">google</li>
-        <li class="entry-sharetwitter entry-share">twitter</li>
-        <li class="entry-sharefacebook entry-share">facebook</li>
-		<li class="entry-sharepocket  entry-share">pocket</li>
-		<li class="entry-shareemail entry-share">email</li>
+		<?php if(\F3::get('star')!="" || \F3::get('star')!="Hide") : ?>
+			<li title="star/unstar" class="entry-starr <?PHP echo $this->item['starred']==1 ? 'active' : ''; ?>">
+				<?php if(\F3::get('star')=="ImageText"): ?>
+					<?PHP echo $this->item['starred']==1 ? 'unstar' : 'star'; ?>
+				<?php else : ?>
+					&nbsp;
+				<?php endif; ?>
+			</li>
+		<?php endif; ?>
+		
+		<?php if(\F3::get('unread')!="" || \F3::get('unread')!="Hide") : ?>
+			<li title="read/unread" class="entry-unread <?PHP echo $this->item['unread']==1 ? 'active' : ''; ?>">
+				<?php if(\F3::get('unread')=="ImageText"): ?>
+					<?PHP echo $this->item['unread']==1 ? 'mark as read' : 'mark as unread'; ?>
+				<?php else : ?>
+					&nbsp;
+				<?php endif; ?>
+			</li>
+		<?php endif; ?>
+		
+       <?php if(\F3::get('open')!="" || \F3::get('open')!="Hide") : ?>
+			<li class="entry-newwindow" title="open"><?php echo \F3::get('open')=="ImageText" ? 'open' : '&nbsp;'; ?></li>
+		<?php endif; ?>
+		
+		<?php if(\F3::get('loadimages')!="" || \F3::get('loadimages')!="Hide") : ?>
+			<li class="entry-loadimages" title="load images"><?php echo \F3::get('loadimages')=="ImageText" ? 'load images' : '&nbsp;'; ?></li>
+		<?php endif; ?>
+		
+		<?php if(\F3::get('sharegoogle')!="" || \F3::get('sharegoogle')!="Hide") : ?>
+			<li class="entry-sharegoogle entry-share" title="google"><?php echo \F3::get('sharegoogle')=="ImageText" ? 'google':'&nbsp;'; ?></li>
+		<?php endif; ?>
+		
+		<?php if(\F3::get('sharetwitter')!="" || \F3::get('sharetwitter')!="Hide") : ?>
+			<li class="entry-sharetwitter entry-share" title="twitter"><?php echo \F3::get('sharetwitter')=="ImageText" ? 'twitter':'&nbsp;'; ?></li>
+		<?php endif; ?>
+		
+		<?php if(\F3::get('sharefacebook')!="" || \F3::get('sharefacebook')!="Hide") : ?>
+			<li class="entry-sharefacebook entry-share" title="facebook"><?php echo \F3::get('sharefacebook')=="ImageText" ? 'facebook':'&nbsp;'; ?></li>
+		<?php endif; ?>
+		
+		<?php if(\F3::get('sharepocket')!="" || \F3::get('sharepocket')!="Hide") : ?>
+			<li class="entry-sharepocket entry-share" title="pocket"><?php echo \F3::get('sharepocket')=="ImageText" ? 'pocket':'&nbsp;'; ?></li>
+		<?php endif; ?>
+		
+		<?php if(\F3::get('shareemail')!="" || \F3::get('shareemail')!="Hide") : ?>
+			<li class="entry-shareemail entry-share" title="email"><?php echo \F3::get('shareemail')=="ImageText" ? 'email':'&nbsp;'; ?></li>
+		<?php endif; ?>
         <li class="entry-close"></li>
     </ul>
 </div>

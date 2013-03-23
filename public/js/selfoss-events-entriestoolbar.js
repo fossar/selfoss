@@ -74,10 +74,14 @@ selfoss.events.entriesToolbar = function(parent) {
             var setButton = function(starr) {
                 if(starr) {
                     button.addClass('active');
-                    button.html('unstar');
+					if($.trim(button.html())!="&nbsp;"){
+						button.html('unstar');
+					}
                 } else {
                     button.removeClass('active');
-                    button.html('star');
+					if($.trim(button.html())!="&nbsp;"){
+						button.html('star');
+					}
                 }
             };
             setButton(starr);
@@ -119,11 +123,15 @@ selfoss.events.entriesToolbar = function(parent) {
             var setButton = function(unread) {
                 if(unread) {
                     button.removeClass('active');
-                    button.html('mark as unread');
+					if($.trim(button.html())!="&nbsp;"){
+						button.html('mark as unread');
+					}
                     parent.removeClass('unread');
                 } else {
                     button.addClass('active');
-                    button.html('mark as read');
+					if($.trim(button.html())!="&nbsp;"){
+						button.html('mark as read');
+					}
                     parent.addClass('unread');
                 }
             };
