@@ -86,6 +86,11 @@ selfoss.events.entries = function(e) {
             if(selfoss.isMobile()==false) {
                 content.lazyLoadImages();
             }
+            
+            // automark as read
+            if(autoMarkAsRead) {
+                parent.find('.entry-unread').click();
+            }
         } 
     });
 
