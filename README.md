@@ -69,6 +69,7 @@ Version 2.4-SNAPSHOT
 * Opening feed search focus the search input field
 * Scroll blockquotes and pre on overflow (especially good for mobile devices)
 * new option for automatically mark items as read
+* new share buttons for email and pocket (thanks a lot to Francis Noel)
 
 Version 2.3
 * new shortcut library jquery hotkeys (thanks a lot to Sigill)
