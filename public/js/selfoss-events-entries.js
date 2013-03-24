@@ -75,16 +75,16 @@ selfoss.events.entries = function(e) {
                 content.show();
                 selfoss.events.entriesToolbar(parent);
                 parent.find('.entry-toolbar').show();
+                
+                // automark as read
+                if(autoMarkAsRead) {
+                    parent.find('.entry-unread').click();
+                }
             }
             
             // load images not on mobile devices
             if(selfoss.isMobile()==false) {
                 content.lazyLoadImages();
-            }
-            
-            // automark as read
-            if(autoMarkAsRead) {
-                parent.find('.entry-unread').click();
             }
         } 
     });
