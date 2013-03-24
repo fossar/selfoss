@@ -29,7 +29,7 @@ class ContentLoader {
      */
     public function update() {
         $sourcesDao = new \daos\Sources();
-        foreach($sourcesDao->get() as $source) {
+        foreach($sourcesDao->getByLastUpdate() as $source) {
             $this->fetch($source);
         }
         $this->cleanup();
@@ -180,12 +180,14 @@ class ContentLoader {
         // destroy feed object (prevent memory issues)
         \F3::get('logger')->log('destroy spout object', \DEBUG);
         $spout->destroy();
-        
+
+        $sourceDao = new \daos\Sources();
         // remove previous error
         if(strlen(trim($source['error']))!=0) {
-            $sourceDao = new \daos\Sources();
             $sourceDao->error($source['id'], '');
         }
+        // save last update
+        $sourceDao->saveLastUpdate($source['id']);
     }
     
     
