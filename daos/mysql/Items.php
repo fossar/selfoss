@@ -327,7 +327,7 @@ class Items extends Database {
         if(is_numeric($sourceid)===false)
             return false;
         
-        $res = \F3::get('db')->exec('SELECT icon FROM items WHERE source=:sourceid AND icon!=0 ORDER BY ID DESC LIMIT 0,1',
+        $res = \F3::get('db')->exec('SELECT icon FROM items WHERE source=:sourceid AND icon!="" ORDER BY ID DESC LIMIT 0,1',
                     array(':sourceid' => $sourceid));
         if(count($res)==1)
             return $res[0]['icon'];
