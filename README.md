@@ -68,6 +68,7 @@ Version 2.4-SNAPSHOT
 * load sources for update by last update time (thanks a lot to Lars Formella)
 * Opening feed search focus the search input field
 * Scroll blockquotes and pre on overflow (especially good for mobile devices)
+* new option for automatically mark items as read
 
 Version 2.3
 * new shortcut library jquery hotkeys (thanks a lot to Sigill)
