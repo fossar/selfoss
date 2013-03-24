@@ -87,6 +87,35 @@ class Sources extends Database {
                         ':error' => $error
                     ));
     }
+
+
+    /**
+     * sets the last updated timestamp
+     *
+     * @return void
+     * @param int $id the source id
+     */
+    public function saveLastUpdate($id) {
+        \F3::get('db')->exec('UPDATE sources SET lastupdate=:lastupdate WHERE id=:id',
+                    array(
+                        ':id'         => $id,
+                        ':lastupdate' => time()
+                    ));
+    }
+
+
+    /**
+     * returns all sources
+     *
+     * @return mixed all sources
+     */
+    public function getByLastUpdate() {
+        $ret = \F3::get('db')->exec('SELECT id, title, tags, spout, params, error FROM sources ORDER BY lastupdate ASC');
+        $spoutLoader = new \helpers\SpoutLoader();
+        for($i=0;$i<count($ret);$i++)
+            $ret[$i]['spout_obj'] = $spoutLoader->get( $ret[$i]['spout'] );
+        return $ret;
+    }
     
     
     /**
