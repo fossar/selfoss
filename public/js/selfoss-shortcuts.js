@@ -50,7 +50,7 @@ selfoss.shortcuts = {
         });
         
         // Shortcut for the swipe version
-         if(selfoss.isSmartphone()){
+         if(selfoss.isSmartphone() || selfoss.isTablet()){
                 // Event for swipe.
                 // Swipe left go to the next item in the list and mark as read
                 Hammer("body").on("swipeleft", function() {
