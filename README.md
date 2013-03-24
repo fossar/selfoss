@@ -65,6 +65,7 @@ Version 2.4-SNAPSHOT
 * show list of sources for filtering (thanks a lot to Fedor Bezrukov)
 * use more eye catching unread stats in main navigation
 * show source title in selfoss RSS feed (thanks a lot to Darkwing1)
+* load sources for update by last update time (thanks a lot to Lars Formella)
 
 Version 2.3
 * new shortcut library jquery hotkeys (thanks a lot to Sigill)
