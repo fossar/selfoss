@@ -70,6 +70,7 @@ Version 2.4-SNAPSHOT
 * Scroll blockquotes and pre on overflow (especially good for mobile devices)
 * new option for automatically mark items as read
 * new share buttons for email and pocket (thanks a lot to Francis Noel)
+* new shortcut r for reloading the current list
 
 Version 2.3
 * new shortcut library jquery hotkeys (thanks a lot to Sigill)

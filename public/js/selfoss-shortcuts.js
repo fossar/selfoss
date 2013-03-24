@@ -33,7 +33,7 @@ selfoss.shortcuts = {
         // Reload the current view
         $(document).bind('keydown', 'r', function() {
             selfoss.reloadList();
-        });        
+        });
         
         // mark all as read
         $(document).bind('keydown', 'ctrl+m', function() {
