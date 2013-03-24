@@ -47,7 +47,20 @@ selfoss.events.entriesToolbar = function(parent) {
         return false;
     });
     
-    
+     // share with pocket
+    parent.find('.entry-sharepocket').unbind('click').click(function(e) {
+        window.open(" https://getpocket.com/save?url="+encodeURIComponent($(this).parents(".entry").children("a").eq(0).attr("href"))+"&title="+encodeURIComponent($(this).parents(".entry").children(".entry-title").html()));
+        e.preventDefault();
+        return false;
+    });
+	
+	// share with e-mail
+	parent.find('.entry-shareemail').unbind('click').click(function(e) {
+		document.location.href = "mailto:?body="+encodeURIComponent($(this).parents(".entry").children("a").eq(0).attr("href"))+"&subject="+encodeURIComponent($(this).parents(".entry").children(".entry-title").html());
+        e.preventDefault();
+        return false;
+    });
+	
     // only loggedin users
     if($('body').hasClass('loggedin')==true) {
         // starr/unstarr
@@ -61,10 +74,14 @@ selfoss.events.entriesToolbar = function(parent) {
             var setButton = function(starr) {
                 if(starr) {
                     button.addClass('active');
-                    button.html('unstar');
+					if($.trim(button.html())!="&nbsp;"){
+						button.html('unstar');
+					}
                 } else {
                     button.removeClass('active');
-                    button.html('star');
+					if($.trim(button.html())!="&nbsp;"){
+						button.html('star');
+					}
                 }
             };
             setButton(starr);
@@ -106,11 +123,15 @@ selfoss.events.entriesToolbar = function(parent) {
             var setButton = function(unread) {
                 if(unread) {
                     button.removeClass('active');
-                    button.html('mark as unread');
+					if($.trim(button.html())!="&nbsp;"){
+						button.html('mark as unread');
+					}
                     parent.removeClass('unread');
                 } else {
                     button.addClass('active');
-                    button.html('mark as read');
+					if($.trim(button.html())!="&nbsp;"){
+						button.html('mark as read');
+					}
                     parent.addClass('unread');
                 }
             };
