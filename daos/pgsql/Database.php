@@ -115,7 +115,7 @@ class Database {
                 }
             }
             else{
-                $version = @\F3::get('db')->exec('SELECT version FROM version ORDER BY version DESC LIMIT 1, 0');
+                $version = @\F3::get('db')->exec('SELECT version FROM version ORDER BY version DESC LIMIT 1');
                 $version = $version[0]['version'];
 
                 if($version == "2"){
