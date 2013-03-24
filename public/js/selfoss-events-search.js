@@ -26,6 +26,7 @@ selfoss.events.search = function() {
     $('#search-button').unbind('click').click(function () {
         if($('#search').hasClass('active')==false) {
             $('#search').addClass('active');
+            $('#search-term').focus();
             return;
         }
         executeSearch($('#search-term').val());
