@@ -84,6 +84,8 @@ selfoss.events.sources = function() {
                 // update sources
                 $('#nav-sources li').remove();
                 $('#nav-sources').append(response.sources);
+                
+                selfoss.events.navigation();
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 selfoss.showErrors(parent, $.parseJSON(jqXHR.responseText));
