@@ -331,6 +331,9 @@ input {
     padding-bottom:20px;
 }
 
+    #content .stream-empty{
+        text-align:center;
+    }
 
     #content.loading {
         background:url(images/ajax-loader-big.gif) center center no-repeat;
