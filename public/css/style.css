@@ -424,6 +424,11 @@ input {
             -webkit-column-count: 1;
             column-count: 1;
         }
+        
+        .entry-content pre,
+        .entry-content blockquote {
+            overflow-x: auto;
+        }
     
     .entry-icon,
     .entry-icon img {
