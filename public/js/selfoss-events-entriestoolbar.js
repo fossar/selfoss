@@ -47,6 +47,19 @@ selfoss.events.entriesToolbar = function(parent) {
         return false;
     });
     
+    // share with pocket
+    parent.find('.entry-sharepocket').unbind('click').click(function(e) {
+        window.open(" https://getpocket.com/save?url="+encodeURIComponent($(this).parents(".entry").children("a").eq(0).attr("href"))+"&title="+encodeURIComponent($(this).parents(".entry").children(".entry-title").html()));
+        e.preventDefault();
+        return false;
+    });
+  
+    // share with e-mail
+    parent.find('.entry-shareemail').unbind('click').click(function(e) {
+        document.location.href = "mailto:?body="+encodeURIComponent($(this).parents(".entry").children("a").eq(0).attr("href"))+"&subject="+encodeURIComponent($(this).parents(".entry").children(".entry-title").html());
+        e.preventDefault();
+        return false;
+    });
     
     // only loggedin users
     if($('body').hasClass('loggedin')==true) {
