@@ -497,8 +497,12 @@ input {
         
         .entry-toolbar .entry-newwindow {
             background-image:url(images/open.png);
-            border-right:1px solid #CCC;
-            padding-right:5px;
+        }
+        
+        .entry-toolbar .entry-sharegoogle {
+            border-left:1px solid #CCC;
+            padding-left:30px;
+            background-position: 10px center;
         }
         
         .entry-sharegoogle {
