@@ -24,7 +24,12 @@
     <link rel="stylesheet" href="all.css">
 
 </head>
-<body class="<?PHP if($this->publicMode===true) : ?>publicmode<?PHP endif; ?> <?PHP echo $this->loggedin ? "loggedin" : "notloggedin"; ?> <?PHP if(\F3::get('initial_open')==1) : ?>initial_open<?PHP endif; ?>">
+<body class="
+    <?PHP echo $this->publicMode===true ? "publicmode" : ""; ?>
+    <?PHP echo $this->loggedin===true ? "loggedin" : "notloggedin"; ?> 
+    <?PHP echo \F3::get('initial_open')==1 ? "initial_open" : ""; ?>
+    <?PHP echo \F3::get('auto_mark_as_read')==1 ? "auto_mark_as_read" : ""; ?>
+">
     
     <!-- menue open for smartphone -->
     <div id="nav-mobile">
