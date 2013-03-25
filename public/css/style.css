@@ -500,8 +500,6 @@ input {
         
         .entry-toolbar .entry-newwindow {
             background-image:url(images/open.png);
-            border-right:1px solid #CCC;
-            padding-right:5px;
         }
         
         .entry-toolbar .entry-sharegoogle {
