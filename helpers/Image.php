@@ -34,14 +34,22 @@ class Image {
                 return $faviconAsPng;
             }
         }
-        
+
+        $urlElements = parse_url($url);
+
         // search on base page for <link rel="shortcut icon" url...
         $html = @file_get_contents($url);
         $shortcutIcon = $this->parseShortcutIcon($html);
         if($shortcutIcon!==false) {
-            if(substr($shortcutIcon,0,4)!='http')
-                $shortcutIcon = $url . $shortcutIcon;
-                
+            if(substr($shortcutIcon,0,4)!='http') {
+                if (substr($shortcutIcon, 0, 2)=='//')
+                    $shortcutIcon = $urlElements['scheme'] . ':' . $shortcutIcon;
+                elseif (substr($shortcutIcon, 0, 1)=='/')
+                    $shortcutIcon = $urlElements['scheme'] . '://' . $urlElements['host'] . $shortcutIcon;
+                else
+                    $shortcutIcon = $url . $shortcutIcon;
+            }
+
             $faviconAsPng = $this->loadImage($shortcutIcon, $width, $height);
             if($faviconAsPng!==false) {
                 $this->faviconUrl = $shortcutIcon;
@@ -50,8 +58,7 @@ class Image {
         }
         
         // search domain/favicon.ico
-        $urlElements = parse_url($url);
-        $url = $urlElements['scheme'] . '://'.$urlElements['host'] . '/favicon.ico';
+        $url = $urlElements['scheme'] . '://' . $urlElements['host'] . '/favicon.ico';
         $faviconAsPng = $this->loadImage($url, $width, $height);
         if($faviconAsPng!==false) {
             $this->faviconUrl = $url;
@@ -149,7 +156,7 @@ class Image {
     private function parseShortcutIcon($html) {
         $result = preg_match('/<link .*rel=("|\')apple-touch-icon\1.*>/Ui', $html, $match1);
         if($result==0)
-            $result = preg_match('/<link .*rel=("|\')shortcut icon\1.*>/Ui', $html, $match1);
+            $result = preg_match('/<link [^>]*rel=("|\')shortcut icon\1.*>/Ui', $html, $match1);
         if($result>0) {
             preg_match('/href=("|\')(.*)\1/Ui', $match1[0], $match2);
             return $match2[2];
