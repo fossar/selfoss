@@ -499,16 +499,34 @@ input {
             background-image:url(images/open.png);
         }
         
+        .entry-toolbar .entry-sharegoogle {
+            border-left:1px solid #CCC;
+            padding-left:30px;
+            background-position: 10px center;
+        }
+        
         .entry-sharegoogle {
             background-image:url(images/googleplus.png);
         }
         
-        .entry-sharetwitter {
-            background-image:url(images/twitter.ico);
+        .entry-smartphone-share li.entry-sharetwitter,
+        .entry-toolbar li.entry-sharetwitter {
+            background-image:url(images/twitter.png);
+            background-size:16px 12px;
         }
         
         .entry-sharefacebook {
-            background-image:url(images/facebook.ico);
+            background-image:url(images/facebook.png);
+        }
+        
+        .entry-sharepocket {
+            background-image:url(images/pocket.png);
+        }
+    
+        .entry-smartphone-share li.entry-shareemail,
+        .entry-toolbar li.entry-shareemail {
+            background-image:url(images/mail.png);
+            background-size:16px 10px;
         }
         
         .entry-toolbar .entry-close {
@@ -1042,12 +1060,13 @@ body.publicmode.notloggedin .entry-unread {
         display:block;
         margin-top:10px;
         margin-bottom:10px;
-        height:20px;
+        height:50px;
     }
     
         .entry-smartphone-share li {
             float:left;
             margin-right:10px;
+            margin-bottom:5px;
             list-style:none;
         }
 }

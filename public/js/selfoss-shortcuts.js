@@ -30,6 +30,11 @@ selfoss.shortcuts = {
             window.open($('.entry.selected .entry-source').attr('href'));
         });
         
+        // Reload the current view
+        $(document).bind('keydown', 'r', function() {
+            selfoss.reloadList();
+        });
+        
         // mark all as read
         $(document).bind('keydown', 'ctrl+m', function() {
             $('#nav-mark').click();
@@ -99,7 +104,7 @@ selfoss.shortcuts = {
             current.click().removeClass('selected').prev().addClass('selected');
         
         // open?
-        if(open && current.find('.entry-thumbnail').length==0) {
+        if(open) {
             var content = current.find('.entry-content');
             // load images not on mobile devices
             if(selfoss.isMobile()==false)
@@ -107,6 +112,9 @@ selfoss.shortcuts = {
             content.show();
             current.find('.entry-toolbar').show();
             selfoss.events.entriesToolbar(current);
+            // automark as read
+            if($('body').hasClass('auto_mark_as_read') && current.hasClass('unread'))
+                current.find('.entry-unread').click();
         }
         
         // scroll to element
