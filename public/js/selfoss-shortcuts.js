@@ -118,7 +118,7 @@ selfoss.shortcuts = {
         }
         
         // scroll to element
-        $("html, body").animate({ scrollTop: current.position().top});
+        $(window).scrollTop(current.position().top);
     },
     
 }
