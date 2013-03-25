@@ -88,6 +88,8 @@ class Image {
             $type = 'jpg';
         elseif(strtolower($imgInfo['mime'])=='image/gif')
             $type = 'gif';
+        elseif(strtolower($imgInfo['mime'])=='image/x-ms-bmp')
+            $type = 'bmp';
         else {
             @unlink($tmp);
             return false;
