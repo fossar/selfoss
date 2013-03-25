@@ -60,12 +60,13 @@ class ViewHelper {
         $ageInDays = $ageInHours / 24;
         
         if($ageInMinutes<1)
-            return str_replace('%s', round($ageInSeconds, 0), \F3::get('lang_seconds'));
+            return \F3::get('lang_seconds',round($ageInSeconds, 0));
         if($ageInHours<1)
-            return str_replace('%s', round($ageInMinutes, 0), \F3::get('lang_minutes'));
+            return \F3::get('lang_minutes',round($ageInMinutes, 0));
         if($ageInDays<1)
-            return str_replace('%s', round($ageInHours, 0), \F3::get('lang_timestamp'));
+            return \F3::get('lang_hours',round($ageInHours, 0));
         
-        return $datestr;
+        //return $datestr;
+        return \F3::get('lang_timestamp', $date->getTimestamp());
     }
 }

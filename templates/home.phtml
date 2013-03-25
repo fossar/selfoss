@@ -51,13 +51,13 @@
         
         <?PHP $active = (\F3::get('homepage')) ? \F3::get('homepage') : 'newest' ?>
         <ul id="nav-filter">
-            <li id="nav-filter-newest" class="nav-filter-newest<?PHP if($active=='newest') : ?> active<?PHP endif; ?>"><?PHP echo \F3::get('lang_newest')?>  <span><?PHP echo $this->statsAll; ?></span></li>
-            <li id="nav-filter-unread" class="nav-filter-unread<?PHP if($active=='unread') : ?> active<?PHP endif; ?>"><?PHP echo \F3::get('lang_unread')?> <span><?PHP echo $this->statsUnread; ?></span></li>
+            <li id="nav-filter-newest" class="nav-filter-newest<?PHP if($active=='newest') : ?> active<?PHP endif; ?>"><?PHP echo \F3::get('lang_newest')?> <span><?PHP echo $this->statsAll; ?></span></li>
+			<li id="nav-filter-unread" class="nav-filter-unread<?PHP if($active=='unread') : ?> active<?PHP endif; ?>"><?PHP echo \F3::get('lang_unread')?> <span <?PHP echo $this->statsUnread>0 ? 'class="unread"' : ''; ?>><?PHP echo $this->statsUnread; ?></span></li>
             <li id="nav-filter-starred" class="nav-filter-starred<?PHP if($active=='starred') : ?> active<?PHP endif; ?>"><?PHP echo \F3::get('lang_starred') ?> <span><?PHP echo $this->statsStarred; ?></span></li>
         </ul>
         
         <hr>
-        
+
         <div id="nav-tags-wrapper">
         <h2 id="nav-tags-title"><?PHP echo \F3::get('lang_tags') ?></h2>
         <ul id="nav-tags">

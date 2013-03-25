@@ -7,6 +7,7 @@ $f3->set('version','2.4-SNAPSHOT');
 $f3->set('AUTOLOAD',__dir__.'/;libs/f3/;libs/;libs/WideImage/;daos/;libs/twitteroauth/;libs/FeedWriter/');
 $f3->set('cache',__dir__.'/data/cache');
 $f3->set('BASEDIR',__dir__);
+$f3->set('LOCALES',__dir__.'/public/lang/'); 
 
 // read defaults
 $f3->config('defaults.ini');
@@ -15,12 +16,8 @@ $f3->config('defaults.ini');
 if(file_exists('config.ini'))
     $f3->config('config.ini');
 
-// language select
-$f3->config('public/lang/en'); //load defaults
-// read language if exists 
-if(file_exists('public/lang/'.$f3->get('language'))){
-	$f3->config('public/lang/'.$f3->get('language'));
-}
+// Load custom language
+$f3->set('LANGUAGE',$f3->get('language'));
 
 // init logger
 $f3->set(
