@@ -118,32 +118,7 @@ selfoss.shortcuts = {
         }
         
         // scroll to element
-        selfoss.shortcuts.autoscroll(current);
-    },
-    
-    
-    /**
-     * autoscroll
-     */
-    autoscroll: function(next) {
-        var viewportHeight = $(window).height();
-        var viewportScrollTop = $(window).scrollTop();
-        
-        // scroll down
-        if(viewportScrollTop + viewportHeight < next.position().top + next.height() + 80) {
-            if(next.height() > viewportHeight) {
-                $(window).scrollTop(next.position().top);
-            } else {
-                var marginTop = (viewportHeight-next.height())/2;
-                var scrollTop = next.position().top-marginTop;
-                $(window).scrollTop(scrollTop);
-            }
-        }
-        
-        // scroll up
-        if(next.position().top <= viewportScrollTop) {
-            $(window).scrollTop(next.position().top);
-        }
+        $("html, body").animate({ scrollTop: current.position().top});
     },
     
 }
