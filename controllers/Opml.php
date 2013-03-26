@@ -88,16 +88,22 @@ class Opml extends BaseController {
         $errors = Array();
         
         // tags are the words of the outline parent
-        if((string)$xml['title']){
+        if((string)$xml['title'] && $xml['title']!='/'){
             $tags[] = (string)$xml['title'];
         }
         
         // parse every outline item
         foreach($xml->outline as $outline){
             if((string)$outline['type']) {
-                $ret = $this->addSubscription($outline,$tags);
-                if($ret!==true) {
-                    $errors[] = $ret;
+                //support folders in opml
+                if($outline['type']=='folder') {
+                    $ret = $this->processGroup($outline,$tags);
+                    $errors = array_merge($errors,$ret);
+                } else {
+                    $ret = $this->addSubscription($outline,$tags);
+                    if($ret!==true) {
+                        $errors[] = $ret;
+                    }
                 }
             } else {
                 $ret = $this->processGroup($outline,$tags);
