@@ -72,6 +72,7 @@ Version 2.4-SNAPSHOT
 * new share buttons for email and pocket (thanks a lot to Francis Noel)
 * new shortcut r for reloading the current list
 * new internationalization (language files for German, English and French included)
+* make article id generation more reliable
 
 Version 2.3
 * new shortcut library jquery hotkeys (thanks a lot to Sigill)
