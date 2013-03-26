@@ -119,6 +119,21 @@ selfoss.shortcuts = {
         
         // scroll to element
         $(window).scrollTop(current.position().top);
+
+        // test if current items is really at top
+        if($(window).scrollTop()<current.position().top && $('.no-more').length > 0) {
+            // calculate distance between top of browser window and top of the current item
+            var nomoreheight = current.position().top-$(window).scrollTop()+$('.no-more').height();
+
+            // set minimum height
+            if (nomoreheight < 30) nomore-height = 30;
+
+            // set height to no-more div
+            $('.no-more').height(current.position().top-$(window).scrollTop()+$('.no-more').height())
+            // re-position current item at top
+            $(window).scrollTop(current.position().top);
+        }
+
     },
     
 }

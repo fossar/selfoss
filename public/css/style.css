@@ -567,7 +567,14 @@ input {
         .stream-more.loading span {
             display:none;
         }
-        
+ 
+    .no-more {
+        margin-top:20px;
+        height:30px;
+        font-size:16px;
+        text-align:center;
+    }
+       
 #fullscreen-entry {
     display:none;
 }
