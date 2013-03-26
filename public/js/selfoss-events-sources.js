@@ -98,7 +98,7 @@ selfoss.events.sources = function() {
     
     // delete source
     $('.source-delete').unbind('click').click(function() {
-        var answer = confirm('really delete this source?');
+        var answer = confirm($('#lang').data('source_warn'));
         if(answer==false)
             return;
         
