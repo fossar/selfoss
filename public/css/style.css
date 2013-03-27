@@ -332,6 +332,9 @@ input {
 }
 
     #content .stream-empty{
+        margin-top:20px;
+        height:30px;
+        font-size:16px;
         text-align:center;
     }
 
@@ -567,7 +570,7 @@ input {
         .stream-more.loading span {
             display:none;
         }
-        
+ 
 #fullscreen-entry {
     display:none;
 }

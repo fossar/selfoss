@@ -157,8 +157,11 @@ class Index extends BaseController {
         if(strlen($itemsHtml)==0) {
             $itemsHtml = '<div class="stream-empty">no entries found</div>';
         } else {
-            if($itemDao->hasMore())
+            if($itemDao->hasMore()) {
                 $itemsHtml .= '<div class="stream-more"><span>more</span></div>';
+            } else {
+                $itemsHtml .= '<div class="stream-empty"></div>';
+            }
         }
         
         return $itemsHtml;

@@ -89,6 +89,9 @@ selfoss.shortcuts = {
             }
         }
 
+        if(current.hasClass('stream-empty'))
+            return;
+
         // remove active
         old.removeClass('selected');
         old.find('.entry-content').hide();
@@ -118,32 +121,23 @@ selfoss.shortcuts = {
         }
         
         // scroll to element
-        selfoss.shortcuts.autoscroll(current);
-    },
-    
-    
-    /**
-     * autoscroll
-     */
-    autoscroll: function(next) {
-        var viewportHeight = $(window).height();
-        var viewportScrollTop = $(window).scrollTop();
-        
-        // scroll down
-        if(viewportScrollTop + viewportHeight < next.position().top + next.height() + 80) {
-            if(next.height() > viewportHeight) {
-                $(window).scrollTop(next.position().top);
-            } else {
-                var marginTop = (viewportHeight-next.height())/2;
-                var scrollTop = next.position().top-marginTop;
-                $(window).scrollTop(scrollTop);
-            }
+        $(window).scrollTop(current.position().top);
+
+        // test if current items is really at top
+        var streamdiv = $('.stream-empty, .stream-more.loading');
+        if($(window).scrollTop()<current.position().top && streamdiv.length == 1) {
+            // calculate distance between top of browser window and top of the current item
+            var nomoreheight = current.position().top-$(window).scrollTop()+streamdiv.height();
+
+            // set minimum height
+            if (nomoreheight < 30) nomore-height = 30;
+
+            // set height to streamdiv
+            streamdiv.height(current.position().top-$(window).scrollTop()+streamdiv.height());
+            // re-position current item at top
+            $(window).scrollTop(current.position().top);
         }
-        
-        // scroll up
-        if(next.position().top <= viewportScrollTop) {
-            $(window).scrollTop(next.position().top);
-        }
+
     },
     
 }
