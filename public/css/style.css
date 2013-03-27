@@ -422,6 +422,20 @@ input {
             max-width:99%;
         }
         
+        .entry-content p {
+            margin-bottom:0.6em;
+        }
+
+        .entry-content li {
+            margin:0.3em;
+            list-style:disc inside;
+        }
+
+        .entry-content blockquote {
+            padding:1px 10px;
+            border-left: 2px solid #eaeaea;
+        }
+
         .entry-content.entry-content-short {
             -moz-column-count: 1;
             -webkit-column-count: 1;
