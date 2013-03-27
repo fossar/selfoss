@@ -160,7 +160,7 @@ class Index extends BaseController {
             if($itemDao->hasMore()) {
                 $itemsHtml .= '<div class="stream-more"><span>more</span></div>';
             } else {
-                $itemsHtml .= '<div class="no-more"><span>No more entries</span></div>';
+                $itemsHtml .= '<div class="stream-empty"></div>';
             }
         }
         
