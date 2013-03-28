@@ -6,7 +6,7 @@ html {
 }
  
 body {
-    font:18px/27px 'OpenSansLight', Arial, sans-serif;
+    font: lighter 18px/27px 'OpenSans', Arial, sans-serif;
     background:url(images/bg.gif) repeat;
     height: 100%;
     position:relative;
@@ -51,9 +51,9 @@ input {
         margin-left:15px;
         margin-right:15px;
         margin-top:50px;
-        font:18px/27px 'OpenSansSemibold', Arial, sans-serif;
         color:#d7d7d7;
         background:#3d6d69;
+        font-weight:600;
         font-size:0.9em;
         text-align:center;
         -moz-border-radius:2px;
@@ -73,11 +73,11 @@ input {
     }
     
         #nav-filter li {
-            font: 18px/27px 'OpenSansRegular', Arial, sans-serif;
             color:#6a6a6a;
             padding:5px;
             padding-left:24px;
             margin-top:5px;
+            font-weight:normal;
             font-size:0.9em;
             cursor:pointer;
         }
@@ -98,7 +98,7 @@ input {
             border-radius: 30px;
             color: white;
             font-size: 10px;
-            font-weight: 500;
+            font-weight: normal;
             line-height: 16px;
             min-width: 8px;
             padding: 0 5px 0 5px;
@@ -111,7 +111,6 @@ input {
         cursor:pointer;
         color:#494949;
         text-transform:uppercase;
-        font:18px/27px 'OpenSansBold', Arial, sans-serif;
         font-size:0.8em;
         margin-left:18px;
         font-weight:bold;
@@ -123,12 +122,12 @@ input {
     
         #nav-tags li {
             position:relative;
-            font: 18px/27px 'OpenSansLight', Arial, sans-serif;
             color:#b9b9b9;
             cursor:pointer;
             padding:5px;
             padding-left:25px;
             padding-right:30px;
+            font-weight:lighter;
             font-size:0.7em;
             
             white-space: nowrap;
@@ -165,11 +164,11 @@ input {
     
         #nav-sources li {
             position:relative;
-            font: 18px/27px 'OpenSansLight', Arial, sans-serif;
             color:#b9b9b9;
             cursor:pointer;
             padding-left:25px;
             padding-right:30px;
+            font-weight:lighter;
             font-size:0.7em;
             
             white-space: nowrap;
@@ -350,7 +349,7 @@ input {
     border-radius:4px;
     background:rgba(255, 255, 255, 0.4);
     position:relative;
-    font: 18px/27px 'OpenSansRegular', Arial, sans-serif;
+    font-weight:normal;
     font-size:0.9em;
     border: 1px solid rgba(255, 255, 255, 0);
 }
@@ -374,6 +373,7 @@ input {
     .entry-tags,
     .entry-tags-tag {
         display:inline;
+        font-weight:normal;
         margin-right:5px;
     }
 
@@ -422,6 +422,20 @@ input {
             max-width:99%;
         }
         
+        .entry-content p {
+            margin-bottom:0.6em;
+        }
+
+        .entry-content li {
+            margin:0.3em;
+            list-style:disc inside;
+        }
+
+        .entry-content blockquote {
+            padding:1px 10px;
+            border-left: 2px solid #eaeaea;
+        }
+
         .entry-content.entry-content-short {
             -moz-column-count: 1;
             -webkit-column-count: 1;
@@ -676,7 +690,7 @@ input {
 
     #login h1 {
         background:url(images/logo.png) left center no-repeat;
-        font-family:'OpenSansSemibold', Arial, sans-serif;
+        font-weight:600;
         padding-top:10px;
         padding-left:40px;
         font-size:1.4em;
