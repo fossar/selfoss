@@ -77,6 +77,7 @@ Version 2.4-SNAPSHOT
 * fix JavaScript error in login screen
 * autofocus username on login
 * add open in new window button for mobile view
+* allow choosing tags in article list
 
 Version 2.3
 * new shortcut library jquery hotkeys (thanks a lot to Sigill)
