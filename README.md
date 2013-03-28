@@ -71,8 +71,11 @@ Version 2.4-SNAPSHOT
 * new option for automatically mark items as read
 * new share buttons for email and pocket (thanks a lot to Francis Noel)
 * new shortcut r for reloading the current list
-* new internationalization (language files for German, English and French included)
+* new internationalization (language files for German, English, French, Turkish, Dutch and Czech included)
 * make article id generation more reliable
+* fix some font issues
+* fix JavaScript error in login screen
+* autofocus username on login
 
 Version 2.3
 * new shortcut library jquery hotkeys (thanks a lot to Sigill)

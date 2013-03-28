@@ -27,6 +27,12 @@ var selfoss = {
      */
     init: function() {
         jQuery(document).ready(function() {
+            // reduced init on login
+            if($('#login').length>0) {
+                $('#username').focus();
+                return;
+            }
+        
             // set items per page
             selfoss.filter.itemsPerPage = $('.entry').length;
             
