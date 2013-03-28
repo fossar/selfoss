@@ -8,12 +8,10 @@ selfoss.shortcuts = {
         // next
         $(document).bind('keydown', 'space', function() { selfoss.shortcuts.nextprev('next', true, false); return false; });
         $(document).bind('keydown', 'n', function() { selfoss.shortcuts.nextprev('next', false); return false; });
-        $(document).bind('keydown', 'j', function() { selfoss.shortcuts.nextprev('next', true); return false; });
         
         // prev
         $(document).bind('keydown', 'shift+space', function() { selfoss.shortcuts.nextprev('prev', true); return false; });
         $(document).bind('keydown', 'p', function() { selfoss.shortcuts.nextprev('prev', false); return false; });
-        $(document).bind('keydown', 'k', function() { selfoss.shortcuts.nextprev('prev', true); return false; });
         
         // star/unstar
         $(document).bind('keydown', 's', function() {
@@ -25,6 +23,11 @@ selfoss.shortcuts = {
             $('.entry.selected .entry-unread').click();
         });
         
+	// open item
+	$(document).bind('keydown', 'enter', function() {
+	    $('.entry.selected .entry-title').click();
+	});
+
         // open target
         $(document).bind('keydown', 'v', function() {
             window.open($('.entry.selected .entry-source').attr('href'));
@@ -36,19 +39,19 @@ selfoss.shortcuts = {
         });
         
         // mark all as read
-        $(document).bind('keydown', 'ctrl+m', function() {
+        $(document).bind('keydown', 'shift+a', function() {
             $('#nav-mark').click();
         });
 
         // throw (mark as read & open next)
-        $(document).bind('keydown', 't', function() {
+        $(document).bind('keydown', 'j', function() {
             $('.entry.selected.unread .entry-unread').click();
             selfoss.shortcuts.nextprev('next', true);
             return false;
         });
 
         // throw (mark as read & open previous)
-        $(document).bind('keydown', 'Shift+t', function() {
+        $(document).bind('keydown', 'k', function() {
             $('.entry.selected.unread .entry-unread').click();
             selfoss.shortcuts.nextprev('prev', true);
             return false;
