@@ -129,4 +129,15 @@ selfoss.events.entries = function(e) {
     
     // set color of all tags by background color
     $('.entry-tags-tag').colorByBrightness();
+    
+    // click a tag
+    $('.entry-tags-tag').unbind('click').click(function() {
+        var tag = $(this).html();
+        $('#nav-tags .tag').each(function(index, item) {
+            if($(item).html()==tag) {
+                $(item).click();
+                return false;
+            }
+        });
+    });
 };
