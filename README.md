@@ -79,6 +79,7 @@ Version 2.4-SNAPSHOT
 * add open in new window button for mobile view
 * allow choosing tags in article list
 * concurent multiples updates makes no longer duplicates entries
+* Reload items on mark as read
 
 Version 2.3
 * new shortcut library jquery hotkeys (thanks a lot to Sigill)
