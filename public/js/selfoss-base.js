@@ -147,6 +147,16 @@ var selfoss = {
                 selfoss.events.entries();
                 selfoss.events.search();
                 location.hash = "";
+                
+                // make unread itemcount red
+                if(data.unread>0)
+                    $('.nav-filter-unread span').addClass('unread');
+                
+                // update tags
+                selfoss.refreshTags(data.tags);
+                
+                // update sources
+                selfoss.refreshSources(data.sources);
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 if (textStatus == "parsererror")
@@ -183,6 +193,38 @@ var selfoss = {
                 $('#nav-tags').removeClass('loading');
             }
         });
+    },
+    
+    
+    /**
+     * refresh taglist.
+     *
+     * @return void
+     * @param tags the new taglist as html
+     */
+    refreshTags: function(tags) {
+        var currentTag = $('#nav-tags li').index($('#nav-tags .active'));
+        $('#nav-tags li:not(:first)').remove();
+        $('#nav-tags').append(tags);
+        if(currentTag>=0)
+            $('#nav-tags li:eq('+currentTag+')').addClass('active');
+        selfoss.events.navigation();
+    },
+    
+    
+    /**
+     * refresh sources list.
+     *
+     * @return void
+     * @param sources the new sourceslist as html
+     */
+    refreshSources: function(sources) {
+        var currentSource = $('#nav-sources li').index($('#nav-sources .active'));
+        $('#nav-sources li').remove();
+        $('#nav-sources').append(sources);
+        if(currentSource>=0)
+            $('#nav-sources li:eq('+currentSource+')').addClass('active');
+        selfoss.events.navigation();
     }
 };
 

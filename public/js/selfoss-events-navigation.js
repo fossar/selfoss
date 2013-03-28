@@ -151,27 +151,16 @@ selfoss.events.navigation = function() {
                     $('.nav-filter-unread span').removeClass('unread');
                     if(unreadstats>0)
                         $('.nav-filter-unread span').addClass('unread');
-                        
                     
                     // hide nav on smartphone
                     if(selfoss.isSmartphone())
                         $('#nav-mobile-settings').click();
-                        
+                    
                     // update tags
-                    var currentTag = $('#nav-tags li').index($('#nav-tags .active'));
-                    $('#nav-tags li:not(:first)').remove();
-                    $('#nav-tags').append(response.tags);
-                    if(currentTag>=0)
-                        $('#nav-tags li:eq('+currentTag+')').addClass('active');
+                    selfoss.refreshTags(response.tags);
                     
                     // update sources
-                    var currentSource = $('#nav-sources li').index($('#nav-sources .active'));
-                    $('#nav-sources li').remove();
-                    $('#nav-sources').append(response.sources);
-                    if(currentSource>=0)
-                        $('#nav-sources li:eq('+currentSource+')').addClass('active');
-                    
-                    selfoss.events.navigation();
+                    selfoss.refreshSources(response.sources);
                     
                     // update mark as read button for every entry
                     var button = $('.entry-unread');

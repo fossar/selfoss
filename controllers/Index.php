@@ -52,23 +52,25 @@ class Index extends BaseController {
         $this->view->statsUnread = $itemsDao->numberOfUnread();
         $this->view->statsStarred = $itemsDao->numberOfStarred();
         
-        // ajax call = only send entries and statistics not full template
-        if(isset($options['ajax'])) {
-            $this->view->jsonSuccess(array(
-                "entries" => $this->view->content,
-                "all"     => $this->view->statsAll,
-                "unread"  => $this->view->statsUnread,
-                "starred" => $this->view->statsStarred
-            ));
-        }
-        
-        // load tags
+        // prepare tags display list
         $tagsController = new \controllers\Tags();
         $this->view->tags = $tagsController->renderTags($tags);
         
         // prepare sources display list
         $sourcesController = new \controllers\Sources();
         $this->view->sources = $sourcesController->renderSources($sources);
+        
+        // ajax call = only send entries and statistics not full template
+        if(isset($options['ajax'])) {
+            $this->view->jsonSuccess(array(
+                "entries"  => $this->view->content,
+                "all"      => $this->view->statsAll,
+                "unread"   => $this->view->statsUnread,
+                "starred"  => $this->view->statsStarred,
+                "tags"     => $this->view->tags,
+                "sources"  => $this->view->sources
+            ));
+        }
         
         // show as full html page
         $this->view->publicMode = \F3::get('auth')->isLoggedin()!==true && \F3::get('public')==1;
