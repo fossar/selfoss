@@ -76,6 +76,7 @@ Version 2.4-SNAPSHOT
 * fix some font issues
 * fix JavaScript error in login screen
 * autofocus username on login
+* add open in new window button for mobile view
 
 Version 2.3
 * new shortcut library jquery hotkeys (thanks a lot to Sigill)
