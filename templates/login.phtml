@@ -6,18 +6,21 @@
 
     <title>selfoss</title>
     
-    <meta name="description" content="selfoss">
-    <meta name="author" content="Tobias Zeising">
+    <meta name="description" content="selfoss" />
+    <meta name="author" content="Tobias Zeising" />
 
     <!--  Mobile viewport optimized: j.mp/bplateviewport -->
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1" />
+    
+    <!-- app 'behaviour' when adding link to iDevice springboard -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
 
     <!-- Place favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
-    <link rel="shortcut icon" href="favicon.ico">
-    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 
     <!-- all css definitions -->
-    <link rel="stylesheet" href="all.css">
+    <link rel="stylesheet" href="all.css" />
 
 </head>
 <body>
@@ -26,7 +29,7 @@
     <form action="<?PHP echo $this->base; ?>?login=1" method="post">
     <ul id="login">
         <li><h1>selfoss login</h1></li>
-        <li><label>Username:</label> <input type="text" name="username" /></li>
+        <li><label>Username:</label> <input type="text" name="username" id="username" /></li>
         <li><label>Password:</label> <input type="password" name="password" /></li>
         <?PHP if(isset($this->error)) : ?>
         <li class="error"><?PHP echo $this->error; ?></li>
