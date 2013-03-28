@@ -18,7 +18,7 @@ class Items extends Database {
      * results or not
      * @var bool
      */
-    private $hasMore = false;
+    protected $hasMore = false;
 
     
     /**
