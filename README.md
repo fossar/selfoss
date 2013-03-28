@@ -80,6 +80,7 @@ Version 2.4-SNAPSHOT
 * allow choosing tags in article list
 * concurent multiples updates makes no longer duplicates entries
 * Reload items on mark as read
+* anonymizer support
 
 Version 2.3
 * new shortcut library jquery hotkeys (thanks a lot to Sigill)

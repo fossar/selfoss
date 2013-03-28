@@ -113,7 +113,7 @@ selfoss.shortcuts = {
             current.find('.entry-toolbar').show();
             selfoss.events.entriesToolbar(current);
             // automark as read
-            if($('body').hasClass('auto_mark_as_read') && current.hasClass('unread'))
+            if($('#config').data('auto_mark_as_read')=="1" && current.hasClass('unread'))
                 current.find('.entry-unread').click();
         }
         
