@@ -34,6 +34,7 @@ $f3->set('js', array(
     'public/js/jquery-ui-1.10.0.custom.js',
     'public/js/jquery.mCustomScrollbar.min.js',
     'public/js/jquery.mousewheel.js',
+    'public/js/jquery.hammer.js',
     'public/js/lazy-image-loader.js',
     'public/js/color-by-brightness.js',
     'public/js/spectrum.js',
