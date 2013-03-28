@@ -512,7 +512,7 @@ input {
             background-image:url(images/arrow-down.png);
         }
         
-        .entry-toolbar .entry-newwindow {
+        .entry-newwindow {
             background-image:url(images/open.png);
         }
         
@@ -848,7 +848,7 @@ body.publicmode.notloggedin .entry-unread {
             display:block;
         }
    
-    .entry-newwindow {
+    .entry-toolbar .entry-newwindow {
         display:none;
     }
 
