@@ -130,7 +130,7 @@ class Opml extends BaseController {
         // RSS URL
         $data['url'] = (string)$xml['xmlUrl'];
 
-        if($xml['type'] == 'rss')
+        if($xml['type'] == 'rss' || $xml['type'] == 'atom')
             $spout = 'spouts\rss\feed';
         else {
             \F3::get('logger')->log('opml import: invalid type (only rss supported) ' . $title, \DEBUG);

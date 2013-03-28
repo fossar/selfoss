@@ -18,7 +18,7 @@ class Items extends Database {
      * results or not
      * @var bool
      */
-    private $hasMore = false;
+    protected $hasMore = false;
 
     
     /**
@@ -87,6 +87,10 @@ class Items extends Database {
      * @param mixed $values
      */
     public function add($values) {
+        // don't add items twice
+        if($this->exists($values['uid'])===true)
+            return;
+        
         \F3::get('db')->exec('INSERT INTO items (
                     datetime, 
                     title, 

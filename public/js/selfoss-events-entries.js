@@ -17,7 +17,18 @@ selfoss.events.entries = function(e) {
         if(parent.hasClass('fullscreen'))
             return;
         
-        var autoMarkAsRead = $('body').hasClass('auto_mark_as_read') && parent.hasClass('unread');
+        var autoMarkAsRead = $('#config').data('auto_mark_as_read')=="1" && parent.hasClass('unread');
+        
+        // anonymize
+        var anonymizer = $('#config').data('anonymizer');
+        if(anonymizer.length>0) {
+            parent.find('.entry-content a').each(function(i,link) {
+                link = $(link);
+                if(link.attr('href').indexOf(anonymizer)!=0) {
+                    link.attr('href', anonymizer + link.attr('href'));
+                }
+            });
+        }
         
          // show entry in popup
         if(selfoss.isSmartphone()) {
@@ -129,4 +140,15 @@ selfoss.events.entries = function(e) {
     
     // set color of all tags by background color
     $('.entry-tags-tag').colorByBrightness();
+    
+    // click a tag
+    $('.entry-tags-tag').unbind('click').click(function() {
+        var tag = $(this).html();
+        $('#nav-tags .tag').each(function(index, item) {
+            if($(item).html()==tag) {
+                $(item).click();
+                return false;
+            }
+        });
+    });
 };
