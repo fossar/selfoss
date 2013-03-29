@@ -51,14 +51,38 @@
     <!-- content -->
     <div class="entry-content <?PHP if(strlen(strip_tags($content))<500) : ?>entry-content-short<?PHP endif; ?>">
         <?PHP echo $content; ?>
-        
+        <?php $firstSmartPhoneShare=true;?>
         <ul class="entry-smartphone-share">
             <li class="entry-newwindow"><?PHP echo \F3::get('lang_open_window')?></li>
-            <li class="entry-sharegoogle" title="google">google</li>
-            <li class="entry-sharetwitter" title="twitter">twitter</li>
-            <li class="entry-sharefacebook" title="facebook">facebook</li>
-            <li class="entry-sharepocket" title="pocket">pocket</li>
-            <li class="entry-shareemail" title="email">email</li>
+			<?php if(\F3::get('share_google_plus')=='1') : ?>
+				<li class="entry-sharegoogle <?php echo $firstSmartPhoneShare ? 'entry-sharefirst' : ''; ?>" title="google">google</li>
+			<?php 
+				$firstSmartPhoneShare=false;
+			endif; ?>
+			
+			<?php if(\F3::get('share_twitter')=='1') : ?>
+				<li class="entry-sharetwitter <?php echo $firstSmartPhoneShare ? 'entry-sharefirst' : ''; ?>" title="twitter">twitter</li>
+			<?php 
+				$firstSmartPhoneShare=false;
+			endif; ?>
+			
+			<?php if(\F3::get('share_facebook')=='1') : ?>
+				<li class="entry-sharefacebook <?php echo $firstSmartPhoneShare ? 'entry-sharefirst' : ''; ?>" title="facebook">facebook</li>
+			<?php 
+				$firstSmartPhoneShare=false;
+			endif; ?>
+			
+			<?php if(\F3::get('share_pocket')=='1') : ?>
+				<li class="entry-sharepocket <?php echo $firstSmartPhoneShare ? 'entry-sharefirst' : ''; ?>" title="pocket">pocket</li>
+			<?php 
+				$firstSmartPhoneShare=false;
+			endif; ?>
+			
+			<?php if(\F3::get('share_email')=='1') : ?>
+				<li class="entry-shareemail <?php echo $firstSmartPhoneShare ? 'entry-sharefirst' : ''; ?>" title="email">email</li>
+			<?php 
+				$firstSmartPhoneShare=false;
+			endif; ?>
         </ul>
     </div>
     
@@ -68,11 +92,38 @@
         <li class="entry-unread <?PHP echo $this->item['unread']==1 ? 'active' : ''; ?>"><?PHP echo $this->item['unread']==1 ? \F3::get('lang_mark') : \F3::get('lang_unmark'); ?></li>
         <li class="entry-newwindow"><?PHP echo \F3::get('lang_open_window')?></li>
         <li class="entry-loadimages"><?PHP echo \F3::get('lang_load_img')?> </li>
-        <li class="entry-sharegoogle entry-share" title="google">&nbsp;</li>
-        <li class="entry-sharetwitter entry-share" title="twitter">&nbsp;</li>
-        <li class="entry-sharefacebook entry-share" title="facebook">&nbsp;</li>
-        <li class="entry-sharepocket entry-share" title="pocket">&nbsp;</li>
-        <li class="entry-shareemail entry-share" title="email">&nbsp;</li>
+		
+		<?php $firstShare=true;?>
+		<?php if(\F3::get('share_google_plus')=='1') : ?>
+			<li class="entry-sharegoogle entry-share <?php echo $firstShare ? 'entry-sharefirst' : ''; ?>" title="google">&nbsp;</li>
+		<?php 
+				$firstShare=false;
+			endif; ?>
+		
+		<?php if(\F3::get('share_twitter')=='1') : ?>
+			<li class="entry-sharetwitter entry-share <?php echo $firstShare ? 'entry-sharefirst' : ''; ?>" title="twitter">&nbsp;</li>
+		<?php 
+				$firstShare=false;
+			endif; ?>
+		
+		<?php if(\F3::get('share_facebook')=='1') : ?>
+			<li class="entry-sharefacebook entry-share <?php echo $firstShare ? 'entry-sharefirst' : ''; ?>" title="facebook">&nbsp;</li>
+		<?php 
+				$firstShare=false;
+			endif; ?>
+		
+		<?php if(\F3::get('share_pocket')=='1') : ?>
+			<li class="entry-sharepocket entry-share <?php echo $firstShare ? 'entry-sharefirst' : ''; ?>" title="pocket">&nbsp;</li>
+		<?php 
+				$firstShare=false;
+			endif; ?>
+		
+		<?php if(\F3::get('share_email')=='1') : ?>
+			<li class="entry-shareemail entry-share <?php echo $firstShare ? 'entry-sharefirst' : ''; ?>" title="email">&nbsp;</li>
+		<?php 
+				$firstShare=false;
+			endif; ?>
+		
         <li class="entry-close"></li>
     </ul>
 </div>
