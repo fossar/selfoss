@@ -159,9 +159,11 @@ var selfoss = {
                 selfoss.refreshSources(data.sources);
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                if (textStatus == "parsererror")
+                if (textStatus == "parsererror") {
                     location.reload();
-                alert('Load list error: '+errorThrown);
+                    return;
+                }
+                alert('Load list error: ' + errorThrown);
             },
             complete: function(jqXHR, textStatus) {
                 $('#content').removeClass('loading');
@@ -225,6 +227,25 @@ var selfoss = {
         if(currentSource>=0)
             $('#nav-sources li:eq('+currentSource+')').addClass('active');
         selfoss.events.navigation();
+    },
+    
+    
+    /**
+     * anonymize links
+     *
+     * @return void
+     * @param parent element
+     */
+    anonymize: function(parent) {
+        var anonymizer = $('#config').data('anonymizer');
+        if(anonymizer.length>0) {
+            parent.find('a').each(function(i,link) {
+                link = $(link);
+                if(typeof link.attr('href') != "undefined" && link.attr('href').indexOf(anonymizer)!=0) {
+                    link.attr('href', anonymizer + link.attr('href'));
+                }
+            });
+        }
     }
 };
 

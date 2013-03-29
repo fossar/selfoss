@@ -20,15 +20,7 @@ selfoss.events.entries = function(e) {
         var autoMarkAsRead = $('#config').data('auto_mark_as_read')=="1" && parent.hasClass('unread');
         
         // anonymize
-        var anonymizer = $('#config').data('anonymizer');
-        if(anonymizer.length>0) {
-            parent.find('.entry-content a').each(function(i,link) {
-                link = $(link);
-                if(link.attr('href').indexOf(anonymizer)!=0) {
-                    link.attr('href', anonymizer + link.attr('href'));
-                }
-            });
-        }
+        selfoss.anonymize(parent.find('.entry-content'));
         
          // show entry in popup
         if(selfoss.isSmartphone()) {
