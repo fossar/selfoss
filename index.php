@@ -72,7 +72,7 @@ $f3->route('GET /api/logout', 'controllers\Api->logout');
 if($f3->get('auth')->isLoggedin()===true || \F3::get('public')==1) {
     $f3->route('GET /rss',       'controllers\Rss->rss');
     $f3->route('GET /feed',      'controllers\Rss->rss');
-    $f3->route('GET /tags',      'controllers\Tags->tags');
+    $f3->route('GET /tags',      'controllers\Tags->tagslist');
 }
 
 // only loggedin users
