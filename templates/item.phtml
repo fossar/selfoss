@@ -34,7 +34,7 @@
     </div>
     
     <!-- source -->
-    <a href="<?PHP echo $this->item['link']; ?>" class="entry-source entry-source<?PHP echo $this->item['source']; ?>" target="_blank"><?PHP echo $sourcetitle ?></a>
+    <a href="<?PHP echo trim(\F3::get('anonymizer')) . $this->item['link']; ?>" class="entry-source entry-source<?PHP echo $this->item['source']; ?>" target="_blank"><?PHP echo $sourcetitle ?></a>
     
     <!-- datetime -->
     <div class="entry-datetime">
