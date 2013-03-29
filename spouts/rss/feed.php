@@ -149,9 +149,8 @@ class feed extends \spouts\spout {
     public function load($params) {
         // initialize simplepie feed loader
         $this->feed = @new \SimplePie();
-	@$this->feed->enable_cache(false);
-        //@$this->feed->set_cache_location(\F3::get('cache'));
-        //@$this->feed->set_cache_duration(1800);
+	@$this->feed->set_cache_location(\F3::get('cache'));
+        @$this->feed->set_cache_duration(1800);
         @$this->feed->set_feed_url(htmlspecialchars_decode($params['url']));
         @$this->feed->force_feed(true);
          
