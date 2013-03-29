@@ -81,6 +81,7 @@ Version 2.4-SNAPSHOT
 * concurent multiples updates makes no longer duplicates entries
 * Reload items on mark as read
 * anonymizer support
+* selfoss rss feed support tag filtering (?tag=)
 
 Version 2.3
 * new shortcut library jquery hotkeys (thanks a lot to Sigill)
