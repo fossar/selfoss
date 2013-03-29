@@ -21,7 +21,7 @@ selfoss.events.entriesToolbar = function(parent) {
     
     // open in new window
     parent.find('.entry-newwindow').unbind('click').click(function(e) {
-        window.open($(this).parents(".entry").children("a").eq(0).attr("href"));
+        window.open($(this).parents(".entry").children(".entry-source").attr("href"));
         e.preventDefault();
         return false;
     });
