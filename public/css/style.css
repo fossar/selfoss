@@ -401,13 +401,13 @@ input {
     
     .entry-content {
         display:none;
-        -moz-column-count: 3;
+        -moz-column-count: 1;
         -moz-column-gap: 2em;
         -moz-column-rule: 1px solid rgba(204, 204, 204, 0.4);
         -webkit-column-count: 3;
         -webkit-column-gap: 2em;
         -webkit-column-rule: 1px solid rgba(204, 204, 204, 0.4);
-        column-count: 3;
+        column-count: 1;
         column-gap: 2em;
         column-rule: 1px solid rgba(204, 204, 204, 0.4);
         font-size:0.95em;
