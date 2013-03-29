@@ -25,11 +25,6 @@ selfoss.shortcuts = {
             $('.entry.selected .entry-unread').click();
         });
         
-	// open item
-	$(document).bind('keydown', 'enter', function() {
-	    $('.entry.selected .entry-title').click();
-	});
-
         // open target
         $(document).bind('keydown', 'v', function() {
             window.open($('.entry.selected .entry-source').attr('href'));
