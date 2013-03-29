@@ -66,7 +66,7 @@ Version 2.4-SNAPSHOT
 * use more eye catching unread stats in main navigation
 * show source title in selfoss RSS feed (thanks a lot to Darkwing1)
 * load sources for update by last update time (thanks a lot to Lars Formella)
-* Opening feed search focus the search input field
+* Opening feed search focuses the search input field
 * Scroll blockquotes and pre on overflow (especially good for mobile devices)
 * new option for automatically mark items as read
 * new share buttons for email and pocket (thanks a lot to Francis Noel)
@@ -81,7 +81,8 @@ Version 2.4-SNAPSHOT
 * concurent multiples updates makes no longer duplicates entries
 * Reload items on mark as read
 * anonymizer support
-* selfoss rss feed support tag filtering (?tag=)
+* selfoss rss feed support tag filtering (?tag=) (thanks a lot to Francis Noel)
+* fix tag render bug
 
 Version 2.3
 * new shortcut library jquery hotkeys (thanks a lot to Sigill)
