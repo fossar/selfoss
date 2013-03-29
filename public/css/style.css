@@ -517,7 +517,7 @@ input {
             background-image:url(images/open.png);
         }
         
-        .entry-toolbar .entry-sharegoogle {
+        .entry-toolbar .entry-sharefirst {
             border-left:1px solid #CCC;
             padding-left:30px;
             background-position: 10px center;
