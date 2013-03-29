@@ -189,7 +189,7 @@ class feed extends \spouts\spout {
      */
     public function getId() {
         if($this->items!==false && $this->valid())
-            return @current($this->items)->get_id(true);
+            return @current($this->items)->get_id();
         return false;
     }
     
