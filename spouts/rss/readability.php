@@ -114,7 +114,7 @@ class readability extends feed {
      * @return string content
      */
     private function fetchFromReadability($url) {
-        $content = file_get_contents("https://readability.com/api/content/v1/parser?token=" . $this->apiKey . "&url=" . $url);
+        $content = @file_get_contents("https://readability.com/api/content/v1/parser?token=" . $this->apiKey . "&url=" . $url);
         $data = json_decode($content);
         if(isset($data->content)===false)
             return false;

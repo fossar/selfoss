@@ -27,6 +27,12 @@ var selfoss = {
      */
     init: function() {
         jQuery(document).ready(function() {
+            // reduced init on login
+            if($('#login').length>0) {
+                $('#username').focus();
+                return;
+            }
+        
             // set items per page
             selfoss.filter.itemsPerPage = $('.entry').length;
             
@@ -141,11 +147,23 @@ var selfoss = {
                 selfoss.events.entries();
                 selfoss.events.search();
                 location.hash = "";
+                
+                // make unread itemcount red
+                if(data.unread>0)
+                    $('.nav-filter-unread span').addClass('unread');
+                
+                // update tags
+                selfoss.refreshTags(data.tags);
+                
+                // update sources
+                selfoss.refreshSources(data.sources);
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                if (textStatus == "parsererror")
+                if (textStatus == "parsererror") {
                     location.reload();
-                alert('Load list error: '+errorThrown);
+                    return;
+                }
+                alert('Load list error: ' + errorThrown);
             },
             complete: function(jqXHR, textStatus) {
                 $('#content').removeClass('loading');
@@ -177,6 +195,57 @@ var selfoss = {
                 $('#nav-tags').removeClass('loading');
             }
         });
+    },
+    
+    
+    /**
+     * refresh taglist.
+     *
+     * @return void
+     * @param tags the new taglist as html
+     */
+    refreshTags: function(tags) {
+        var currentTag = $('#nav-tags li').index($('#nav-tags .active'));
+        $('#nav-tags li:not(:first)').remove();
+        $('#nav-tags').append(tags);
+        if(currentTag>=0)
+            $('#nav-tags li:eq('+currentTag+')').addClass('active');
+        selfoss.events.navigation();
+    },
+    
+    
+    /**
+     * refresh sources list.
+     *
+     * @return void
+     * @param sources the new sourceslist as html
+     */
+    refreshSources: function(sources) {
+        var currentSource = $('#nav-sources li').index($('#nav-sources .active'));
+        $('#nav-sources li').remove();
+        $('#nav-sources').append(sources);
+        if(currentSource>=0)
+            $('#nav-sources li:eq('+currentSource+')').addClass('active');
+        selfoss.events.navigation();
+    },
+    
+    
+    /**
+     * anonymize links
+     *
+     * @return void
+     * @param parent element
+     */
+    anonymize: function(parent) {
+        var anonymizer = $('#config').data('anonymizer');
+        if(anonymizer.length>0) {
+            parent.find('a').each(function(i,link) {
+                link = $(link);
+                if(typeof link.attr('href') != "undefined" && link.attr('href').indexOf(anonymizer)!=0) {
+                    link.attr('href', anonymizer + link.attr('href'));
+                }
+            });
+        }
     }
 };
 

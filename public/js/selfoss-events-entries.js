@@ -6,7 +6,7 @@ selfoss.events.entries = function(e) {
     // show/hide entry
     var target = selfoss.isMobile() ? '.entry' : '.entry-title';
     $(target).unbind('click').click(function() {
-        var parent = target == '.entry' ? $(this) : $(this).parent();
+        var parent = ((target == '.entry') ? $(this) : $(this).parent());
         
         if(selfoss.isSmartphone()==false) {
             $('.entry.selected').removeClass('selected');
@@ -16,6 +16,11 @@ selfoss.events.entries = function(e) {
         // prevent event on fullscreen touch
         if(parent.hasClass('fullscreen'))
             return;
+        
+        var autoMarkAsRead = $('#config').data('auto_mark_as_read')=="1" && parent.hasClass('unread');
+        
+        // anonymize
+        selfoss.anonymize(parent.find('.entry-content'));
         
          // show entry in popup
         if(selfoss.isSmartphone()) {
@@ -57,10 +62,15 @@ selfoss.events.entries = function(e) {
                 fullscreen.hide();
             });
             
+            // automark as read
+            if(autoMarkAsRead) {
+                fullscreen.find('.entry-unread').click();
+            }
         // open entry content
         } else {
             var content = parent.find('.entry-content');
             
+            // show/hide (with toolbar)
             if(content.is(':visible')) {
                 parent.find('.entry-toolbar').hide();
                 content.hide();
@@ -68,6 +78,11 @@ selfoss.events.entries = function(e) {
                 content.show();
                 selfoss.events.entriesToolbar(parent);
                 parent.find('.entry-toolbar').show();
+                
+                // automark as read
+                if(autoMarkAsRead) {
+                    parent.find('.entry-unread').click();
+                }
             }
             
             // load images not on mobile devices
@@ -117,4 +132,15 @@ selfoss.events.entries = function(e) {
     
     // set color of all tags by background color
     $('.entry-tags-tag').colorByBrightness();
+    
+    // click a tag
+    $('.entry-tags-tag').unbind('click').click(function() {
+        var tag = $(this).html();
+        $('#nav-tags .tag').each(function(index, item) {
+            if($(item).html()==tag) {
+                $(item).click();
+                return false;
+            }
+        });
+    });
 };

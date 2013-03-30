@@ -85,6 +85,10 @@ class ContentLoader {
         $imageHelper = new \helpers\Image();
         $lasticon = false;
         foreach ($spout as $item) {
+            // item already in database?
+            if($itemsDao->exists($item->getId())===true)
+                continue;
+            
             // test date: continue with next if item too old
             $itemDate = new \DateTime($item->getDate());
             if($itemDate < $minDate) {
@@ -96,10 +100,6 @@ class ContentLoader {
             $now = new \DateTime();
             if($itemDate > $now)
                 $itemDate = $now;
-            
-            // item already in database?
-            if($itemsDao->exists($item->getId())===true)
-                continue;
             
             // insert new item
             \F3::get('logger')->log('start insertion of new item "'.$item->getTitle().'"', \DEBUG);
