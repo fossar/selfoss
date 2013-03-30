@@ -8,13 +8,22 @@ selfoss.shortcuts = {
         // next
         $(document).bind('keydown', 'space', function() { selfoss.shortcuts.nextprev('next', true, false); return false; });
         $(document).bind('keydown', 'n', function() { selfoss.shortcuts.nextprev('next', false); return false; });
-        $(document).bind('keydown', 'right', function() { selfoss.shortcuts.nextprev('next', false); return false; });
+        $(document).bind('keydown', 'right', function() {
+        	var content = $('.entry-content').is(':visible');
+        	selfoss.shortcuts.nextprev('next', content);
+        	return false;
+        });
         $(document).bind('keydown', 'j', function() { selfoss.shortcuts.nextprev('next', true); return false; });
         
         // prev
         $(document).bind('keydown', 'shift+space', function() { selfoss.shortcuts.nextprev('prev', true); return false; });
         $(document).bind('keydown', 'p', function() { selfoss.shortcuts.nextprev('prev', false); return false; });
-        $(document).bind('keydown', 'left', function() { selfoss.shortcuts.nextprev('prev', false); return false; });
+        $(document).bind('keydown', 'left', function() { 
+        	
+			var content = $('.entry-content').is(':visible');
+        	selfoss.shortcuts.nextprev('prev', content);
+        	return false; 
+        });
         $(document).bind('keydown', 'k', function() { selfoss.shortcuts.nextprev('prev', true); return false; });
         
         // star/unstar
@@ -35,6 +44,10 @@ selfoss.shortcuts = {
         // Reload the current view
         $(document).bind('keydown', 'r', function() {
             selfoss.reloadList();
+        });
+        
+        $(document).bind('keydown', 'e', function() {
+            $('.entry.selected').click();
         });
         
         // mark all as read
