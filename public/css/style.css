@@ -336,7 +336,7 @@ input {
 
     #content.loading {
         background:url(images/ajax-loader-big.gif) center center no-repeat;
-        min-height:100%
+        min-height:90%;
     }
 
 .entry ,
