@@ -751,7 +751,11 @@ body.publicmode.notloggedin .entry-unread {
         height:auto;
         height:100%;
     }
-    
+
+    .entry-content.entry-content-short {
+        max-width: 750px;
+    }
+
 }
 
 /* ipad and smartphone */
