@@ -54,8 +54,9 @@
                 <li>mobile support (Android, iOS, iPad)</li>
                 <li>use selfoss to live stream and collect all your posts, tweets, feeds in one place</li>
                 <li>lightweight PHP application with less than 2 MB</li>
-                <li>supports MySQL and Sqlite Databases</li>
+                <li>supports MySQL, PostgreSQL and Sqlite Databases</li>
                 <li>OPML Import</li>
+                <li>easy installation: upload and run</li>
             </ul>
         </div>
     </div>
@@ -109,36 +110,34 @@
                 For further questions or on any problem use our <a href="forum">support forum</a>.
             </div>
 
-	    <h2>Configuration</h2>
-	    <div class="documentation-entry">
-		<p>Configuration is optional. Any settings in config.ini will override the settings in defaults.ini. To customize settings follow these instructions:</p>
-		<ol>
-		    <li>Copy defaults.ini to config.ini.</li>
-		    <li>Edit config.ini and delete any lines you do not wish to override.</li>
-		    <li>Do not delete the <code>[globals]</code> line.</li>
-		</ol>
-		<p>Sample config.ini file which provides password protection:</p>
-<pre>
-<code>
+            <h2>Configuration</h2>
+            <div class="documentation-entry">
+                <p>Configuration is optional. Any settings in config.ini will override the settings in defaults.ini. To customize settings follow these instructions:</p>
+                <ol>
+                    <li>Copy defaults.ini to config.ini.</li>
+                    <li>Edit config.ini and delete any lines you do not wish to override.</li>
+                    <li>Do not delete the <code>[globals]</code> line.</li>
+                </ol>
+                <p>Sample config.ini file which provides password protection:</p>
+                <pre>
+                    <code>
 [globals]
 username=secretagent
 password=5d95c032abce4865d49ee225d28a8a939ea39a924a158f0056ebb1880d9
-salt=1291929@9394$95%939201098*61234324(@#$(!*@#981923123
-</code>
-</pre>
-		<p>Sample config.ini file with a MySQL database connection:</p>
-<pre>
-<code>
+salt=1291929@9394$95%939201098*61234324(@#$(!*@#981923123</code>
+                </pre>
+                <p>Sample config.ini file with a MySQL database connection:</p>
+                <pre>
+                    <code>
 [globals]
 db_type=mysql
 db_host=localhost
 db_database=selfoss
 db_username=secretagent
 db_password=life0fD4ng3r
-db_port=3306
-</code>
-</pre>
-	    </div>
+db_port=3306</code>
+                </pre>
+            </div>
             
             <h2>Update</h2>
             <div class="documentation-entry">
@@ -159,7 +158,7 @@ db_port=3306
             <h2>Import your feeds from Google Reader (OPML File)</h2>
             <div class="documentation-entry">
                 Visit the page http://yoururl.com/opml for importing your OPML File.
-                If you are a user of the google reader then use https://www.google.com/takeout/ to get all your feeds in one opml file.
+                If you are a user of the google reader then use http://www.google.com/reader/subscriptions/export or https://www.google.com/takeout/ to get all your feeds in one opml file.
             </div>
             
             <h2>Configuration</h2>
@@ -247,6 +246,18 @@ db_port=3306
                         <td class="documentation-first-column">homepage</td>
                         <td>set here your prefered homepage. Choose between newest, unread and starred. Default = newest.</td>
                     </tr>
+                    <tr>
+                        <td class="documentation-first-column">auto_mark_as_read</td>
+                        <td>set this to 1 for autmatically marking items as read after open/read them.</td>
+                    </tr>
+                    <tr>
+                        <td class="documentation-first-column">language</td>
+                        <td>set 0 or leave empty for auto detection (browser language) or set "de" for german, "en" for english, "fr" for french, "cs" for czech, "nl" for dutch, "ru" for russian, "tr" for turkish, "lv" for latvian, "tw" for traditional chinese, "cn" for simplified chinese</td>
+                    </tr>
+                    <tr>
+                        <td class="documentation-first-column">anonymizer</td>
+                        <td>set here your anonymizer service url. e.g.: anonymizer=http://anonym.to/?</td>
+                    </tr>
                 </table>
             </div>
             
@@ -307,6 +318,10 @@ db_port=3306
                         <td class="documentation-first-column">Ctrl+m</td>
                         <td>mark all as read</td>
                     </tr>
+                    <tr>
+                        <td class="documentation-first-column">r</td>
+                        <td>reload the list</td>
+                    </tr>
                 </table>
             </div>
             
@@ -322,7 +337,10 @@ db_port=3306
                     <li>Images from tumblr</li>
                     <li>Your twitter timeline</li>
                     <li>Tweets of a twitter user</li>
-                    <li>heise News</li>
+                    <li>heise News with full content</li>
+                    <li>golem News with full content</li>
+                    <li>MMOSpy News with full content</li>
+                    <li>RSS Feeds with readability</li>
                 </ul>
                 <p>
                     If you want to get the newest entries from your own source (e.g. an IMAP Email Account, Log Files or any data from your own application), you can include a new spout in your selfoss stream by writing just one php class (saved in one php file).
@@ -426,7 +444,6 @@ db_port=3306
                 <p>
                     More information about selfoss can be found on my german speaking blog <a href="http://blog.aditu.de">http://blog.aditu.de</a>.
                     The icon was created by <a href="http://blog.artcore-illustrations.de/aicons/">Nadja (ArtCore)</a>, thanks for licensing it as CC.
-                    Thanks to <a href="http://phpblogger.de/">Harald</a> for the SqLite and MongoDB database interface.
                 </p>
                 
                 <p>

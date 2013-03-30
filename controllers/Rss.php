@@ -33,6 +33,8 @@ class Rss extends BaseController {
         if(count($_GET)>0)
             $options = $_GET;
         $options['items'] = \F3::get('rss_max_items');
+        if(\F3::get('PARAMS["tag"]')!=null)
+            $options['tag'] = \F3::get('PARAMS["tag"]');
         
         // get items
         $newestEntryDate = false;
@@ -58,6 +60,15 @@ class Rss extends BaseController {
             @$newItem->setLink($item['link']);
             $newItem->setDate($item['datetime']);
             $newItem->setDescription(str_replace('&#34;', '"', $item['content']));
+            
+            // add tags in category node
+            $itemsTags = explode(",",$item['tags']);
+            foreach($itemsTags as $tag) {
+                $tag = trim($tag);
+                if(strlen($tag)>0)
+                    $newItem->addElement('category', $tag);
+            }
+
             $feedWriter->addItem($newItem);
             $lastid = $item['id'];
         }

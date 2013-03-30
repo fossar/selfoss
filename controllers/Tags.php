@@ -17,7 +17,7 @@ class Tags extends BaseController {
      *
      * @return void
      */
-    public function tags() {
+    public function tagslist() {
         echo $this->tagsListAsString();
     }
     

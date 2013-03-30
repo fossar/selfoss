@@ -98,7 +98,7 @@ selfoss.events.sources = function() {
     
     // delete source
     $('.source-delete').unbind('click').click(function() {
-        var answer = confirm('really delete this source?');
+        var answer = confirm($('#lang').data('source_warn'));
         if(answer==false)
             return;
         
@@ -120,8 +120,9 @@ selfoss.events.sources = function() {
                     $(this).remove();
                 });
                 
-                // reload tags
+                // reload tags and remove source from navigation
                 selfoss.reloadTags();
+                $('#nav-sources li#'+parent.attr('id')).remove();
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 parent.find('.source-edit-delete').removeClass('loading');
