@@ -19,8 +19,7 @@ selfoss.shortcuts = {
         $(document).bind('keydown', 'shift+space', function() { selfoss.shortcuts.nextprev('prev', true); return false; });
         $(document).bind('keydown', 'p', function() { selfoss.shortcuts.nextprev('prev', false); return false; });
         $(document).bind('keydown', 'left', function() { 
-        	
-			var content = $('.entry-content').is(':visible');
+        	var content = $('.entry-content').is(':visible');
         	selfoss.shortcuts.nextprev('prev', content);
         	return false; 
         });
@@ -44,10 +43,6 @@ selfoss.shortcuts = {
         // Reload the current view
         $(document).bind('keydown', 'r', function() {
             selfoss.reloadList();
-        });
-        
-        $(document).bind('keydown', 'e', function() {
-            $('.entry.selected').click();
         });
         
         // mark all as read
