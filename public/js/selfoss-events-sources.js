@@ -63,7 +63,7 @@ selfoss.events.sources = function() {
                 parent.attr('id', 'source'+id);
                 
                 // show saved text
-                parent.find('.source-showparams').addClass('saved').html('saved');
+                parent.find('.source-showparams').addClass('saved').html($('#lang').data('source_saved'));
                 window.setTimeout(function() {
                     parent.find('.source-showparams').removeClass('saved').html('edit');
                 }, 10000);
