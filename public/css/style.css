@@ -396,7 +396,7 @@ input {
         border-radius:4px;
         padding:2px;
         font-size:0.8em;
-        
+        white-space: nowrap;
     }
     
     .entry-content {
