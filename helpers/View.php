@@ -127,8 +127,10 @@ class View {
         $targetCss = \F3::get('BASEDIR').'/public/all.css';
         if(!file_exists($targetCss) || \F3::get('DEBUG')!=0) {
             $css = "";
-            foreach(\F3::get('css') as $file)
-                $css = $css . "\n" . $this->minifyCss(file_get_contents(\F3::get('BASEDIR').'/'.$file));
+            foreach(\F3::get('css') as $file) {
+                if(file_exists($file))
+                    $css = $css . "\n" . $this->minifyCss(file_get_contents(\F3::get('BASEDIR').'/'.$file));
+            }
             file_put_contents($targetCss, $css);
         }
     }
