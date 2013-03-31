@@ -6,7 +6,28 @@ selfoss.shortcuts = {
      */
     init: function() { 
         // next
-        $(document).bind('keydown', 'space', function() { selfoss.shortcuts.nextprev('next', true, false); return false; });
+        $(document).bind('keydown', 'space', function() {
+        	var content = $('.entry-content').is(':visible');
+
+        	if(content) {
+        		// focused entry content is visible: go to next entry
+        		selfoss.shortcuts.nextprev('next', true, false);
+        	}else{
+	        	// focused entry content is not visible: show content of entry
+	        	var entry = $('.entry.selected');
+	        	
+	        	// Initial spacebar press without any items selected
+	        	if(entry.length == 0) {
+	        		$('.entry:first').addClass('selected');
+	        		entry = $('.entry.selected');
+	        	}
+	        	
+	        	// Toggle open/closed content
+	        	entry.find('.entry-content').toggle();
+	        	entry.find('.entry-toolbar').toggle();
+        	}
+        	return false;
+        });
         $(document).bind('keydown', 'n', function() { selfoss.shortcuts.nextprev('next', false); return false; });
         $(document).bind('keydown', 'right', function() {
         	var content = $('.entry-content').is(':visible');
@@ -21,7 +42,7 @@ selfoss.shortcuts = {
         $(document).bind('keydown', 'left', function() { 
         	var content = $('.entry-content').is(':visible');
         	selfoss.shortcuts.nextprev('prev', content);
-        	return false; 
+        	return false;
         });
         $(document).bind('keydown', 'k', function() { selfoss.shortcuts.nextprev('prev', true); return false; });
         
@@ -33,6 +54,14 @@ selfoss.shortcuts = {
         // mark/unmark
         $(document).bind('keydown', 'm', function() {
             $('.entry.selected .entry-unread').click();
+        });
+        
+        // open/close entry
+        // can be used in combination with left and right key
+        $(document).bind('keydown', 'o', function() {
+        	var entry = $('.entry.selected');
+        	entry.find('.entry-content').toggle();
+            entry.find('.entry-toolbar').toggle();
         });
         
         // open target
