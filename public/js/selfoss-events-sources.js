@@ -143,7 +143,7 @@ selfoss.events.sources = function() {
         params.show();
         if($.trim(val).length==0) {
             params.html('');
-            selfoss.resize();
+            selfoss.events.resize();
             return;
         }
         params.addClass('loading');
@@ -153,11 +153,11 @@ selfoss.events.sources = function() {
             type: 'GET',
             success: function(data) {
                 params.removeClass('loading').html(data);
-                selfoss.resize();
+                selfoss.events.resize();
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 params.removeClass('loading').append('<li class="error">'+errorThrown+'</li>');
-                selfoss.resize();
+                selfoss.events.resize();
             }
         });
     });
