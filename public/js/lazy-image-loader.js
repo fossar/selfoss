@@ -23,18 +23,20 @@ $.fn.mobileImgHelpers = function() {
             $(self).wrapAll("<div class='mobileimgdiv'></div>");
             $(self).parent().append("<br>");
             if ($(this).width() < width) {
-                $(self).parent().append("<a href='#' class='zoom'>Zoom</a> ");
+                $(self).parent().append("<span class='zoom'>Zoom</a> ");
             }
             if ($(this).attr("alt")) {
-                $(self).parent().append("<a href='#' class='alttext'>Alt Text</a> ");
+                $(self).parent().append("<span class='alttext'>Alt Text</a> ");
                 $(self).parent().append("<br><div class=alttextdiv style='display:none;'>"+$(this).attr("alt")+"</div>");
             }
-            $(self).parent().children(".zoom").click(function (e) {
+            $(self).parent().children(".zoom").unbind("click").click(function (e) {
                 e.preventDefault();
-                $(this).parent().children("img").css("max-width",width + "px");
+                e.stopPropagation();
+                $(this).parent().children("img").css("max-width", width + "px");
             });
-            $(self).parent().children(".alttext").click(function (e) {
+            $(self).parent().children(".alttext").unbind("click").click(function (e) {
                 e.preventDefault();
+                e.stopPropagation();
                 $(this).parent().children(".alttextdiv").toggle();
             });
         });

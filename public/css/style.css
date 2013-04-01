@@ -1074,4 +1074,9 @@ body.publicmode.notloggedin .entry-unread {
 
 .mobileimgdiv {
     overflow-x: scroll;
+    padding-bottom: 10px;
+}
+
+.mobileimgdiv span {
+    cursor: pointer;
 }
