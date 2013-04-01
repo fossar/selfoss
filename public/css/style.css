@@ -541,6 +541,10 @@ input {
             background-image:url(images/pocket.png);
         }
     
+        .entry-statusnet {
+            background-image:url(images/statusnet.png);
+        }
+    
         .entry-smartphone-share li.entry-shareemail,
         .entry-toolbar li.entry-shareemail {
             background-image:url(images/mail.png);
