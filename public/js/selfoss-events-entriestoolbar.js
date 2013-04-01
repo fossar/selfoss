@@ -60,6 +60,13 @@ selfoss.events.entriesToolbar = function(parent) {
         e.preventDefault();
         return false;
     });
+
+    // share with StatusNet
+    parent.find('.entry-statusnet').unbind('click').click(function(e) {
+        window.open(" "+(share_sn_url?share_sn_url:"https://identi.ca")+"/index.php?action=newnotice&status_textarea="+encodeURIComponent($(this).parents(".entry").children(".entry-title").html())+" "+encodeURIComponent($(this).parents(".entry").children("a").eq(0).attr("href")));
+        e.preventDefault();
+        return false;
+    });
     
     // only loggedin users
     if($('body').hasClass('loggedin')==true) {
