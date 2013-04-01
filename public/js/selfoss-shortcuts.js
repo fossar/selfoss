@@ -7,31 +7,12 @@ selfoss.shortcuts = {
     init: function() { 
         // next
         $(document).bind('keydown', 'space', function() {
-        	var content = $('.entry-content').is(':visible');
-
-        	if(content) {
-        		// focused entry content is visible: go to next entry
-        		selfoss.shortcuts.nextprev('next', true, false);
-        	}else{
-	        	// focused entry content is not visible: show content of entry
-	        	var entry = $('.entry.selected');
-	        	
-	        	// Initial spacebar press without any items selected
-	        	if(entry.length == 0) {
-	        		$('.entry:first').addClass('selected');
-	        		entry = $('.entry.selected');
-	        	}
-	        	
-	        	// Toggle open/closed content
-	        	entry.find('.entry-content').toggle();
-	        	entry.find('.entry-toolbar').toggle();
-        	}
+        	selfoss.shortcuts.spacebar();
         	return false;
         });
         $(document).bind('keydown', 'n', function() { selfoss.shortcuts.nextprev('next', false); return false; });
         $(document).bind('keydown', 'right', function() {
-        	var content = $('.entry-content').is(':visible');
-        	selfoss.shortcuts.nextprev('next', content);
+        	selfoss.shortcuts.entrynav('next');
         	return false;
         });
         $(document).bind('keydown', 'j', function() { selfoss.shortcuts.nextprev('next', true); return false; });
@@ -40,8 +21,7 @@ selfoss.shortcuts = {
         $(document).bind('keydown', 'shift+space', function() { selfoss.shortcuts.nextprev('prev', true); return false; });
         $(document).bind('keydown', 'p', function() { selfoss.shortcuts.nextprev('prev', false); return false; });
         $(document).bind('keydown', 'left', function() { 
-        	var content = $('.entry-content').is(':visible');
-        	selfoss.shortcuts.nextprev('prev', content);
+        	selfoss.shortcuts.entrynav('prev');
         	return false;
         });
         $(document).bind('keydown', 'k', function() { selfoss.shortcuts.nextprev('prev', true); return false; });
@@ -185,6 +165,43 @@ selfoss.shortcuts = {
         if(next.position().top <= viewportScrollTop) {
             $(window).scrollTop(next.position().top);
         }
+    },
+    
+    /**
+     * spacebar navigation
+     */
+	spacebar: function() {
+		var content = $('.entry-content').is(':visible');
+
+    	if(content) {
+    		// focused entry content is visible: go to next entry
+    		selfoss.shortcuts.nextprev('next', true, false);
+    	}else{
+        	// focused entry content is not visible: show content of entry
+        	var entry = $('.entry.selected');
+        	
+        	// Initial spacebar press without any items selected
+        	if(entry.length == 0) {
+        		$('.entry:first').addClass('selected');
+        		entry = $('.entry.selected');
+        	}
+        	
+        	// Toggle open/closed content
+        	entry.find('.entry-content').toggle();
+        	entry.find('.entry-toolbar').toggle();
+    	}
+    },
+    
+    /**
+     * entry navigation (next/prev) with keys
+     * @param direction
+     */
+    entrynav: function(direction) {
+    	if(typeof direction == "undefined" || (direction!="next" && direction!="prev"))
+            direction = "next";
+        
+        var content = $('.entry-content').is(':visible');
+        	selfoss.shortcuts.nextprev(direction, content);
     },
     
 }
