@@ -181,10 +181,12 @@ input {
             background:#272325;
             color:#d7d7d7;
         }
-    #nav-sources li.unread{
-        font-weight: bold;
-        font-size: 0.7em;
-    }    
+        
+        #nav-sources li.unread{
+            font-weight: bold;
+            font-size: 0.7em;
+        }
+    
     #nav .unread {
         font-size:0.9em;
         vertical-align:sub;
@@ -333,7 +335,7 @@ input {
     padding-bottom:20px;
 }
 
-    #content .stream-empty{
+    #content .stream-empty {
         text-align:center;
     }
 
@@ -786,6 +788,10 @@ body.publicmode.notloggedin .entry-unread {
         cursor:pointer;
         padding:5px;
         font-size:1.1em;
+    }
+    
+    #content .stream-empty {
+        padding-top:20px;
     }
     
     #nav-settings.nologin {
