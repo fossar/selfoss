@@ -7,13 +7,13 @@ selfoss.shortcuts = {
     init: function() { 
         // next
         $(document).bind('keydown', 'space', function() {
-        	selfoss.shortcuts.spacebar();
-        	return false;
+            selfoss.shortcuts.spacebar();
+            return false;
         });
         $(document).bind('keydown', 'n', function() { selfoss.shortcuts.nextprev('next', false); return false; });
         $(document).bind('keydown', 'right', function() {
-        	selfoss.shortcuts.entrynav('next');
-        	return false;
+            selfoss.shortcuts.entrynav('next');
+            return false;
         });
         $(document).bind('keydown', 'j', function() { selfoss.shortcuts.nextprev('next', true); return false; });
         
@@ -21,8 +21,8 @@ selfoss.shortcuts = {
         $(document).bind('keydown', 'shift+space', function() { selfoss.shortcuts.nextprev('prev', true); return false; });
         $(document).bind('keydown', 'p', function() { selfoss.shortcuts.nextprev('prev', false); return false; });
         $(document).bind('keydown', 'left', function() { 
-        	selfoss.shortcuts.entrynav('prev');
-        	return false;
+            selfoss.shortcuts.entrynav('prev');
+            return false;
         });
         $(document).bind('keydown', 'k', function() { selfoss.shortcuts.nextprev('prev', true); return false; });
         
@@ -39,8 +39,8 @@ selfoss.shortcuts = {
         // open/close entry
         // can be used in combination with left and right key
         $(document).bind('keydown', 'o', function() {
-        	var entry = $('.entry.selected');
-        	entry.find('.entry-content').toggle();
+            var entry = $('.entry.selected');
+            entry.find('.entry-content').toggle();
             entry.find('.entry-toolbar').toggle();
         });
         
@@ -167,41 +167,42 @@ selfoss.shortcuts = {
         }
     },
     
+    
     /**
      * spacebar navigation
      */
-	spacebar: function() {
-		var content = $('.entry-content').is(':visible');
+    spacebar: function() {
+        var content = $('.entry-content').is(':visible');
 
-    	if(content) {
-    		// focused entry content is visible: go to next entry
-    		selfoss.shortcuts.nextprev('next', true, false);
-    	}else{
-        	// focused entry content is not visible: show content of entry
-        	var entry = $('.entry.selected');
-        	
-        	// Initial spacebar press without any items selected
-        	if(entry.length == 0) {
-        		$('.entry:first').addClass('selected');
-        		entry = $('.entry.selected');
-        	}
-        	
-        	// Toggle open/closed content
-        	entry.find('.entry-content').toggle();
-        	entry.find('.entry-toolbar').toggle();
-    	}
+        if(content) {
+            // focused entry content is visible: go to next entry
+            selfoss.shortcuts.nextprev('next', true, false);
+        } else {
+            // focused entry content is not visible: show content of entry
+            var entry = $('.entry.selected');
+            
+            // Initial spacebar press without any items selected
+            if(entry.length == 0) {
+                $('.entry:first').addClass('selected');
+                entry = $('.entry.selected');
+            }
+            
+            // Toggle open/closed content
+            entry.find('.entry-content').toggle();
+            entry.find('.entry-toolbar').toggle();
+        }
     },
+    
     
     /**
      * entry navigation (next/prev) with keys
      * @param direction
      */
     entrynav: function(direction) {
-    	if(typeof direction == "undefined" || (direction!="next" && direction!="prev"))
+        if(typeof direction == "undefined" || (direction!="next" && direction!="prev"))
             direction = "next";
         
         var content = $('.entry-content').is(':visible');
-        	selfoss.shortcuts.nextprev(direction, content);
-    },
-    
+            selfoss.shortcuts.nextprev(direction, content);
+    }
 }
