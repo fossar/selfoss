@@ -54,6 +54,7 @@ Version 2.5
 * new navigation with right/left cursor (thanks a lot to jicho)
 * replace &bullet; for IE compatibility
 * fix re-initialize entry events on screen width change (thanks a lot to Sean Rand)
+* allow optional userdefined public/css/user.css (thanks a lot to Jean Baptiste Favre)
 
 Version 2.4
 * prevent error on icons parsing error
