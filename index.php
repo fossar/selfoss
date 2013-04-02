@@ -54,7 +54,8 @@ $f3->set('css', array(
     'public/css/reset.css',
     'public/css/fonts.css',
     'public/css/style.css',
-    'public/css/opml.css'
+    'public/css/opml.css',
+    'public/css/user-defined.css'
 ));
 
 // define routes
