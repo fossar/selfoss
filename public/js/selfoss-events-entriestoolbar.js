@@ -146,13 +146,20 @@ selfoss.events.entriesToolbar = function(parent) {
                 // update unread count on sources
                 var sourceId = $('#entry'+id+' .entry-source').attr('class').substr(25);
                 var sourceNav = $('#source'+sourceId+' .unread');
+                var sourceNavClass = $('#source'+sourceId+'');
                 var sourceCount = parseInt(sourceNav.html());
                 if(typeof sourceCount != "number" || isNaN(sourceCount)==true)
                     sourceCount = 0;
                 sourceCount = unread ? sourceCount-1 : sourceCount+1;
-                if(sourceCount<=0)
+                if(sourceCount<=0){
                     sourceCount = "";
+                    sourceNavClass.removeClass('unread');
+                } 
+                else{
+                    sourceNavClass.addClass('unread');
+                }
                 sourceNav.html(sourceCount);
+                
                 
                 // update unread on tags
                 $('#entry'+id+' .entry-tags-tag').each( function(index) {
