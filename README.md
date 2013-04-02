@@ -55,6 +55,7 @@ Version 2.5
 * replace &bullet; for IE compatibility
 * fix re-initialize entry events on screen width change (thanks a lot to Sean Rand)
 * allow optional userdefined public/css/user.css (thanks a lot to Jean Baptiste Favre)
+* some smaller css tweaks (thanks a lot to Sean Rand)
 
 Version 2.4
 * prevent error on icons parsing error
