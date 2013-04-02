@@ -27,19 +27,19 @@
     <!-- title -->
     <h2 class="entry-title"><?PHP echo $title; ?></h2>
     
-    <div class="entry-tags">
+    <span class="entry-tags">
         <?PHP foreach($this->item['tags'] as $tag => $color) : ?>
-            <div class="entry-tags-tag" style="background-color:<?PHP echo $color; ?>"><?PHP echo $tag; ?></div>
+            <span class="entry-tags-tag" style="background-color:<?PHP echo $color; ?>"><?PHP echo $tag; ?></span>
         <?PHP endforeach; ?>
-    </div>
+    </span>
     
     <!-- source -->
     <a href="<?PHP echo trim(\F3::get('anonymizer')) . $this->item['link']; ?>" class="entry-source entry-source<?PHP echo $this->item['source']; ?>" target="_blank"><?PHP echo $sourcetitle ?></a>
     
     <!-- datetime -->
-    <div class="entry-datetime">
+    <span class="entry-datetime">
         &bull; <?PHP echo $date; ?>
-    </div>
+    </span>
     
     <!-- thumbnail -->
     <?PHP if(isset($this->item['thumbnail']) && strlen(trim($this->item['thumbnail']))>0) : ?>
