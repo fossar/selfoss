@@ -181,7 +181,10 @@ input {
             background:#272325;
             color:#d7d7d7;
         }
-        
+    #nav-sources li.unread{
+        font-weight: bold;
+        font-size: 0.7em;
+    }    
     #nav .unread {
         font-size:0.9em;
         vertical-align:sub;
