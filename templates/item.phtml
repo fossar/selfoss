@@ -35,10 +35,12 @@
     
     <!-- source -->
     <a href="<?PHP echo trim(\F3::get('anonymizer')) . $this->item['link']; ?>" class="entry-source entry-source<?PHP echo $this->item['source']; ?>" target="_blank"><?PHP echo $sourcetitle ?></a>
-    
+
+    <span class="entry-separator">&bull;</span>
+
     <!-- datetime -->
     <span class="entry-datetime">
-        &bull; <?PHP echo $date; ?>
+        <?PHP echo $date; ?>
     </span>
     
     <!-- thumbnail -->
