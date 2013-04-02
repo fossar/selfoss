@@ -23,6 +23,9 @@
     <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 
     <!-- all css definitions -->
+    <?PHP if(\F3::get('use_system_font')!=true) : ?>
+        <link rel="stylesheet" href="css/fonts.css" />
+    <?PHP endif; ?>
     <link rel="stylesheet" href="all.css" />
 
 </head>
