@@ -72,7 +72,7 @@ selfoss.events.sources = function() {
                 parent.find('.source-edit-form').hide();
                 
                 // update title
-                parent.find('.source-title').html(parent.find('#title').val());
+                parent.find('.source-title').html(parent.find("input[name='title']").val());
                 
                 // show all links for new items
                 parent.removeClass('source-new');

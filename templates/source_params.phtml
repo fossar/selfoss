@@ -16,7 +16,6 @@ foreach($this->spout->params as $spoutParamName => $spoutParam) {
         echo '<li>
                 <label>'.$spoutParam['title'].':</label>
                 <input type="'.$spoutParam["type"].'" 
-                       id="'.$spoutParamName.'" 
                        name="'.$spoutParamName.'" 
                        value="'.$value.'" 
                        '.$checked.' />
@@ -31,7 +30,7 @@ foreach($this->spout->params as $spoutParamName => $spoutParam) {
 
         echo '<li>
                 <label>'.$spoutParam['title'].':</label>
-                <select id="'.$spoutParamName.'" name="'.$spoutParamName.'" size="1">'.$options.'
+                <select name="'.$spoutParamName.'" size="1">'.$options.'
                 </select>
             </li>';
     }
