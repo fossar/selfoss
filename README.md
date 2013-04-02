@@ -56,6 +56,7 @@ Version 2.5
 * fix re-initialize entry events on screen width change (thanks a lot to Sean Rand)
 * allow optional userdefined user.css (thanks a lot to Jean Baptiste Favre)
 * some smaller css tweaks (thanks a lot to Sean Rand)
+* new parameter use_system_font for using Arial instead of Open Sans
 
 Version 2.4
 * prevent error on icons parsing error

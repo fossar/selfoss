@@ -53,7 +53,6 @@ $css = array(
     'public/css/jquery.mCustomScrollbar.css',
     'public/css/spectrum.css',
     'public/css/reset.css',
-    'public/css/fonts.css',
     'public/css/style.css'
 );
 if(file_exists("user.css"))
