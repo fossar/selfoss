@@ -28,7 +28,7 @@ $f3->set(
 // init authentication
 $f3->set('auth', new \helpers\Authentication());
 
-// define js and css files
+// define js files
 $f3->set('js', array(
     'public/js/jquery-1.8.3.min.js',
     'public/js/jquery-ui-1.10.0.custom.js',
@@ -48,14 +48,18 @@ $f3->set('js', array(
     'public/js/selfoss-shortcuts.js'
 ));
 
-$f3->set('css', array(
+// define css files
+$css = array(
     'public/css/jquery.mCustomScrollbar.css',
     'public/css/spectrum.css',
     'public/css/reset.css',
     'public/css/fonts.css',
-    'public/css/style.css',
-    'public/css/opml.css'
-));
+    'public/css/style.css'
+);
+if(file_exists("public/css/user.css"))
+    $css[] = "public/css/user.css";
+$f3->set('css', $css);
+
 
 // define routes
 
