@@ -10,7 +10,11 @@ selfoss.events = {
         selfoss.events.navigation();
         selfoss.events.entries();
         selfoss.events.search();
-        
+
+        // re-init on media query change
+        var mq = window.matchMedia("(min-width: 641px) and (max-width: 1024px)");
+        mq.addListener(selfoss.events.entries);
+
         // window resize
         $("#nav-tags-wrapper").mCustomScrollbar({
             advanced:{
