@@ -56,8 +56,8 @@ $css = array(
     'public/css/fonts.css',
     'public/css/style.css'
 );
-if(file_exists("public/css/user.css"))
-    $css[] = "public/css/user.css";
+if(file_exists("user.css"))
+    $css[] = "user.css";
 $f3->set('css', $css);
 
 
