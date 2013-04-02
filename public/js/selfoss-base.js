@@ -49,7 +49,7 @@ var selfoss = {
     
     
     /**
-     * returns an array of id value pairs of all form elements in given element
+     * returns an array of name value pairs of all form elements in given element
      *
      * @return void
      * @param element containing the form elements
@@ -58,11 +58,11 @@ var selfoss = {
         var values = {};
         
         $(element).find(':input').each(function (i, el) {
-            // get only input elements with id
-            if($.trim($(el).attr('id')).length!=0) {
-                values[$(el).attr('id')] = $(el).val();
+            // get only input elements with name
+            if($.trim($(el).attr('name')).length!=0) {
+                values[$(el).attr('name')] = $(el).val();
                 if($(el).attr('type')=='checkbox')
-                    values[$(el).attr('id')] = $(el).attr('checked') ? 1 : 0;
+                    values[$(el).attr('name')] = $(el).attr('checked') ? 1 : 0;
             }
         });
         
