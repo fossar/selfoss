@@ -3,9 +3,11 @@
  */
 selfoss.events.entries = function(e) {
 
+    $('.entry, .entry-title').unbind('click');
+
     // show/hide entry
     var target = selfoss.isMobile() ? '.entry' : '.entry-title';
-    $(target).unbind('click').click(function() {
+    $(target).click(function() {
         var parent = ((target == '.entry') ? $(this) : $(this).parent());
         
         if(selfoss.isSmartphone()==false) {
