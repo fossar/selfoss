@@ -57,6 +57,7 @@ Version 2.5
 * allow optional userdefined user.css (thanks a lot to Jean Baptiste Favre)
 * some smaller css tweaks (thanks a lot to Sean Rand)
 * new parameter use_system_font for using Arial instead of Open Sans
+* new italian language file (thanks a lot to David Chionne)
 
 Version 2.4
 * prevent error on icons parsing error
