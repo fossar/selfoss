@@ -39,9 +39,7 @@ selfoss.shortcuts = {
         // open/close entry
         // can be used in combination with left and right key
         $(document).bind('keydown', 'o', function() {
-            var entry = $('.entry.selected');
-            entry.find('.entry-content').toggle();
-            entry.find('.entry-toolbar').toggle();
+            $('.entry.selected').find('h2').click();
         });
         
         // open target
