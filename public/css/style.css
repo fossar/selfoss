@@ -466,6 +466,7 @@ input {
     }
     
     .entry-source,
+    .entry-separator,
     .entry-datetime {
         display:inline;
         color:#aaa;
@@ -1073,6 +1074,7 @@ body.publicmode.notloggedin .entry-unread {
         }
         
         .entry-source,
+        .entry-separator,
         .entry-datetime {
             color:#3d6d69;
         }
