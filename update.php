@@ -4,7 +4,6 @@ chdir(__DIR__);
 $f3 = require(__DIR__.'/libs/f3/base.php');
 
 $f3->set('DEBUG',0);
-$f3->set('version','2.4-SNAPSHOT');
 $f3->set('AUTOLOAD',__dir__.'/;libs/f3/;libs/;libs/WideImage/;daos/;libs/twitteroauth/;libs/FeedWriter/');
 $f3->set('cache',__dir__.'/data/cache');
 $f3->set('BASEDIR',__dir__);

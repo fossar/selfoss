@@ -4,7 +4,7 @@ selfoss
 Copyright (c) 2013 Tobias Zeising, tobias.zeising@aditu.de  
 http://selfoss.aditu.de  
 Licensed under the GPLv3 license  
-Version 2.4-SNAPSHOT
+Version 2.5-SNAPSHOT
 
 
 INSTALLATION
@@ -50,7 +50,16 @@ Visit the page http://yourselfossurl.com/opml for importing your OPML File. If y
 CHANGELOG
 ---------
 
-Version 2.4-SNAPSHOT
+Version 2.5
+* new navigation with right/left cursor (thanks a lot to jicho)
+* replace &bullet; for IE compatibility
+* fix re-initialize entry events on screen width change (thanks a lot to Sean Rand)
+* allow optional userdefined user.css (thanks a lot to Jean Baptiste Favre)
+* some smaller css tweaks (thanks a lot to Sean Rand)
+* new parameter use_system_font for using Arial instead of Open Sans
+* new italian language file (thanks a lot to David Chionne)
+
+Version 2.4
 * prevent error on icons parsing error
 * new homepage parameter (thanks a lot to Jean Baptiste Favre)
 * new button for open an articles source

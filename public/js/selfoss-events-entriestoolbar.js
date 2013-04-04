@@ -150,8 +150,12 @@ selfoss.events.entriesToolbar = function(parent) {
                 if(typeof sourceCount != "number" || isNaN(sourceCount)==true)
                     sourceCount = 0;
                 sourceCount = unread ? sourceCount-1 : sourceCount+1;
-                if(sourceCount<=0)
+                if(sourceCount<=0) {
                     sourceCount = "";
+                    $('#source'+sourceId+'').removeClass('unread');
+                } else {
+                    $('#source'+sourceId+'').addClass('unread');
+                }
                 sourceNav.html(sourceCount);
                 
                 // update unread on tags

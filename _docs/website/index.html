@@ -26,7 +26,7 @@
             <li class="documentation">documentation</li>
             <li class="about">about</li>
             <li class="forum"><a href="/forum">forum</a></li>
-            <li class="download"><a href="selfoss-2.3.zip">download</a></li>
+            <li class="download"><a href="selfoss-2.4.zip">download</a></li>
         </ul>
         
         <a id="header-fork" href="https://github.com/SSilence/selfoss"></a>
@@ -35,7 +35,7 @@
         
         <div id="header-just-updated"></div>
         
-        <a id="header-download" href="selfoss-2.3.zip"><span>download selfoss 2.3</span></a>
+        <a id="header-download" href="selfoss-2.4.zip"><span>download selfoss 2.4</span></a>
         
         <a id="header-donate" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LR67F3T9DMSC8"><span>donate</span></a>
         
@@ -258,6 +258,10 @@ db_port=3306</code>
                         <td class="documentation-first-column">anonymizer</td>
                         <td>set here your anonymizer service url. e.g.: anonymizer=http://anonym.to/?</td>
                     </tr>
+                    <tr>
+                        <td class="documentation-first-column">use_system_font</td>
+                        <td>set use_system_font=1 if you have problems with special characters. Then instead of Open Sans the font Arial will be used.</td>
+                    </tr>
                 </table>
             </div>
             
@@ -283,6 +287,10 @@ db_port=3306</code>
                         <td>select next entry</td>
                     </tr>
                     <tr>
+                        <td class="documentation-first-column">&rarr;</td>
+                        <td>select next entry (and open it when the current is open)</td>
+                    </tr>
+                    <tr>
                         <td class="documentation-first-column">shift + space</td>
                         <td>select and open previous entry</td>
                     </tr>
@@ -293,6 +301,10 @@ db_port=3306</code>
                     <tr>
                         <td class="documentation-first-column">p</td>
                         <td>select previous entry</td>
+                    </tr>
+                    <tr>
+                        <td class="documentation-first-column">&larr;</td>
+                        <td>select previous entry (and open it when the current is open)</td>
                     </tr>
                     <tr>
                         <td class="documentation-first-column">s</td>
@@ -315,12 +327,16 @@ db_port=3306</code>
                         <td>open url of current entry in new tab/window</td>
                     </tr>
                     <tr>
-                        <td class="documentation-first-column">Ctrl+m</td>
+                        <td class="documentation-first-column">Ctrl + m</td>
                         <td>mark all as read</td>
                     </tr>
                     <tr>
                         <td class="documentation-first-column">r</td>
                         <td>reload the list</td>
+                    </tr>
+                    <tr>
+                        <td class="documentation-first-column">o</td>
+                        <td>open current item</td>
                     </tr>
                 </table>
             </div>
