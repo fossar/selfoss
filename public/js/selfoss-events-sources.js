@@ -63,7 +63,7 @@ selfoss.events.sources = function() {
                 parent.attr('id', 'source'+id);
                 
                 // show saved text
-                parent.find('.source-showparams').addClass('saved').html('saved');
+                parent.find('.source-showparams').addClass('saved').html($('#lang').data('source_saved'));
                 window.setTimeout(function() {
                     parent.find('.source-showparams').removeClass('saved').html('edit');
                 }, 10000);
@@ -72,7 +72,7 @@ selfoss.events.sources = function() {
                 parent.find('.source-edit-form').hide();
                 
                 // update title
-                parent.find('.source-title').html(parent.find('#title').val());
+                parent.find('.source-title').html(parent.find("input[name='title']").val());
                 
                 // show all links for new items
                 parent.removeClass('source-new');
@@ -143,7 +143,7 @@ selfoss.events.sources = function() {
         params.show();
         if($.trim(val).length==0) {
             params.html('');
-            selfoss.resize();
+            selfoss.events.resize();
             return;
         }
         params.addClass('loading');
@@ -153,11 +153,11 @@ selfoss.events.sources = function() {
             type: 'GET',
             success: function(data) {
                 params.removeClass('loading').html(data);
-                selfoss.resize();
+                selfoss.events.resize();
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 params.removeClass('loading').append('<li class="error">'+errorThrown+'</li>');
-                selfoss.resize();
+                selfoss.events.resize();
             }
         });
     });

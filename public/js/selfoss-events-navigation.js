@@ -70,7 +70,7 @@ selfoss.events.navigation = function() {
     
     // hide/show tags
     $('#nav-tags-title').unbind('click').click(function () {
-        var s = $('#nav-tags').toggle("slow");
+        var s = $('#nav-tags').slideToggle("slow");
     });
     
     // source
@@ -91,7 +91,7 @@ selfoss.events.navigation = function() {
     
     // hide/show sources
     $('#nav-sources-title').unbind('click').click(function () {
-        var s = $('#nav-sources').toggle("slow");
+        var s = $('#nav-sources').slideToggle("slow");
     });
     
     // show hide navigation for mobile version

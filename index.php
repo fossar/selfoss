@@ -3,7 +3,7 @@
 $f3 = require(__DIR__.'/libs/f3/base.php');
 
 $f3->set('DEBUG',0);
-$f3->set('version','2.4-SNAPSHOT');
+$f3->set('version','2.5-SNAPSHOT');
 $f3->set('AUTOLOAD',__dir__.'/;libs/f3/;libs/;libs/WideImage/;daos/;libs/twitteroauth/;libs/FeedWriter/');
 $f3->set('cache',__dir__.'/data/cache');
 $f3->set('BASEDIR',__dir__);
@@ -28,7 +28,7 @@ $f3->set(
 // init authentication
 $f3->set('auth', new \helpers\Authentication());
 
-// define js and css files
+// define js files
 $f3->set('js', array(
     'public/js/jquery-1.8.3.min.js',
     'public/js/jquery-ui-1.10.0.custom.js',
@@ -48,14 +48,17 @@ $f3->set('js', array(
     'public/js/selfoss-shortcuts.js'
 ));
 
-$f3->set('css', array(
+// define css files
+$css = array(
     'public/css/jquery.mCustomScrollbar.css',
     'public/css/spectrum.css',
     'public/css/reset.css',
-    'public/css/fonts.css',
-    'public/css/style.css',
-    'public/css/opml.css'
-));
+    'public/css/style.css'
+);
+if(file_exists("user.css"))
+    $css[] = "user.css";
+$f3->set('css', $css);
+
 
 // define routes
 

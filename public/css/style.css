@@ -1,3 +1,4 @@
+
 /* base */
 
 html {
@@ -182,6 +183,11 @@ input {
             color:#d7d7d7;
         }
         
+        #nav-sources li.unread{
+            font-weight: bold;
+            font-size: 0.7em;
+        }
+    
     #nav .unread {
         font-size:0.9em;
         vertical-align:sub;
@@ -330,13 +336,13 @@ input {
     padding-bottom:20px;
 }
 
-    #content .stream-empty{
+    #content .stream-empty {
         text-align:center;
     }
 
     #content.loading {
         background:url(images/ajax-loader-big.gif) center center no-repeat;
-        min-height:100%
+        min-height:90%
     }
 
 .entry ,
@@ -396,7 +402,7 @@ input {
         border-radius:4px;
         padding:2px;
         font-size:0.8em;
-        
+        white-space:nowrap;
     }
     
     .entry-content {
@@ -441,6 +447,7 @@ input {
             -moz-column-count: 1;
             -webkit-column-count: 1;
             column-count: 1;
+            max-width: 750px;
         }
         
         .entry-content pre,
@@ -459,6 +466,7 @@ input {
     }
     
     .entry-source,
+    .entry-separator,
     .entry-datetime {
         display:inline;
         color:#aaa;
@@ -713,6 +721,64 @@ input {
         font-size:1.2em;
     }
 
+/* opml import */
+
+#opmlbody {
+    height:auto;
+}
+
+#opml {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 150px;
+    width: 500px;
+}
+
+    #opml h1 {
+        background:url(images/logo.png) left center no-repeat;
+        font-family:'OpenSansSemibold', Arial, sans-serif;
+        padding-top:10px;
+        padding-left:40px;
+        font-size:1.4em;
+        margin-bottom:20px;
+    }
+
+    #opml .msg {
+        padding: 8px;
+        border-radius:8px;
+        margin-top: 15px;
+    }
+
+    #opml .error {
+        background-color: #ffcccc;
+    }
+
+    #opml .success {
+        background-color: #ffcc00;
+    }
+
+    #opml li.center, #opml li.button {
+        text-align: center;
+    }
+
+    #opml .button input {
+        margin-left:7px;
+        padding:9px;
+        margin-top: 30px;
+        font-size:1.2em;
+    }
+
+    #opml label {
+        display: inline-block;
+        width: 100px;
+    }
+
+    #opml input {
+        margin-top: 30px;
+        background:white;
+    }
+    
+    
 /* public mode */
 
 body.publicmode.notloggedin #nav-mark {
@@ -783,6 +849,10 @@ body.publicmode.notloggedin .entry-unread {
         cursor:pointer;
         padding:5px;
         font-size:1.1em;
+    }
+    
+    #content .stream-empty {
+        padding-top:20px;
     }
     
     #nav-settings.nologin {
@@ -1004,6 +1074,7 @@ body.publicmode.notloggedin .entry-unread {
         }
         
         .entry-source,
+        .entry-separator,
         .entry-datetime {
             color:#3d6d69;
         }
