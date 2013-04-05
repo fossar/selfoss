@@ -89,6 +89,10 @@ selfoss.shortcuts = {
         // select current        
         var old = $('.entry.selected');
         
+        // automark as read
+        if($('#config').data('auto_mark_as_read')=="1" && old.hasClass('unread'))
+            old.find('.entry-unread').click();
+        
         // select next/prev and save it to "current"
         if(direction=="next") {
             if(old.length==0) {
@@ -131,9 +135,6 @@ selfoss.shortcuts = {
             content.show();
             current.find('.entry-toolbar').show();
             selfoss.events.entriesToolbar(current);
-            // automark as read
-            if($('#config').data('auto_mark_as_read')=="1" && current.hasClass('unread'))
-                current.find('.entry-unread').click();
         }
         
         // scroll to element

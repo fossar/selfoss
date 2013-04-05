@@ -76,15 +76,15 @@ selfoss.events.entries = function(e) {
             if(content.is(':visible')) {
                 parent.find('.entry-toolbar').hide();
                 content.hide();
-            } else {
-                content.show();
-                selfoss.events.entriesToolbar(parent);
-                parent.find('.entry-toolbar').show();
                 
                 // automark as read
                 if(autoMarkAsRead) {
                     parent.find('.entry-unread').click();
                 }
+            } else {
+                content.show();
+                selfoss.events.entriesToolbar(parent);
+                parent.find('.entry-toolbar').show();
             }
             
             // load images not on mobile devices
