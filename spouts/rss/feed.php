@@ -188,8 +188,12 @@ class feed extends \spouts\spout {
      * @return string id as hash
      */
     public function getId() {
-        if($this->items!==false && $this->valid())
-            return @current($this->items)->get_id();
+        if($this->items!==false && $this->valid()) {
+            $id = @current($this->items)->get_id();
+            if(strlen($id)>255)
+                $id = md5($id);
+            return $id;
+        }
         return false;
     }
     
