@@ -138,7 +138,7 @@ class Items extends Database {
      */
     public function exists($uid) {
         $res = \F3::get('db')->exec('SELECT COUNT(*) AS amount FROM items WHERE uid=:uid',
-                    array(':uid' => $uid));
+                    array( ':uid' => array($uid, \PDO::PARAM_STR) ) );
         return $res[0]['amount']>0;
     }
     
