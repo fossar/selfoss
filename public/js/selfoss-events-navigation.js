@@ -14,7 +14,7 @@ selfoss.events.navigation = function() {
             $(this).css('backgroundColor', color.toHexString());
             
             $.ajax({
-                url: $('base').attr('href') + 'tagset',
+                url: $('base').attr('href') + 'tag/color',
                 type: 'POST',
                 data: {
                     tag: $(this).parent().find('.tag').html(),
