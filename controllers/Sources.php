@@ -122,7 +122,7 @@ class Sources extends BaseController {
         $sourcesDao = new \daos\Sources();
 
         // read data
-        $data = $_POST;
+        parse_str(\F3::get('BODY'),$data);
 
         if(!isset($data['title']))
             $this->view->jsonError(array('title' => 'no data for title given'));

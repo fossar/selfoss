@@ -60,9 +60,13 @@ class Tags extends BaseController {
      *
      * @return void
      */
-    public function tagset() {
-        $tag = $_POST['tag'];
-        $color = $_POST['color'];
+    public function color() {
+    
+        // read data
+        parse_str(\F3::get('BODY'),$data);
+    
+        $tag = $data['tag'];
+        $color = $data['color'];
         
         if(!isset($tag) || strlen(trim($tag))==0)
             $this->view->error('invalid or no tag given');

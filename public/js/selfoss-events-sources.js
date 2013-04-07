@@ -118,7 +118,7 @@ selfoss.events.sources = function() {
         // delete on server
         $.ajax({
             url: $('base').attr('href')+'source/'+id,
-            type: 'DELETE',
+            type: 'POST',
             success: function() {
                 parent.fadeOut('fast', function() {
                     $(this).remove();
