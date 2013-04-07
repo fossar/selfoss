@@ -58,6 +58,8 @@ Version 2.5
 * some smaller css tweaks (thanks a lot to Sean Rand)
 * new parameter use_system_font for using Arial instead of Open Sans
 * new italian language file (thanks a lot to David Chionne)
+* fix duplicate article fetching on uids with more than 255 characters
+* full json interface
 
 Version 2.4
 * prevent error on icons parsing error

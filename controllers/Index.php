@@ -14,6 +14,7 @@ class Index extends BaseController {
     
     /**
      * home site
+     * html
      *
      * @return void
      */
@@ -30,17 +31,13 @@ class Index extends BaseController {
         if(count($_GET)>0)
             $options = $_GET;
         
-        // load tags
-        $tagsDao = new \daos\Tags();
-        $tags = $tagsDao->get();
-        
-        // load sources
-        $sourcesDao = new \daos\Sources();
-        $sources = $sourcesDao->get();
-        
         // get search param
         if(isset($options['search']) && strlen($options['search'])>0)
             $this->view->search = $options['search'];
+        
+        // load tags
+        $tagsDao = new \daos\Tags();
+        $tags = $tagsDao->get();
         
         // load items
         $itemsHtml = $this->loadItems($options, $tags);
@@ -57,6 +54,8 @@ class Index extends BaseController {
         $this->view->tags = $tagsController->renderTags($tags);
         
         // prepare sources display list
+        $sourcesDao = new \daos\Sources();
+        $sources = $sourcesDao->get();
         $sourcesController = new \controllers\Sources();
         $this->view->sources = $sourcesController->renderSources($sources);
         
@@ -81,6 +80,7 @@ class Index extends BaseController {
     
     /**
      * password hash generator
+     * html
      *
      * @return void
      */
@@ -95,6 +95,7 @@ class Index extends BaseController {
     
     /**
      * check and show login/logout
+     * html
      *
      * @return void
      */
@@ -128,6 +129,61 @@ class Index extends BaseController {
             else
                 \F3::reroute($this->view->base);
         }
+    }
+    
+    
+    /**
+     * login for api json access
+     * json
+     *
+     * @return void
+     */
+    public function login() {
+        $view = new \helpers\View();
+        if(\F3::get('auth')->isLoggedin()==true)
+            $view->jsonSuccess(array(
+                'success' => true
+            ));
+        
+        $username = isset($_POST["username"]) ? $_POST["username"] : '';
+        $password = isset($_POST["password"]) ? $_POST["password"] : '';
+        
+        if(\F3::get('auth')->login($username,$password)==true)
+            $view->jsonSuccess(array(
+                'success' => true
+            ));
+        
+        $view->jsonSuccess(array(
+            'success' => false
+        ));
+    }
+    
+
+    /**
+     * logout for api json access
+     * json
+     *
+     * @return void
+     */
+    public function logout() {
+        $view = new \helpers\View();
+        \F3::get('auth')->logout();
+        $view->jsonSuccess(array(
+            'success' => true
+        ));
+    }
+    
+    
+    /**
+     * update feeds
+     * text
+     *
+     * @return void
+     */
+    public function update() {
+        $loader = new \helpers\ContentLoader();
+        $loader->update();
+        echo "finished";
     }
     
     

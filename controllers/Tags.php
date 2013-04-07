@@ -14,6 +14,7 @@ class Tags extends BaseController {
 
     /**
      * returns all tags
+     * html
      *
      * @return void
      */
@@ -21,8 +22,10 @@ class Tags extends BaseController {
         echo $this->tagsListAsString();
     }
     
+    
     /**
      * returns all tags
+     * html
      *
      * @return void
      */
@@ -30,6 +33,27 @@ class Tags extends BaseController {
         $tagsDao = new \daos\Tags();
         return $this->renderTags($tagsDao->get());
     }
+    
+    
+    /**
+     * returns all tags
+     * html
+     *
+     * @return void
+     */
+    public function renderTags($tags) {
+        $html = "";
+        $itemsDao = new \daos\Items();
+        foreach($tags as $tag) {
+            $this->view->tag = $tag['tag'];
+            $this->view->color = $tag['color'];
+            $this->view->unread = $itemsDao->numberOfUnreadForTag($tag['tag']);
+            $html .= $this->view->render('templates/tag.phtml');
+        }
+        
+        return $html;
+    }
+    
     
     /**
      * set tag color
@@ -47,24 +71,26 @@ class Tags extends BaseController {
             
         $tagsDao = new \daos\Tags();
         $tagsDao->saveTagColor($tag, $color);
-        $this->view->jsonSuccess(array('success' => true));
+        $this->view->jsonSuccess(array(
+            'success' => true
+        ));
     }
+    
     
     /**
      * returns all tags
+     * html
      *
      * @return void
      */
-    public function renderTags($tags) {
-        $html = "";
-        $itemsDao = new \daos\Items();
-        foreach($tags as $tag) {
-            $this->view->tag = $tag['tag'];
-            $this->view->color = $tag['color'];
-            $this->view->unread = $itemsDao->numberOfUnreadForTag($tag['tag']);
-            $html .= $this->view->render('templates/tag.phtml');
-        }
+    public function listTags() {
+        $tagsDao = new \daos\Tags();
+        $tags = $tagsDao->get();
         
-        return $html;
+        $itemsDao = new \daos\Items();
+        for($i=0; $i<count($tags); $i++)
+            $tags[$i]['unread'] = $itemsDao->numberOfUnreadForTag($tags[$i]['tag']);
+        
+        $this->view->jsonSuccess($tags);
     }
 }
