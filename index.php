@@ -100,7 +100,7 @@ if($f3->get('auth')->isLoggedin()===true) {
     $f3->route('GET    /sources/stats',   'controllers\Sources->stats');        // json
     
     $f3->route('GET  /tags',              'controllers\Tags->listTags');        // json
-    $f3->route('POST /tag/color',         'controllers\Tags->color');           // json
+    $f3->route('POST /tags/color',        'controllers\Tags->color');           // json
     
     $f3->route('GET  /opml',              'controllers\Opml->show');            // html
     $f3->route('POST /opml',              'controllers\Opml->add');             // html
