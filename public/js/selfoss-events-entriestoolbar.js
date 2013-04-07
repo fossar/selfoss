@@ -14,6 +14,7 @@ selfoss.events.entriesToolbar = function(parent) {
     
     // load images
     parent.find('.entry-loadimages').unbind('click').click(function() {
+        $(this).parents('.entry').mobileImgHelpers();
         $(this).parents('.entry').lazyLoadImages();
         $(this).fadeOut();
         return false;

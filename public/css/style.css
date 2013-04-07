@@ -427,6 +427,7 @@ input {
         
         .entry-content img {
             max-width:99%;
+            height: auto;
         }
         
         .entry-content p {
@@ -1178,3 +1179,17 @@ body.publicmode.notloggedin .entry-unread {
     
  }
  
+.alttextdiv {
+    border-style: solid;
+    border-width: 1px;
+    border-color: black;
+}
+
+.mobileimgdiv {
+    overflow-x: scroll;
+    padding-bottom: 10px;
+}
+
+.mobileimgdiv span {
+    cursor: pointer;
+}
