@@ -140,13 +140,8 @@ class Index extends BaseController {
      */
     public function login() {
         $view = new \helpers\View();
-        if(\F3::get('auth')->isLoggedin()==true)
-            $view->jsonSuccess(array(
-                'success' => true
-            ));
-        
-        $username = isset($_POST["username"]) ? $_POST["username"] : '';
-        $password = isset($_POST["password"]) ? $_POST["password"] : '';
+        $username = isset($_REQUEST["username"]) ? $_REQUEST["username"] : '';
+        $password = isset($_REQUEST["password"]) ? $_REQUEST["password"] : '';
         
         if(\F3::get('auth')->login($username,$password)==true)
             $view->jsonSuccess(array(
