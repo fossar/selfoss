@@ -95,7 +95,6 @@ if($f3->get('auth')->isLoggedin()===true) {
     $f3->route('POST   /source/@id',      'controllers\Sources->write');        // json
     $f3->route('POST   /source',          'controllers\Sources->write');        // json
     $f3->route('DELETE /source/@id',      'controllers\Sources->remove');       // json
-    $f3->route('POST   /source/@id',      'controllers\Sources->remove');       // json
     $f3->route('GET    /sources/spouts',  'controllers\Sources->spouts');       // json
     $f3->route('GET    /sources/stats',   'controllers\Sources->stats');        // json
     

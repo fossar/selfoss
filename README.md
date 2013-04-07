@@ -59,7 +59,8 @@ Version 2.5
 * new parameter use_system_font for using Arial instead of Open Sans
 * new italian language file (thanks a lot to David Chionne)
 * fix duplicate article fetching on uids with more than 255 characters
-* full json interface
+* add integrated json api
+* add error handling for feeds with wrong link
 
 Version 2.4
 * prevent error on icons parsing error
