@@ -186,6 +186,7 @@ selfoss.events.entriesToolbar = function(parent) {
             
             $.ajax({
                 url: $('base').attr('href') + (unread ? 'mark/' : 'unmark/') + id,
+                data: { ajax: true },
                 type: 'POST',
                 error: function(jqXHR, textStatus, errorThrown) {
                     // rollback ui changes

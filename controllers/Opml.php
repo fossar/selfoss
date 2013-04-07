@@ -15,19 +15,21 @@ class Opml extends BaseController {
      * Passed to opml.phtml
      * @var String
      */
-    var $msgclass = 'error'; 
+    private $msgclass = 'error'; 
     
     /**
      * Passed to opml.phtml
      * @var String
      */
-    var $msg;
+    private $msg;
     
     
     /** 
      * Shows a simple html form
-    */
-    function show(){
+     * html
+     *
+     */
+    public function show(){
         $this->view = new \helpers\View();
         $this->view->msg = $this->msg;
         $this->view->msgclass = $this->msgclass;
@@ -37,9 +39,11 @@ class Opml extends BaseController {
     
     /**
      * Add an Opml to the user's subscriptions
+     * html
+     *
      * @note Borrows from controllers/Sources.php:write
      */
-    function add(){
+    public function add(){
         try {
             if(!array_key_exists('opml',$_FILES)){
                 throw new Exception("No file uploaded!");
@@ -79,12 +83,13 @@ class Opml extends BaseController {
     
     /**
      * Process a group of outlines
+     *
      * @param $xml (SimpleXML) A SimpleXML object with <outline> children
      * @param $tags (Array) An array of tags for the current <outline>
      * @note Recursive
      * @note We use non-rss outline's text as tags
      */
-    function processGroup($xml,$tags = Array()){
+    private function processGroup($xml,$tags = Array()){
         $errors = Array();
         
         // tags are the words of the outline parent
@@ -116,11 +121,12 @@ class Opml extends BaseController {
     
     /**
      * Add new feed subscription
+     *
      * @return true on success or item title on error
      * @param $xml xml feed entry for item
      * @param $tags of the entry
      */
-    function addSubscription($xml, $tags){
+    private function addSubscription($xml, $tags){
         // OPML Required attributes: text,xmlUrl,type 
         // Optional attributes: title, htmlUrl, language, title, version
         

@@ -14,6 +14,7 @@ class Sources extends BaseController {
     
     /**
      * list all available sources
+     * html
      *
      * @return void
      */
@@ -43,6 +44,7 @@ class Sources extends BaseController {
     
     /**
      * add new source
+     * html
      *
      * @return void
      */
@@ -55,6 +57,7 @@ class Sources extends BaseController {
     
     /**
      * render spouts params
+     * html
      *
      * @return void
      */
@@ -76,37 +79,50 @@ class Sources extends BaseController {
     
     
     /**
-     * delete source
+     * return all Sources suitable for navigation panel
+     * html
      *
-     * @return void
+     * @return htmltext
      */
-    public function remove() {
-        $id = \F3::get('PARAMS["id"]');
+    public function renderSources($sources) {
+        $html = "";
+        $itemsDao = new \daos\Items();
+        foreach($sources as $source) {
+            $this->view->source = $source['title'];
+            $this->view->sourceid = $source['id'];
+            $this->view->unread = $itemsDao->numberOfUnreadForSource($source['id']);
+            $html .= $this->view->render('templates/source-nav.phtml');
+        }
         
-        $sourceDao = new \daos\Sources();
-        
-        if (!$sourceDao->isValid('id', $id))
-            $this->view->error('invalid id given');
-        
-        $sourceDao->delete($id);
-        
-        // cleanup tags
-        $tagsDao = new \daos\Tags();
-        $allTags = $sourceDao->getAllTags();
-        $tagsDao->cleanup($allTags);
+        return $html;
+    }
+
+    
+    /**
+     * load all available sources and return all Sources suitable 
+     * for navigation panel
+     * html
+     *
+     * @return htmltext
+     */
+    public function sourcesListAsString() {
+        $sourcesDao = new \daos\Sources();
+        $sources = $sourcesDao->get();
+        return $this->renderSources($sources);
     }
     
     
     /**
      * render spouts params
+     * json
      *
      * @return void
      */
     public function write() {
         $sourcesDao = new \daos\Sources();
 
-        // validate
-        parse_str(\F3::get('BODY'),$data);
+        // read data
+        $data = $_POST;
 
         if(!isset($data['title']))
             $this->view->jsonError(array('title' => 'no data for title given'));
@@ -116,10 +132,12 @@ class Sources extends BaseController {
         $title = $data['title'];
         $spout = $data['spout'];
         $tags = $data['tags'];
-
+        $isAjax = isset($data['ajax']);
+        
         unset($data['title']);
         unset($data['spout']);
         unset($data['tags']);
+        unset($data['ajax']);
 
         $spout = str_replace("_", "\\", $spout);
         
@@ -144,51 +162,110 @@ class Sources extends BaseController {
         // cleanup tags
         $tagsDao->cleanup($sourcesDao->getAllTags());
         
-        // get new tag list with updated count values
-        $tagController = new \controllers\Tags();
-        $renderedTags = $tagController->tagsListAsString();
-        
-        // get new sources list
-        $sourcesController = new \controllers\Sources();
-        $renderedSources = $sourcesController->sourcesListAsString();
-        
-        $this->view->jsonSuccess(
-            array(
-                'success' => true,
-                'id'      => $id,
-                'tags'    => $renderedTags,
-                'sources' => $renderedSources
-            )
+        $return = array(
+            'success' => true,
+            'id'      => $id
         );
-    }
-
-    /**
-     * return all Sources suitable for navigation panel
-     *
-     * @return htmltext
-     */
-    public function renderSources($sources) {
-        $html = "";
-        $itemsDao = new \daos\Items();
-        foreach($sources as $source) {
-            $this->view->source = $source['title'];
-            $this->view->sourceid = $source['id'];
-            $this->view->unread = $itemsDao->numberOfUnreadForSource($source['id']);
-            $html .= $this->view->render('templates/source-nav.phtml');
+        
+        // only for selfoss ui (update stats in navigation)
+        if($isAjax) {
+            // get new tag list with updated count values
+            $tagController = new \controllers\Tags();
+            $return['tags'] = $tagController->tagsListAsString();
+            
+            // get new sources list
+            $sourcesController = new \controllers\Sources();
+            $return['sources'] = $sourcesController->sourcesListAsString();
         }
         
-        return $html;
+        $this->view->jsonSuccess($return);
     }
-
+    
+    
     /**
-     * load all available sources and return all Sources suitable 
-     * for navigation panel
+     * delete source
+     * json
      *
-     * @return htmltext
+     * @return void
      */
-    public function sourcesListAsString() {
+    public function remove() {
+        $id = \F3::get('PARAMS["id"]');
+        
+        $sourceDao = new \daos\Sources();
+        
+        if (!$sourceDao->isValid('id', $id))
+            $this->view->error('invalid id given');
+        
+        $sourceDao->delete($id);
+        
+        // cleanup tags
+        $tagsDao = new \daos\Tags();
+        $allTags = $sourceDao->getAllTags();
+        $tagsDao->cleanup($allTags);
+        
+        $this->view->jsonSuccess(array(
+            'success' => true
+        ));
+    }
+    
+    
+    /**
+     * returns all available sources
+     * json
+     *
+     * @return void
+     */
+    public function listSources() {
+        $itemDao = new \daos\Items();
+        
+        // load sources
         $sourcesDao = new \daos\Sources();
         $sources = $sourcesDao->get();
-        return $this->renderSources($sources);
+        
+        // get last icon
+        for($i=0; $i<count($sources); $i++)
+            $sources[$i]['icon'] = $itemDao->getLastIcon($sources[$i]['id']);
+        
+        $this->view->jsonSuccess($sources);
+    }
+    
+    
+    /**
+     * returns all available spouts
+     * json
+     *
+     * @return void
+     */
+    public function spouts() {
+        $spoutLoader = new \helpers\SpoutLoader();
+        $spouts = $spoutLoader->all();
+        $this->view->jsonSuccess($spouts);
+    }
+    
+    
+    /**
+     * returns all sources with unread items
+     * json
+     *
+     * @return void
+     */
+    public function stats() {
+        $itemDao = new \daos\Items();
+        
+        // load sources
+        $sourcesDao = new \daos\Sources();
+        $sources = $sourcesDao->get();
+        
+        // get stats
+        $result = array();
+        for($i=0; $i<count($sources); $i++) {
+            $result[] = array(
+                'id'     => $sources[$i]['id'],
+                'title'  => $sources[$i]['title'],
+                'unread' => $itemDao->numberOfUnreadForSource($sources[$i]['id'])
+            );
+        }
+        
+        $this->view->jsonSuccess($result);
     }
 }

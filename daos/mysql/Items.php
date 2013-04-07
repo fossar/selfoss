@@ -375,7 +375,7 @@ class Items extends Database {
                    WHERE starred=1');
         return $res[0]['amount'];
     }
-
+    
     
     /**
      * returns the amount of unread entries in database per tag
@@ -394,7 +394,7 @@ class Items extends Database {
             array(':tag' => "%,".$tag.",%"));
         return $res[0]['amount'];
     }
-
+    
     
     /**
      * returns the amount of unread entries in database per source
