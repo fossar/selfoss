@@ -199,6 +199,10 @@ class Items extends Database {
         if(!is_numeric($options['items']) || $options['items']>200)
             $options['items'] = \F3::get('items_perpage');
         
+        // set offset
+        if(is_numeric($options['offset'])===false)
+            $options['offset'] = 0;
+        
         // first check whether more items are available
         $result = \F3::get('db')->exec('SELECT items.id
                    FROM items, sources
