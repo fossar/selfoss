@@ -223,8 +223,12 @@ class Sources extends BaseController {
         $sources = $sourcesDao->get();
         
         // get last icon
-        for($i=0; $i<count($sources); $i++)
+        for($i=0; $i<count($sources); $i++) {
             $sources[$i]['icon'] = $itemDao->getLastIcon($sources[$i]['id']);
+            $sources[$i]['params'] = json_decode(html_entity_decode($sources[$i]['params']), true);
+            $sources[$i]['error'] = $sources[$i]['error']==null ? '' : $sources[$i]['error'];
+            unset($sources[$i]['spout_obj']);
+        }
         
         $this->view->jsonSuccess($sources);
     }
