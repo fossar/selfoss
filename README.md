@@ -50,7 +50,7 @@ Visit the page http://yourselfossurl.com/opml for importing your OPML File. If y
 CHANGELOG
 ---------
 
-Version 2.5
+Version 2.5-SNAPSHOT
 * new navigation with right/left cursor (thanks a lot to jicho)
 * replace &bullet; for IE compatibility
 * fix re-initialize entry events on screen width change (thanks a lot to Sean Rand)
@@ -61,6 +61,7 @@ Version 2.5
 * fix duplicate article fetching on uids with more than 255 characters
 * add integrated json api
 * add error handling for feeds with wrong link
+* new swedish translation (thanks a lot to andersgd)
 
 Version 2.4
 * prevent error on icons parsing error
