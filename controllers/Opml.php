@@ -99,9 +99,9 @@ class Opml extends BaseController {
         
         // parse every outline item
         foreach($xml->outline as $outline){
-            if((string)$outline['type']) {
+            if((string)$outline['type'] || !(string)$outline['xmlUrl']) {
                 //support folders in opml
-                if($outline['type']=='folder') {
+                if($outline['type']=='folder' || !(string)$outline['xmlUrl']) {
                     $ret = $this->processGroup($outline,$tags);
                     $errors = array_merge($errors,$ret);
                 } else {
@@ -132,6 +132,9 @@ class Opml extends BaseController {
         
         // description
         $title = (string)$xml['text'];
+        if ($title == null) {
+            $title = (string)$xml['title'];
+        }
         
         // RSS URL
         $data['url'] = (string)$xml['xmlUrl'];
