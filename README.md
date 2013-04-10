@@ -51,7 +51,10 @@ CHANGELOG
 ---------
 
 Version 2.6-SNAPSHOT
-* Fixed OPML import for other formats (thanks a lot to Remy Gardette)
+* fixed OPML import for other formats (thanks a lot to Remy Gardette)
+* fix deletion of sources (no longer bad request)
+* disable tag click on smartphone
+* shortcuts mark/unmark as read and star/unstar also available on closed articles
 
 Version 2.5
 * new navigation with right/left cursor (thanks a lot to jicho)
