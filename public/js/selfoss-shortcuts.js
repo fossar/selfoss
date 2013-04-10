@@ -33,11 +33,13 @@ selfoss.shortcuts = {
         
         // star/unstar
         $(document).bind('keydown', 's', function() {
+            selfoss.events.entriesToolbar($('.entry.selected'));
             $('.entry.selected .entry-starr').click();
         });
         
         // mark/unmark
         $(document).bind('keydown', 'm', function() {
+            selfoss.events.entriesToolbar($('.entry.selected'));
             $('.entry.selected .entry-unread').click();
         });
         
