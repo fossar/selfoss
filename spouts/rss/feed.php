@@ -159,7 +159,16 @@ class feed extends \spouts\spout {
         
         // check for error
         if(@$this->feed->error()) {
-            throw new \exception($this->feed->error());
+        	// try .atom file format
+        	@$this->feed->set_feed_url(htmlspecialchars_decode($params['url'] .'.atom'));
+			@$this->feed->init();
+			
+			if(@$this->feed->error()) {
+            	throw new \exception($this->feed->error());
+			} else {
+				// save fetched items
+            	$this->items = @$this->feed->get_items();
+			}
         } else {
             // save fetched items
             $this->items = @$this->feed->get_items();
