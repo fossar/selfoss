@@ -31,11 +31,6 @@ var selfoss = {
             if (!("autofocus" in document.createElement("input"))) {
                 $('input[autofocus]').focus();
             }
-            
-            // Stop other scripts on login page
-            if($('#login').length > 0) {
-                return;
-            }
         
             // set items per page
             selfoss.filter.itemsPerPage = $('.entry').length;
