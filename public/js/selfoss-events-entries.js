@@ -136,13 +136,15 @@ selfoss.events.entries = function(e) {
     $('.entry-tags-tag').colorByBrightness();
     
     // click a tag
-    $('.entry-tags-tag').unbind('click').click(function() {
-        var tag = $(this).html();
-        $('#nav-tags .tag').each(function(index, item) {
-            if($(item).html()==tag) {
-                $(item).click();
-                return false;
-            }
+    if(selfoss.isSmartphone()==false) {
+        $('.entry-tags-tag').unbind('click').click(function() {
+            var tag = $(this).html();
+            $('#nav-tags .tag').each(function(index, item) {
+                if($(item).html()==tag) {
+                    $(item).click();
+                    return false;
+                }
+            });
         });
-    });
+    }
 };
