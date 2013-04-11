@@ -27,9 +27,13 @@ var selfoss = {
      */
     init: function() {
         jQuery(document).ready(function() {
-            // reduced init on login
-            if($('#login').length>0) {
-                $('#username').focus();
+            // reduced init on login when HTML5 autofocus isn't available
+            if (!("autofocus" in document.createElement("input"))) {
+                $('input[autofocus]').focus();
+            }
+            
+            // Stop other scripts on login page
+            if($('#login').length > 0) {
                 return;
             }
         
@@ -44,6 +48,9 @@ var selfoss = {
             
             // init shortcut handler
             selfoss.shortcuts.init();
+            
+            // init touch
+            selfoss.touch.init();
         });
     },
     
