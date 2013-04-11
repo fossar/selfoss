@@ -37,7 +37,6 @@ $f3->set('js', array(
     'public/js/lazy-image-loader.js',
     'public/js/color-by-brightness.js',
     'public/js/spectrum.js',
-    'public/js/quo.debug.js',
     'public/js/jquery.hotkeys.js',
     'public/js/selfoss-base.js',
     'public/js/selfoss-events.js',
@@ -46,8 +45,7 @@ $f3->set('js', array(
     'public/js/selfoss-events-entries.js',
     'public/js/selfoss-events-entriestoolbar.js',
     'public/js/selfoss-events-sources.js',
-    'public/js/selfoss-shortcuts.js',
-    'public/js/selfoss-touch.js'
+    'public/js/selfoss-shortcuts.js'
 ));
 
 // define css files
