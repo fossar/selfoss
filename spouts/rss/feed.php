@@ -152,23 +152,14 @@ class feed extends \spouts\spout {
         @$this->feed->set_cache_location(\F3::get('cache'));
         @$this->feed->set_cache_duration(1800);
         @$this->feed->set_feed_url(htmlspecialchars_decode($params['url']));
-        @$this->feed->force_feed(true);
+        @$this->feed->set_autodiscovery_level( SIMPLEPIE_LOCATOR_AUTODISCOVERY | SIMPLEPIE_LOCATOR_LOCAL_EXTENSION | SIMPLEPIE_LOCATOR_LOCAL_BODY);
          
         // fetch items
         @$this->feed->init();
         
         // check for error
         if(@$this->feed->error()) {
-        	// try .atom file format
-        	@$this->feed->set_feed_url(htmlspecialchars_decode($params['url'] .'.atom'));
-			@$this->feed->init();
-			
-			if(@$this->feed->error()) {
-            	throw new \exception($this->feed->error());
-			} else {
-				// save fetched items
-            	$this->items = @$this->feed->get_items();
-			}
+            throw new \exception($this->feed->error());
         } else {
             // save fetched items
             $this->items = @$this->feed->get_items();
