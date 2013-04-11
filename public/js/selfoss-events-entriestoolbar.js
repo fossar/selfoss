@@ -114,7 +114,7 @@ selfoss.events.entriesToolbar = function(parent) {
             var unread = $(this).hasClass('active')==true;
             var button = $("#entry"+id+" .entry-unread, #entrr"+id+" .entry-unread");
             var parent = $("#entry"+id+", #entrr"+id);
-            
+
             // update button
             var setButton = function(unread) {
                 if(unread) {

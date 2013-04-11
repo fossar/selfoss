@@ -4,7 +4,7 @@ selfoss
 Copyright (c) 2013 Tobias Zeising, tobias.zeising@aditu.de  
 http://selfoss.aditu.de  
 Licensed under the GPLv3 license  
-Version 2.5-SNAPSHOT
+Version 2.6
 
 
 INSTALLATION
@@ -50,6 +50,13 @@ Visit the page http://yourselfossurl.com/opml for importing your OPML File. If y
 CHANGELOG
 ---------
 
+Version 2.6
+* fixed OPML import for other formats (thanks a lot to Remy Gardette)
+* fix deletion of sources (no longer bad request)
+* disable tag click on smartphone
+* shortcuts mark/unmark as read and star/unstar also available on closed articles
+* fix tag list refresh
+
 Version 2.5
 * new navigation with right/left cursor (thanks a lot to jicho)
 * replace &bullet; for IE compatibility
@@ -59,7 +66,9 @@ Version 2.5
 * new parameter use_system_font for using Arial instead of Open Sans
 * new italian language file (thanks a lot to David Chionne)
 * fix duplicate article fetching on uids with more than 255 characters
-* full json interface
+* add integrated json api
+* add error handling for feeds with wrong link
+* new swedish translation (thanks a lot to andersgd)
 
 Version 2.4
 * prevent error on icons parsing error

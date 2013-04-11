@@ -7,7 +7,12 @@ selfoss.shortcuts = {
     init: function() { 
         // next
         $(document).bind('keydown', 'space', function() {
-            selfoss.shortcuts.spacebar();
+            var selected = $('.entry.selected');
+            if(selected.length>0 && selected.find('.entry-content').is(':visible')==false) {
+                selected.find('.entry-title').click();
+            } else {
+                selfoss.shortcuts.nextprev('next', true);
+            }
             return false;
         });
         $(document).bind('keydown', 'n', function() { selfoss.shortcuts.nextprev('next', false); return false; });
@@ -28,11 +33,13 @@ selfoss.shortcuts = {
         
         // star/unstar
         $(document).bind('keydown', 's', function() {
+            selfoss.events.entriesToolbar($('.entry.selected'));
             $('.entry.selected .entry-starr').click();
         });
         
         // mark/unmark
         $(document).bind('keydown', 'm', function() {
+            selfoss.events.entriesToolbar($('.entry.selected'));
             $('.entry.selected .entry-unread').click();
         });
         
@@ -162,32 +169,6 @@ selfoss.shortcuts = {
         // scroll up
         if(next.position().top <= viewportScrollTop) {
             $(window).scrollTop(next.position().top);
-        }
-    },
-    
-    
-    /**
-     * spacebar navigation
-     */
-    spacebar: function() {
-        var content = $('.entry-content').is(':visible');
-
-        if(content) {
-            // focused entry content is visible: go to next entry
-            selfoss.shortcuts.nextprev('next', true, false);
-        } else {
-            // focused entry content is not visible: show content of entry
-            var entry = $('.entry.selected');
-            
-            // Initial spacebar press without any items selected
-            if(entry.length == 0) {
-                $('.entry:first').addClass('selected');
-                entry = $('.entry.selected');
-            }
-            
-            // Toggle open/closed content
-            entry.find('.entry-content').toggle();
-            entry.find('.entry-toolbar').toggle();
         }
     },
     

@@ -84,7 +84,7 @@ var selfoss = {
     showErrors: function(form, errors) {
         $(form).find('span.error').remove();
         $.each(errors, function(key, val) {
-            form.find('#'+key).addClass('error').parent('li').append('<span class="error">'+val+'</span>');
+            form.find("[name='"+key+"']").addClass('error').parent('li').append('<span class="error">'+val+'</span>');
         });
     },
     
@@ -186,7 +186,7 @@ var selfoss = {
         $('#nav-tags li:not(:first)').remove();
         
         $.ajax({
-            url: $('base').attr('href')+'tags',
+            url: $('base').attr('href')+'tagslist',
             type: 'GET',
             success: function(data) {
                 $('#nav-tags').append(data);
