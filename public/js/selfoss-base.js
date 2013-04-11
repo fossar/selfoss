@@ -48,6 +48,9 @@ var selfoss = {
             
             // init shortcut handler
             selfoss.shortcuts.init();
+            
+            // init touch
+            selfoss.touch.init();
         });
     },
     
