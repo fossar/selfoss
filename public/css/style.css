@@ -249,7 +249,7 @@ input {
 
 #search {
     z-index:9;
-    position:absolute;
+    position:fixed;
     left:-118px;
     top:25px;
     width:330px;
