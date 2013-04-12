@@ -33,7 +33,8 @@ selfoss.touch = {
         
         var current = $('#fullscreen-entry').find('.fullscreen'),
             cur_id = current.attr('id').substr(5),
-            next = null;
+            next = null,
+            auto_read = $('#config').data('auto_mark_as_read');
         
         // find next/prev item
         if(direction == 'next') {
@@ -42,15 +43,24 @@ selfoss.touch = {
             next = $('#entry' + cur_id).prev();
         }
         
+        // mark read
+        if(auto_read == "1" && next.hasClass('unread')) {
+            next.removeClass('unread');
+        }
+        
+        // show entry
         if(next.attr('id') == undefined && direction == 'next') {
-            // get more items
+            // get more items, we're at the end of the current list
             $('.stream-more').click();
-            $(document).ajaxComplete(function() {
-                next = $('#entry' + cur_id).next();
-                next.find('h2').click();
-            });
+            
+            // TODO: Find a way to open next entry after ajax load without extra swipe
+            
+        }else if(next.attr('id') == undefined && direction == 'prev') {
+            // There is nothing before the first entry, close current entry
+            current.find('.entry-close').click();
         }else{
-            next.find('h2').click();
+            // show next/prev entry
+            next.click();
         }
         
     },

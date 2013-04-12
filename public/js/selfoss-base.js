@@ -46,7 +46,9 @@ var selfoss = {
             selfoss.shortcuts.init();
             
             // init touch
-            selfoss.touch.init();
+            if(selfoss.isMobile()) {
+                selfoss.touch.init();
+            }
         });
     },
     
