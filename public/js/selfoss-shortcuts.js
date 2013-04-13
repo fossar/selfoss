@@ -35,33 +35,39 @@ selfoss.shortcuts = {
         $(document).bind('keydown', 's', function() {
             selfoss.events.entriesToolbar($('.entry.selected'));
             $('.entry.selected .entry-starr').click();
+            return false;
         });
         
         // mark/unmark
         $(document).bind('keydown', 'm', function() {
             selfoss.events.entriesToolbar($('.entry.selected'));
             $('.entry.selected .entry-unread').click();
+            return false;
         });
         
         // open/close entry
         // can be used in combination with left and right key
         $(document).bind('keydown', 'o', function() {
             $('.entry.selected').find('h2').click();
+            return false;
         });
         
         // open target
         $(document).bind('keydown', 'v', function() {
             window.open($('.entry.selected .entry-source').attr('href'));
+            return false;
         });
         
         // Reload the current view
         $(document).bind('keydown', 'r', function() {
             selfoss.reloadList();
+            return false;
         });
         
         // mark all as read
         $(document).bind('keydown', 'ctrl+m', function() {
             $('#nav-mark').click();
+            return false;
         });
 
         // throw (mark as read & open next)
