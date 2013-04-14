@@ -1,4 +1,8 @@
-<div id="source<?PHP echo isset($this->source) ? $this->source['id'] : ''; ?>" class="source <?PHP echo isset($this->source)===false ? 'source-new' : ''; ?>">
+<div id="source<?PHP echo isset($this->source) ? $this->source['id'] : ''; ?>" 
+        class="source <?PHP 
+                        echo isset($this->source)===false ? 'source-new' : ''; 
+                        echo (isset($this->source) && isset($this->source['error']) && strlen($this->source['error'] > 0)) ? 'error' : ''
+                        ?>">
     <div class="source-icon">
         <?PHP if(isset($this->source) && isset($this->source['icon']) && $this->source['icon']!==false && $this->source['icon']!="0") : ?>
         <img src="<?PHP echo 'favicons/'.$this->source['icon']; ?>" alt="<?PHP echo isset($this->source) ? $this->source['title'] : ''; ?>" />
