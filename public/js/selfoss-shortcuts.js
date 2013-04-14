@@ -5,82 +5,123 @@ selfoss.shortcuts = {
      * init shortcuts
      */
     init: function() { 
-        // next
-        $(document).bind('keydown', 'space', function() {
+        // 'space': next article
+        $(document).bind('keydown', 'space', function(e) {
             var selected = $('.entry.selected');
             if(selected.length>0 && selected.find('.entry-content').is(':visible')==false) {
                 selected.find('.entry-title').click();
             } else {
                 selfoss.shortcuts.nextprev('next', true);
             }
-            return false;
-        });
-        $(document).bind('keydown', 'n', function() { selfoss.shortcuts.nextprev('next', false); return false; });
-        $(document).bind('keydown', 'right', function() {
-            selfoss.shortcuts.entrynav('next');
-            return false;
-        });
-        $(document).bind('keydown', 'j', function() { selfoss.shortcuts.nextprev('next', true); return false; });
-        
-        // prev
-        $(document).bind('keydown', 'shift+space', function() { selfoss.shortcuts.nextprev('prev', true); return false; });
-        $(document).bind('keydown', 'p', function() { selfoss.shortcuts.nextprev('prev', false); return false; });
-        $(document).bind('keydown', 'left', function() { 
-            selfoss.shortcuts.entrynav('prev');
-            return false;
-        });
-        $(document).bind('keydown', 'k', function() { selfoss.shortcuts.nextprev('prev', true); return false; });
-        
-        // star/unstar
-        $(document).bind('keydown', 's', function() {
-            selfoss.events.entriesToolbar($('.entry.selected'));
-            $('.entry.selected .entry-starr').click();
-            return false;
-        });
-        
-        // mark/unmark
-        $(document).bind('keydown', 'm', function() {
-            selfoss.events.entriesToolbar($('.entry.selected'));
-            $('.entry.selected .entry-unread').click();
-            return false;
-        });
-        
-        // open/close entry
-        // can be used in combination with left and right key
-        $(document).bind('keydown', 'o', function() {
-            $('.entry.selected').find('h2').click();
-            return false;
-        });
-        
-        // open target
-        $(document).bind('keydown', 'v', function() {
-            window.open($('.entry.selected .entry-source').attr('href'));
-            return false;
-        });
-        
-        // Reload the current view
-        $(document).bind('keydown', 'r', function() {
-            selfoss.reloadList();
-            return false;
-        });
-        
-        // mark all as read
-        $(document).bind('keydown', 'ctrl+m', function() {
-            $('#nav-mark').click();
+            e.preventDefault();
             return false;
         });
 
-        // throw (mark as read & open next)
-        $(document).bind('keydown', 't', function() {
+        // 'n': next article
+        $(document).bind('keydown', 'n', function(e) {
+            selfoss.shortcuts.nextprev('next', false);
+            e.preventDefault();
+            return false;
+        });
+
+        // 'right cursor': next article
+        $(document).bind('keydown', 'right', function(e) {
+            selfoss.shortcuts.entrynav('next');
+            e.preventDefault();
+            return false;
+        });
+
+        // 'j': next article
+        $(document).bind('keydown', 'j', function(e) {
+            selfoss.shortcuts.nextprev('next', true);
+            e.preventDefault();
+            return false;
+        });
+        
+        // 'shift+space': previous article
+        $(document).bind('keydown', 'shift+space', function(e) {
+            selfoss.shortcuts.nextprev('prev', true);
+            e.preventDefault();
+            return false;
+        });
+
+        // 'p': previous article
+        $(document).bind('keydown', 'p', function(e) {
+            selfoss.shortcuts.nextprev('prev', false);
+            e.preventDefault();
+            return false;
+        });
+
+        // 'left': previous article
+        $(document).bind('keydown', 'left', function(e) {
+            selfoss.shortcuts.entrynav('prev');
+            e.preventDefault();
+            return false;
+        });
+
+        // 'k': previous article
+        $(document).bind('keydown', 'k', function(e) {
+            selfoss.shortcuts.nextprev('prev', true);
+            e.preventDefault();
+            return false;
+        });
+        
+        // 's': star/unstar
+        $(document).bind('keydown', 's', function(e) {
+            selfoss.events.entriesToolbar($('.entry.selected'));
+            $('.entry.selected .entry-starr').click();
+            e.preventDefault();
+            return false;
+        });
+        
+        // 'm': mark/unmark
+        $(document).bind('keydown', 'm', function(e) {
+            selfoss.events.entriesToolbar($('.entry.selected'));
+            $('.entry.selected .entry-unread').click();
+            e.preventDefault();
+            return false;
+        });
+        
+        // 'o': open/close entry
+        $(document).bind('keydown', 'o', function(e) {
+            $('.entry.selected').find('h2').click();
+            e.preventDefault();
+            return false;
+        });
+        
+        // 'v': open target
+        $(document).bind('keydown', 'v', function(e) {
+            window.open($('.entry.selected .entry-source').attr('href'));
+            e.preventDefault();
+            return false;
+        });
+        
+        // 'r': Reload the current view
+        $(document).bind('keydown', 'r', function(e) {
+            selfoss.reloadList();
+            e.preventDefault();
+            return false;
+        });
+        
+        // 'Ctrl+m': mark all as read
+        $(document).bind('keydown', 'ctrl+m', function(e) {
+            $('#nav-mark').click();
+            e.preventDefault();
+            return false;
+        });
+
+        // 't': throw (mark as read & open next)
+        $(document).bind('keydown', 't', function(e) {
             $('.entry.selected.unread .entry-unread').click();
             selfoss.shortcuts.nextprev('next', true);
             return false;
         });
 
         // throw (mark as read & open previous)
-        $(document).bind('keydown', 'Shift+t', function() {
+        $(document).bind('keydown', 'Shift+t', function(e) {
             $('.entry.selected.unread .entry-unread').click();
             selfoss.shortcuts.nextprev('prev', true);
+            e.preventDefault();
             return false;
         });
     },
