@@ -639,6 +639,14 @@ input {
         min-width:70px;
     }
     
+    .source-edit-form input {
+        width: 200px;
+    }
+    
+    .source-edit-form input:focus {
+        width: 50%;
+    }
+    
     .source-edit-form  .source-edit-form-help {
         color:#999;
         font-size:0.75em;
