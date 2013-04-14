@@ -5,6 +5,13 @@
 $username = "ssilence";
 $repo_name = "selfoss";
 
+$cacheFile = "rss.cache";
+if(file_exists($cacheFile) && (time() - filemtime($cacheFile) < 3600)) {
+    header("Content-Type: text/xml");
+    echo file_get_contents($cacheFile);
+    return;
+}
+
 function status_ok($curl) {
     $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
     return ($status >= 200 && $status < 300);
@@ -57,6 +64,7 @@ escape($username);
 
 
 header("Content-Type: application/xml;");
+ob_start();
 echo '<?xml version="1.0" encoding="utf-8"?>'; ?>
 <rss version="2.0">
     <channel>
@@ -90,3 +98,10 @@ echo '<?xml version="1.0" encoding="utf-8"?>'; ?>
         
     </channel>
 </rss>
+<?PHP
+    $content = ob_get_contents();
+    ob_end_clean();
+    header("Content-Type: text/xml");
+    file_put_contents($cacheFile, $content);
+    echo $content;
+?>
