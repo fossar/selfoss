@@ -54,6 +54,7 @@ Version 2.7-SNAPSHOT
 * new spout for instapaper (thanks a lot to janeczku)
 * new Hungarian translation (thanks a lot to Sancho)
 * fix keyboard shortcut on some browsers
+* new spout for youtube channels (thanks a lot to Arndt Staudinger)
 
 Version 2.6
 * fixed OPML import for other formats (thanks a lot to Remy Gardette)
