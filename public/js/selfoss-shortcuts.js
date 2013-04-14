@@ -102,6 +102,13 @@ selfoss.shortcuts = {
             e.preventDefault();
             return false;
         });
+
+		// Share on G+
+		$(document).bind('keydown', 'g', function() {
+			var w = window.open('https://plus.google.com/share?url='+ $('.entry.selected .entry-source').attr('href'), 
+				'google_share', "status=0,toolbar=0,location=0,width=500,height=450,scrollbars=1,menubar=0");
+			return true;
+		});
         
         // 'Ctrl+m': mark all as read
         $(document).bind('keydown', 'ctrl+m', function(e) {
@@ -124,6 +131,11 @@ selfoss.shortcuts = {
             e.preventDefault();
             return false;
         });
+
+		// open search
+		$(document).bind('keyup', '/', function() {
+			$('#search-button').click();
+		});
     },
     
     
@@ -177,9 +189,11 @@ selfoss.shortcuts = {
         // open?
         if(open) {
             var content = current.find('.entry-content');
+            var connext = current.next().find('.entry-content');
             // load images not on mobile devices
             if(selfoss.isMobile()==false)
                 content.lazyLoadImages();
+                connext.lazyLoadImages();
             // anonymize
             selfoss.anonymize(content);
             content.show();
