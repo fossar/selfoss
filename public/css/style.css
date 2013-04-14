@@ -608,6 +608,10 @@ input {
     color:#ff0000;
 }
 
+.source.error {
+    border: 1px solid #e74c3c;
+}
+
 .source-edit-delete,
 .source-action {
     display:inline;
