@@ -16,7 +16,10 @@
     <!-- edit -->
     <ul class="source-edit-form">
         <!-- title -->
-        <li><label><?PHP echo \F3::get('lang_source_title')?>:</label> <input type="text" name="title" value="<?PHP echo isset($this->source) ? $this->source['title'] : \F3::get('lang_source_new') ; ?>" /></li>
+        <li>
+            <label><?PHP echo \F3::get('lang_source_title')?>:</label>
+            <input type="text" name="title" value="" placeholder="<?PHP echo isset($this->source) ? $this->source['title'] : \F3::get('lang_source_new') ; ?>" />
+        </li>
         
         <!-- tags -->
         <li><label><?PHP echo \F3::get('lang_source_tags');?>:</label>
