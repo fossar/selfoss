@@ -124,6 +124,9 @@ selfoss.events.entries = function(e) {
             success: function(data) {
                 $('.stream-more').replaceWith(data.entries);
                 selfoss.events.entries();
+                
+                // load next entry, but only when we're in overlay (mobile)
+                selfoss.touch.shownextentry();
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 streamMore.removeClass('loading');

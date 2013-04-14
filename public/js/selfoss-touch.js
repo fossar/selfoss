@@ -5,18 +5,21 @@
  */
 selfoss.touch = {
 
-
     /**
      * init swipes
      */
     init: function() {
     
-        $$('#fullscreen-entry').swipeLeft(function(){
+        $$('#fullscreen-entry').swipeLeft(function(e) {
+            e.preventDefault();
+            
             // Next entry
             selfoss.touch.entrynav('next');
         });
         
-        $$('#fullscreen-entry').swipeRight(function(){
+        $$('#fullscreen-entry').swipeRight(function(e) {
+            e.preventDefault();
+            
             // Next entry
             selfoss.touch.entrynav('prev');
         });
@@ -31,38 +34,63 @@ selfoss.touch = {
         if(typeof direction == "undefined" || (direction!="next" && direction!="prev"))
             direction = "next";
         
-        var current = $('#fullscreen-entry').find('.fullscreen'),
-            cur_id = current.attr('id').substr(5),
-            next = null,
-            auto_read = $('#config').data('auto_mark_as_read');
+        var next = selfoss.touch.getcurrententry();
         
         // find next/prev item
         if(direction == 'next') {
-            next = $('#entry' + cur_id).next();
+            next = next.next();
         }else{
-            next = $('#entry' + cur_id).prev();
+            next = next.prev();
         }
         
         // mark read
-        if(auto_read == "1" && next.hasClass('unread')) {
-            next.removeClass('unread');
-        }
+        selfoss.touch.markread(next);
         
         // show entry
         if(next.attr('id') == undefined && direction == 'next') {
             // get more items, we're at the end of the current list
+            // next item will be loaded via succes in selfoss-events-entries.js
             $('.stream-more').click();
             
-            // TODO: Find a way to open next entry after ajax load without extra swipe
-            
         }else if(next.attr('id') == undefined && direction == 'prev') {
-            // There is nothing before the first entry, close current entry
-            current.find('.entry-close').click();
+            // there is nothing before the first entry, close current entry
+            $('.entry-close:visible').click();
         }else{
             // show next/prev entry
             next.click();
         }
         
     },
-  
+    
+    /**
+     * get current visible entry
+     */
+    getcurrententry: function() {
+        var cur_id = $('#fullscreen-entry').find('.fullscreen').attr('id').substr(5);
+        return $('#entry' + cur_id);
+    },
+    
+    /**
+     * load next entry
+     */
+    shownextentry: function() {
+        if(selfoss.isMobile()) {
+            var entry = selfoss.touch.getcurrententry();
+            if(entry.is(':visible') == false) {
+                entry.next().click();
+            }
+            
+        }
+    },
+    
+    /**
+     * mark element read
+     */
+    markread: function(elem) {
+        var auto_read = $('#config').data('auto_mark_as_read');
+
+        if(auto_read == "1" && elem.hasClass('unread')) {
+            elem.removeClass('unread');
+        }
+    },
 }
