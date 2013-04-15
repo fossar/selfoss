@@ -13,7 +13,8 @@ namespace controllers;
 class Items extends BaseController {
     
     /**
-     * mark items as read
+     * mark items as read. Allows one id or an array of ids
+     * json
      *
      * @return void
      */
@@ -26,29 +27,34 @@ class Items extends BaseController {
         
         $itemDao = new \daos\Items();
         
+        // validate id or ids
         if (!$itemDao->isValid('id', $lastid))
             $this->view->error('invalid id');
         
         $itemDao->mark($lastid);
         
-        // get new tag list with updated count values
-        $tagController = new \controllers\Tags();
-        $renderedTags = $tagController->tagsListAsString();
+        $return = array(
+            'success' => true
+        );
         
-        // get new sources list
-        $sourcesController = new \controllers\Sources();
-        $renderedSources = $sourcesController->sourcesListAsString();
+        // only for selfoss ui on mark all as read (update stats in navigation)
+        if(isset($_POST['ajax'])) {
+            // get new tag list with updated count values
+            $tagController = new \controllers\Tags();
+            $return['tags'] = $tagController->tagsListAsString();
+            
+            // get new sources list
+            $sourcesController = new \controllers\Sources();
+            $return['sources'] = $sourcesController->sourcesListAsString();
+        }
         
-        $this->view->jsonSuccess(array(
-            'success' => true,
-            'tags'    => $renderedTags,
-            'sources' => $renderedSources
-        ));
+        $this->view->jsonSuccess($return);
     }
     
     
     /**
-     * mark items as unread
+     * mark item as unread
+     * json
      *
      * @return void
      */
@@ -61,12 +67,16 @@ class Items extends BaseController {
             $this->view->error('invalid id');
         
         $itemDao->unmark($lastid);
-        $this->view->jsonSuccess(array('success' => true));
+        
+        $this->view->jsonSuccess(array(
+            'success' => true
+        ));
     }
     
     
     /**
      * starr item
+     * json
      *
      * @return void
      */
@@ -79,12 +89,15 @@ class Items extends BaseController {
             $this->view->error('invalid id');
 
         $itemDao->starr($id);
-        $this->view->jsonSuccess(array('success' => true));
+        $this->view->jsonSuccess(array(
+            'success' => true
+        ));
     }
     
     
     /**
      * unstarr item
+     * json
      *
      * @return void
      */
@@ -97,24 +110,35 @@ class Items extends BaseController {
             $this->view->error('invalid id');
 
         $itemDao->unstarr($id);
-        $this->view->jsonSuccess(array('success' => true));
+        $this->view->jsonSuccess(array(
+            'success' => true
+        ));
     }
     
     
     /**
-     * update feeds
+     * returns items as json string
+     * json
      *
      * @return void
      */
-    public function update() {
-        $loader = new \helpers\ContentLoader();
-        $loader->update();
-        echo "finished";
+    public function listItems() {
+        // parse params
+        $options = array();
+        if(count($_GET)>0)
+            $options = $_GET;
+        
+        // get items
+        $itemDao = new \daos\Items();
+        $items = $itemDao->get($options);
+        
+        $this->view->jsonSuccess($items);
     }
     
     
     /**
-     * returns current stats
+     * returns current basic stats
+     * json
      *
      * @return void
      */
