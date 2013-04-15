@@ -58,13 +58,15 @@ class Image {
         }
         
         // search domain/favicon.ico
-        $url = $urlElements['scheme'] . '://' . $urlElements['host'] . '/favicon.ico';
-        $faviconAsPng = $this->loadImage($url, $width, $height);
-        if($faviconAsPng!==false) {
-            $this->faviconUrl = $url;
-            return $faviconAsPng;
+        if(isset($urlElements['scheme']) && isset($urlElements['host'])) {
+            $url = $urlElements['scheme'] . '://' . $urlElements['host'] . '/favicon.ico';
+            $faviconAsPng = $this->loadImage($url, $width, $height);
+            if($faviconAsPng!==false) {
+                $this->faviconUrl = $url;
+                return $faviconAsPng;
+            }
         }
-            
+        
         return false;
     }
     

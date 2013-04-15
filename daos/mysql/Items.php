@@ -138,7 +138,7 @@ class Items extends Database {
      */
     public function exists($uid) {
         $res = \F3::get('db')->exec('SELECT COUNT(*) AS amount FROM items WHERE uid=:uid',
-                    array(':uid' => $uid));
+                    array( ':uid' => array($uid, \PDO::PARAM_STR) ) );
         return $res[0]['amount']>0;
     }
     
@@ -198,6 +198,10 @@ class Items extends Database {
         // set limit
         if(!is_numeric($options['items']) || $options['items']>200)
             $options['items'] = \F3::get('items_perpage');
+        
+        // set offset
+        if(is_numeric($options['offset'])===false)
+            $options['offset'] = 0;
         
         // first check whether more items are available
         $result = \F3::get('db')->exec('SELECT items.id
@@ -375,7 +379,7 @@ class Items extends Database {
                    WHERE starred=1');
         return $res[0]['amount'];
     }
-
+    
     
     /**
      * returns the amount of unread entries in database per tag
@@ -394,7 +398,7 @@ class Items extends Database {
             array(':tag' => "%,".$tag.",%"));
         return $res[0]['amount'];
     }
-
+    
     
     /**
      * returns the amount of unread entries in database per source

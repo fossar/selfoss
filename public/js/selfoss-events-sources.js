@@ -53,11 +53,15 @@ selfoss.events.sources = function() {
         if(id!=false)
             url = url + '/' + id;
         
+        // get values and params
+        var values = selfoss.getValues(parent);
+        values['ajax'] = true;
+        
         $.ajax({
             url: url,
             type: 'POST',
             dataType: 'json',
-            data: selfoss.getValues(parent),
+            data: values,
             success: function(response) {
                 var id = response['id'];
                 parent.attr('id', 'source'+id);
@@ -113,8 +117,8 @@ selfoss.events.sources = function() {
         
         // delete on server
         $.ajax({
-            url: $('base').attr('href')+'source/'+id,
-            type: 'DELETE',
+            url: $('base').attr('href')+'source/delete/'+id,
+            type: 'POST',
             success: function() {
                 parent.fadeOut('fast', function() {
                     $(this).remove();

@@ -114,7 +114,7 @@ selfoss.events.entriesToolbar = function(parent) {
             var unread = $(this).hasClass('active')==true;
             var button = $("#entry"+id+" .entry-unread, #entrr"+id+" .entry-unread");
             var parent = $("#entry"+id+", #entrr"+id);
-            
+
             // update button
             var setButton = function(unread) {
                 if(unread) {
@@ -186,6 +186,7 @@ selfoss.events.entriesToolbar = function(parent) {
             
             $.ajax({
                 url: $('base').attr('href') + (unread ? 'mark/' : 'unmark/') + id,
+                data: { ajax: true },
                 type: 'POST',
                 error: function(jqXHR, textStatus, errorThrown) {
                     // rollback ui changes

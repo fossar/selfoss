@@ -31,10 +31,7 @@ class Authentication {
      */
     public function __construct() {
         // session cookie will be valid for one month
-        session_set_cookie_params(time()+(3600*24*30), "/");
-        
-        // session will be valid for this day
-        @ini_set('session.gc_maxlifetime', time()+(3600*24));
+        session_set_cookie_params((3600*24*30), "/");
         
         session_name();
         if(session_id()=="")
