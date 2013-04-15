@@ -178,8 +178,10 @@ selfoss.shortcuts = {
         if(open) {
             var content = current.find('.entry-content');
             // load images not on mobile devices
-            if(selfoss.isMobile()==false)
+            if(selfoss.isMobile()==false) {
                 content.lazyLoadImages();
+                current.next().find('.entry-content').lazyLoadImages();
+            }
             // anonymize
             selfoss.anonymize(content);
             content.show();
