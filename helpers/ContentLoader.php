@@ -68,7 +68,7 @@ class ContentLoader {
                 json_decode(html_entity_decode($source['params']), true)
             );
         } catch(\exception $e) {
-            \F3::get('logger')->log('error loading feed content: ' . $e->getMessage(), \ERROR);
+            \F3::get('logger')->log('error loading feed content for ' . $source['title'] . ': ' . $e->getMessage(), \ERROR);
             $sourceDao = new \daos\Sources();
             $sourceDao->error($source['id'], date('Y-m-d H:i:s') . 'error loading feed content: ' . $e->getMessage());
             return;
