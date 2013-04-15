@@ -44,6 +44,11 @@ var selfoss = {
             
             // init shortcut handler
             selfoss.shortcuts.init();
+            
+            // init touch
+            if(selfoss.isMobile()) {
+                selfoss.touch.init();
+            }
         });
     },
     

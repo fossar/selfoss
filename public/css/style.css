@@ -249,7 +249,7 @@ input {
 
 #search {
     z-index:9;
-    position:absolute;
+    position:fixed;
     left:-118px;
     top:25px;
     width:330px;
@@ -604,6 +604,10 @@ input {
     color:#ff0000;
 }
 
+.source.error {
+    border: 1px solid #e74c3c;
+}
+
 .source-edit-delete,
 .source-action {
     display:inline;
@@ -633,6 +637,14 @@ input {
     .source-edit-form label {
         display:inline-block;
         min-width:70px;
+    }
+    
+    .source-edit-form input {
+        width: 200px;
+    }
+    
+    .source-edit-form input:focus {
+        width: 50%;
     }
     
     .source-edit-form  .source-edit-form-help {
@@ -706,7 +718,7 @@ input {
     
     #login label {
         display:inline-block;
-        width:100px;
+        width:135px;
     }
 
     #login .error {
