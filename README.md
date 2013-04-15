@@ -4,7 +4,7 @@ selfoss
 Copyright (c) 2013 Tobias Zeising, tobias.zeising@aditu.de  
 http://selfoss.aditu.de  
 Licensed under the GPLv3 license  
-Version 2.6
+Version 2.7-SNAPSHOT
 
 
 INSTALLATION
@@ -49,6 +49,13 @@ Visit the page http://yourselfossurl.com/opml for importing your OPML File. If y
 
 CHANGELOG
 ---------
+
+Version 2.7-SNAPSHOT
+* new spout for instapaper (thanks a lot to janeczku)
+* new Hungarian translation (thanks a lot to Sancho)
+* fix keyboard shortcut on some browsers
+* new spout for youtube channels (thanks a lot to Arndt Staudinger)
+* new rss feed for selfoss releases: http://selfoss.aditu.de/feed.php
 
 Version 2.6
 * fixed OPML import for other formats (thanks a lot to Remy Gardette)
