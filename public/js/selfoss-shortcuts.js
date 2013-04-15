@@ -103,6 +103,15 @@ selfoss.shortcuts = {
             return false;
         });
         
+        // 'u': start manual update
+        $(document).bind('keydown', 'u', function(e) {
+            $.get('update').done(function(data) {
+    			alert("Update: " + data);
+			});
+            e.preventDefault();
+            return false;
+        });
+        
         // 'Ctrl+m': mark all as read
         $(document).bind('keydown', 'ctrl+m', function(e) {
             $('#nav-mark').click();
