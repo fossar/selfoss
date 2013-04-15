@@ -28,10 +28,11 @@ selfoss.events.search = function() {
     $('#search-button').unbind('click').click(function () {
         if($('#search').hasClass('active')==false) {
             $('#search').addClass('active');
-            $('#search-term').focus();
+            $('#search-term').focus().select();
             return;
         }
         executeSearch($('#search-term').val());
+        $('#search-term').blur();
     });
     
     // navigation search button for mobile navigation
@@ -41,9 +42,11 @@ selfoss.events.search = function() {
     });
     
     // keypress enter in search inputfield
-    $('#search-term').unbind('keypress').keypress(function(e) {
+    $('#search-term').unbind('keyup').keyup(function(e) {
         if(e.which == 13)
             $('#search-button').click();
+        if(e.keyCode == 27)
+            $('#search-remove').click();
     });
     
     // search term list in top of the page
@@ -60,6 +63,7 @@ selfoss.events.search = function() {
     $('#search-remove').unbind('click').click(function () {
         if(selfoss.filter.search=='') {
             $('#search').removeClass('active');
+            $('#search-term').blur();
             return;
         }
         
