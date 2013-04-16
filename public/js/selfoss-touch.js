@@ -50,7 +50,18 @@ selfoss.touch = {
         if(next.attr('id') == undefined && direction == 'next') {
             // get more items, we're at the end of the current list
             // next item will be loaded via succes in selfoss-events-entries.js
-            $('.stream-more').click();
+            
+            if($('.stream-more').length > 0){
+                $('.stream-more').click();
+            }else{
+                // there is nothing after the laste entry, close current entry
+                $('.entry-close:visible').click();
+                
+                // scroll to last entry
+                $('html, body').animate({
+                     scrollTop: $('#content .entry:last').offset().top
+                 }, 100);
+            }
             
         }else if(next.attr('id') == undefined && direction == 'prev') {
             // there is nothing before the first entry, close current entry
