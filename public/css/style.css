@@ -595,6 +595,10 @@ input {
         
 /* sources */
 
+.source input {
+    width:60%;
+}
+
 .source-title {
     display:inline;
     color:#333333;
