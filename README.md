@@ -58,6 +58,7 @@ Version 2.7-SNAPSHOT
 * new rss feed for selfoss releases: http://selfoss.aditu.de/feed.php
 * fix bug on removing search terms (thanks a lot to ochristi)
 * translation for login page (thanks a lot to jicho)
+* new japanese language file (thanks a lot to wowo)
 
 Version 2.6
 * fixed OPML import for other formats (thanks a lot to Remy Gardette)
