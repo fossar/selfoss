@@ -157,6 +157,13 @@ class feed extends \spouts\spout {
         // fetch items
         @$this->feed->init();
         
+        // on error retry with force_feed
+        if(@$this->feed->error()) {
+            @$this->feed->set_autodiscovery_level(SIMPLEPIE_LOCATOR_NONE);
+            @$this->feed->force_feed(true);
+            @$this->feed->init();
+        }
+        
         // check for error
         if(@$this->feed->error()) {
             throw new \exception($this->feed->error());
