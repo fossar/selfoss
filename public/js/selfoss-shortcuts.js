@@ -103,6 +103,22 @@ selfoss.shortcuts = {
             return false;
         });
         
+        // 'u': start manual update
+        $(document).bind('keydown', 'u', function(e) {
+            $('#content').addClass('loading').html("");
+            $.get('update')
+		.done(function() { 
+			$('#content').removeClass('loading');
+			selfoss.reloadList();
+		})
+		.error(function(xhr, status, error) { 
+			$('#content').removeClass('loading');
+			alert("Status: " + status + "\nError: " + error + "\nError detail: " + xhr.responseText); 
+		});
+            e.preventDefault();
+            return false;
+        });
+        
         // 'Ctrl+m': mark all as read
         $(document).bind('keydown', 'ctrl+m', function(e) {
             $('#nav-mark').click();

@@ -57,7 +57,14 @@ class feed extends \spouts\spout {
             "default"    => "",
             "required"   => true,
             "validation" => array("notempty")
-        )
+        ),
+    	"force_feed" => array(
+			"title" => "force the feed to be rss compliant",
+			"type" => "checkbox",
+			"default" => "",
+			"required" => false,
+			"validation" => array("int")
+		)
     );
     
     
@@ -152,7 +159,11 @@ class feed extends \spouts\spout {
         @$this->feed->set_cache_location(\F3::get('cache'));
         @$this->feed->set_cache_duration(1800);
         @$this->feed->set_feed_url(htmlspecialchars_decode($params['url']));
-        @$this->feed->set_autodiscovery_level( SIMPLEPIE_LOCATOR_AUTODISCOVERY | SIMPLEPIE_LOCATOR_LOCAL_EXTENSION | SIMPLEPIE_LOCATOR_LOCAL_BODY);
+        if (array_key_exists('force_feed',$params) && $params['force_feed'] === 1) {
+    		@$this->feed->force_feed(true);
+		} else {
+			@$this->feed->set_autodiscovery_level( SIMPLEPIE_LOCATOR_AUTODISCOVERY | SIMPLEPIE_LOCATOR_LOCAL_EXTENSION | SIMPLEPIE_LOCATOR_LOCAL_BODY);
+		}
          
         // fetch items
         @$this->feed->init();
