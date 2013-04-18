@@ -12,8 +12,11 @@ selfoss.events = {
         selfoss.events.search();
 
         // re-init on media query change
-        var mq = window.matchMedia("(min-width: 641px) and (max-width: 1024px)");
-        mq.addListener(selfoss.events.entries);
+        if ((typeof window.matchMedia) != "undefined") {
+            var mq = window.matchMedia("(min-width: 641px) and (max-width: 1024px)");
+            if ((typeof mq.addListener) != "undefined")
+                mq.addListener(selfoss.events.entries);
+        }
 
         // window resize
         $("#nav-tags-wrapper").mCustomScrollbar({
