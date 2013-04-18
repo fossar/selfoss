@@ -1,4 +1,3 @@
-
 /* base */
 
 html {
@@ -806,7 +805,7 @@ body.publicmode.notloggedin .entry-unread {
 @media screen and (min-width: 1024px) {
 
     body.publicmode.notloggedin  .entry-toolbar {
-        display:none !important;
+        display:none;
     }
 
 }
