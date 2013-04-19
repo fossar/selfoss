@@ -146,9 +146,9 @@ selfoss.events.entriesToolbar = function(parent) {
                 // update all read counter
                 var readstats = parseInt($('.nav-filter-read span').html());
                 if(unread) {
-                    readstats--;
-                } else {
                     readstats++;
+                } else {
+                    readstats--;
                 }
                 $('.nav-filter-read span').html(readstats);
                 $('.nav-filter-read span').removeClass('read');
