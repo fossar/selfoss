@@ -37,6 +37,8 @@ selfoss.events.navigation = function() {
             selfoss.filter.type='newest';
         else if($(this).hasClass('nav-filter-unread'))
             selfoss.filter.type='unread';
+        else if($(this).hasClass('nav-filter-read'))
+            selfoss.filter.type='read';
         else if($(this).hasClass('nav-filter-starred'))
             selfoss.filter.type='starred';
         
