@@ -159,6 +159,8 @@ class Image {
         $result = preg_match('/<link .*rel=("|\')apple-touch-icon\1.*>/Ui', $html, $match1);
         if($result==0)
             $result = preg_match('/<link [^>]*rel=("|\')shortcut icon\1.*>/Ui', $html, $match1);
+        if($result==0)
+            $result = preg_match('/<link [^>]*rel=("|\')icon\1.*>/Ui', $html, $match1);
         if($result>0) {
             preg_match('/href=("|\')(.*)\1/Ui', $match1[0], $match2);
             return $match2[2];
