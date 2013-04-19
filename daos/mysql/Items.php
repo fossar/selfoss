@@ -172,6 +172,10 @@ class Items extends Database {
         // only unread
         else if(isset($options['type']) && $options['type']=='unread')
             $where .= ' AND unread=1 ';
+
+        // only read
+        else if(isset($options['type']) && $options['type']=='read')
+            $where .= ' AND unread=0 ';
         
         // search
         if(isset($options['search']) && strlen($options['search'])>0) {
@@ -367,6 +371,17 @@ class Items extends Database {
         return $res[0]['amount'];
     }
     
+    /**
+     * returns the amount of entries in database which are read
+     *
+     * @return int amount of entries in database which are read
+     */
+    public function numberOfRead() {
+        $res = \F3::get('db')->exec('SELECT count(*) AS amount
+                   FROM items 
+                   WHERE unread=0');
+        return $res[0]['amount'];
+    }
     
     /**
      * returns the amount of entries in database which are starred

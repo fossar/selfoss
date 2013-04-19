@@ -147,6 +147,7 @@ class Items extends BaseController {
         $return = array(
             'all'     => $itemsDao->numberOfItems(),
             'unread'  => $itemsDao->numberOfUnread(),
+            'read'    => $itemsDao->numberOfRead(),
             'starred' => $itemsDao->numberOfStarred()
         );
         $this->view->jsonSuccess($return);

@@ -37,6 +37,8 @@ selfoss.events.navigation = function() {
             selfoss.filter.type='newest';
         else if($(this).hasClass('nav-filter-unread'))
             selfoss.filter.type='unread';
+        else if($(this).hasClass('nav-filter-read'))
+            selfoss.filter.type='read';
         else if($(this).hasClass('nav-filter-starred'))
             selfoss.filter.type='starred';
         
@@ -157,6 +159,13 @@ selfoss.events.navigation = function() {
                     if(unreadstats>0)
                         $('.nav-filter-unread span').addClass('unread');
                     
+                    // update read stats
+                    var readstats = parseInt($('.nav-filter-read span').html()) + ids.length;
+                    $('.nav-filter-read span').html(readstats);
+                    $('.nav-filter-read span').removeClass('read');
+                    if(readstats>0)
+                        $('.nav-filter-read span').addClass('read');
+
                     // hide nav on smartphone
                     if(selfoss.isSmartphone())
                         $('#nav-mobile-settings').click();
