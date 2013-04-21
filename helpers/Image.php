@@ -47,7 +47,7 @@ class Image {
                 elseif (substr($shortcutIcon, 0, 1)=='/')
                     $shortcutIcon = $urlElements['scheme'] . '://' . $urlElements['host'] . $shortcutIcon;
                 else
-                    $shortcutIcon = $url . '/' . $shortcutIcon;
+                    $shortcutIcon = (strrpos($url, '/')===strlen($url)-1) ? $url . $shortcutIcon : $url . '/' . $shortcutIcon;
             }
 
             $faviconAsPng = $this->loadImage($shortcutIcon, $width, $height);
