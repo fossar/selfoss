@@ -140,6 +140,7 @@ var selfoss = {
             success: function(data) {
                 $('.nav-filter-newest span').html(data.all);
                 $('.nav-filter-unread span').html(data.unread);
+                $('.nav-filter-read span').html(data.read);
                 $('.nav-filter-starred span').html(data.starred);
                 
                 $('#content').html(data.entries);

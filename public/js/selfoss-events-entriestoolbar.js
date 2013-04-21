@@ -142,6 +142,18 @@ selfoss.events.entriesToolbar = function(parent) {
                 $('.nav-filter-unread span').removeClass('unread');
                 if(unreadstats>0)
                     $('.nav-filter-unread span').addClass('unread');
+
+                // update all read counter
+                var readstats = parseInt($('.nav-filter-read span').html());
+                if(unread) {
+                    readstats++;
+                } else {
+                    readstats--;
+                }
+                $('.nav-filter-read span').html(readstats);
+                $('.nav-filter-read span').removeClass('read');
+                if(readstats>0)
+                    $('.nav-filter-read span').addClass('read');
                     
                 // update unread count on sources
                 var sourceId = $('#entry'+id+' .entry-source').attr('class').substr(25);
