@@ -35,6 +35,9 @@ class Rss extends BaseController {
         $options['items'] = \F3::get('rss_max_items');
         if(\F3::get('PARAMS["tag"]')!=null)
             $options['tag'] = \F3::get('PARAMS["tag"]');
+        if(\F3::get('PARAMS["type"]')!=null)
+            $options['type'] = \F3::get('PARAMS["type"]');
+            
         
         // get items
         $newestEntryDate = false;
