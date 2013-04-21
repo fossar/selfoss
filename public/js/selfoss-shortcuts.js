@@ -96,6 +96,21 @@ selfoss.shortcuts = {
             return false;
         });
         
+        // 'Shift + v': open target and mark read
+        $(document).bind('keydown', 'Shift+v', function(e) {
+            e.preventDefault();
+            
+            selfoss.events.entriesToolbar($('.entry.selected'));
+            
+            // mark item as read
+            if($('.entry.selected .entry-unread').hasClass('active')) {
+                $('.entry.selected .entry-unread').click();
+            }
+            
+            // open item in new window
+            $('.entry.selected .entry-source').click();
+        });
+        
         // 'r': Reload the current view
         $(document).bind('keydown', 'r', function(e) {
             selfoss.reloadList();
@@ -123,6 +138,24 @@ selfoss.shortcuts = {
             selfoss.shortcuts.nextprev('prev', true);
             e.preventDefault();
             return false;
+        });
+        
+        // 'Shift+n': switch to newest items overview / menu item
+        $(document).bind('keydown', 'Shift+n', function(e) {
+            e.preventDefault();
+            $('#nav-filter-newest').click();
+        });
+        
+        // 'Shift+u': switch to unread items overview / menu item
+        $(document).bind('keydown', 'Shift+u', function(e) {
+            e.preventDefault();
+            $('#nav-filter-unread').click();
+        });
+        
+        // 'Shift+s': switch to starred items overview / menu item
+        $(document).bind('keydown', 'Shift+s', function(e) {
+            e.preventDefault();
+            $('#nav-filter-starred').click();
         });
     },
     
