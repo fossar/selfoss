@@ -89,6 +89,12 @@ selfoss.shortcuts = {
             return false;
         });
         
+        // 'Shift + o': close open entries
+        $(document).bind('keydown', 'Shift+o', function(e) {
+            e.preventDefault();
+            $('.entry-content, .entry-toolbar').hide();
+        });
+        
         // 'v': open target
         $(document).bind('keydown', 'v', function(e) {
             window.open($('.entry.selected .entry-source').attr('href'));
