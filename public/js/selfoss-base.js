@@ -21,6 +21,10 @@ var selfoss = {
         ajax: true
     },
 
+    /**
+     * instance of the currently running XHR that is used to reload the items list
+     */
+    activeAjaxReq: null,
     
     /**
      * initialize application
@@ -130,9 +134,12 @@ var selfoss = {
      * @return void
      */
     reloadList: function() {
+        if (selfoss.activeAjaxReq !== null)
+            selfoss.activeAjaxReq.abort();
+
         $('#content').addClass('loading').html("");
-        
-        $.ajax({
+
+        selfoss.activeAjaxReq = $.ajax({
             url: $('base').attr('href'),
             type: 'GET',
             dataType: 'json',
@@ -157,16 +164,18 @@ var selfoss = {
                 
                 // update sources
                 selfoss.refreshSources(data.sources);
+
+                // clean up
+                $('#content').removeClass('loading');
+                selfoss.activeAjaxReq = null;
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                if (textStatus == "parsererror") {
-                    location.reload();
+                if (textStatus == "abort")
                     return;
-                }
-                alert('Load list error: ' + errorThrown);
-            },
-            complete: function(jqXHR, textStatus) {
-                $('#content').removeClass('loading');
+                else if (textStatus == "parsererror")
+                    location.reload();
+                else if (errorThrown)
+                    alert('Load list error: ' + errorThrown);
             }
         });
     },
