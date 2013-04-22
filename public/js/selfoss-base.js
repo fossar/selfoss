@@ -137,6 +137,11 @@ var selfoss = {
         if (selfoss.activeAjaxReq !== null)
             selfoss.activeAjaxReq.abort();
 
+        if (location.hash == "#sources") {
+            location.hash = "";
+            return;
+        }
+
         $('#content').addClass('loading').html("");
 
         selfoss.activeAjaxReq = $.ajax({
@@ -153,7 +158,6 @@ var selfoss = {
                 $(document).scrollTop(0);
                 selfoss.events.entries();
                 selfoss.events.search();
-                location.hash = "";
                 
                 // make unread itemcount red
                 if(data.unread>0)
