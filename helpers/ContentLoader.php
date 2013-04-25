@@ -197,13 +197,11 @@ class ContentLoader {
      * @return void
      */
     public function cleanup() {
-        // cleanup old items
-        if(\F3::get('items_lifetime')) {
-            \F3::get('logger')->log('cleanup old items', \DEBUG);
-            $itemsDao = new \daos\Items();
-            $itemsDao->cleanup(\F3::get('items_lifetime'));
-            \F3::get('logger')->log('cleanup old items finished', \DEBUG);
-        }
+        // cleanup orphaned and old items
+        \F3::get('logger')->log('cleanup orphaned and old items', \DEBUG);
+        $itemsDao = new \daos\Items();
+        $itemsDao->cleanup(\F3::get('items_lifetime'));
+        \F3::get('logger')->log('cleanup orphaned and old items finished', \DEBUG);
         
         // delete orphaned thumbnails
         \F3::get('logger')->log('delete orphaned thumbnails', \DEBUG);
