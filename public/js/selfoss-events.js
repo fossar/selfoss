@@ -60,8 +60,11 @@ selfoss.events = {
         
         // load sources
         if(location.hash=="#sources") {
+            if (selfoss.activeAjaxReq !== null)
+                selfoss.activeAjaxReq.abort();
+
             $('#content').addClass('loading').html("");
-            $.ajax({
+            selfoss.activeAjaxReq = $.ajax({
                 url: $('base').attr('href')+'sources',
                 type: 'GET',
                 success: function(data) {
@@ -69,7 +72,10 @@ selfoss.events = {
                     selfoss.events.sources();
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
-                    alert('Load sources error: '+errorThrown);
+                    if (textStatus == "abort")
+                        return;
+                    else if (errorThrown)
+                        alert('Load list error: ' + errorThrown);
                 },
                 complete: function(jqXHR, textStatus) {
                     $('#content').removeClass('loading');
