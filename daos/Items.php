@@ -48,15 +48,17 @@ class Items extends Database {
     
     
     /**
-     * cleanup old items
+     * cleanup orphaned and old items
      *
      * @return void
-     * @param int $days delete all items older than this value
+     * @param int $days delete all items older than this value [optional]
      */
     public function cleanup($days) {
-        $minDate = new \DateTime();
-        $minDate->sub(new \DateInterval('P'.$days.'D'));
-        
+        $minDate = NULL;
+        if ($days !== "") {
+            $minDate = new \DateTime();
+            $minDate->sub(new \DateInterval('P'.$days.'D'));
+        }
         $this->backend->cleanup($minDate);
     }
     
