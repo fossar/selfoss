@@ -59,6 +59,10 @@ Version 2.7-SNAPSHOT
 * fix bug on removing search terms (thanks a lot to ochristi)
 * translation for login page (thanks a lot to jicho)
 * new japanese language file (thanks a lot to wowo)
+* new shortcuts (thanks a lot to jicho)
+* Fix issues with refreshing the items list and slow ajax requests (thanks a lot to Sean Rand)
+* Don't leave behind sp-container divs when refreshing the tags (thanks a lot to Sean Rand)
+* Clean up orphaned items of deleted sources (thanks a lot to Sean Rand)
 
 Version 2.6
 * fixed OPML import for other formats (thanks a lot to Remy Gardette)
