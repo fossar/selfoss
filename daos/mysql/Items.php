@@ -144,13 +144,17 @@ class Items extends Database {
     
     
     /**
-     * cleanup old items
+     * cleanup orphaned and old items
      *
      * @return void
-     * @param DateTime $date date to delete all items older than this value
+     * @param DateTime $date date to delete all items older than this value [optional]
      */
-    public function cleanup(\DateTime $date) {
-        \F3::get('db')->exec('DELETE FROM items WHERE starred=0 AND datetime<:date',
+    public function cleanup(\DateTime $date = NULL) {
+        \F3::get('db')->exec('DELETE FROM items WHERE id IN (
+                                SELECT items.id FROM items LEFT JOIN sources
+                                ON items.source=sources.id WHERE sources.id IS NULL)');
+        if ($date !== NULL)
+            \F3::get('db')->exec('DELETE FROM items WHERE starred=0 AND datetime<:date',
                     array(':date' => $date->format('Y-m-d').' 00:00:00'));
     }
     
