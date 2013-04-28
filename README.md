@@ -63,6 +63,8 @@ Version 2.7-SNAPSHOT
 * Fix issues with refreshing the items list and slow ajax requests (thanks a lot to Sean Rand)
 * Don't leave behind sp-container divs when refreshing the tags (thanks a lot to Sean Rand)
 * Clean up orphaned items of deleted sources (thanks a lot to Sean Rand)
+* update fat free php framework to newest versoin 3.0.6
+* only allow update for localhost or loggedin users (thanks a lot to Tiouss)
 
 Version 2.6
 * fixed OPML import for other formats (thanks a lot to Remy Gardette)
