@@ -60,11 +60,13 @@ Version 2.7-SNAPSHOT
 * translation for login page (thanks a lot to jicho)
 * new japanese language file (thanks a lot to wowo)
 * new shortcuts (thanks a lot to jicho)
-* Fix issues with refreshing the items list and slow ajax requests (thanks a lot to Sean Rand)
-* Don't leave behind sp-container divs when refreshing the tags (thanks a lot to Sean Rand)
-* Clean up orphaned items of deleted sources (thanks a lot to Sean Rand)
+* fix issues with refreshing the items list and slow ajax requests (thanks a lot to Sean Rand)
+* don't leave behind sp-container divs when refreshing the tags (thanks a lot to Sean Rand)
+* clean up orphaned items of deleted sources (thanks a lot to Sean Rand)
 * update fat free php framework to newest versoin 3.0.6
 * only allow update for localhost or loggedin users (thanks a lot to Tiouss)
+* added Facebook page feed (thanks a lot to Thomas Muguet)
+* fix memory bug on icon generation (thanks a lot to Matthieu Codron)
 
 Version 2.6
 * fixed OPML import for other formats (thanks a lot to Remy Gardette)
