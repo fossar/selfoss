@@ -106,7 +106,7 @@ class ContentLoader {
             
             // sanitize content html
             $content = htmLawed(
-                html_entity_decode($item->getContent(), ENT_COMPAT, 'UTF-8'),
+                htmlspecialchars_decode($item->getContent()),
                 array(
                     "safe"           => 1,
                     "deny_attribute" => '* -alt -title -src -href',
@@ -116,7 +116,7 @@ class ContentLoader {
                     "elements"       => 'div,p,ul,li,a,img,dl,dt,h1,h2,h3,h4,h5,h6,ol,br,table,tr,td,blockquote,pre,ins,del,th,thead,tbody,b,i,strong,em,tt'
                 )
             );
-            $title = html_entity_decode($item->getTitle(), ENT_COMPAT, 'UTF-8');
+            $title = htmlspecialchars_decode($item->getTitle());
             $title = htmLawed($title, array("deny_attribute" => "*", "elements" => "-*"));
             \F3::get('logger')->log('item content sanitized', \DEBUG);
             
