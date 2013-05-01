@@ -7,7 +7,9 @@ namespace spouts\facebook;
  *
  * @package    spouts
  * @subpackage facebook
+ * @copyright  Copyright (c) Tobias Zeising (http://www.aditu.de)
  * @license    GPLv3 (http://www.gnu.org/licenses/gpl-3.0.html)
+ * @author     Tobias Zeising <tobias.zeising@aditu.de>
  * @author     Thomas Muguet <t.muguet@thomasmuguet.info>
  */
 class page extends \spouts\rss\feed {
@@ -75,9 +77,10 @@ class page extends \spouts\rss\feed {
      * @param mixed $params the params of this source
      */
     public function load($params) {
-        $info = json_decode(file_get_contents("https://graph.facebook.com/" . $params['user']), TRUE);
+        $content = @file_get_contents("https://graph.facebook.com/" . urlencode($params['user']));
+        $data = json_decode($content, TRUE);
         
-        $rssParams = array("url" => "https://www.facebook.com/feeds/page.php?format=atom10&id=" . $info['id']);
+        $rssParams = array("url" => "https://www.facebook.com/feeds/page.php?format=atom10&id=" . $data['id']);
         return parent::load($rssParams);
     }
 }
