@@ -681,16 +681,15 @@ input {
 .source-export {
     margin-right: 75px;
     float: right;
-    text-decoration: none;
-    color: #000;
+    
 }
 
+.source-export,
 .source-opml {
     font-size:0.60em;
     text-decoration:none;
     color:#777;
     margin-left:10px;
-    clear:both;
 }
 
 .source-new .source-edit-form {
@@ -1177,6 +1176,15 @@ body.publicmode.notloggedin .entry-unread {
             margin-bottom:5px;
             list-style:none;
         }
+        
+    .source-opml,
+    .source-export {
+        display:none;
+    }
+    
+    .source-add {
+        float:none;
+    }
 }
 
 

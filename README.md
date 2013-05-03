@@ -67,6 +67,7 @@ Version 2.7-SNAPSHOT
 * only allow update for localhost or loggedin users (thanks a lot to Tiouss)
 * added Facebook page feed (thanks a lot to Thomas Muguet)
 * fix memory bug on icon generation (thanks a lot to Matthieu Codron)
+* new opml export (thanks a lot to Sean Rand)
 
 Version 2.6
 * fixed OPML import for other formats (thanks a lot to Remy Gardette)
