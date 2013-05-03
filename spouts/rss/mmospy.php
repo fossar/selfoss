@@ -71,10 +71,21 @@ class mmospy extends feed {
      * @param string $url
      */
     public function load($params) {
-        parent::load(array( 'url' => $this->feedUrl ) );
+        parent::load(array( 'url' => $this->getXmlUrl() ) );
     }
-    
-    
+
+
+    /**
+     * returns the xml feed url for the source
+     *
+     * @return string url as xml
+     * @param mixed $params params for the source
+     */
+    public function getXmlUrl($params = null) {
+        return $this->feedUrl;
+    }
+
+
     /**
      * returns the content of this item
      *

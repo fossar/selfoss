@@ -27,8 +27,9 @@ class Sources extends BaseController {
         
         // load sources
         $sourcesDao = new \daos\Sources();
-        echo '<div class="source-add">'. \F3::get('lang_source_add') .
-             '</div> <a class="source-opml" href="opml">'. \F3::get('lang_source_opml');
+        echo '<div class="source-add">' . \F3::get('lang_source_add') . '</div>' .
+             '<a class="source-export" href="opmlexport">' . \F3::get('lang_source_export') . '</a>' .
+             '<a class="source-opml" href="opml">' . \F3::get('lang_source_opml');
         $sourcesHtml = '</a>';
         $i=0;
         

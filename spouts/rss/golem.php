@@ -124,10 +124,21 @@ class golem extends feed {
      * @param string $url
      */
     public function load($params) {
-        parent::load(array( 'url' => $this->feedUrls[$params['section']]) );
+        parent::load(array( 'url' => $this->getXmlUrl($params)) );
     }
-    
-    
+
+
+    /**
+     * returns the xml feed url for the source
+     *
+     * @return string url as xml
+     * @param mixed $params params for the source
+     */
+    public function getXmlUrl($params) {
+        return $this->feedUrls[$params['section']];
+    }
+
+
     /**
      * returns the content of this item
      *

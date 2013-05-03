@@ -175,8 +175,19 @@ class feed extends \spouts\spout {
         // return html url
         $this->htmlUrl = @$this->feed->get_link();
     }
-    
-    
+
+
+    /**
+     * returns the xml feed url for the source
+     *
+     * @return string url as xml
+     * @param mixed $params params for the source
+     */
+    public function getXmlUrl($params) {
+        return isset($params['url']) ? html_entity_decode($params['url']) : false;
+    }
+
+
     /**
      * returns the global html url for the source
      *
