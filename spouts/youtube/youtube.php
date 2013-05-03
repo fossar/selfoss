@@ -68,8 +68,18 @@ class youtube extends \spouts\rss\feed {
      * @param mixed $params the params of this source
      */
     public function load($params) {
-        parent::load(array( 'url' => 'http://gdata.youtube.com/feeds/api/users/'
-                        . $params['channel'] .  '/uploads?alt=rss&orderby=published') );
+        parent::load(array( 'url' => $this->getXmlUrl($params)) );
+    }
+
+
+    /**
+     * returns the xml feed url for the source
+     *
+     * @return string url as xml
+     * @param mixed $params params for the source
+     */
+    public function getXmlUrl($params) {
+        return "http://gdata.youtube.com/feeds/api/users/" . $params['channel'] . "/uploads?alt=rss&orderby=published";
     }
 
 
