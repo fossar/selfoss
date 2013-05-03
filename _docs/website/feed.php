@@ -102,6 +102,7 @@ echo '<?xml version="1.0" encoding="utf-8"?>'; ?>
     $content = ob_get_contents();
     ob_end_clean();
     header("Content-Type: text/xml");
+    unlink($cacheFile);
     file_put_contents($cacheFile, $content);
     echo $content;
 ?>
