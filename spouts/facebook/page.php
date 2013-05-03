@@ -77,10 +77,20 @@ class page extends \spouts\rss\feed {
      * @param mixed $params the params of this source
      */
     public function load($params) {
+        parent::load(array('url' => $this->getXmlUrl($params)));
+    }
+
+
+    /**
+     * returns the xml feed url for the source
+     *
+     * @return string url as xml
+     * @param mixed $params params for the source
+     */
+    public function getXmlUrl($params) {
         $content = @file_get_contents("https://graph.facebook.com/" . urlencode($params['user']));
         $data = json_decode($content, TRUE);
-        
-        $rssParams = array("url" => "https://www.facebook.com/feeds/page.php?format=atom10&id=" . $data['id']);
-        return parent::load($rssParams);
+
+        return "https://www.facebook.com/feeds/page.php?format=atom10&id=" . $data['id'];
     }
 }
