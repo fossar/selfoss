@@ -111,7 +111,7 @@ class Tags extends Database {
      *
      * @return boolean true if color is used by an tag
      */
-    private function hasTag($tag) {
+    public function hasTag($tag) {
         $res = \F3::get('db')->exec('SELECT COUNT(*) AS amount FROM tags WHERE tag=:tag',
                     array(':tag' => $tag));
         return $res[0]['amount']>0;

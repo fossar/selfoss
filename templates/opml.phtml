@@ -38,5 +38,10 @@
             </ul>
         </form>
         <script src="all.js"></script>
+        <script type="text/javascript">
+            $('form').submit(function() {
+                $('input[type=submit]').prop('disabled', true).val('Importing...');
+            });
+        </script>
     </body>
 </html>

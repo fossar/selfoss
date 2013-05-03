@@ -65,8 +65,19 @@ abstract class spout implements \Iterator {
      * @param mixed $params params of this source
      */
     abstract public function load($params);
-    
-    
+
+
+    /**
+     * returns the xml feed url for the source
+     *
+     * @return string url as xml
+     * @param mixed $params params for the source
+     */
+    public function getXmlUrl($params) {
+        return false;
+    }
+
+
     /**
      * returns the global html url for the source
      *
