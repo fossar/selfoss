@@ -668,11 +668,21 @@ input {
     text-decoration:none;
 }
 
+.source-add, .source-export {
+    font-size:0.85em;
+}
+
 .source-add {
     cursor:pointer;
-    font-size:0.85em;
     margin-left:20px;
     float:left;
+}
+
+.source-export {
+    margin-right: 75px;
+    float: right;
+    text-decoration: none;
+    color: #000;
 }
 
 .source-opml {
@@ -948,6 +958,10 @@ body.publicmode.notloggedin .entry-unread {
     .source-add { 
         margin-left:20px;
         text-align:left;
+    }
+
+    .source-export {
+        margin-right:20px;
     }
 }
 
