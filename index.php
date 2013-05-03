@@ -105,6 +105,7 @@ if($f3->get('auth')->isLoggedin()===true) {
     
     $f3->route('GET  /opml',                'controllers\Opml->show');            // html
     $f3->route('POST /opml',                'controllers\Opml->add');             // html
+    $f3->route('GET  /opmlexport',          'controllers\Opml->export');          // xml
 }
 
 // dispatch
