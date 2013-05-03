@@ -70,7 +70,16 @@ class user extends \spouts\rss\images {
      * @param mixed $params the params of this source
      */
     public function load($params) {
-        parent::load(array( "url" => 'http://backend.deviantart.com/rss.xml?q=sort%3Atime%20by%3A'.urlencode($params['username']).'&type=deviation'));
+        parent::load(array( "url" => $this->getXmlUrl($params)));
     }
-    
+
+    /**
+     * returns the xml feed url for the source
+     *
+     * @return string url as xml
+     * @param mixed $params params for the source
+     */
+    public function getXmlUrl($params) {
+        return 'http://backend.deviantart.com/rss.xml?q=sort%3Atime%20by%3A' . urlencode($params['username']) . '&type=deviation';
+    }
 }
