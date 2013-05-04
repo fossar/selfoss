@@ -22,9 +22,12 @@ class Sources extends \daos\mysql\Sources {
      * @param mixed $params depends from spout
      */
     public function add($title, $tags, $spout, $params) {
+        // sanitize tag list
+        $tags = implode(',', preg_split('/\s*,\s*/', trim($tags), -1, PREG_SPLIT_NO_EMPTY));
+
         $res = \F3::get('db')->exec('INSERT INTO sources (title, tags, spout, params) VALUES (:title, :tags, :spout, :params) RETURNING id',
                     array(
-                        ':title'  => $title,
+                        ':title'  => trim($title),
                         ':tags'  => $tags,
                         ':spout'  => $spout,
                         ':params' => htmlentities(json_encode($params))
