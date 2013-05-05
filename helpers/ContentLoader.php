@@ -29,6 +29,11 @@ class ContentLoader {
 
 
     /**
+     * @var \daos\Sourcesdatabase access for saveing sources last update
+     */
+    private $sourceDao;
+
+    /**
      * ctor
      */
     public function __construct() {
@@ -39,6 +44,7 @@ class ContentLoader {
         $this->spoutLoader = new \helpers\SpoutLoader();
         $this->imageHelper = new \helpers\Image();
         $this->itemsDao = new \daos\Items();
+        $this->sourceDao = new \daos\Sources();
     }
     
     
@@ -88,8 +94,7 @@ class ContentLoader {
             );
         } catch(\exception $e) {
             \F3::get('logger')->log('error loading feed content for ' . $source['title'] . ': ' . $e->getMessage(), \ERROR);
-            $sourceDao = new \daos\Sources();
-            $sourceDao->error($source['id'], date('Y-m-d H:i:s') . 'error loading feed content: ' . $e->getMessage());
+            $this->sourceDao->error($source['id'], date('Y-m-d H:i:s') . 'error loading feed content: ' . $e->getMessage());
             return;
         }
         
@@ -163,13 +168,8 @@ class ContentLoader {
         \F3::get('logger')->log('destroy spout object', \DEBUG);
         $spout->destroy();
 
-        $sourceDao = new \daos\Sources();
-        // remove previous error
-        if(strlen(trim($source['error']))!=0) {
-            $sourceDao->error($source['id'], '');
-        }
-        // save last update
-        $sourceDao->saveLastUpdate($source['id']);
+        // remove previous errors and set last update timestamp
+        $this->updateSource($source);
     }
 
 
@@ -308,5 +308,19 @@ class ContentLoader {
             }
         }
     }
-    
+
+
+    /**
+     * Update source (remove previous errors, update last update)
+     *
+     * @param $source source object
+     */
+    protected function updateSource($source) {
+        // remove previous error
+        if (strlen(trim($source['error'])) != 0) {
+            $this->sourceDao->error($source['id'], '');
+        }
+        // save last update
+        $this->sourceDao->saveLastUpdate($source['id']);
+    }
 }
