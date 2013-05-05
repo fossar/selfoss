@@ -11,7 +11,23 @@ namespace helpers;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class ContentLoader {
-    
+
+    /**
+     * @var SpoutLoader loads the spout (plugin for fetching items)
+     */
+    private $spoutLoader;
+
+    /**
+     * @var Image thumbnail and icon generation
+     */
+    private $imageHelper;
+
+    /**
+     * @var \daos\Items database access for saving new item
+     */
+    private $itemsDao;
+
+
     /**
      * ctor
      */
@@ -19,6 +35,10 @@ class ContentLoader {
         // include htmLawed
         if(!function_exists('htmLawed'))
             require('libs/htmLawed.php');
+
+        $this->spoutLoader = new \helpers\SpoutLoader();
+        $this->imageHelper = new \helpers\Image();
+        $this->itemsDao = new \daos\Items();
     }
     
     
@@ -53,8 +73,7 @@ class ContentLoader {
         \F3::get('logger')->log('start fetching source "'. $source['title'] . ' (id: '.$source['id'].') ', \DEBUG);
         
         // get spout
-        $spoutLoader = new \helpers\SpoutLoader();
-        $spout = $spoutLoader->get($source['spout']);
+        $spout = $this->spoutLoader->get($source['spout']);
         if($spout===false) {
             \F3::get('logger')->log('unknown spout: ' . $source['spout'], \ERROR);
             return;
@@ -81,12 +100,11 @@ class ContentLoader {
         
         // insert new items in database
         \F3::get('logger')->log('start item fetching', \DEBUG);
-        $itemsDao = new \daos\Items();
-        $imageHelper = new \helpers\Image();
+
         $lasticon = false;
         foreach ($spout as $item) {
             // item already in database?
-            if($itemsDao->exists($item->getId())===true)
+            if($this->itemsDao->exists($item->getId())===true)
                 continue;
             
             // test date: continue with next if item too old
@@ -105,25 +123,16 @@ class ContentLoader {
             \F3::get('logger')->log('start insertion of new item "'.$item->getTitle().'"', \DEBUG);
             
             // sanitize content html
-            $content = htmLawed(
-                htmlspecialchars_decode($item->getContent()),
-                array(
-                    "safe"           => 1,
-                    "deny_attribute" => '* -alt -title -src -href',
-                    "keep_bad"       => 0,
-                    "comment"        => 1,
-                    "cdata"          => 1,
-                    "elements"       => 'div,p,ul,li,a,img,dl,dt,h1,h2,h3,h4,h5,h6,ol,br,table,tr,td,blockquote,pre,ins,del,th,thead,tbody,b,i,strong,em,tt'
-                )
-            );
+            $content = $this->sanitizeContent($item->getContent());
+
+            // sanitize title
             $title = htmlspecialchars_decode($item->getTitle());
             $title = htmLawed($title, array("deny_attribute" => "*", "elements" => "-*"));
+            if(strlen(trim($title))==0)
+                $title = "[" . \F3::get('lang_no_title') . "]";
+
             \F3::get('logger')->log('item content sanitized', \DEBUG);
 
-            // empty title?
-            if(strlen(trim($title))==0)
-                $title = "[" . \F3::get('lang_not_title') . "]";
-            
             $icon = $item->getIcon();
             $newItem = array(
                     'title'        => $title,
@@ -137,45 +146,13 @@ class ContentLoader {
             );
             
             // save thumbnail
-            if(strlen($thumbnail = $item->getThumbnail())!=0) {
-                $thumbnailAsPng = $imageHelper->loadImage($thumbnail, 150, 150);
-                if($thumbnailAsPng!==false) {
-                    file_put_contents(
-                        'data/thumbnails/' . md5($thumbnail) . '.png', 
-                        $thumbnailAsPng
-                    );
-                    $newItem['thumbnail'] = md5($thumbnail) . '.png';
-                    \F3::get('logger')->log('thumbnail generated: '.$thumbnail, \DEBUG);
-                } else {
-                    $newItem['thumbnail'] = '';
-                    \F3::get('logger')->log('thumbnail generation error: '.$thumbnail, \ERROR);
-                }
-            }
-            
+            $newItem = $this->fetchThumbnail($item->getThumbnail(), $newItem);
+
             // save icon
-            if(strlen($icon = $item->getIcon())!=0) {
-                if($icon==$lasticon) {
-                    \F3::get('logger')->log('use last icon: '.$lasticon, \DEBUG);
-                    $newItem['icon'] = md5($lasticon) . '.png';
-                } else {
-                    $iconAsPng = $imageHelper->loadImage($icon, 30, 30);
-                    if($iconAsPng!==false) {
-                        file_put_contents(
-                            'data/favicons/' . md5($icon) . '.png', 
-                            $iconAsPng
-                        );
-                        $newItem['icon'] = md5($icon) . '.png';
-                        $lasticon = $icon;
-                        \F3::get('logger')->log('icon generated: '.$icon, \DEBUG);
-                    } else {
-                        $newItem['icon'] = '';
-                        \F3::get('logger')->log('icon generation error: '.$icon, \ERROR);
-                    }
-                }
-            }
-            
+            $newItem = $this->fetchIcon($item->getIcon(), $newItem, $lasticon);
+
             // insert new item
-            $itemsDao->add($newItem);
+            $this->itemsDao->add($newItem);
             \F3::get('logger')->log('item inserted', \DEBUG);
             
             \F3::get('logger')->log('Memory usage: '.memory_get_usage(), \DEBUG);
@@ -194,8 +171,89 @@ class ContentLoader {
         // save last update
         $sourceDao->saveLastUpdate($source['id']);
     }
-    
-    
+
+
+    /**
+     * Sanitize content for preventing XSS attacks.
+     *
+     * @param $content content of the given feed
+     * @return mixed|string sanitized content
+     */
+    protected function sanitizeContent($content) {
+        return htmLawed(
+            htmlspecialchars_decode($content),
+            array(
+                "safe"           => 1,
+                "deny_attribute" => '* -alt -title -src -href',
+                "keep_bad"       => 0,
+                "comment"        => 1,
+                "cdata"          => 1,
+                "elements"       => 'div,p,ul,li,a,img,dl,dt,h1,h2,h3,h4,h5,h6,ol,br,table,tr,td,blockquote,pre,ins,del,th,thead,tbody,b,i,strong,em,tt'
+            )
+        );
+    }
+
+
+    /**
+     * Fetch the thumbanil of a given item
+     *
+     * @param $thumbnail the thumbnail url
+     * @param $newItem new item for saving in database
+     * @return the newItem Object with thumbnail
+     */
+    protected function fetchThumbnail($thumbnail, $newItem) {
+        if (strlen(trim($thumbnail)) > 0) {
+            $thumbnailAsPng = $this->imageHelper->loadImage($thumbnail, 150, 150);
+            if ($thumbnailAsPng !== false) {
+                file_put_contents(
+                    'data/thumbnails/' . md5($thumbnail) . '.png',
+                    $thumbnailAsPng
+                );
+                $newItem['thumbnail'] = md5($thumbnail) . '.png';
+                \F3::get('logger')->log('thumbnail generated: ' . $thumbnail, \DEBUG);
+            } else {
+                $newItem['thumbnail'] = '';
+                \F3::get('logger')->log('thumbnail generation error: ' . $thumbnail, \ERROR);
+            }
+        }
+
+        return $newItem;
+    }
+
+
+    /**
+     * Fetch the icon of a given feed item
+     *
+     * @param $icon icon given by the spout
+     * @param $newItem new item for saving in database
+     * @param $lasticon the last fetched icon (byref)
+     * @return mixed newItem with icon
+     */
+    protected function fetchIcon($icon, $newItem, &$lasticon) {
+        if(strlen(trim($icon)) > 0) {
+            if($icon==$lasticon) {
+                \F3::get('logger')->log('use last icon: '.$lasticon, \DEBUG);
+                $newItem['icon'] = md5($lasticon) . '.png';
+            } else {
+                $iconAsPng = $this->imageHelper->loadImage($icon, 30, 30);
+                if($iconAsPng!==false) {
+                    file_put_contents(
+                        'data/favicons/' . md5($icon) . '.png',
+                        $iconAsPng
+                    );
+                    $newItem['icon'] = md5($icon) . '.png';
+                    $lasticon = $icon;
+                    \F3::get('logger')->log('icon generated: '.$icon, \DEBUG);
+                } else {
+                    $newItem['icon'] = '';
+                    \F3::get('logger')->log('icon generation error: '.$icon, \ERROR);
+                }
+            }
+        }
+        return $newItem;
+    }
+
+
     /**
      * clean up messages, thumbnails etc.
      *
@@ -204,8 +262,7 @@ class ContentLoader {
     public function cleanup() {
         // cleanup orphaned and old items
         \F3::get('logger')->log('cleanup orphaned and old items', \DEBUG);
-        $itemsDao = new \daos\Items();
-        $itemsDao->cleanup(\F3::get('items_lifetime'));
+        $this->itemsDao->cleanup(\F3::get('items_lifetime'));
         \F3::get('logger')->log('cleanup orphaned and old items finished', \DEBUG);
         
         // delete orphaned thumbnails
@@ -233,8 +290,7 @@ class ContentLoader {
      * @param string $type thumbnails or icons
      */
     protected function cleanupFiles($type) {
-        $itemsDao = new \daos\Items();
-        \F3::set('im', $itemsDao);
+        \F3::set('im', $this->itemsDao);
         if($type=='thumbnails') {
             $checker = function($file) { return \F3::get('im')->hasThumbnail($file);};
             $itemPath = 'data/thumbnails/';
