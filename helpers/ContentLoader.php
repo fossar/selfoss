@@ -119,6 +119,10 @@ class ContentLoader {
             $title = htmlspecialchars_decode($item->getTitle());
             $title = htmLawed($title, array("deny_attribute" => "*", "elements" => "-*"));
             \F3::get('logger')->log('item content sanitized', \DEBUG);
+
+            // empty title?
+            if(strlen(trim($title))==0)
+                $title = "[" . \F3::get('lang_not_title') . "]";
             
             $icon = $item->getIcon();
             $newItem = array(

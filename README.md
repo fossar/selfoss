@@ -69,6 +69,7 @@ Version 2.7-SNAPSHOT
 * fix memory bug on icon generation (thanks a lot to Matthieu Codron)
 * new opml export (thanks a lot to Sean Rand)
 * new norwegian translation (thanks a lot to Kjetil Elde)
+* set default title if no one was given by the feed
 
 Version 2.6
 * fixed OPML import for other formats (thanks a lot to Remy Gardette)
