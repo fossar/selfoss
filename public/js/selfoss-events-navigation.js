@@ -116,6 +116,11 @@ selfoss.events.navigation = function() {
         }
         
     });
+
+    // reload current view for mobile version
+    $('#nav-mobile-reload').unbind('click').click(function () {
+        selfoss.reloadList();
+    });
     
     // login
     $('#nav-login').unbind('click').click(function () {

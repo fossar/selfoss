@@ -996,6 +996,19 @@ body.publicmode.notloggedin .entry-unread {
             background-size:96px 40px;
         }
 
+        #nav-mobile-reload {
+            position:absolute;
+            width:29px;
+            height:29px;
+            left:100%;
+            top:10px;
+            margin-left:-90px;
+            /* Reload icon under CC BY 3.0 license by Yankoa (http://yankoa.deviantart.com/)
+               From http://www.iconfinder.com/icondetails/81144/128/mb_reload_icon */
+            background:url(images/nav-mobile-reload.png) no-repeat;
+            background-size:29px 29px;
+        }
+
         #nav-mobile-settings {
             position:absolute;
             width:29px;
