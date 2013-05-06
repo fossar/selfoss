@@ -42,7 +42,6 @@ class ContentLoader {
             require('libs/htmLawed.php');
 
         $this->spoutLoader = new \helpers\SpoutLoader();
-        $this->imageHelper = new \helpers\Image();
         $this->itemsDao = new \daos\Items();
         $this->sourceDao = new \daos\Sources();
     }
@@ -151,6 +150,7 @@ class ContentLoader {
             );
             
             // save thumbnail
+            $this->imageHelper = new \helpers\Image();
             $newItem = $this->fetchThumbnail($item->getThumbnail(), $newItem);
 
             // save icon
