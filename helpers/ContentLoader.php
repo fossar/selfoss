@@ -13,20 +13,9 @@ namespace helpers;
 class ContentLoader {
 
     /**
-     * @var SpoutLoader loads the spout (plugin for fetching items)
-     */
-    private $spoutLoader;
-
-    /**
-     * @var Image thumbnail and icon generation
-     */
-    private $imageHelper;
-
-    /**
      * @var \daos\Items database access for saving new item
      */
     private $itemsDao;
-
 
     /**
      * @var \daos\Sourcesdatabase access for saveing sources last update
@@ -41,7 +30,6 @@ class ContentLoader {
         if(!function_exists('htmLawed'))
             require('libs/htmLawed.php');
 
-        $this->spoutLoader = new \helpers\SpoutLoader();
         $this->itemsDao = new \daos\Items();
         $this->sourceDao = new \daos\Sources();
     }
@@ -78,7 +66,8 @@ class ContentLoader {
         \F3::get('logger')->log('start fetching source "'. $source['title'] . ' (id: '.$source['id'].') ', \DEBUG);
         
         // get spout
-        $spout = $this->spoutLoader->get($source['spout']);
+        $spoutLoader = new \helpers\SpoutLoader();
+        $spout = $spoutLoader->get($source['spout']);
         if($spout===false) {
             \F3::get('logger')->log('unknown spout: ' . $source['spout'], \ERROR);
             return;
@@ -150,7 +139,6 @@ class ContentLoader {
             );
             
             // save thumbnail
-            $this->imageHelper = new \helpers\Image();
             $newItem = $this->fetchThumbnail($item->getThumbnail(), $newItem);
 
             // save icon
@@ -203,7 +191,8 @@ class ContentLoader {
      */
     protected function fetchThumbnail($thumbnail, $newItem) {
         if (strlen(trim($thumbnail)) > 0) {
-            $thumbnailAsPng = $this->imageHelper->loadImage($thumbnail, 150, 150);
+            $imageHelper = new \helpers\Image();
+            $thumbnailAsPng = $imageHelper->loadImage($thumbnail, 150, 150);
             if ($thumbnailAsPng !== false) {
                 file_put_contents(
                     'data/thumbnails/' . md5($thumbnail) . '.png',
@@ -235,7 +224,8 @@ class ContentLoader {
                 \F3::get('logger')->log('use last icon: '.$lasticon, \DEBUG);
                 $newItem['icon'] = md5($lasticon) . '.png';
             } else {
-                $iconAsPng = $this->imageHelper->loadImage($icon, 30, 30);
+                $imageHelper = new \helpers\Image();
+                $iconAsPng = $imageHelper->loadImage($icon, 30, 30);
                 if($iconAsPng!==false) {
                     file_put_contents(
                         'data/favicons/' . md5($icon) . '.png',
