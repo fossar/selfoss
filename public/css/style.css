@@ -429,6 +429,10 @@ input {
         .entry-content p {
             margin-bottom:0.6em;
         }
+        
+        .entry-content ol li {
+			list-style:decimal inside;
+		}
 
         .entry-content li {
             margin:0.3em;
