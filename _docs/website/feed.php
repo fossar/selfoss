@@ -5,11 +5,20 @@
 $username = "ssilence";
 $repo_name = "selfoss";
 
+// use cache?
 $cacheFile = "rss.cache";
-if(file_exists($cacheFile) && (time() - filemtime($cacheFile) < 3600)) {
-    header("Content-Type: text/xml");
-    echo file_get_contents($cacheFile);
-    return;
+if(!file_exists($cacheFile))
+    touch($cacheFile);
+$maxTimestampValidity = 5400; // 1.5 hours
+$cacheFileContent = file_get_contents($cacheFile);
+if(strlen($cacheFileContent)>0) {
+    $cacheFileContent = json_decode($cacheFileContent, true);
+    if($cacheFileContent['timestamp'] + $maxTimestampValidity < time()) {
+        unlink($cacheFile);
+    } else {
+        header("Content-Type: application/xml;");
+        die($cacheFileContent['feed']);
+    }
 }
 
 function status_ok($curl) {
@@ -22,13 +31,14 @@ $list_url = $repo_url."/git/refs/tags/";
 
 $curl = curl_init();
 curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($curl, CURLOPT_USERAGENT, 'selfoss.aditu.de/feed.php (tobias.zeising@aditu.de)');
 
 curl_setopt($curl, CURLOPT_URL, $repo_url);
 $response = curl_exec($curl);
 
 if(!status_ok($curl)) {
     header("HTTP/1.1 404 Not Found");
-    exit("Repository doesn't exist or is private.");
+    exit("Repository doesn't exist or is private." . $response);
 }
 
 $repo = json_decode($response, true);
@@ -102,7 +112,10 @@ echo '<?xml version="1.0" encoding="utf-8"?>'; ?>
     $content = ob_get_contents();
     ob_end_clean();
     header("Content-Type: text/xml");
-    unlink($cacheFile);
-    file_put_contents($cacheFile, $content);
+    $cacheFileContent = json_encode(array(
+        "timestamp" => time(),
+        "feed" => $content
+    ));
+    file_put_contents($cacheFile, $cacheFileContent);
     echo $content;
 ?>
