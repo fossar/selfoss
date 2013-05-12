@@ -7,7 +7,7 @@ html {
  
 body {
     font: lighter 18px/27px 'OpenSans', Arial, sans-serif;
-    background:url(images/bg.gif) repeat;
+    background:url(../images/bg.gif) repeat;
     height: 100%;
     position:relative;
 }
@@ -41,7 +41,7 @@ input {
         position:absolute;
         left:20px;
         top:14px;
-        background:url(images/logo.png);
+        background:url(../images/logo.png);
         width:31px;
         height:37px;
     }
@@ -216,16 +216,16 @@ input {
     }
     
     #nav-settings {
-        background:url(images/nav-sources.png) no-repeat center center #272325;
+        background:url(../images/nav-sources.png) no-repeat center center #272325;
     }
         
     #nav-logout {
-        background:url(images/nav-logout.png) no-repeat center center #272325;
+        background:url(../images/nav-logout.png) no-repeat center center #272325;
         left:85px;
     }    
     
     #nav-login {
-        background:url(images/nav-login.png) no-repeat center center #272325;
+        background:url(../images/nav-login.png) no-repeat center center #272325;
         width:140px;
     }
     
@@ -292,11 +292,11 @@ input {
     }
     
     #search-remove {
-        background:url(images/remove.png) no-repeat center center;
+        background:url(../images/remove.png) no-repeat center center;
     }
     
     #search-button {
-        background:url(images/search.png) no-repeat center center;
+        background:url(../images/search.png) no-repeat center center;
         left:305px;
     }
     
@@ -314,7 +314,7 @@ input {
         padding-left:5px;
         padding-right:15px;
         font-size:0.85em;
-        background: url(images/remove-small.png) no-repeat right center #3d6d69;
+        background: url(../images/remove-small.png) no-repeat right center #3d6d69;
         border-right:6px solid #3d6d69;
         -webkit-border-top-right-radius: 4px;
         -webkit-border-bottom-right-radius: 4px;
@@ -338,7 +338,7 @@ input {
     }
 
     #content.loading {
-        background:url(images/ajax-loader-big.gif) center center no-repeat;
+        background:url(../images/ajax-loader-big.gif) center center no-repeat;
         min-height:90%
     }
 
@@ -502,28 +502,28 @@ input {
         }
         
         .entry-toolbar .entry-starr {
-            background-image:url(images/unstarred.png);
+            background-image:url(../images/unstarred.png);
         }
         
         .entry-toolbar .entry-starr.active {
-            background-image:url(images/starred.png);
+            background-image:url(../images/starred.png);
         }
         
         .entry-toolbar .entry-unread {
-            background-image:url(images/read.png);
+            background-image:url(../images/read.png);
         }
         
         .entry-toolbar .entry-unread.active {
-            background-image:url(images/unread.png);
+            background-image:url(../images/unread.png);
         }
         
         .entry-toolbar .entry-loadimages {
             display:none;
-            background-image:url(images/arrow-down.png);
+            background-image:url(../images/arrow-down.png);
         }
         
         .entry-newwindow {
-            background-image:url(images/open.png);
+            background-image:url(../images/open.png);
         }
         
         .entry-toolbar .entry-sharegoogle {
@@ -533,26 +533,26 @@ input {
         }
         
         .entry-sharegoogle {
-            background-image:url(images/googleplus.png);
+            background-image:url(../images/googleplus.png);
         }
         
         .entry-smartphone-share li.entry-sharetwitter,
         .entry-toolbar li.entry-sharetwitter {
-            background-image:url(images/twitter.png);
+            background-image:url(../images/twitter.png);
             background-size:16px 12px;
         }
         
         .entry-sharefacebook {
-            background-image:url(images/facebook.png);
+            background-image:url(../images/facebook.png);
         }
         
         .entry-sharepocket {
-            background-image:url(images/pocket.png);
+            background-image:url(../images/pocket.png);
         }
     
         .entry-smartphone-share li.entry-shareemail,
         .entry-toolbar li.entry-shareemail {
-            background-image:url(images/mail.png);
+            background-image:url(../images/mail.png);
             background-size:16px 10px;
         }
         
@@ -565,7 +565,7 @@ input {
             left:100%;
             top:0;
             margin-left:-60px;
-            background:url(images/close.png) center center no-repeat;
+            background:url(../images/close.png) center center no-repeat;
             background-size: 28px 28px;
         }
         
@@ -585,7 +585,7 @@ input {
         }
         
         .stream-more.loading {
-            background:url(images/ajax-loader-big.gif) center center no-repeat;
+            background:url(../images/ajax-loader-big.gif) center center no-repeat;
         }
         
         .stream-more.loading span {
@@ -653,7 +653,7 @@ input {
     
 .source-edit-delete.loadi1ng,
 .source-action.loading {
-    background:url(images/ajax-loader.gif) right center no-repeat;
+    background:url(../images/ajax-loader.gif) right center no-repeat;
     padding-right:25px;
 }
     
@@ -716,7 +716,7 @@ input {
 }
 
     #login h1 {
-        background:url(images/logo.png) left center no-repeat;
+        background:url(../images/logo.png) left center no-repeat;
         font-weight:600;
         padding-top:10px;
         padding-left:40px;
@@ -753,7 +753,7 @@ input {
 }
 
     #opml h1 {
-        background:url(images/logo.png) left center no-repeat;
+        background:url(../images/logo.png) left center no-repeat;
         font-family:'OpenSansSemibold', Arial, sans-serif;
         padding-top:10px;
         padding-left:40px;
@@ -851,7 +851,7 @@ body.publicmode.notloggedin .entry-unread {
         border-radius:0px;
         /*border-top:1px solid #ccc;*/
         border:0;
-        background:url(images/entry-bg.png) bottom repeat-x #fff;
+        background:url(../images/entry-bg.png) bottom repeat-x #fff;
     }
     
     .source-showparams,
@@ -996,7 +996,7 @@ body.publicmode.notloggedin .entry-unread {
             left:50%;
             top:5px;
             margin-left:-48px;
-            background:url(images/nav-mobile-logo.png) no-repeat;
+            background:url(../images/nav-mobile-logo.png) no-repeat;
             background-size:96px 40px;
         }
 
@@ -1007,7 +1007,7 @@ body.publicmode.notloggedin .entry-unread {
             left:100%;
             top:10px;
             margin-left:-48px;
-            background:url(images/nav-mobile-settings.png) no-repeat;
+            background:url(../images/nav-mobile-settings.png) no-repeat;
             background-size:29px 29px;
         }
         
