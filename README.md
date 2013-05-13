@@ -12,7 +12,7 @@ INSTALLATION
 
 1. Upload all files of this folder (IMPORTANT: also upload the invisible .htaccess files)
 2. Make the directories data/cache, data/favicons, data/logs, data/thumbnails, data/sqlite and public/ writeable
-3. Insert database access data in config.ini (see below -- you have not to change anything if you would like to use sqlite)
+3. Insert database access data in config.ini (see below -- you don't have to change anything if you want to use sqlite)
 3. You don't have to install the database, it will be created automatically
 4. Create cronjob for updating feeds and point it to http://yourselfossurl.com/update via wget or curl. You can also execute the update.php from commandline.
 
