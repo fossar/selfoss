@@ -69,7 +69,7 @@ selfoss.events.sources = function() {
                 // show saved text
                 parent.find('.source-showparams').addClass('saved').html($('#lang').data('source_saved'));
                 window.setTimeout(function() {
-                    parent.find('.source-showparams').removeClass('saved').html('edit');
+                    parent.find('.source-showparams').removeClass('saved').html($('#lang').data('source_edit'));
                 }, 10000);
                 
                 // hide input form
