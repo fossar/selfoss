@@ -57,6 +57,7 @@ Version 2.8-SNAPSHOT
 * replace file_get_content for icon fetching with curl based version for prevent allow_url_fopen problems
 * update fat free php framework version 3.0.8
 * new configuration parameter for default readability api key
+* new configuration parameter for allowing unauthorized access for the update job
 
 Version 2.7
 * new spout for instapaper (thanks a lot to janeczku)
