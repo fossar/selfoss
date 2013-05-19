@@ -297,7 +297,7 @@ class Template extends View {
 								if ($match[3]) {
 									// Process attributes
 									preg_match_all(
-										'/\b(\w+)\h*=\h*'.
+										'/\b([\w-]+)\h*=\h*'.
 										'(?:"(.+?)"|\'(.+?)\')/s',
 										$match[3],$attr,PREG_SET_ORDER);
 									foreach ($attr as $kv)
@@ -315,7 +315,7 @@ class Template extends View {
 						}
 						else {
 							// Text node
-							$tmp.=$text[$ptr];
+							$tmp.=substr($text,$ptr,1);
 							$ptr++;
 						}
 					if (strlen($tmp))
