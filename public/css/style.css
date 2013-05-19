@@ -549,6 +549,10 @@ input {
         .entry-sharepocket {
             background-image:url(images/pocket.png);
         }
+
+        .entry-sharereadability {
+            background-image:url(images/readability.png);
+        }
     
         .entry-smartphone-share li.entry-shareemail,
         .entry-toolbar li.entry-shareemail {
