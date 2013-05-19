@@ -68,8 +68,8 @@ class readability extends feed {
             "title"      => "Readability API Key",
             "type"       => "text",
             "default"    => "",
-            "required"   => true,
-            "validation" => array("notempty")
+            "required"   => false,
+            "validation" => array()
         )
     );
 
@@ -90,6 +90,9 @@ class readability extends feed {
      */
     public function load($params) {
         $this->apiKey = $params['api'];
+        if(strlen(trim($this->apiKey))==0)
+            $this->apiKey = \F3::get('readability');
+        
         parent::load(array( 'url' => $params['url']) );
     }
     
