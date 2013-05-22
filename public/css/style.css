@@ -550,6 +550,10 @@ input {
             background-image:url(images/pocket.png);
         }
     
+        .entry-sharedelicious {
+            background-image:url(images/delicious.png);
+        }
+
         .entry-smartphone-share li.entry-shareemail,
         .entry-toolbar li.entry-shareemail {
             background-image:url(images/mail.png);

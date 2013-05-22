@@ -54,6 +54,15 @@ selfoss.events.entriesToolbar = function(parent) {
         return false;
     });
   
+    // share with delicious
+    parent.find('.entry-sharedelicious').unbind('click').click(function(e) {
+        var href = $(this).parents(".entry").children("a").eq(0).attr("href");
+        var title = $(this).parents(".entry").children(".entry-title").html();
+        window.open("https://delicious.com/save?url="+encodeURIComponent(href)+"&title="+encodeURIComponent(title));
+        e.preventDefault();
+        return false;
+    });
+
     // share with e-mail
     parent.find('.entry-shareemail').unbind('click').click(function(e) {
         document.location.href = "mailto:?body="+encodeURIComponent($(this).parents(".entry").children("a").eq(0).attr("href"))+"&subject="+encodeURIComponent($(this).parents(".entry").children(".entry-title").html());
