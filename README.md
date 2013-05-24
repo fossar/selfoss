@@ -57,6 +57,7 @@ Version 2.8-SNAPSHOT
 * update fat free php framework version 3.0.8
 * new configuration parameter for default readability api key
 * new configuration parameter for allowing unauthorized access for the update job
+* new delicious support (thanks a lot to bbeardsley)
 
 Version 2.7
 * new spout for instapaper (thanks a lot to janeczku)
