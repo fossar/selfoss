@@ -118,7 +118,7 @@ class Index extends BaseController {
                 else if(!isset($_POST['password']))
                     $this->view->error = 'no password given';
                 else {
-                    if(\F3::get('auth')->login($_POST['username'], $_POST['password'])===false)
+                    if(\F3::get('auth')->login($_POST['username'], $_POST['password'], isset($_POST['rememberMe']))===false)
                         $this->view->error = 'invalid username/password';
                 }
             }
