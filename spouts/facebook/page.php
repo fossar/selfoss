@@ -88,9 +88,13 @@ class page extends \spouts\rss\feed {
      * @param mixed $params params for the source
      */
     public function getXmlUrl($params) {
-        $content = @file_get_contents("https://graph.facebook.com/" . urlencode($params['user']));
+        $protocol = "http://";
+        if (version_compare(PHP_VERSION, "5.3.0") >= 0 && defined("OPENSSL_VERSION_NUMBER")) {
+            $protocol = "https://";
+        }
+        $content = @file_get_contents($protocol . "graph.facebook.com/" . urlencode($params['user']));
         $data = json_decode($content, TRUE);
 
-        return "https://www.facebook.com/feeds/page.php?format=atom10&id=" . $data['id'];
+        return $protocol . "www.facebook.com/feeds/page.php?format=atom10&id=" . $data['id'];
     }
 }
