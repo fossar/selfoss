@@ -33,14 +33,21 @@ class Authentication {
             session_start();
         if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
             $this->loggedin = true;
-        } else if (isset($_COOKIE['rememberMe']) && $_COOKIE['rememberMe'] == hash("sha512", \F3::get('salt') . \F3::get('password') . \F3::get('salt') . \F3::get('username'))) {
+        } else if (isset($_COOKIE['rememberMe']) 
+                && $_COOKIE['rememberMe'] == hash("sha512", \F3::get('salt') 
+                        . \F3::get('password') 
+                        . \F3::get('salt') 
+                        . \F3::get('username'))) {
             $this->loggedin = true;
         }
 
         $this->enabled = strlen(trim(\F3::get('username'))) != 0 && strlen(trim(\F3::get('password'))) != 0;
 
         // autologin if request contains unsername and password
-        if ($this->enabled === true && $this->loggedin === false && isset($_REQUEST['username']) && isset($_REQUEST['password'])) {
+        if ($this->enabled === true 
+                && $this->loggedin === false 
+                && isset($_REQUEST['username']) 
+                && isset($_REQUEST['password'])) {
             $this->login($_REQUEST['username'], $_REQUEST['password'], isset($_REQUEST['rememberMe']));
         }
     }
@@ -76,12 +83,17 @@ class Authentication {
      */
     public function login($username, $password, $rememberMe = false) {
         if ($this->enabled()) {
-            if (
-                    $username == \F3::get('username') && hash("sha512", \F3::get('salt') . $password) == \F3::get('password')
-            ) {
+            if ($username == \F3::get('username') 
+                    && hash("sha512", \F3::get('salt') . $password) == \F3::get('password')) {
+                
+                //if 'remember me' checkbox is checked, set cookie
                 if(isset($rememberMe) && $rememberMe === true) {
-                    $this->set_cookie('rememberMe', hash("sha512", \F3::get('salt') . \F3::get('password') . \F3::get('salt') . \F3::get('username')));
+                    $this->set_cookie('rememberMe', hash("sha512", \F3::get('salt') 
+                            . \F3::get('password') 
+                            . \F3::get('salt') 
+                            . \F3::get('username')));
                 }
+                
                 $this->loggedin = true;
                 $_SESSION['loggedin'] = true;
                 return true;
@@ -113,6 +125,13 @@ class Authentication {
         session_destroy();
     }
 
+    /**
+     * set or remove cookie.
+     * if value is missing or empty, cookie will be removed
+     * 
+     * @param type $name
+     * @param type $value
+     */
     public function set_cookie($name, $value = '') {
         if ($value == '')
             $expires = time() - 6000;
@@ -121,5 +140,4 @@ class Authentication {
         
         setcookie($name, $value, $expires);
     }
-
 }
