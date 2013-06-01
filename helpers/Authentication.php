@@ -30,8 +30,16 @@ class Authentication {
      * start session and check login
      */
     public function __construct() {
+        
+        // check for SSL proxy and special cookie options
+    	if(isset($_SERVER['HTTP_X_FORWARDED_SERVER'])) {
+  			// set cookie details (http://php.net/manual/en/function.setcookie.php)
+  			// expire, path, domain, secure, httponly
+        	session_set_cookie_params((3600*24*30), '/'.$_SERVER['SERVER_NAME'].preg_replace('/\/[^\/]+$/','',$_SERVER['PHP_SELF']).'/', $_SERVER['HTTP_X_FORWARDED_SERVER'], "true", "true");
+  		} else {
         // session cookie will be valid for one month
         session_set_cookie_params((3600*24*30), "/");
+        }
         
         session_name();
         if(session_id()=="")
