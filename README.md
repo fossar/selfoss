@@ -58,6 +58,7 @@ Version 2.8-SNAPSHOT
 * new configuration parameter for default readability api key
 * new configuration parameter for allowing unauthorized access for the update job
 * new delicious support (thanks a lot to bbeardsley)
+* support ssl proxy (thanks a lot to zajad)
 
 Version 2.7
 * new spout for instapaper (thanks a lot to janeczku)
