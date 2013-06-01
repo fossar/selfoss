@@ -59,6 +59,7 @@ Version 2.8-SNAPSHOT
 * new configuration parameter for allowing unauthorized access for the update job
 * new delicious support (thanks a lot to bbeardsley)
 * support ssl proxy (thanks a lot to zajad)
+* new readability support (thanks a lot to hayk)
 
 Version 2.7
 * new spout for instapaper (thanks a lot to janeczku)
