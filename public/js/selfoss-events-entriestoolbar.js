@@ -63,6 +63,13 @@ selfoss.events.entriesToolbar = function(parent) {
         return false;
     });
 
+    // share with readability
+    parent.find('.entry-sharereadability').unbind('click').click(function(e) {
+        window.open(" http://www.readability.com/save?url="+encodeURIComponent($(this).parents(".entry").children("a").eq(0).attr("href")));
+        e.preventDefault();
+        return false;
+    });
+
     // share with e-mail
     parent.find('.entry-shareemail').unbind('click').click(function(e) {
         document.location.href = "mailto:?body="+encodeURIComponent($(this).parents(".entry").children("a").eq(0).attr("href"))+"&subject="+encodeURIComponent($(this).parents(".entry").children(".entry-title").html());
