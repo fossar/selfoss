@@ -32,7 +32,10 @@ class Items extends \daos\mysql\Items {
 
         // only single
         else if(isset($options['single']) && is_numeric($options['single']))
+        {
             $where .= ' AND items.id = :single ';
+            $params['single'] = $options['single'];
+        }
 
         // search
         if(isset($options['search']) && strlen($options['search'])>0) {
@@ -65,7 +68,7 @@ class Items extends \daos\mysql\Items {
 
         // only titles
         $content = ', content ';
-        if(isset($options['content']) && $options['content']=='false')
+        if(isset($options['content']) && $options['content']==false)
             $content = '';
 
         // get items from database
