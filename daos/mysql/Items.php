@@ -427,4 +427,24 @@ class Items extends Database {
         return $res[0]['amount'];
     }
 
+    /**
+     * returns a list of ids of unread entries in database per source
+     *
+     * @return array array with ids of entries in database per tag
+     */
+    public function unreadEntriesForSource($sourceid) {
+        $res = \F3::get('db')->exec(
+            'SELECT id FROM items WHERE source=:source AND unread=1',
+            array(':source' => $sourceid));
+        $ids = array();
+        if(count($res) > 0)
+        {
+            foreach($res as $data)
+            {
+                $ids[] = (int) $data['id'];
+            }
+        }
+        return $ids;
+    }
+
 }
