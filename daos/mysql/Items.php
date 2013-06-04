@@ -171,10 +171,14 @@ class Items extends Database {
         // only starred
         if(isset($options['type']) && $options['type']=='starred')
             $where .= ' AND starred=1 ';
-            
+
         // only unread
         else if(isset($options['type']) && $options['type']=='unread')
             $where .= ' AND unread=1 ';
+
+        // only single
+        else if(isset($options['single']) && is_numeric($options['single']))
+            $where .= ' AND items.id = :single ';
         
         // search
         if(isset($options['search']) && strlen($options['search'])>0) {
@@ -213,9 +217,14 @@ class Items extends Database {
                    LIMIT ' . ($options['offset']+$options['items']) . ', 1', $params);
         $this->hasMore = count($result);
 
+        // only titles
+        $content = ', content ';
+        if(isset($options['content']) && $options['content']=='false')
+            $content = '';
+
         // get items from database
         return \F3::get('db')->exec('SELECT 
-                    items.id, datetime, items.title AS title, content, unread, starred, source, thumbnail, icon, uid, link, sources.title as sourcetitle, sources.tags as tags
+                    items.id, datetime, items.title AS title'.$content.', unread, starred, source, thumbnail, icon, uid, link, sources.title as sourcetitle, sources.tags as tags
                    FROM items, sources 
                    WHERE items.source=sources.id '.$where.' 
                    ORDER BY items.datetime DESC 
