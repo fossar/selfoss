@@ -466,6 +466,10 @@ input {
         text-decoration:none;
     }
     
+    .entry-link {
+        display:none;
+    }
+
     .entry-source,
     .entry-separator,
     .entry-datetime {
