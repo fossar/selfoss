@@ -60,6 +60,7 @@ Version 2.8-SNAPSHOT
 * new delicious support (thanks a lot to bbeardsley)
 * support ssl proxy (thanks a lot to zajad)
 * new readability support (thanks a lot to hayk)
+* pass original url to external sites except for opening the anonymized url (thanks a lot to bbeardsley)
 
 Version 2.7
 * new spout for instapaper (thanks a lot to janeczku)
