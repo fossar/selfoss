@@ -74,15 +74,16 @@ class Rss extends BaseController {
 
             $feedWriter->addItem($newItem);
             $lastid = $item['id'];
+         
+            // mark as read
+            if(\F3::get('rss_mark_as_read')==1 && $lastid!=-1)
+                $itemDao->mark($lastid);
         }
         
         if($newestEntryDate===false)
             $newestEntryDate = date(\DATE_ATOM , time());
         $feedWriter->setChannelElement('updated', $newestEntryDate);
-        
-        // mark as read
-        if(\F3::get('rss_mark_as_read')==1 && $lastid!=-1)
-            $itemDao->mark($lastid);
+
         
         $feedWriter->genarateFeed();
     }
