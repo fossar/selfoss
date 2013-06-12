@@ -71,12 +71,12 @@
         <hr>
 
         <div id="nav-tags-wrapper">
-        <h2 id="nav-tags-title"><?PHP echo \F3::get('lang_tags') ?></h2>
+        <h2 id="nav-tags-title" class="nav-tags-expanded"><?PHP echo \F3::get('lang_tags') ?></h2>
         <ul id="nav-tags">
             <li class="active nav-tags-all"><?PHP echo \F3::get('lang_alltags')?></li>
             <?PHP echo $this->tags; ?>
         </ul>
-        <h2 id="nav-sources-title"><?PHP echo \F3::get('lang_sources') ?></h2>
+        <h2 id="nav-sources-title" class="nav-sources-collapsed"><?PHP echo \F3::get('lang_sources') ?></h2>
         <ul id="nav-sources">
             <?PHP echo $this->sources; ?>
         </div>
