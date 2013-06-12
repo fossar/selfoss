@@ -118,6 +118,16 @@ input {
         overflow:hidden;
     }
     
+        .nav-tags-collapsed {
+            padding-left: 20px;
+            background: url(images/nav-collapsed.png) center left no-repeat;
+        }
+        
+        .nav-tags-expanded {
+            padding-left: 20px;
+            background: url(images/nav-expanded.png) center left no-repeat;
+        }
+        
         #nav-tags li {
             position:relative;
             color:#b9b9b9;
@@ -156,6 +166,16 @@ input {
         overflow:hidden;
     }
     
+        .nav-sources-collapsed {
+            padding-left: 20px;
+            background: url(images/nav-collapsed.png) center left no-repeat;
+        }
+        
+        .nav-sources-expanded {
+            padding-left: 20px;
+            background: url(images/nav-expanded.png) center left no-repeat;
+        }
+        
         #nav-sources {
             display:none;
         }
