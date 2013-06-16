@@ -197,7 +197,7 @@ class Index extends BaseController {
      * @return html with items
      */
     private function loadItems($options, $tags) {
-        $tagColors = $this->convertTagsToAssocArray($tags);
+        $tagColors = \helpers\Tags::convertToAssocArray($tags);
         
         $itemDao = new \daos\Items();
         $itemsHtml = "";
@@ -224,19 +224,5 @@ class Index extends BaseController {
         }
         
         return $itemsHtml;
-    }
-    
-    
-    /**
-     * return tag => color array
-     *
-     * @return tag color array
-     * @param array $tags
-     */
-    private function convertTagsToAssocArray($tags) {
-        $assocTags = array();
-        foreach($tags as $tag)
-            $assocTags[$tag['tag']] = $tag['color'];
-        return $assocTags;
     }
 }

@@ -22,7 +22,7 @@ class Sources extends BaseController {
         // load tags
         $tagsDao = new \daos\Tags();
         $tags = $tagsDao->get();
-        $tagColors = $this->convertTagsToAssocArray($tags);
+        $tagColors = \helpers\Tags::convertToAssocArray($tags);
 
         // get available spouts
         $spoutLoader = new \helpers\SpoutLoader();
@@ -288,20 +288,5 @@ class Sources extends BaseController {
         }
         
         $this->view->jsonSuccess($result);
-    }
-    
-    
-    /**
-     * return tag => color array
-     *
-     * @return tag color array
-     * @param array $tags
-     * @todo Merge with "Index" controller?
-     */
-    private function convertTagsToAssocArray($tags) {
-        $assocTags = array();
-        foreach($tags as $tag)
-            $assocTags[$tag['tag']] = $tag['color'];
-        return $assocTags;
     }
 }
