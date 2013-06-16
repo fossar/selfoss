@@ -19,6 +19,11 @@ class Sources extends BaseController {
      * @return void
      */
     public function show() {
+        // load tags
+        $tagsDao = new \daos\Tags();
+        $tags = $tagsDao->get();
+        $tagColors = $this->convertTagsToAssocArray($tags);
+
         // get available spouts
         $spoutLoader = new \helpers\SpoutLoader();
         $this->view->spouts = $spoutLoader->all();
@@ -34,6 +39,17 @@ class Sources extends BaseController {
         $i=0;
         
         foreach($sourcesDao->get() as $source) {
+
+            // parse tags and assign tag colors
+            // TODO: Merge tag code with loadItems() code from "Index" controller?
+            $sourcesTags = explode(",",$source['tags']);
+            $source['colorful_tags'] = array();
+            foreach($sourcesTags as $tag) {
+                $tag = trim($tag);
+                if(strlen($tag)>0 && isset($tagColors[$tag]))
+                    $source['colorful_tags'][$tag] = $tagColors[$tag];
+            }
+
             $this->view->source = $source;
             $this->view->source['icon'] = $itemDao->getLastIcon($source['id']);
             $sourcesHtml .= $this->view->render('templates/source.phtml');
@@ -272,5 +288,20 @@ class Sources extends BaseController {
         }
         
         $this->view->jsonSuccess($result);
+    }
+    
+    
+    /**
+     * return tag => color array
+     *
+     * @return tag color array
+     * @param array $tags
+     * @todo Merge with "Index" controller?
+     */
+    private function convertTagsToAssocArray($tags) {
+        $assocTags = array();
+        foreach($tags as $tag)
+            $assocTags[$tag['tag']] = $tag['color'];
+        return $assocTags;
     }
 }

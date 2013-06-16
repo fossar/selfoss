@@ -11,6 +11,12 @@
     
     <div class="source-title"><?PHP echo isset($this->source) ? $this->source['title'] : \F3::get('lang_source_new') ; ?></div>
     
+    <span class="source-tags">
+        <?PHP foreach($this->source['colorful_tags'] as $tag => $color) : ?>
+            <span class="source-tags-tag" style="background-color:<?PHP echo $color; ?>"><?PHP echo $tag; ?></span>
+        <?PHP endforeach; ?>
+    </span>
+    
     <div class="source-edit-delete"><span class="source-showparams"><?PHP echo \F3::get('lang_source_edit')?></span> &bull; <span class="source-delete"><?PHP echo \F3::get('lang_source_delete')?></span></div>
 
     <!-- edit -->
