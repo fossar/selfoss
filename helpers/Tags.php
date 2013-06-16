@@ -24,4 +24,22 @@ class Tags {
         return $assocTags;
     }
 
+    /**
+     * parse tags and assign tag colors
+     *
+     * @return tag array with colors
+     * @param string $value tags string
+     * @param array $tags tag => color array
+     */
+    public static function parseAndAssignTagColors($value, $tagColors) {
+        $tags = explode(",",$value);
+        $return = array();
+        foreach($tags as $tag) {
+            $tag = trim($tag);
+            if(strlen($tag)>0 && isset($tagColors[$tag]))
+                $return[$tag] = $tagColors[$tag];
+        }
+        return $return;
+    }
+
 }

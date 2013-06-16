@@ -41,14 +41,7 @@ class Sources extends BaseController {
         foreach($sourcesDao->get() as $source) {
 
             // parse tags and assign tag colors
-            // TODO: Merge tag code with loadItems() code from "Index" controller?
-            $sourcesTags = explode(",",$source['tags']);
-            $source['colorful_tags'] = array();
-            foreach($sourcesTags as $tag) {
-                $tag = trim($tag);
-                if(strlen($tag)>0 && isset($tagColors[$tag]))
-                    $source['colorful_tags'][$tag] = $tagColors[$tag];
-            }
+            $source['colorful_tags'] = \helpers\Tags::parseAndAssignTagColors($source['tags'], $tagColors);
 
             $this->view->source = $source;
             $this->view->source['icon'] = $itemDao->getLastIcon($source['id']);
