@@ -36,7 +36,6 @@ class Sources extends BaseController {
              '<a class="source-export" href="opmlexport">' . \F3::get('lang_source_export') . '</a>' .
              '<a class="source-opml" href="opml">' . \F3::get('lang_source_opml');
         $sourcesHtml = '</a>';
-        $i=0;
         
         foreach($sourcesDao->get() as $source) {
 
