@@ -16,7 +16,7 @@ if (php_sapi_name() == 'cli-server') {
     }
 
     //redirects to proper location for favicons
-    if ( preg_match( '/favicons/', $_SERVER["REQUEST_URI"] ) ) {
+    if ( preg_match( '/(favicons|thumbnails)/', $_SERVER["REQUEST_URI"] ) ) {
       header( "Location: /data".$_SERVER["REQUEST_URI"] );
       exit;
     }
