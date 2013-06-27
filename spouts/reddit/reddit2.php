@@ -218,6 +218,10 @@ class reddit2 extends \spouts\spout {
      */
     public function getContent() {
         if ( $this->items!==false && $this->valid() ) {
+            $text = @current( $this->items )->data->selftext_html;
+            if (!empty($text)) {
+                return $text;
+            }
 
             if ( preg_match( '/\.(?:gif|jpg|png|svg)/i', $this->getHtmlUrl() ) ) {
                 return "<img src=\"". $this->getHtmlUrl() ."\" />";
@@ -243,7 +247,7 @@ class reddit2 extends \spouts\spout {
                     return $contentFromInstapaper;
                 }
             }
-            return @current( $this->items )->data->selftext_html;
+            return @current( $this->items )->data->url;
         }
         return false;
     }
