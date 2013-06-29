@@ -1,4 +1,3 @@
-            return $imageHelper->getFaviconUrl();
 <?php
 
 namespace spouts\reddit;
