@@ -47,6 +47,13 @@ selfoss.events.entriesToolbar = function(parent) {
         return false;
     });
     
+    // share with diigo
+    parent.find('.entry-sharediigo').unbind('click').click(function(e) {
+    	window.open("http://www.diigo.com/post?url=" + encodeURIComponent($(this).parents(".entry").children("a").eq(0).attr("href")) + "&title=" + encodeURIComponent($(this).parents(".entry").children(".entry-title").html()));
+    	e.preventDefault();
+    	return false;
+    });    
+    
     // share with pocket
     parent.find('.entry-sharepocket').unbind('click').click(function(e) {
         window.open(" https://getpocket.com/save?url="+encodeURIComponent($(this).parents(".entry").children(".entry-link").eq(0).attr("href"))+"&title="+encodeURIComponent($(this).parents(".entry").children(".entry-title").html()));

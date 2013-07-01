@@ -167,15 +167,19 @@ class Items extends Database {
     public function get($options = array()) {
         $params = array();
         $where = '';
-        
+        $order = 'DESC';
+
         // only starred
         if(isset($options['type']) && $options['type']=='starred')
             $where .= ' AND starred=1 ';
             
         // only unread
-        else if(isset($options['type']) && $options['type']=='unread')
+        else if(isset($options['type']) && $options['type']=='unread') {
             $where .= ' AND unread=1 ';
-        
+            if (\F3::get('reverse_unread_order')==1)
+                $order = 'ASC';
+        }
+
         // search
         if(isset($options['search']) && strlen($options['search'])>0) {
             $search = str_replace(" ", "%", trim($options['search']));
@@ -218,7 +222,7 @@ class Items extends Database {
                     items.id, datetime, items.title AS title, content, unread, starred, source, thumbnail, icon, uid, link, sources.title as sourcetitle, sources.tags as tags
                    FROM items, sources 
                    WHERE items.source=sources.id '.$where.' 
-                   ORDER BY items.datetime DESC 
+                   ORDER BY items.datetime '.$order.' 
                    LIMIT ' . $options['offset'] . ', ' . $options['items'], $params);
     }
     
