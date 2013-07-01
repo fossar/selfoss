@@ -570,6 +570,10 @@ input {
             background-image:url(images/facebook.png);
         }
         
+        .entry-sharediigo {
+			background-image:url(images/diigo.png);
+		}
+		        
         .entry-sharepocket {
             background-image:url(images/pocket.png);
         }
