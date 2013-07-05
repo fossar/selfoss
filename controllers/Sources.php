@@ -19,6 +19,11 @@ class Sources extends BaseController {
      * @return void
      */
     public function show() {
+        // load tags
+        $tagsDao = new \daos\Tags();
+        $tags = $tagsDao->get();
+        $tagColors = \helpers\Tags::convertToAssocArray($tags);
+
         // get available spouts
         $spoutLoader = new \helpers\SpoutLoader();
         $this->view->spouts = $spoutLoader->all();
@@ -31,9 +36,12 @@ class Sources extends BaseController {
              '<a class="source-export" href="opmlexport">' . \F3::get('lang_source_export') . '</a>' .
              '<a class="source-opml" href="opml">' . \F3::get('lang_source_opml');
         $sourcesHtml = '</a>';
-        $i=0;
         
         foreach($sourcesDao->get() as $source) {
+
+            // parse tags and assign tag colors
+            $source['colorful_tags'] = \helpers\Tags::parseAndAssignTagColors($source['tags'], $tagColors);
+
             $this->view->source = $source;
             $this->view->source['icon'] = $itemDao->getLastIcon($source['id']);
             $sourcesHtml .= $this->view->render('templates/source.phtml');

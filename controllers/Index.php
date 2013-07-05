@@ -197,20 +197,14 @@ class Index extends BaseController {
      * @return html with items
      */
     private function loadItems($options, $tags) {
-        $tagColors = $this->convertTagsToAssocArray($tags);
+        $tagColors = \helpers\Tags::convertToAssocArray($tags);
         
         $itemDao = new \daos\Items();
         $itemsHtml = "";
         foreach($itemDao->get($options) as $item) {
         
             // parse tags and assign tag colors
-            $itemsTags = explode(",",$item['tags']);
-            $item['tags'] = array();
-            foreach($itemsTags as $tag) {
-                $tag = trim($tag);
-                if(strlen($tag)>0 && isset($tagColors[$tag]))
-                    $item['tags'][$tag] = $tagColors[$tag];
-            }
+            $item['tags'] = \helpers\Tags::parseAndAssignTagColors($item['tags'], $tagColors);
             
             $this->view->item = $item;
             $itemsHtml .= $this->view->render('templates/item.phtml');
@@ -224,19 +218,5 @@ class Index extends BaseController {
         }
         
         return $itemsHtml;
-    }
-    
-    
-    /**
-     * return tag => color array
-     *
-     * @return tag color array
-     * @param array $tags
-     */
-    private function convertTagsToAssocArray($tags) {
-        $assocTags = array();
-        foreach($tags as $tag)
-            $assocTags[$tag['tag']] = $tag['color'];
-        return $assocTags;
     }
 }

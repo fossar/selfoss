@@ -78,6 +78,9 @@ selfoss.events.sources = function() {
                 // update title
                 parent.find('.source-title').html(parent.find("input[name='title']").val());
                 
+                // update tags
+                parent.find('.source-tags').html("<span class=\"source-tags-tag\" style=\"color:white;background-color:red;\">&hellip;</span>"); //TODO: Find a way to show tags with colors!
+                
                 // show all links for new items
                 parent.removeClass('source-new');
                 
@@ -165,4 +168,7 @@ selfoss.events.sources = function() {
             }
         });
     });
+
+    // set color of all tags by background color
+    $('.source-tags-tag').colorByBrightness();
 };
