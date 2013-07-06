@@ -38,6 +38,7 @@ $f3->set('js', array(
     'public/js/color-by-brightness.js',
     'public/js/spectrum.js',
     'public/js/jquery.hotkeys.js',
+    'public/js/jquery.hammer-1.0.0.min.js',
     'public/js/selfoss-base.js',
     'public/js/selfoss-events.js',
     'public/js/selfoss-events-navigation.js',

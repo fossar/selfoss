@@ -82,7 +82,7 @@ selfoss.events.entriesToolbar = function(parent) {
         var fullscreen = $('#fullscreen-entry');
         var scrollTop = $(window).scrollTop();
         // set events for closing fullscreen
-        fullscreen.find('.entry, .entry-close').click(function(e) {
+        fullscreen.find('.entry-close').click(function(e) {
             if(e.target.tagName.toLowerCase()=="a")
                 return;
             $('#content').show();

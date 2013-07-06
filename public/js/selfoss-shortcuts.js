@@ -163,6 +163,18 @@ selfoss.shortcuts = {
             e.preventDefault();
             $('#nav-filter-starred').click();
         });
+
+        //swipe next and previous
+        $('#content, #fullscreen-entry').hammer().on('swipeleft', '.entry', function(e) {
+            selfoss.shortcuts.nextprev('prev', true);
+            e.stopPropagation();
+            e.gesture.preventDefault();
+        });
+        $('#content, #fullscreen-entry').hammer().on('swiperight', '.entry', function(e) {
+            selfoss.shortcuts.nextprev('next', true);
+            e.stopPropagation();
+            e.gesture.preventDefault();
+        });
     },
     
     
