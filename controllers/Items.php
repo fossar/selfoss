@@ -114,8 +114,8 @@ class Items extends BaseController {
             'success' => true
         ));
     }
-    
-    
+
+
     /**
      * returns items as json string
      * json
@@ -127,11 +127,59 @@ class Items extends BaseController {
         $options = array();
         if(count($_GET)>0)
             $options = $_GET;
-        
+
         // get items
         $itemDao = new \daos\Items();
         $items = $itemDao->get($options);
-        
+
+        $this->view->jsonSuccess($items);
+    }
+
+
+    /**
+     * returns a single item as json string
+     * json
+     *
+     * @return void
+     */
+    public function listItem() {
+
+        //get the id
+        if(\F3::get('PARAMS["item"]')!=null)
+            $id = \F3::get('PARAMS["item"]');
+
+        // parse params
+        $options = array();
+        if(count($_GET)>0)
+            $options = $_GET;
+
+        $options['single'] = $id;
+        // get item
+        $itemDao = new \daos\Items();
+        $items = $itemDao->get($options);
+
+        $this->view->jsonSuccess($items);
+    }
+
+
+    /**
+     * returns the items witout the content as json string
+     * json
+     *
+     * @return void
+     */
+    public function listTitles() {
+        // parse params
+        $options = array();
+        if(count($_GET)>0)
+            $options = $_GET;
+
+        // get items without content
+        $options['content'] = false;
+
+        $itemDao = new \daos\Items();
+        $items = $itemDao->get($options);
+
         $this->view->jsonSuccess($items);
     }
     

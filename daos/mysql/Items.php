@@ -171,10 +171,17 @@ class Items extends Database {
         // only starred
         if(isset($options['type']) && $options['type']=='starred')
             $where .= ' AND starred=1 ';
-            
+
         // only unread
         else if(isset($options['type']) && $options['type']=='unread')
             $where .= ' AND unread=1 ';
+
+        // only single
+        else if(isset($options['single']) && is_numeric($options['single']))
+        {
+            $where .= ' AND items.id = :single ';
+            $params['single'] = $options['single'];
+        }
         
         // search
         if(isset($options['search']) && strlen($options['search'])>0) {
@@ -213,9 +220,14 @@ class Items extends Database {
                    LIMIT ' . ($options['offset']+$options['items']) . ', 1', $params);
         $this->hasMore = count($result);
 
+        // only titles
+        $content = ', content ';
+        if(isset($options['content']) && $options['content']==false)
+            $content = '';
+
         // get items from database
         return \F3::get('db')->exec('SELECT 
-                    items.id, datetime, items.title AS title, content, unread, starred, source, thumbnail, icon, uid, link, sources.title as sourcetitle, sources.tags as tags
+                    items.id, datetime, items.title AS title'.$content.', unread, starred, source, thumbnail, icon, uid, link, sources.title as sourcetitle, sources.tags as tags
                    FROM items, sources 
                    WHERE items.source=sources.id '.$where.' 
                    ORDER BY items.datetime DESC 
@@ -413,6 +425,26 @@ class Items extends Database {
             'SELECT count(*) AS amount FROM items WHERE source=:source AND unread=1',
             array(':source' => $sourceid));
         return $res[0]['amount'];
+    }
+
+    /**
+     * returns a list of ids of unread entries in database per source
+     *
+     * @return array array with ids of entries in database per tag
+     */
+    public function unreadEntriesForSource($sourceid) {
+        $res = \F3::get('db')->exec(
+            'SELECT id FROM items WHERE source=:source AND unread=1',
+            array(':source' => $sourceid));
+        $ids = array();
+        if(count($res) > 0)
+        {
+            foreach($res as $data)
+            {
+                $ids[] = (int) $data['id'];
+            }
+        }
+        return $ids;
     }
 
 }

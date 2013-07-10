@@ -73,13 +73,15 @@ $f3->route('GET /update',     'controllers\Index->update');   // text
 
 // only for loggedin users or on public mode
 if($f3->get('auth')->isLoggedin()===true || \F3::get('public')==1) {
-    $f3->route('GET /rss',           'controllers\Rss->rss');           // rss
-    $f3->route('GET /feed',          'controllers\Rss->rss');           // rss
-    $f3->route('GET /items',         'controllers\Items->listItems');   // json
-    $f3->route('GET /tags',          'controllers\Tags->listTags');     // json
-    $f3->route('GET /tagslist',      'controllers\Tags->tagslist');     // html
-    $f3->route('GET /stats',         'controllers\Items->stats');       // json
-    $f3->route('GET /sources/stats', 'controllers\Sources->stats');     // json
+    $f3->route('GET /rss',              'controllers\Rss->rss');            // rss
+    $f3->route('GET /feed',             'controllers\Rss->rss');            // rss
+    $f3->route('GET /titles',           'controllers\Items->listTitles');   // json - Nils Plaschke
+    $f3->route('GET /items',            'controllers\Items->listItems');    // json
+    $f3->route('GET /items/@item',      'controllers\Items->listItem');     // json - Nils Plaschke
+    $f3->route('GET /tags',             'controllers\Tags->listTags');      // json
+    $f3->route('GET /tagslist',         'controllers\Tags->tagslist');      // html
+    $f3->route('GET /stats',            'controllers\Items->stats');        // json
+    $f3->route('GET /sources/stats',    'controllers\Sources->stats');      // json
 }
 
 // only loggedin users

@@ -267,10 +267,10 @@ class Sources extends BaseController {
             $result[] = array(
                 'id'     => $sources[$i]['id'],
                 'title'  => $sources[$i]['title'],
-                'unread' => $itemDao->numberOfUnreadForSource($sources[$i]['id'])
+                'unread' => $itemDao->numberOfUnreadForSource($sources[$i]['id']),
+                'entries' => $itemDao->unreadEntriesForSource($sources[$i]['id'])
             );
         }
-        
         $this->view->jsonSuccess($result);
     }
 }
