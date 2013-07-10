@@ -1195,7 +1195,7 @@ body.publicmode.notloggedin .entry-unread {
                 display:block;
             }
     
-    .entry-share {
+    .entry-toolbar .entry-share {
         display:none;
     }
     
