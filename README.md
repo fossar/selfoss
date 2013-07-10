@@ -61,6 +61,7 @@ Version 2.8-SNAPSHOT
 * support ssl proxy (thanks a lot to zajad)
 * new readability support (thanks a lot to hayk)
 * pass original url to external sites except for opening the anonymized url (thanks a lot to bbeardsley)
+* new finnish translation (thanks a lot to jukper)
 
 Version 2.7
 * new spout for instapaper (thanks a lot to janeczku)
