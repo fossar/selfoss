@@ -969,10 +969,6 @@ body.publicmode.notloggedin .entry-unread {
             display:block;
         }
    
-    .entry-toolbar .entry-newwindow {
-        display:none;
-    }
-
     .entry-content {
         display:none;
         -moz-column-count: 1;
@@ -1194,7 +1190,11 @@ body.publicmode.notloggedin .entry-unread {
             #fullscreen-entry .entry-close {
                 display:block;
             }
-    
+   
+    .entry-toolbar .entry-newwindow {
+        display:none;
+    }
+ 
     .entry-toolbar .entry-share {
         display:none;
     }
