@@ -62,6 +62,7 @@ Version 2.8-SNAPSHOT
 * new readability support (thanks a lot to hayk)
 * pass original url to external sites except for opening the anonymized url (thanks a lot to bbeardsley)
 * new finnish translation (thanks a lot to jukper)
+* new spanish translation (thanks a lot to Matias Perrone)
 
 Version 2.7
 * new spout for instapaper (thanks a lot to janeczku)
