@@ -92,7 +92,7 @@ class Database {
                     CREATE TABLE '.\F3::get('db_prefix').'tags (
                         tag         TEXT NOT NULL,
                         color       VARCHAR(7) NOT NULL
-                    ) DEFAULT CHARSET=utf8;
+                    ) ENGINE = MYISAM DEFAULT CHARSET=utf8;
                 ');
                 
                 if($isNewestSourcesTable===false) {
