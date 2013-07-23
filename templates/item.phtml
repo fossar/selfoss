@@ -12,6 +12,16 @@
     $title = $this->viewHelper->lazyimg($title);
     $content = $this->viewHelper->lazyimg($content);
     $date = $this->viewHelper->dateago($this->item['datetime']);
+    $sharecfg = \F3::get('share');
+    $share = array(
+        "g" => "google",
+        "f" => "facebook",
+        "t" => "twitter",
+        "p" => "pocket",
+        "r" => "readability",
+        "d" => "delicious",
+        "e" => "email"
+    );
 ?>
 <div id="entry<?PHP echo $this->item['id']; ?>"
      class="entry
@@ -57,13 +67,12 @@
         
         <ul class="entry-smartphone-share">
             <li class="entry-newwindow"><?PHP echo \F3::get('lang_open_window')?></li>
-            <li class="entry-sharegoogle entry-share" title="google">google</li>
-            <li class="entry-sharetwitter entry-share" title="twitter">twitter</li>
-            <li class="entry-sharefacebook entry-share" title="facebook">facebook</li>
-            <li class="entry-sharepocket entry-share" title="pocket">pocket</li>
-            <li class="entry-sharedelicious entry-share" title="delicious">delicious</li>
-            <li class="entry-sharereadability entry-share" title="readability">readability</li>
-            <li class="entry-shareemail entry-share" title="email">email</li>
+             <?PHP foreach (str_split($sharecfg) as $s) {
+                $name = $share[$s];
+                if($name) {
+                    echo '<li class="entry-share'.$name.' entry-share" title="'.$name.'">'.$name.'</li>';
+                }
+            } ?>
         </ul>
     </div>
     
@@ -73,13 +82,12 @@
         <li class="entry-unread <?PHP echo $this->item['unread']==1 ? 'active' : ''; ?>"><?PHP echo $this->item['unread']==1 ? \F3::get('lang_mark') : \F3::get('lang_unmark'); ?></li>
         <li class="entry-newwindow"><?PHP echo \F3::get('lang_open_window')?></li>
         <li class="entry-loadimages"><?PHP echo \F3::get('lang_load_img')?> </li>
-        <li class="entry-sharegoogle entry-share" title="google">&nbsp;</li>
-        <li class="entry-sharetwitter entry-share" title="twitter">&nbsp;</li>
-        <li class="entry-sharefacebook entry-share" title="facebook">&nbsp;</li>
-        <li class="entry-sharepocket entry-share" title="pocket">&nbsp;</li>
-        <li class="entry-sharedelicious entry-share" title="delicious">&nbsp;</li>
-        <li class="entry-sharereadability entry-share" title="readability">&nbsp;</li>
-        <li class="entry-shareemail entry-share" title="email">&nbsp;</li>
+        <?PHP foreach (str_split($sharecfg) as $s) {
+            $name = $share[$s];
+            if($name) {
+                echo '<li class="entry-share'.$name.' entry-share" title="'.$name.'">&nbsp;</li>';
+            }
+        } ?>
         <li class="entry-close"></li>
     </ul>
 </div>
