@@ -87,6 +87,13 @@ class reddit2 extends \spouts\spout {
     protected $items = false;
 
     /**
+     * favicon url
+     *
+     * @var string
+     */
+    private $faviconUrl = '';
+
+    /**
      * loads content for given source
      *
      * @return void
