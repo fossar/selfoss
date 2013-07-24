@@ -15,9 +15,6 @@ selfoss.events.search = function() {
         
         // execute search
         $('#search').removeClass('active');
-        if(!$('#nav').is(':visible')) {
-            $('#search').addClass('closed');
-        }
         selfoss.filter.search = term;
         selfoss.reloadList();
         
@@ -31,7 +28,6 @@ selfoss.events.search = function() {
     $('#search-button').unbind('click').click(function () {
         if($('#search').hasClass('active')==false) {
             $('#search').addClass('active');
-            $('#search').removeClass('closed');
             $('#search-term').focus().select();
             return;
         }
