@@ -118,26 +118,6 @@ selfoss.events.navigation = function() {
         }
         
     });
-
-    // show hide navigation for desktop version
-    $('#toggle').unbind('click').click(function () {
-        var nav = $('#nav');
-        if(nav.is(':visible')) { // hide
-            nav.hide();
-            $('#search').removeClass('active');
-            $('#search').addClass('closed');
-            $('#toggle').addClass('closed');
-            $('#toggle').html('&nbsp;&gt;');
-            $('#content').addClass('expanded');
-        } else { // show
-            nav.show();
-            $('#search').removeClass('active');
-            $('#search').removeClass('closed');
-            $('#toggle').removeClass('closed');
-            $('#toggle').html('&nbsp;&lt;');
-            $('#content').removeClass('expanded');
-        }
-    });
     
     // login
     $('#nav-login').unbind('click').click(function () {
