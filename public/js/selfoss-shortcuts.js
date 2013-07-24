@@ -163,6 +163,18 @@ selfoss.shortcuts = {
             e.preventDefault();
             $('#nav-filter-starred').click();
         });
+
+        //swipe next and previous
+        $('#content, #fullscreen-entry').hammer().on('swipeleft', '.entry', function(e) {
+            selfoss.shortcuts.nextprev('prev', true);
+            e.stopPropagation();
+            e.gesture.preventDefault();
+        });
+        $('#content, #fullscreen-entry').hammer().on('swiperight', '.entry', function(e) {
+            selfoss.shortcuts.nextprev('next', true);
+            e.stopPropagation();
+            e.gesture.preventDefault();
+        });
     },
     
     
@@ -223,9 +235,20 @@ selfoss.shortcuts = {
             }
             // anonymize
             selfoss.anonymize(content);
+
             content.show();
             current.find('.entry-toolbar').show();
-            selfoss.events.entriesToolbar(current);
+
+            if ($('#fullscreen-entry').is(':visible')) {
+                // show fullscreen
+                var fullscreen = $('#fullscreen-entry');
+                fullscreen.html('<div id="entrr'+current.attr('id').substr(5)+'" class="entry fullscreen">'+current.html()+'</div>');
+                selfoss.events.entriesToolbar(fullscreen);
+                $(window).scrollTop(0);
+            } else {
+                selfoss.events.entriesToolbar(current);
+            }
+
             // automark as read
             if($('#config').data('auto_mark_as_read')=="1" && current.hasClass('unread'))
                 current.find('.entry-unread').click();

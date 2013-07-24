@@ -76,6 +76,23 @@ selfoss.events.entriesToolbar = function(parent) {
         e.preventDefault();
         return false;
     });
+
+    //fullscreen
+    if ($('#fullscreen-entry').is(':visible')) {
+        var fullscreen = $('#fullscreen-entry');
+        var scrollTop = $(window).scrollTop();
+        // set events for closing fullscreen
+        fullscreen.find('.entry-close').click(function(e) {
+            if(e.target.tagName.toLowerCase()=="a")
+                return;
+            $('#content').show();
+            $('#content').find('.entry-content, .entry-toolbar').hide();
+            fullscreen.hide();
+            location.hash = "";
+            $(window).scrollTop(scrollTop);
+            $('.entry.selected').removeClass('selected');
+        });
+    }
     
     // only loggedin users
     if($('body').hasClass('loggedin')==true) {

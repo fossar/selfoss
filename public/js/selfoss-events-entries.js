@@ -10,10 +10,8 @@ selfoss.events.entries = function(e) {
     $(target).click(function() {
         var parent = ((target == '.entry') ? $(this) : $(this).parent());
         
-        if(selfoss.isSmartphone()==false) {
-            $('.entry.selected').removeClass('selected');
-            parent.addClass('selected');
-        }
+        $('.entry.selected').removeClass('selected');
+        parent.addClass('selected');
         
         // prevent event on fullscreen touch
         if(parent.hasClass('fullscreen'))
@@ -37,11 +35,10 @@ selfoss.events.entries = function(e) {
                 $('#nav').hide();
             }
             
-            // save scroll position and hide content
-            var scrollTop = $(window).scrollTop();
+            // hide content frame but make sure the content and toolbar are shown
             var content = $('#content');
-            $(window).scrollTop(0);
             content.hide();
+            content.find('.entry-content, .entry-toolbar').show();
             
             // show fullscreen
             var fullscreen = $('#fullscreen-entry');
@@ -53,16 +50,9 @@ selfoss.events.entries = function(e) {
             
             // set color of all tags by background color
             fullscreen.find('.entry-tags-tag').colorByBrightness();
-    
-            // set events for closing fullscreen
-            fullscreen.find('.entry, .entry-close').click(function(e) {
-                if(e.target.tagName.toLowerCase()=="a")
-                    return;
-                content.show();
-                location.hash = "";
-                $(window).scrollTop(scrollTop);
-                fullscreen.hide();
-            });
+
+            // scroll to top
+            $(window).scrollTop(0);
             
             // automark as read
             if(autoMarkAsRead) {
