@@ -4,7 +4,7 @@ selfoss
 Copyright (c) 2013 Tobias Zeising, tobias.zeising@aditu.de  
 http://selfoss.aditu.de  
 Licensed under the GPLv3 license  
-Version 2.8
+Version 2.9-SNAPSHOT
 
 
 INSTALLATION
@@ -49,6 +49,9 @@ Visit the page http://yourselfossurl.com/opml for importing your OPML File. If y
 
 CHANGELOG
 ---------
+
+Version 2.9-SNAPSHOT
+* New configuration parameter for share buttons (thanks a lot to becevka)
 
 Version 2.8
 * new Polish translation (thanks a lot to Piotr Dymacz)
