@@ -118,6 +118,34 @@ selfoss.events.navigation = function() {
         }
         
     });
+
+    // updates sources
+    $('#nav-refresh').unbind('click').click(function () {
+        // show loading
+        var content = $('#content');
+        var articleList = content.html();
+        $('#content').addClass('loading').html("");
+          
+        $.ajax({
+            url: $('base').attr('href') + 'update',
+            type: 'GET',
+            dataType: 'text',
+            data: {},
+            success: function(response) {
+                // hide nav on smartphone
+                if(selfoss.isSmartphone())
+                    $('#nav-mobile-settings').click();
+                    
+                // refresh list
+                 selfoss.reloadList();
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                content.html(articleList);
+                $('#content').removeClass('loading');
+                alert('Can not refresh sources: ' + errorThrown);
+            }
+        });
+    });
     
     // login
     $('#nav-login').unbind('click').click(function () {

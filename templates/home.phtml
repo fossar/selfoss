@@ -89,11 +89,14 @@
             <hr>
         </div>
         
-        <?PHP if($this->loggedin===true) : ?>
-        <div id="nav-settings" <?PHP if(\F3::get('auth')->enabled()===false) : ?>class="nologin"<?PHP endif; ?>></div>
+        <?PHP if($this->loggedin===true && \F3::get('auth')->enabled()===false) : ?>
+        <div id="nav-refresh" class="nologin"></div>
+        <div id="nav-settings" class="nologin"></div>
         <?PHP endif; ?>
         
         <?PHP if($this->loggedin===true && \F3::get('auth')->enabled()===true) : ?>
+        <div id="nav-refresh"></div>
+        <div id="nav-settings"></div>
         <div id="nav-logout"></div>
         <?PHP endif; ?>
         
