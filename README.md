@@ -52,6 +52,8 @@ CHANGELOG
 
 Version 2.9-SNAPSHOT
 * New configuration parameter for share buttons (thanks a lot to becevka)
+* new Ukrainian translation (thanks a lot to becevka)
+* fix Italian translation
 
 Version 2.8
 * new Polish translation (thanks a lot to Piotr Dymacz)
