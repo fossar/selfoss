@@ -28,7 +28,7 @@
             <li class="documentation">documentation</li>
             <li class="about">about</li>
             <li class="forum"><a href="/forum">forum</a></li>
-            <li class="download"><a href="selfoss-2.7.zip">download</a></li>
+            <li class="download"><a href="selfoss-2.8.zip">download</a></li>
         </ul>
         
         <a id="header-fork" href="https://github.com/SSilence/selfoss"></a>
@@ -37,7 +37,7 @@
         
         <div id="header-just-updated"></div>
         
-        <a id="header-download" href="selfoss-2.7.zip"><span>download selfoss 2.7</span></a>
+        <a id="header-download" href="selfoss-2.8.zip"><span>download selfoss 2.8</span></a>
         
         <a id="header-donate" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LR67F3T9DMSC8"><span>donate</span></a>
         
@@ -198,6 +198,10 @@ db_port=3306</code>
                         <td>database password</td>
                     </tr>
                     <tr>
+                        <td class="documentation-first-column">db_prefix</td>
+                        <td>table prefix for MySQL/SQLite databases</td>
+                    </tr>
+                    <tr>
                         <td class="documentation-first-column">db_port</td>
                         <td>port for database connections (3306 for mysql, 5432 for PostgreSQL</td>
                     </tr>
@@ -272,6 +276,10 @@ db_port=3306</code>
                     <tr>
                         <td class="documentation-first-column">allow_public_update_access</td>
                         <td>set allow_public_update_access=1 for allowing public access for /update (anybody can access and start the update job).</td>
+                    </tr>
+                    <tr>
+                        <td class="documentation-first-column">share</td>
+                        <td>share defines which share buttons beneath the entry are visible. Default is share=gtfprde (g = google, f = facebook, t = twitter, p = pocket, r = readability, d = delicious, e = email). When you would like to show only facebook and twitter share button use share=ft.</td>
                     </tr>
                 </table>
             </div>

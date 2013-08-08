@@ -498,6 +498,7 @@ input {
         .entry-content blockquote {
             padding:1px 10px;
             border-left: 2px solid #eaeaea;
+			font-style: italic;
         }
 
         .entry-content.entry-content-short {
@@ -1005,10 +1006,6 @@ body.publicmode.notloggedin .entry-unread {
             display:block;
         }
    
-    .entry-toolbar .entry-newwindow {
-        display:none;
-    }
-
     .entry-content {
         display:none;
         -moz-column-count: 1;
@@ -1230,7 +1227,11 @@ body.publicmode.notloggedin .entry-unread {
             #fullscreen-entry .entry-close {
                 display:block;
             }
-    
+   
+    .entry-toolbar .entry-newwindow {
+        display:none;
+    }
+ 
     .entry-toolbar .entry-share {
         display:none;
     }
