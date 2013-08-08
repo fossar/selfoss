@@ -4,7 +4,7 @@ selfoss
 Copyright (c) 2013 Tobias Zeising, tobias.zeising@aditu.de  
 http://selfoss.aditu.de  
 Licensed under the GPLv3 license  
-Version 2.8-SNAPSHOT
+Version 2.9-SNAPSHOT
 
 
 INSTALLATION
@@ -50,7 +50,12 @@ Visit the page http://yourselfossurl.com/opml for importing your OPML File. If y
 CHANGELOG
 ---------
 
-Version 2.8-SNAPSHOT
+Version 2.9-SNAPSHOT
+* New configuration parameter for share buttons (thanks a lot to becevka)
+* new Ukrainian translation (thanks a lot to becevka)
+* fix Italian translation
+
+Version 2.8
 * new Polish translation (thanks a lot to Piotr Dymacz)
 * improved Expires section and Compression in .htaccess (thanks a lot to S Anand)
 * make api item listing, tags and sources stats accessible for non loggedin users in public mode
@@ -61,6 +66,8 @@ Version 2.8-SNAPSHOT
 * support ssl proxy (thanks a lot to zajad)
 * new readability support (thanks a lot to hayk)
 * pass original url to external sites except for opening the anonymized url (thanks a lot to bbeardsley)
+* new finnish translation (thanks a lot to jukper)
+* new spanish translation (thanks a lot to Matias Perrone)
 
 Version 2.7
 * new spout for instapaper (thanks a lot to janeczku)
