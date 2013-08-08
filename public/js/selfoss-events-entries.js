@@ -127,7 +127,7 @@ selfoss.events.entries = function(e) {
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 streamMore.removeClass('loading');
-                alert('Load more error: '+errorThrown);
+                selfoss.events.showErrorBar('Load more error: '+errorThrown);
             }
         });
     });

@@ -22,6 +22,42 @@ input {
     padding:6px;
 }
 
+/* error bar */
+
+#error-bar {
+    text-align:center;
+    background-color: #f9edbe;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -khtml-border-radius: 4px;
+    border-color: #f0c36d;
+    border-radius: 4px;
+    width: 100%;
+    padding: 10px 0 10px 0;
+    display: none;
+}
+    #error-bar-inner {
+        position:relative;
+        diplay: inline-block;
+    }
+
+    #error-close {
+        float:right;
+        margin-right:10px;
+        text-decoration:none;
+        font-size:0.8em;
+        color:#aaa;
+        cursor: pointer;
+    }
+
+.sticky {  
+    position: fixed;  
+    top: 0;  
+    z-index: 100;  
+    border-top: 0;  
+}
+
+
 
 /* navigation */
 
