@@ -24,7 +24,7 @@ selfoss.events.navigation = function() {
                     selfoss.reloadList();
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
-                    selfoss.events.showErrorBar('Can not save new color: '+errorThrown);
+                    selfoss.showError('Can not save new color: '+errorThrown);
                 }
             });
             
@@ -169,7 +169,7 @@ selfoss.events.navigation = function() {
                 error: function(jqXHR, textStatus, errorThrown) {
                     content.html(articleList);
                     $('#content').removeClass('loading');
-                    selfoss.events.showErrorBar('Can not mark all visible item:'+errorThrown);
+                    selfoss.showError('Can not mark all visible item:'+errorThrown);
                 }
             });
         });
