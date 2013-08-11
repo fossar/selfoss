@@ -34,12 +34,6 @@ selfoss.events = {
         if(location.hash.trim().length!=0)
             location.hash = "";
 
-        // bind error bar close/dimiss link
-        $('#error-close').unbind('click').click(function() {
-            $('#error-bar-inner').html('');
-            $('#error-bar').hide();
-        });
-
     },
     
     
@@ -82,7 +76,7 @@ selfoss.events = {
                     if (textStatus == "abort")
                         return;
                     else if (errorThrown)
-                        selfoss.events.showErrorBar('Load list error: '+errorThrown); 
+                        selfoss.showError('Load list error: '+errorThrown); 
                 },
                 complete: function(jqXHR, textStatus) {
                     $('#content').removeClass('loading');
@@ -109,15 +103,5 @@ selfoss.events = {
             $('#nav-tags-wrapper').height("auto");
             $("#nav-tags-wrapper").mCustomScrollbar("disable",selfoss.isSmartphone());
         }
-    },
-
-
-    // Show error bar
-    showErrorBar: function(message) {
-        if(typeof(message) == 'undefined') {
-            var message = "Oops! Something went wrong";
-        }
-        $('#error-bar-inner').html(message);
-        $('#error-bar').show();
     }
 };
