@@ -26,8 +26,8 @@ selfoss.events.sources = function() {
                 selfoss.events.sources();
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                parent.find('.source-edit-delete').removeClass('loading');
-                alert('Error deleting source: '+errorThrown);
+                parent.find('.source-edit-delete').removeClass('loading');                     
+                selfoss.events.showErrorBar('Error adding source: '+errorThrown); 
             }
         });
     });
@@ -130,7 +130,7 @@ selfoss.events.sources = function() {
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 parent.find('.source-edit-delete').removeClass('loading');
-                alert('Error deleting source: '+errorThrown);
+                selfoss.events.showErrorBar('Error deleting source: '+errorThrown); 
             }
         }); 
     });
