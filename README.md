@@ -54,6 +54,7 @@ Version 2.9-SNAPSHOT
 * New configuration parameter for share buttons (thanks a lot to becevka)
 * new Ukrainian translation (thanks a lot to becevka)
 * fix Italian translation
+* new error message bar (thanks a lot to tamizhgeek)
 
 Version 2.8
 * new Polish translation (thanks a lot to Piotr Dymacz)
