@@ -124,3 +124,6 @@ RewriteRule (.*) public/$1 [L]
     </IfModule>
 
 </IfModule>
+
+# add font types for chromium/chrome
+AddType application/font-woff woff
