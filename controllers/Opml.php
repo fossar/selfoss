@@ -201,6 +201,11 @@ class Opml extends BaseController {
             $tags = implode(',', $this->imported[$hash]['tags']);
             $this->sourcesDao->edit($this->imported[$hash]['id'], $title, $tags, $spout, $data);
             \F3::get('logger')->log('  OPML import: updated tags for      "' . $title . '"', \DEBUG);
+        } elseif ($id = $this->sourcesDao->checkIfExists($title, $spout, $data)) {
+            $tags = array_unique(array_merge($this->sourcesDao->getTags($id), $tags));
+            $this->sourcesDao->edit($id, $title, implode(',', $tags), $spout, $data);
+            $this->imported[$hash] = Array('id' => $id, 'tags' => $tags);
+            \F3::get('logger')->log('  OPML import: updated tags for  "' . $title . '"', \DEBUG);
         } else {
             $id = $this->sourcesDao->add($title, implode(',', $tags), $spout, $data);
             $this->imported[$hash] = Array('id' => $id, 'tags' => $tags);
