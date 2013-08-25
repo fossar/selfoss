@@ -102,7 +102,7 @@ class mmospy extends feed {
                                             return "<a\1href=\"" . $this->absolute("\2", "http://www.mmo-spy.de") . "\"";},
                                             $content);
                 $content = preg_replace_callback(',<img([^>]+)src="([^>"\s]+)",i', function($matches) {
-                                        return '"<img\1src=\"" . $this->absolute("\2", "http://www.mmo-spy.de") . "\"";},
+                                        return "<img\1src=\"" . $this->absolute("\2", "http://www.mmo-spy.de") . "\"";},
                                         $content);
             
                 return $content;
