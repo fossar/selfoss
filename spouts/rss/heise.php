@@ -156,11 +156,11 @@ class heise extends feed {
                 $content = $this->getTag($div[1], $div[2], $originalContent, $div[0], $div[3]);
                 if(is_array($content) && count($content)>=1) {
                     $content = $content[0];
-                    $content = preg_replace(',<a([^>]+)href="([^>"\s]+)",ie',
-                                            '"<a\1href=\"" . $this->absolute("\2", "http://www.heise.de") . "\""',
+                    $content = preg_replace_callback(',<a([^>]+)href="([^>"\s]+)",i', function($matches) {
+                                            return "<a\1href=\"" . $this->absolute("\2", "http://www.heise.de") . "\"";},
                                             $content);
-                    $content = preg_replace(',<img([^>]+)src="([^>"\s]+)",ie',
-                                            '"<img\1src=\"" . $this->absolute("\2", "http://www.heise.de") . "\""',
+                    $content = preg_replace_callback(',<img([^>]+)src="([^>"\s]+)",i', function($matches) {
+                                            return "<img\1src=\"" . $this->absolute("\2", "http://www.heise.de") . "\"";},
                                             $content);
                     return $content;
                 }
