@@ -98,11 +98,11 @@ class mmospy extends feed {
             if(is_array($matches) && is_array($matches[0]) && isset($matches[0][0])) {
                 $content = utf8_encode($matches[0][0]);
                 
-                $content = preg_replace(',<a([^>]+)href="([^>"\s]+)",ie',
-                                            '"<a\1href=\"" . $this->absolute("\2", "http://www.mmo-spy.de") . "\""',
+                $content = preg_replace_callback(',<a([^>]+)href="([^>"\s]+)",i', function($matches) {
+                                            return "<a\1href=\"" . $this->absolute("\2", "http://www.mmo-spy.de") . "\"";},
                                             $content);
-                $content = preg_replace(',<img([^>]+)src="([^>"\s]+)",ie',
-                                        '"<img\1src=\"" . $this->absolute("\2", "http://www.mmo-spy.de") . "\""',
+                $content = preg_replace_callback(',<img([^>]+)src="([^>"\s]+)",i', function($matches) {
+                                        return '"<img\1src=\"" . $this->absolute("\2", "http://www.mmo-spy.de") . "\"";},
                                         $content);
             
                 return $content;
