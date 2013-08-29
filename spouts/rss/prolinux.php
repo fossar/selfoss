@@ -139,10 +139,10 @@ class prolinux extends feed {
                 if(is_array($content) && count($content)>=1) {
                     $content = $content[0];
                     $content = preg_replace_callback(',<a([^>]+)href="([^>"\s]+)",i', function($matches) {
-                                            return "<a\1href=\"" . $this->absolute("\2", "http://www.pro-linux.de") . "\"";},
+                                            return "<a\1href=\"" . \spouts\rss\prolinux::absolute("\2", "http://www.pro-linux.de") . "\"";},
                                             $content);
                     $content = preg_replace_callback(',<img([^>]+)src="([^>"\s]+)",i', function($matches) {
-                                            return "<img\1src=\"" . $this->absolute("\2", "http://www.pro-linux.de") . "\"";},
+                                            return "<img\1src=\"" . \spouts\rss\prolinux::absolute("\2", "http://www.pro-linux.de") . "\"";},
                                             $content);
                     return $content;
                 }
@@ -188,7 +188,7 @@ class prolinux extends feed {
      * @return string $relative url
      * @return string $absolute url
      */
-    public function absolute($relative, $absolute) {
+    public static function absolute($relative, $absolute) {
         if (preg_match(',^(https?://|ftp://|mailto:|news:),i', $relative))
             return $relative;
         return $absolute . $relative;
