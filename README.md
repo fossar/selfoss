@@ -51,10 +51,17 @@ CHANGELOG
 ---------
 
 Version 2.9-SNAPSHOT
-* New configuration parameter for share buttons (thanks a lot to becevka)
+* new configuration parameter for share buttons (thanks a lot to becevka)
 * new Ukrainian translation (thanks a lot to becevka)
 * fix Italian translation
 * new error message bar (thanks a lot to tamizhgeek)
+* fix php 5.5 bug for some spouts (thanks a lot to amiga23)
+* fix 'Undefined Index' error in item tpl when no shares available (thanks a lot to venyii)
+* add multi reddit support (thanks a lot to Janez Troha)
+* avoid duplicate sources while importing OPML (thanks a lot to Azhaguselvan SP)
+* prevent reflected XSS vulnerability in search form (thanks a lot to Azhaguselvan SP)
+* add support for fullscreen Webapp on iPhone 5 (thanks a lot to darkside40)
+* added new config parameter (unread_order) to be able to read unread items from oldest to newest (thanks a lot to Paul Fauchon)
 
 Version 2.8
 * new Polish translation (thanks a lot to Piotr Dymacz)
