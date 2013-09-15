@@ -436,6 +436,7 @@ input {
         font-size:0.95em;
         margin-top:20px;
         line-height: 1.7em;
+		overflow: hidden;
     }
     
         .entry-content a {
@@ -444,6 +445,9 @@ input {
         
         .entry-content img {
             max-width:99%;
+			display: block;
+			float: left;
+			margin: 0 10px 5px 0;
         }
         
         .entry-content p {
@@ -476,6 +480,14 @@ input {
             overflow-x: auto;
         }
     
+        .entry-content p,
+        .entry-content ol,
+        .entry-content ul,
+        .entry-content pre,
+        .entry-content blockquote {
+			clear: left;
+		}
+
     .entry-icon,
     .entry-icon img {
         margin-top:3px;
