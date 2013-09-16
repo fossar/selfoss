@@ -49,6 +49,7 @@ class readability extends feed {
      *     "type"       => "text",
      *     "default"    => "",
      *     "required"   => true,
+     *     "placeholder"=> "text", (optional)
      *     "validation" => array("alnum")
      *   ),
      *   ....
@@ -56,6 +57,7 @@ class readability extends feed {
      *
      * @var bool|mixed
      */
+         
     public $params = array(
         "url" => array(
             "title"      => "URL",
@@ -69,9 +71,18 @@ class readability extends feed {
             "type"       => "text",
             "default"    => "",
             "required"   => false,
+            "placeholder" => "",
             "validation" => array()
         )
     );
+
+    /*
+     * Constructor to set the placeholder value
+     */
+    public function __construct()
+    {
+       $this->params['api']['placeholder'] = \F3::get('readability');
+    }
 
     
     /**
@@ -80,8 +91,7 @@ class readability extends feed {
      * @var string
      */
     private $apiKey = "";
-
-
+    
     /**
      * loads content for given source
      *

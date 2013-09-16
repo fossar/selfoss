@@ -4,6 +4,8 @@ foreach($this->spout->params as $spoutParamName => $spoutParam) {
     $checked = '';
     
     $value = $spoutParam['default'];
+    $placeholder = isset($spoutParam['placeholder']) ? $spoutParam['placeholder'] : '';
+    
     if(isset($this->params) && isset($this->params[$spoutParamName])) {
         $value = $this->params[$spoutParamName];
         if($spoutParam["type"]=="checkbox" && $value=='1')
@@ -17,7 +19,8 @@ foreach($this->spout->params as $spoutParamName => $spoutParam) {
                 <label>'.$spoutParam['title'].':</label>
                 <input type="'.$spoutParam["type"].'" 
                        name="'.$spoutParamName.'" 
-                       value="'.$value.'" 
+                       value="'.$value.'"
+                       placeholder="'.$placeholder.'" 
                        '.$checked.' />
               </li>';
 
