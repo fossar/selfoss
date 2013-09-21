@@ -62,6 +62,9 @@ Version 2.9-SNAPSHOT
 * prevent reflected XSS vulnerability in search form (thanks a lot to Azhaguselvan SP)
 * add support for fullscreen Webapp on iPhone 5 (thanks a lot to darkside40)
 * added new config parameter (unread_order) to be able to read unread items from oldest to newest (thanks a lot to Paul Fauchon)
+* update twitter api (thanks a lot to bobman38)
+* the processing of the parameter of the session cookie is updated (thanks a lot to arbk)
+* prevent stored XSS vulnerability in the source add form (thanks a lot to Azhaguselvan SP)
 
 Version 2.8
 * new Polish translation (thanks a lot to Piotr Dymacz)

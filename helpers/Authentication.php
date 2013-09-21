@@ -32,9 +32,8 @@ class Authentication {
     public function __construct() {
         
         // check for SSL proxy and special cookie options
-        if(isset($_SERVER['HTTP_X_FORWARDED_SERVER'])
-           &&isset($_SERVER['HTTP_X_FORWARDED_HOST'])
-           &&($_SERVER['HTTP_X_FORWARDED_SERVER']===$_SERVER['HTTP_X_FORWARDED_HOST'])) {
+        if(isset($_SERVER['HTTP_X_FORWARDED_SERVER']) && isset($_SERVER['HTTP_X_FORWARDED_HOST'])
+           && ($_SERVER['HTTP_X_FORWARDED_SERVER']===$_SERVER['HTTP_X_FORWARDED_HOST'])) {
             // set cookie details (http://php.net/manual/en/function.setcookie.php)
             // expire, path, domain, secure, httponly
             session_set_cookie_params(
