@@ -301,12 +301,13 @@ class commits extends \spouts\spout {
     }
     
     /**
-     * cut title after X chars
+     * cut title after X chars (from the first line)
      * @param string $title title
      * @param integer $cutafter Cut after X chars
      * @return string Cutted title
      */
     public static function cutTitle($title, $cutafter = 69) {
+        $title = strtok($title, "\n");
         if (($cutafter > 0) && (strlen($title) > $cutafter)) {
             return substr($title, 0, $cutafter) . '&hellip;';
         }
