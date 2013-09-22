@@ -507,7 +507,7 @@ input {
             font-style: italic;
         }
 
-        .entry-content.entry-content-short {
+        .entry-content.entry-content-nocolumns {
             -moz-column-count: 1;
             -webkit-column-count: 1;
             column-count: 1;

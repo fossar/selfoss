@@ -72,7 +72,7 @@
     <?PHP endif; ?>
     
     <!-- content -->
-    <div class="entry-content <?PHP if(strlen(strip_tags($content))<500) : ?>entry-content-short<?PHP endif; ?>">
+    <div class="entry-content <?PHP $l = strlen(strip_tags($content)); if($l<500||$l>2500) : ?>entry-content-nocolumns<?PHP endif; ?>">
         <?PHP echo $content; ?>
         
         <ul class="entry-smartphone-share">
