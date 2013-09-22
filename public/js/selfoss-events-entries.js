@@ -56,7 +56,7 @@ selfoss.events.entries = function(e) {
             
             // set events for fullscreen
             selfoss.events.entriesToolbar(fullscreen);
-            
+ 
             // set color of all tags by background color
             fullscreen.find('.entry-tags-tag').colorByBrightness();
     
@@ -117,6 +117,13 @@ selfoss.events.entries = function(e) {
             $('.stream-more').click();
     });
     
+    $('.mark-these-read').unbind('click').click(function () {
+        $('#nav-mark').click();
+        // hide nav on smartphone
+        if(selfoss.isSmartphone())
+            $('#nav-mobile-settings').click();
+    });
+
     // more
     $('.stream-more').unbind('click').click(function () {
         var streamMore = $(this);
@@ -129,6 +136,7 @@ selfoss.events.entries = function(e) {
             dataType: 'json',
             data: selfoss.filter,
             success: function(data) {
+                streamMore.siblings('.mark-these-read').remove();
                 $('.stream-more').replaceWith(data.entries);
                 selfoss.events.entries();
             },
