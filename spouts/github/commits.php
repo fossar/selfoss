@@ -220,7 +220,7 @@ class commits extends \spouts\spout {
         if($this->items!==false && $this->valid()) {
             $message = @current( $this->items )->commit->message;
             
-            return $message;
+            return nl2br($message, false);
         }
         return false;
     }
