@@ -22,7 +22,7 @@ class prolinux extends feed {
      *
      * @var string
      */
-    public $name = 'pro-linux feeds';
+    public $name = 'News: Pro-Linux';
 
 
     /**
