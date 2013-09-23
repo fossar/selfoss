@@ -18,7 +18,7 @@ class dailydeviations extends \spouts\rss\images {
      *
      * @var string
      */
-    public $name = 'deviantArt daily deviations';
+    public $name = 'deviantART - daily deviations';
     
     
     /**
@@ -26,7 +26,7 @@ class dailydeviations extends \spouts\rss\images {
      *
      * @var string
      */
-    public $description = 'daily deviations of deviantart';
+    public $description = 'daily deviations of deviantART';
     
     
     /**
