@@ -19,7 +19,7 @@ class golem extends feed {
      *
      * @var string
      */
-    public $name = 'golem news';
+    public $name = 'News: Golem';
     
     
     /**

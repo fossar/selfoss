@@ -20,7 +20,7 @@ class instapaper extends feed {
      *
      * @var string
      */
-    public $name = 'RSS Feed with instapaper';
+    public $name = 'RSS Feed (with instapaper)';
     
     
     /**
