@@ -65,6 +65,7 @@ Version 2.9-SNAPSHOT
 * update twitter api (thanks a lot to bobman38)
 * the processing of the parameter of the session cookie is updated (thanks a lot to arbk)
 * prevent stored XSS vulnerability in the source add form (thanks a lot to Azhaguselvan SP)
+* sort spouts by name (thanks a lot to Tim Gerundt)
 
 Version 2.8
 * new Polish translation (thanks a lot to Piotr Dymacz)
