@@ -18,7 +18,7 @@ class usertimeline extends \spouts\spout {
      *
      * @var string
      */
-    public $name = 'Twitter User';
+    public $name = 'Twitter - User timeline';
     
     
     /**

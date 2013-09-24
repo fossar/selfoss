@@ -19,7 +19,7 @@ class mmospy extends feed {
      *
      * @var string
      */
-    public $name = 'mmospy';
+    public $name = 'News: MMOspy';
     
     
     /**

@@ -20,7 +20,7 @@ class readability extends feed {
      *
      * @var string
      */
-    public $name = 'RSS Feed with readability';
+    public $name = 'RSS Feed (with readability)';
     
     
     /**

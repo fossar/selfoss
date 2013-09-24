@@ -18,7 +18,7 @@ class user extends \spouts\rss\images {
      *
      * @var string
      */
-    public $name = 'deviantArt User';
+    public $name = 'deviantART - user';
     
     
     /**
@@ -26,7 +26,7 @@ class user extends \spouts\rss\images {
      *
      * @var string
      */
-    public $description = 'deviations of a deviantart user';
+    public $description = 'deviations of a deviantART user';
     
     
     /**
