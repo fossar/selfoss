@@ -18,7 +18,7 @@ class images extends feed {
      *
      * @var string
      */
-    public $name = 'RSS Feeds Images';
+    public $name = 'RSS Feed Images';
     
     
     /**

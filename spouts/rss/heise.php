@@ -20,7 +20,7 @@ class heise extends feed {
      *
      * @var string
      */
-    public $name = 'heise news';
+    public $name = 'News: Heise';
     
     
     /**
