@@ -18,7 +18,7 @@ class hometimeline extends \spouts\twitter\usertimeline {
      *
      * @var string
      */
-    public $name = 'Timeline on Twitter';
+    public $name = 'Twitter - Your timeline';
     
     
     /**
