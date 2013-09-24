@@ -18,7 +18,7 @@ class usersfavs extends \spouts\rss\images {
      *
      * @var string
      */
-    public $name = 'deviantArt favs of a user';
+    public $name = 'deviantART - favs of a user';
     
     
     /**
@@ -26,7 +26,7 @@ class usersfavs extends \spouts\rss\images {
      *
      * @var string
      */
-    public $description = 'favorites of a user on deviantart';
+    public $description = 'favorites of a user on deviantART';
     
     
     /**
