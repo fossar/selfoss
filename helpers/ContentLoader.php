@@ -94,11 +94,19 @@ class ContentLoader {
         // insert new items in database
         \F3::get('logger')->log('start item fetching', \DEBUG);
 
+        $itemsInFeed = array();
+        foreach ($spout as $item) {
+            $itemsInFeed[] = $item->getId();
+        }
+        $itemsFound = $this->itemsDao->findAll($itemsInFeed);
+
+
         $lasticon = false;
         foreach ($spout as $item) {
             // item already in database?
-            if($this->itemsDao->exists($item->getId())===true)
+            if (isset($itemsFound[$item->getId()])) {
                 continue;
+            }
             
             // test date: continue with next if item too old
             $itemDate = new \DateTime($item->getDate());
