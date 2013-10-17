@@ -13,6 +13,9 @@
     <!--  Mobile viewport optimized: j.mp/bplateviewport -->
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1" />
     
+    <!--  Add support for fullscreen Webapp on iPhone 5 -->
+    <meta name="viewport" content="initial-scale=1, user-scalable=no, maximum-scale=1" media="(device-height: 568px)" />
+    
     <!-- app 'behaviour' when adding link to iDevice springboard -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
 
@@ -34,6 +37,8 @@
     <?PHP echo $this->loggedin===true ? "loggedin" : "notloggedin"; ?> 
     <?PHP echo \F3::get('auto_mark_as_read')==1 ? "auto_mark_as_read" : ""; ?>
 ">
+    
+    <div id="error">error message</div>
     
     <!-- language settings for jQuery -->
     <span id="lang"

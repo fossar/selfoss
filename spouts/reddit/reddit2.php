@@ -3,10 +3,10 @@
 namespace spouts\reddit;
 
 /**
- * Spout for fetching an rss feed
+ * Spout for fetching from reddit 
  *
  * @package    spouts
- * @subpackage rss
+ * @subpackage reddit
  * @copyright  Copyright (c) Tobias Zeising (http://www.aditu.de)
  * @license    GPLv3 (http://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
@@ -56,13 +56,26 @@ class reddit2 extends \spouts\spout {
      */
     public $params = array(
         "url" => array(
-            "title"      => "Subreddit",
+            "title"      => "Subreddit or multireddit url",
             "type"       => "text",
-            "default"    => "worldnews",
+            "default"    => "r/worldnews/top",
             "required"   => true,
             "validation" => array( "notempty" )
+        ),
+        "username" => array(
+            "title"      => "Username",
+            "type"       => "text",
+            "default"    => "",
+            "required"   => false,
+        ),
+        "password" => array(
+            "title"      => "Password",
+            "type"       => "password",
+            "default"    => "",
+            "required"   => false,
         )
     );
+
 
     /**
      * the readability api key
@@ -70,6 +83,15 @@ class reddit2 extends \spouts\spout {
      * @var string
      */
     private $apiKey = "";
+
+
+    /**
+     * the reddit_session cookie
+     *
+     * @var string
+     */
+    private $reddit_session = "";
+
 
     /**
      * the scrape urls
@@ -87,6 +109,13 @@ class reddit2 extends \spouts\spout {
     protected $items = false;
 
     /**
+     * favicon url
+     *
+     * @var string
+     */
+    private $faviconUrl = '';
+
+    /**
      * loads content for given source
      *
      * @return void
@@ -95,7 +124,18 @@ class reddit2 extends \spouts\spout {
     public function load( $params ) {
 
         $this->apiKey = \F3::get( 'readability' );
-        $json = json_decode( $this->file_get_contents_curl( "http://www.reddit.com/r/" . $params['url'] . "/.json" ) );
+        
+        if (!empty($params['password']) && !empty($params['username'])) {
+            if (function_exists("apc_fetch")) {
+                $this->reddit_session = apc_fetch("{$params['username']}_slefoss_reddit_session");
+                if (empty($this->reddit_session)) {
+                    $this->login($params);
+                }
+            }else{
+                 $this->login($params);
+            }
+        }
+        $json = json_decode( $this->file_get_contents_curl( "http://www.reddit.com/" . $params['url'] . ".json" ) );
         $this->items = $json->data->children;
     }
 
@@ -369,6 +409,9 @@ class reddit2 extends \spouts\spout {
         $ch = curl_init();
         curl_setopt( $ch, CURLOPT_CONNECTTIMEOUT, 15 );
         curl_setopt( $ch, CURLOPT_TIMEOUT, 15 );
+        if (!empty($this->reddit_session)) {
+            curl_setopt($ch, CURLOPT_COOKIE, $this->reddit_session);
+        }
         curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
         curl_setopt( $ch, CURLOPT_URL, $url );
         $data = @curl_exec( $ch );
@@ -383,6 +426,9 @@ class reddit2 extends \spouts\spout {
         curl_setopt( $ch, CURLOPT_TIMEOUT, 15 );
         curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
         // Only calling the head
+        if (!empty($this->reddit_session)) {
+            curl_setopt($ch, CURLOPT_COOKIE, $this->reddit_session);
+        }
         curl_setopt($ch, CURLOPT_HEADER, true); // header will be at output
         curl_setopt($ch, CURLOPT_NOBODY, true);
         curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1); // ADD THIS
@@ -417,6 +463,32 @@ class reddit2 extends \spouts\spout {
             }
         } else {
             return false;
+        }
+    }
+
+    private function login($params)
+    {
+        $login = sprintf("api_type=json&user=%s&passwd=%s", $params['username'], $params['password']);
+        $ch = curl_init("https://ssl.reddit.com/api/login/{$params['username']}");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt( $ch, CURLOPT_CONNECTTIMEOUT, 15 );
+        curl_setopt( $ch, CURLOPT_TIMEOUT, 15 );
+        curl_setopt( $ch, CURLOPT_CUSTOMREQUEST, "POST" );
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $login);
+        $response = curl_exec($ch);
+        $response = json_decode($response);
+        if (curl_errno($ch)) {
+            print(curl_error($ch));
+        } else {
+            curl_close($ch);
+            if (count($response->json->errors) > 0){
+                print($response);    
+            } else {
+                $this->reddit_session = "reddit_session={$response->json->data->cookie}";
+                if (function_exists("apc_store")) {
+                    apc_store("{$params['username']}_slefoss_reddit_session", $this->reddit_session, 3600);
+                }
+            }
         }
     }
 }

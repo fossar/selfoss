@@ -35,7 +35,7 @@ class Items extends Database {
             $id = implode(",", $id);
         
         // i used string concatenation after validating $id
-        \F3::get('db')->exec('UPDATE items SET unread=0 WHERE id IN (' . $id . ')');
+        \F3::get('db')->exec('UPDATE '.\F3::get('db_prefix').'items SET unread=0 WHERE id IN (' . $id . ')');
     }
     
     
@@ -51,7 +51,7 @@ class Items extends Database {
         } else if(!is_numeric($id)) {
             return;
         }
-        \F3::get('db')->exec('UPDATE items SET unread=1 WHERE id IN (:id)',
+        \F3::get('db')->exec('UPDATE '.\F3::get('db_prefix').'items SET unread=1 WHERE id IN (:id)',
                     array(':id' => $id));
     }
     
@@ -63,7 +63,7 @@ class Items extends Database {
      * @param int $id the item
      */
     public function starr($id) {
-        \F3::get('db')->exec('UPDATE items SET starred=1 WHERE id=:id', 
+        \F3::get('db')->exec('UPDATE '.\F3::get('db_prefix').'items SET starred=1 WHERE id=:id', 
                     array(':id' => $id));
     }
     
@@ -75,7 +75,7 @@ class Items extends Database {
      * @param int $id the item
      */
     public function unstarr($id) {
-        \F3::get('db')->exec('UPDATE items SET starred=0 WHERE id=:id',
+        \F3::get('db')->exec('UPDATE '.\F3::get('db_prefix').'items SET starred=0 WHERE id=:id',
                     array(':id' => $id));
     }
     
@@ -91,7 +91,7 @@ class Items extends Database {
         if($this->exists($values['uid'])===true)
             return;
         
-        \F3::get('db')->exec('INSERT INTO items (
+        \F3::get('db')->exec('INSERT INTO '.\F3::get('db_prefix').'items (
                     datetime, 
                     title, 
                     content, 
@@ -137,7 +137,7 @@ class Items extends Database {
      * @param string $uid
      */
     public function exists($uid) {
-        $res = \F3::get('db')->exec('SELECT COUNT(*) AS amount FROM items WHERE uid=:uid',
+        $res = \F3::get('db')->exec('SELECT COUNT(*) AS amount FROM '.\F3::get('db_prefix').'items WHERE uid=:uid',
                     array( ':uid' => array($uid, \PDO::PARAM_STR) ) );
         return $res[0]['amount']>0;
     }
@@ -150,10 +150,10 @@ class Items extends Database {
      * @param DateTime $date date to delete all items older than this value [optional]
      */
     public function cleanup(\DateTime $date = NULL) {
-        \F3::get('db')->exec('DELETE FROM items USING items LEFT JOIN sources
+        \F3::get('db')->exec('DELETE items FROM '.\F3::get('db_prefix').'items AS items LEFT JOIN '.\F3::get('db_prefix').'sources AS sources
                                 ON items.source=sources.id WHERE sources.id IS NULL');
         if ($date !== NULL)
-            \F3::get('db')->exec('DELETE FROM items WHERE starred=0 AND datetime<:date',
+            \F3::get('db')->exec('DELETE FROM '.\F3::get('db_prefix').'items WHERE starred=0 AND datetime<:date',
                     array(':date' => $date->format('Y-m-d').' 00:00:00'));
     }
     
@@ -167,14 +167,19 @@ class Items extends Database {
     public function get($options = array()) {
         $params = array();
         $where = '';
-        
+        $order = 'DESC';
+                
         // only starred
         if(isset($options['type']) && $options['type']=='starred')
             $where .= ' AND starred=1 ';
             
         // only unread
-        else if(isset($options['type']) && $options['type']=='unread')
+        else if(isset($options['type']) && $options['type']=='unread'){
             $where .= ' AND unread=1 ';
+            if(\F3::get('unread_order')=='asc'){
+            	$order = 'ASC';
+            }
+        }
         
         // search
         if(isset($options['search']) && strlen($options['search'])>0) {
@@ -208,7 +213,7 @@ class Items extends Database {
         
         // first check whether more items are available
         $result = \F3::get('db')->exec('SELECT items.id
-                   FROM items, sources
+                   FROM '.\F3::get('db_prefix').'items AS items, '.\F3::get('db_prefix').'sources AS sources
                    WHERE items.source=sources.id '.$where.' 
                    LIMIT ' . ($options['offset']+$options['items']) . ', 1', $params);
         $this->hasMore = count($result);
@@ -216,9 +221,9 @@ class Items extends Database {
         // get items from database
         return \F3::get('db')->exec('SELECT 
                     items.id, datetime, items.title AS title, content, unread, starred, source, thumbnail, icon, uid, link, sources.title as sourcetitle, sources.tags as tags
-                   FROM items, sources 
+                   FROM '.\F3::get('db_prefix').'items AS items, '.\F3::get('db_prefix').'sources AS sources
                    WHERE items.source=sources.id '.$where.' 
-                   ORDER BY items.datetime DESC 
+                   ORDER BY items.datetime '.$order.' 
                    LIMIT ' . $options['offset'] . ', ' . $options['items'], $params);
     }
     
@@ -242,7 +247,7 @@ class Items extends Database {
     public function getThumbnails() {
         $thumbnails = array();
         $result = \F3::get('db')->exec('SELECT thumbnail 
-                   FROM items 
+                   FROM '.\F3::get('db_prefix').'items 
                    WHERE thumbnail!=""');
         foreach($result as $thumb)
             $thumbnails[] = $thumb['thumbnail'];
@@ -258,7 +263,7 @@ class Items extends Database {
     public function getIcons() {
         $icons = array();
         $result = \F3::get('db')->exec('SELECT icon 
-                   FROM items 
+                   FROM '.\F3::get('db_prefix').'items 
                    WHERE icon!=""');
         foreach($result as $icon)
             $icons[] = $icon['icon'];
@@ -274,7 +279,7 @@ class Items extends Database {
      */
     public function hasThumbnail($thumbnail) {
         $res = \F3::get('db')->exec('SELECT count(*) AS amount
-                   FROM items 
+                   FROM '.\F3::get('db_prefix').'items 
                    WHERE thumbnail=:thumbnail',
                   array(':thumbnail' => $thumbnail));
         $amount = $res[0]['amount'];
@@ -292,7 +297,7 @@ class Items extends Database {
      */
     public function hasIcon($icon) {
         $res = \F3::get('db')->exec('SELECT count(*) AS amount
-                   FROM items 
+                   FROM '.\F3::get('db_prefix').'items 
                    WHERE icon=:icon',
                   array(':icon' => $icon));
         return $res[0]['amount']>0;
@@ -338,7 +343,7 @@ class Items extends Database {
         if(is_numeric($sourceid)===false)
             return false;
         
-        $res = \F3::get('db')->exec('SELECT icon FROM items WHERE source=:sourceid AND icon!=0 AND icon!="" ORDER BY ID DESC LIMIT 0,1',
+        $res = \F3::get('db')->exec('SELECT icon FROM '.\F3::get('db_prefix').'items WHERE source=:sourceid AND icon!=0 AND icon!="" ORDER BY ID DESC LIMIT 0,1',
                     array(':sourceid' => $sourceid));
         if(count($res)==1)
             return $res[0]['icon'];
@@ -353,7 +358,7 @@ class Items extends Database {
      * @return int amount of entries in database
      */
     public function numberOfItems() {
-        $res = \F3::get('db')->exec('SELECT count(*) AS amount FROM items');
+        $res = \F3::get('db')->exec('SELECT count(*) AS amount FROM '.\F3::get('db_prefix').'items');
         return $res[0]['amount'];
     }
     
@@ -365,7 +370,7 @@ class Items extends Database {
      */
     public function numberOfUnread() {
         $res = \F3::get('db')->exec('SELECT count(*) AS amount
-                   FROM items 
+                   FROM '.\F3::get('db_prefix').'items 
                    WHERE unread=1');
         return $res[0]['amount'];
     }
@@ -378,7 +383,7 @@ class Items extends Database {
      */
     public function numberOfStarred() {
         $res = \F3::get('db')->exec('SELECT count(*) AS amount
-                   FROM items 
+                   FROM '.\F3::get('db_prefix').'items 
                    WHERE starred=1');
         return $res[0]['amount'];
     }
@@ -390,7 +395,7 @@ class Items extends Database {
      * @return int amount of entries in database per tag
      */
     public function numberOfUnreadForTag($tag) {
-        $select = 'SELECT count(*) AS amount FROM items, sources';
+        $select = 'SELECT count(*) AS amount FROM '.\F3::get('db_prefix').'items AS items, '.\F3::get('db_prefix').'sources AS sources';
         $where = ' WHERE items.source=sources.id AND unread=1';
         if ( \F3::get( 'db_type' ) == 'mysql' ) {
             $where .= " AND ( CONCAT( ',' , sources.tags , ',' ) LIKE :tag ) ";
@@ -410,7 +415,7 @@ class Items extends Database {
      */
     public function numberOfUnreadForSource($sourceid) {
         $res = \F3::get('db')->exec(
-            'SELECT count(*) AS amount FROM items WHERE source=:source AND unread=1',
+            'SELECT count(*) AS amount FROM '.\F3::get('db_prefix').'items WHERE source=:source AND unread=1',
             array(':source' => $sourceid));
         return $res[0]['amount'];
     }
