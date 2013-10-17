@@ -21,11 +21,11 @@ class Tags extends Database {
      */
     public function saveTagColor($tag, $color) {
         if($this->hasTag($tag)===true) {
-            \F3::get('db')->exec('UPDATE tags SET color=:color WHERE tag=:tag',
+            \F3::get('db')->exec('UPDATE '.\F3::get('db_prefix').'tags SET color=:color WHERE tag=:tag',
                     array(':tag'   => $tag,
                           ':color' => $color));
         } else {
-            \F3::get('db')->exec('INSERT INTO tags (
+            \F3::get('db')->exec('INSERT INTO '.\F3::get('db_prefix').'tags (
                     tag, 
                     color
                   ) VALUES (
@@ -73,7 +73,7 @@ class Tags extends Database {
     public function get() {
         return \F3::get('db')->exec('SELECT 
                     tag, color
-                   FROM tags 
+                   FROM '.\F3::get('db_prefix').'tags 
                    ORDER BY LOWER(tag);');
     }
     
@@ -100,7 +100,7 @@ class Tags extends Database {
      * @return boolean true if color is used by an tag
      */
     private function isColorUsed($color) {
-        $res = \F3::get('db')->exec('SELECT COUNT(*) AS amount FROM tags WHERE color=:color',
+        $res = \F3::get('db')->exec('SELECT COUNT(*) AS amount FROM '.\F3::get('db_prefix').'tags WHERE color=:color',
                     array(':color' => $color));
         return $res[0]['amount']>0;
     }
@@ -112,7 +112,7 @@ class Tags extends Database {
      * @return boolean true if color is used by an tag
      */
     public function hasTag($tag) {
-        $res = \F3::get('db')->exec('SELECT COUNT(*) AS amount FROM tags WHERE tag=:tag',
+        $res = \F3::get('db')->exec('SELECT COUNT(*) AS amount FROM '.\F3::get('db_prefix').'tags WHERE tag=:tag',
                     array(':tag' => $tag));
         return $res[0]['amount']>0;
     }
@@ -125,7 +125,7 @@ class Tags extends Database {
      * @param string $tag
      */
     public function delete($tag) {
-        \F3::get('db')->exec('DELETE FROM tags WHERE tag=:tag',
+        \F3::get('db')->exec('DELETE FROM '.\F3::get('db_prefix').'tags WHERE tag=:tag',
                     array(':tag' => $tag));
     }
 }
