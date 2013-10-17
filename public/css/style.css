@@ -488,6 +488,13 @@ input {
 			clear: left;
 		}
 
+		.entry-content dt {
+			font-weight: bold;
+		}
+		.entry-content dd {
+			text-indent: 1.3em;
+		}
+
     .entry-icon,
     .entry-icon img {
         margin-top:3px;
