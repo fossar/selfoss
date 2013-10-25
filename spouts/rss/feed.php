@@ -277,30 +277,11 @@ class feed extends \spouts\spout {
      */
     public function getDate() {
         if($this->items!==false && $this->valid())
-            $date = @current($this->items)->get_date('');
-
-        $match = false;
-        $dateFormats = array(
-            "Y-m-d H:i:s",
-            "d/m/Y H:i:s"
-        );
-
-        foreach ($dateFormats as $dateFormat) {
-            $dt = \DateTime::createFromFormat($dateFormat, $date);
-
-            if ($dt !== false && !array_sum($dt->getLastErrors())) {
-                $match = true;
-                $date = $dt->format('Y-m-d H:i:s');
-                break;
-            }
-        }
-
-        if(!$match) 
+            $date = @current($this->items)->get_date('Y-m-d H:i:s');
+        if(strlen($date)==0)
             $date = date('Y-m-d H:i:s');
-        
         return $date;
     }
-    
     
     /**
      * destroy the plugin (prevent memory issues)
