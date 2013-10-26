@@ -50,14 +50,22 @@ class Index extends BaseController {
         $this->view->statsStarred = $itemsDao->numberOfStarred();
         
         // prepare tags display list
-        $tagsController = new \controllers\Tags();
-        $this->view->tags = $tagsController->renderTags($tags);
+        if (\F3::get('ui_show_tags')) {
+            $tagsController = new \controllers\Tags();
+            $this->view->tags = $tagsController->renderTags($tags);
+        } else {
+            $this->view->tags = '';
+        }
         
         // prepare sources display list
-        $sourcesDao = new \daos\Sources();
-        $sources = $sourcesDao->get();
-        $sourcesController = new \controllers\Sources();
-        $this->view->sources = $sourcesController->renderSources($sources);
+        if (\F3::get('ui_show_sources')) {
+            $sourcesDao = new \daos\Sources();
+            $sources = $sourcesDao->get();
+            $sourcesController = new \controllers\Sources();
+            $this->view->sources = $sourcesController->renderSources($sources);
+        } else {
+            $this->view->sources = '';
+        }
         
         // ajax call = only send entries and statistics not full template
         if(isset($options['ajax'])) {

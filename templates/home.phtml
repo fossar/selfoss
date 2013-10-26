@@ -72,21 +72,35 @@
             <li id="nav-filter-unread" class="nav-filter-unread<?PHP if($active=='unread') : ?> active<?PHP endif; ?>"><?PHP echo \F3::get('lang_unread')?> <span <?PHP echo $this->statsUnread>0 ? 'class="unread"' : ''; ?>><?PHP echo $this->statsUnread; ?></span></li>
             <li id="nav-filter-starred" class="nav-filter-starred<?PHP if($active=='starred') : ?> active<?PHP endif; ?>"><?PHP echo \F3::get('lang_starred') ?> <span><?PHP echo $this->statsStarred; ?></span></li>
         </ul>
-        
-        <hr>
+
+        <?PHP if (\F3::get('ui_show_tags') || \F3::get('ui_show_sources')) { ?>
+            <hr>
+        <?PHP } ?>
 
         <div id="nav-tags-wrapper">
-        <h2 id="nav-tags-title" class="nav-tags-expanded"><?PHP echo \F3::get('lang_tags') ?></h2>
-        <ul id="nav-tags">
-            <li class="active nav-tags-all"><?PHP echo \F3::get('lang_alltags')?></li>
-            <?PHP echo $this->tags; ?>
-        </ul>
-        <h2 id="nav-sources-title" class="nav-sources-collapsed"><?PHP echo \F3::get('lang_sources') ?></h2>
-        <ul id="nav-sources">
-            <?PHP echo $this->sources; ?>
+            <?PHP if (\F3::get('ui_show_tags')) { ?>
+                <h2 id="nav-tags-title" class="nav-tags-expanded"><?PHP echo \F3::get('lang_tags') ?></h2>
+            <?PHP } ?>
+            <ul id="nav-tags">
+                <?PHP if (\F3::get('ui_show_tags')) { ?>
+                    <li class="active nav-tags-all"><?PHP echo \F3::get('lang_alltags')?></li>
+                    <?PHP echo $this->tags; ?>
+                <?PHP } ?>
+            </ul>
+
+            <?PHP if (\F3::get('ui_show_sources')) { ?>
+                <h2 id="nav-sources-title" class="nav-sources-collapsed"><?PHP echo \F3::get('lang_sources') ?></h2>
+            <?PHP } ?>
+            <ul id="nav-sources">
+                <?PHP if (\F3::get('ui_show_sources')) { ?>
+                    <?PHP echo $this->sources; ?>
+                <?PHP } ?>
+            </ul>
         </div>
-        
-        <hr>
+
+        <?PHP if (\F3::get('ui_show_tags') || \F3::get('ui_show_sources')) { ?>
+            <hr>
+        <?PHP } ?>
         
         <!-- navigation search input just for smartphone version -->
         <div id="nav-search">
