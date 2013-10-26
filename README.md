@@ -68,6 +68,7 @@ Version 2.9-SNAPSHOT
 * sort spouts by name (thanks a lot to Tim Gerundt)
 * allow <dd>-element and style definition list elements (thanks a lot to mcnesium)
 * new GitHub spout to list commits on a repository (thanks a lot to Tim Gerundt)
+* performance improvement on feed update (thanks a lot to Brad Koehn)
 
 Version 2.8
 * new Polish translation (thanks a lot to Piotr Dymacz)
