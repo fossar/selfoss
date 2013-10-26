@@ -87,10 +87,6 @@ class Items extends Database {
      * @param mixed $values
      */
     public function add($values) {
-        // don't add items twice
-        if($this->exists($values['uid'])===true)
-            return;
-        
         \F3::get('db')->exec('INSERT INTO '.\F3::get('db_prefix').'items (
                     datetime, 
                     title, 
@@ -142,6 +138,21 @@ class Items extends Database {
         return $res[0]['amount']>0;
     }
     
+    public function findAll($itemsInFeed) {
+        $itemsFound = array();
+        array_walk($itemsInFeed, function( &$value ) { $value = \F3::get('db')->quote($value); });
+        $query = "SELECT uid AS uid FROM items WHERE uid IN (". implode(',', $itemsInFeed) .")";
+        $res = \F3::get('db')->query($query);
+        if ($res) {
+            $all = $res->fetchAll();
+            foreach ($all as $row) {
+                $uid = $row['uid'];
+                $itemsFound[$uid] = true;
+            }
+        }
+        return $itemsFound;
+    }
+
     
     /**
      * cleanup orphaned and old items
