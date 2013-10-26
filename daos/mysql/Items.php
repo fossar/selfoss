@@ -138,6 +138,13 @@ class Items extends Database {
         return $res[0]['amount']>0;
     }
     
+    
+    /**
+     * search whether given ids are already in database or not
+     * 
+     * @return array with all existing ids from itemsInFeed (array (id => true))
+     * @param array $itemsInFeed list with ids for checking whether they are already in database or not
+     */
     public function findAll($itemsInFeed) {
         $itemsFound = array();
         array_walk($itemsInFeed, function( &$value ) { $value = \F3::get('db')->quote($value); });
