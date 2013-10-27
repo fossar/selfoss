@@ -66,7 +66,7 @@ Version 2.9
 * the processing of the parameter of the session cookie is updated (thanks a lot to arbk)
 * prevent stored XSS vulnerability in the source add form (thanks a lot to Azhaguselvan SP)
 * sort spouts by name (thanks a lot to Tim Gerundt)
-* allow <dd>-element and style definition list elements (thanks a lot to mcnesium)
+* allow dd-element and style definition list elements (thanks a lot to mcnesium)
 * new GitHub spout to list commits on a repository (thanks a lot to Tim Gerundt)
 * performance improvement on feed update (thanks a lot to Brad Koehn)
 
