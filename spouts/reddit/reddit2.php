@@ -314,7 +314,7 @@ class reddit2 extends \spouts\spout {
      */
     public function getLink() {
         if ( $this->items!==false && $this->valid() )
-            return "//reddit.com" . @current( $this->items )->data->permalink;
+            return "http://reddit.com" . @current( $this->items )->data->permalink;
         return false;
     }
 
