@@ -67,12 +67,14 @@ class reddit2 extends \spouts\spout {
             "type"       => "text",
             "default"    => "",
             "required"   => false,
+            "validation" => ""
         ),
         "password" => array(
             "title"      => "Password",
             "type"       => "password",
             "default"    => "",
             "required"   => false,
+            "validation" => ""
         )
     );
 
