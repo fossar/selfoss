@@ -93,7 +93,14 @@ selfoss.events.entries = function(e) {
             }
         } 
     });
-
+    
+    // doubleclick to mark/unmark
+    $('.entry').dblclick(function() {
+        var entry = $(this);
+        selfoss.events.entriesToolbar(entry);
+        entry.find('.entry-unread').click();
+    });
+    
     // no source click
     if(selfoss.isSmartphone())
         $('.entry-source, .entry-icon').unbind('click').click(function(e) {e.preventDefault(); return false });
