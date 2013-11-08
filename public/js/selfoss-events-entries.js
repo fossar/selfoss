@@ -7,7 +7,8 @@ selfoss.events.entries = function(e) {
 
     // show/hide entry
     var target = selfoss.isMobile() ? '.entry' : '.entry-title';
-    $(target).click(function() {
+    $(target).click(function(e) {
+        if(e.which !== 1) return;
         var parent = ((target == '.entry') ? $(this) : $(this).parent());
         
         if(selfoss.isSmartphone()==false) {
@@ -93,7 +94,33 @@ selfoss.events.entries = function(e) {
             }
         } 
     });
-
+    
+    // middle click to open in new window
+    $('.entry-title a').mousedown(function(e) {
+        if((e.which != 1) && (e.which != 2)) return;
+        e.preventDefault();
+	    
+        if(e.which == 2) {
+            $(this).data('doMiddleClick', true);
+        }
+    }).mouseup(function(e) {
+        if((e.which != 1) && (e.which != 2)) return;
+        var link = $(this);
+        
+        if((e.which == 2) && link.data('doMiddleClick')) {
+            var entry = link.parents('.entry');
+            selfoss.events.entriesToolbar(entry);
+            entry.find('.entry-unread.active').click();
+            link.removeData('doMiddleClick');
+        } else {
+            e.preventDefault();
+        }
+    }).click(function(e) {
+        if(e.which == 1) {
+            e.preventDefault();
+        }
+    });
+    
     // no source click
     if(selfoss.isSmartphone())
         $('.entry-source, .entry-icon').unbind('click').click(function(e) {e.preventDefault(); return false });

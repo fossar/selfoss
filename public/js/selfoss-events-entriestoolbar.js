@@ -6,7 +6,7 @@ selfoss.events.entriesToolbar = function(parent) {
         parent = $('#content');
     
     // prevent close on links
-    parent.find('a').unbind('click').click(function(e) {
+    parent.find('.entry-content a').unbind('click').click(function(e) {
         window.open($(this).attr('href'));
         e.preventDefault();
         return false;

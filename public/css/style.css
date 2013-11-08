@@ -420,14 +420,21 @@ input {
 
     .entry-title {
         cursor:pointer;
-        color:#999999;
         padding-top:7px;
         padding-bottom:7px;
     }
+
+    .entry-title,
+    .entry-title a {
+        color:#999999;
+        font-weight:normal;
+        text-decoration: none;
+    }
     
-        .entry.unread  .entry-title {
-            color:#333333;
-        }
+    .entry.unread .entry-title,
+    .entry.unread .entry-title a {
+        color:#333333;
+    }
     
     .entry-tags-tag {
         -moz-border-radius:4px;
@@ -1201,10 +1208,14 @@ body.publicmode.notloggedin .entry-unread {
         #fullscreen-entry .entry {
             padding-top:50px;
         }
+        
+        #fullscreen-entry .entry-title,
+        #fullscreen-entry .entry-title a {
+            color:#333333;
+        }
     
         #fullscreen-entry .entry-title {
             padding-top:40px;
-            color:#333333;
             font-size:1.3em;
         }
         
