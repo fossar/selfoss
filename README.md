@@ -50,6 +50,9 @@ Visit the page http://yourselfossurl.com/opml for importing your OPML File. If y
 CHANGELOG
 ---------
 
+Version 2.10-SNAPSHOT
+* fix error 500 on icon fetching
+
 Version 2.9
 * new configuration parameter for share buttons (thanks a lot to becevka)
 * new Ukrainian translation (thanks a lot to becevka)
