@@ -134,7 +134,12 @@ class ContentLoader {
 
             \F3::get('logger')->log('item content sanitized', \DEBUG);
 
-            $icon = $item->getIcon();
+            try {
+                $icon = $item->getIcon();
+            } catch(\exception $e) {
+                return;
+            }
+
             $newItem = array(
                     'title'        => $title,
                     'content'      => $content,
