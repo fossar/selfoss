@@ -74,7 +74,8 @@ class heise extends feed {
                 "tp"     => "Telepolis",
                 "resale" => "Resale",
                 "foto"   => "Foto",
-                "autos"  => "Autos"
+                "autos"  => "Autos",
+                "hh"     => "Hardware-Hacks"
             ),
             "default"    => "main",
             "required"   => true,
@@ -101,6 +102,7 @@ class heise extends feed {
         "resale" => "http://www.heise.de/resale/rss/resale-atom.xml",
         "foto"   => "http://www.heise.de/foto/rss/news-atom.xml",
         "autos"  => "http://www.heise.de/autos/rss/news-atom.xml",
+        "hh"     => "http://www.heise.de/hardware-hacks/rss/hardware-hacks-atom.xml",
     );
 
 
@@ -110,7 +112,7 @@ class heise extends feed {
      * elements: start tag, attribute of start tag, value of start tag attribute, end
      */
     private $textDivs = array(
-        array("div", "class", "meldung_wrapper", '<!-- AUTHOR-DATA-MARKER-BEGIN'), // main, ix, mac, mobil, sec, net, open, dev, resale, foto
+        array("div", "class", "meldung_wrapper", '<!-- AUTHOR-DATA-MARKER-BEGIN'), // main, ix, mac, mobil, sec, net, open, dev, resale, foto, hh articles
         array("p", "class", "artikel_datum", '<p class="artikel_option">'),        // ct
         array("div", "class", "aufmacher", '<!-- AUTHOR-DATA-MARKER-BEGIN'),       // tr
         array("div", "class", "datum_autor", '<div class="artikel_fuss">'),        // mac
@@ -119,6 +121,8 @@ class heise extends feed {
         array("span", "class", "date", '<div xmlns:v="http://rdf'),                // tp
         array("div", "class", "artikel_content", '<div class="artikel_fuss">'),    // resale
         array("div", "id", "artikel_shortnews", '<p class="editor">'),             // autos
+        array("div", "id", "projekte", '<div id="artikelfuss">'),                  // hh projects
+        array("div", 'id', 'artikel', '<div id="artikelfuss">'),                   // some hh articles
     );
 
 
