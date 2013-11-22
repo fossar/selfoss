@@ -52,7 +52,7 @@ class feed extends \spouts\spout {
      */
     public $params = array(
         "url" => array(
-            "title"      => "URL",
+            "title"      => "http://www.cricketcountry.com/rssfeed",
             "type"       => "text",
             "default"    => "",
             "required"   => true,
