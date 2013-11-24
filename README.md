@@ -52,6 +52,9 @@ CHANGELOG
 
 Version 2.10-SNAPSHOT
 * fix error 500 on icon fetching
+* add heise hardware-hacks (thanks a lot to robelix)
+* reddit2 spout: fix link to return http (thanks a lot to Bert Deferme)
+* reddit2 spout: add empty validation on username and password (thanks a lot to Bert Deferme)
 
 Version 2.9
 * new configuration parameter for share buttons (thanks a lot to becevka)
