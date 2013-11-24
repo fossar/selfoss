@@ -67,12 +67,14 @@ class reddit2 extends \spouts\spout {
             "type"       => "text",
             "default"    => "",
             "required"   => false,
+            "validation" => ""
         ),
         "password" => array(
             "title"      => "Password",
             "type"       => "password",
             "default"    => "",
             "required"   => false,
+            "validation" => ""
         )
     );
 
@@ -314,7 +316,7 @@ class reddit2 extends \spouts\spout {
      */
     public function getLink() {
         if ( $this->items!==false && $this->valid() )
-            return "//reddit.com" . @current( $this->items )->data->permalink;
+            return "http://reddit.com" . @current( $this->items )->data->permalink;
         return false;
     }
 
