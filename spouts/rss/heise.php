@@ -118,6 +118,7 @@ class heise extends feed {
         array("div", "class", "datum_autor", '<div class="artikel_fuss">'),        // mac
         array("p", "class", "vorlauftext", '<div class="artikel_fuss">'),          // mobil
         array("div", "id", "blocon", '</div>'),                                    // tp
+        array("div", "class", "mar0", '<div id="breadcrumb">'),                    // some tp articles
         array("span", "class", "date", '<div xmlns:v="http://rdf'),                // tp
         array("div", "class", "artikel_content", '<div class="artikel_fuss">'),    // resale
         array("div", "id", "artikel_shortnews", '<p class="editor">'),             // autos
