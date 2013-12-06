@@ -69,4 +69,22 @@ class ViewHelper {
         //return $datestr;
         return \F3::get('lang_timestamp', $date->getTimestamp());
     }
+
+
+    /**
+     * anonymizes the url unless the anonymize parameter is set to boolean false
+     * @return anonymized string
+     * @param string $url which is the url to anonymize
+     */
+    public function anonymize($url) {
+        if (isset($_GET['anonymize'])) {
+            \F3::set('SESSION.anonymize', $_GET['anonymize']);
+        }
+
+        if (\F3::exists('SESSION.anonymize') && in_array(\F3::get('SESSION.anonymize'), array("no", "n", "false", "f", "0"))) {
+            return $url;
+        }
+
+        return trim(\F3::get('anonymizer')) . $url;
+    }
 }
