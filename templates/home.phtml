@@ -37,7 +37,9 @@
     <?PHP echo $this->loggedin===true ? "loggedin" : "notloggedin"; ?> 
     <?PHP echo \F3::get('auto_mark_as_read')==1 ? "auto_mark_as_read" : ""; ?>
 ">
-    
+    <?PHP
+        $this->viewHelper = new \helpers\ViewHelper();
+    ?>
     <div id="error">error message</div>
     
     <!-- language settings for jQuery -->
@@ -52,7 +54,7 @@
 
     <!-- other settings -->
     <span id="config"
-        data-anonymizer="<?PHP echo trim(\F3::get('anonymizer')); ?>"
+        data-anonymizer="<?PHP echo $this->viewHelper->get_anonymizer(); ?>"
         data-auto_mark_as_read="<?PHP echo \F3::get('auto_mark_as_read'); ?>">
 
     <!-- menue open for smartphone -->

@@ -72,19 +72,33 @@ class ViewHelper {
 
 
     /**
+     * @return TRUE or FALSE - whether or not we should anonymize urls
+     */
+    public function should_anonymize() {
+        if (\F3::exists('SESSION.anonymize') && in_array(\F3::get('SESSION.anonymize'), array("no", "n", "false", "f", "0"))) {
+            return FALSE;
+        }
+        return TRUE;
+    }
+
+
+    /**
      * anonymizes the url unless the anonymize parameter is set to boolean false
      * @return anonymized string
      * @param string $url which is the url to anonymize
      */
     public function anonymize($url) {
-        if (isset($_GET['anonymize'])) {
-            \F3::set('SESSION.anonymize', $_GET['anonymize']);
+        if ($this->should_anonymize()) {
+            return trim(\F3::get('anonymizer')) . $url;
         }
+        return $url;
+    }
 
-        if (\F3::exists('SESSION.anonymize') && in_array(\F3::get('SESSION.anonymize'), array("no", "n", "false", "f", "0"))) {
-            return $url;
-        }
 
-        return trim(\F3::get('anonymizer')) . $url;
+    /**
+     * @return the anonymizer string if we should anonymize otherwise blank
+     */
+    public function get_anonymizer() {
+        return $this->should_anonymize() ? trim(\F3::get('anonymizer')) : '';
     }
 }

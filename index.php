@@ -25,6 +25,11 @@ $f3->set(
     new \helpers\Logger( __dir__.'/data/logs/default.log', $f3->get('logger_level') )
 );
 
+// set anonymize in the session if found in the parameter
+if (isset($_GET['anonymize'])) {
+    \F3::set('SESSION.anonymize', $_GET['anonymize']);
+}
+
 // init authentication
 $f3->set('auth', new \helpers\Authentication());
 
