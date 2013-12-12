@@ -30,7 +30,7 @@ class Items extends \daos\mysql\Items {
         else if(isset($options['type']) && $options['type']=='unread'){
             $where .= ' AND unread=true ';
             if(\F3::get('unread_order')=='asc'){
-            	$order = 'ASC';
+                $order = 'ASC';
             }
         }
         
