@@ -161,6 +161,7 @@ class heise extends feed {
                 $content = $this->getTag($div[1], $div[2], $originalContent, $div[0], $div[3]);
                 if(is_array($content) && count($content)>=1) {
                     $content = $content[0];
+                    $content = preg_replace('/<script.*?<\/script>/si', '', $content);
                     $content = preg_replace_callback(',<a([^>]+)href="([^>"\s]+)",i', function($matches) {
                                             return "<a\1href=\"" . \spouts\rss\heise::absolute("\2", "http://www.heise.de") . "\"";},
                                             $content);
