@@ -1,5 +1,170 @@
 CHANGELOG
 
+3.2.0 (18 December 2013)
+*	NEW: Automatic CSRF protection (with IP and User-Agent checks) for
+	sessions mapped to SQL-, Jig-, Mongo- and Cache-based backends
+*	NEW: Named routes
+*	NEW: PATH variable; returns the URL relative to BASE
+*	NEW: Image->captcha() color parameters
+*	NEW: Ability to access MongoCuror thru the cursor() method
+*	NEW: Mapper->fields() method returns array of field names
+*	NEW: Mapper onload(), oninsert(), onupdate(), and onerase() event
+	listeners/triggers
+*	NEW: Preview class (a lightweight template engine)
+*	NEW: rel() method derives path from URL relative to BASE; useful for
+	rerouting
+*	NEW: PREFIX variable for prepending a string to a dictionary term;
+	Enable support for prefixed dictionary arrays and .ini files (Feature
+	request #440)
+*	NEW: Google static map plugin
+*	NEW: devoid() method
+*	Introduce clean(); similar to scrub(), except that arg is passed by
+	value
+*	Use $ttl for cookie expiration (Issue #457)
+*	Fix needs_rehash() cost comparison
+*	Add pass-by-reference argument to exists() so if method returns TRUE,
+	a subsequent get() is unnecessary
+*	Improve MySQL support
+*	Move esc(), raw(), and dupe() to View class where they more
+	appropriately belong
+*	Allow user-defined fields in SQL mapper constructor (Feature request
+	#450)
+*	Re-implement the pre-3.0 template resolve() feature
+*	Remove redundant instances of session_commit()
+*	Add support for input filtering in Mapper->copyfrom()
+*	Prevent intrusive behavior of Mapper->copyfrom()
+*	Support multiple SQL primary keys
+*	Support custom tag attributes/inline tokens defined at runtime
+	(Feature request #438)
+*	Broader support for HTTP basic auth
+*	Prohibit Jig _id clear()
+*	Add support for detailed stringify() output
+*	Add base directory to UI path as fallback
+*	Support Test->expect() chaining
+*	Support __tostring() in stringify()
+*	Trigger error on invalid CAPTCHA length (Issue #458)
+*	Bug fix: exists() pass-by-reference argument returns incorrect value
+*	Bug fix: DB Exec does not return affected row if query contains a
+	sub-SELECT (Issue #437)
+*	Improve seed generator and add code for detecting of acceptable
+	limits in Image->captcha() (Feature request #460)
+*	Add decimal format ICU extension
+*	Bug fix: 404-reported URI contains HTTP query
+*	Bug fix: Data type detection in DB->schema()
+*	Bug fix: TZ initialization
+*	Bug fix: paginate() passes incorrect argument to count()
+*	Bug fix: Incorrect query when reloading after insert()
+*	Bug fix: SQL preg_match error in pdo_type matching (Issue #447)
+*	Bug fix: Missing merge() function (Issue #444)
+*	Bug fix: BASE misdefined in command line mode
+*	Bug fix: Stringifying hive may run infinite (Issue #436)
+*	Bug fix: Incomplete stringify() when DEBUG<3 (Issue #432)
+*	Bug fix: Redirection of basic auth (Issue #430)
+*	Bug fix: Filter only PHP code (including short tags) in templates
+*	Bug fix: Markdown paragraph parser does not convert PHP code blocks
+	properly
+*	Bug fix: identicon() colors on same keys are randomized
+*	Bug fix: quotekey() fails on aliased keys
+*	Bug fix: Missing _id in Jig->find() return value
+*	Bug fix: LANGUAGE/LOCALES handling
+*	Bug fix: Loose comparison in stringify()
+
+3.1.2 (5 November 2013)
+*	Abandon .chm help format; Package API documentation in plain HTML;
+	(Launch lib/api/index.html in your browser)
+*	Deprecate BAIL in favor of HALT (default: TRUE)
+*	Revert to 3.1.0 autoload behavior; Add support for lowercase folder
+	names
+*	Allow Spring-style HTTP method overrides
+*	Add support for SQL Server-based sessions
+*	Capture full X-Forwarded-For header
+*	Add protection against malicious scripts; Extra check if file was really
+	uploaded
+*	Pass-thru page limit in return value of Cursor->paginate()
+*	Optimize code: Implement single-pass escaping
+*	Short circuit Jig->find() if source file is empty
+*	Bug fix: PHP globals passed by reference in hive() result (Issue #424)
+*	Bug fix: ZIP mime type incorrect behavior
+*	Bug fix: Jig->erase() filter malfunction
+*	Bug fix: Mongo->select() group
+*	Bug fix: Unknown bcrypt constant
+
+3.1.1 (13 October 2013)
+*	NEW: Support OpenID attribute exchange
+*	NEW: BAIL variable enables/disables continuance of execution on non-fatal
+	errors
+*	Deprecate BAIL in favor of HALT (default: FALSE)
+*	Add support for Oracle
+*	Mark cached queries in log (Feature Request #405)
+*	Implement Bcrypt->needs_reshash()
+*	Add entropy to SQL cache hash; Add uuid() method to DB backends
+*	Find real document root; Simplify debug paths
+*	Permit OpenID required fields to be declared as comma-separated string or
+	array
+*	Pass modified filename as argument to user-defined function in
+	Web->receive()
+*	Quote keys in optional SQL clauses (Issue #408)
+*	Allow UNLOAD to override fatal error detection (Issue #404)
+*	Mutex operator precedence error (Issue #406)
+*	Bug fix: exists() malfunction (Issue #401)
+*	Bug fix: Jig mapper triggers error when loading from CACHE (Issue #403)
+*	Bug fix: Array index check
+*	Bug fix: OpenID verified() return value
+*	Bug fix: Basket->find() should return a set of results (Issue #407);
+	Also implemented findone() for consistency with mappers
+*	Bug fix: PostgreSQL last insert ID (Issue #410)
+*	Bug fix: $port component URL overwritten by _socket()
+*	Bug fix: Calculation of elapsed time
+
+3.1.0 (20 August 2013)
+*	NEW: Web->filler() returns a chunk of text from the standard
+	Lorem Ipsum passage
+*	Change in behavior: Drop support for JSON serialization
+*	SQL->exec() now returns value of RETURNING clause
+*	Add support for $ttl argument in count() (Issue #393)
+*	Allow UI to be overridden by custom $path
+*	Return result of PDO primitives: begintransaction(), rollback(), and
+	commit()
+*	Full support for PHP 5.5
+*	Flush buffers only when DEBUG=0
+*	Support class->method, class::method, and lambda functions as
+	Web->basic() arguments
+*	Commit session on Basket->save()
+*	Optional enlargement in Image->resize()
+*	Support authentication on hosts running PHP-CGI
+*	Change visibility level of Cache properties
+*	Prevent ONERROR recursion
+*	Work around Apache pre-2.4 VirtualDocumentRoot bug
+*	Prioritize cURL in HTTP engine detection
+*	Bug fix: Minify tricky JS
+*	Bug fix: desktop() detection
+*	Bug fix: Double-slash on TEMP-relative path
+*	Bug fix: Cursor mapping of first() and last() records
+*	Bug fix: Premature end of Web->receive() on multiple files
+*	Bug fix: German umlaute to its corresponding grammatically-correct
+	equivalent
+
+3.0.9 (12 June 2013)
+*	NEW: Web->whois()
+*	NEW: Template <switch> <case> tags
+*	Improve CACHE consistency
+*	Case-insensitive MIME type detection
+*	Support pre-PHP 5.3.4 in Prefab->instance()
+*	Refactor isdesktop() and ismobile(); Add isbot()
+*	Add support for Markdown strike-through
+*	Work around ODBC's lack of quote() support
+*	Remove useless Prefab destructor
+*	Support multiple cache instances
+*	Bug fix: Underscores in OpenId keys mangled
+*	Refactor format()
+*	Numerous tweaks
+*	Bug fix: MongoId object not preserved
+*	Bug fix: Double-quotes included in lexicon() string (Issue #341)
+*	Bug fix: UTF-8 formatting mangled on Windows (Issue #342)
+*	Bug fix: Cache->load() error when CACHE is FALSE (Issue #344)
+*	Bug fix: send() ternary expression
+*	Bug fix: Country code constants
+
 3.0.8 (17 May 2013)
 *	NEW: Bcrypt lightweight hashing library\
 *	Return total number of records in superset in Cursor->paginate()
