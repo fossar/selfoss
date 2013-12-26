@@ -118,6 +118,7 @@ class heise extends feed {
         array("div", "class", "datum_autor", '<div class="artikel_fuss">'),        // mac
         array("p", "class", "vorlauftext", '<div class="artikel_fuss">'),          // mobil
         array("div", "id", "blocon", '</div>'),                                    // tp
+        array("div", "class", "mar0", '<div id="breadcrumb">'),                    // some tp articles
         array("span", "class", "date", '<div xmlns:v="http://rdf'),                // tp
         array("div", "class", "artikel_content", '<div class="artikel_fuss">'),    // resale
         array("div", "id", "artikel_shortnews", '<p class="editor">'),             // autos
@@ -160,6 +161,7 @@ class heise extends feed {
                 $content = $this->getTag($div[1], $div[2], $originalContent, $div[0], $div[3]);
                 if(is_array($content) && count($content)>=1) {
                     $content = $content[0];
+                    $content = preg_replace('/<script.*?<\/script>/si', '', $content);
                     $content = preg_replace_callback(',<a([^>]+)href="([^>"\s]+)",i', function($matches) {
                                             return "<a\1href=\"" . \spouts\rss\heise::absolute("\2", "http://www.heise.de") . "\"";},
                                             $content);
