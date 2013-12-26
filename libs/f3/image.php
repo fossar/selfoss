@@ -19,7 +19,8 @@ class Image {
 	//@{ Messages
 	const
 		E_Color='Invalid color specified: %s',
-		E_Font='CAPTCHA font not found';
+		E_Font='CAPTCHA font not found',
+		E_Length='Invalid CAPTCHA length: %s';
 	//@}
 
 	//@{ Positional cues
@@ -209,13 +210,14 @@ class Image {
 
 	/**
 	*	Resize image (Maintain aspect ratio); Crop relative to center
-	*	if flag is enabled
+	*	if flag is enabled; Enlargement allowed if flag is enabled
 	*	@return object
 	*	@param $width int
 	*	@param $height int
 	*	@param $crop bool
+	*	@param $enlarge bool
 	**/
-	function resize($width,$height,$crop=TRUE) {
+	function resize($width,$height,$crop=TRUE,$enlarge=TRUE) {
 		// Adjust dimensions; retain aspect ratio
 		$ratio=($origw=imagesx($this->data))/($origh=imagesy($this->data));
 		if (!$crop)
@@ -223,6 +225,10 @@ class Image {
 				$height=$width/$ratio;
 			else
 				$width=$height*$ratio;
+		if (!$enlarge) {
+			$width=min($origw,$width);
+			$height=min($origh,$height);
+		}
 		// Create blank image
 		$tmp=imagecreatetruecolor($width,$height);
 		imagesavealpha($tmp,TRUE);
@@ -254,7 +260,8 @@ class Image {
 	*	@param $angle int
 	**/
 	function rotate($angle) {
-		$this->data=imagerotate($this->data,$angle,IMG_COLOR_TRANSPARENT);
+		$this->data=imagerotate($this->data,$angle,
+			imagecolorallocatealpha($this->data,0,0,0,127));
 		imagesavealpha($this->data,TRUE);
 		return $this->save();
 	}
@@ -320,11 +327,11 @@ class Image {
 			array(0,.5,.5,.5,.5,0,1,0,.5,.5,1,.5,.5,1,.5,.5,0,1),
 			array(0,0,1,0,.5,.5,.5,0,0,.5,1,.5,.5,1,.5,.5,0,1)
 		);
+		$hash=sha1($str);
 		$this->data=imagecreatetruecolor($size,$size);
-		list($r,$g,$b)=$this->rgb(mt_rand(0x333,0xCCC));
+		list($r,$g,$b)=$this->rgb(hexdec(substr($hash,-3)));
 		$fg=imagecolorallocate($this->data,$r,$g,$b);
 		imagefill($this->data,0,0,IMG_COLOR_TRANSPARENT);
-		$hash=sha1($str);
 		$ctr=count($sprites);
 		$dim=$blocks*floor($size/$blocks)*2/$blocks;
 		for ($j=0,$y=ceil($blocks/2);$j<$y;$j++)
@@ -339,12 +346,12 @@ class Image {
 				}
 				$sprite=imagerotate($sprite,
 					90*(hexdec($hash[($j*$blocks+$i)*2+1])%4),
-					IMG_COLOR_TRANSPARENT);
+					imagecolorallocatealpha($sprite,0,0,0,127));
 				for ($k=0;$k<4;$k++) {
 					imagecopyresampled($this->data,$sprite,
 						$i*$dim/2,$j*$dim/2,0,0,$dim/2,$dim/2,$dim,$dim);
 					$this->data=imagerotate($this->data,90,
-						IMG_COLOR_TRANSPARENT);
+						imagecolorallocatealpha($this->data,0,0,0,127));
 				}
 				imagedestroy($sprite);
 			}
@@ -359,12 +366,22 @@ class Image {
 	*	@param $size int
 	*	@param $len int
 	*	@param $key string
+	*	@param $path string
+	*	@param $fg int
+	*	@param $bg int
 	**/
-	function captcha($font,$size=24,$len=5,$key=NULL) {
+	function captcha($font,$size=24,$len=5,
+		$key=NULL,$path='',$fg=0xFFFFFF,$bg=0x000000) {
+		if ((!$ssl=extension_loaded('openssl')) && ($len<4 || $len>13)) {
+			user_error(sprintf(self::E_Length,$len));
+			return FALSE;
+		}
 		$fw=Base::instance();
-		foreach ($fw->split($fw->get('UI')) as $dir)
+		foreach ($fw->split($path?:$fw->get('UI').';./') as $dir)
 			if (is_file($path=$dir.$font)) {
-				$seed=strtoupper(substr(uniqid(),-$len));
+				$seed=strtoupper(substr(
+					$ssl?bin2hex(openssl_random_pseudo_bytes($len)):uniqid(),
+					-$len));
 				$block=$size*3;
 				$tmp=array();
 				for ($i=0,$width=0,$height=0;$i<$len;$i++) {
@@ -373,12 +390,12 @@ class Image {
 					$w=$box[2]-$box[0];
 					$h=$box[1]-$box[5];
 					$char=imagecreatetruecolor($block,$block);
-					imagefill($char,0,0,0);
+					imagefill($char,0,0,$bg);
 					imagettftext($char,$size*2,0,
 						($block-$w)/2,$block-($block-$h)/2,
-						0xFFFFFF,$path,$seed[$i]);
-					$char=imagerotate($char,
-						mt_rand(-30,30),IMG_COLOR_TRANSPARENT);
+						$fg,$path,$seed[$i]);
+					$char=imagerotate($char,mt_rand(-30,30),
+						imagecolorallocatealpha($char,0,0,0,127));
 					// Reduce to normal size
 					$tmp[$i]=imagecreatetruecolor(
 						($w=imagesx($char))/2,($h=imagesy($char))/2);
@@ -504,22 +521,32 @@ class Image {
 	}
 
 	/**
+	*	Load string
+	*	@return object
+	*	@param $str string
+	**/
+	function load($str) {
+		$this->data=imagecreatefromstring($str);
+		imagesavealpha($this->data,TRUE);
+		$this->save();
+		return $this;
+	}
+
+	/**
 	*	Instantiate image
 	*	@param $file string
 	*	@param $flag bool
+	*	@param $path string
 	**/
-	function __construct($file=NULL,$flag=FALSE) {
+	function __construct($file=NULL,$flag=FALSE,$path='') {
 		$this->flag=$flag;
 		if ($file) {
 			$fw=Base::instance();
 			// Create image from file
 			$this->file=$file;
-			foreach ($fw->split($fw->get('UI')) as $dir)
-				if (is_file($dir.$file)) {
-					$this->data=imagecreatefromstring($fw->read($dir.$file));
-					imagesavealpha($this->data,TRUE);
-					$this->save();
-				}
+			foreach ($fw->split($path?:$fw->get('UI').';./') as $dir)
+				if (is_file($dir.$file))
+					$this->load($fw->read($dir.$file));
 		}
 	}
 
