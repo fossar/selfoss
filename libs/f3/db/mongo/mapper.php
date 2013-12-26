@@ -24,7 +24,9 @@ class Mapper extends \DB\Cursor {
 		//! Mongo collection
 		$collection,
 		//! Mongo document
-		$document=array();
+		$document=array(),
+		//! Mongo cursor
+		$cursor;
 
 	/**
 	*	Return TRUE if field is defined
@@ -77,6 +79,8 @@ class Mapper extends \DB\Cursor {
 		foreach ($row as $key=>$val)
 			$mapper->document[$key]=$val;
 		$mapper->query=array(clone($mapper));
+		if (isset($mapper->trigger['load']))
+			\Base::instance()->call($mapper->trigger['load'],$mapper);
 		return $mapper;
 	}
 
@@ -110,27 +114,24 @@ class Mapper extends \DB\Cursor {
 		);
 		$fw=\Base::instance();
 		$cache=\Cache::instance();
-		if (!$fw->get('CACHE') || !$ttl || !($cached=$cache->exists(
-			$hash=$fw->hash($fw->stringify(array($fields,$filter,$options))).
-				'.mongo',$result)) || $cached[0]+$ttl<microtime(TRUE)) {
+		if (!($cached=$cache->exists($hash=$fw->hash($this->db->dsn().
+			$fw->stringify(array($fields,$filter,$options))).'.mongo',
+			$result)) || !$ttl || $cached[0]+$ttl<microtime(TRUE)) {
 			if ($options['group']) {
+				$grp=$this->collection->group(
+					$options['group']['keys'],
+					$options['group']['initial'],
+					$options['group']['reduce'],
+					array(
+						'condition'=>$filter,
+						'finalize'=>$options['group']['finalize']
+					)
+				);
 				$tmp=$this->db->selectcollection(
-					$fw->get('HOST').'.'.$fw->get('BASE').'.'.uniqid().'.tmp'
+					$fw->get('HOST').'.'.$fw->get('BASE').'.'.
+					uniqid(NULL,TRUE).'.tmp'
 				);
-				$tmp->batchinsert(
-					$this->collection->group(
-						$options['group']['keys'],
-						$options['group']['initial'],
-						$options['group']['reduce'],
-						array(
-							'condition'=>array(
-								$filter,
-								$options['group']['finalize']
-							)
-						)
-					),
-					array('safe'=>TRUE)
-				);
+				$tmp->batchinsert($grp['retval'],array('safe'=>TRUE));
 				$filter=array();
 				$collection=$tmp;
 			}
@@ -138,30 +139,25 @@ class Mapper extends \DB\Cursor {
 				$filter=$filter?:array();
 				$collection=$this->collection;
 			}
-			$cursor=$collection->find($filter,$fields?:array());
+			$this->cursor=$collection->find($filter,$fields?:array());
 			if ($options['order'])
-				$cursor=$cursor->sort($options['order']);
+				$this->cursor=$this->cursor->sort($options['order']);
 			if ($options['limit'])
-				$cursor=$cursor->limit($options['limit']);
+				$this->cursor=$this->cursor->limit($options['limit']);
 			if ($options['offset'])
-				$cursor=$cursor->skip($options['offset']);
+				$this->cursor=$this->cursor->skip($options['offset']);
+			$result=array();
+			while ($this->cursor->hasnext())
+				$result[]=$this->cursor->getnext();
 			if ($options['group'])
 				$tmp->drop();
-			$result=iterator_to_array($cursor,FALSE);
 			if ($fw->get('CACHE') && $ttl)
 				// Save to cache backend
 				$cache->set($hash,$result,$ttl);
 		}
 		$out=array();
-		foreach ($result as &$doc) {
-			foreach ($doc as &$val) {
-				if (is_array($val))
-					$val=json_decode(json_encode($val));
-				unset($val);
-			}
+		foreach ($result as $doc)
 			$out[]=$this->factory($doc);
-			unset($doc);
-		}
 		return $out;
 	}
 
@@ -188,9 +184,20 @@ class Mapper extends \DB\Cursor {
 	*	Count records that match criteria
 	*	@return int
 	*	@param $filter array
+	*	@param $ttl int
 	**/
-	function count($filter=NULL) {
-		return $this->collection->count($filter);
+	function count($filter=NULL,$ttl=0) {
+		$fw=\Base::instance();
+		$cache=\Cache::instance();
+		if (!($cached=$cache->exists($hash=$fw->hash($fw->stringify(
+			array($filter))).'.mongo',$result)) || !$ttl ||
+			$cached[0]+$ttl<microtime(TRUE)) {
+			$result=$this->collection->count($filter);
+			if ($fw->get('CACHE') && $ttl)
+				// Save to cache backend
+				$cache->set($hash,$result,$ttl);
+		}
+		return $result;
 	}
 
 	/**
@@ -201,6 +208,8 @@ class Mapper extends \DB\Cursor {
 	**/
 	function skip($ofs=1) {
 		$this->document=($out=parent::skip($ofs))?$out->document:array();
+		if ($this->document && isset($this->trigger['load']))
+			\Base::instance()->call($this->trigger['load'],$this);
 		return $out;
 	}
 
@@ -212,6 +221,10 @@ class Mapper extends \DB\Cursor {
 		if (isset($this->document['_id']))
 			return $this->update();
 		$this->collection->insert($this->document);
+		$pkey=array('_id'=>$this->document['_id']);
+		if (isset($this->trigger['insert']))
+			\Base::instance()->call($this->trigger['insert'],
+				array($this,$pkey));
 		return $this->document;
 	}
 
@@ -221,7 +234,13 @@ class Mapper extends \DB\Cursor {
 	**/
 	function update() {
 		$this->collection->update(
-			array('_id'=>$this->document['_id']),$this->document);
+			$pkey=array('_id'=>$this->document['_id']),
+			$this->document,
+			array('upsert'=>TRUE)
+		);
+		if (isset($this->trigger['update']))
+			\Base::instance()->call($this->trigger['update'],
+				array($this,$pkey));
 		return $this->document;
 	}
 
@@ -233,10 +252,14 @@ class Mapper extends \DB\Cursor {
 	function erase($filter=NULL) {
 		if ($filter)
 			return $this->collection->remove($filter);
+		$pkey=array('_id'=>$this->document['_id']);
 		$result=$this->collection->
 			remove(array('_id'=>$this->document['_id']));
 		parent::erase();
 		$this->skip(0);
+		if (isset($this->trigger['erase']))
+			\Base::instance()->call($this->trigger['erase'],
+				array($this,$pkey));
 		return $result;
 	}
 
@@ -253,9 +276,13 @@ class Mapper extends \DB\Cursor {
 	*	Hydrate mapper object using hive array variable
 	*	@return NULL
 	*	@param $key string
+	*	@param $func callback
 	**/
-	function copyfrom($key) {
-		foreach (\Base::instance()->get($key) as $key=>$val)
+	function copyfrom($key,$func=NULL) {
+		$var=\Base::instance()->get($key);
+		if ($func)
+			$var=$func($var);
+		foreach ($var as $key=>$val)
 			$this->document[$key]=$val;
 	}
 
@@ -268,6 +295,22 @@ class Mapper extends \DB\Cursor {
 		$var=&\Base::instance()->ref($key);
 		foreach ($this->document as $key=>$field)
 			$var[$key]=$field;
+	}
+
+	/**
+	*	Return field names
+	*	@return array
+	**/
+	function fields() {
+		return array_keys($this->document);
+	}
+
+	/**
+	*	Return the cursor from last query
+	*	@return object|NULL
+	**/
+	function cursor() {
+		return $this->cursor;
 	}
 
 	/**
