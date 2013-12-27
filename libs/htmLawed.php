@@ -1,7 +1,7 @@
 <?php
 
 /*
-htmLawed 1.1.14, 8 August 2012
+htmLawed 1.1.16, 29 August 2013
 Copyright Santosh Patnaik
 Dual licensed with LGPL 3 and GPL 2+
 A PHP Labware internal utility; www.bioinformatics.org/phplabware/internal_utilities/htmLawed
@@ -336,7 +336,7 @@ $c = isset($C['schemes'][$c]) ? $C['schemes'][$c] : $C['schemes']['*'];
 static $d = 'denied:';
 if(isset($c['!']) && substr($p, 0, 7) != $d){$p = "$d$p";}
 if(isset($c['*']) or !strcspn($p, '#?;') or (substr($p, 0, 7) == $d)){return "{$b}{$p}{$a}";} // All ok, frag, query, param
-if(preg_match('`^([a-z\d\-+.&#; ]+?)(:|&#(58|x3a);|%3a|\\\\0{0,4}3a).`i', $p, $m) && !isset($c[strtolower($m[1])])){ // Denied prot
+if(preg_match('`^([^:?[@!$()*,=/\'\]]+?)(:|&#(58|x3a);|%3a|\\\\0{0,4}3a).`i', $p, $m) && !isset($c[strtolower($m[1])])){ // Denied prot
  return "{$b}{$d}{$p}{$a}";
 }
 if($C['abs_url']){
@@ -644,7 +644,7 @@ return '';
 function hl_tidy($t, $w, $p){
 // Tidy/compact HTM
 if(strpos(' pre,script,textarea', "$p,")){return $t;}
-$t = str_replace(' </', '</', preg_replace(array('`(<\w[^>]*(?<!/)>)\s+`', '`\s+`', '`(<\w[^>]*(?<!/)>) `'), array(' $1', ' ', '$1'), preg_replace_callback(array('`(<(!\[CDATA\[))(.+?)(\]\]>)`sm', '`(<(!--))(.+?)(-->)`sm', '`(<(pre|script|textarea)[^>]*?>)(.+?)(</\2>)`sm'), create_function('$m', 'return $m[1]. str_replace(array("<", ">", "\n", "\r", "\t", " "), array("\x01", "\x02", "\x03", "\x04", "\x05", "\x07"), $m[3]). $m[4];'), $t)));
+$t = preg_replace('`\s+`', ' ', preg_replace_callback(array('`(<(!\[CDATA\[))(.+?)(\]\]>)`sm', '`(<(!--))(.+?)(-->)`sm', '`(<(pre|script|textarea)[^>]*?>)(.+?)(</\2>)`sm'), create_function('$m', 'return $m[1]. str_replace(array("<", ">", "\n", "\r", "\t", " "), array("\x01", "\x02", "\x03", "\x04", "\x05", "\x07"), $m[3]). $m[4];'), $t));
 if(($w = strtolower($w)) == -1){
  return str_replace(array("\x01", "\x02", "\x03", "\x04", "\x05", "\x07"), array('<', '>', "\n", "\r", "\t", ' '), $t);
 }
@@ -652,7 +652,7 @@ $s = strpos(" $w", 't') ? "\t" : ' ';
 $s = preg_match('`\d`', $w, $m) ? str_repeat($s, $m[0]) : str_repeat($s, ($s == "\t" ? 1 : 2));
 $N = preg_match('`[ts]([1-9])`', $w, $m) ? $m[1] : 0;
 $a = array('br'=>1);
-$b = array('button'=>1, 'input'=>1, 'option'=>1);
+$b = array('button'=>1, 'input'=>1, 'option'=>1, 'param'=>1);
 $c = array('caption'=>1, 'dd'=>1, 'dt'=>1, 'h1'=>1, 'h2'=>1, 'h3'=>1, 'h4'=>1, 'h5'=>1, 'h6'=>1, 'isindex'=>1, 'label'=>1, 'legend'=>1, 'li'=>1, 'object'=>1, 'p'=>1, 'pre'=>1, 'td'=>1, 'textarea'=>1, 'th'=>1);
 $d = array('address'=>1, 'blockquote'=>1, 'center'=>1, 'colgroup'=>1, 'dir'=>1, 'div'=>1, 'dl'=>1, 'fieldset'=>1, 'form'=>1, 'hr'=>1, 'iframe'=>1, 'map'=>1, 'menu'=>1, 'noscript'=>1, 'ol'=>1, 'optgroup'=>1, 'rbc'=>1, 'rtc'=>1, 'ruby'=>1, 'script'=>1, 'select'=>1, 'table'=>1, 'tbody'=>1, 'tfoot'=>1, 'thead'=>1, 'tr'=>1, 'ul'=>1);
 $T = explode('<', $t);
@@ -674,20 +674,20 @@ while($X){
     else{++$N; ob_end_clean(); continue 2;}
    }
    else{echo "\n", str_repeat($s, $n), "$e\n", str_repeat($s, ($x != 1 ? ++$n : $n));}
-   echo ltrim($r); continue;
+   echo $r; continue;
   }
   $f = "\n". str_repeat($s, $n);
   if(isset($c[$y])){
-   if(!$x){echo $e, $f, ltrim($r);}
+   if(!$x){echo $e, $f, $r;}
    else{echo $f, $e, $r;}
   }elseif(isset($b[$y])){echo $f, $e, $r;
-  }elseif(isset($a[$y])){echo $e, $f, ltrim($r);
-  }elseif(!$y){echo $f, $e, $f, ltrim($r);
+  }elseif(isset($a[$y])){echo $e, $f, $r;
+  }elseif(!$y){echo $f, $e, $f, $r;
   }else{echo $e, $r;}
  }
  $X = 0;
 }
-$t = preg_replace('`[\n]\s*?[\n]+`', "\n", ob_get_contents());
+$t = str_replace(array("\n ", " \n"), "\n", preg_replace('`[\n]\s*?[\n]+`', "\n", ob_get_contents()));
 ob_end_clean();
 if(($l = strpos(" $w", 'r') ? (strpos(" $w", 'n') ? "\r\n" : "\r") : 0)){
  $t = str_replace("\n", $l, $t);
@@ -698,7 +698,7 @@ return str_replace(array("\x01", "\x02", "\x03", "\x04", "\x05", "\x07"), array(
 
 function hl_version(){
 // rel
-return '1.1.14';
+return '1.1.16';
 // eof
 }
 
