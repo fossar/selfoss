@@ -128,6 +128,27 @@ class heise extends feed {
 
 
     /**
+     * htmLawed configuration
+     */
+    private $htmLawedConfig = array(
+        'abs_url'  => 1,
+        'base_url' => 'http://www.heise.de/',
+        'comment'  => 1,
+        'safe'     => 1,
+    );
+
+
+    /**
+     * ctor
+     */
+    public function __construct() {
+        // include htmLawed
+        if(!function_exists('htmLawed'))
+            require('libs/htmLawed.php');
+    }
+
+
+    /**
      * loads content for given source
      *
      * @return void
@@ -160,15 +181,7 @@ class heise extends feed {
             foreach($this->textDivs as $div) {
                 $content = $this->getTag($div[1], $div[2], $originalContent, $div[0], $div[3]);
                 if(is_array($content) && count($content)>=1) {
-                    $content = $content[0];
-                    $content = preg_replace('/<script.*?<\/script>/si', '', $content);
-                    $content = preg_replace_callback(',<a([^>]+)href="([^>"\s]+)",i', function($matches) {
-                                            return "<a\1href=\"" . \spouts\rss\heise::absolute("\2", "http://www.heise.de") . "\"";},
-                                            $content);
-                    $content = preg_replace_callback(',<img([^>]+)src="([^>"\s]+)",i', function($matches) {
-                                            return "<img\1src=\"" . \spouts\rss\heise::absolute("\2", "http://www.heise.de") . "\"";},
-                                            $content);
-                    return $content;
+                    return htmLawed($content[0], $this->htmLawedConfig);
                 }
             }
         }
@@ -202,19 +215,5 @@ class heise extends feed {
         $tag_regex = '|<('.$tag.')[^>]*'.$attr.'\s*=\s*([\'"])'.$value.'\2[^>]*>(.*?)'.$end.'|ims';
         preg_match_all($tag_regex, $xml, $matches, PREG_PATTERN_ORDER);
         return $matches[3];
-    }
-    
-    
-    /**
-     * convert relative url to absolute
-     *
-     * @return string absolute url
-     * @return string $relative url
-     * @return string $absolute url
-     */
-    public static function absolute($relative, $absolute) {
-        if (preg_match(',^(https?://|ftp://|mailto:|news:),i', $relative))
-            return $relative;
-        return $absolute . $relative;
     }
 }
