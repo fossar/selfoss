@@ -4,9 +4,10 @@ chdir(__DIR__);
 $f3 = require(__DIR__.'/libs/f3/base.php');
 
 $f3->set('DEBUG',0);
-$f3->set('AUTOLOAD',__dir__.'/;libs/f3/;libs/;libs/WideImage/;daos/;libs/twitteroauth/;libs/FeedWriter/');
+$f3->set( 'AUTOLOAD',__dir__.'/;libs/f3/;libs/;libs/WideImage/;daos/;libs/twitteroauth/;libs/FeedWriter/;libs/content-extractor/;libs/readability/');
 $f3->set('cache',__dir__.'/data/cache');
 $f3->set('BASEDIR',__dir__);
+$f3->set('FTRSS_DATA_DIR', __dir__.'/data/ftrss');
 
 // read config
 $f3->config('defaults.ini');
