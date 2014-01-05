@@ -118,7 +118,6 @@ class fulltextrss extends feed {
 
         $url = parent::getLink();
         \F3::get('logger')->log($this->tag . ' - Loading page: ' . $url, \INFO);
-
         $content = $this->fetchFromWebSite($url);
         if ($content===false) {
             \F3::get('logger')->log($this->tag . ' - Failed loading page', \ERROR);
@@ -152,8 +151,6 @@ class fulltextrss extends feed {
      */
     private function fetchFromWebSite($url) {
 
-        \F3::get('logger')->log($this->tag . ' - Initializing FullText RSS', \DEBUG);
-
         $this->extractor = new \ContentExtractor(\F3::get('FTRSS_DATA_DIR').'/site_config/custom', \F3::get('FTRSS_DATA_DIR').'/site_config/standard');
         \SiteConfig::use_apc(false);
         $this->extractor->fingerprints = $this->fingerprints;
@@ -174,7 +171,6 @@ class fulltextrss extends feed {
         $url = $this->removeTrackersFromUrl($url);
 
         // Load web page
-        \F3::get('logger')->log($this->tag . ' - Loading page: ' . $url, \DEBUG);
         $html = @file_get_contents($url, false, $context);
         if ($html===false)
             return false;
@@ -232,9 +228,10 @@ class fulltextrss extends feed {
         //$html = convert_to_utf8($html, $response['headers']);
 
         $extract_result = $this->extractor->process($html, $url);
-        $extracted_content = ($extract_result) ? $this->extractor->getContent() : null;
-        $extracted_title = ($extract_result) ? $this->extractor->getTitle() : '';
+        if ($extract_result===false)
+            return false;
 
+        $extracted_content = $this->extractor->getContent();
         $readability = $this->extractor->readability;
         $readability->clean($extracted_content, 'select');
         if ($this->rewrite_relative_urls) $this->makeAbsolute($url, $extracted_content);
