@@ -20,6 +20,7 @@ selfoss.events.entries = function(e) {
             return;
         
         var autoMarkAsRead = $('#config').data('auto_mark_as_read')=="1" && parent.hasClass('unread');
+        var mobileHideOnClose = $('#config').data('mobile_hide_on_close')=="1" && parent.hasClass('unread');
         
         // anonymize
         selfoss.anonymize(parent.find('.entry-content'));
@@ -58,6 +59,9 @@ selfoss.events.entries = function(e) {
             fullscreen.find('.entry, .entry-close').click(function(e) {
                 if(e.target.tagName.toLowerCase()=="a")
                     return;
+                if(mobileHideOnClose && ($('#entrr'+parent.attr('id').substr(5)).hasClass('unread')==false)) {
+                    $('#'+parent.attr('id')).hide();
+                }
                 content.show();
                 location.hash = "";
                 $(window).scrollTop(scrollTop);
