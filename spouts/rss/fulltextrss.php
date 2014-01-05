@@ -63,13 +63,6 @@ class fulltextrss extends feed {
             "required"   => true,
             "validation" => array("notempty")
         ),
-        "api" => array(
-            "title"      => "API Key",
-            "type"       => "text",
-            "default"    => "",
-            "required"   => false,
-            "validation" => array()
-        )
     );
 
     /**
@@ -80,13 +73,6 @@ class fulltextrss extends feed {
     public $tag = 'ftrss';
 
     private $extractor;
-
-    /**
-     * the fivefilters api key
-     *
-     * @var string
-     */
-    private $apiKey = "";
 
     private $fingerprints = array(
         '<meta name="generator" content="Posterous"' => array('hostname'=>'fingerprint.posterous.com', 'head'=>true),
@@ -105,7 +91,6 @@ class fulltextrss extends feed {
      * @param string $url
      */
     public function load($params) {
-        $this->apiKey = $params['api'];
         parent::load(array( 'url' => $this->getXmlUrl($params)) );
     }
 
