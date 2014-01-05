@@ -324,7 +324,7 @@ class Opml extends BaseController {
         $this->writer->endDocument();
 
         // save content as file and suggest file name
-        header('Content-Disposition: attachment; filename="selfoss-subscriptions.opml"');
+        header('Content-Disposition: attachment; filename="selfoss-subscriptions.xml"');
         header('Content-Type: text/xml; charset=UTF-8');
         echo $this->writer->outputMemory();
     }
