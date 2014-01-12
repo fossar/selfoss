@@ -17,7 +17,9 @@ if(file_exists('config.ini'))
     $f3->config('config.ini');
 
 // Load custom language
-$f3->set('LANGUAGE',$f3->get('language'));
+$lang = $f3->get('language');
+if($lang!='0' && $lang!='')
+    $f3->set('LANGUAGE', $lang);
 
 // init logger
 $f3->set(

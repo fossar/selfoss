@@ -59,6 +59,7 @@ Version 2.10-SNAPSHOT
 * update fat free php framework version 3.2.0 (thanks a lot to Tim Gerundt)
 * improve heise spout (thanks a lot to robelix)
 * Fix duplicate items with MySQL (thanks a lot to mistic100)
+* Fix auto language detection
 
 Version 2.9
 * new configuration parameter for share buttons (thanks a lot to becevka)
