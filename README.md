@@ -60,6 +60,7 @@ Version 2.10-SNAPSHOT
 * improve heise spout (thanks a lot to robelix)
 * Fix duplicate items with MySQL (thanks a lot to mistic100)
 * Fix auto language detection
+* save OPML export file with xml extension (thanks a lot to hdhoang)
 
 Version 2.9
 * new configuration parameter for share buttons (thanks a lot to becevka)
