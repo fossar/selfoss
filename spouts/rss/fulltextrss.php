@@ -90,9 +90,11 @@ class fulltextrss extends feed {
      * @return void
      * @param string $url
      */
+/*
     public function load($params) {
         parent::load(array( 'url' => $this->getXmlUrl($params)) );
     }
+*/
 
     /**
      * returns the content of this item
@@ -137,6 +139,11 @@ class fulltextrss extends feed {
     private function fetchFromWebSite($url) {
 
         $this->extractor = new \ContentExtractor(\F3::get('FTRSS_DATA_DIR').'/site_config/custom', \F3::get('FTRSS_DATA_DIR').'/site_config/standard');
+        if (\F3::get('logger_level')==="DEBUG") {
+            ob_start();
+            $this->extractor->debug = true;
+            \SiteConfig::$debug = true;
+        }
         \SiteConfig::use_apc(false);
         $this->extractor->fingerprints = $this->fingerprints;
         $this->extractor->allowedParsers = $this->allowed_parsers;
@@ -201,6 +208,8 @@ class fulltextrss extends feed {
 
     /**
      * Extract full text from a full web page
+     * I supress all Notices & Warnings of ContentExtractor & Readability
+     * for ensuring working plugin in PHP Strict mode
      *
      * @author Jean Baptiste Favre
      * @return string html
@@ -216,9 +225,12 @@ class fulltextrss extends feed {
         if ($extract_result===false)
             return false;
 
-        $extracted_content = $this->extractor->getContent();
-        $readability = $this->extractor->readability;
-        $readability->clean($extracted_content, 'select');
+        $extracted_content = @$this->extractor->getContent();
+        $readability = @$this->extractor->readability;
+        if (\F3::get('logger_level')==="DEBUG") {
+            $readability->debug = true;
+        }
+        @$readability->clean($extracted_content, 'select');
         if ($this->rewrite_relative_urls) $this->makeAbsolute($url, $extracted_content);
         unset($readability);
 
@@ -233,7 +245,7 @@ class fulltextrss extends feed {
         if (in_array(strtolower($extracted_content->tagName), array('div', 'article', 'section', 'header', 'footer'))) {
                 $html = $extracted_content->innerHTML;
         } else {
-                $html = $extracted_content->ownerDocument->saveXML($extracted_content); // essentially outerHTML
+                $html = @$extracted_content->ownerDocument->saveXML($extracted_content); // essentially outerHTML
         }
         unset($extracted_content);
 
