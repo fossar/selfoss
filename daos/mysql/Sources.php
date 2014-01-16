@@ -130,7 +130,7 @@ class Sources extends Database {
      * @return mixed all sources
      */
     public function get() {
-        $ret = \F3::get('db')->exec('SELECT id, title, tags, spout, params, error FROM '.\F3::get('db_prefix').'sources ORDER BY lower(title) ASC');
+        $ret = \F3::get('db')->exec('SELECT id, title, tags, spout, params, error FROM '.\F3::get('db_prefix').'sources ORDER BY error DESC, lower(title) ASC');
         $spoutLoader = new \helpers\SpoutLoader();
         for($i=0;$i<count($ret);$i++)
             $ret[$i]['spout_obj'] = $spoutLoader->get( $ret[$i]['spout'] );
