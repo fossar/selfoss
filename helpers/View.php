@@ -47,7 +47,7 @@ class View {
             $lastSlash = strrpos($_SERVER['SCRIPT_NAME'], '/');
             $subdir = $lastSlash!==false ? substr($_SERVER['SCRIPT_NAME'], 0, $lastSlash) : '';
             $base =   'http' . 
-                      (isset($_SERVER["HTTPS"])=="on" ? 's' : '') . 
+                      (isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"]=="on" ? 's' : '') . 
                       '://' . $_SERVER["SERVER_NAME"] . 
                       ($_SERVER["SERVER_PORT"]!="80" ? ':'.$_SERVER["SERVER_PORT"] . '' : '') . 
                       $subdir . 
