@@ -63,6 +63,7 @@ Version 2.10-SNAPSHOT
 * save OPML export file with xml extension (thanks a lot to hdhoang)
 * sqlite's "optimize()" was implemented (thanks a lot to arbk)
 * sources: show sources with error first (thanks a lot to hdhoang)
+* fix bug on base url determining using https
 
 Version 2.9
 * new configuration parameter for share buttons (thanks a lot to becevka)
