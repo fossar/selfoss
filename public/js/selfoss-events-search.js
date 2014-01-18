@@ -3,9 +3,26 @@
  */
 selfoss.events.search = function() {
 
+    var splitTerm = function(term) {
+        if(term=="")
+            return [];
+        var words = term.match(/\w+|"[^"]+"/g);
+        for(var i = 0; i < words.length; i++)
+            words[i] = words[i].replace(/"/g, "");
+        return words;
+    }
+
+    var joinTerm = function(words) {
+        for(var i = 0; i < words.length; i++) {
+            if(words[i].indexOf(" ") >= 0)
+                words[i] = '"'  + words[i] + '"';
+        }
+        return words.join(" ");
+    }
+
     var executeSearch = function(term) {
         // show words in top of the page
-        var words = term.split(" ");
+        var words = splitTerm(term);
         $('#search-list').html('');
         var itemId = 0;
         $.each(words, function(index, item) {
@@ -52,10 +69,10 @@ selfoss.events.search = function() {
     
     // search term list in top of the page
     $('#search-list li').unbind('click').click(function () {
-        var termArray = $('#search-term').val().split(" ");
+        var termArray = splitTerm($('#search-term').val());
         termId = $(this).attr('id').replace("search-item-", "");
         termArray.splice(termId, 1);
-        var newterm = termArray.join(" ");
+        var newterm = joinTerm(termArray);
         $('#search-term').val(newterm);
         executeSearch($('#search-term').val());
     });
