@@ -64,6 +64,7 @@ Version 2.10-SNAPSHOT
 * sqlite's "optimize()" was implemented (thanks a lot to arbk)
 * sources: show sources with error first (thanks a lot to hdhoang)
 * fix bug on base url determining using https
+* support search terms with quotes to find exact phrase like "Windows 8" (thanks a lot to Tim Gerundt)
 
 Version 2.9
 * new configuration parameter for share buttons (thanks a lot to becevka)
