@@ -285,9 +285,17 @@ class commits extends \spouts\spout {
      * @return object JSON object
      */
     public static function getJsonContent($url) {
-        $content = @file_get_contents($url);
+        $v = \F3::get('version');
+        $options  = array('http' => array(
+            'user_agent' => "Selfoss/$v GitHub spout (+http://selfoss.aditu.de)",
+            'ignore_errors' => true
+        ));
+        $context  = stream_context_create($options);
+
+        $content = file_get_contents($url, false, $context);
         
-        if ($content === false) {
+        if( $http_response_header[0] != 'HTTP/1.1 200 OK' ) {
+            \F3::get('logger')->log('github spout error ' . $http_response_header[0] . ': ' . substr($content, 0, 512), \ERROR);
             return false;
         }
         
