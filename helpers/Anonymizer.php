@@ -3,7 +3,7 @@
 namespace helpers;
 
 /**
- * Helper class for authenticate user
+ * Helper class for anonymizing urls
  *
  * @package    helpers
  * @copyright  Copyright (c) Tobias Zeising (http://www.aditu.de)
