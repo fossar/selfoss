@@ -106,7 +106,8 @@ selfoss.events.entries = function(e) {
     
     // scroll load more
     $(window).unbind('scroll').scroll(function() {
-        if($('#content').is(':visible')==false)
+        if($('#config').data('auto_stream_more') == 0 ||
+           $('#content').is(':visible')==false)
             return;
     
         var content = $('#content');
