@@ -247,6 +247,7 @@ class Opml extends BaseController {
         $this->writer->writeAttributeNS('selfoss', 'params', null, html_entity_decode($source['params']));
 
         $this->writer->endElement();  // outline
+        \F3::get('logger')->log("done exporting source ".$source['title'], \DEBUG);
     }
 
 
@@ -259,6 +260,7 @@ class Opml extends BaseController {
         $this->sourcesDao = new \daos\Sources();
         $this->tagsDao = new \daos\Tags();
 
+        \F3::get('logger')->log('start OPML export', \DEBUG);
         $this->writer = new \XMLWriter();
         $this->writer->openMemory();
         $this->writer->setIndent(1);
@@ -276,11 +278,13 @@ class Opml extends BaseController {
         $this->writer->writeAttribute('version', '1.0');
         $this->writer->writeAttribute('createdOn', date('r'));
         $this->writer->endElement();  // meta
+        \F3::get('logger')->log('OPML export: finished writing meta', \DEBUG);
 
         $this->writer->startElement('head');
         $user = \F3::get('username');
         $this->writer->writeElement('title', ($user?$user.'\'s':'My') . ' subscriptions in selfoss');
         $this->writer->endElement();  // head
+        \F3::get('logger')->log('OPML export: finished writing head', \DEBUG);
 
         $this->writer->startElement('body');
 
@@ -303,6 +307,7 @@ class Opml extends BaseController {
 
         // generate outline elements for all sources
         foreach ($sources['tagged'] as $tag => $children) {
+            \F3::get('logger')->log("OPML export: exporting tag $tag", \DEBUG);
             $this->writer->startElement('outline');
             $this->writer->writeAttribute('title', $tag);
             $this->writer->writeAttribute('text', $tag);
@@ -322,6 +327,7 @@ class Opml extends BaseController {
         $this->writer->endElement();  // body
 
         $this->writer->endDocument();
+        \F3::get('logger')->log('finished OPML export', \DEBUG);
 
         // save content as file and suggest file name
         header('Content-Disposition: attachment; filename="selfoss-subscriptions.xml"');
