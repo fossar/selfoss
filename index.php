@@ -17,7 +17,6 @@ $f3->set('js', array(
     'public/js/jquery.mCustomScrollbar.min.js',
     'public/js/jquery.mousewheel.js',
     'public/js/lazy-image-loader.js',
-    'public/js/color-by-brightness.js',
     'public/js/spectrum.js',
     'public/js/jquery.hotkeys.js',
     'public/js/selfoss-base.js',
