@@ -302,12 +302,13 @@ class Opml extends BaseController {
         // create associative array with tag names as keys, colors as values
         $tagColors = array();
         foreach ($this->tagsDao->get() as $key => $tag) {
+            \F3::get('logger')->log("OPML export: tag ".$tag['tag']." has color ".$tag['color'], \DEBUG);
             $tagColors[$tag['tag']] = $tag['color'];
         }
 
         // generate outline elements for all sources
         foreach ($sources['tagged'] as $tag => $children) {
-            \F3::get('logger')->log("OPML export: exporting tag $tag", \DEBUG);
+            \F3::get('logger')->log("OPML export: exporting tag $tag sources", \DEBUG);
             $this->writer->startElement('outline');
             $this->writer->writeAttribute('title', $tag);
             $this->writer->writeAttribute('text', $tag);
@@ -320,6 +321,8 @@ class Opml extends BaseController {
 
             $this->writer->endElement();  // outline
         }
+
+        \F3::get('logger')->log("OPML export: exporting untagged sources", \DEBUG);
         foreach ($sources['untagged'] as $key => $source) {
             $this->writeSource($source);
         }
