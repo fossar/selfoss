@@ -4,7 +4,7 @@ selfoss
 Copyright (c) 2013 Tobias Zeising, tobias.zeising@aditu.de  
 http://selfoss.aditu.de  
 Licensed under the GPLv3 license  
-Version 2.10-SNAPSHOT
+Version 2.10
 
 
 INSTALLATION
@@ -50,7 +50,7 @@ Visit the page http://yourselfossurl.com/opml for importing your OPML File. If y
 CHANGELOG
 ---------
 
-Version 2.10-SNAPSHOT
+Version 2.10
 * fix error 500 on icon fetching
 * add heise hardware-hacks (thanks a lot to robelix)
 * reddit2 spout: fix link to return http (thanks a lot to Bert Deferme)
