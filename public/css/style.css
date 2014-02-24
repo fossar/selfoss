@@ -453,7 +453,7 @@ input {
         font-size:0.95em;
         margin-top:20px;
         line-height: 1.7em;
-		overflow: hidden;
+        overflow: hidden;
     }
     
         .entry-content a {
@@ -462,9 +462,8 @@ input {
         
         .entry-content img {
             max-width:99%;
-			display: block;
-			float: left;
-			margin: 0 10px 5px 0;
+            display: block;
+            margin: 0 10px 5px 0;
         }
         
         .entry-content p {
@@ -472,8 +471,8 @@ input {
         }
         
         .entry-content ol li {
-			list-style:decimal inside;
-		}
+            list-style:decimal inside;
+        }
 
         .entry-content li {
             margin:0.3em;
@@ -483,7 +482,7 @@ input {
         .entry-content blockquote {
             padding:1px 10px;
             border-left: 2px solid #eaeaea;
-			font-style: italic;
+            font-style: italic;
         }
 
         .entry-content.entry-content-short {
@@ -503,15 +502,15 @@ input {
         .entry-content ul,
         .entry-content pre,
         .entry-content blockquote {
-			clear: left;
-		}
+            clear: left;
+        }
 
-		.entry-content dt {
-			font-weight: bold;
-		}
-		.entry-content dd {
-			text-indent: 1.3em;
-		}
+        .entry-content dt {
+            font-weight: bold;
+        }
+        .entry-content dd {
+            text-indent: 1.3em;
+        }
 
     .entry-icon,
     .entry-icon img {

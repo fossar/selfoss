@@ -74,7 +74,8 @@ class heise extends feed {
                 "tp"     => "Telepolis",
                 "resale" => "Resale",
                 "foto"   => "Foto",
-                "autos"  => "Autos"
+                "autos"  => "Autos",
+                "hh"     => "Hardware-Hacks"
             ),
             "default"    => "main",
             "required"   => true,
@@ -101,6 +102,7 @@ class heise extends feed {
         "resale" => "http://www.heise.de/resale/rss/resale-atom.xml",
         "foto"   => "http://www.heise.de/foto/rss/news-atom.xml",
         "autos"  => "http://www.heise.de/autos/rss/news-atom.xml",
+        "hh"     => "http://www.heise.de/hardware-hacks/rss/hardware-hacks-atom.xml",
     );
 
 
@@ -110,16 +112,40 @@ class heise extends feed {
      * elements: start tag, attribute of start tag, value of start tag attribute, end
      */
     private $textDivs = array(
-        array("div", "class", "meldung_wrapper", '<!-- AUTHOR-DATA-MARKER-BEGIN'), // main, ix, mac, mobil, sec, net, open, dev, resale, foto
+        array("div", "class", "meldung_wrapper", '<!-- AUTHOR-DATA-MARKER-BEGIN'), // main, ix, mac, mobil, sec, net, open, dev, resale, foto, hh articles
         array("p", "class", "artikel_datum", '<p class="artikel_option">'),        // ct
         array("div", "class", "aufmacher", '<!-- AUTHOR-DATA-MARKER-BEGIN'),       // tr
         array("div", "class", "datum_autor", '<div class="artikel_fuss">'),        // mac
         array("p", "class", "vorlauftext", '<div class="artikel_fuss">'),          // mobil
         array("div", "id", "blocon", '</div>'),                                    // tp
+        array("div", "class", "mar0", '<div id="breadcrumb">'),                    // some tp articles
         array("span", "class", "date", '<div xmlns:v="http://rdf'),                // tp
         array("div", "class", "artikel_content", '<div class="artikel_fuss">'),    // resale
         array("div", "id", "artikel_shortnews", '<p class="editor">'),             // autos
+        array("div", "id", "projekte", '<div id="artikelfuss">'),                  // hh projects
+        array("div", 'id', 'artikel', '<div id="artikelfuss">'),                   // some hh articles
     );
+
+
+    /**
+     * htmLawed configuration
+     */
+    private $htmLawedConfig = array(
+        'abs_url'  => 1,
+        'base_url' => 'http://www.heise.de/',
+        'comment'  => 1,
+        'safe'     => 1,
+    );
+
+
+    /**
+     * ctor
+     */
+    public function __construct() {
+        // include htmLawed
+        if(!function_exists('htmLawed'))
+            require('libs/htmLawed.php');
+    }
 
 
     /**
@@ -155,14 +181,7 @@ class heise extends feed {
             foreach($this->textDivs as $div) {
                 $content = $this->getTag($div[1], $div[2], $originalContent, $div[0], $div[3]);
                 if(is_array($content) && count($content)>=1) {
-                    $content = $content[0];
-                    $content = preg_replace_callback(',<a([^>]+)href="([^>"\s]+)",i', function($matches) {
-                                            return "<a\1href=\"" . \spouts\rss\heise::absolute("\2", "http://www.heise.de") . "\"";},
-                                            $content);
-                    $content = preg_replace_callback(',<img([^>]+)src="([^>"\s]+)",i', function($matches) {
-                                            return "<img\1src=\"" . \spouts\rss\heise::absolute("\2", "http://www.heise.de") . "\"";},
-                                            $content);
-                    return $content;
+                    return htmLawed($content[0], $this->htmLawedConfig);
                 }
             }
         }
@@ -196,19 +215,5 @@ class heise extends feed {
         $tag_regex = '|<('.$tag.')[^>]*'.$attr.'\s*=\s*([\'"])'.$value.'\2[^>]*>(.*?)'.$end.'|ims';
         preg_match_all($tag_regex, $xml, $matches, PREG_PATTERN_ORDER);
         return $matches[3];
-    }
-    
-    
-    /**
-     * convert relative url to absolute
-     *
-     * @return string absolute url
-     * @return string $relative url
-     * @return string $absolute url
-     */
-    public static function absolute($relative, $absolute) {
-        if (preg_match(',^(https?://|ftp://|mailto:|news:),i', $relative))
-            return $relative;
-        return $absolute . $relative;
     }
 }

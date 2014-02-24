@@ -4,7 +4,7 @@ selfoss
 Copyright (c) 2013 Tobias Zeising, tobias.zeising@aditu.de  
 http://selfoss.aditu.de  
 Licensed under the GPLv3 license  
-Version 2.9
+Version 2.10
 
 
 INSTALLATION
@@ -50,6 +50,24 @@ Visit the page http://yourselfossurl.com/opml for importing your OPML File. If y
 CHANGELOG
 ---------
 
+Version 2.10
+* fix error 500 on icon fetching
+* add heise hardware-hacks (thanks a lot to robelix)
+* reddit2 spout: fix link to return http (thanks a lot to Bert Deferme)
+* reddit2 spout: add empty validation on username and password (thanks a lot to Bert Deferme)
+* setting to lazy load images on mobile devices (thanks a lot to Bodnár István)
+* update fat free php framework version 3.2.0 (thanks a lot to Tim Gerundt)
+* improve heise spout (thanks a lot to robelix)
+* fix duplicate items with MySQL (thanks a lot to mistic100)
+* fix auto language detection
+* save OPML export file with xml extension (thanks a lot to hdhoang)
+* sqlite's "optimize()" was implemented (thanks a lot to arbk)
+* sources: show sources with error first (thanks a lot to hdhoang)
+* fix bug on base url determining using https
+* support search terms with quotes to find exact phrase like "Windows 8" (thanks a lot to Tim Gerundt)
+* github spout fix (set user agent) (thanks a lot to niol)
+* more opml export logging (thanks a lot to niol)
+
 Version 2.9
 * new configuration parameter for share buttons (thanks a lot to becevka)
 * new Ukrainian translation (thanks a lot to becevka)
@@ -66,7 +84,7 @@ Version 2.9
 * the processing of the parameter of the session cookie is updated (thanks a lot to arbk)
 * prevent stored XSS vulnerability in the source add form (thanks a lot to Azhaguselvan SP)
 * sort spouts by name (thanks a lot to Tim Gerundt)
-* allow <dd>-element and style definition list elements (thanks a lot to mcnesium)
+* allow dd-element and style definition list elements (thanks a lot to mcnesium)
 * new GitHub spout to list commits on a repository (thanks a lot to Tim Gerundt)
 * performance improvement on feed update (thanks a lot to Brad Koehn)
 

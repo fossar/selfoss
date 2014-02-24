@@ -30,13 +30,13 @@ class Items extends \daos\mysql\Items {
         else if(isset($options['type']) && $options['type']=='unread'){
             $where .= ' AND unread=true ';
             if(\F3::get('unread_order')=='asc'){
-            	$order = 'ASC';
+                $order = 'ASC';
             }
         }
         
         // search
         if(isset($options['search']) && strlen($options['search'])>0) {
-            $search = str_replace(" ", "%", trim($options['search']));
+            $search = implode('%', \helpers\Search::splitTerms($options['search']));
             $params[':search'] = $params[':search2'] = $params[':search3'] = array("%".$search."%", \PDO::PARAM_STR);
             $where .= ' AND (items.title LIKE :search OR items.content LIKE :search2 OR sources.title LIKE :search3) ';
         }
