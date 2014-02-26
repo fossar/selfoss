@@ -22,6 +22,7 @@ selfoss.events.search = function() {
 
     var executeSearch = function(term) {
         // show words in top of the page
+    	if(term=="\"") term="";
         var words = splitTerm(term);
         $('#search-list').html('');
         var itemId = 0;
