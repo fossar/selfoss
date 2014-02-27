@@ -12,13 +12,23 @@
     $title = $this->viewHelper->lazyimg($title);
     $content = $this->viewHelper->lazyimg($content);
     $date = $this->viewHelper->dateago($this->item['datetime']);
+    $sharecfg = \F3::get('share');
+    $share = array(
+        "g" => "google",
+        "f" => "facebook",
+        "t" => "twitter",
+        "p" => "pocket",
+        "r" => "readability",
+        "d" => "delicious",
+        "e" => "email"
+    );
 ?>
 <div id="entry<?PHP echo $this->item['id']; ?>"
      class="entry
             <?PHP echo $this->item['unread']==1 ? 'unread' : ''; ?>">
     
     <!-- icon -->
-    <a href="<?PHP echo $this->item['link']; ?>" class="entry-icon">
+    <a href="<?PHP echo \helpers\Anonymizer::anonymize($this->item['link']); ?>" class="entry-icon">
         <?PHP if(strlen(trim($this->item['icon']))>0 && $this->item['icon']!="0") : ?>
         <img src="<?PHP echo 'favicons/'.$this->item['icon']; ?>" alt="<?PHP echo $sourcetitle ?>" />
         <?PHP endif; ?>
@@ -34,7 +44,8 @@
     </span>
     
     <!-- source -->
-    <a href="<?PHP echo trim(\F3::get('anonymizer')) . $this->item['link']; ?>" class="entry-source entry-source<?PHP echo $this->item['source']; ?>" target="_blank"><?PHP echo $sourcetitle ?></a>
+    <a href="<?PHP echo \helpers\Anonymizer::anonymize($this->item['link']); ?>" class="entry-source entry-source<?PHP echo $this->item['source']; ?>" target="_blank"><?PHP echo $sourcetitle ?></a>
+    <a href="<?PHP echo $this->item['link']; ?>" class="entry-link"></a>
 
     <span class="entry-separator">&bull;</span>
 
@@ -46,7 +57,7 @@
     <!-- thumbnail -->
     <?PHP if(isset($this->item['thumbnail']) && strlen(trim($this->item['thumbnail']))>0) : ?>
     <div class="entry-thumbnail">
-        <a href="<?PHP echo trim(\F3::get('anonymizer')) . $this->item['link']; ?>" target="_blank"><img src="<?PHP echo 'thumbnails/'.$this->item['thumbnail']; ?>" alt="<?PHP echo $this->item['title']; ?>" /></a>
+        <a href="<?PHP echo \helpers\Anonymizer::anonymize($this->item['link']); ?>" target="_blank"><img src="<?PHP echo 'thumbnails/'.$this->item['thumbnail']; ?>" alt="<?PHP echo $this->item['title']; ?>" /></a>
     </div>
     <?PHP endif; ?>
     
@@ -56,12 +67,14 @@
         
         <ul class="entry-smartphone-share">
             <li class="entry-newwindow"><?PHP echo \F3::get('lang_open_window')?></li>
-            <li class="entry-sharegoogle" title="google">google</li>
-            <li class="entry-sharetwitter" title="twitter">twitter</li>
-            <li class="entry-sharefacebook" title="facebook">facebook</li>
-            <li class="entry-sharepocket" title="pocket">pocket</li>
-            <li class="entry-sharereadability" title="readability">readability</li>
-            <li class="entry-shareemail" title="email">email</li>
+             <?PHP if (strlen($sharecfg) > 0) {
+                foreach (str_split($sharecfg) as $s) {
+                    $name = $share[$s];
+                    if ($name) {
+                       echo '<li class="entry-share'.$name.' entry-share" title="'.$name.'">'.$name.'</li>';
+                    }
+                }
+             } ?>
         </ul>
     </div>
     
@@ -71,12 +84,14 @@
         <li class="entry-unread <?PHP echo $this->item['unread']==1 ? 'active' : ''; ?>"><?PHP echo $this->item['unread']==1 ? \F3::get('lang_mark') : \F3::get('lang_unmark'); ?></li>
         <li class="entry-newwindow"><?PHP echo \F3::get('lang_open_window')?></li>
         <li class="entry-loadimages"><?PHP echo \F3::get('lang_load_img')?> </li>
-        <li class="entry-sharegoogle entry-share" title="google">&nbsp;</li>
-        <li class="entry-sharetwitter entry-share" title="twitter">&nbsp;</li>
-        <li class="entry-sharefacebook entry-share" title="facebook">&nbsp;</li>
-        <li class="entry-sharepocket entry-share" title="pocket">&nbsp;</li>
-        <li class="entry-sharereadability entry-share" title="readability">&nbsp;</li>
-        <li class="entry-shareemail entry-share" title="email">&nbsp;</li>
+        <?PHP if (strlen($sharecfg) > 0) {
+            foreach (str_split($sharecfg) as $s) {
+                $name = $share[$s];
+                if ($name) {
+                    echo '<li class="entry-share'.$name.' entry-share" title="'.$name.'">&nbsp;</li>';
+                }
+            }
+        } ?>
         <li class="entry-close"></li>
     </ul>
 </div>

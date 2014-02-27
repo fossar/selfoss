@@ -22,6 +22,23 @@ input {
     padding:6px;
 }
 
+#error {
+    display:none;
+    position:absolute;
+    width:100%;
+    background:#f2dede;
+    border:1px solid #eed3d7;
+    color:#b94a48;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
+    filter: alpha(opacity=90);
+    -moz-opacity: 0.9;
+    -khtml-opacity: 0.9;
+    opacity: 0.9;
+    z-index:100;
+    text-align:center;
+    padding:10px;
+}
+
 
 /* navigation */
 
@@ -118,6 +135,16 @@ input {
         overflow:hidden;
     }
     
+        .nav-tags-collapsed {
+            padding-left: 20px;
+            background: url(images/nav-collapsed.png) center left no-repeat;
+        }
+        
+        .nav-tags-expanded {
+            padding-left: 20px;
+            background: url(images/nav-expanded.png) center left no-repeat;
+        }
+        
         #nav-tags li {
             position:relative;
             color:#b9b9b9;
@@ -156,6 +183,16 @@ input {
         overflow:hidden;
     }
     
+        .nav-sources-collapsed {
+            padding-left: 20px;
+            background: url(images/nav-collapsed.png) center left no-repeat;
+        }
+        
+        .nav-sources-expanded {
+            padding-left: 20px;
+            background: url(images/nav-expanded.png) center left no-repeat;
+        }
+        
         #nav-sources {
             display:none;
         }
@@ -416,6 +453,7 @@ input {
         font-size:0.95em;
         margin-top:20px;
         line-height: 1.7em;
+        overflow: hidden;
     }
     
         .entry-content a {
@@ -424,6 +462,8 @@ input {
         
         .entry-content img {
             max-width:99%;
+            display: block;
+            margin: 0 10px 5px 0;
         }
         
         .entry-content p {
@@ -431,8 +471,8 @@ input {
         }
         
         .entry-content ol li {
-			list-style:decimal inside;
-		}
+            list-style:decimal inside;
+        }
 
         .entry-content li {
             margin:0.3em;
@@ -442,6 +482,7 @@ input {
         .entry-content blockquote {
             padding:1px 10px;
             border-left: 2px solid #eaeaea;
+            font-style: italic;
         }
 
         .entry-content.entry-content-short {
@@ -456,6 +497,21 @@ input {
             overflow-x: auto;
         }
     
+        .entry-content p,
+        .entry-content ol,
+        .entry-content ul,
+        .entry-content pre,
+        .entry-content blockquote {
+            clear: left;
+        }
+
+        .entry-content dt {
+            font-weight: bold;
+        }
+        .entry-content dd {
+            text-indent: 1.3em;
+        }
+
     .entry-icon,
     .entry-icon img {
         margin-top:3px;
@@ -466,6 +522,10 @@ input {
         text-decoration:none;
     }
     
+    .entry-link {
+        display:none;
+    }
+
     .entry-source,
     .entry-separator,
     .entry-datetime {
@@ -554,6 +614,10 @@ input {
             background-image:url(images/readability.png);
         }
     
+        .entry-sharedelicious {
+            background-image:url(images/delicious.png);
+        }
+
         .entry-smartphone-share li.entry-shareemail,
         .entry-toolbar li.entry-shareemail {
             background-image:url(images/mail.png);
@@ -941,10 +1005,6 @@ body.publicmode.notloggedin .entry-unread {
             display:block;
         }
    
-    .entry-toolbar .entry-newwindow {
-        display:none;
-    }
-
     .entry-content {
         display:none;
         -moz-column-count: 1;
@@ -1009,10 +1069,10 @@ body.publicmode.notloggedin .entry-unread {
             width:29px;
             height:29px;
             left:100%;
-            top:10px;
-            margin-left:-48px;
-            background:url(images/nav-mobile-settings.png) no-repeat;
+            margin-left:-66px;
+            background:url(images/nav-mobile-settings.png) no-repeat center;
             background-size:29px 29px;
+            padding:11px 21px 11px 15px;
         }
         
     #nav {
@@ -1166,8 +1226,12 @@ body.publicmode.notloggedin .entry-unread {
             #fullscreen-entry .entry-close {
                 display:block;
             }
-    
-    .entry-share {
+   
+    .entry-toolbar .entry-newwindow {
+        display:none;
+    }
+ 
+    .entry-toolbar .entry-share {
         display:none;
     }
     

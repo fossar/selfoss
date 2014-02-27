@@ -13,6 +13,9 @@
     <!--  Mobile viewport optimized: j.mp/bplateviewport -->
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1" />
     
+    <!--  Add support for fullscreen Webapp on iPhone 5 -->
+    <meta name="viewport" content="initial-scale=1, user-scalable=no, maximum-scale=1" media="(device-height: 568px)" />
+    
     <!-- app 'behaviour' when adding link to iDevice springboard -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
 
@@ -35,6 +38,8 @@
     <?PHP echo \F3::get('auto_mark_as_read')==1 ? "auto_mark_as_read" : ""; ?>
 ">
     
+    <div id="error"></div>
+    
     <!-- language settings for jQuery -->
     <span id="lang"
         data-mark="<?PHP echo \F3::get('lang_mark'); ?>"
@@ -43,12 +48,13 @@
         data-unstar="<?PHP echo \F3::get('lang_unstar'); ?>"
         data-source_warn="<?PHP echo \F3::get('lang_source_warn'); ?>"
         data-source_saved="<?PHP echo \F3::get('lang_source_saved'); ?>"
-        data-source_edit="<?PHP echo \F3::get('lang_source_edit'); ?>">
+        data-source_edit="<?PHP echo \F3::get('lang_source_edit'); ?>"></span>
 
     <!-- other settings -->
     <span id="config"
-        data-anonymizer="<?PHP echo trim(\F3::get('anonymizer')); ?>"
-        data-auto_mark_as_read="<?PHP echo \F3::get('auto_mark_as_read'); ?>">
+        data-anonymizer="<?PHP echo \helpers\Anonymizer::getAnonymizer(); ?>"
+        data-auto_mark_as_read="<?PHP echo \F3::get('auto_mark_as_read'); ?>"
+        data-load_images_on_mobile="<?PHP echo \F3::get('load_images_on_mobile'); ?>"></span>
 
     <!-- menue open for smartphone -->
     <div id="nav-mobile">
@@ -71,21 +77,22 @@
         <hr>
 
         <div id="nav-tags-wrapper">
-        <h2 id="nav-tags-title"><?PHP echo \F3::get('lang_tags') ?></h2>
+        <h2 id="nav-tags-title" class="nav-tags-expanded"><?PHP echo \F3::get('lang_tags') ?></h2>
         <ul id="nav-tags">
             <li class="active nav-tags-all"><?PHP echo \F3::get('lang_alltags')?></li>
             <?PHP echo $this->tags; ?>
         </ul>
-        <h2 id="nav-sources-title"><?PHP echo \F3::get('lang_sources') ?></h2>
+        <h2 id="nav-sources-title" class="nav-sources-collapsed"><?PHP echo \F3::get('lang_sources') ?></h2>
         <ul id="nav-sources">
             <?PHP echo $this->sources; ?>
+        </ul>
         </div>
         
         <hr>
         
         <!-- navigation search input just for smartphone version -->
         <div id="nav-search">
-            <input type="text" id="nav-search-term"></input> <input type="button" id="nav-search-button" value="<?PHP echo \F3::get('lang_searchbutton')?>" />
+            <input type="text" id="nav-search-term" /> <input type="button" id="nav-search-button" value="<?PHP echo \F3::get('lang_searchbutton')?>" />
             <hr>
         </div>
         
@@ -106,7 +113,7 @@
     
     <!-- search -->
     <div id="search">
-        <input type="text" id="search-term"></input>
+        <input type="text" id="search-term" />
         <div id="search-remove"></div>
         <div id="search-button"></div>
         <div id="search-shownav"></div>

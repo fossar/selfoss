@@ -129,10 +129,11 @@ class Sources extends BaseController {
             $this->view->jsonError(array('title' => 'no data for title given'));
         if(!isset($data['spout']))
             $this->view->jsonError(array('spout' => 'no data for spout given'));
-        
-        $title = $data['title'];
+
+        // clean up title and tag data to prevent XSS
+        $title = htmlspecialchars($data['title']);
+        $tags = htmlspecialchars($data['tags']);
         $spout = $data['spout'];
-        $tags = $data['tags'];
         $isAjax = isset($data['ajax']);
         
         unset($data['title']);
@@ -191,7 +192,7 @@ class Sources extends BaseController {
      */
     public function remove() {
         $id = \F3::get('PARAMS["id"]');
-        
+
         $sourceDao = new \daos\Sources();
         
         if (!$sourceDao->isValid('id', $id))

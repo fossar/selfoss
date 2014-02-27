@@ -283,7 +283,6 @@ class feed extends \spouts\spout {
         return $date;
     }
     
-    
     /**
      * destroy the plugin (prevent memory issues)
      */

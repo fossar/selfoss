@@ -26,8 +26,8 @@ selfoss.events.sources = function() {
                 selfoss.events.sources();
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                parent.find('.source-edit-delete').removeClass('loading');
-                alert('Error deleting source: '+errorThrown);
+                parent.find('.source-edit-delete').removeClass('loading');                     
+                selfoss.showError('Error adding source: '+errorThrown); 
             }
         });
     });
@@ -74,10 +74,10 @@ selfoss.events.sources = function() {
                 
                 // hide input form
                 parent.find('.source-edit-form').hide();
-                
+
                 // update title
-                parent.find('.source-title').html(parent.find("input[name='title']").val());
-                
+                parent.find('.source-title').text(parent.find("input[name='title']").val());
+
                 // show all links for new items
                 parent.removeClass('source-new');
                 
@@ -130,7 +130,7 @@ selfoss.events.sources = function() {
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 parent.find('.source-edit-delete').removeClass('loading');
-                alert('Error deleting source: '+errorThrown);
+                selfoss.showError('Error deleting source: '+errorThrown); 
             }
         }); 
     });

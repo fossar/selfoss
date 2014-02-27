@@ -4,7 +4,7 @@ selfoss
 Copyright (c) 2013 Tobias Zeising, tobias.zeising@aditu.de  
 http://selfoss.aditu.de  
 Licensed under the GPLv3 license  
-Version 2.8-SNAPSHOT
+Version 2.10
 
 
 INSTALLATION
@@ -50,14 +50,57 @@ Visit the page http://yourselfossurl.com/opml for importing your OPML File. If y
 CHANGELOG
 ---------
 
-Version 2.8-SNAPSHOT
+Version 2.10
+* fix error 500 on icon fetching
+* add heise hardware-hacks (thanks a lot to robelix)
+* reddit2 spout: fix link to return http (thanks a lot to Bert Deferme)
+* reddit2 spout: add empty validation on username and password (thanks a lot to Bert Deferme)
+* setting to lazy load images on mobile devices (thanks a lot to Bodnár István)
+* update fat free php framework version 3.2.0 (thanks a lot to Tim Gerundt)
+* improve heise spout (thanks a lot to robelix)
+* fix duplicate items with MySQL (thanks a lot to mistic100)
+* fix auto language detection
+* save OPML export file with xml extension (thanks a lot to hdhoang)
+* sqlite's "optimize()" was implemented (thanks a lot to arbk)
+* sources: show sources with error first (thanks a lot to hdhoang)
+* fix bug on base url determining using https
+* support search terms with quotes to find exact phrase like "Windows 8" (thanks a lot to Tim Gerundt)
+* github spout fix (set user agent) (thanks a lot to niol)
+* more opml export logging (thanks a lot to niol)
+
+Version 2.9
+* new configuration parameter for share buttons (thanks a lot to becevka)
+* new Ukrainian translation (thanks a lot to becevka)
+* fix Italian translation
+* new error message bar (thanks a lot to tamizhgeek)
+* fix php 5.5 bug for some spouts (thanks a lot to amiga23)
+* fix 'Undefined Index' error in item tpl when no shares available (thanks a lot to venyii)
+* add multi reddit support (thanks a lot to Janez Troha)
+* avoid duplicate sources while importing OPML (thanks a lot to Azhaguselvan SP)
+* prevent reflected XSS vulnerability in search form (thanks a lot to Azhaguselvan SP)
+* add support for fullscreen Webapp on iPhone 5 (thanks a lot to darkside40)
+* added new config parameter (unread_order) to be able to read unread items from oldest to newest (thanks a lot to Paul Fauchon)
+* update twitter api (thanks a lot to bobman38)
+* the processing of the parameter of the session cookie is updated (thanks a lot to arbk)
+* prevent stored XSS vulnerability in the source add form (thanks a lot to Azhaguselvan SP)
+* sort spouts by name (thanks a lot to Tim Gerundt)
+* allow dd-element and style definition list elements (thanks a lot to mcnesium)
+* new GitHub spout to list commits on a repository (thanks a lot to Tim Gerundt)
+* performance improvement on feed update (thanks a lot to Brad Koehn)
+
+Version 2.8
 * new Polish translation (thanks a lot to Piotr Dymacz)
 * improved Expires section and Compression in .htaccess (thanks a lot to S Anand)
 * make api item listing, tags and sources stats accessible for non loggedin users in public mode
-* replace file_get_content for icon fetching with curl based version for prevent allow_url_fopen problems
 * update fat free php framework version 3.0.8
 * new configuration parameter for default readability api key
 * new configuration parameter for allowing unauthorized access for the update job
+* new delicious support (thanks a lot to bbeardsley)
+* support ssl proxy (thanks a lot to zajad)
+* new readability support (thanks a lot to hayk)
+* pass original url to external sites except for opening the anonymized url (thanks a lot to bbeardsley)
+* new finnish translation (thanks a lot to jukper)
+* new spanish translation (thanks a lot to Matias Perrone)
 
 Version 2.7
 * new spout for instapaper (thanks a lot to janeczku)

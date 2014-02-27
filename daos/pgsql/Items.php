@@ -21,18 +21,22 @@ class Items extends \daos\mysql\Items {
     public function get($options = array()) {
         $params = array();
         $where = '';
-        
+        $order = 'DESC';
         // only starred
         if(isset($options['type']) && $options['type']=='starred')
             $where .= ' AND starred=true ';
             
         // only unread
-        else if(isset($options['type']) && $options['type']=='unread')
+        else if(isset($options['type']) && $options['type']=='unread'){
             $where .= ' AND unread=true ';
+            if(\F3::get('unread_order')=='asc'){
+                $order = 'ASC';
+            }
+        }
         
         // search
         if(isset($options['search']) && strlen($options['search'])>0) {
-            $search = str_replace(" ", "%", trim($options['search']));
+            $search = implode('%', \helpers\Search::splitTerms($options['search']));
             $params[':search'] = $params[':search2'] = $params[':search3'] = array("%".$search."%", \PDO::PARAM_STR);
             $where .= ' AND (items.title LIKE :search OR items.content LIKE :search2 OR sources.title LIKE :search3) ';
         }
@@ -64,7 +68,7 @@ class Items extends \daos\mysql\Items {
                     items.id, datetime, items.title AS title, content, unread, starred, source, thumbnail, icon, uid, link, sources.title as sourcetitle, sources.tags as tags
                    FROM items, sources 
                    WHERE items.source=sources.id '.$where.' 
-                   ORDER BY items.datetime DESC 
+                   ORDER BY items.datetime '.$order.' 
                    LIMIT ' . $options['items'] . ' OFFSET ' . $options['offset'], $params);
     }
     

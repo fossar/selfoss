@@ -139,5 +139,8 @@ class Database {
      * @return  void
      */
     public function optimize() {
+        @\F3::get('db')->exec('
+            VACUUM;
+        ');
     }
 }

@@ -30,8 +30,24 @@ class Authentication {
      * start session and check login
      */
     public function __construct() {
-        // session cookie will be valid for one month
-        session_set_cookie_params((3600*24*30), "/");
+        
+        // check for SSL proxy and special cookie options
+        if(isset($_SERVER['HTTP_X_FORWARDED_SERVER']) && isset($_SERVER['HTTP_X_FORWARDED_HOST'])
+           && ($_SERVER['HTTP_X_FORWARDED_SERVER']===$_SERVER['HTTP_X_FORWARDED_HOST'])) {
+            // set cookie details (http://php.net/manual/en/function.setcookie.php)
+            // expire, path, domain, secure, httponly
+            session_set_cookie_params(
+                (3600*24*30), 
+                '/'.$_SERVER['SERVER_NAME'].preg_replace('/\/[^\/]+$/','',$_SERVER['PHP_SELF']).'/', 
+                $_SERVER['HTTP_X_FORWARDED_SERVER'], 
+                (isset($_SERVER['HTTPS'])&&"off"!==$_SERVER['HTTPS'])?"true":"false", 
+                "true");
+        } else {
+            // session cookie will be valid for one month. path is script dir.
+            session_set_cookie_params(
+                (3600*24*30), 
+                dirname($_SERVER['SCRIPT_NAME'])==='/'?'/':dirname($_SERVER['SCRIPT_NAME']).'/');
+        }
         
         session_name();
         if(session_id()=="")

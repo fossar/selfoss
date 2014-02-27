@@ -19,14 +19,14 @@ class youtube extends \spouts\rss\feed {
      *
      * @var string
      */
-    public $name = 'Youtube RSS Feed';
+    public $name = 'YouTube Channel';
 
     /**
      * description of this source type
      *
      * @var string
      */
-    public $description = 'An Youtube RSS Feed as source';
+    public $description = 'An YouTube channel as source';
 
     /**
      * config params

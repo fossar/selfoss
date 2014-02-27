@@ -38,8 +38,7 @@ class Image {
         $urlElements = parse_url($url);
 
         // search on base page for <link rel="shortcut icon" url...
-        $html = @\Web::instance()->request($url);
-        $html = isset($html['body']) ? $html['body'] : "";
+        $html = @file_get_contents($url);
         $shortcutIcon = $this->parseShortcutIcon($html);
         if($shortcutIcon!==false) {
             if(substr($shortcutIcon,0,4)!='http') {
@@ -82,8 +81,7 @@ class Image {
      */
     public function loadImage($url, $width=false, $height=false) {
         // load image
-        $data = @\Web::instance()->request($url);
-        $data = isset($data['body']) ? $data['body'] : false;
+        $data = @file_get_contents($url);
         if($data===false)
             return false;
         
