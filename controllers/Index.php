@@ -235,8 +235,10 @@ class Index extends BaseController {
      */
     private function convertTagsToAssocArray($tags) {
         $assocTags = array();
-        foreach($tags as $tag)
-            $assocTags[$tag['tag']] = $tag['color'];
+        foreach($tags as $tag) {
+            $assocTags[$tag['tag']]['backColor'] = $tag['color'];
+            $assocTags[$tag['tag']]['foreColor'] = \helpers\Color::colorByBrightness($tag['color']);
+        }
         return $assocTags;
     }
 }
