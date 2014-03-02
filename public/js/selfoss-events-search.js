@@ -13,6 +13,8 @@ selfoss.events.search = function() {
     };
 
     var joinTerm = function(words) {
+        if(!words || words.length <= 0)
+            return "";
         for(var i = 0; i < words.length; i++) {
             if(words[i].indexOf(" ") >= 0)
                 words[i] = '"'  + words[i] + '"';
@@ -23,6 +25,7 @@ selfoss.events.search = function() {
     var executeSearch = function(term) {
         // show words in top of the page
         var words = splitTerm(term);
+        term = joinTerm(words);
         $('#search-list').html('');
         var itemId = 0;
         $.each(words, function(index, item) {
