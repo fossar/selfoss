@@ -36,13 +36,13 @@
     
     <!-- title -->
     <h2 class="entry-title"><?PHP echo $title; ?></h2>
-    
+    <? if(\F3::get('hide_tags_from_items')!='1'){ ?>
     <span class="entry-tags">
         <?PHP foreach($this->item['tags'] as $tag => $color) : ?>
             <span class="entry-tags-tag" style="background-color:<?PHP echo $color; ?>"><?PHP echo $tag; ?></span>
         <?PHP endforeach; ?>
     </span>
-    
+    <?}?>
     <!-- source -->
     <a href="<?PHP echo \helpers\Anonymizer::anonymize($this->item['link']); ?>" class="entry-source entry-source<?PHP echo $this->item['source']; ?>" target="_blank"><?PHP echo $sourcetitle ?></a>
     <a href="<?PHP echo $this->item['link']; ?>" class="entry-link"></a>
