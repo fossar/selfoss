@@ -98,10 +98,10 @@ class instapaper extends feed {
      */
     private function fetchFromInstapaper($url) {
         if (function_exists('curl_init') && !ini_get("open_basedir")) {
-            $content = $this->file_get_contents_curl("http://www.instapaper.com/text?u=" . urlencode($url));
+            $content = $this->file_get_contents_curl("https://www.instapaper.com/text?u=" . urlencode($url));
         }
         else {
-            $content = @file_get_contents("http://www.instapaper.com/text?u=" . urlencode($url));
+            $content = @file_get_contents("https://www.instapaper.com/text?u=" . urlencode($url));
         }
         $dom = new \DOMDocument();
         @$dom->loadHTML($content);
