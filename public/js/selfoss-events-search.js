@@ -6,23 +6,26 @@ selfoss.events.search = function() {
     var splitTerm = function(term) {
         if(term=="")
             return [];
-        var words = term.match(/\w+|"[^"]+"/g);
+        var words = term.match(/"[^"]+"|\S+/g);
         for(var i = 0; i < words.length; i++)
             words[i] = words[i].replace(/"/g, "");
         return words;
-    }
+    };
 
     var joinTerm = function(words) {
+        if(!words || words.length <= 0)
+            return "";
         for(var i = 0; i < words.length; i++) {
             if(words[i].indexOf(" ") >= 0)
                 words[i] = '"'  + words[i] + '"';
         }
         return words.join(" ");
-    }
+    };
 
     var executeSearch = function(term) {
         // show words in top of the page
         var words = splitTerm(term);
+        term = joinTerm(words);
         $('#search-list').html('');
         var itemId = 0;
         $.each(words, function(index, item) {
@@ -40,7 +43,7 @@ selfoss.events.search = function() {
             $('#search-list').hide();
         else
             $('#search-list').show();
-    }
+    };
     
     // search button shows search input or executes search
     $('#search-button').unbind('click').click(function () {
