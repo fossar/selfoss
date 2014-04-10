@@ -62,6 +62,7 @@ Version 2.11-SNAPSHOT
 * Use PHP to set the fore color of all tags
 * itemsPerPage value is set from INI file.
 * API header returns application/json
+* Bugfix: Heise feed pull kills Update process #499 
 
 Version 2.10
 * fix error 500 on icon fetching
