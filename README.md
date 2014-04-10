@@ -61,6 +61,7 @@ Version 2.11-SNAPSHOT
 * Make it possible to disable auto stream more, add handy "Mark these read" button
 * Use PHP to set the fore color of all tags
 * itemsPerPage value is set from INI file.
+* API header returns application/json
 
 Version 2.10
 * fix error 500 on icon fetching

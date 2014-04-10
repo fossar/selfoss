@@ -94,6 +94,7 @@ class View {
      * @param mixed $datan
      */
     public function jsonError($data) {
+        header('Content-type: application/json');
         $this->error( json_encode($data) );
     }
     
@@ -105,6 +106,7 @@ class View {
      * @param mixed $datan
      */
     public function jsonSuccess($data) {
+        header('Content-type: application/json');
         die(json_encode($data));
     }
     
