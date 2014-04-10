@@ -39,7 +39,7 @@
     
     <span class="entry-tags">
         <?PHP foreach($this->item['tags'] as $tag => $color) : ?>
-            <span class="entry-tags-tag" style="background-color:<?PHP echo $color; ?>"><?PHP echo $tag; ?></span>
+            <span class="entry-tags-tag" style="color:<?PHP echo $color['foreColor']; ?>;background-color:<?PHP echo $color['backColor']; ?>"><?PHP echo $tag; ?></span>
         <?PHP endforeach; ?>
     </span>
     

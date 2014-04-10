@@ -4,7 +4,7 @@ selfoss
 Copyright (c) 2013 Tobias Zeising, tobias.zeising@aditu.de  
 http://selfoss.aditu.de  
 Licensed under the GPLv3 license  
-Version 2.10
+Version 2.11-SNAPSHOT
 
 
 INSTALLATION
@@ -50,102 +50,114 @@ Visit the page http://yourselfossurl.com/opml for importing your OPML File. If y
 CHANGELOG
 ---------
 
+Version 2.11-SNAPSHOT
+* Little fix to Polish translation
+* instapaper spout: use HTTPS
+* A new spout to get full text for entries in the Teltarif RSS feed
+* Fix pgsql VACUUM ANALYZE syntax error
+* A new spout to get full text for entries in the Lightreading RSS feed
+* Multi-language support of search and error fix.
+* fix https for openshift
+* Make it possible to disable auto stream more, add handy "Mark these read" button
+* Use PHP to set the fore color of all tags
+* itemsPerPage value is set from INI file.
+
 Version 2.10
 * fix error 500 on icon fetching
-* add heise hardware-hacks (thanks a lot to robelix)
-* reddit2 spout: fix link to return http (thanks a lot to Bert Deferme)
-* reddit2 spout: add empty validation on username and password (thanks a lot to Bert Deferme)
-* setting to lazy load images on mobile devices (thanks a lot to Bodnár István)
-* update fat free php framework version 3.2.0 (thanks a lot to Tim Gerundt)
-* improve heise spout (thanks a lot to robelix)
-* fix duplicate items with MySQL (thanks a lot to mistic100)
+* add heise hardware-hacks 
+* reddit2 spout: fix link to return http 
+* reddit2 spout: add empty validation on username and password 
+* setting to lazy load images on mobile devices 
+* update fat free php framework version 3.2.0 
+* improve heise spout 
+* fix duplicate items with MySQL 
 * fix auto language detection
-* save OPML export file with xml extension (thanks a lot to hdhoang)
-* sqlite's "optimize()" was implemented (thanks a lot to arbk)
-* sources: show sources with error first (thanks a lot to hdhoang)
+* save OPML export file with xml extension 
+* sqlite's "optimize()" was implemented 
+* sources: show sources with error first 
 * fix bug on base url determining using https
-* support search terms with quotes to find exact phrase like "Windows 8" (thanks a lot to Tim Gerundt)
-* github spout fix (set user agent) (thanks a lot to niol)
-* more opml export logging (thanks a lot to niol)
+* support search terms with quotes to find exact phrase like "Windows 8" 
+* github spout fix (set user agent) 
+* more opml export logging 
 
 Version 2.9
-* new configuration parameter for share buttons (thanks a lot to becevka)
-* new Ukrainian translation (thanks a lot to becevka)
+* new configuration parameter for share buttons 
+* new Ukrainian translation 
 * fix Italian translation
-* new error message bar (thanks a lot to tamizhgeek)
-* fix php 5.5 bug for some spouts (thanks a lot to amiga23)
-* fix 'Undefined Index' error in item tpl when no shares available (thanks a lot to venyii)
-* add multi reddit support (thanks a lot to Janez Troha)
-* avoid duplicate sources while importing OPML (thanks a lot to Azhaguselvan SP)
-* prevent reflected XSS vulnerability in search form (thanks a lot to Azhaguselvan SP)
-* add support for fullscreen Webapp on iPhone 5 (thanks a lot to darkside40)
-* added new config parameter (unread_order) to be able to read unread items from oldest to newest (thanks a lot to Paul Fauchon)
-* update twitter api (thanks a lot to bobman38)
-* the processing of the parameter of the session cookie is updated (thanks a lot to arbk)
-* prevent stored XSS vulnerability in the source add form (thanks a lot to Azhaguselvan SP)
-* sort spouts by name (thanks a lot to Tim Gerundt)
-* allow dd-element and style definition list elements (thanks a lot to mcnesium)
-* new GitHub spout to list commits on a repository (thanks a lot to Tim Gerundt)
-* performance improvement on feed update (thanks a lot to Brad Koehn)
+* new error message bar 
+* fix php 5.5 bug for some spouts 
+* fix 'Undefined Index' error in item tpl when no shares available 
+* add multi reddit support 
+* avoid duplicate sources while importing OPML 
+* prevent reflected XSS vulnerability in search form 
+* add support for fullscreen Webapp on iPhone 5 
+* added new config parameter (unread_order) to be able to read unread items from oldest to newest 
+* update twitter api 
+* the processing of the parameter of the session cookie is updated 
+* prevent stored XSS vulnerability in the source add form 
+* sort spouts by name 
+* allow dd-element and style definition list elements 
+* new GitHub spout to list commits on a repository 
+* performance improvement on feed update 
 
 Version 2.8
-* new Polish translation (thanks a lot to Piotr Dymacz)
-* improved Expires section and Compression in .htaccess (thanks a lot to S Anand)
+* new Polish translation 
+* improved Expires section and Compression in .htaccess 
 * make api item listing, tags and sources stats accessible for non loggedin users in public mode
 * update fat free php framework version 3.0.8
 * new configuration parameter for default readability api key
 * new configuration parameter for allowing unauthorized access for the update job
-* new delicious support (thanks a lot to bbeardsley)
-* support ssl proxy (thanks a lot to zajad)
-* new readability support (thanks a lot to hayk)
-* pass original url to external sites except for opening the anonymized url (thanks a lot to bbeardsley)
-* new finnish translation (thanks a lot to jukper)
-* new spanish translation (thanks a lot to Matias Perrone)
+* new delicious support 
+* support ssl proxy 
+* new readability support 
+* pass original url to external sites except for opening the anonymized url 
+* new finnish translation 
+* new spanish translation 
 
 Version 2.7
-* new spout for instapaper (thanks a lot to janeczku)
-* new Hungarian translation (thanks a lot to Sancho)
+* new spout for instapaper 
+* new Hungarian translation 
 * fix keyboard shortcut on some browsers
-* new spout for youtube channels (thanks a lot to Arndt Staudinger)
+* new spout for youtube channels 
 * new rss feed for selfoss releases: http://selfoss.aditu.de/feed.php
-* fix bug on removing search terms (thanks a lot to ochristi)
-* translation for login page (thanks a lot to jicho)
-* new japanese language file (thanks a lot to wowo)
-* new shortcuts (thanks a lot to jicho)
-* fix issues with refreshing the items list and slow ajax requests (thanks a lot to Sean Rand)
-* don't leave behind sp-container divs when refreshing the tags (thanks a lot to Sean Rand)
-* clean up orphaned items of deleted sources (thanks a lot to Sean Rand)
+* fix bug on removing search terms 
+* translation for login page 
+* new japanese language file 
+* new shortcuts 
+* fix issues with refreshing the items list and slow ajax requests 
+* don't leave behind sp-container divs when refreshing the tags 
+* clean up orphaned items of deleted sources 
 * update fat free php framework to newest versoin 3.0.6
-* only allow update for localhost or loggedin users (thanks a lot to Tiouss)
-* added Facebook page feed (thanks a lot to Thomas Muguet)
-* fix memory bug on icon generation (thanks a lot to Matthieu Codron)
-* new opml export (thanks a lot to Sean Rand)
-* new norwegian translation (thanks a lot to Kjetil Elde)
+* only allow update for localhost or loggedin users 
+* added Facebook page feed 
+* fix memory bug on icon generation 
+* new opml export 
+* new norwegian translation 
 * set default title if no one was given by the feed
 
 Version 2.6
-* fixed OPML import for other formats (thanks a lot to Remy Gardette)
+* fixed OPML import for other formats 
 * fix deletion of sources (no longer bad request)
 * disable tag click on smartphone
 * shortcuts mark/unmark as read and star/unstar also available on closed articles
 * fix tag list refresh
 
 Version 2.5
-* new navigation with right/left cursor (thanks a lot to jicho)
+* new navigation with right/left cursor 
 * replace &bullet; for IE compatibility
-* fix re-initialize entry events on screen width change (thanks a lot to Sean Rand)
-* allow optional userdefined user.css (thanks a lot to Jean Baptiste Favre)
-* some smaller css tweaks (thanks a lot to Sean Rand)
+* fix re-initialize entry events on screen width change 
+* allow optional userdefined user.css 
+* some smaller css tweaks 
 * new parameter use_system_font for using Arial instead of Open Sans
-* new italian language file (thanks a lot to David Chionne)
+* new italian language file 
 * fix duplicate article fetching on uids with more than 255 characters
 * add integrated json api
 * add error handling for feeds with wrong link
-* new swedish translation (thanks a lot to andersgd)
+* new swedish translation 
 
 Version 2.4
 * prevent error on icons parsing error
-* new homepage parameter (thanks a lot to Jean Baptiste Favre)
+* new homepage parameter 
 * new button for open an articles source
 * no error message if no unread item is available and mark all as read was pressed
 * improve logger
@@ -154,15 +166,15 @@ Version 2.4
 * mysql use longtext for articles content
 * improved detection of mobile devices
 * allow more tags in articles content
-* show unread items per tag in taglist (thanks a lot to Fedor Bezrukov)
-* show list of sources for filtering (thanks a lot to Fedor Bezrukov)
+* show unread items per tag in taglist 
+* show list of sources for filtering 
 * use more eye catching unread stats in main navigation
-* show source title in selfoss RSS feed (thanks a lot to Darkwing1)
-* load sources for update by last update time (thanks a lot to Lars Formella)
+* show source title in selfoss RSS feed 
+* load sources for update by last update time 
 * Opening feed search focuses the search input field
 * Scroll blockquotes and pre on overflow (especially good for mobile devices)
 * new option for automatically mark items as read
-* new share buttons for email and pocket (thanks a lot to Francis Noel)
+* new share buttons for email and pocket 
 * new shortcut r for reloading the current list
 * new internationalization (language files for German, English, French, Turkish, Dutch, Czech, Russian, Latvian, traditional and simplified Chinese included)
 * make article id generation more reliable
@@ -174,25 +186,25 @@ Version 2.4
 * concurent multiples updates makes no longer duplicates entries
 * Reload items on mark as read
 * anonymizer support
-* selfoss rss feed support tag filtering (?tag=) (thanks a lot to Francis Noel)
+* selfoss rss feed support tag filtering (?tag=) 
 * fix tag render bug
 
 Version 2.3
-* new shortcut library jquery hotkeys (thanks a lot to Sigill)
-* new shortcut for mark as read and switch to next in one step (thanks a lot to Sigill)
+* new shortcut library jquery hotkeys 
+* new shortcut for mark as read and switch to next in one step 
 * prevent error on png conversion
 * items will be saved in mysql databases also no icon is available
-* support of PostgreSQL Database (thanks a lot to volkadav)
-* now updates by command line are possible (thanks a lot to Jeppe Toustrup)
+* support of PostgreSQL Database 
+* now updates by command line are possible 
 * default charset on mysql is utf8
-* new readability support (thanks a lot to oxman)
+* new readability support 
 * link to opml import added
 * Use IfMoudule to avoid errors in Etags settings (thanks to vincebusam)
 * Allow tag filtering to not include partial matches (thanks to WalterWeight and bsweeney)
 
 Version 2.2
 * update fat free php Framework to 3.0.5
-* new opml import page (thanks a lot to Michael Moore)
+* new opml import page 
 
 Version 2.1
 * security bugfix
@@ -225,6 +237,7 @@ Version 1.1
 * minify JavaScript and CSS and collect them all in one all.js and all.css file
 * activate caching and compression in .htaccess (if supported by current apache installation)
 * code optimization and smaller bugfixes
+
 
 
 CREDITS
