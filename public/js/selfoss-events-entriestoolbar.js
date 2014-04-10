@@ -19,9 +19,11 @@ selfoss.events.entriesToolbar = function(parent) {
         return false;
     });
     
-    // open in new window
+    // open in new window and mark as read
     parent.find('.entry-newwindow').unbind('click').click(function(e) {
-        window.open($(this).parents(".entry").children(".entry-source").attr("href"));
+        var entry = $(this).parents('.entry');
+        entry.find('.entry-unread.active').click();
+        window.open(entry.find('.entry-source').prop('href'));
         e.preventDefault();
         return false;
     });
