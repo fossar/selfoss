@@ -35,7 +35,7 @@
     </a>
     
     <!-- title -->
-    <h2 class="entry-title"><?PHP echo $title; ?></h2>
+    <h2 class="entry-title"><a href="<?PHP echo trim(\F3::get('anonymizer')) . $this->item['link']; ?>"><?PHP echo $title; ?></a></h2>
     
     <span class="entry-tags">
         <?PHP foreach($this->item['tags'] as $tag => $color) : ?>
