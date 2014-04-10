@@ -70,6 +70,16 @@ selfoss.events.entriesToolbar = function(parent) {
         return false;
     });
 
+    // share with wordpress
+    parent.find('.entry-sharewordpress').unbind('click').click(function(e) {
+		var wordpressUrl = $( '#config').data('wordpress');
+		if(wordpressUrl.length>0) {
+        	window.open( wordpressUrl+"/wp-admin/press-this.php?u="+encodeURIComponent($(this).parents(".entry").children(".entry-link").eq(0).attr("href"))+"&t="+encodeURIComponent($(this).parents(".entry").children(".entry-title").html()));
+		}
+        e.preventDefault();
+        return false;
+    });
+
     // share with e-mail
     parent.find('.entry-shareemail').unbind('click').click(function(e) {
         document.location.href = "mailto:?body="+encodeURIComponent($(this).parents(".entry").children(".entry-link").eq(0).attr("href"))+"&subject="+encodeURIComponent($(this).parents(".entry").children(".entry-title").html());

@@ -1,4 +1,4 @@
-<!doctype html>  
+<!DOCTYPE html>
 <head>
     <base href="<?PHP echo $this->base; ?>" /> 
 
@@ -53,6 +53,7 @@
     <!-- other settings -->
     <span id="config"
         data-anonymizer="<?PHP echo \helpers\Anonymizer::getAnonymizer(); ?>"
+        data-wordpress="<?PHP echo \F3::get('wordpress'); ?>"
         data-auto_mark_as_read="<?PHP echo \F3::get('auto_mark_as_read'); ?>"
         data-load_images_on_mobile="<?PHP echo \F3::get('load_images_on_mobile'); ?>"></span>
 
