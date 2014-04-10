@@ -221,6 +221,7 @@ class Index extends BaseController {
         } else {
             if($itemDao->hasMore())
                 $itemsHtml .= '<div class="stream-more"><span>'. \F3::get('lang_more').'</span></div>';
+                $itemsHtml .= '<div class="mark-these-read"><span>'. \F3::get('lang_markread').'</span></div>';
         }
         
         return $itemsHtml;
