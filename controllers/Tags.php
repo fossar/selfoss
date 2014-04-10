@@ -41,13 +41,15 @@ class Tags extends BaseController {
      *
      * @return void
      */
-    public function renderTags($tags) {
+    public function renderTags($tags,$unreadOnly=true) {
         $html = "";
         $itemsDao = new \daos\Items();
         foreach($tags as $tag) {
+            $unreadCount = $itemsDao->numberOfUnreadForTag($tag['tag']);
+            if(($unreadOnly===true)&&($unreadCount==0)) continue;
             $this->view->tag = $tag['tag'];
             $this->view->color = $tag['color'];
-            $this->view->unread = $itemsDao->numberOfUnreadForTag($tag['tag']);
+            $this->view->unread = $unreadCount;
             $html .= $this->view->render('templates/tag.phtml');
         }
         

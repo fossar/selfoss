@@ -85,13 +85,15 @@ class Sources extends BaseController {
      *
      * @return htmltext
      */
-    public function renderSources($sources) {
+    public function renderSources($sources,$unreadOnly=true) {
         $html = "";
         $itemsDao = new \daos\Items();
         foreach($sources as $source) {
+            $unreadCount = $itemsDao->numberOfUnreadForSource($source['id']);
+            if(($unreadOnly===true)&&($unreadCount==0)) continue;
             $this->view->source = $source['title'];
             $this->view->sourceid = $source['id'];
-            $this->view->unread = $itemsDao->numberOfUnreadForSource($source['id']);
+            $this->view->unread = $unreadCount;
             $html .= $this->view->render('templates/source-nav.phtml');
         }
         
