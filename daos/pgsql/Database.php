@@ -150,6 +150,6 @@ class Database {
         $tables = array();
         foreach($result as $table)
             foreach($table as $key=>$value)
-                @\F3::get('db')->exec("VACUUM ANALYZE :table", array(':table' => $value));
+                @\F3::get('db')->exec("VACUUM ANALYZE " . $value);
     }
 }
