@@ -660,6 +660,29 @@ input {
             display:none;
         }
         
+    .entry-markread {
+        display:none;
+        margin-top:20px;
+        margin-bottom:10px;
+        height:35px;
+        font-size:16px;
+        font-weight:bold;
+        cursor:pointer;
+        text-align:center;
+    }
+    
+        .touch .entry-markread {
+            margin-bottom:20px;
+        }
+        
+        .entry-markread.loading {
+            background:url(images/ajax-loader-big.gif) center center no-repeat;
+        }
+        
+        .entry-markread.loading span {
+            display:none;
+        }
+    
 #fullscreen-entry {
     display:none;
 }
@@ -875,7 +898,8 @@ body.publicmode.notloggedin #nav-mark {
 }
 
 body.publicmode.notloggedin .entry-starr,
-body.publicmode.notloggedin .entry-unread {
+body.publicmode.notloggedin .entry-unread,
+body.publicmode.notloggedin .entry-markread {
     display:none;
 }
 

@@ -24,8 +24,8 @@
     );
 ?>
 <div id="entry<?PHP echo $this->item['id']; ?>"
-     class="entry
-            <?PHP echo $this->item['unread']==1 ? 'unread' : ''; ?>">
+     class="entry <?PHP echo $this->item['unread']==1 ? 'unread' : ''; ?>"
+     data-itemid="<?PHP echo $this->item['id']; ?>" >
     
     <!-- icon -->
     <a href="<?PHP echo \helpers\Anonymizer::anonymize($this->item['link']); ?>" class="entry-icon">

@@ -201,6 +201,7 @@ class Index extends BaseController {
         
         $itemDao = new \daos\Items();
         $itemsHtml = "";
+        $lastItemId = "";
         foreach($itemDao->get($options) as $item) {
         
             // parse tags and assign tag colors
@@ -214,13 +215,19 @@ class Index extends BaseController {
             
             $this->view->item = $item;
             $itemsHtml .= $this->view->render('templates/item.phtml');
+            $lastItemId = $item['id'];
         }
 
         if(strlen($itemsHtml)==0) {
             $itemsHtml = '<div class="stream-empty">'. \F3::get('lang_no_entries').'</div>';
         } else {
-            if($itemDao->hasMore())
+            if(\F3::get('auth')->isLoggedin()===true){
+                $itemsHtml .= '<div id="entry-markread'.$lastItemId.'" data-itemid="'.$lastItemId.'" class="entry-markread"><span>'. \F3::get('lang_markread').'</span></div>';
+            }
+
+            if($itemDao->hasMore()) {
                 $itemsHtml .= '<div class="stream-more"><span>'. \F3::get('lang_more').'</span></div>';
+            }
         }
         
         return $itemsHtml;
