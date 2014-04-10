@@ -4,13 +4,6 @@
 RewriteEngine On
 #RewriteBase /selfoss
 
-# Force https
-# following RewriteCond don't work on openshift
-## RewriteCond %{HTTPS} !^on$
-## RewriteCond %{HTTPS} !=on [NC]
-#RewriteCond %{HTTP:X-Forwarded-Proto} !https
-#RewriteRule .* https://%{HTTP_HOST}%{REQUEST_URI} [R,L]
-
 # rule for favicons
 RewriteRule !data/favicons/(.*)$ - [C]
 RewriteRule favicons/(.*)$ data/favicons/$1 [L]

@@ -57,9 +57,6 @@ selfoss.events.entries = function(e) {
             // set events for fullscreen
             selfoss.events.entriesToolbar(fullscreen);
             
-            // set color of all tags by background color
-            fullscreen.find('.entry-tags-tag').colorByBrightness();
-    
             // set events for closing fullscreen
             fullscreen.find('.entry, .entry-close').click(function(e) {
                 if(e.target.tagName.toLowerCase()=="a")
@@ -137,9 +134,6 @@ selfoss.events.entries = function(e) {
             }
         });
     });
-    
-    // set color of all tags by background color
-    $('.entry-tags-tag').colorByBrightness();
     
     // click a tag
     if(selfoss.isSmartphone()==false) {
