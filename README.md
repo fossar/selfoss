@@ -57,7 +57,6 @@ Version 2.11-SNAPSHOT
 * Fix pgsql VACUUM ANALYZE syntax error
 * A new spout to get full text for entries in the Lightreading RSS feed
 * Multi-language support of search and error fix.
-* fix https for openshift
 * Make it possible to disable auto stream more, add handy "Mark these read" button
 * Use PHP to set the fore color of all tags
 * itemsPerPage value is set from INI file.
