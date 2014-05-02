@@ -46,12 +46,16 @@ class View {
         } else {
             $lastSlash = strrpos($_SERVER['SCRIPT_NAME'], '/');
             $subdir = $lastSlash!==false ? substr($_SERVER['SCRIPT_NAME'], 0, $lastSlash) : '';
-            $base =   'http' . 
-                      (isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"]=="on" ? 's' : '') . 
-                      '://' . $_SERVER["SERVER_NAME"] . 
-                      ($_SERVER["SERVER_PORT"]!="80" ? ':'.$_SERVER["SERVER_PORT"] . '' : '') . 
-                      $subdir . 
-                      '/';
+            
+            $protocol = 'http';
+            if (isset($_SERVER["HTTPS"]) && ($_SERVER["HTTPS"]=="on" || $_SERVER["HTTPS"]==1)
+                $protocol = 'https';
+            
+            $port = '';
+            if ($_SERVER["SERVER_PORT"]!="80")
+                $port = ':' . $_SERVER["SERVER_PORT"];
+            
+            $base = $protocol . '://' . $_SERVER["SERVER_NAME"] . $port . $subdir . '/';
         }
         
         return $base;
