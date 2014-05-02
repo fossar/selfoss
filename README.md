@@ -63,6 +63,7 @@ Version 2.11-SNAPSHOT
 * API header returns application/json
 * Bugfix: Heise feed pull kills Update process #499 
 * Bugfix: https for openshift #488
+* Bugfix: heise spout error handling #517
 
 Version 2.10
 * fix error 500 on icon fetching
