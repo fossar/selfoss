@@ -62,6 +62,7 @@ Version 2.11-SNAPSHOT
 * itemsPerPage value is set from INI file.
 * API header returns application/json
 * Bugfix: Heise feed pull kills Update process #499 
+* Bugfix: https for openshift #488
 
 Version 2.10
 * fix error 500 on icon fetching
