@@ -123,12 +123,13 @@ class ContentLoader {
             // insert new item
             \F3::get('logger')->log('start insertion of new item "'.$item->getTitle().'"', \DEBUG);
             
-            // get content
+            $content = "";
             try {
+                // fetch content
                 $content = $item->getContent();
                 
                 // sanitize content html
-                $content = $this->sanitizeContent($item->getContent());
+                $content = $this->sanitizeContent($content);
             } catch(\exception $e) {
                 $content = 'Error: Content not fetched. Reason: ' . $e->getMessage();
                 \F3::get('logger')->log('Can not fetch "'.$item->getTitle().'" : ' . $e->getMessage(), \ERROR);
