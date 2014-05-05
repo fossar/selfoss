@@ -52,7 +52,8 @@ class View {
                 $protocol = 'https';
             
             $port = '';
-            if ($_SERVER["SERVER_PORT"]!="80")
+            if (($protocol == 'http' && $_SERVER["SERVER_PORT"]!="80") ||
+                ($protocol == 'https' && $_SERVER["SERVER_PORT"]!="443"))
                 $port = ':' . $_SERVER["SERVER_PORT"];
             
             $base = $protocol . '://' . $_SERVER["SERVER_NAME"] . $port . $subdir . '/';
