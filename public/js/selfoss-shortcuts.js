@@ -272,4 +272,4 @@ selfoss.shortcuts = {
         var content = $('.entry-content').is(':visible');
             selfoss.shortcuts.nextprev(direction, content);
     }
-}
+};
