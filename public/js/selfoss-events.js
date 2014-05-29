@@ -97,7 +97,6 @@ selfoss.events = {
             var start = $('#nav-tags-wrapper').position().top;
             var windowHeight = $(window).height();
             $('#nav-tags-wrapper').height(windowHeight - start - 100);
-            $("#nav-tags-wrapper").mCustomScrollbar("update");
             $('#nav').show();
         } else {
             $('#nav-tags-wrapper').height("auto");
