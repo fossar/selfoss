@@ -26,12 +26,14 @@ $f3->set('js', array(
     'public/js/selfoss-events-entries.js',
     'public/js/selfoss-events-entriestoolbar.js',
     'public/js/selfoss-events-sources.js',
-    'public/js/selfoss-shortcuts.js'
+    'public/js/selfoss-shortcuts.js',
+    'public/js/jquery.fancybox.pack.js'
 ));
 
 // define css files
 $css = array(
     'public/css/jquery.mCustomScrollbar.css',
+    'public/css/jquery.fancybox.css',
     'public/css/spectrum.css',
     'public/css/reset.css',
     'public/css/style.css'

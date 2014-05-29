@@ -88,6 +88,17 @@ selfoss.events.entries = function(e) {
                 if(autoMarkAsRead) {
                     parent.find('.entry-unread').click();
                 }
+
+                // setup fancyBox image viewer
+                var images = $(content).find('a[href$=".jpg"],a[href$=".jpeg"],a[href$=".png"],a[href$=".gif"]');
+                $(images).attr('rel', 'gallery-'+parent.attr('id').substr(5)).unbind('click');
+                $(images).fancybox({
+                    helpers: {
+                        overlay: {
+                            locked: false
+                        }
+                    }
+                });
             }
             
             // load images not on mobile devices

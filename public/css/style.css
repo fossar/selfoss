@@ -1280,3 +1280,19 @@ body.publicmode.notloggedin .entry-unread {
     
  }
  
+/* fancyBox */
+#fancybox-loading, .fancybox-close, .fancybox-prev span, .fancybox-next span {
+    background-image: url('images/fancybox_sprite.png');
+}
+
+#fancybox-loading div {
+    background: url('images/ajax-loader-big.gif') center center no-repeat;
+}
+
+.fancybox-nav {
+    background: transparent url('images/blank.gif'); /* helps IE */
+}
+
+.fancybox-overlay {
+    background: url('images/fancybox_overlay.png');
+}
