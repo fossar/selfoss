@@ -15,7 +15,7 @@ $f3->set('js', array(
     'public/js/jquery-1.11.1.min.js',
     'public/js/jquery-ui-1.10.0.custom.js',
     'public/js/jquery.mCustomScrollbar.min.js',
-    'public/js/jquery.mousewheel.js',
+    'public/js/jquery.mousewheel.min.js',
     'public/js/lazy-image-loader.js',
     'public/js/spectrum.js',
     'public/js/jquery.hotkeys.js',
