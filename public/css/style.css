@@ -396,6 +396,7 @@ input {
 
     .entry.selected.unread,
     .entry.unread {
+        margin-left: 3px;
         border-left:3px solid #5f9490;
     }
 
