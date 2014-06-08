@@ -62,7 +62,8 @@ class Database {
                         starred     BOOLEAN NOT NULL,
                         source      INTEGER NOT NULL,
                         uid         TEXT NOT NULL,
-                        link        TEXT NOT NULL
+                        link        TEXT NOT NULL,
+                        author      TEXT
                     );
                 ');
                 
