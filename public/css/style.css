@@ -526,6 +526,7 @@ input {
         display:none;
     }
 
+    .entry-author,
     .entry-source,
     .entry-separator,
     .entry-datetime {

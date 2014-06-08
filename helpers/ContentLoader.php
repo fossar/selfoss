@@ -141,6 +141,10 @@ class ContentLoader {
             if(strlen(trim($title))==0)
                 $title = "[" . \F3::get('lang_no_title') . "]";
 
+            // sanitize author
+            $author = htmlspecialchars_decode($item->getAuthor());
+            $author = htmLawed($author, array("deny_attribute" => "*", "elements" => "-*"));
+
             \F3::get('logger')->log('item content sanitized', \DEBUG);
 
             try {
@@ -157,7 +161,8 @@ class ContentLoader {
                     'uid'          => $item->getId(),
                     'thumbnail'    => $item->getThumbnail(),
                     'icon'         => $icon!==false ? $icon : "",
-                    'link'         => htmLawed($item->getLink(), array("deny_attribute" => "*", "elements" => "-*"))
+                    'link'         => htmLawed($item->getLink(), array("deny_attribute" => "*", "elements" => "-*")),
+                    'author'       => $author
             );
             
             // save thumbnail

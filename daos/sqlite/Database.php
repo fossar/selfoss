@@ -61,7 +61,8 @@ class Database {
                         starred     BOOL NOT NULL,
                         source      INT NOT NULL,
                         uid         VARCHAR(255) NOT NULL,
-                        link        TEXT NOT NULL
+                        link        TEXT NOT NULL,
+                        author      VARCHAR(255)
                     );
                 ');
                 

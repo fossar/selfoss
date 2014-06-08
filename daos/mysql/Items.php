@@ -97,7 +97,8 @@ class Items extends Database {
                     thumbnail, 
                     icon, 
                     uid,
-                    link
+                    link,
+                    author
                   ) VALUES (
                     :datetime, 
                     :title, 
@@ -108,7 +109,8 @@ class Items extends Database {
                     :thumbnail, 
                     :icon, 
                     :uid,
-                    :link
+                    :link,
+                    :author
                   )',
                  array(
                     ':datetime'    => $values['datetime'],
@@ -120,7 +122,8 @@ class Items extends Database {
                     ':starred'     => 0,
                     ':source'      => $values['source'],
                     ':uid'         => $values['uid'],
-                    ':link'        => $values['link']
+                    ':link'        => $values['link'],
+                    ':author'      => $values['author']
                  ));
     }
     
@@ -238,7 +241,7 @@ class Items extends Database {
 
         // get items from database
         return \F3::get('db')->exec('SELECT 
-                    items.id, datetime, items.title AS title, content, unread, starred, source, thumbnail, icon, uid, link, sources.title as sourcetitle, sources.tags as tags
+                    items.id, datetime, items.title AS title, content, unread, starred, source, thumbnail, icon, uid, link, author, sources.title as sourcetitle, sources.tags as tags
                    FROM '.\F3::get('db_prefix').'items AS items, '.\F3::get('db_prefix').'sources AS sources
                    WHERE items.source=sources.id '.$where.' 
                    ORDER BY items.datetime '.$order.' 

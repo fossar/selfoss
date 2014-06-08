@@ -1,5 +1,6 @@
 <?PHP
     $title = $this->item['title'];
+    $author = $this->item['author'];
     //$content = html_entity_decode($this->item['content']);
     $content = str_replace('&#34;', '"', $this->item['content']);
     $sourcetitle = $this->item['sourcetitle'];
@@ -48,6 +49,12 @@
     <a href="<?PHP echo $this->item['link']; ?>" class="entry-link"></a>
 
     <span class="entry-separator">&bull;</span>
+
+    <!-- author -->
+    <?PHP if(!empty($author)) : ?>
+    <span class="entry-author"><?PHP echo $author; ?></span>
+    <span class="entry-separator">&bull;</span>
+    <?PHP endif; ?>
 
     <!-- datetime -->
     <span class="entry-datetime">
