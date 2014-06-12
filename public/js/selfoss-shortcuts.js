@@ -229,6 +229,9 @@ selfoss.shortcuts = {
             // automark as read
             if($('#config').data('auto_mark_as_read')=="1" && current.hasClass('unread'))
                 current.find('.entry-unread').click();
+
+            // setup fancyBox image viewer
+            selfoss.setupFancyBox(content, content.parent().attr('id').substr(5));
         }
         
         // scroll to element

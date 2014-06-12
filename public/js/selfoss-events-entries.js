@@ -90,15 +90,7 @@ selfoss.events.entries = function(e) {
                 }
 
                 // setup fancyBox image viewer
-                var images = $(content).find('a[href$=".jpg"],a[href$=".jpeg"],a[href$=".png"],a[href$=".gif"]');
-                $(images).attr('rel', 'gallery-'+parent.attr('id').substr(5)).unbind('click');
-                $(images).fancybox({
-                    helpers: {
-                        overlay: {
-                            locked: false
-                        }
-                    }
-                });
+                selfoss.setupFancyBox(content, parent.attr('id').substr(5));
             }
             
             // load images not on mobile devices
