@@ -51,16 +51,20 @@ CHANGELOG
 ---------
 
 Version 2.11-SNAPSHOT
-* Little fix to Polish translation
+* little fix to Polish translation
 * instapaper spout: use HTTPS
 * A new spout to get full text for entries in the Teltarif RSS feed
-* Fix pgsql VACUUM ANALYZE syntax error
+* fix pgsql VACUUM ANALYZE syntax error
 * A new spout to get full text for entries in the Lightreading RSS feed
 * Multi-language support of search and error fix.
 * Make it possible to disable auto stream more, add handy "Mark these read" button
 * Use PHP to set the fore color of all tags
 * itemsPerPage value is set from INI file.
 * API header returns application/json
+* added estonian translation
+* allow <sub> and <sup> elements
+* entry CSS tweaks
+* Bugfix: API REST : /login should return true if auth is disable
 * Bugfix: Heise feed pull kills Update process #499 
 * Bugfix: https for openshift #488
 * Bugfix: heise spout error handling #517
