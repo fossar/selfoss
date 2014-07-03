@@ -1184,6 +1184,7 @@ body.publicmode.notloggedin .entry-unread {
         .entry-content {
             line-height:1.5em;
             font-size:0.95em;
+            padding: 0;
         }
         
     .sp-container {
