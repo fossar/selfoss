@@ -87,8 +87,15 @@ input {
         background:#3d5f6d;
     }
     
+        #nav-update a {
+	        color:#d7d7d7;
+	        font-size:0.9em;
+	        cursor:pointer;
+	        text-decoration: none;
+        }
+    
         #nav-mark:hover,
-        #nav-update:hover {
+        #nav-update a:hover {
             color:#000000;
         }
     
