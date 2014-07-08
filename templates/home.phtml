@@ -68,6 +68,9 @@
     <div id="nav">
         <div id="nav-logo"></div>
         <div id="nav-mark"><?PHP echo \F3::get('lang_markread')?></div>
+    <?PHP if(\F3::get('manual_update')=='1') : ?>
+        <div id="nav-update"><?PHP echo \F3::get('lang_manual_update')?></div>
+    <?PHP endif; ?>
         
         <?PHP $active = (\F3::get('homepage')) ? \F3::get('homepage') : 'newest' ?>
         <ul id="nav-filter">
