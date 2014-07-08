@@ -63,7 +63,8 @@ input {
         height:37px;
     }
     
-    #nav-mark {
+    #nav-mark,
+    #nav-update {
         padding:10px;
         margin-left:15px;
         margin-right:15px;
@@ -80,7 +81,14 @@ input {
         cursor:pointer;
     }
     
-        #nav-mark:hover {
+    #nav-update {
+    	pading:5px;
+        margin-top:10px;
+        background:#3d5f6d;
+    }
+    
+        #nav-mark:hover,
+        #nav-update:hover {
             color:#000000;
         }
     
