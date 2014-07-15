@@ -62,14 +62,14 @@ class Database {
                 ');
                 \F3::get('db')->exec('
                     CREATE TRIGGER insert_updatetime_trigger
-                    BEFORE INSERT ON items FOR EACH ROW
+                    BEFORE INSERT ON ' . \F3::get('db_prefix') . 'items FOR EACH ROW
                         BEGIN
                             SET NEW.updatetime = NOW();
                         END;
                 ');
                 \F3::get('db')->exec('
                     CREATE TRIGGER update_updatetime_trigger
-                    BEFORE UPDATE ON items FOR EACH ROW
+                    BEFORE UPDATE ON ' . \F3::get('db_prefix') . 'items FOR EACH ROW
                         BEGIN
                             SET NEW.updatetime = NOW();
                         END;
@@ -135,14 +135,14 @@ class Database {
                     ');
                     \F3::get('db')->exec('
                         CREATE TRIGGER insert_updatetime_trigger
-                        BEFORE INSERT ON items FOR EACH ROW
+                        BEFORE INSERT ON ' . \F3::get('db_prefix') . 'items FOR EACH ROW
                             BEGIN
                                 SET NEW.updatetime = NOW();
                             END;
                     ');
                     \F3::get('db')->exec('
                         CREATE TRIGGER update_updatetime_trigger
-                        BEFORE UPDATE ON items FOR EACH ROW
+                        BEFORE UPDATE ON ' . \F3::get('db_prefix') . 'items FOR EACH ROW
                             BEGIN
                                 SET NEW.updatetime = NOW();
                             END;
