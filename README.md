@@ -4,7 +4,7 @@ selfoss
 Copyright (c) 2013 Tobias Zeising, tobias.zeising@aditu.de  
 http://selfoss.aditu.de  
 Licensed under the GPLv3 license  
-Version 2.11
+Version 2.12-SNAPSHOT
 
 
 INSTALLATION
@@ -50,6 +50,9 @@ Visit the page http://yourselfossurl.com/opml for importing your OPML File. If y
 
 CHANGELOG
 ---------
+
+Version 2.12-SNAPSHOT
+* fix prefix bug on mysql
 
 Version 2.11
 * little fix to Polish translation
