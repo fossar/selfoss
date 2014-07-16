@@ -70,6 +70,13 @@ selfoss.events.entriesToolbar = function(parent) {
         return false;
     });
 
+    // share with wallabag
+    parent.find('.entry-sharewallabag').unbind('click').click(function(e) {
+        window.open($('#config').data('wallabag')+'/?action=add&url='+btoa($(this).parents(".entry").children(".entry-link").eq(0).attr("href")));
+        e.preventDefault();
+        return false;
+    });
+
     // share with e-mail
     parent.find('.entry-shareemail').unbind('click').click(function(e) {
         document.location.href = "mailto:?body="+encodeURIComponent($(this).parents(".entry").children(".entry-link").eq(0).attr("href"))+"&subject="+encodeURIComponent($(this).parents(".entry").children(".entry-title").html());
