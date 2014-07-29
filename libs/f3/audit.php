@@ -1,7 +1,7 @@
 <?php
 
 /*
-	Copyright (c) 2009-2012 F3::Factory/Bong Cosca, All rights reserved.
+	Copyright (c) 2009-2013 F3::Factory/Bong Cosca, All rights reserved.
 
 	This file is part of the Fat-Free Framework (http://fatfree.sf.net).
 
@@ -16,21 +16,28 @@
 //! Data validator
 class Audit extends Prefab {
 
+	//@{ User agents
+	const
+		UA_Mobile='android|blackberry|iphone|ipod|palm|windows\s+ce',
+		UA_Desktop='bsd|linux|os\s+[x9]|solaris|windows',
+		UA_Bot='bot|crawl|slurp|spider';
+	//@}
+
 	/**
-		Return TRUE if string is a valid URL
-		@return bool
-		@param $str string
+	*	Return TRUE if string is a valid URL
+	*	@return bool
+	*	@param $str string
 	**/
 	function url($str) {
 		return is_string(filter_var($str,FILTER_VALIDATE_URL));
 	}
 
 	/**
-		Return TRUE if string is a valid e-mail address;
-		Check DNS MX records if specified
-		@return bool
-		@param $str string
-		@param $mx boolean
+	*	Return TRUE if string is a valid e-mail address;
+	*	Check DNS MX records if specified
+	*	@return bool
+	*	@param $str string
+	*	@param $mx boolean
 	**/
 	function email($str,$mx=TRUE) {
 		$hosts=array();
@@ -39,27 +46,27 @@ class Audit extends Prefab {
 	}
 
 	/**
-		Return TRUE if string is a valid IPV4 address
-		@return bool
-		@param $addr string
+	*	Return TRUE if string is a valid IPV4 address
+	*	@return bool
+	*	@param $addr string
 	**/
 	function ipv4($addr) {
 		return filter_var($addr,FILTER_VALIDATE_IP,FILTER_FLAG_IPV4);
 	}
 
 	/**
-		Return TRUE if string is a valid IPV6 address
-		@return bool
-		@param $addr string
+	*	Return TRUE if string is a valid IPV6 address
+	*	@return bool
+	*	@param $addr string
 	**/
 	function ipv6($addr) {
 		return (bool)filter_var($addr,FILTER_VALIDATE_IP,FILTER_FLAG_IPV6);
 	}
 
 	/**
-		Return TRUE if IP address is within private range
-		@return bool
-		@param $addr string
+	*	Return TRUE if IP address is within private range
+	*	@return bool
+	*	@param $addr string
 	**/
 	function isprivate($addr) {
 		return !(bool)filter_var($addr,FILTER_VALIDATE_IP,
@@ -67,9 +74,9 @@ class Audit extends Prefab {
 	}
 
 	/**
-		Return TRUE if IP address is within reserved range
-		@return bool
-		@param $addr string
+	*	Return TRUE if IP address is within reserved range
+	*	@return bool
+	*	@param $addr string
 	**/
 	function isreserved($addr) {
 		return !(bool)filter_var($addr,FILTER_VALIDATE_IP,
@@ -77,9 +84,9 @@ class Audit extends Prefab {
 	}
 
 	/**
-		Return TRUE if IP address is neither private nor reserved
-		@return bool
-		@param $addr string
+	*	Return TRUE if IP address is neither private nor reserved
+	*	@return bool
+	*	@param $addr string
 	**/
 	function ispublic($addr) {
 		return (bool)filter_var($addr,FILTER_VALIDATE_IP,
@@ -88,9 +95,37 @@ class Audit extends Prefab {
 	}
 
 	/**
-		Return TRUE if specified ID has a valid (Luhn) Mod-10 check digit
-		@return bool
-		@param $id string
+	*	Return TRUE if user agent is a desktop browser
+	*	@return bool
+	**/
+	function isdesktop() {
+		$agent=Base::instance()->get('AGENT');
+		return (bool)preg_match('/('.self::UA_Desktop.')/i',$agent) &&
+			!$this->ismobile();
+	}
+
+	/**
+	*	Return TRUE if user agent is a mobile device
+	*	@return bool
+	**/
+	function ismobile() {
+		$agent=Base::instance()->get('AGENT');
+		return (bool)preg_match('/('.self::UA_Mobile.')/i',$agent);
+	}
+
+	/**
+	*	Return TRUE if user agent is a Web bot
+	*	@return bool
+	**/
+	function isbot() {
+		$agent=Base::instance()->get('AGENT');
+		return (bool)preg_match('/('.self::UA_Bot.')/i',$agent);
+	}
+
+	/**
+	*	Return TRUE if specified ID has a valid (Luhn) Mod-10 check digit
+	*	@return bool
+	*	@param $id string
 	**/
 	function mod10($id) {
 		if (!ctype_digit($id))
@@ -103,9 +138,9 @@ class Audit extends Prefab {
 	}
 
 	/**
-		Return credit card type if number is valid
-		@return string|FALSE
-		@param $id string
+	*	Return credit card type if number is valid
+	*	@return string|FALSE
+	*	@param $id string
 	**/
 	function card($id) {
 		$id=preg_replace('/[^\d]/','',$id);
@@ -124,6 +159,19 @@ class Audit extends Prefab {
 				return 'Visa';
 		}
 		return FALSE;
+	}
+
+	/**
+	*	Return entropy estimate of a password (NIST 800-63)
+	*	@return int
+	*	@param $str string
+	**/
+	function entropy($str) {
+		$len=strlen($str);
+		return 4*min($len,1)+($len>1?(2*(min($len,8)-1)):0)+
+			($len>8?(1.5*(min($len,20)-8)):0)+($len>20?($len-20):0)+
+			6*(bool)(preg_match(
+				'/[A-Z].*?[0-9[:punct:]]|[0-9[:punct:]].*?[A-Z]/',$str));
 	}
 
 }

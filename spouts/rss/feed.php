@@ -157,6 +157,13 @@ class feed extends \spouts\spout {
         // fetch items
         @$this->feed->init();
         
+        // on error retry with force_feed
+        if(@$this->feed->error()) {
+            @$this->feed->set_autodiscovery_level(SIMPLEPIE_LOCATOR_NONE);
+            @$this->feed->force_feed(true);
+            @$this->feed->init();
+        }
+        
         // check for error
         if(@$this->feed->error()) {
             throw new \exception($this->feed->error());
@@ -168,8 +175,19 @@ class feed extends \spouts\spout {
         // return html url
         $this->htmlUrl = @$this->feed->get_link();
     }
-    
-    
+
+
+    /**
+     * returns the xml feed url for the source
+     *
+     * @return string url as xml
+     * @param mixed $params params for the source
+     */
+    public function getXmlUrl($params) {
+        return isset($params['url']) ? html_entity_decode($params['url']) : false;
+    }
+
+
     /**
      * returns the global html url for the source
      *
@@ -264,7 +282,6 @@ class feed extends \spouts\spout {
             $date = date('Y-m-d H:i:s');
         return $date;
     }
-    
     
     /**
      * destroy the plugin (prevent memory issues)

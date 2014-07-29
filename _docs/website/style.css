@@ -46,7 +46,7 @@ img {
 
 .wrapper-dark {
     background:url(images/bgdark.png);
-	color:#ffffff;
+    color:#ffffff;
 }
 
     .wrapper-dark h1 {
@@ -102,12 +102,12 @@ img {
         margin-left:30px;
         cursor:pointer;
     }
-	
-	#header-navigation a {
-		text-decoration:none;
-		color:#3e3e3e;
-	}
-	
+    
+    #header-navigation a {
+        text-decoration:none;
+        color:#3e3e3e;
+    }
+    
 #header-fork {
     position:absolute;
     left:100%;
@@ -130,7 +130,7 @@ img {
 }
 
 #header-just-updated {
-	position:absolute;
+    position:absolute;
     background:url(images/justupdated.png);
     width:138px;
     height:52px;

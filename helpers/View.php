@@ -46,12 +46,17 @@ class View {
         } else {
             $lastSlash = strrpos($_SERVER['SCRIPT_NAME'], '/');
             $subdir = $lastSlash!==false ? substr($_SERVER['SCRIPT_NAME'], 0, $lastSlash) : '';
-            $base =   'http' . 
-                      (isset($_SERVER["HTTPS"])=="on" ? 's' : '') . 
-                      '://' . $_SERVER["SERVER_NAME"] . 
-                      ($_SERVER["SERVER_PORT"]!="80" ? ':'.$_SERVER["SERVER_PORT"] . '' : '') . 
-                      $subdir . 
-                      '/';
+            
+            $protocol = 'http';
+            if (isset($_SERVER["HTTPS"]) && ($_SERVER["HTTPS"]=="on" || $_SERVER["HTTPS"]==1))
+                $protocol = 'https';
+            
+            $port = '';
+            if (($protocol == 'http' && $_SERVER["SERVER_PORT"]!="80") ||
+                ($protocol == 'https' && $_SERVER["SERVER_PORT"]!="443"))
+                $port = ':' . $_SERVER["SERVER_PORT"];
+            
+            $base = $protocol . '://' . $_SERVER["SERVER_NAME"] . $port . $subdir . '/';
         }
         
         return $base;
@@ -92,6 +97,7 @@ class View {
      * @param mixed $datan
      */
     public function jsonError($data) {
+        header('Content-type: application/json');
         $this->error( json_encode($data) );
     }
     
@@ -103,6 +109,7 @@ class View {
      * @param mixed $datan
      */
     public function jsonSuccess($data) {
+        header('Content-type: application/json');
         die(json_encode($data));
     }
     

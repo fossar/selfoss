@@ -1,7 +1,7 @@
 <?php
 
 /*
-	Copyright (c) 2009-2012 F3::Factory/Bong Cosca, All rights reserved.
+	Copyright (c) 2009-2013 F3::Factory/Bong Cosca, All rights reserved.
 
 	This file is part of the Fat-Free Framework (http://fatfree.sf.net).
 
@@ -16,6 +16,11 @@
 //! Session-based pseudo-mapper
 class Basket {
 
+	//@{ Error messages
+	const
+		E_Field='Undefined field %s';
+	//@}
+
 	protected
 		//! Session key
 		$key,
@@ -25,28 +30,28 @@ class Basket {
 		$item=array();
 
 	/**
-		Return TRUE if field is defined
-		@return bool
-		@param $key string
+	*	Return TRUE if field is defined
+	*	@return bool
+	*	@param $key string
 	**/
 	function exists($key) {
 		return array_key_exists($key,$this->item);
 	}
 
 	/**
-		Assign value to field
-		@return scalar|FALSE
-		@param $key string
-		@param $val scalar
+	*	Assign value to field
+	*	@return scalar|FALSE
+	*	@param $key string
+	*	@param $val scalar
 	**/
 	function set($key,$val) {
 		return ($key=='_id')?FALSE:($this->item[$key]=$val);
 	}
 
 	/**
-		Retrieve value of field
-		@return scalar|FALSE
-		@param $key string
+	*	Retrieve value of field
+	*	@return scalar|FALSE
+	*	@param $key string
 	**/
 	function get($key) {
 		if ($key=='_id')
@@ -58,81 +63,96 @@ class Basket {
 	}
 
 	/**
-		Delete field
-		@return NULL
-		@param $key string
+	*	Delete field
+	*	@return NULL
+	*	@param $key string
 	**/
 	function clear($key) {
 		unset($this->item[$key]);
 	}
 
 	/**
-		Return item that matches key/value pair
-		@return object|FALSE
-		@param $key string
-		@param $val mixed
+	*	Return items that match key/value pair
+	*	@return array|FALSE
+	*	@param $key string
+	*	@param $val mixed
 	**/
 	function find($key,$val) {
-		if (isset($_SESSION[$this->key]))
+		if (isset($_SESSION[$this->key])) {
+			$out=array();
 			foreach ($_SESSION[$this->key] as $id=>$item)
-				if ($item[$key]==$val) {
+				if (array_key_exists($key,$item) && $item[$key]==$val) {
 					$obj=clone($this);
 					$obj->id=$id;
 					$obj->item=$item;
-					return $obj;
+					$out[]=$obj;
 				}
+			return $out;
+		}
 		return FALSE;
 	}
 
 	/**
-		Map current item to matching key/value pair
-		@return array
-		@param $key string
-		@param $val mixed
+	*	Return first item that matches key/value pair
+	*	@return object|FALSE
+	*	@param $key string
+	*	@param $val mixed
+	**/
+	function findone($key,$val) {
+		return ($data=$this->find($key,$val))?$data[0]:FALSE;
+	}
+
+	/**
+	*	Map current item to matching key/value pair
+	*	@return array
+	*	@param $key string
+	*	@param $val mixed
 	**/
 	function load($key,$val) {
 		if ($found=$this->find($key,$val)) {
-			$this->id=$found->id;
-			return $this->item=$found->item;
+			$this->id=$found[0]->id;
+			return $this->item=$found[0]->item;
 		}
 		$this->reset();
 		return array();
 	}
 
 	/**
-		Return TRUE if current item is empty/undefined
-		@return bool
+	*	Return TRUE if current item is empty/undefined
+	*	@return bool
 	**/
 	function dry() {
 		return !$this->item;
 	}
 
 	/**
-		Return number of items in basket
-		@return int
+	*	Return number of items in basket
+	*	@return int
 	**/
 	function count() {
 		return isset($_SESSION[$this->key])?count($_SESSION[$this->key]):0;
 	}
 
 	/**
-		Save current item
-		@return array
+	*	Save current item
+	*	@return array
 	**/
 	function save() {
 		if (!$this->id)
-			$this->id=uniqid();
-		return $_SESSION[$this->key][$this->id]=$this->item;
+			$this->id=uniqid(NULL,TRUE);
+		$_SESSION[$this->key][$this->id]=$this->item;
+		return $this->item;
 	}
 
 	/**
-		Erase item matching key/value pair
-		@return bool
-		@param $key string
-		@param $val mixed
+	*	Erase item matching key/value pair
+	*	@return bool
+	*	@param $key string
+	*	@param $val mixed
 	**/
 	function erase($key,$val) {
-		if ($id=$this->find($key,$val)->id) {
+		$found=$this->find($key,$val);
+		if ($found && $id=$found[0]->id) {
 			unset($_SESSION[$this->key][$id]);
 			if ($id==$this->id)
 				$this->reset();
@@ -142,8 +162,8 @@ class Basket {
 	}
 
 	/**
-		Reset cursor
-		@return NULL
+	*	Reset cursor
+	*	@return NULL
 	**/
 	function reset() {
 		$this->id=NULL;
@@ -151,17 +171,17 @@ class Basket {
 	}
 
 	/**
-		Empty basket
-		@return NULL
+	*	Empty basket
+	*	@return NULL
 	**/
 	function drop() {
 		unset($_SESSION[$this->key]);
 	}
 
 	/**
-		Hydrate item using hive array variable
-		@return NULL
-		@param $key string
+	*	Hydrate item using hive array variable
+	*	@return NULL
+	*	@param $key string
 	**/
 	function copyfrom($key) {
 		foreach (\Base::instance()->get($key) as $key=>$val)
@@ -169,9 +189,9 @@ class Basket {
 	}
 
 	/**
-		Populate hive array variable with item contents
-		@return NULL
-		@param $key string
+	*	Populate hive array variable with item contents
+	*	@return NULL
+	*	@param $key string
 	**/
 	function copyto($key) {
 		$var=&\Base::instance()->ref($key);
@@ -180,8 +200,8 @@ class Basket {
 	}
 
 	/**
-		Check out basket contents
-		@return array
+	*	Check out basket contents
+	*	@return array
 	**/
 	function checkout() {
 		if (isset($_SESSION[$this->key])) {
@@ -193,9 +213,9 @@ class Basket {
 	}
 
 	/**
-		Instantiate class
-		@return void
-		@param $key string
+	*	Instantiate class
+	*	@return void
+	*	@param $key string
 	**/
 	function __construct($key='basket') {
 		$this->key=$key;

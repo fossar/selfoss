@@ -12,8 +12,11 @@ selfoss.events = {
         selfoss.events.search();
 
         // re-init on media query change
-        var mq = window.matchMedia("(min-width: 641px) and (max-width: 1024px)");
-        mq.addListener(selfoss.events.entries);
+        if ((typeof window.matchMedia) != "undefined") {
+            var mq = window.matchMedia("(min-width: 641px) and (max-width: 1024px)");
+            if ((typeof mq.addListener) != "undefined")
+                mq.addListener(selfoss.events.entries);
+        }
 
         // window resize
         $("#nav-tags-wrapper").mCustomScrollbar({
@@ -30,6 +33,7 @@ selfoss.events = {
         // remove given hash (we just use it for history support)
         if(location.hash.trim().length!=0)
             location.hash = "";
+
     },
     
     
@@ -57,8 +61,11 @@ selfoss.events = {
         
         // load sources
         if(location.hash=="#sources") {
+            if (selfoss.activeAjaxReq !== null)
+                selfoss.activeAjaxReq.abort();
+
             $('#content').addClass('loading').html("");
-            $.ajax({
+            selfoss.activeAjaxReq = $.ajax({
                 url: $('base').attr('href')+'sources',
                 type: 'GET',
                 success: function(data) {
@@ -66,7 +73,10 @@ selfoss.events = {
                     selfoss.events.sources();
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
-                    alert('Load sources error: '+errorThrown);
+                    if (textStatus == "abort")
+                        return;
+                    else if (errorThrown)
+                        selfoss.showError('Load list error: '+errorThrown); 
                 },
                 complete: function(jqXHR, textStatus) {
                     $('#content').removeClass('loading');
@@ -93,5 +103,5 @@ selfoss.events = {
             $('#nav-tags-wrapper').height("auto");
             $("#nav-tags-wrapper").mCustomScrollbar("disable",selfoss.isSmartphone());
         }
-    }    
+    }
 };

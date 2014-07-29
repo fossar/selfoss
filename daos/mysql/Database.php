@@ -42,9 +42,9 @@ class Database {
                 foreach($table as $key=>$value)
                     $tables[] = $value;
             
-            if(!in_array('items', $tables))
+            if(!in_array(\F3::get('db_prefix').'items', $tables)) {
                 \F3::get('db')->exec('
-                    CREATE TABLE items (
+                    CREATE TABLE '.\F3::get('db_prefix').'items (
                         id INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
                         datetime DATETIME NOT NULL ,
                         title TEXT NOT NULL ,
@@ -56,14 +56,30 @@ class Database {
                         source INT NOT NULL ,
                         uid VARCHAR(255) NOT NULL,
                         link TEXT NOT NULL,
+                        updatetime DATETIME NOT NULL,
                         INDEX (source)
                     ) ENGINE = MYISAM DEFAULT CHARSET=utf8;
                 ');
+                \F3::get('db')->exec('
+                    CREATE TRIGGER insert_updatetime_trigger
+                    BEFORE INSERT ON ' . \F3::get('db_prefix') . 'items FOR EACH ROW
+                        BEGIN
+                            SET NEW.updatetime = NOW();
+                        END;
+                ');
+                \F3::get('db')->exec('
+                    CREATE TRIGGER update_updatetime_trigger
+                    BEFORE UPDATE ON ' . \F3::get('db_prefix') . 'items FOR EACH ROW
+                        BEGIN
+                            SET NEW.updatetime = NOW();
+                        END;
+                ');
+            }
             
             $isNewestSourcesTable = false;
-            if(!in_array('sources', $tables)) {
+            if(!in_array(\F3::get('db_prefix').'sources', $tables)) {
                 \F3::get('db')->exec('
-                    CREATE TABLE sources (
+                    CREATE TABLE '.\F3::get('db_prefix').'sources (
                         id INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
                         title TEXT NOT NULL ,
                         tags TEXT,
@@ -77,40 +93,62 @@ class Database {
             }
             
             // version 1 or new
-            if(!in_array('version', $tables)) {
+            if(!in_array(\F3::get('db_prefix').'version', $tables)) {
                 \F3::get('db')->exec('
-                    CREATE TABLE version (
+                    CREATE TABLE '.\F3::get('db_prefix').'version (
                         version INT
                     ) ENGINE = MYISAM DEFAULT CHARSET=utf8;
                 ');
                 
                 \F3::get('db')->exec('
-                    INSERT INTO version (version) VALUES (3);
+                    INSERT INTO '.\F3::get('db_prefix').'version (version) VALUES (4);
                 ');
                 
                 \F3::get('db')->exec('
-                    CREATE TABLE tags (
+                    CREATE TABLE '.\F3::get('db_prefix').'tags (
                         tag         TEXT NOT NULL,
                         color       VARCHAR(7) NOT NULL
-                    ) DEFAULT CHARSET=utf8;
+                    ) ENGINE = MYISAM DEFAULT CHARSET=utf8;
                 ');
                 
                 if($isNewestSourcesTable===false) {
                     \F3::get('db')->exec('
-                        ALTER TABLE sources ADD tags TEXT;
+                        ALTER TABLE '.\F3::get('db_prefix').'sources ADD tags TEXT;
                     ');
                 }
             }
             else{
-                $version = @\F3::get('db')->exec('SELECT version FROM version ORDER BY version DESC LIMIT 0, 1');
+                $version = @\F3::get('db')->exec('SELECT version FROM '.\F3::get('db_prefix').'version ORDER BY version DESC LIMIT 0, 1');
                 $version = $version[0]['version'];
                 
-                if($version == "2"){
+                if(strnatcmp($version, "3") < 0){
                     \F3::get('db')->exec('
-                        ALTER TABLE sources ADD lastupdate INT;
+                        ALTER TABLE '.\F3::get('db_prefix').'sources ADD lastupdate INT;
                     ');
                     \F3::get('db')->exec('
-                        INSERT INTO version (version) VALUES (3);
+                        INSERT INTO '.\F3::get('db_prefix').'version (version) VALUES (3);
+                    ');
+                }
+                if(strnatcmp($version, "4") < 0){
+                    \F3::get('db')->exec('
+                        ALTER TABLE '.\F3::get('db_prefix').'items ADD updatetime DATETIME;
+                    ');
+                    \F3::get('db')->exec('
+                        CREATE TRIGGER insert_updatetime_trigger
+                        BEFORE INSERT ON ' . \F3::get('db_prefix') . 'items FOR EACH ROW
+                            BEGIN
+                                SET NEW.updatetime = NOW();
+                            END;
+                    ');
+                    \F3::get('db')->exec('
+                        CREATE TRIGGER update_updatetime_trigger
+                        BEFORE UPDATE ON ' . \F3::get('db_prefix') . 'items FOR EACH ROW
+                            BEGIN
+                                SET NEW.updatetime = NOW();
+                            END;
+                    ');
+                    \F3::get('db')->exec('
+                        INSERT INTO '.\F3::get('db_prefix').'version (version) VALUES (4);
                     ');
                 }
             }
@@ -128,6 +166,6 @@ class Database {
      * @return void
      */
     public function optimize() {
-        @\F3::get('db')->exec("OPTIMIZE TABLE `sources`, `items`");
+        @\F3::get('db')->exec('OPTIMIZE TABLE `'.\F3::get('db_prefix').'sources`, `'.\F3::get('db_prefix').'items`');
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
 /*
-	Copyright (c) 2009-2012 F3::Factory/Bong Cosca, All rights reserved.
+	Copyright (c) 2009-2013 F3::Factory/Bong Cosca, All rights reserved.
 
 	This file is part of the Fat-Free Framework (http://fatfree.sf.net).
 
@@ -26,9 +26,9 @@ class Web extends Prefab {
 		$wrapper;
 
 	/**
-		Detect MIME type using file extension
-		@return string
-		@param $file string
+	*	Detect MIME type using file extension
+	*	@return string
+	*	@param $file string
 	**/
 	function mime($file) {
 		if (preg_match('/\w+$/',$file,$ext)) {
@@ -69,21 +69,21 @@ class Web extends Prefab {
 				'wav'=>'audio/wav',
 				'xls'=>'application/vnd.ms-excel',
 				'xml'=>'application/xml',
-				'zip'=>'application/zip'
+				'zip'=>'application/x-zip-compressed'
 			);
 			foreach ($map as $key=>$val)
-				if (preg_match('/'.$key.'/',$ext[0]))
+				if (preg_match('/'.$key.'/',strtolower($ext[0])))
 					return $val;
 		}
 		return 'application/octet-stream';
 	}
 
 	/**
-		Return the MIME types stated in the HTTP Accept header as an array;
-		If a list of MIME types is specified, return the best match; or
-		FALSE if none found
-		@return array|string|FALSE
-		@param $list string|array
+	*	Return the MIME types stated in the HTTP Accept header as an array;
+	*	If a list of MIME types is specified, return the best match; or
+	*	FALSE if none found
+	*	@return array|string|FALSE
+	*	@param $list string|array
 	**/
 	function acceptable($list=NULL) {
 		$accept=array();
@@ -110,19 +110,19 @@ class Web extends Prefab {
 	}
 
 	/**
-		Transmit file to HTTP client; Return file size if successful,
-		FALSE otherwise
-		@return int|FALSE
-		@param $file string
-		@param $mime string
-		@param $kbps int
-		@param $force bool
+	*	Transmit file to HTTP client; Return file size if successful,
+	*	FALSE otherwise
+	*	@return int|FALSE
+	*	@param $file string
+	*	@param $mime string
+	*	@param $kbps int
+	*	@param $force bool
 	**/
 	function send($file,$mime=NULL,$kbps=0,$force=TRUE) {
 		if (!is_file($file))
 			return FALSE;
 		if (PHP_SAPI!='cli') {
-			header('Content-Type: '.$mime?:$this->mime($file));
+			header('Content-Type: '.($mime?:$this->mime($file)));
 			if ($force)
 				header('Content-Disposition: attachment; '.
 					'filename='.basename($file));
@@ -150,12 +150,11 @@ class Web extends Prefab {
 	}
 
 	/**
-		Receive file(s) from HTTP client; Return file size if successful,
-		FALSE otherwise
-		@return int|FALSE
-		@param $func callback
-		@param $overwrite bool
-		@param $slug bool
+	*	Receive file(s) from HTTP client
+	*	@return array|bool
+	*	@param $func callback
+	*	@param $overwrite bool
+	*	@param $slug callback|bool
 	**/
 	function receive($func=NULL,$overwrite=FALSE,$slug=TRUE) {
 		$fw=Base::instance();
@@ -163,45 +162,77 @@ class Web extends Prefab {
 		if (!is_dir($dir))
 			mkdir($dir,Base::MODE,TRUE);
 		if ($fw->get('VERB')=='PUT') {
-			$fw->write($dir.basename($fw->get('URI')),$fw->get('BODY'));
-			return TRUE;
-		}
-		if ($fw->get('VERB')=='POST')
-			foreach ($_FILES as $item) {
-				if (is_array($item['name'])) {
-					// Transpose array
-					$out=array();
-					foreach ($item as $keyx=>$cols)
-						foreach ($cols as $keyy=>$valy)
-							$out[$keyy][$keyx]=$valy;
-					$item=$out;
-				}
-				else
-					$item=array($item);
-				foreach ($item as $file) {
-					if (empty($file['name']))
-						return FALSE;
-					$base=basename($file['name']);
-					$dst=$dir.
-						($slug && preg_match('/(.+?)(\.\w+)?$/',$base,$parts)?
-							$this->slug($parts[1]).
-							(isset($parts[2])?$parts[2]:''):$base);
-					if ($file['error'] ||
-						$file['type']!=$this->mime($file['name']) ||
-						$overwrite && file_exists($dst) ||
-						$func && !$fw->call($func,array($file)) ||
-						!move_uploaded_file($file['tmp_name'],$dst))
-						return FALSE;
-				}
-				return TRUE;
+			$tmp=$fw->get('TEMP').
+				$fw->hash($fw->get('ROOT').$fw->get('BASE')).'.'.
+				$fw->hash(uniqid());
+			if (!$fw->get('RAW'))
+				$fw->write($tmp,$fw->get('BODY'));
+			else {
+				$src=@fopen('php://input','r');
+				$dst=@fopen($tmp,'w');
+				if (!$src || !$dst)
+					return FALSE;
+				while (!feof($src) &&
+					($info=stream_get_meta_data($src)) &&
+					!$info['timed_out'] && $str=fgets($src,4096))
+					fputs($dst,$str,strlen($str));
+				fclose($dst);
+				fclose($src);
 			}
-		return FALSE;
+			$base=basename($fw->get('URI'));
+			$file=array(
+				'name'=>$dir.
+					($slug && preg_match('/(.+?)(\.\w+)?$/',$base,$parts)?
+						(is_callable($slug)?
+							$slug($base):
+							($this->slug($parts[1]).
+								(isset($parts[2])?$parts[2]:''))):
+						$base),
+				'tmp_name'=>$tmp,
+				'type'=>$this->mime($base),
+				'size'=>filesize($tmp)
+			);
+			return (!file_exists($file['name']) || $overwrite) &&
+				(!$func || $fw->call($func,array($file))!==FALSE) &&
+				$fw->write($file['name'],$fw->read($tmp));
+		}
+		$out=array();
+		foreach ($_FILES as $item) {
+			if (is_array($item['name'])) {
+				// Transpose array
+				$tmp=array();
+				foreach ($item as $keyx=>$cols)
+					foreach ($cols as $keyy=>$valy)
+						$tmp[$keyy][$keyx]=$valy;
+				$item=$tmp;
+			}
+			else
+				$item=array($item);
+			foreach ($item as $file) {
+				if (empty($file['name']))
+					continue;
+				$base=basename($file['name']);
+				$file['name']=$dir.
+					($slug && preg_match('/(.+?)(\.\w+)?$/',$base,$parts)?
+						(is_callable($slug)?
+							$slug($base):
+							($this->slug($parts[1]).
+								(isset($parts[2])?$parts[2]:''))):
+						$base);
+				$out[$file['name']]=!$file['error'] &&
+					is_uploaded_file($file['tmp_name']) &&
+					(!file_exists($file['name']) || $overwrite) &&
+					(!$func || $fw->call($func,array($file))!==FALSE) &&
+					move_uploaded_file($file['tmp_name'],$file['name']);
+			}
+		}
+		return $out;
 	}
 
 	/**
-		Return upload progress in bytes, FALSE on failure
-		@return int|FALSE
-		@param $id string
+	*	Return upload progress in bytes, FALSE on failure
+	*	@return int|FALSE
+	*	@param $id string
 	**/
 	function progress($id) {
 		// ID returned by session.upload_progress.name
@@ -211,10 +242,10 @@ class Web extends Prefab {
 	}
 
 	/**
-		HTTP request via cURL
-		@return array
-		@param $url string
-		@param $options array
+	*	HTTP request via cURL
+	*	@return array
+	*	@param $url string
+	*	@param $options array
 	**/
 	protected function _curl($url,$options) {
 		$curl=curl_init($url);
@@ -258,10 +289,10 @@ class Web extends Prefab {
 	}
 
 	/**
-		HTTP request via PHP stream wrapper
-		@return array
-		@param $url string
-		@param $options array
+	*	HTTP request via PHP stream wrapper
+	*	@return array
+	*	@param $url string
+	*	@param $options array
 	**/
 	protected function _stream($url,$options) {
 		$eol="\r\n";
@@ -292,21 +323,23 @@ class Web extends Prefab {
 	}
 
 	/**
-		HTTP request via low-level TCP/IP socket
-		@return array
-		@param $url string
-		@param $options array
+	*	HTTP request via low-level TCP/IP socket
+	*	@return array
+	*	@param $url string
+	*	@param $options array
 	**/
 	protected function _socket($url,$options) {
 		$eol="\r\n";
 		$headers=array();
 		$body='';
 		$parts=parse_url($url);
+		$empty=empty($parts['port']);
 		if ($parts['scheme']=='https') {
 			$parts['host']='ssl://'.$parts['host'];
-			$parts['port']=443;
+			if ($empty)
+				$parts['port']=443;
 		}
-		else
+		elseif ($empty)
 			$parts['port']=80;
 		if (empty($parts['path']))
 			$parts['path']='/';
@@ -360,32 +393,31 @@ class Web extends Prefab {
 	}
 
 	/**
-		Specify the HTTP request engine to use; If not available,
-		fall back to an applicable substitute
-		@return string
-		@param $arg string
+	*	Specify the HTTP request engine to use; If not available,
+	*	fall back to an applicable substitute
+	*	@return string
+	*	@param $arg string
 	**/
-	function engine($arg='socket') {
+	function engine($arg='curl') {
 		$arg=strtolower($arg);
-		if ($arg=='curl' && ($curl=extension_loaded('curl')) ||
-			$arg=='stream' && ($stream=ini_get('allow_url_fopen')) ||
-			$arg=='socket' && ($socket=function_exists('fsockopen')))
-			$this->wrapper=$arg;
-		elseif ($socket)
-			$this->wrapper='socket';
-		elseif ($stream)
-			$this->wrapper='stream';
-		elseif ($curl)
-			$this->wrapper='curl';
-		else
-			user_error(E_Request);
+		$flags=array(
+			'curl'=>extension_loaded('curl'),
+			'stream'=>ini_get('allow_url_fopen'),
+			'socket'=>function_exists('fsockopen')
+		);
+		if ($flags[$arg])
+			return $this->wrapper=$arg;
+		foreach ($flags as $key=>$val)
+			if ($val)
+				return $this->wrapper=$key;
+		user_error(E_Request);
 	}
 
 	/**
-		Replace old headers with new elements
-		@return NULL
-		@param $old array
-		@param $new string|array
+	*	Replace old headers with new elements
+	*	@return NULL
+	*	@param $old array
+	*	@param $new string|array
 	**/
 	function subst(array &$old,$new) {
 		if (is_string($new))
@@ -398,12 +430,12 @@ class Web extends Prefab {
 	}
 
 	/**
-		Submit HTTP request; Use HTTP context options (described in
-		http://www.php.net/manual/en/context.http.php) if specified;
-		Cache the page as instructed by remote server
-		@return array|FALSE
-		@param $url string
-		@param $options array
+	*	Submit HTTP request; Use HTTP context options (described in
+	*	http://www.php.net/manual/en/context.http.php) if specified;
+	*	Cache the page as instructed by remote server
+	*	@return array|FALSE
+	*	@param $url string
+	*	@param $options array
 	**/
 	function request($url,array $options=NULL) {
 		$fw=Base::instance();
@@ -488,14 +520,15 @@ class Web extends Prefab {
 	}
 
 	/**
-		Strip Javascript/CSS files of extraneous whitespaces and comments;
-		Return combined output as a minified string
-		@return string
-		@param $files string|array
-		@param $mime string
-		@param $header bool
+	*	Strip Javascript/CSS files of extraneous whitespaces and comments;
+	*	Return combined output as a minified string
+	*	@return string
+	*	@param $files string|array
+	*	@param $mime string
+	*	@param $header bool
+	*	@param $path string
 	**/
-	function minify($files,$mime=NULL,$header=TRUE) {
+	function minify($files,$mime=NULL,$header=TRUE,$path='') {
 		$fw=Base::instance();
 		if (is_string($files))
 			$files=$fw->split($files);
@@ -504,13 +537,13 @@ class Web extends Prefab {
 		preg_match('/\w+$/',$files[0],$ext);
 		$cache=Cache::instance();
 		$dst='';
-		foreach ($fw->split($fw->get('UI')) as $dir)
+		foreach ($fw->split($path?:$fw->get('UI').';./') as $dir)
 			foreach ($files as $file)
 				if (is_file($save=$fw->fixslashes($dir.$file))) {
 					if ($fw->get('CACHE') &&
 						($cached=$cache->exists(
 							$hash=$fw->hash($save).'.'.$ext[0],$data)) &&
-						$cached>filemtime($save))
+						$cached[0]>filemtime($save))
 						$dst.=$data;
 					else {
 						$data='';
@@ -598,8 +631,9 @@ class Web extends Prefab {
 							}
 							if (ctype_space($src[$ptr])) {
 								if ($ptr+1<strlen($src) &&
-									preg_match('/([\w'.($ext[0]=='css'?
-										'#\.+\-*()\[\]':'\$').']){2}/',
+									preg_match('/[\w'.($ext[0]=='css'?
+										'#\.+\-*()\[\]':'\$').']{2}|'.
+										'[+\-]{2}/',
 										substr($data,-1).$src[$ptr+1]))
 									$data.=' ';
 								$ptr++;
@@ -619,11 +653,11 @@ class Web extends Prefab {
 	}
 
 	/**
-		Retrieve RSS/Atom feed and return as an array
-		@return array|FALSE
-		@param $url string
-		@param $max int
-		@param $tags string
+	*	Retrieve RSS feed and return as an array
+	*	@return array|FALSE
+	*	@param $url string
+	*	@param $max int
+	*	@param $tags string
 	**/
 	function rss($url,$max=10,$tags=NULL) {
 		if (!$data=$this->request($url))
@@ -637,24 +671,15 @@ class Web extends Prefab {
 		$out=array();
 		if (isset($xml->channel)) {
 			$out['source']=(string)$xml->channel->title;
+			$max=min($max,count($xml->channel->item));
 			for ($i=0;$i<$max;$i++) {
 				$item=$xml->channel->item[$i];
-				$out['feed'][]=array(
-					'title'=>(string)$item->title,
-					'link'=>(string)$item->link,
-					'text'=>(string)$item->description
-				);
-			}
-		}
-		elseif (isset($xml->entry)) {
-			$out['source']=(string)$xml->author->name;
-			for ($i=0;$i<$max;$i++) {
-				$item=$xml->entry[$i];
-				$out['feed'][]=array(
-					'title'=>(string)$item->title,
-					'link'=>(string)$item->link['href'],
-					'text'=>(string)$item->summary
-				);
+				$list=array(''=>NULL)+$item->getnamespaces(TRUE);
+				$fields=array();
+				foreach ($list as $ns=>$uri)
+					foreach ($item->children($uri) as $key=>$val)
+						$fields[$ns.($ns?':':'').$key]=(string)$val;
+				$out['feed'][]=$fields;
 			}
 		}
 		else
@@ -664,32 +689,129 @@ class Web extends Prefab {
 	}
 
 	/**
-		Return a URL/filesystem-friendly version of string
-		@return string
-		@param $text string
+	*	Retrieve information from whois server
+	*	@return string|FALSE
+	*	@param $addr string
+	*	@param $server string
+	**/
+	function whois($addr,$server='whois.internic.net') {
+		$socket=@fsockopen($server,43,$errno,$errstr);
+		if (!$socket)
+			// Can't establish connection
+			return FALSE;
+		// Set connection timeout parameters
+		stream_set_blocking($socket,TRUE);
+		stream_set_timeout($socket,ini_get('default_socket_timeout'));
+		// Send request
+		fputs($socket,$addr."\r\n");
+		$info=stream_get_meta_data($socket);
+		// Get response
+		$response='';
+		while (!feof($socket) && !$info['timed_out']) {
+			$response.=fgets($socket,4096); // MDFK97
+			$info=stream_get_meta_data($socket);
+		}
+		fclose($socket);
+		return $info['timed_out']?FALSE:trim($response);
+	}
+
+	/**
+	*	Return a URL/filesystem-friendly version of string
+	*	@return string
+	*	@param $text string
 	**/
 	function slug($text) {
 		return trim(strtolower(preg_replace('/([^\pL\pN])+/u','-',
 			trim(strtr(str_replace('\'','',$text),
 			Base::instance()->get('DIACRITICS')+
 			array(
-				'À'=>'A','Á'=>'A','Â'=>'A','Ã'=>'A','Å'=>'A','Ä'=>'A',
-				'Ă'=>'A','Æ'=>'AE','à'=>'a','á'=>'a','â'=>'a','ã'=>'a',
-				'å'=>'a','ä'=>'a','ă'=>'a','æ'=>'ae','Þ'=>'B','þ'=>'b',
-				'Č'=>'C','Ć'=>'C','Ç'=>'C','č'=>'c','ć'=>'c','ç'=>'c',
-				'Ď'=>'D','ð'=>'d','ď'=>'d','Đ'=>'Dj','đ'=>'dj','È'=>'E',
-				'É'=>'E','Ê'=>'E','Ë'=>'E','Ě'=>'e','ě'=>'e','è'=>'e',
-				'é'=>'e','ê'=>'e','ë'=>'e','Ì'=>'I','Í'=>'I','Î'=>'I',
-				'Ï'=>'I','ì'=>'i','í'=>'i','î'=>'i','ï'=>'i','Ľ'=>'L',
-				'ľ'=>'l','Ñ'=>'N','Ň'=>'N','ñ'=>'n','ň'=>'n','Ò'=>'O',
-				'Ó'=>'O','Ô'=>'O','Õ'=>'O','Ø'=>'O','Ö'=>'O','Œ'=>'OE',
-				'ò'=>'o','ó'=>'o','ô'=>'o','õ'=>'o','ö'=>'o','œ'=>'oe',
-				'ø'=>'o','Ŕ'=>'R','Ř'=>'R','ŕ'=>'r','ř'=>'r','Š'=>'S',
-				'Ș'=>'s','ș'=>'s','š'=>'s','ß'=>'ss','Ț'=>'T','ț'=>'t',
-				'Ť'=>'T','ť'=>'t','Ù'=>'U','Ú'=>'U','Û'=>'U','Ü'=>'U',
-				'Ů'=>'U','ù'=>'u','ú'=>'u','û'=>'u','ü'=>'u','ů'=>'u',
-				'Ý'=>'Y','Ÿ'=>'Y','ý'=>'y','ÿ'=>'y','Ž'=>'Z','ž'=>'z'
+				'Ǎ'=>'A','А'=>'A','Ā'=>'A','Ă'=>'A','Ą'=>'A','Å'=>'A',
+				'Ǻ'=>'A','Ä'=>'Ae','Á'=>'A','À'=>'A','Ã'=>'A','Â'=>'A',
+				'Æ'=>'AE','Ǽ'=>'AE','Б'=>'B','Ç'=>'C','Ć'=>'C','Ĉ'=>'C',
+				'Č'=>'C','Ċ'=>'C','Ц'=>'C','Ч'=>'Ch','Ð'=>'Dj','Đ'=>'Dj',
+				'Ď'=>'Dj','Д'=>'Dj','É'=>'E','Ę'=>'E','Ё'=>'E','Ė'=>'E',
+				'Ê'=>'E','Ě'=>'E','Ē'=>'E','È'=>'E','Е'=>'E','Э'=>'E',
+				'Ë'=>'E','Ĕ'=>'E','Ф'=>'F','Г'=>'G','Ģ'=>'G','Ġ'=>'G',
+				'Ĝ'=>'G','Ğ'=>'G','Х'=>'H','Ĥ'=>'H','Ħ'=>'H','Ï'=>'I',
+				'Ĭ'=>'I','İ'=>'I','Į'=>'I','Ī'=>'I','Í'=>'I','Ì'=>'I',
+				'И'=>'I','Ǐ'=>'I','Ĩ'=>'I','Î'=>'I','Ĳ'=>'IJ','Ĵ'=>'J',
+				'Й'=>'J','Я'=>'Ja','Ю'=>'Ju','К'=>'K','Ķ'=>'K','Ĺ'=>'L',
+				'Л'=>'L','Ł'=>'L','Ŀ'=>'L','Ļ'=>'L','Ľ'=>'L','М'=>'M',
+				'Н'=>'N','Ń'=>'N','Ñ'=>'N','Ņ'=>'N','Ň'=>'N','Ō'=>'O',
+				'О'=>'O','Ǿ'=>'O','Ǒ'=>'O','Ơ'=>'O','Ŏ'=>'O','Ő'=>'O',
+				'Ø'=>'O','Ö'=>'Oe','Õ'=>'O','Ó'=>'O','Ò'=>'O','Ô'=>'O',
+				'Œ'=>'OE','П'=>'P','Ŗ'=>'R','Р'=>'R','Ř'=>'R','Ŕ'=>'R',
+				'Ŝ'=>'S','Ş'=>'S','Š'=>'S','Ș'=>'S','Ś'=>'S','С'=>'S',
+				'Ш'=>'Sh','Щ'=>'Shch','Ť'=>'T','Ŧ'=>'T','Ţ'=>'T','Ț'=>'T',
+				'Т'=>'T','Ů'=>'U','Ű'=>'U','Ŭ'=>'U','Ũ'=>'U','Ų'=>'U',
+				'Ū'=>'U','Ǜ'=>'U','Ǚ'=>'U','Ù'=>'U','Ú'=>'U','Ü'=>'Ue',
+				'Ǘ'=>'U','Ǖ'=>'U','У'=>'U','Ư'=>'U','Ǔ'=>'U','Û'=>'U',
+				'В'=>'V','Ŵ'=>'W','Ы'=>'Y','Ŷ'=>'Y','Ý'=>'Y','Ÿ'=>'Y',
+				'Ź'=>'Z','З'=>'Z','Ż'=>'Z','Ž'=>'Z','Ж'=>'Zh','á'=>'a',
+				'ă'=>'a','â'=>'a','à'=>'a','ā'=>'a','ǻ'=>'a','å'=>'a',
+				'ä'=>'ae','ą'=>'a','ǎ'=>'a','ã'=>'a','а'=>'a','ª'=>'a',
+				'æ'=>'ae','ǽ'=>'ae','б'=>'b','č'=>'c','ç'=>'c','ц'=>'c',
+				'ċ'=>'c','ĉ'=>'c','ć'=>'c','ч'=>'ch','ð'=>'dj','ď'=>'dj',
+				'д'=>'dj','đ'=>'dj','э'=>'e','é'=>'e','ё'=>'e','ë'=>'e',
+				'ê'=>'e','е'=>'e','ĕ'=>'e','è'=>'e','ę'=>'e','ě'=>'e',
+				'ė'=>'e','ē'=>'e','ƒ'=>'f','ф'=>'f','ġ'=>'g','ĝ'=>'g',
+				'ğ'=>'g','г'=>'g','ģ'=>'g','х'=>'h','ĥ'=>'h','ħ'=>'h',
+				'ǐ'=>'i','ĭ'=>'i','и'=>'i','ī'=>'i','ĩ'=>'i','į'=>'i',
+				'ı'=>'i','ì'=>'i','î'=>'i','í'=>'i','ï'=>'i','ĳ'=>'ij',
+				'ĵ'=>'j','й'=>'j','я'=>'ja','ю'=>'ju','ķ'=>'k','к'=>'k',
+				'ľ'=>'l','ł'=>'l','ŀ'=>'l','ĺ'=>'l','ļ'=>'l','л'=>'l',
+				'м'=>'m','ņ'=>'n','ñ'=>'n','ń'=>'n','н'=>'n','ň'=>'n',
+				'ŉ'=>'n','ó'=>'o','ò'=>'o','ǒ'=>'o','ő'=>'o','о'=>'o',
+				'ō'=>'o','º'=>'o','ơ'=>'o','ŏ'=>'o','ô'=>'o','ö'=>'oe',
+				'õ'=>'o','ø'=>'o','ǿ'=>'o','œ'=>'oe','п'=>'p','р'=>'r',
+				'ř'=>'r','ŕ'=>'r','ŗ'=>'r','ſ'=>'s','ŝ'=>'s','ș'=>'s',
+				'š'=>'s','ś'=>'s','с'=>'s','ş'=>'s','ш'=>'sh','щ'=>'shch',
+				'ß'=>'ss','ţ'=>'t','т'=>'t','ŧ'=>'t','ť'=>'t','ț'=>'t',
+				'у'=>'u','ǘ'=>'u','ŭ'=>'u','û'=>'u','ú'=>'u','ų'=>'u',
+				'ù'=>'u','ű'=>'u','ů'=>'u','ư'=>'u','ū'=>'u','ǚ'=>'u',
+				'ǜ'=>'u','ǔ'=>'u','ǖ'=>'u','ũ'=>'u','ü'=>'ue','в'=>'v',
+				'ŵ'=>'w','ы'=>'y','ÿ'=>'y','ý'=>'y','ŷ'=>'y','ź'=>'z',
+				'ž'=>'z','з'=>'z','ż'=>'z','ж'=>'zh'
 			))))),'-');
+	}
+
+	/**
+	*	Return chunk of text from standard Lorem Ipsum passage
+	*	@return string
+	*	@param $count int
+	*	@param $max int
+	*	@param $std bool
+	**/
+	function filler($count=1,$max=20,$std=TRUE) {
+		$out='';
+		if ($std)
+			$out='Lorem ipsum dolor sit amet, consectetur adipisicing elit, '.
+				'sed do eiusmod tempor incididunt ut labore et dolore magna '.
+				'aliqua.';
+		$rnd=explode(' ',
+			'a ab ad accusamus adipisci alias aliquam amet animi aperiam '.
+			'architecto asperiores aspernatur assumenda at atque aut beatae '.
+			'blanditiis cillum commodi consequatur corporis corrupti culpa '.
+			'cum cupiditate debitis delectus deleniti deserunt dicta '.
+			'dignissimos distinctio dolor ducimus duis ea eaque earum eius '.
+			'eligendi enim eos error esse est eum eveniet ex excepteur '.
+			'exercitationem expedita explicabo facere facilis fugiat harum '.
+			'hic id illum impedit in incidunt ipsa iste itaque iure iusto '.
+			'laborum laudantium libero magnam maiores maxime minim minus '.
+			'modi molestiae mollitia nam natus necessitatibus nemo neque '.
+			'nesciunt nihil nisi nobis non nostrum nulla numquam occaecati '.
+			'odio officia omnis optio pariatur perferendis perspiciatis '.
+			'placeat porro possimus praesentium proident quae quia quibus '.
+			'quo ratione recusandae reiciendis rem repellat reprehenderit '.
+			'repudiandae rerum saepe sapiente sequi similique sint soluta '.
+			'suscipit tempora tenetur totam ut ullam unde vel veniam vero '.
+			'vitae voluptas');
+		for ($i=0,$add=$count-(int)$std;$i<$add;$i++) {
+			shuffle($rnd);
+			$words=array_slice($rnd,0,mt_rand(3,$max));
+			$out.=' '.ucfirst(implode(' ',$words)).'.';
+		}
+		return $out;
 	}
 
 }
@@ -697,8 +819,8 @@ class Web extends Prefab {
 if (!function_exists('gzdecode')) {
 
 	/**
-		Decode gzip-compressed string
-		@param $data string
+	*	Decode gzip-compressed string
+	*	@param $str string
 	**/
 	function gzdecode($str) {
 		$fw=Base::instance();
@@ -706,7 +828,7 @@ if (!function_exists('gzdecode')) {
 			mkdir($tmp,Base::MODE,TRUE);
 		file_put_contents($file=$tmp.'/'.
 			$fw->hash($fw->get('ROOT').$fw->get('BASE')).'.'.
-			$fw->hash(uniqid()).'.gz',$str,LOCK_EX);
+			$fw->hash(uniqid(NULL,TRUE)).'.gz',$str,LOCK_EX);
 		ob_start();
 		readgzfile($file);
 		$out=ob_get_clean();

@@ -47,7 +47,7 @@ class Image {
                 elseif (substr($shortcutIcon, 0, 1)=='/')
                     $shortcutIcon = $urlElements['scheme'] . '://' . $urlElements['host'] . $shortcutIcon;
                 else
-                    $shortcutIcon = $url . $shortcutIcon;
+                    $shortcutIcon = (strrpos($url, '/')===strlen($url)-1) ? $url . $shortcutIcon : $url . '/' . $shortcutIcon;
             }
 
             $faviconAsPng = $this->loadImage($shortcutIcon, $width, $height);
@@ -159,6 +159,8 @@ class Image {
         $result = preg_match('/<link .*rel=("|\')apple-touch-icon\1.*>/Ui', $html, $match1);
         if($result==0)
             $result = preg_match('/<link [^>]*rel=("|\')shortcut icon\1.*>/Ui', $html, $match1);
+        if($result==0)
+            $result = preg_match('/<link [^>]*rel=("|\')icon\1.*>/Ui', $html, $match1);
         if($result>0) {
             preg_match('/href=("|\')(.*)\1/Ui', $match1[0], $match2);
             return $match2[2];

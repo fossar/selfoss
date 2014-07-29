@@ -176,8 +176,17 @@ class Index extends BaseController {
      * @return void
      */
     public function update() {
+        // only allow access for localhost and loggedin users
+        if (\F3::get('allow_public_update_access')!=1 
+                && $_SERVER['REMOTE_ADDR'] !== $_SERVER['SERVER_ADDR'] 
+                && $_SERVER['REMOTE_ADDR'] !== "127.0.0.1"
+                && \F3::get('auth')->isLoggedin() != 1)
+            die("unallowed access");
+    
+        // update feeds
         $loader = new \helpers\ContentLoader();
         $loader->update();
+        
         echo "finished";
     }
     
@@ -212,6 +221,7 @@ class Index extends BaseController {
         } else {
             if($itemDao->hasMore())
                 $itemsHtml .= '<div class="stream-more"><span>'. \F3::get('lang_more').'</span></div>';
+                $itemsHtml .= '<div class="mark-these-read"><span>'. \F3::get('lang_markread').'</span></div>';
         }
         
         return $itemsHtml;
@@ -226,8 +236,10 @@ class Index extends BaseController {
      */
     private function convertTagsToAssocArray($tags) {
         $assocTags = array();
-        foreach($tags as $tag)
-            $assocTags[$tag['tag']] = $tag['color'];
+        foreach($tags as $tag) {
+            $assocTags[$tag['tag']]['backColor'] = $tag['color'];
+            $assocTags[$tag['tag']]['foreColor'] = \helpers\Color::colorByBrightness($tag['color']);
+        }
         return $assocTags;
     }
 }

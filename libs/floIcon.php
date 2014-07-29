@@ -288,7 +288,7 @@ class floIcon {
 	function readICO($file, $offset = 0) {
 		if (file_exists($file) && filesize($file) > 0 && $filePointer = fopen($file, "r")) {
 			fseek($filePointer, $offset);
-			$header = unpack("SReserved/SType/SCount", fread($filePointer, 6));
+			$header = unpack("vReserved/vType/vCount", fread($filePointer, 6));
 			for ($t = 0; $t < $header["Count"]; $t++) {
 				$newImage = new floIconImage();
 				$newImage->readImageFromICO($filePointer, 6 + ($t * 16));
@@ -778,14 +778,14 @@ class floIconImage {
 		// Get the entry.
 		fseek($filePointer, $entryOffset);
 		$this->_entryIconFormat = fread($filePointer, 16);
-		$this->_entry = unpack("CWidth/CHeight/CColorCount/CReserved/SPlanes/SBitCount/LSizeInBytes/LFileOffset", $this->_entryIconFormat);
+		$this->_entry = unpack("CWidth/CHeight/CColorCount/CReserved/vPlanes/vBitCount/VSizeInBytes/VFileOffset", $this->_entryIconFormat);
 
 		// Position the file pointer.
 		fseek($filePointer, $this->_entry["FileOffset"]);
 
 		// Get the header.
 		$this->_headerIconFormat = fread($filePointer, 40);
-        $this->_header = unpack("LSize/LWidth/LHeight/SPlanes/SBitCount/LCompression/LImageSize/LXpixelsPerM/LYpixelsPerM/LColorsUsed/LColorsImportant", $this->_headerIconFormat);
+        $this->_header = unpack("VSize/VWidth/VHeight/vPlanes/vBitCount/VCompression/VImageSize/VXpixelsPerM/VYpixelsPerM/VColorsUsed/VColorsImportant", $this->_headerIconFormat);
 
 		// Get the image.
 		$this->_imageIconFormat = @fread($filePointer, $this->_entry["SizeInBytes"] - strlen($this->_headerIconFormat));

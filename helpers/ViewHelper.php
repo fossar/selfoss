@@ -24,7 +24,7 @@ class ViewHelper {
             return $content;
         
         if(!is_array($searchWords))
-            $searchWords = explode(" ", $searchWords);
+            $searchWords = \helpers\Search::splitTerms($searchWords);
         
         foreach($searchWords as $word)
             $content = preg_replace('/(?!<[^<>])('.$word.')(?![^<>]*>)/i','<span class=found>$0</span>',$content);

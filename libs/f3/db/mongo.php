@@ -1,7 +1,7 @@
 <?php
 
 /*
-	Copyright (c) 2009-2012 F3::Factory/Bong Cosca, All rights reserved.
+	Copyright (c) 2009-2013 F3::Factory/Bong Cosca, All rights reserved.
 
 	This file is part of the Fat-Free Framework (http://fatfree.sf.net).
 
@@ -24,12 +24,32 @@ class Mongo extends \MongoDB {
 	//@}
 
 	private
+		//! UUID
+		$uuid,
+		//! Data source name
+		$dsn,
 		//! MongoDB log
 		$log;
 
 	/**
-		Return MongoDB profiler results
-		@return string
+	*	Return data source name
+	*	@return string
+	**/
+	function dsn() {
+		return $this->dsn;
+	}
+
+	/**
+	*	Return UUID
+	*	@return string
+	**/
+	function uuid() {
+		return $this->uuid;
+	}
+
+	/**
+	*	Return MongoDB profiler results
+	*	@return string
 	**/
 	function log() {
 		$cursor=$this->selectcollection('system.profile')->find();
@@ -47,8 +67,8 @@ class Mongo extends \MongoDB {
 	}
 
 	/**
-		Intercept native call to re-enable profiler
-		@return int
+	*	Intercept native call to re-enable profiler
+	*	@return int
 	**/
 	function drop() {
 		$out=parent::drop();
@@ -57,12 +77,13 @@ class Mongo extends \MongoDB {
 	}
 
 	/**
-		Instantiate class
-		@param $dsn string
-		@param $dbname string
-		@param $options array
+	*	Instantiate class
+	*	@param $dsn string
+	*	@param $dbname string
+	*	@param $options array
 	**/
 	function __construct($dsn,$dbname,array $options=NULL) {
+		$this->uuid=\Base::instance()->hash($this->dsn=$dsn);
 		$class=class_exists('\MongoClient')?'\MongoClient':'\Mongo';
 		parent::__construct(new $class($dsn,$options?:array()),$dbname);
 		$this->setprofilinglevel(2);
