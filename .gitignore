@@ -12,4 +12,8 @@ user.css
 /_docs/website/forum
 config.ini
 .project
+<<<<<<< HEAD
 .idea/*
+=======
+.idea
+>>>>>>> 1d85a4581067e3f9380d39ead99748ec0635cf0a
