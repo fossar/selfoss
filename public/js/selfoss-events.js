@@ -76,7 +76,7 @@ selfoss.events = {
                     if (textStatus == "abort")
                         return;
                     else if (errorThrown)
-                        selfoss.showError('Load list error: '+errorThrown); 
+                        selfoss.showError('Load list error: '+errorThrown);
                 },
                 complete: function(jqXHR, textStatus) {
                     $('#content').removeClass('loading');
@@ -96,7 +96,8 @@ selfoss.events = {
         if(selfoss.isSmartphone()==false) {
             var start = $('#nav-tags-wrapper').position().top;
             var windowHeight = $(window).height();
-            $('#nav-tags-wrapper').height(windowHeight - start - 100);
+            var navSettingsHeight = (parseInt($('#nav-settings').css('margin-top')) * -1);
+            $('#nav-tags-wrapper').height(windowHeight - start - (navSettingsHeight + 20));
             $("#nav-tags-wrapper").mCustomScrollbar("update");
             $('#nav').show();
         } else {
