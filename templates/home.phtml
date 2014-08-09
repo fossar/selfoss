@@ -1,29 +1,37 @@
-<!doctype html>  
+<!doctype html>
 <head>
-    <base href="<?PHP echo $this->base; ?>" /> 
+    <base href="<?PHP echo $this->base; ?>" />
 
     <meta charset="utf-8">
 
     <title>selfoss</title>
-    
+
     <meta name="description" content="selfoss" />
     <meta name="author" content="Tobias Zeising" />
     <meta name="version" content="<?PHP echo \F3::get('version'); ?>" />
 
     <!--  Mobile viewport optimized: j.mp/bplateviewport -->
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1" />
-    
+
     <!--  Add support for fullscreen Webapp on iPhone 5 -->
     <meta name="viewport" content="initial-scale=1, user-scalable=no, maximum-scale=1" media="(device-height: 568px)" />
-    
+
     <!-- app 'behaviour' when adding link to iDevice springboard -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
 
     <!--  RSS Feed -->
     <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="feed" />
-    
+
     <link rel="shortcut icon" href="favicon.ico" />
     <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+
+    <link rel="apple-touch-icon" sizes="114x114" href="apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="apple-touch-icon-152x152.png">
+    <link rel="icon" type="image/png" href="favicon-196x196.png" sizes="196x196">
+    <link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-TileImage" content="mstile-144x144.png">
 
     <!-- all css definitions -->
     <?PHP if(\F3::get('use_system_font')!=true) : ?>
@@ -34,12 +42,12 @@
 </head>
 <body class="
     <?PHP echo $this->publicMode===true ? "publicmode" : ""; ?>
-    <?PHP echo $this->loggedin===true ? "loggedin" : "notloggedin"; ?> 
+    <?PHP echo $this->loggedin===true ? "loggedin" : "notloggedin"; ?>
     <?PHP echo \F3::get('auto_mark_as_read')==1 ? "auto_mark_as_read" : ""; ?>
 ">
-    
+
     <div id="error"></div>
-    
+
     <!-- language settings for jQuery -->
     <span id="lang"
         data-mark="<?PHP echo \F3::get('lang_mark'); ?>"
@@ -63,19 +71,19 @@
         <div id="nav-mobile-logo"></div>
         <div id="nav-mobile-settings"></div>
     </div>
-    
+
     <!-- navigation -->
     <div id="nav">
         <div id="nav-logo"></div>
         <div id="nav-mark"><?PHP echo \F3::get('lang_markread')?></div>
-        
+
         <?PHP $active = (\F3::get('homepage')) ? \F3::get('homepage') : 'newest' ?>
         <ul id="nav-filter">
             <li id="nav-filter-newest" class="nav-filter-newest<?PHP if($active=='newest') : ?> active<?PHP endif; ?>"><?PHP echo \F3::get('lang_newest')?> <span><?PHP echo $this->statsAll; ?></span></li>
             <li id="nav-filter-unread" class="nav-filter-unread<?PHP if($active=='unread') : ?> active<?PHP endif; ?>"><?PHP echo \F3::get('lang_unread')?> <span <?PHP echo $this->statsUnread>0 ? 'class="unread"' : ''; ?>><?PHP echo $this->statsUnread; ?></span></li>
             <li id="nav-filter-starred" class="nav-filter-starred<?PHP if($active=='starred') : ?> active<?PHP endif; ?>"><?PHP echo \F3::get('lang_starred') ?> <span><?PHP echo $this->statsStarred; ?></span></li>
         </ul>
-        
+
         <hr>
 
         <div id="nav-tags-wrapper">
@@ -89,30 +97,30 @@
             <?PHP echo $this->sources; ?>
         </ul>
         </div>
-        
+
         <hr>
-        
+
         <!-- navigation search input just for smartphone version -->
         <div id="nav-search">
             <input type="text" id="nav-search-term" /> <input type="button" id="nav-search-button" value="<?PHP echo \F3::get('lang_searchbutton')?>" />
             <hr>
         </div>
-        
+
         <?PHP if($this->loggedin===true) : ?>
         <div id="nav-settings" <?PHP if(\F3::get('auth')->enabled()===false) : ?>class="nologin"<?PHP endif; ?>></div>
         <?PHP endif; ?>
-        
+
         <?PHP if($this->loggedin===true && \F3::get('auth')->enabled()===true) : ?>
         <div id="nav-logout"></div>
         <?PHP endif; ?>
-        
+
         <?PHP if($this->loggedin===false) : ?>
         <div id="nav-login"></div>
         <?PHP endif; ?>
-        
+
         <a id="nav-copyright" href="http://selfoss.aditu.de" target="_blank">selfoss <?PHP echo \F3::get('version'); ?></a>
     </div>
-    
+
     <!-- search -->
     <div id="search">
         <input type="text" id="search-term" />
@@ -120,18 +128,18 @@
         <div id="search-button"></div>
         <div id="search-shownav"></div>
     </div>
-    
+
     <ul id="search-list">
     </ul>
-    
+
     <!-- content -->
     <div id="content">
         <?PHP echo $this->content; ?>
     </div>
-    
+
     <!-- fullscreen popup -->
     <div id="fullscreen-entry"></div>
-    
+
     <script src="all.js"></script>
 </body>
 </html>
