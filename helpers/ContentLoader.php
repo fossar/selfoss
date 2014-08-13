@@ -136,8 +136,7 @@ class ContentLoader {
             }
 
             // sanitize title
-            $title = htmlspecialchars_decode($item->getTitle());
-            $title = htmLawed($title, array("deny_attribute" => "*", "elements" => "-*"));
+            $title = $this->sanitizeContent($item->getTitle());
             if(strlen(trim($title))==0)
                 $title = "[" . \F3::get('lang_no_title') . "]";
 
