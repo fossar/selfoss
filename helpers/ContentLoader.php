@@ -213,7 +213,7 @@ class ContentLoader {
     protected function fetchThumbnail($thumbnail, $newItem) {
         if (strlen(trim($thumbnail)) > 0) {
             $imageHelper = new \helpers\Image();
-            $thumbnailAsPng = $imageHelper->loadImage($thumbnail, 150, 150);
+            $thumbnailAsPng = $imageHelper->loadImage($thumbnail, 500, 500);
             if ($thumbnailAsPng !== false) {
                 file_put_contents(
                     'data/thumbnails/' . md5($thumbnail) . '.png',
