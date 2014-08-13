@@ -263,6 +263,25 @@ class usertimeline extends \spouts\spout {
     
     
     /**
+     * returns the thumbnail of this item (for multimedia feeds)
+     *
+     * @return mixed thumbnail data
+     */
+    public function getThumbnail() {
+        if($this->items!==false) {
+            $item = current($this->items);
+            if(isset($item->retweeted_status)){
+                $item = $item->retweeted_status;
+            }
+            if(isset($item->entities->media) && $item->entities->media[0]->type==="photo"){
+                return $item->entities->media[0]->media_url;
+            }
+        }
+        return "";
+    }
+    
+    
+    /**
      * returns the date of this item
      *
      * @return string date
