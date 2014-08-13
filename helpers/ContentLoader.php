@@ -193,7 +193,7 @@ class ContentLoader {
             htmlspecialchars_decode($content),
             array(
                 "safe"           => 1,
-                "deny_attribute" => '* -alt -title -src -href',
+                "deny_attribute" => '* -alt -title -src -href -target',
                 "keep_bad"       => 0,
                 "comment"        => 1,
                 "cdata"          => 1,
