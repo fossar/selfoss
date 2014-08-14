@@ -426,6 +426,10 @@ input {
         padding-bottom:7px;
     }
     
+        .entry-title a {
+            color:#3d6d69;
+        }
+    
         .entry.unread  .entry-title {
             color:#333333;
         }
