@@ -439,6 +439,12 @@ input {
         font-size:0.8em;
         white-space:nowrap;
     }
+
+        .entry-thumbnail img {
+            max-width:99%;
+            display: block;
+            margin: 0 10px 5px 0;
+        }
     
     .entry-content {
         display:none;
