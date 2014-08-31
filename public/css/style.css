@@ -1289,7 +1289,7 @@ body.publicmode.notloggedin .entry-unread {
 }
 
 #fancybox-loading div {
-    background: url('images/ajax-loader-big.gif') center center no-repeat;
+    background: url('images/fancybox_loading.gif') center center no-repeat;
 }
 
 .fancybox-nav {
