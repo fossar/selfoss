@@ -152,6 +152,14 @@ class Database {
                         INSERT INTO '.\F3::get('db_prefix').'version (version) VALUES (4);
                     ');
                 }
+                if(strnatcmp($version, "5") < 0){
+                    \F3::get('db')->exec('
+                        ALTER TABLE '.\F3::get('db_prefix').'items ADD author VARCHAR(255);
+                    ');
+                    \F3::get('db')->exec('
+                        INSERT INTO '.\F3::get('db_prefix').'version (version) VALUES (5);
+                    ');
+                }
             }
             
             // just initialize once
