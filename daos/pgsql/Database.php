@@ -166,6 +166,14 @@ class Database {
                         INSERT INTO version (version) VALUES (4);
                     ');
                 }
+                if(strnatcmp($version, "5") < 0){
+                    \F3::get('db')->exec('
+                        ALTER TABLE items ADD author TEXT;
+                    ');
+                    \F3::get('db')->exec('
+                        INSERT INTO version (version) VALUES (5);
+                    ');
+                }
             }
             
             // just initialize once
