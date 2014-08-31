@@ -63,14 +63,28 @@ class Database {
                         source      INTEGER NOT NULL,
                         uid         TEXT NOT NULL,
                         link        TEXT NOT NULL,
+                        updatetime  TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
                         author      TEXT
                     );
                 ');
-                
                 \F3::get('db')->exec('
                     CREATE INDEX source ON items (
                         source
                     );
+                ');
+                \F3::get('db')->exec('
+                    CREATE OR REPLACE FUNCTION update_updatetime_procedure()
+                    RETURNS TRIGGER AS $$
+                        BEGIN
+                            NEW.updatetime = NOW();
+                            RETURN NEW;
+                        END;
+                    $$ LANGUAGE "plpgsql";
+                ');
+                \F3::get('db')->exec('
+                    CREATE TRIGGER update_updatetime_trigger
+                    BEFORE UPDATE ON items FOR EACH ROW EXECUTE PROCEDURE
+                    update_updatetime_procedure();
                 ');
             }
             
@@ -99,7 +113,7 @@ class Database {
                 ');
                 
                 \F3::get('db')->exec('
-                    INSERT INTO version (version) VALUES (3);
+                    INSERT INTO version (version) VALUES (4);
                 ');
                 
                 \F3::get('db')->exec('
@@ -119,12 +133,37 @@ class Database {
                 $version = @\F3::get('db')->exec('SELECT version FROM version ORDER BY version DESC LIMIT 1');
                 $version = $version[0]['version'];
 
-                if($version == "2"){
+                if(strnatcmp($version, "3") < 0){
                     \F3::get('db')->exec('
                         ALTER TABLE sources ADD lastupdate INT;
                     ');
                     \F3::get('db')->exec('
                         INSERT INTO version (version) VALUES (3);
+                    ');
+                }
+                if(strnatcmp($version, "4") < 0){
+                    \F3::get('db')->exec('
+                        ALTER TABLE items ADD updatetime TIMESTAMP WITH TIME ZONE;
+                    ');
+                    \F3::get('db')->exec('
+                        ALTER TABLE items ALTER COLUMN updatetime SET DEFAULT CURRENT_TIMESTAMP;
+                    ');
+                    \F3::get('db')->exec('
+                        CREATE OR REPLACE FUNCTION update_updatetime_procedure()
+                        RETURNS TRIGGER AS $$
+                            BEGIN
+                                NEW.updatetime = NOW();
+                                RETURN NEW;
+                            END;
+                        $$ LANGUAGE "plpgsql";
+                    ');
+                    \F3::get('db')->exec('
+                        CREATE TRIGGER update_updatetime_trigger
+                        BEFORE UPDATE ON items FOR EACH ROW EXECUTE PROCEDURE
+                        update_updatetime_procedure();
+                    ');
+                    \F3::get('db')->exec('
+                        INSERT INTO version (version) VALUES (4);
                     ');
                 }
             }

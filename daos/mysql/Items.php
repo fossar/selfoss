@@ -223,7 +223,13 @@ class Items extends Database {
             $params[':source'] = array($options['source'], \PDO::PARAM_INT);
             $where .= " AND items.source=:source ";
         }
-        
+
+        // update time filter
+        if(isset($options['updatedsince']) && strlen($options['updatedsince'])>0) {
+            $params[':updatedsince'] = array($options['updatedsince'], \PDO::PARAM_STR);
+            $where .= " AND items.updatetime > :updatedsince ";
+        }
+
         // set limit
         if(!is_numeric($options['items']) || $options['items']>200)
             $options['items'] = \F3::get('items_perpage');
@@ -241,7 +247,7 @@ class Items extends Database {
 
         // get items from database
         return \F3::get('db')->exec('SELECT 
-                    items.id, datetime, items.title AS title, content, unread, starred, source, thumbnail, icon, uid, link, author, sources.title as sourcetitle, sources.tags as tags
+                    items.id, datetime, items.title AS title, content, unread, starred, source, thumbnail, icon, uid, link, updatetime, author, sources.title as sourcetitle, sources.tags as tags
                    FROM '.\F3::get('db_prefix').'items AS items, '.\F3::get('db_prefix').'sources AS sources
                    WHERE items.source=sources.id '.$where.' 
                    ORDER BY items.datetime '.$order.' 

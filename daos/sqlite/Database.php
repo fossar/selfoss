@@ -62,6 +62,7 @@ class Database {
                         source      INT NOT NULL,
                         uid         VARCHAR(255) NOT NULL,
                         link        TEXT NOT NULL,
+                        updatetime  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
                         author      VARCHAR(255)
                     );
                 ');
@@ -71,6 +72,15 @@ class Database {
                         source
                     );
                 ');
+                \F3::get('db')->exec('
+                    CREATE TRIGGER update_updatetime_trigger
+                    AFTER UPDATE ON items FOR EACH ROW
+                        BEGIN
+                            UPDATE items
+                            SET updatetime = CURRENT_TIMESTAMP
+                            WHERE id = NEW.id;
+                        END;
+                 ');
             }
             
             $isNewestSourcesTable = false;
@@ -98,7 +108,7 @@ class Database {
                 ');
                 
                 \F3::get('db')->exec('
-                    INSERT INTO version (version) VALUES (3);
+                    INSERT INTO version (version) VALUES (4);
                 ');
                 
                 \F3::get('db')->exec('
@@ -118,12 +128,38 @@ class Database {
                 $version = @\F3::get('db')->exec('SELECT version FROM version ORDER BY version DESC LIMIT 0, 1');
                 $version = $version[0]['version'];
 
-                if($version == "2"){
+                if(strnatcmp($version, "3") < 0){
                     \F3::get('db')->exec('
                         ALTER TABLE sources ADD lastupdate INT;
                     ');
                     \F3::get('db')->exec('
                         INSERT INTO version (version) VALUES (3);
+                    ');
+                }
+                if(strnatcmp($version, "4") < 0){
+                    \F3::get('db')->exec('
+                        ALTER TABLE items ADD updatetime DATETIME;
+                    ');
+                    \F3::get('db')->exec('
+                        CREATE TRIGGER insert_updatetime_trigger
+                        AFTER INSERT ON items FOR EACH ROW
+                            BEGIN
+                                UPDATE items
+                                SET updatetime = CURRENT_TIMESTAMP
+                                WHERE id = NEW.id;
+                            END;
+                    ');
+                    \F3::get('db')->exec('
+                        CREATE TRIGGER update_updatetime_trigger
+                        AFTER UPDATE ON items FOR EACH ROW
+                            BEGIN
+                                UPDATE items
+                                SET updatetime = CURRENT_TIMESTAMP
+                                WHERE id = NEW.id;
+                            END;
+                    ');
+                    \F3::get('db')->exec('
+                        INSERT INTO version (version) VALUES (4);
                     ');
                 }
             }
