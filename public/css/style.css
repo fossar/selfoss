@@ -396,6 +396,7 @@ input {
 
     .entry.selected.unread,
     .entry.unread {
+        margin-left: 3px;
         border-left:3px solid #5f9490;
     }
 
@@ -454,6 +455,7 @@ input {
         margin-top:20px;
         line-height: 1.7em;
         overflow: hidden;
+        padding: 0 1em;
     }
     
         .entry-content a {
@@ -1182,6 +1184,7 @@ body.publicmode.notloggedin .entry-unread {
         .entry-content {
             line-height:1.5em;
             font-size:0.95em;
+            padding: 0;
         }
         
     .sp-container {
