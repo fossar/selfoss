@@ -42,7 +42,7 @@ class Database {
                 foreach($table as $key=>$value)
                     $tables[] = $value;
             
-            if(!in_array(\F3::get('db_prefix').'items', $tables))
+            if(!in_array(\F3::get('db_prefix').'items', $tables)) {
                 \F3::get('db')->exec('
                     CREATE TABLE '.\F3::get('db_prefix').'items (
                         id INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
@@ -56,10 +56,26 @@ class Database {
                         source INT NOT NULL ,
                         uid VARCHAR(255) NOT NULL,
                         link TEXT NOT NULL,
+                        updatetime DATETIME NOT NULL,
                         author VARCHAR(255),
                         INDEX (source)
                     ) ENGINE = MYISAM DEFAULT CHARSET=utf8;
                 ');
+                \F3::get('db')->exec('
+                    CREATE TRIGGER insert_updatetime_trigger
+                    BEFORE INSERT ON ' . \F3::get('db_prefix') . 'items FOR EACH ROW
+                        BEGIN
+                            SET NEW.updatetime = NOW();
+                        END;
+                ');
+                \F3::get('db')->exec('
+                    CREATE TRIGGER update_updatetime_trigger
+                    BEFORE UPDATE ON ' . \F3::get('db_prefix') . 'items FOR EACH ROW
+                        BEGIN
+                            SET NEW.updatetime = NOW();
+                        END;
+                ');
+            }
             
             $isNewestSourcesTable = false;
             if(!in_array(\F3::get('db_prefix').'sources', $tables)) {
@@ -86,7 +102,7 @@ class Database {
                 ');
                 
                 \F3::get('db')->exec('
-                    INSERT INTO '.\F3::get('db_prefix').'version (version) VALUES (3);
+                    INSERT INTO '.\F3::get('db_prefix').'version (version) VALUES (4);
                 ');
                 
                 \F3::get('db')->exec('
@@ -106,12 +122,34 @@ class Database {
                 $version = @\F3::get('db')->exec('SELECT version FROM '.\F3::get('db_prefix').'version ORDER BY version DESC LIMIT 0, 1');
                 $version = $version[0]['version'];
                 
-                if($version == "2"){
+                if(strnatcmp($version, "3") < 0){
                     \F3::get('db')->exec('
                         ALTER TABLE '.\F3::get('db_prefix').'sources ADD lastupdate INT;
                     ');
                     \F3::get('db')->exec('
                         INSERT INTO '.\F3::get('db_prefix').'version (version) VALUES (3);
+                    ');
+                }
+                if(strnatcmp($version, "4") < 0){
+                    \F3::get('db')->exec('
+                        ALTER TABLE '.\F3::get('db_prefix').'items ADD updatetime DATETIME;
+                    ');
+                    \F3::get('db')->exec('
+                        CREATE TRIGGER insert_updatetime_trigger
+                        BEFORE INSERT ON ' . \F3::get('db_prefix') . 'items FOR EACH ROW
+                            BEGIN
+                                SET NEW.updatetime = NOW();
+                            END;
+                    ');
+                    \F3::get('db')->exec('
+                        CREATE TRIGGER update_updatetime_trigger
+                        BEFORE UPDATE ON ' . \F3::get('db_prefix') . 'items FOR EACH ROW
+                            BEGIN
+                                SET NEW.updatetime = NOW();
+                            END;
+                    ');
+                    \F3::get('db')->exec('
+                        INSERT INTO '.\F3::get('db_prefix').'version (version) VALUES (4);
                     ');
                 }
             }

@@ -51,6 +51,12 @@ class Items extends \daos\mysql\Items {
             $params[':source'] = array($options['source'], \PDO::PARAM_INT);
             $where .= " AND items.source=:source ";
         }
+
+        // update time filter
+        if(isset($options['updatedsince']) && strlen($options['updatedsince'])>0) {
+            $params[':updatedsince'] = array($options['updatedsince'], \PDO::PARAM_STR);
+            $where .= " AND items.updatetime > :updatedsince ";
+        }
         
         // set limit
         if(!is_numeric($options['items']) || $options['items']>200)
@@ -65,7 +71,7 @@ class Items extends \daos\mysql\Items {
 
         // get items from database
         return \F3::get('db')->exec('SELECT 
-                    items.id, datetime, items.title AS title, content, unread, starred, source, thumbnail, icon, uid, link, author, sources.title as sourcetitle, sources.tags as tags
+                    items.id, datetime, items.title AS title, content, unread, starred, source, thumbnail, icon, uid, link, updatetime, author, sources.title as sourcetitle, sources.tags as tags
                    FROM items, sources 
                    WHERE items.source=sources.id '.$where.' 
                    ORDER BY items.datetime '.$order.' 

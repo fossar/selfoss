@@ -105,9 +105,11 @@ class Authentication {
                 $this->loggedin = true;
                 $_SESSION['loggedin'] = true;
                 return true;
+            } else {
+                return false;
             }
         }
-        return false;
+        return true;	
     }
     
     
