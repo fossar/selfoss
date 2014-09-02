@@ -63,7 +63,8 @@ class Database {
                         source      INTEGER NOT NULL,
                         uid         TEXT NOT NULL,
                         link        TEXT NOT NULL,
-                        updatetime  TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
+                        updatetime  TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                        author      TEXT
                     );
                 ');
                 \F3::get('db')->exec('
@@ -163,6 +164,14 @@ class Database {
                     ');
                     \F3::get('db')->exec('
                         INSERT INTO version (version) VALUES (4);
+                    ');
+                }
+                if(strnatcmp($version, "5") < 0){
+                    \F3::get('db')->exec('
+                        ALTER TABLE items ADD author TEXT;
+                    ');
+                    \F3::get('db')->exec('
+                        INSERT INTO version (version) VALUES (5);
                     ');
                 }
             }
