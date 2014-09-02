@@ -186,8 +186,12 @@ class Index extends BaseController {
         // update feeds
         $loader = new \helpers\ContentLoader();
         $loader->update();
-        
-        echo "finished";
+
+        if (\F3::get('manual_update')==1) {
+        	\F3::reroute($this->view->base);
+        } else {
+        	echo "finished";
+        }
     }
     
     
