@@ -12,10 +12,10 @@ $f3->set('auth', new \helpers\Authentication());
 
 // define js files
 $f3->set('js', array(
-    'public/js/jquery-1.8.3.min.js',
+    'public/js/jquery-1.11.1.min.js',
     'public/js/jquery-ui-1.10.0.custom.js',
     'public/js/jquery.mCustomScrollbar.min.js',
-    'public/js/jquery.mousewheel.js',
+    'public/js/jquery.mousewheel.min.js',
     'public/js/lazy-image-loader.js',
     'public/js/spectrum.js',
     'public/js/jquery.hotkeys.js',
@@ -26,12 +26,14 @@ $f3->set('js', array(
     'public/js/selfoss-events-entries.js',
     'public/js/selfoss-events-entriestoolbar.js',
     'public/js/selfoss-events-sources.js',
-    'public/js/selfoss-shortcuts.js'
+    'public/js/selfoss-shortcuts.js',
+    'public/js/jquery.fancybox.pack.js'
 ));
 
 // define css files
 $css = array(
     'public/css/jquery.mCustomScrollbar.css',
+    'public/css/jquery.fancybox.css',
     'public/css/spectrum.css',
     'public/css/reset.css',
     'public/css/style.css'

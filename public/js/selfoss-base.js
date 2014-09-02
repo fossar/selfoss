@@ -282,7 +282,27 @@ var selfoss = {
         error.unbind('click').click(function() {
             error.fadeOut();
         });
+    },
+
+    /**
+     * Setup fancyBox image viewer
+     * @param content element
+     * @param int
+     */
+    setupFancyBox: function(content, id) {
+        // Close existing fancyBoxes
+        $.fancybox.close();
+        var images = $(content).find('a[href$=".jpg"],a[href$=".jpeg"],a[href$=".png"],a[href$=".gif"]');
+        $(images).attr('rel', 'gallery-'+id).unbind('click');
+        $(images).fancybox({
+            helpers: {
+                overlay: {
+                    locked: false
+                }
+            }
+        });
     }
+
 };
 
 selfoss.init();
