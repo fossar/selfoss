@@ -1,7 +1,7 @@
 <?php
 
 /*
-	Copyright (c) 2009-2013 F3::Factory/Bong Cosca, All rights reserved.
+	Copyright (c) 2009-2014 F3::Factory/Bong Cosca, All rights reserved.
 
 	This file is part of the Fat-Free Framework (http://fatfree.sf.net).
 
@@ -21,7 +21,7 @@ class Web extends Prefab {
 		E_Request='No suitable HTTP request engine found';
 	//@}
 
-	private
+	protected
 		//! HTTP request engine
 		$wrapper;
 
@@ -194,10 +194,10 @@ class Web extends Prefab {
 			);
 			return (!file_exists($file['name']) || $overwrite) &&
 				(!$func || $fw->call($func,array($file))!==FALSE) &&
-				$fw->write($file['name'],$fw->read($tmp));
+				rename($tmp,$file['name']);
 		}
 		$out=array();
-		foreach ($_FILES as $item) {
+		foreach ($_FILES as $name=>$item) {
 			if (is_array($item['name'])) {
 				// Transpose array
 				$tmp=array();
@@ -215,14 +215,14 @@ class Web extends Prefab {
 				$file['name']=$dir.
 					($slug && preg_match('/(.+?)(\.\w+)?$/',$base,$parts)?
 						(is_callable($slug)?
-							$slug($base):
+							$slug($base,$name):
 							($this->slug($parts[1]).
 								(isset($parts[2])?$parts[2]:''))):
 						$base);
 				$out[$file['name']]=!$file['error'] &&
 					is_uploaded_file($file['tmp_name']) &&
 					(!file_exists($file['name']) || $overwrite) &&
-					(!$func || $fw->call($func,array($file))!==FALSE) &&
+					(!$func || $fw->call($func,array($file,$name))!==FALSE) &&
 					move_uploaded_file($file['tmp_name'],$file['name']);
 			}
 		}
@@ -723,7 +723,6 @@ class Web extends Prefab {
 	function slug($text) {
 		return trim(strtolower(preg_replace('/([^\pL\pN])+/u','-',
 			trim(strtr(str_replace('\'','',$text),
-			Base::instance()->get('DIACRITICS')+
 			array(
 				'Ǎ'=>'A','А'=>'A','Ā'=>'A','Ă'=>'A','Ą'=>'A','Å'=>'A',
 				'Ǻ'=>'A','Ä'=>'Ae','Á'=>'A','À'=>'A','Ã'=>'A','Â'=>'A',
@@ -772,7 +771,7 @@ class Web extends Prefab {
 				'ǜ'=>'u','ǔ'=>'u','ǖ'=>'u','ũ'=>'u','ü'=>'ue','в'=>'v',
 				'ŵ'=>'w','ы'=>'y','ÿ'=>'y','ý'=>'y','ŷ'=>'y','ź'=>'z',
 				'ž'=>'z','з'=>'z','ż'=>'z','ж'=>'zh'
-			))))),'-');
+			)+Base::instance()->get('DIACRITICS'))))),'-');
 	}
 
 	/**

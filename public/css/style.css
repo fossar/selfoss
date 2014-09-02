@@ -255,7 +255,7 @@ input {
     
     #nav-settings {
         background:url(images/nav-sources.png) no-repeat center center #272325;
-        left:65px;
+        left:70px;
     }
         
     #nav-logout {
@@ -273,7 +273,7 @@ input {
     }
 
     #nav-settings.nologin {
-        left:90px;
+        left:95px;
     }
     
     #nav-mobile {
@@ -975,12 +975,27 @@ body.publicmode.notloggedin .entry-unread {
         width:120px;
     }
 
+    #nav-refresh,
+    #nav-settings,
+    #nav-logout,
+    #nav-login {
+        width:40px;
+    }
+    
+    #nav-settings {
+        left:65px;
+    }
+    
+    #nav-logout {
+        left:110px;
+    }
+    
     #nav-settings.nologin, #nav-refresh.nologin {
-        width:60px;
+        width:55px;
     }
 
     #nav-settings.nologin {
-        left:70px;
+        left:80px;
     }
     
     #nav-tags .color {

@@ -2,7 +2,7 @@
 
 # Enable rewrite engine and route requests to framework
 RewriteEngine On
-#RewriteBase /selfoss
+RewriteBase /selfoss
 
 # rule for favicons
 RewriteRule !data/favicons/(.*)$ - [C]
