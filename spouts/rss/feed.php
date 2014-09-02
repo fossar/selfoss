@@ -282,6 +282,27 @@ class feed extends \spouts\spout {
             $date = date('Y-m-d H:i:s');
         return $date;
     }
+
+
+    /**
+     * returns the author of this item
+     * @return string author
+     */
+    public function getAuthor() {
+        if($this->items!==false && $this->valid()) {
+            $author = @current($this->items)->get_author();
+            if(isset($author)) {
+                $name = $author->get_name();
+                if(isset($name)) {
+                    return $name;
+                } else {
+                    return $author->get_email();
+                }
+            }
+        }
+        return null;
+    }
+
     
     /**
      * destroy the plugin (prevent memory issues)

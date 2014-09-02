@@ -62,7 +62,8 @@ class Database {
                         source      INT NOT NULL,
                         uid         VARCHAR(255) NOT NULL,
                         link        TEXT NOT NULL,
-                        updatetime  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+                        updatetime  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                        author      VARCHAR(255)
                     );
                 ');
                 
@@ -159,6 +160,14 @@ class Database {
                     ');
                     \F3::get('db')->exec('
                         INSERT INTO version (version) VALUES (4);
+                    ');
+                }
+                if(strnatcmp($version, "5") < 0){
+                    \F3::get('db')->exec('
+                        ALTER TABLE items ADD author VARCHAR(255);
+                    ');
+                    \F3::get('db')->exec('
+                        INSERT INTO version (version) VALUES (5);
                     ');
                 }
             }

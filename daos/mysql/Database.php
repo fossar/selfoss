@@ -57,6 +57,7 @@ class Database {
                         uid VARCHAR(255) NOT NULL,
                         link TEXT NOT NULL,
                         updatetime DATETIME NOT NULL,
+                        author VARCHAR(255),
                         INDEX (source)
                     ) ENGINE = MYISAM DEFAULT CHARSET=utf8;
                 ');
@@ -149,6 +150,14 @@ class Database {
                     ');
                     \F3::get('db')->exec('
                         INSERT INTO '.\F3::get('db_prefix').'version (version) VALUES (4);
+                    ');
+                }
+                if(strnatcmp($version, "5") < 0){
+                    \F3::get('db')->exec('
+                        ALTER TABLE '.\F3::get('db_prefix').'items ADD author VARCHAR(255);
+                    ');
+                    \F3::get('db')->exec('
+                        INSERT INTO '.\F3::get('db_prefix').'version (version) VALUES (5);
                     ');
                 }
             }
