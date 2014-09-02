@@ -190,6 +190,14 @@ img {
         margin-top:5px;
     }
 
+    
+#header-appstores {
+    position:absolute;
+    left:50%;
+    top:560px;
+    margin-left:240px;
+}
+   
    
 #header-teaser {
     width:600px;
