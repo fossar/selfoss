@@ -77,9 +77,10 @@ Special thanks to the great programmers of this libraries which will be used in 
 * twitteroauth: https://github.com/abraham/twitteroauth
 * floIcon: http://www.phpclasses.org/package/3906-PHP-Read-and-write-images-from-ICO-files.html
 * jQuery hotkeys: https://github.com/tzuryby/jquery.hotkeys
-* jsmin: https://github.com/rgrove/jsmin-php/blob/master/jsmin.php
+* jsmin: https://github.com/rgrove/jsmin-php
 * cssmin: http://code.google.com/p/cssmin/
 * Spectrum Colorpicker: https://github.com/bgrins/spectrum
 * jQuery custom content scroller: http://manos.malihu.gr/jquery-custom-content-scroller/
+* twitter oauth library: https://github.com/abraham/twitteroauth
 
 Icon Source: http://blog.artcore-illustrations.de/aicons/

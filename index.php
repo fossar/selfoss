@@ -12,8 +12,8 @@ $f3->set('auth', new \helpers\Authentication());
 
 // define js files
 $f3->set('js', array(
-    'public/js/jquery-1.11.1.min.js',
-    'public/js/jquery-ui-1.10.0.custom.js',
+    'public/js/jquery-2.1.1.min.js',
+    'public/js/jquery-ui-1.10.4.min.js',
     'public/js/jquery.mCustomScrollbar.min.js',
     'public/js/jquery.mousewheel.min.js',
     'public/js/lazy-image-loader.js',
