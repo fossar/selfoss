@@ -426,6 +426,10 @@ input {
         padding-bottom:7px;
     }
     
+        .entry-title a {
+            color:#3d6d69;
+        }
+    
         .entry.unread  .entry-title {
             color:#333333;
         }
@@ -439,6 +443,12 @@ input {
         font-size:0.8em;
         white-space:nowrap;
     }
+
+        .entry-thumbnail img {
+            max-width:99%;
+            display: block;
+            margin: 0 10px 5px 0;
+        }
     
     .entry-content {
         display:none;

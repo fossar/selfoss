@@ -57,7 +57,9 @@
     <!-- thumbnail -->
     <?PHP if(isset($this->item['thumbnail']) && strlen(trim($this->item['thumbnail']))>0) : ?>
     <div class="entry-thumbnail">
-        <a href="<?PHP echo \helpers\Anonymizer::anonymize($this->item['link']); ?>" target="_blank"><img src="<?PHP echo 'thumbnails/'.$this->item['thumbnail']; ?>" alt="<?PHP echo $this->item['title']; ?>" /></a>
+        <a href="<?PHP echo \helpers\Anonymizer::anonymize($this->item['link']); ?>" target="_blank">
+            <img src="<?PHP echo 'thumbnails/'.$this->item['thumbnail']; ?>" alt="<?PHP echo require_once('libs/htmLawed.php'); htmLawed(htmlspecialchars_decode($this->item['title']), array("deny_attribute" => "*", "elements" => "-*")); ?>" />
+        </a>
     </div>
     <?PHP endif; ?>
     

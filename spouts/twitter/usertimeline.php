@@ -209,7 +209,13 @@ class usertimeline extends \spouts\spout {
     public function getTitle() {
         if($this->items!==false) {
             $item = @current($this->items);
-            return $item->user->screen_name . " (" . $item->user->name . "): " . $item->text;
+            $rt = "";
+            if(isset($item->retweeted_status)){
+                $rt = " (RT " . $item->user->name . ")";
+                $item = $item->retweeted_status;
+            }
+            $tweet = $item->user->name . $rt . ":<br>" . $this->formatLinks($item->text);
+            return $tweet;
         }
         return false;
     }
@@ -221,7 +227,7 @@ class usertimeline extends \spouts\spout {
      * @return string content
      */
     public function getContent() {
-        return $this->formatLinks($this->getTitle());
+        return;
     }
     
     
@@ -231,8 +237,13 @@ class usertimeline extends \spouts\spout {
      * @return string icon url
      */
     public function getIcon() {
-        if($this->items!==false)
-            return @current($this->items)->user->profile_image_url;
+        if($this->items!==false){
+            $item = @current($this->items);
+            if(isset($item->retweeted_status)){
+                $item = $item->retweeted_status;
+            }
+            return $item->user->profile_image_url;
+        }
         return false;
     }
     
@@ -248,6 +259,25 @@ class usertimeline extends \spouts\spout {
             return 'http://twitter.com/'.$item->user->screen_name.'/status/'.$item->id_str;
         }
         return false;
+    }
+    
+    
+    /**
+     * returns the thumbnail of this item (for multimedia feeds)
+     *
+     * @return mixed thumbnail data
+     */
+    public function getThumbnail() {
+        if($this->items!==false) {
+            $item = current($this->items);
+            if(isset($item->retweeted_status)){
+                $item = $item->retweeted_status;
+            }
+            if(isset($item->entities->media) && $item->entities->media[0]->type==="photo"){
+                return $item->entities->media[0]->media_url;
+            }
+        }
+        return "";
     }
     
     
@@ -284,7 +314,7 @@ class usertimeline extends \spouts\spout {
         $text = preg_replace("/([\w-?&;#~=\.\/]+\@(\[?)[a-zA-Z0-9\-\.]+\.([a-zA-Z]{2,3}|[0-9]{1,3})(\]?))/i","<a href=\"mailto:$1\">$1</a>",$text);
         $text = str_replace("http://www.","www.",$text);
         $text = str_replace("www.","http://www.",$text);
-        $text = preg_replace("/([\w]+:\/\/[\w-?&;#~=\.\/\@]+[\w\/])/i","<a href=\"$1\">$1</a>", $text);
+        $text = preg_replace("/([\w]+:\/\/[\w-?&;#~=\.\/\@]+[\w\/])/i","<a href=\"$1\" target=\"_blank\">$1</a>", $text);
         return $text;
     }
 }

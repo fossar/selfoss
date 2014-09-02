@@ -136,8 +136,7 @@ class ContentLoader {
             }
 
             // sanitize title
-            $title = htmlspecialchars_decode($item->getTitle());
-            $title = htmLawed($title, array("deny_attribute" => "*", "elements" => "-*"));
+            $title = $this->sanitizeContent($item->getTitle());
             if(strlen(trim($title))==0)
                 $title = "[" . \F3::get('lang_no_title') . "]";
 
@@ -194,7 +193,7 @@ class ContentLoader {
             htmlspecialchars_decode($content),
             array(
                 "safe"           => 1,
-                "deny_attribute" => '* -alt -title -src -href',
+                "deny_attribute" => '* -alt -title -src -href -target',
                 "keep_bad"       => 0,
                 "comment"        => 1,
                 "cdata"          => 1,
@@ -214,7 +213,7 @@ class ContentLoader {
     protected function fetchThumbnail($thumbnail, $newItem) {
         if (strlen(trim($thumbnail)) > 0) {
             $imageHelper = new \helpers\Image();
-            $thumbnailAsPng = $imageHelper->loadImage($thumbnail, 150, 150);
+            $thumbnailAsPng = $imageHelper->loadImage($thumbnail, 500, 500);
             if ($thumbnailAsPng !== false) {
                 file_put_contents(
                     'data/thumbnails/' . md5($thumbnail) . '.png',
