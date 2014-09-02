@@ -630,6 +630,10 @@ input {
             background-image:url(images/delicious.png);
         }
 
+        .entry-sharewallabag {
+            background-image:url(images/wallabag.png);
+        }
+
         .entry-smartphone-share li.entry-shareemail,
         .entry-toolbar li.entry-shareemail {
             background-image:url(images/mail.png);
