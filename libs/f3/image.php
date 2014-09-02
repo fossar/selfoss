@@ -1,7 +1,7 @@
 <?php
 
 /*
-	Copyright (c) 2009-2013 F3::Factory/Bong Cosca, All rights reserved.
+	Copyright (c) 2009-2014 F3::Factory/Bong Cosca, All rights reserved.
 
 	This file is part of the Fat-Free Framework (http://fatfree.sf.net).
 
@@ -33,7 +33,7 @@ class Image {
 		POS_Bottom=32;
 	//@}
 
-	private
+	protected
 		//! Source filename
 		$file,
 		//! Image resource
@@ -270,11 +270,16 @@ class Image {
 	*	Apply an image overlay
 	*	@return object
 	*	@param $img object
-	*	@param $align int
+	*	@param $align int|array
+	*	@param $alpha int
 	**/
-	function overlay(Image $img,$align=NULL) {
+	function overlay(Image $img,$align=NULL,$alpha=100) {
 		if (is_null($align))
 			$align=self::POS_Right|self::POS_Bottom;
+		if (is_array($align)) {
+			list($posx,$posy)=$align;
+			$align = 0;
+		}
 		$ovr=imagecreatefromstring($img->dump());
 		imagesavealpha($ovr,TRUE);
 		$imgw=$this->width();
@@ -297,7 +302,15 @@ class Image {
 			$posx=0;
 		if (empty($posy))
 			$posy=0;
-		imagecopy($this->data,$ovr,$posx,$posy,0,0,$ovrw,$ovrh);
+		if ($alpha==100)
+			imagecopy($this->data,$ovr,$posx,$posy,0,0,$ovrw,$ovrh);
+		else {
+			$cut=imagecreatetruecolor($ovrw,$ovrh);
+			imagecopy($cut,$this->data,0,0,$posx,$posy,$ovrw,$ovrh);
+			imagecopy($cut,$ovr,0,0,0,0,$ovrw,$ovrh);
+			imagecopymerge($this->data,
+				$cut,$posx,$posy,0,0,$ovrw,$ovrh,$alpha);
+		}
 		return $this->save();
 	}
 
@@ -400,7 +413,8 @@ class Image {
 					$tmp[$i]=imagecreatetruecolor(
 						($w=imagesx($char))/2,($h=imagesy($char))/2);
 					imagefill($tmp[$i],0,0,IMG_COLOR_TRANSPARENT);
-					imagecopyresampled($tmp[$i],$char,0,0,0,0,$w/2,$h/2,$w,$h);
+					imagecopyresampled($tmp[$i],
+						$char,0,0,0,0,$w/2,$h/2,$w,$h);
 					imagedestroy($char);
 					$width+=$i+1<$len?$block/2:$w/2;
 					$height=max($height,$h/2);
@@ -546,7 +560,7 @@ class Image {
 			$this->file=$file;
 			foreach ($fw->split($path?:$fw->get('UI').';./') as $dir)
 				if (is_file($dir.$file))
-					$this->load($fw->read($dir.$file));
+					return $this->load($fw->read($dir.$file));
 		}
 	}
 

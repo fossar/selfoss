@@ -1,7 +1,7 @@
 <?php
 
 /*
-	Copyright (c) 2009-2013 F3::Factory/Bong Cosca, All rights reserved.
+	Copyright (c) 2009-2014 F3::Factory/Bong Cosca, All rights reserved.
 
 	This file is part of the Fat-Free Framework (http://fatfree.sf.net).
 
@@ -27,6 +27,14 @@ class Mapper extends \DB\Cursor {
 		$document=array(),
 		//! Mongo cursor
 		$cursor;
+
+	/**
+	*	Return database type
+	*	@return string
+	**/
+	function dbtype() {
+		return 'Mongo';
+	}
 
 	/**
 	*	Return TRUE if field is defined
@@ -220,11 +228,15 @@ class Mapper extends \DB\Cursor {
 	function insert() {
 		if (isset($this->document['_id']))
 			return $this->update();
+		if (isset($this->trigger['beforeinsert']))
+			\Base::instance()->call($this->trigger['beforeinsert'],
+				array($this,array('_id'=>$this->document['_id'])));
 		$this->collection->insert($this->document);
 		$pkey=array('_id'=>$this->document['_id']);
-		if (isset($this->trigger['insert']))
-			\Base::instance()->call($this->trigger['insert'],
+		if (isset($this->trigger['afterinsert']))
+			\Base::instance()->call($this->trigger['afterinsert'],
 				array($this,$pkey));
+		$this->load($pkey);
 		return $this->document;
 	}
 
@@ -233,13 +245,14 @@ class Mapper extends \DB\Cursor {
 	*	@return array
 	**/
 	function update() {
+		$pkey=array('_id'=>$this->document['_id']);
+		if (isset($this->trigger['beforeupdate']))
+			\Base::instance()->call($this->trigger['beforeupdate'],
+				array($this,$pkey));
 		$this->collection->update(
-			$pkey=array('_id'=>$this->document['_id']),
-			$this->document,
-			array('upsert'=>TRUE)
-		);
-		if (isset($this->trigger['update']))
-			\Base::instance()->call($this->trigger['update'],
+			$pkey,$this->document,array('upsert'=>TRUE));
+		if (isset($this->trigger['afterupdate']))
+			\Base::instance()->call($this->trigger['afterupdate'],
 				array($this,$pkey));
 		return $this->document;
 	}
@@ -253,12 +266,15 @@ class Mapper extends \DB\Cursor {
 		if ($filter)
 			return $this->collection->remove($filter);
 		$pkey=array('_id'=>$this->document['_id']);
+		if (isset($this->trigger['beforeerase']))
+			\Base::instance()->call($this->trigger['beforeerase'],
+				array($this,$pkey));
 		$result=$this->collection->
 			remove(array('_id'=>$this->document['_id']));
 		parent::erase();
 		$this->skip(0);
-		if (isset($this->trigger['erase']))
-			\Base::instance()->call($this->trigger['erase'],
+		if (isset($this->trigger['aftererase']))
+			\Base::instance()->call($this->trigger['aftererase'],
 				array($this,$pkey));
 		return $result;
 	}
@@ -281,7 +297,7 @@ class Mapper extends \DB\Cursor {
 	function copyfrom($key,$func=NULL) {
 		$var=\Base::instance()->get($key);
 		if ($func)
-			$var=$func($var);
+			$var=call_user_func($func,$var);
 		foreach ($var as $key=>$val)
 			$this->document[$key]=$val;
 	}
@@ -321,7 +337,7 @@ class Mapper extends \DB\Cursor {
 	**/
 	function __construct(\DB\Mongo $db,$collection) {
 		$this->db=$db;
-		$this->collection=$db->{$collection};
+		$this->collection=$db->selectcollection($collection);
 		$this->reset();
 	}
 
