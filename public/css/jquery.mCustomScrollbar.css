@@ -1,6 +1,5 @@
 /*
 == malihu jquery custom scrollbar plugin ==
-Version: 3.0.0 
 Plugin URI: http://manos.malihu.gr/jquery-custom-content-scroller
 */
 
@@ -52,7 +51,7 @@ y-axis
 ------------------------------------------------------------------------------------------------------------------------
 */
 
-	.mCSB_inside > .mCSB_container{ margin-right: 30px; }
+	.mCSB_inside > .mCSB_container{ margin-right: 0px; }
 
 	.mCSB_container.mCS_no_scrollbar_y.mCS_y_hidden{ margin-right: 0; } /* non-visible scrollbar */
 	
