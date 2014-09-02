@@ -1,0 +1,14 @@
+{
+  "name": "selfoss",
+  "description": "selfoss",
+  "ver": "2.12-SNAPSHOT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SSilence/selfoss.git"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "grunt-contrib-compress": "^0.10.0",
+    "grunt-text-replace": "~0.3"
+  }
+}

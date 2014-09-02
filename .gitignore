@@ -12,3 +12,4 @@ user.css
 /_docs/website/forum
 config.ini
 .project
+node_modules
