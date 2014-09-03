@@ -35,8 +35,8 @@
     <form action="<?PHP echo $this->base; ?>?login=1" method="post">
     <ul id="login">
         <li><h1>selfoss login</h1></li>
-        <li><label><?PHP echo \F3::get('lang_login_username'); ?>:</label> <input type="text" name="username" id="username" /></li>
-        <li><label><?PHP echo \F3::get('lang_login_password'); ?>:</label> <input type="password" name="password" /></li>
+         <li><label><?PHP echo trim(\F3::get('lang_login_username')); ?>:</label> <input type="text" name="username" id="username" /></li>
+         <li><label><?PHP echo trim(\F3::get('lang_login_password')); ?>:</label> <input type="password" name="password" /></li>
         <?PHP if(isset($this->error)) : ?>
         <li class="error"><?PHP echo $this->error; ?></li>
         <?PHP endif; ?>
