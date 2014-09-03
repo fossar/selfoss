@@ -58,6 +58,7 @@ Version 2.12-SNAPSHOT
 * show authors of feeds
 * wallbag support added
 * update frameworks
+* fix utf8 feed title bug
 
 
 CREDITS
@@ -73,7 +74,7 @@ Special thanks to the great programmers of this libraries which will be used in 
 * jQuery UI: http://jqueryui.com/
 * WideImage: http://wideimage.sourceforge.net/
 * htmLawed: http://www.bioinformatics.org/phplabware/internal_utilities/htmLawed/
-* PHP Universal Feed Generator: http://www.ajaxray.com/blog/2008/03/08/php-universal-feed-generator-supports-rss-10-rss-20-and-atom/
+* PHP Universal Feed Generator: https://github.com/ajaxray/FeedWriter
 * twitteroauth: https://github.com/abraham/twitteroauth
 * floIcon: http://www.phpclasses.org/package/3906-PHP-Read-and-write-images-from-ICO-files.html
 * jQuery hotkeys: https://github.com/tzuryby/jquery.hotkeys
