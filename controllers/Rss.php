@@ -18,7 +18,7 @@ class Rss extends BaseController {
      * @return void
      */
     public function rss() {
-        $feedWriter = new \FeedWriter(\RSS2);
+        $feedWriter = new \RSS2FeedWriter();
         $feedWriter->setTitle(\F3::get('rss_title'));
         
         $feedWriter->setLink($this->view->base);
@@ -85,7 +85,7 @@ class Rss extends BaseController {
         $feedWriter->setChannelElement('updated', $newestEntryDate);
 
         
-        $feedWriter->genarateFeed();
+        $feedWriter->generateFeed();
     }
 
     private function UTF8entities($content="") { 
