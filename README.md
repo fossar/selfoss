@@ -57,8 +57,11 @@ Version 2.12-SNAPSHOT
 * improved twitter integration
 * show authors of feeds
 * wallbag support added
-* update frameworks
+* update third party libraries
+* allow ajax based update of feeds
 * fix utf8 feed title bug
+* fix #405: extra spaces on login screen
+* fix #518: sorting of sources
 
 
 CREDITS
