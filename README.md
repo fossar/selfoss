@@ -48,6 +48,12 @@ OPML Import
 Visit the page http://yourselfossurl.com/opml for importing your OPML File. If you are a user of the google reader then use https://www.google.com/takeout/ to get all your feeds in one opml file.
 
 
+APPS
+----
+
+Third party apps are available for iOS and Android: [Cataracta](https://itunes.apple.com/us/app/cataracta/id817392033?mt=8&ign-mpt=uo%3D4) and [Selfoss](https://play.google.com/store/apps/details?id=fr.ydelouis.selfoss).
+
+
 CHANGELOG
 ---------
 
