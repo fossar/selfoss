@@ -4,7 +4,7 @@ selfoss
 Copyright (c) 2013 Tobias Zeising, tobias.zeising@aditu.de  
 http://selfoss.aditu.de  
 Licensed under the GPLv3 license  
-Version 2.12-SNAPSHOT
+Version 2.12
 
 
 INSTALLATION
@@ -53,21 +53,6 @@ APPS
 
 Third party apps are available for iOS and Android: [Cataracta](https://itunes.apple.com/us/app/cataracta/id817392033?mt=8&ign-mpt=uo%3D4) and [Selfoss](https://play.google.com/store/apps/details?id=fr.ydelouis.selfoss).
 
-
-CHANGELOG
----------
-
-Version 2.12-SNAPSHOT
-* fix prefix bug on mysql
-* integrate fancybox for images
-* improved twitter integration
-* show authors of feeds
-* wallbag support added
-* update third party libraries
-* allow ajax based update of feeds
-* fix utf8 feed title bug
-* fix #405: extra spaces on login screen
-* fix #518: sorting of sources
 
 
 CREDITS

@@ -1,5 +1,3 @@
-#AddHandler php53-cgi .php
-
 # Enable rewrite engine and route requests to framework
 RewriteEngine On
 #RewriteBase /selfoss
