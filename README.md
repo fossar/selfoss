@@ -4,7 +4,7 @@ selfoss
 Copyright (c) 2013 Tobias Zeising, tobias.zeising@aditu.de  
 http://selfoss.aditu.de  
 Licensed under the GPLv3 license  
-Version 2.12
+Version 2.13-SNAPSHOT
 
 
 INSTALLATION
@@ -52,6 +52,13 @@ APPS
 ----
 
 Third party apps are available for iOS and Android: [Cataracta](https://itunes.apple.com/us/app/cataracta/id817392033?mt=8&ign-mpt=uo%3D4) and [Selfoss](https://play.google.com/store/apps/details?id=fr.ydelouis.selfoss).
+
+
+
+CHANGELOG
+---------
+
+* show number of unread items in the document title
 
 
 

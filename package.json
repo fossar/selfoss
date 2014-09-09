@@ -1,7 +1,7 @@
 {
   "name": "selfoss",
   "description": "selfoss",
-  "ver": "2.12",
+  "ver": "2.13-SNAPSHOT",
   "repository": {
     "type": "git",
     "url": "https://github.com/SSilence/selfoss.git"
