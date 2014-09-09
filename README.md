@@ -59,6 +59,7 @@ CHANGELOG
 ---------
 
 * show number of unread items in the document title
+* add titles to buttons
 
 
 
