@@ -100,18 +100,18 @@
         </div>
         
         <?PHP if($this->loggedin===true && \F3::get('auth')->enabled()===false) : ?>
-        <div id="nav-refresh" class="nologin"></div>
-        <div id="nav-settings" class="nologin"></div>
+        <div id="nav-refresh" title="<?PHP echo trim(\F3::get('lang_refreshbutton')); ?>" class="nologin"></div>
+        <div id="nav-settings" title="<?PHP echo trim(\F3::get('lang_settingsbutton')); ?>" class="nologin"></div>
         <?PHP endif; ?>
         
         <?PHP if($this->loggedin===true && \F3::get('auth')->enabled()===true) : ?>
-        <div id="nav-refresh"></div>
-        <div id="nav-settings"></div>
-        <div id="nav-logout"></div>
+        <div id="nav-refresh" title="<?PHP echo trim(\F3::get('lang_refreshbutton')); ?>"></div>
+        <div id="nav-settings" title="<?PHP echo trim(\F3::get('lang_settingsbutton')); ?>"></div>
+        <div id="nav-logout" title="<?PHP echo trim(\F3::get('lang_logoutbutton')); ?>"></div>
         <?PHP endif; ?>
         
         <?PHP if($this->loggedin===false) : ?>
-        <div id="nav-login"></div>
+        <div id="nav-login" title="<?PHP echo trim(\F3::get('lang_loginbutton')); ?>"></div>
         <?PHP endif; ?>
         
         <a id="nav-copyright" href="http://selfoss.aditu.de" target="_blank">selfoss <?PHP echo \F3::get('version'); ?></a>
