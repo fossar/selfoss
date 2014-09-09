@@ -55,8 +55,8 @@ Third party apps are available for iOS and Android: [Cataracta](https://itunes.a
 
 
 
-CHANGELOG
----------
+CHANGELOG NEWEST SNAPSHOT
+-------------------------
 
 * show number of unread items in the document title
 * add titles to buttons
