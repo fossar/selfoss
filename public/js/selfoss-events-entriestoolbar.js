@@ -204,6 +204,7 @@ selfoss.events.entriesToolbar = function(parent) {
                         tagsCountEl.html('');
                     
                 } );
+                selfoss.setUnreadCount(unreadstats);
             };
             updateStats(unread);
             
