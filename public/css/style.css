@@ -1210,6 +1210,7 @@ body.publicmode.notloggedin .entry-unread {
             border-top:1px solid #ccc;
         }
         
+        .entry-author,
         .entry-source,
         .entry-separator,
         .entry-datetime {
