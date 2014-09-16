@@ -119,9 +119,8 @@ selfoss.shortcuts = {
         
         // 'r': Reload the current view
         $(document).bind('keydown', 'r', function(e) {
-            selfoss.reloadList();
             e.preventDefault();
-            return false;
+            $('#nav-filter-unread').click();
         });
         
         // 'Ctrl+m': mark all as read
