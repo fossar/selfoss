@@ -54,15 +54,6 @@ APPS
 Third party apps are available for iOS and Android: [Cataracta](https://itunes.apple.com/us/app/cataracta/id817392033?mt=8&ign-mpt=uo%3D4) and [Selfoss](https://play.google.com/store/apps/details?id=fr.ydelouis.selfoss).
 
 
-
-CHANGELOG NEWEST SNAPSHOT
--------------------------
-
-* show number of unread items in the document title
-* add titles to buttons
-
-
-
 CREDITS
 -------
 
