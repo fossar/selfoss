@@ -112,7 +112,12 @@ class Tags extends Database {
      * @return boolean true if color is used by an tag
      */
     public function hasTag($tag) {
-        $res = \F3::get('db')->exec('SELECT COUNT(*) AS amount FROM '.\F3::get('db_prefix').'tags WHERE tag=:tag',
+        if ( \F3::get( 'db_type' ) == 'mysql' ) {
+            $where = 'WHERE tag = _utf8 :tag COLLATE utf8_bin';
+        } else {
+            $where = 'WHERE tag=:tag';
+        }
+        $res = \F3::get('db')->exec('SELECT COUNT(*) AS amount FROM '.\F3::get('db_prefix').'tags '.$where,
                     array(':tag' => $tag));
         return $res[0]['amount']>0;
     }
