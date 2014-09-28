@@ -116,13 +116,34 @@ class View {
     
     
     /**
+     * returns global JavaScript file name (all.js)
+     *
+     * @return string all.js file name
+     */
+    public static function getGlobalJsFileName() {
+        return 'all-v' . \F3::get('version') . '.js';
+    }
+    
+    
+    /**
+     * returns global CSS file name (all.css)
+     *
+     * @return string all.css file name
+     */
+    public static function getGlobalCssFileName() {
+        return 'all-v' . \F3::get('version') . '.css';
+    }
+    
+    
+    
+    /**
      * generate minified css and js
      *
      * @return void
      */
     public function genMinifiedJsAndCss() {
         // minify js
-        $targetJs = \F3::get('BASEDIR').'/public/all.js';
+        $targetJs = \F3::get('BASEDIR').'/public/'.self::getGlobalJsFileName();
         if(!file_exists($targetJs) || \F3::get('DEBUG')!=0) {
             $js = "";
             foreach(\F3::get('js') as $file)
@@ -131,7 +152,7 @@ class View {
         }
     
         // minify css
-        $targetCss = \F3::get('BASEDIR').'/public/all.css';
+        $targetCss = \F3::get('BASEDIR').'/public/'.self::getGlobalCssFileName();
         if(!file_exists($targetCss) || \F3::get('DEBUG')!=0) {
             $css = "";
             foreach(\F3::get('css') as $file)

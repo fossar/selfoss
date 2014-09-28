@@ -20,7 +20,7 @@
         <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
         <!-- all css definitions -->
-        <link rel="stylesheet" href="all.css">
+        <link rel="stylesheet" href="<?PHP echo \helpers\View::getGlobalCssFileName(); ?>">
     </head>
     <body id="opmlbody">
         <form method="post" enctype="multipart/form-data">
@@ -40,7 +40,7 @@
             <li class="button"><label>&nbsp;</label><input type="submit" value="Deliver my OPML!" /></li>
             </ul>
         </form>
-        <script src="all.js"></script>
+        <script src="<?PHP echo \helpers\View::getGlobalJsFileName(); ?>"></script>
         <script type="text/javascript">
             $('form').submit(function() {
                 $('input[type=submit]').prop('disabled', true).val('Importing...');
