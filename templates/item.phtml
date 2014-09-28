@@ -28,23 +28,23 @@
 <div id="entry<?PHP echo $this->item['id']; ?>"
      class="entry
             <?PHP echo $this->item['unread']==1 ? 'unread' : ''; ?>">
-    
+
     <!-- icon -->
     <a href="<?PHP echo \helpers\Anonymizer::anonymize($this->item['link']); ?>" class="entry-icon">
         <?PHP if(strlen(trim($this->item['icon']))>0 && $this->item['icon']!="0") : ?>
         <img src="<?PHP echo 'favicons/'.$this->item['icon']; ?>" alt="<?PHP echo $sourcetitle ?>" />
         <?PHP endif; ?>
     </a>
-    
+
     <!-- title -->
     <h2 class="entry-title"><?PHP echo $title; ?></h2>
-    
+
     <span class="entry-tags">
         <?PHP foreach($this->item['tags'] as $tag => $color) : ?>
             <span class="entry-tags-tag" style="color:<?PHP echo $color['foreColor']; ?>;background-color:<?PHP echo $color['backColor']; ?>"><?PHP echo $tag; ?></span>
         <?PHP endforeach; ?>
     </span>
-    
+
     <!-- source -->
     <a href="<?PHP echo \helpers\Anonymizer::anonymize($this->item['link']); ?>" class="entry-source entry-source<?PHP echo $this->item['source']; ?>" target="_blank"><?PHP echo $sourcetitle ?></a>
     <a href="<?PHP echo $this->item['link']; ?>" class="entry-link"></a>
@@ -61,7 +61,7 @@
     <span class="entry-datetime">
         <?PHP echo $date; ?>
     </span>
-    
+
     <!-- thumbnail -->
     <?PHP if(isset($this->item['thumbnail']) && strlen(trim($this->item['thumbnail']))>0) : ?>
     <div class="entry-thumbnail">
@@ -70,13 +70,13 @@
         </a>
     </div>
     <?PHP endif; ?>
-    
+
     <!-- content -->
     <div class="entry-content <?PHP if(strlen(strip_tags($content))<500) : ?>entry-content-short<?PHP endif; ?>">
         <?PHP echo $content; ?>
-        
+
         <ul class="entry-smartphone-share">
-            <li class="entry-newwindow"><?PHP echo \F3::get('lang_open_window')?></li>
+            <li class="entry-newwindow"><a href='<?PHP echo \helpers\Anonymizer::anonymize($this->item['link']); ?>' target='_blank'><?PHP echo \F3::get('lang_open_window')?></a></li>
              <?PHP if (strlen($sharecfg) > 0) {
                 foreach (str_split($sharecfg) as $s) {
                     $name = $share[$s];
@@ -87,12 +87,12 @@
              } ?>
         </ul>
     </div>
-    
+
     <!-- toolbar -->
     <ul class="entry-toolbar">
         <li class="entry-starr <?PHP echo $this->item['starred']==1 ? 'active' : ''; ?>"><?PHP echo $this->item['starred']==1 ? \F3::get('lang_unstar') : \F3::get('lang_star'); ?></li>
         <li class="entry-unread <?PHP echo $this->item['unread']==1 ? 'active' : ''; ?>"><?PHP echo $this->item['unread']==1 ? \F3::get('lang_mark') : \F3::get('lang_unmark'); ?></li>
-        <li class="entry-newwindow"><?PHP echo \F3::get('lang_open_window')?></li>
+        <li class="entry-newwindow"><a href='<?PHP echo \helpers\Anonymizer::anonymize($this->item['link']); ?>' target='_blank'><?PHP echo \F3::get('lang_open_window')?></a></li>
         <li class="entry-loadimages"><?PHP echo \F3::get('lang_load_img')?> </li>
         <?PHP if (strlen($sharecfg) > 0) {
             foreach (str_split($sharecfg) as $s) {
