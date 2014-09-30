@@ -30,8 +30,8 @@ selfoss.events.entriesToolbar = function(parent) {
     parent.find('.entry-throw').unbind('click').click(function(e) {
         var $selected = $('.entry.selected');
         $selected.filter('.unread').find('.entry-unread').click();
-        $selected.find('.entry-close').click();
-        $selected.next('.entry').click();
+        $selected.find('.entry-close, .entry-title').click();
+        $selected.next('.entry').find('.entry-title').click();
         return false;
     });
     
