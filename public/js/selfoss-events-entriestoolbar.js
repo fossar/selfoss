@@ -25,6 +25,13 @@ selfoss.events.entriesToolbar = function(parent) {
         e.preventDefault();
         return false;
     });
+
+    // throw item
+    parent.find('.entry-throw').unbind('click').click(function(e) {
+        $('.entry.selected.unread .entry-unread').click();
+        selfoss.shortcuts.nextprev('next', true);
+        return false;
+    });
     
     // share with google plus
     parent.find('.entry-sharegoogle').unbind('click').click(function(e) {
