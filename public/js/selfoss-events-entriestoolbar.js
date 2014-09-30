@@ -28,10 +28,11 @@ selfoss.events.entriesToolbar = function(parent) {
 
     // throw item
     parent.find('.entry-throw').unbind('click').click(function(e) {
-        var $selected = $('.entry.selected');
-        $selected.filter('.unread').find('.entry-unread').click();
-        $selected.find('.entry-close, .entry-title').click();
-        $selected.next('.entry').find('.entry-title').click();
+        var $selected = $('.entry.selected, .entry.fullscreen:visible'),
+            id = $selected.attr('id').replace('entrr', 'entry');
+        $selected.find('.entry-unread.active').click();
+        $selected.find('.entry-title').click();
+        $("#" + id).next('.entry').find('.entry-title').click();
         return false;
     });
     
