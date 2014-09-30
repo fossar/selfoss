@@ -28,8 +28,10 @@ selfoss.events.entriesToolbar = function(parent) {
 
     // throw item
     parent.find('.entry-throw').unbind('click').click(function(e) {
-        $('.entry.selected.unread .entry-unread').click();
-        selfoss.shortcuts.nextprev('next', true);
+        var $selected = $('.entry.selected');
+        $selected.filter('.unread').find('.entry-unread').click();
+        $selected.find('.entry-close').click();
+        $selected.next('.entry').click();
         return false;
     });
     
