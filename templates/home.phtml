@@ -16,13 +16,10 @@
     <!--  Add support for fullscreen Webapp on iPhone 5 -->
     <meta name="viewport" content="initial-scale=1, user-scalable=no, maximum-scale=1" media="(device-height: 568px)" />
 
+    <?PHP if(\F3::get('support_mobile_web_app')==1) : ?>
     <!-- app 'behaviour' when adding link to iDevice springboard -->
-    <?PHP if(\F3::get('ios_web_app')==1) : ?>
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <?PHP endif; ?>
-
     <!-- app 'behaviour' when adding link to Android Home  -->
-    <?PHP if(\F3::get('android_web_app')==1) : ?>
     <meta name="mobile-web-app-capable" content="yes" />
     <?PHP endif; ?>
 
