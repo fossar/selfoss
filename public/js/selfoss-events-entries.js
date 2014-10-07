@@ -95,6 +95,11 @@ selfoss.events.entries = function(e) {
 
                 // setup fancyBox image viewer
                 selfoss.setupFancyBox(content, parent.attr('id').substr(5));
+
+                // turn of column view if entry is too long
+                if(content.height() > $(window).height() ) {
+                    content.addClass('entry-content-nocolumns');
+                }
             }
             
             // load images not on mobile devices
