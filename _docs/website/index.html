@@ -109,7 +109,8 @@
                 <p>selfoss is a lightweight php based application. Just follow the simple installation instructions:</p>
                 
                 <ol>
-                    <li>Upload all files of this folder (IMPORTANT: also upload the invisible .htaccess files)</li>
+                    <li>Upload all files of this folder (IMPORTANT: also upload the invisible .htaccess.dist file)</li>
+                    <li>Copy .htaccess.dist to .htaccess and eventually edit the RewriteBase line to suit your installation.</li>
                     <li>Make the directories data/cache, data/favicons, data/logs, data/thumbnails, data/sqlite and public/ writeable</li>
                     <li>Insert database access data in config.ini (see below &mdash; you have not to change anything if you would like to use sqlite)</li>
                     <li>You don't have to install the database, it will be created automatically</li>
