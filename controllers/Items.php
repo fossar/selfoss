@@ -11,7 +11,7 @@ namespace controllers;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class Items extends BaseController {
-    
+
     /**
      * mark items as read. Allows one id or an array of ids
      * json
@@ -24,34 +24,23 @@ class Items extends BaseController {
         else if(isset($_POST['ids'])) {
             $lastid = $_POST['ids'];
         }
-        
+
         $itemDao = new \daos\Items();
-        
+
         // validate id or ids
         if (!$itemDao->isValid('id', $lastid))
             $this->view->error('invalid id');
-        
+
         $itemDao->mark($lastid);
-        
+
         $return = array(
             'success' => true
         );
-        
-        // only for selfoss ui on mark all as read (update stats in navigation)
-        if(isset($_POST['ajax'])) {
-            // get new tag list with updated count values
-            $tagController = new \controllers\Tags();
-            $return['tags'] = $tagController->tagsListAsString();
-            
-            // get new sources list
-            $sourcesController = new \controllers\Sources();
-            $return['sources'] = $sourcesController->sourcesListAsString();
-        }
-        
+
         $this->view->jsonSuccess($return);
     }
-    
-    
+
+
     /**
      * mark item as unread
      * json
@@ -62,18 +51,18 @@ class Items extends BaseController {
         $lastid = \F3::get('PARAMS["item"]');
 
         $itemDao = new \daos\Items();
-        
+
         if (!$itemDao->isValid('id', $lastid))
             $this->view->error('invalid id');
-        
+
         $itemDao->unmark($lastid);
-        
+
         $this->view->jsonSuccess(array(
             'success' => true
         ));
     }
-    
-    
+
+
     /**
      * starr item
      * json
@@ -84,7 +73,7 @@ class Items extends BaseController {
         $id = \F3::get('PARAMS["item"]');
 
         $itemDao = new \daos\Items();
-        
+
         if (!$itemDao->isValid('id', $id))
             $this->view->error('invalid id');
 
@@ -93,8 +82,8 @@ class Items extends BaseController {
             'success' => true
         ));
     }
-    
-    
+
+
     /**
      * unstarr item
      * json
@@ -105,7 +94,7 @@ class Items extends BaseController {
         $id = \F3::get('PARAMS["item"]');
 
         $itemDao = new \daos\Items();
-        
+
         if (!$itemDao->isValid('id', $id))
             $this->view->error('invalid id');
 
@@ -114,8 +103,8 @@ class Items extends BaseController {
             'success' => true
         ));
     }
-    
-    
+
+
     /**
      * returns items as json string
      * json
@@ -127,15 +116,15 @@ class Items extends BaseController {
         $options = array();
         if(count($_GET)>0)
             $options = $_GET;
-        
+
         // get items
         $itemDao = new \daos\Items();
         $items = $itemDao->get($options);
-        
+
         $this->view->jsonSuccess($items);
     }
-    
-    
+
+
     /**
      * returns current basic stats
      * json
