@@ -26,10 +26,16 @@ selfoss.events.entriesToolbar = function(parent) {
         return false;
     });
 
-    // throw item
-    parent.find('.entry-throw').unbind('click').click(function(e) {
-        var $selected = $('.entry.selected, .entry.fullscreen:visible'),
-            id = $selected.attr('id').replace('entrr', 'entry');
+    // next item on smartphone
+    parent.find('.entry-toolbar .entry-next').unbind('click').click(function(e) {
+        selfoss.shortcuts.nextprev('next', true);
+        return false;
+    });
+    
+    // next item on tablet
+    parent.find('.entry-smartphone-share .entry-next').unbind('click').click(function(e) {
+        var $selected = $('.entry.selected, .entry.fullscreen:visible');
+        var id = $selected.attr('id').replace('entrr', 'entry');
         $selected.find('.entry-unread.active').click();
         $selected.find('.entry-title').click();
         $("#" + id).next('.entry').find('.entry-title').click();

@@ -609,8 +609,9 @@ input {
             background-image:url(images/open.png);
         }
 
-        .entry-throw {
+        .entry-next {
             background-image:url(images/arrow-right.png);
+            display:none;
         }
         
         .entry-toolbar .entry-sharegoogle {
@@ -1058,7 +1059,7 @@ body.publicmode.notloggedin .entry-unread {
             display:block;
         }
 
-        .entry-toolbar .entry-throw {
+        .entry-toolbar .entry-next {
             display:block;
         }
    
@@ -1291,12 +1292,12 @@ body.publicmode.notloggedin .entry-unread {
     .entry-toolbar .entry-newwindow {
         display:none;
     }
-
-    .entry-toolbar .entry-throw {
-        display:none;
-    }
  
     .entry-toolbar .entry-share {
+        display:none;
+    }
+    
+    .entry-toolbar .entry-next {
         display:none;
     }
     
@@ -1312,6 +1313,7 @@ body.publicmode.notloggedin .entry-unread {
             margin-right:10px;
             margin-bottom:5px;
             list-style:none;
+            display:block;
         }
         
     .source-opml,
