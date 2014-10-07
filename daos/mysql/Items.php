@@ -150,6 +150,9 @@ class Items extends Database {
      */
     public function findAll($itemsInFeed) {
         $itemsFound = array();
+        if( count($itemsInFeed) < 1 )
+            return $itemsFound;
+
         array_walk($itemsInFeed, function( &$value ) { $value = \F3::get('db')->quote($value); });
         $query = 'SELECT uid AS uid FROM '.\F3::get('db_prefix').'items WHERE uid IN ('. implode(',', $itemsInFeed) .')';
         $res = \F3::get('db')->query($query);

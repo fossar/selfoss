@@ -34,7 +34,7 @@ UPDATE
 2. (IMPORTANT: don't delete the "data" folder) delete all old files and folders excluding the folder "data"
 3. upload all new files and folders excluding the data folder (IMPORTANT: also upload the invisible .htaccess files)
 4. Rename your folder /data/icons into /data/favicons
-5. Delete the files /public/all.css and /public/all.js
+5. Delete the files /public/all-v*.css and /public/all-v*.js
 6. Clean your browser cache
 7. insert your current database connection and your individual configuration in config.ini. Important: we change the config.ini and add new options in newer versions. You have to update the config.ini too.
 8. The database will be updated automatically (ensure that your database has enought rights for creating triggers)

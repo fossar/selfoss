@@ -26,7 +26,7 @@
     <?PHP if(\F3::get('use_system_font')!=true) : ?>
         <link rel="stylesheet" href="css/fonts.css" />
     <?PHP endif; ?>
-    <link rel="stylesheet" href="all.css" />
+    <link rel="stylesheet" href="<?PHP echo \helpers\View::getGlobalCssFileName(); ?>" />
 
 </head>
 <body>
@@ -57,6 +57,6 @@
     </form>
     <?PHP endif; ?>
     
-    <script src="all.js"></script>
+    <script src="<?PHP echo \helpers\View::getGlobalJsFileName(); ?>"></script>
 </body>
 </html>
