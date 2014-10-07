@@ -608,6 +608,10 @@ input {
         .entry-newwindow {
             background-image:url(images/open.png);
         }
+
+        .entry-throw {
+            background-image:url(images/arrow-right.png);
+        }
         
         .entry-toolbar .entry-sharegoogle {
             border-left:1px solid #CCC;
@@ -1053,6 +1057,10 @@ body.publicmode.notloggedin .entry-unread {
         .entry-toolbar .entry-loadimages {
             display:block;
         }
+
+        .entry-toolbar .entry-throw {
+            display:block;
+        }
    
     .entry-content {
         display:none;
@@ -1281,6 +1289,10 @@ body.publicmode.notloggedin .entry-unread {
             }
    
     .entry-toolbar .entry-newwindow {
+        display:none;
+    }
+
+    .entry-toolbar .entry-throw {
         display:none;
     }
  

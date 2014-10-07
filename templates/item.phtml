@@ -85,6 +85,7 @@
                     }
                 }
              } ?>
+            <li class="entry-throw"><?PHP echo \F3::get('lang_throw')?></li>
         </ul>
     </div>
     
@@ -94,6 +95,7 @@
         <li class="entry-unread <?PHP echo $this->item['unread']==1 ? 'active' : ''; ?>"><?PHP echo $this->item['unread']==1 ? \F3::get('lang_mark') : \F3::get('lang_unmark'); ?></li>
         <li class="entry-newwindow"><?PHP echo \F3::get('lang_open_window')?></li>
         <li class="entry-loadimages"><?PHP echo \F3::get('lang_load_img')?> </li>
+        <li class="entry-throw"><?PHP echo \F3::get('lang_throw')?></li>
         <?PHP if (strlen($sharecfg) > 0) {
             foreach (str_split($sharecfg) as $s) {
                 $name = $share[$s];
