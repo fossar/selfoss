@@ -113,7 +113,7 @@ class fulltextrss extends feed {
         }
 
         \F3::get('logger')->log($this->tag . ' - Extracting content', \INFO);
-        $content = $this->extractContent($content, parent::getLink());
+        $content = @$this->extractContent($content, parent::getLink());
         if ($content===false) {
             \F3::get('logger')->log($this->tag . ' - Failed extracting content', \ERROR);
             return parent::getContent() .
