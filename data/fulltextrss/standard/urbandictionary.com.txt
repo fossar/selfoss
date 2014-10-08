@@ -1,0 +1,3 @@
+title: //title
+body: //table[@id='entries']
+test_url: http://www.urbandictionary.com/define.php?term=Grown-Ass

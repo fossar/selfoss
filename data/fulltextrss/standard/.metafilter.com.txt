@@ -1,0 +1,9 @@
+body: //div[contains(@class, 'copy') or contains(@class, 'comments')]
+strip_id_or_class: related
+strip_id_or_class: whitesmallcopy
+strip: //a[. = 'Subscribe']
+strip: //h1/span[@class = 'smallcopy']
+strip: //a[@class = 'skip']
+strip: //div[@id = 'logo']
+strip: //div[contains(@class, 'comments') and contains(., 'You are not currently logged in')]
+test_url: http://ask.metafilter.com/159539/Connect-ZERO-I-feel-like-an-idiot

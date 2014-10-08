@@ -1,0 +1,21 @@
+title: //h1[@id='firstHeading']
+body: //div[@id = 'bodyContent']
+strip_id_or_class: editsection
+#strip_id_or_class: toc
+strip_id_or_class: vertical-navbox
+strip: //*[@id='toc']
+strip: //div[@id='catlinks']
+strip: //div[@id='jump-to-nav']
+strip: //div[@class='thumbcaption']//div[@class='magnify']
+strip: //table[@class='navbox']
+#strip: //table[contains(@class, 'infobox')]
+strip: //div[@class='dablink']
+strip: //div[@id='contentSub']
+strip: //table[contains(@class, 'metadata')]
+strip: //*[contains(@class, 'noprint')]
+strip: //span[@class='noexcerpt']
+prune: no
+tidy: no
+test_url: http://en.wikipedia.org/wiki/Christopher_Lloyd
+test_url: https://en.wikipedia.org/wiki/Ronnie_James_Dio
+test_url: https://en.wikipedia.org/wiki/Metallica

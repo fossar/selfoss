@@ -1,0 +1,5 @@
+strip_id_or_class: comments
+prune: no
+date: //p[@class="entry-posted"]//abbr[@class="published"]/@title
+
+test_url: https://hacks.mozilla.org/2013/05/how-to-spread-the-word-about-your-code/

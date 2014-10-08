@@ -1,0 +1,14 @@
+title: //div[@class='translateHead']//h1
+author: //span[@class="post_by"]/a/text()
+date: //span[@class="post_date"]
+body: //div[@class="translateBody"]
+
+#Strip article junk
+strip: //div[@id="share-box"] 
+strip: //div[@id="fb-meta-like"] 
+
+tidy: no
+
+test_url: http://blog.foreignpolicy.com/posts/2013/04/01/us_is_running_out_of_fancy_planes_to_send_to_korea?wpisrc=obinsite
+test_url: http://thecable.foreignpolicy.com/posts/2013/04/12/will_the_magnitsky_list_spoil_donilon_s_russia_trip
+test_url: http://mideast.foreignpolicy.com/posts/2013/11/11/can_palestinians_advance_their_rights_through_unesco

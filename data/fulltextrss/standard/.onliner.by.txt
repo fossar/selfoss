@@ -1,0 +1,9 @@
+title: //*[contains(@class, 'b-posts-1-item__title')]
+body: //figure[contains(@class, 'b-posts-1-item__image')] | //div[contains(@class, 'b-posts-1-item__text')]
+date: //article//time/@datetime
+
+tidy: no
+prune: no
+
+test_url: http://tech.onliner.by/feed
+test_url: http://tech.onliner.by/2014/04/24/the-amazing-spider-man-2

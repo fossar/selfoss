@@ -1,0 +1,8 @@
+title: //h2[@class='postingtitle']
+date: //p[@class='postinginfo']/date
+
+body: //figure[@class='iw'] | //section[@class='cltags' or @id='postingbody']
+prune: no
+tidy: no
+
+test_url: http://sfbay.craigslist.org/hhh/index.rss
