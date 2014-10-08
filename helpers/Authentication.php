@@ -30,30 +30,35 @@ class Authentication {
      * start session and check login
      */
     public function __construct() {
-        
+
+        // session cookie will be valid for one month.
+        $cookie_expire = 3600*24*30;
+        $cookie_secure = (isset($_SERVER['HTTPS'])&&"off"!==$_SERVER['HTTPS'])?"true":"false";
+        $cookie_httponly = true;
+
         // check for SSL proxy and special cookie options
         if(isset($_SERVER['HTTP_X_FORWARDED_SERVER']) && isset($_SERVER['HTTP_X_FORWARDED_HOST'])
            && ($_SERVER['HTTP_X_FORWARDED_SERVER']===$_SERVER['HTTP_X_FORWARDED_HOST'])) {
-            // set cookie details (http://php.net/manual/en/function.setcookie.php)
-            // expire, path, domain, secure, httponly
-            session_set_cookie_params(
-                (3600*24*30), 
-                '/'.$_SERVER['SERVER_NAME'].preg_replace('/\/[^\/]+$/','',$_SERVER['PHP_SELF']).'/', 
-                $_SERVER['HTTP_X_FORWARDED_SERVER'], 
-                (isset($_SERVER['HTTPS'])&&"off"!==$_SERVER['HTTPS'])?"true":"false", 
-                "true");
+            $cookie_path = '/'.$_SERVER['SERVER_NAME'].preg_replace('/\/[^\/]+$/','',$_SERVER['PHP_SELF']).'/';
+            $cookie_domain = $_SERVER['HTTP_X_FORWARDED_SERVER'];
         } else {
-            // session cookie will be valid for one month. path is script dir.
-            session_set_cookie_params(
-                (3600*24*30), 
-                dirname($_SERVER['SCRIPT_NAME'])==='/'?'/':dirname($_SERVER['SCRIPT_NAME']).'/');
+            // cookie path is script dir.
+            $cookie_path = dirname($_SERVER['SCRIPT_NAME'])==='/'?'/':dirname($_SERVER['SCRIPT_NAME']).'/';
+            $cookie_domain = $_SERVER['SERVER_NAME'];
         }
+        session_set_cookie_params($cookie_expire, $cookie_path, $cookie_domain,
+                                  $cookie_secure, $cookie_httponly);
+        \F3::get('logger')->log("set cookie on $cookie_domain$cookie_path expiring in $cookie_expire seconds", \DEBUG);
         
         session_name();
         if(session_id()=="")
             session_start();
-        if(isset($_SESSION['loggedin']) && $_SESSION['loggedin']===true)
+        if(isset($_SESSION['loggedin']) && $_SESSION['loggedin']===true){
             $this->loggedin = true;
+            \F3::get('logger')->log('logged in using valid session', \DEBUG);
+        } else {
+            \F3::get('logger')->log('session does not contain valid auth', \DEBUG);
+        }
         $this->enabled = strlen(trim(\F3::get('username')))!=0 && strlen(trim(\F3::get('password')))!=0;
         
         // autologin if request contains unsername and password
@@ -104,8 +109,10 @@ class Authentication {
             ) {
                 $this->loggedin = true;
                 $_SESSION['loggedin'] = true;
+                \F3::get('logger')->log('logged in with supplied username and password', \DEBUG);
                 return true;
             } else {
+                \F3::get('logger')->log('failed to log in with supplied username and password', \DEBUG);
                 return false;
             }
         }
@@ -134,5 +141,6 @@ class Authentication {
         $this->loggedin = false;
         $_SESSION['loggedin'] = false;
         session_destroy();
+        \F3::get('logger')->log('logged out and destroyed session', \DEBUG);
     }
 }
