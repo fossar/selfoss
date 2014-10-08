@@ -23,24 +23,23 @@
     <meta name="mobile-web-app-capable" content="yes" />
 
     <!--  RSS Feed -->
-    <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="feed" />
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="<?PHP echo \F3::get('ASSETS') ?>feed" />
     
-    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="shortcut icon" href="<?PHP echo \F3::get('ASSETS') ?>favicon.ico" />
     <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 
     <!-- all css definitions -->
     <?PHP if(\F3::get('use_system_font')!=true) : ?>
-        <link rel="stylesheet" href="css/fonts.css" />
+        <link rel="stylesheet" href="<?PHP echo \F3::get('ASSETS') ?>css/fonts.css" />
     <?PHP endif; ?>
-    <link rel="stylesheet" href="<?PHP echo \helpers\View::getGlobalCssFileName(); ?>" />
+    <link rel="stylesheet" href="<?PHP echo \F3::get('ASSETS').\helpers\View::getGlobalCssFileName(); ?>" />
 
 </head>
 <body class="
     <?PHP echo $this->publicMode===true ? "publicmode" : ""; ?>
     <?PHP echo $this->loggedin===true ? "loggedin" : "notloggedin"; ?> 
     <?PHP echo \F3::get('auto_mark_as_read')==1 ? "auto_mark_as_read" : ""; ?>
-">
-    
+">    
     <div id="error"></div>
     
     <!-- language settings for jQuery -->
@@ -140,6 +139,6 @@
     <!-- fullscreen popup -->
     <div id="fullscreen-entry"></div>
     
-    <script src="<?PHP echo \helpers\View::getGlobalJsFileName(); ?>"></script>
+    <script src="<?PHP echo \F3::get('ASSETS').\helpers\View::getGlobalJsFileName(); ?>"></script>
 </body>
 </html>
