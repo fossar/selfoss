@@ -6,6 +6,7 @@
 /data/cache/*.spc
 /data/logs/*.log
 /data/sqlite/*.db
+/data/fulltextrss/standard
 /public/all.*
 /public/all-v*.*
 user.css

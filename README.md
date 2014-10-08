@@ -26,6 +26,26 @@ CONFIGURATION
 3. Do not delete the [globals] line
 4. See http://selfoss.aditu.de/ for examples
 
+FullTextRSS configuration
+-------------------------
+
+To enable FullTextRSS support, you'll need to manually add site-specific extraction rules.  
+They are *not* included here because of their number and the fact then might change without notice.
+
+Site-specific extraction rules are freely available on `https://github.com/fivefilters/ftr-site-config.git`
+
+To install them:
+
+1. Go to directory `data/ftrss/`
+2. Execute `git clone https://github.com/fivefilters/ftr-site-config.git standard`
+
+To refresh them:
+
+1. go to `data/ftrss/standard`
+2. Execute `git pull`
+
+You can also add your own rules. Just add them into `data/ftrss/custom` directory.
+Please refer to the online documentation here `http://help.fivefilters.org/customer/portal/articles/223153-site-patterns`
 
 UPDATE
 ------
