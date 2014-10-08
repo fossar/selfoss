@@ -1653,7 +1653,7 @@ class Base extends Prefab {
 		$_SERVER['DOCUMENT_ROOT']=realpath($_SERVER['DOCUMENT_ROOT']);
 		$base='';
 		if (PHP_SAPI!='cli')
-			$base=implode('/',array_map('urlencode',
+			$base=implode('/',array_map('rawurlencode',
 				explode('/',rtrim($this->fixslashes(
 					dirname($_SERVER['SCRIPT_NAME'])),'/'))));
 		$path=preg_replace('/^'.preg_quote($base,'/').'/','',
