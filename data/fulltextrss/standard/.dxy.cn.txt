@@ -1,4 +1,0 @@
-body: //div[@id='content']
-prune: no
-
-test_url: http://neurosurg.dxy.cn/article/87224
