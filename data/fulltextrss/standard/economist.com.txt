@@ -1,8 +1,0 @@
-body: //div[@class='main-content']
-date: //time[@class='date-created']
-strip: //aside
-prune: no
-
-autodetect_next_page: no
-
-test_url: http://www.economist.com/node/21528429
