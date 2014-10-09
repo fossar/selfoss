@@ -48,14 +48,19 @@ class View {
             $subdir = $lastSlash!==false ? substr($_SERVER['SCRIPT_NAME'], 0, $lastSlash) : '';
             
             $protocol = 'http';
-            if (isset($_SERVER["HTTPS"]) && ($_SERVER["HTTPS"]=="on" || $_SERVER["HTTPS"]==1))
+            if (isset($_SERVER["HTTPS"]) && ($_SERVER["HTTPS"]=="on" || $_SERVER["HTTPS"]==1) ||
+               (isset($_SERVER['HTTP_X_FORWARDED_PROTO'])) && $_SERVER['HTTP_X_FORWARDED_PROTO']=="https" ||
+               (isset($_SERVER['HTTP_HTTPS'])) && $_SERVER['HTTP_HTTPS']=="https")
                 $protocol = 'https';
             
             $port = '';
             if (($protocol == 'http' && $_SERVER["SERVER_PORT"]!="80") ||
                 ($protocol == 'https' && $_SERVER["SERVER_PORT"]!="443"))
                 $port = ':' . $_SERVER["SERVER_PORT"];
-            
+            //Override the port if nginx is the front end and the traffic is being forwarded
+            if (isset($_SERVER["HTTP_X_FORWARDED_PORT"]))
+                $port = ':' . $_SERVER["HTTP_X_FORWARDED_PORT"];
+
             $base = $protocol . '://' . $_SERVER["SERVER_NAME"] . $port . $subdir . '/';
         }
         
