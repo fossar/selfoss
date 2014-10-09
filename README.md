@@ -55,7 +55,7 @@ Third party apps are available for iOS and Android: [Cataracta](https://itunes.a
 
 
 DEVELOPMENT
-___________
+-----------
 
 Selfoss uses [git submodules](http://www.git-scm.com/book/en/Git-Tools-Submodules) for some external libaries. When you clone the repository you have to issue a `git submodule init` as well as a `git submodule update` to retrieve the external sources.
 
