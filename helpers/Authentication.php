@@ -33,7 +33,7 @@ class Authentication {
 
         // session cookie will be valid for one month.
         $cookie_expire = 3600*24*30;
-        $cookie_secure = (isset($_SERVER['HTTPS'])&&"off"!==$_SERVER['HTTPS'])?"true":"false";
+        $cookie_secure = isset($_SERVER['HTTPS']) && "off"!==$_SERVER['HTTPS'];
         $cookie_httponly = true;
 
         // check for SSL proxy and special cookie options
