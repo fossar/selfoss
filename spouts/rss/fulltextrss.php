@@ -127,7 +127,7 @@ class fulltextrss extends feed {
             return parent::getContent() .
                    "<p><strong>Full Text RSS cleaning error</strong></p>";
         }
-        return htmlentities($content);
+        return $content;
     }
 
     /**
