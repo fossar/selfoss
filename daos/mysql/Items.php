@@ -179,7 +179,7 @@ class Items extends Database {
         if ($date !== NULL) {
             $query = 'DELETE FROM '.\F3::get('db_prefix').'items WHERE starred=0 AND datetime<:date';
 
-            if(true !== \F3::get('delete_unread'))
+            if(0 === \F3::get('delete_unread'))
                 $query .= ' AND unread=0';
 
             \F3::get('db')->exec($query,
