@@ -19,6 +19,8 @@ class Tags extends BaseController {
      * @return void
      */
     public function tagslist() {
+        $this->needsLoggedInOrPublicMode();
+
         echo $this->tagsListAsString();
     }
     
@@ -61,6 +63,7 @@ class Tags extends BaseController {
      * @return void
      */
     public function color() {
+        $this->needsLoggedIn();
     
         // read data
         parse_str(\F3::get('BODY'),$data);
@@ -88,6 +91,8 @@ class Tags extends BaseController {
      * @return void
      */
     public function listTags() {
+        $this->needsLoggedInOrPublicMode();
+
         $tagsDao = new \daos\Tags();
         $tags = $tagsDao->get();
         
