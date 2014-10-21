@@ -534,6 +534,13 @@ input {
             text-indent: 1.3em;
         }
 
+        .entry-content sup {
+            vertical-align: sup;
+        }
+        .entry-content sub {
+            vertical-align: sub;
+        }
+
     .entry-icon,
     .entry-icon img {
         margin-top:3px;
