@@ -288,21 +288,22 @@ class commits extends \spouts\spout {
         $v = \F3::get('version');
         $options  = array('http' => array(
             'user_agent' => "Selfoss/$v GitHub spout (+http://selfoss.aditu.de)",
-            'ignore_errors' => true
+            'ignore_errors' => true,
+            'timeout' => 60
         ));
-        $context  = stream_context_create($options);
 
-        $content = file_get_contents($url, false, $context);
-        
-        if( $http_response_header[0] != 'HTTP/1.1 200 OK' ) {
-            \F3::get('logger')->log('github spout error ' . $http_response_header[0] . ': ' . substr($content, 0, 512), \ERROR);
-            return false;
+        $request = \Web::instance()->request($url, $options);
+
+        if( $request['headers'][0] != 'HTTP/1.1 200 OK' ) {
+            throw new \exception('github spout error ' . $request['headers'][0] . ': ' . substr($request['body'], 0, 512));
         }
-        
+
+        $content = $request['body'];
+
         $json = @json_decode($content);
         
         if (empty($json)) {
-            return false;
+            throw new \exception('github spout error ' . $request['headers'][0] . ': empy json');
         }
         
         return $json;
