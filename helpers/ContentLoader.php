@@ -112,6 +112,7 @@ class ContentLoader {
         foreach ($spout as $item) {
             // item already in database?
             if (isset($itemsFound[$item->getId()])) {
+                \F3::get('logger')->log('item "' . $item->getTitle() . '" with id ' . $item->getId() . ' is already in database.', \DEBUG);
                 continue;
             }
             
