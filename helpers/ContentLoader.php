@@ -60,6 +60,13 @@ class ContentLoader {
         
         @set_time_limit(5000);
         @error_reporting(E_ERROR);
+
+        // prevent another simultaneous update of the same source
+        $lock = new \helpers\Lock('update-source-'.$source['id']);
+        if( !$lock->acquire() ){
+            \F3::get('logger')->log('abording source ' . $source['title'] . ' (id: '.$source['id'].') update: another update is running.', \DEBUG);
+            return;
+        }
         
         // logging
         \F3::get('logger')->log('---', \DEBUG);
@@ -184,6 +191,8 @@ class ContentLoader {
 
         // remove previous errors and set last update timestamp
         $this->updateSource($source);
+
+        $lock->release();
     }
 
 
