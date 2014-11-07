@@ -2,6 +2,10 @@
 
 namespace helpers;
 
+
+define('SOURCE_UPDATE_MAX_INTERVAL', 300);
+
+
 /**
  * Helper class for loading extern items
  *
@@ -71,6 +75,13 @@ class ContentLoader {
         // logging
         \F3::get('logger')->log('---', \DEBUG);
         \F3::get('logger')->log('start fetching source "'. $source['title'] . ' (id: '.$source['id'].') ', \DEBUG);
+
+        // do not hammer source
+        $lastupdateAge = time() - $source['lastupdate'];
+        if( $lastupdateAge < SOURCE_UPDATE_MAX_INTERVAL ){
+            \F3::get('logger')->log('skipping: source has been updated less than ' . SOURCE_UPDATE_MAX_INTERVAL . ' seconds ago.', \DEBUG);
+            return;
+        }
         
         // get spout
         $spoutLoader = new \helpers\SpoutLoader();
