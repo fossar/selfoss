@@ -80,6 +80,7 @@ class ContentLoader {
         $lastupdateAge = time() - $source['lastupdate'];
         if( $lastupdateAge < SOURCE_UPDATE_MAX_INTERVAL ){
             \F3::get('logger')->log('skipping: source has been updated less than ' . SOURCE_UPDATE_MAX_INTERVAL . ' seconds ago.', \DEBUG);
+            $lock->release();
             return;
         }
         
@@ -88,6 +89,7 @@ class ContentLoader {
         $spout = $spoutLoader->get($source['spout']);
         if($spout===false) {
             \F3::get('logger')->log('unknown spout: ' . $source['spout'], \ERROR);
+            $lock->release();
             return;
         }
         \F3::get('logger')->log('spout successfully loaded: ' . $source['spout'], \DEBUG);
@@ -101,6 +103,7 @@ class ContentLoader {
         } catch(\exception $e) {
             \F3::get('logger')->log('error loading feed content for ' . $source['title'] . ': ' . $e->getMessage(), \ERROR);
             $this->sourceDao->error($source['id'], date('Y-m-d H:i:s') . 'error loading feed content: ' . $e->getMessage());
+            $lock->release();
             return;
         }
         
@@ -168,6 +171,7 @@ class ContentLoader {
             try {
                 $icon = $item->getIcon();
             } catch(\exception $e) {
+                $lock->release();
                 return;
             }
 
