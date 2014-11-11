@@ -56,6 +56,24 @@ abstract class spout implements \Iterator {
      * @var bool|mixed
      */
     public $params = false;
+
+
+    /**
+     * get the user agent to use for web based spouts
+     *
+     * @return the user agent string for this spout
+     */
+    protected function getUserAgent($agentInfo=null){
+        $userAgent = 'Selfoss/'.\F3::get('version');
+
+        if( is_null($agentInfo) )
+            $agentInfo = array();
+
+        $agentInfo[] = $this->name.' spout';
+        $agentInfo[] = '+http://selfoss.aditu.de';
+
+        return $userAgent.' ('.implode('; ', $agentInfo).')';
+    }
     
     
     /**

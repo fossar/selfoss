@@ -170,7 +170,7 @@ class commits extends \spouts\spout {
         $this->htmlUrl = "https://github.com/" . urlencode($params['owner']) . "/" . urlencode($params['repo']) . "/" . urlencode($params['branch']);
         
         $jsonUrl = "https://api.github.com/repos/" . urlencode($params['owner']) . "/" . urlencode($params['repo']) . "/commits?sha=" . urlencode($params['branch']);
-        $this->items = self::getJsonContent($jsonUrl);
+        $this->items = $this->getJsonContent($jsonUrl);
     }
     
     
@@ -284,10 +284,9 @@ class commits extends \spouts\spout {
      * @param string $url URL
      * @return object JSON object
      */
-    public static function getJsonContent($url) {
-        $v = \F3::get('version');
+    public function getJsonContent($url) {
         $options  = array('http' => array(
-            'user_agent' => "Selfoss/$v GitHub spout (+http://selfoss.aditu.de)",
+            'user_agent' => $this->getUserAgent(),
             'ignore_errors' => true,
             'timeout' => 60
         ));
