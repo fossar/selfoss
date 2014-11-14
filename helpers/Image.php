@@ -128,7 +128,8 @@ class Image {
         
         // resize
         if($width!==false && $height!==false) {
-            if($wideImage->getHeight()>$height || $wideImage->getWidth()>$width)
+            if(($height!==null && $wideImage->getHeight()>$height) ||
+               ($width!==null && $wideImage->getWidth()>$width))
                 $wideImage = $wideImage->resize($width, $height);
         }
         

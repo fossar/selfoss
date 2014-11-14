@@ -253,8 +253,16 @@ class feed extends \spouts\spout {
         $this->faviconUrl = false;
         $imageHelper = $this->getImageHelper();
         $htmlUrl = $this->getHtmlUrl();
-        if($htmlUrl && $imageHelper->fetchFavicon($htmlUrl))
+        if($htmlUrl && $imageHelper->fetchFavicon($htmlUrl, true)){
             $this->faviconUrl = $imageHelper->getFaviconUrl();
+            \F3::get('logger')->log('icon: using feed homepage favicon: ' . $this->faviconUrl, \DEBUG);
+        }else{
+            $feedLogoUrl = $this->feed->get_image_url();
+            if( $feedLogoUrl && $imageHelper->fetchFavicon($feedLogoUrl) ){
+                $this->faviconUrl = $imageHelper->getFaviconUrl();
+                \F3::get('logger')->log('icon: using feed logo: ' . $this->faviconUrl, \DEBUG);
+           }
+        }
         return $this->faviconUrl;
     }
     

@@ -251,7 +251,7 @@ class ContentLoader {
                 $newItem['icon'] = md5($lasticon) . '.png';
             } else {
                 $imageHelper = new \helpers\Image();
-                $iconAsPng = $imageHelper->loadImage($icon, 30, 30);
+                $iconAsPng = $imageHelper->loadImage($icon, 30, null);
                 if($iconAsPng!==false) {
                     file_put_contents(
                         'data/favicons/' . md5($icon) . '.png',
