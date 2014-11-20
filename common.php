@@ -22,4 +22,25 @@ $f3->set(
     new \helpers\Logger( __dir__.'/data/logs/default.log', $f3->get('logger_level') )
 );
 
-?>
+// init error handling
+$f3->set('ONERROR',
+    function($f3) {
+        $trace = $f3->get('ERROR.trace');
+        $tracestr = "\n";
+        foreach($trace as $entry) {
+            $tracestr = $tracestr . $entry['file'] . ':' . $entry['line'] . "\n";
+        }
+        
+        \F3::get('logger')->log($f3->get('ERROR.text') . $tracestr, \ERROR);
+        if (\F3::get('DEBUG')!=0) {
+            echo $f3->get('lang_error') . ": ";
+            echo $f3->get('ERROR.text') . "\n";
+            echo $tracestr;
+        } else {
+            echo $f3->get('lang_error');
+        }
+    }
+);
+
+if (\F3::get('DEBUG')!=0)
+    ini_set('display_errors',0);
