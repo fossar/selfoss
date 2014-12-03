@@ -20,17 +20,12 @@ class Authentication {
     
     
     /**
-     * enabled
-     * @var bool
-     */
-    private $enabled = false;
-    
-    
-    /**
      * start session and check login
      */
     public function __construct() {
-
+        if ($this->enabled()===false)
+            return;
+    
         // session cookie will be valid for one month.
         $cookie_expire = 3600*24*30;
         $cookie_secure = isset($_SERVER['HTTPS']) && "off"!==$_SERVER['HTTPS'];
@@ -59,11 +54,9 @@ class Authentication {
         } else {
             \F3::get('logger')->log('session does not contain valid auth', \DEBUG);
         }
-        $this->enabled = strlen(trim(\F3::get('username')))!=0 && strlen(trim(\F3::get('password')))!=0;
         
         // autologin if request contains unsername and password
-        if( $this->enabled===true 
-            && $this->loggedin===false
+        if($this->loggedin===false
             && isset($_REQUEST['username'])
             && isset($_REQUEST['password'])) {
             $this->login($_REQUEST['username'], $_REQUEST['password']);
@@ -79,7 +72,7 @@ class Authentication {
      * @param string $password
      */
     public function enabled() {
-        return $this->enabled;
+        return strlen(trim(\F3::get('username')))!=0 && strlen(trim(\F3::get('password')))!=0;
     }
     
     
