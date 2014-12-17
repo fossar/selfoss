@@ -2,6 +2,10 @@
 
 namespace helpers;
 
+
+define('SOURCE_UPDATE_MAX_INTERVAL', 300);
+
+
 /**
  * Helper class for loading extern items
  *
@@ -60,16 +64,32 @@ class ContentLoader {
         
         @set_time_limit(5000);
         @error_reporting(E_ERROR);
+
+        // prevent another simultaneous update of the same source
+        $lock = new \helpers\Lock('update-source-'.$source['id']);
+        if( !$lock->acquire() ){
+            \F3::get('logger')->log('abording source ' . $source['title'] . ' (id: '.$source['id'].') update: another update is running.', \DEBUG);
+            return;
+        }
         
         // logging
         \F3::get('logger')->log('---', \DEBUG);
         \F3::get('logger')->log('start fetching source "'. $source['title'] . ' (id: '.$source['id'].') ', \DEBUG);
+
+        // do not hammer source
+        $lastupdateAge = time() - $source['lastupdate'];
+        if( $lastupdateAge < SOURCE_UPDATE_MAX_INTERVAL ){
+            \F3::get('logger')->log('skipping: source has been updated less than ' . SOURCE_UPDATE_MAX_INTERVAL . ' seconds ago.', \DEBUG);
+            $lock->release();
+            return;
+        }
         
         // get spout
         $spoutLoader = new \helpers\SpoutLoader();
         $spout = $spoutLoader->get($source['spout']);
         if($spout===false) {
             \F3::get('logger')->log('unknown spout: ' . $source['spout'], \ERROR);
+            $lock->release();
             return;
         }
         \F3::get('logger')->log('spout successfully loaded: ' . $source['spout'], \DEBUG);
@@ -83,6 +103,7 @@ class ContentLoader {
         } catch(\exception $e) {
             \F3::get('logger')->log('error loading feed content for ' . $source['title'] . ': ' . $e->getMessage(), \ERROR);
             $this->sourceDao->error($source['id'], date('Y-m-d H:i:s') . 'error loading feed content: ' . $e->getMessage());
+            $lock->release();
             return;
         }
         
@@ -105,6 +126,7 @@ class ContentLoader {
         foreach ($spout as $item) {
             // item already in database?
             if (isset($itemsFound[$item->getId()])) {
+                \F3::get('logger')->log('item "' . $item->getTitle() . '" with id ' . $item->getId() . ' is already in database.', \DEBUG);
                 continue;
             }
             
@@ -149,6 +171,7 @@ class ContentLoader {
             try {
                 $icon = $item->getIcon();
             } catch(\exception $e) {
+                $lock->release();
                 return;
             }
 
@@ -184,6 +207,8 @@ class ContentLoader {
 
         // remove previous errors and set last update timestamp
         $this->updateSource($source);
+
+        $lock->release();
     }
 
 
