@@ -86,6 +86,7 @@ class Database {
                         tags TEXT,
                         spout TEXT NOT NULL ,
                         params TEXT NOT NULL ,
+			filter TEXT,
                         error TEXT,
                         lastupdate INT
                     ) ENGINE = MYISAM DEFAULT CHARSET=utf8;

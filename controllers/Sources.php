@@ -134,10 +134,12 @@ class Sources extends BaseController {
         $title = htmlspecialchars($data['title']);
         $tags = htmlspecialchars($data['tags']);
         $spout = $data['spout'];
+	$filter = $data['filter'];
         $isAjax = isset($data['ajax']);
         
         unset($data['title']);
         unset($data['spout']);
+        unset($data['filter']);
         unset($data['tags']);
         unset($data['ajax']);
 
@@ -151,9 +153,9 @@ class Sources extends BaseController {
         $id = \F3::get('PARAMS["id"]');
         
         if (!$sourcesDao->isValid('id', $id))
-            $id = $sourcesDao->add($title, $tags, $spout, $data);
+            $id = $sourcesDao->add($title, $tags, $filter, $spout, $data);
         else
-            $sourcesDao->edit($id, $title, $tags, $spout, $data);
+            $sourcesDao->edit($id, $title, $tags, $filter, $spout, $data);
         
         // autocolor tags
         $tagsDao = new \daos\Tags();

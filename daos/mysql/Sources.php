@@ -21,14 +21,15 @@ class Sources extends Database {
      * @param string $spout the source type
      * @param mixed $params depends from spout
      */
-    public function add($title, $tags, $spout, $params) {
+    public function add($title, $tags, $filter, $spout, $params) {
         // sanitize tag list
         $tags = implode(',', preg_split('/\s*,\s*/', trim($tags), -1, PREG_SPLIT_NO_EMPTY));
 
-        \F3::get('db')->exec('INSERT INTO '.\F3::get('db_prefix').'sources (title, tags, spout, params, error) VALUES (:title, :tags, :spout, :params, "")',
+        \F3::get('db')->exec('INSERT INTO '.\F3::get('db_prefix').'sources (title, tags, filter, spout, params, error) VALUES (:title, :tags, :filter, :spout, :params, "")',
                     array(
                         ':title'  => trim($title),
                         ':tags'   => $tags,
+			':filter' => $filter,
                         ':spout'  => $spout,
                         ':params' => htmlentities(json_encode($params))
                     ));
@@ -48,14 +49,15 @@ class Sources extends Database {
      * @param string $spout new spout
      * @param mixed $params the new params
      */
-    public function edit($id, $title, $tags, $spout, $params) {
+    public function edit($id, $title, $tags, $filter, $spout, $params) {
         // sanitize tag list
         $tags = implode(',', preg_split('/\s*,\s*/', trim($tags), -1, PREG_SPLIT_NO_EMPTY));
 
-        \F3::get('db')->exec('UPDATE '.\F3::get('db_prefix').'sources SET title=:title, tags=:tags, spout=:spout, params=:params, error=\'\' WHERE id=:id',
+        \F3::get('db')->exec('UPDATE '.\F3::get('db_prefix').'sources SET title=:title, tags=:tags, filter=:filter, spout=:spout, params=:params, error="" WHERE id=:id',
                     array(
                         ':title'  => trim($title),
                         ':tags'  => $tags,
+			':filter' => $filter,
                         ':spout'  => $spout,
                         ':params' => htmlentities(json_encode($params)),
                         ':id'     => $id
@@ -116,7 +118,7 @@ class Sources extends Database {
      * @return mixed all sources
      */
     public function getByLastUpdate() {
-        $ret = \F3::get('db')->exec('SELECT id, title, tags, spout, params, error FROM '.\F3::get('db_prefix').'sources ORDER BY lastupdate ASC');
+        $ret = \F3::get('db')->exec('SELECT id, title, tags, spout, params, filter, error FROM '.\F3::get('db_prefix').'sources ORDER BY lastupdate ASC');
         $spoutLoader = new \helpers\SpoutLoader();
         for($i=0;$i<count($ret);$i++)
             $ret[$i]['spout_obj'] = $spoutLoader->get( $ret[$i]['spout'] );
@@ -130,7 +132,7 @@ class Sources extends Database {
      * @return mixed all sources
      */
     public function get() {
-        $ret = \F3::get('db')->exec('SELECT id, title, tags, spout, params, error FROM '.\F3::get('db_prefix').'sources ORDER BY error DESC, lower(title) ASC');
+        $ret = \F3::get('db')->exec('SELECT id, title, tags, spout, params, filter, error FROM '.\F3::get('db_prefix').'sources ORDER BY error DESC, lower(title) ASC');
         $spoutLoader = new \helpers\SpoutLoader();
         for($i=0;$i<count($ret);$i++)
             $ret[$i]['spout_obj'] = $spoutLoader->get( $ret[$i]['spout'] );
