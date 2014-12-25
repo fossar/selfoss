@@ -90,7 +90,7 @@ class Database {
                         id          INTEGER PRIMARY KEY AUTOINCREMENT,
                         title       TEXT NOT NULL,
                         tags        TEXT,
-			filter	    TEXT,
+                        filter      TEXT,
                         spout       TEXT NOT NULL,
                         params      TEXT NOT NULL,
                         error       TEXT,
@@ -171,7 +171,7 @@ class Database {
                         INSERT INTO version (version) VALUES (5);
                     ');
                 }
-                if(strnatcmp($version, "5") < 0){
+                if(strnatcmp($version, "6") < 0){
                     \F3::get('db')->exec('
                         ALTER TABLE sources ADD filter TEXT;
                     ');
