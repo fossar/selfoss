@@ -86,6 +86,7 @@ class Database {
                         tags TEXT,
                         spout TEXT NOT NULL ,
                         params TEXT NOT NULL ,
+			filter TEXT,
                         error TEXT,
                         lastupdate INT
                     ) ENGINE = MYISAM DEFAULT CHARSET=utf8;
@@ -158,6 +159,14 @@ class Database {
                     ');
                     \F3::get('db')->exec('
                         INSERT INTO '.\F3::get('db_prefix').'version (version) VALUES (5);
+                    ');
+                }
+                if(strnatcmp($version, "6") < 0){
+                    \F3::get('db')->exec('
+                        ALTER TABLE '.\F3::get('db_prefix').'sources ADD filter TEXT;
+                    ');
+                    \F3::get('db')->exec('
+                        INSERT INTO '.\F3::get('db_prefix').'version (version) VALUES (6);
                     ');
                 }
             }
