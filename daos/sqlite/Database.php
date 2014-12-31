@@ -90,9 +90,9 @@ class Database {
                         id          INTEGER PRIMARY KEY AUTOINCREMENT,
                         title       TEXT NOT NULL,
                         tags        TEXT,
-                        filter      TEXT,
                         spout       TEXT NOT NULL,
                         params      TEXT NOT NULL,
+                        filter      TEXT,
                         error       TEXT,
                         lastupdate  INTEGER
                     );
@@ -109,7 +109,7 @@ class Database {
                 ');
                 
                 \F3::get('db')->exec('
-                    INSERT INTO version (version) VALUES (5);
+                    INSERT INTO version (version) VALUES (7);
                 ');
                 
                 \F3::get('db')->exec('
