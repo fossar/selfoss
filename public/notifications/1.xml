@@ -1,16 +1,16 @@
 <tile>
   <visual lang="en-US" version="3">
       <binding template="TileSquare150x150PeekImageAndText02">
-        <image id="1" src="http://nostromo.myds.me/selfoss/win8-150-icon.png" alt="Selfoss" />
+        <image id="1" src="win8-150-icon.png" alt="Selfoss" />
         <text id="2">Selfoss</text>
       </binding>
 
       <binding template="TileSquare71x71IconWithBadge">
-        <image id="1" src="http://nostromo.myds.me/selfoss/win8-71-icon.png" alt="Selfoss" />
+        <image id="1" src="win8-71-icon.png" alt="Selfoss" />
       </binding>
 
       <binding template="TileSquare150x150IconWithBadge">
-        <image id="1" src="http://nostromo.myds.me/selfoss/win8-150-icon.png" alt="Selfoss" />
+        <image id="1" src="win8-150-icon.png" alt="Selfoss" />
       </binding>
   </visual>
 </tile>
