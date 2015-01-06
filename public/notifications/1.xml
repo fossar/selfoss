@@ -6,7 +6,7 @@
       </binding>
 
       <binding template="TileSquare71x71IconWithBadge">
-        <image id="1" src="http://nostromo.myds.me/selfoss/win8-70-icon.png" alt="Selfoss" />
+        <image id="1" src="http://nostromo.myds.me/selfoss/win8-71-icon.png" alt="Selfoss" />
       </binding>
 
       <binding template="TileSquare150x150IconWithBadge">
