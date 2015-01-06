@@ -201,6 +201,10 @@ class Index extends BaseController {
         echo $this->view->render('templates/badge.phtml');
     }
 
+    public function win8Notifications() {
+        echo $this->view->render('templates/win8-notifications.phtml');
+    }
+
     /**
      * load items
      *
