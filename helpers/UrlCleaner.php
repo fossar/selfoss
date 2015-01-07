@@ -24,7 +24,7 @@ class UrlCleaner {
      * patterns to look for in URL host
      * @var array
      */
-    private $hostPatterns = ['feeds', 'rss', 't.co'];
+    private $hostPatterns = ['feed', 'rss', 't.co'];
 
     /**
      * patterns to look for in URL query string
@@ -57,12 +57,13 @@ class UrlCleaner {
 		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
 		curl_setopt($ch, CURLOPT_HEADER, TRUE);
 		curl_exec($ch);
-		$htis->realUrl = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
+		$this->realUrl = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
 		unset($ch);
 		break;
 	    }
 	}
-	$this->realUrl = $this->cleanTrackers($this->realUrl);
+	$this->cleanTrackers();
+	return true;
     }
 
     /**
@@ -99,7 +100,7 @@ class UrlCleaner {
 			$realQuery[]= $key.'='.$value;
 		}
             }
-            if ( count($real_query) )
+            if ( count($realQuery) )
                 $realUrl .= '?' . implode('&', $realQuery);
 	    unset($q_array);
 	    unset($realQuery);
