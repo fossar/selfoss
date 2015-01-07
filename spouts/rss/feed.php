@@ -264,8 +264,14 @@ class feed extends \spouts\spout {
      * @return string link
      */
     public function getLink() {
-        if($this->items!==false && $this->valid())
-            return @current($this->items)->get_link();
+        if($this->items!==false && $this->valid()) {
+	    $link = @current($this->items)->get_link();
+	    $urlHelper = $this->getUrlHelper();
+	    if($urlHelper->processUrl($link)) {
+		$link = $urlHelper->getRealUrl();
+		return $link;
+	    }
+	}
         return false;
     }
     
