@@ -46,6 +46,7 @@ class UrlCleaner {
      * @param string $url
      */
     public function processUrl($url) {
+	$this->realUrl = $url;
 	$urlToken = parse_url($url);
 
 	// Look for host patterns. If found, use curl to get real URL
@@ -96,12 +97,13 @@ class UrlCleaner {
             foreach ($q_array as $key => $value) {
                 // Remove trackers from URL query string
 		foreach ( $this->queryPatterns as $pattern ) {
-		    if ( strpos($key, 'utm_') === false && strpos($key, 'xtor') === false )
+		    if ( strpos($key, $pattern) !== false )
 			$realQuery[]= $key.'='.$value;
 		}
             }
-            if ( count($realQuery) )
-                $realUrl .= '?' . implode('&', $realQuery);
+	    $realQuery = http_build_query($q_array);
+            if ( $realQuery )
+                $realUrl .= '?' . $realQuery;
 	    unset($q_array);
 	    unset($realQuery);
         }
