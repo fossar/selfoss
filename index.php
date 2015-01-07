@@ -53,7 +53,8 @@ $f3->route('POST /password',  'controllers\Index->password'); // html
 $f3->route('GET /login',      'controllers\Index->login');    // json
 $f3->route('GET /logout',     'controllers\Index->logout');   // json
 $f3->route('GET /update',     'controllers\Index->update');   // text
-$f3->route('GET /badge',	  'controllers\Index->badge');    // xml
+$f3->route('GET /badge',      'controllers\Index->badge');    // xml
+$f3->route('GET /win8notifs', 'controllers\Index->win8Notifications');    // xml
 
 // only for loggedin users or on public mode
 if($f3->get('auth')->isLoggedin()===true || \F3::get('public')==1) {
