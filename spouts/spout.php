@@ -174,4 +174,15 @@ abstract class spout implements \Iterator {
     public function getImageHelper() {
         return new \helpers\Image();
     }
+
+    /**
+     * returns an instance of selfoss URL helper
+     * for getting real URLs and cleaning trackers
+     * params and fragments
+     *
+     * @return \helpers\UrlCleaner
+     */
+    public function getUrlHelper() {
+        return new \helpers\UrlCleaner();
+    }
 }
