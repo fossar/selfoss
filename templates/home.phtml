@@ -22,6 +22,16 @@
     <!-- app 'behaviour' when adding link to Android Home  -->
     <meta name="mobile-web-app-capable" content="yes" />
 
+    <!-- app tile and notification when adding link to Windows 8 start screen -->
+    <meta name="application-name" content="Selfoss" />
+    <meta name="msapplication-TileColor" content="#3d6d69" />
+    <meta name="msapplication-square70x70logo" content="<?php echo $this->base; ?>win8-70-icon.png" />
+    <meta name="msapplication-square150x150logo" content="<?php echo $this->base; ?>win8-150-icon.png" />
+    <meta name="msapplication-wide310x150logo" content="<?php echo $this->base; ?>win8-150-icon.png" />
+    <meta name="msapplication-square310x310logo" content="<?php echo $this->base; ?>win8-310-icon.png" />
+    <meta name="msapplication-notification" content="cycle=1; frequency=30; polling-uri=<?php echo $this->base; ?>win8notifs" />
+    <meta name="msapplication-badge" content="frequency=30; polling-uri=<?php echo $this->base; ?>badge" />
+
     <!--  RSS Feed -->
     <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="feed" />
     
