@@ -46,24 +46,25 @@ $f3->set('css', $css);
 // define routes
 
 // all users
-$f3->route('GET /',           'controllers\Index->home');     // html
-$f3->route('POST /',          'controllers\Index->home');     // html
-$f3->route('GET /password',   'controllers\Index->password'); // html
-$f3->route('POST /password',  'controllers\Index->password'); // html
-$f3->route('GET /login',      'controllers\Index->login');    // json
-$f3->route('GET /logout',     'controllers\Index->logout');   // json
-$f3->route('GET /update',     'controllers\Index->update');   // text
-$f3->route('GET /badge',      'controllers\Index->badge');    // xml
-$f3->route('GET /win8notifs', 'controllers\Index->win8Notifications');    // xml
+$f3->route('GET /',           'controllers\Index->home');                     // html
+$f3->route('POST /',          'controllers\Index->home');                     // html
+$f3->route('GET /password',   'controllers\Index->password');                 // html
+$f3->route('POST /password',  'controllers\Index->password');                 // html
+$f3->route('GET /login',      'controllers\Index->login');                    // json
+$f3->route('GET /logout',     'controllers\Index->logout');                   // json
+$f3->route('GET /keepAlive',  'controllers\Index->keepAlive');                // json
+$f3->route('GET /update',     'controllers\Index->update');                   // text
+$f3->route('GET /badge',      'controllers\Index->badge');                    // xml
+$f3->route('GET /win8notifs', 'controllers\Index->win8Notifications');        // xml
 
 // only for loggedin users or on public mode
-$f3->route('GET /rss',           'controllers\Rss->rss');           // rss
-$f3->route('GET /feed',          'controllers\Rss->rss');           // rss
-$f3->route('GET /items',         'controllers\Items->listItems');   // json
-$f3->route('GET /tags',          'controllers\Tags->listTags');     // json
-$f3->route('GET /tagslist',      'controllers\Tags->tagslist');     // html
-$f3->route('GET /stats',         'controllers\Items->stats');       // json
-$f3->route('GET /sources/stats', 'controllers\Sources->stats');     // json
+$f3->route('GET /rss',           'controllers\Rss->rss');                     // rss
+$f3->route('GET /feed',          'controllers\Rss->rss');                     // rss
+$f3->route('GET /items',         'controllers\Items->listItems');             // json
+$f3->route('GET /tags',          'controllers\Tags->listTags');               // json
+$f3->route('GET /tagslist',      'controllers\Tags->tagslist');               // html
+$f3->route('GET /stats',         'controllers\Items->stats');                 // json
+$f3->route('GET /sources/stats', 'controllers\Sources->stats');               // json
 
 // only loggedin users
 $f3->route('POST /mark/@item',          'controllers\Items->mark');           // json

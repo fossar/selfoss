@@ -170,6 +170,20 @@ class Index extends BaseController {
     
     
     /**
+     * keep session alive by actually doing nothing...
+     * json
+     *
+     * @return void
+     */
+    public function keepAlive() {
+        $this->view->jsonSuccess(array(
+            'publicMode' => ((\F3::get('auth')->isLoggedin() !== true) && (\F3::get('public') == 1)),
+            'loggedin' => (\F3::get('auth')->isLoggedin() === true)
+        ));
+    }
+    
+    
+    /**
      * update feeds
      * text
      *
