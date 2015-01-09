@@ -29,7 +29,7 @@ class Sources extends \daos\mysql\Sources {
                     array(
                         ':title'  => trim($title),
                         ':tags'  => $tags,
-			':filter' => $filter,
+                        ':filter' => $filter,
                         ':spout'  => $spout,
                         ':params' => htmlentities(json_encode($params))
                     ));

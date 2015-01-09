@@ -13,42 +13,45 @@ namespace spouts\twitter;
  */
 
 class listtimeline extends \spouts\twitter\usertimeline {
-	public function __construct() {
-		$this->name = 'Twitter - List timeline';
-		$this->description = 'The timeline of a given list';
-		$this->params = array(
-	        "consumer_key" => array(
-	            "title"      => "Consumer Key",
-	            "type"       => "text",
-	            "default"    => "",
-	            "required"   => true,
-	            "validation" => array("notempty")
-	        ),
-	        "consumer_secret" => array(
-	            "title"      => "Consumer Secret",
-	            "type"       => "password",
-	            "default"    => "",
-	            "required"   => true,
-	            "validation" => array("notempty")
-	        ),
-	        "slug" => array(
-	            "title"      => "List Slug",
-	            "type"       => "text",
-	            "default"    => "",
-	            "required"   => true,
-	            "validation" => array("notempty")
-	        ),
-	        "owner_screen_name" => array(
-	            "title"      => "Username",
-	            "type"       => "text",
-	            "default"    => "",
-	            "required"   => true,
-	            "validation" => array("notempty")
-	        )
-	    );
-	}
 
-	/**
+
+    public function __construct() {
+    
+        $this->name = 'Twitter - List timeline';
+        $this->description = 'The timeline of a given list';
+        $this->params = array(
+            "consumer_key" => array(
+                "title"      => "Consumer Key",
+                "type"       => "text",
+                "default"    => "",
+                "required"   => true,
+                "validation" => array("notempty")
+            ),
+            "consumer_secret" => array(
+                "title"      => "Consumer Secret",
+                "type"       => "password",
+                "default"    => "",
+                "required"   => true,
+                "validation" => array("notempty")
+            ),
+            "slug" => array(
+                "title"      => "List Slug",
+                "type"       => "text",
+                "default"    => "",
+                "required"   => true,
+                "validation" => array("notempty")
+            ),
+            "owner_screen_name" => array(
+                "title"      => "Username",
+                "type"       => "text",
+                "default"    => "",
+                "required"   => true,
+                "validation" => array("notempty")
+            )
+        );
+    }
+
+    /**
      * loads content for given list
      *
      * @return void
@@ -56,7 +59,12 @@ class listtimeline extends \spouts\twitter\usertimeline {
      */
     public function load($params) {
         $twitter = new \TwitterOAuth($params['consumer_key'], $params['consumer_secret']);
-        $timeline = $twitter->get('lists/statuses', array('slug' => $params['slug'], 'owner_screen_name' => $params['owner_screen_name'], 'include_rts' => 1, 'count' => 50));
+        $timeline = $twitter->get('lists/statuses', 
+                            array('slug' => $params['slug'], 
+                                  'owner_screen_name' => $params['owner_screen_name'], 
+                                  'include_rts' => 1, 
+                                  'count' => 50));
+        
         if(isset($timeline->error))
             throw new \exception($timeline->error);
         

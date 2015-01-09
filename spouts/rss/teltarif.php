@@ -95,7 +95,7 @@ class teltarif extends feed {
      */
     public function load($params) {
         parent::load(array( 'url' => $this->getXmlUrl() ) );
-    	    }
+    }
 
 
     /**
@@ -115,29 +115,28 @@ class teltarif extends feed {
      * @return string content
      */
     public function getContent() {
-    	
-    	$start_marker = "<!-- Artikel -->";
-    	$end_marker = "<!-- NOPRINT Start -->";
-    	
+        
+        $start_marker = "<!-- Artikel -->";
+        $end_marker = "<!-- NOPRINT Start -->";
+        
         if($this->items!==false && $this->valid()) {
             $originalContent = @file_get_contents($this->getLink());
             if($originalContent) {
-            	
-            	$originalContent = mb_convert_encoding($originalContent, 'UTF-8', 'ISO-8859-1');
-            	
-            	// cut the article from the page
-            	$text_start_pos = strpos ($originalContent, $start_marker);  	            	
-            	$text_end_pos= strrpos ($originalContent, $end_marker);
-            	
-            	if (($text_start_pos != False) && ($text_end_pos != False)){
-            		          		
-            		$content = substr ($originalContent, 
-            				           $text_start_pos + strlen ($start_marker), 
-            				           $text_end_pos - $text_start_pos - strlen ($start_marker));
+                
+                $originalContent = mb_convert_encoding($originalContent, 'UTF-8', 'ISO-8859-1');
+                
+                // cut the article from the page
+                $text_start_pos = strpos ($originalContent, $start_marker);
+                $text_end_pos= strrpos ($originalContent, $end_marker);
+                
+                if (($text_start_pos != false) && ($text_end_pos != false)) {
+                    $content = substr ($originalContent, 
+                                       $text_start_pos + strlen ($start_marker), 
+                                       $text_end_pos - $text_start_pos - strlen ($start_marker));
 
-            		// remove most html coding and return result
-            		return htmLawed($content, $this->htmLawedConfig);
-            	}
+                    // remove most html coding and return result
+                    return htmLawed($content, $this->htmLawedConfig);
+                }
             }       
         }
         return parent::getContent();

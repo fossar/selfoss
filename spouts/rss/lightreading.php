@@ -72,7 +72,7 @@ class lightreading extends feed {
      * elements: start tag, attribute of start tag, value of start tag attribute, end
      */
     private $textDivs = array(
-    	array ("p", "class", "smalltallline lightergray", '<div class="divsplitter"') 		
+        array ("p", "class", "smalltallline lightergray", '<div class="divsplitter"')
     );
 
 
@@ -105,7 +105,7 @@ class lightreading extends feed {
      */
     public function load($params) {
         parent::load(array( 'url' => $this->getXmlUrl() ) );
-    	    }
+    }
 
 
     /**
@@ -130,8 +130,8 @@ class lightreading extends feed {
             foreach($this->textDivs as $div) {
                 $content = $this->getTag($div[1], $div[2], $originalContent, $div[0], $div[3]);
                 if(is_array($content) && count($content)>=1) {
-                	$content[0] = "<p>" . mb_convert_encoding($content[0], 'UTF-8', 'Windows-1252');             	
-                	return htmLawed($content[0], $this->htmLawedConfig);
+                    $content[0] = "<p>" . mb_convert_encoding($content[0], 'UTF-8', 'Windows-1252');
+                    return htmLawed($content[0], $this->htmLawedConfig);
                 }
             }
         }

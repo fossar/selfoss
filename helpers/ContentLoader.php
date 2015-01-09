@@ -140,7 +140,7 @@ class ContentLoader {
             if(strlen(trim($title))==0)
                 $title = "[" . \F3::get('lang_no_title') . "]";
 
-	    // Check sanatized title against filter
+            // Check sanatized title against filter
             try {
                 if($this->filter($source, $title,$content)===false)
                     continue;
@@ -205,9 +205,9 @@ class ContentLoader {
     protected function filter($source, $title,$content) {
         if(strlen(trim($source['filter']))!=0) {
             $resultTitle = @preg_match($source['filter'], $title);
-	    $resultContent = @preg_match($source['filter'], $content);
+            $resultContent = @preg_match($source['filter'], $content);
             if($resultTitle===false || $resultContent===false) {
-		\F3::get('logger')->log('filter error: ' . $source->fiter, \ERROR);
+                \F3::get('logger')->log('filter error: ' . $source->fiter, \ERROR);
                 throw new Exception();
             }
             // test filter

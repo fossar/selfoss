@@ -29,7 +29,7 @@ class Sources extends Database {
                     array(
                         ':title'  => trim($title),
                         ':tags'   => $tags,
-			':filter' => $filter,
+                        ':filter' => $filter,
                         ':spout'  => $spout,
                         ':params' => htmlentities(json_encode($params))
                     ));
@@ -56,8 +56,8 @@ class Sources extends Database {
         \F3::get('db')->exec('UPDATE '.\F3::get('db_prefix').'sources SET title=:title, tags=:tags, filter=:filter, spout=:spout, params=:params, error="" WHERE id=:id',
                     array(
                         ':title'  => trim($title),
-                        ':tags'  => $tags,
-			':filter' => $filter,
+                        ':tags'   => $tags,
+                        ':filter' => $filter,
                         ':spout'  => $spout,
                         ':params' => htmlentities(json_encode($params)),
                         ':id'     => $id

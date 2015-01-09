@@ -95,7 +95,7 @@ class Database {
                         id          SERIAL PRIMARY KEY,
                         title       TEXT NOT NULL,
                         tags        TEXT,
-			filter	    TEXT,
+                        filter      TEXT,
                         spout       TEXT NOT NULL,
                         params      TEXT NOT NULL,
                         error       TEXT,

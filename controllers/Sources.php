@@ -134,7 +134,7 @@ class Sources extends BaseController {
         $title = htmlspecialchars($data['title']);
         $tags = htmlspecialchars($data['tags']);
         $spout = $data['spout'];
-	$filter = $data['filter'];
+        $filter = $data['filter'];
         $isAjax = isset($data['ajax']);
         
         unset($data['title']);
