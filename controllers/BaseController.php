@@ -28,4 +28,26 @@ class BaseController {
     public function __construct() {
         $this->view = new \helpers\View();
     }
+
+    /**
+     * send 403 if not logged in and not public mode
+     *
+     * @return void
+    */
+    public function needsLoggedInOrPublicMode() {
+        if(\F3::get('auth')->isLoggedin()!==true && \F3::get('public')!=1) {
+            \F3::error(403);
+        }
+    }
+
+    /**
+     * send 403 if not logged in
+     *
+     * @return void
+    */
+    public function needsLoggedIn() {
+        if(\F3::get('auth')->isLoggedin()!==true) {
+            \F3::error(403);
+        }
+    }
 }

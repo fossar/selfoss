@@ -19,6 +19,8 @@ class Sources extends BaseController {
      * @return void
      */
     public function show() {
+        $this->needsLoggedIn();
+
         // get available spouts
         $spoutLoader = new \helpers\SpoutLoader();
         $this->view->spouts = $spoutLoader->all();
@@ -50,6 +52,8 @@ class Sources extends BaseController {
      * @return void
      */
     public function add() {
+        $this->needsLoggedIn();
+
         $spoutLoader = new \helpers\SpoutLoader();
         $this->view->spouts = $spoutLoader->all();
         echo $this->view->render('templates/source.phtml');
@@ -63,6 +67,8 @@ class Sources extends BaseController {
      * @return void
      */
     public function params() {
+        $this->needsLoggedIn();
+
         if(!isset($_GET['spout']))
             $this->view->error('no spout type given');
         
@@ -120,6 +126,8 @@ class Sources extends BaseController {
      * @return void
      */
     public function write() {
+        $this->needsLoggedIn();
+
         $sourcesDao = new \daos\Sources();
 
         // read data
@@ -193,6 +201,8 @@ class Sources extends BaseController {
      * @return void
      */
     public function remove() {
+        $this->needsLoggedIn();
+
         $id = \F3::get('PARAMS["id"]');
 
         $sourceDao = new \daos\Sources();
@@ -220,6 +230,8 @@ class Sources extends BaseController {
      * @return void
      */
     public function listSources() {
+        $this->needsLoggedIn();
+
         $itemDao = new \daos\Items();
         
         // load sources
@@ -245,6 +257,8 @@ class Sources extends BaseController {
      * @return void
      */
     public function spouts() {
+        $this->needsLoggedIn();
+
         $spoutLoader = new \helpers\SpoutLoader();
         $spouts = $spoutLoader->all();
         $this->view->jsonSuccess($spouts);
@@ -258,6 +272,8 @@ class Sources extends BaseController {
      * @return void
      */
     public function stats() {
+        $this->needsLoggedInOrPublicMode();
+
         $itemDao = new \daos\Items();
         
         // load sources

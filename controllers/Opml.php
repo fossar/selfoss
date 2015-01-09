@@ -39,6 +39,8 @@ class Opml extends BaseController {
      *
      */
     public function show() {
+        $this->needsLoggedIn();
+
         $this->view = new \helpers\View();
         $this->view->msg = $this->msg;
         $this->view->msgclass = $this->msgclass;
@@ -53,6 +55,8 @@ class Opml extends BaseController {
      * @note Borrows from controllers/Sources.php:write
      */
     public function add() {
+        $this->needsLoggedIn();
+
         try {
             $opml = $_FILES['opml'];
             if ($opml['error'] == UPLOAD_ERR_NO_FILE) {
@@ -257,6 +261,8 @@ class Opml extends BaseController {
      * @note Uses the selfoss namespace to store selfoss-specific information
      */
     public function export() {
+        $this->needsLoggedIn();
+
         $this->sourcesDao = new \daos\Sources();
         $this->tagsDao = new \daos\Tags();
 

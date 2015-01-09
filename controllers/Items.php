@@ -19,6 +19,8 @@ class Items extends BaseController {
      * @return void
      */
     public function mark() {
+        $this->needsLoggedIn();
+
         if(\F3::get('PARAMS["item"]')!=null)
             $lastid = \F3::get('PARAMS["item"]');
         else if(isset($_POST['ids'])) {
@@ -48,6 +50,8 @@ class Items extends BaseController {
      * @return void
      */
     public function unmark() {
+        $this->needsLoggedIn();
+
         $lastid = \F3::get('PARAMS["item"]');
 
         $itemDao = new \daos\Items();
@@ -70,6 +74,8 @@ class Items extends BaseController {
      * @return void
      */
     public function starr() {
+        $this->needsLoggedIn();
+
         $id = \F3::get('PARAMS["item"]');
 
         $itemDao = new \daos\Items();
@@ -91,6 +97,8 @@ class Items extends BaseController {
      * @return void
      */
     public function unstarr() {
+        $this->needsLoggedIn();
+
         $id = \F3::get('PARAMS["item"]');
 
         $itemDao = new \daos\Items();
@@ -112,6 +120,8 @@ class Items extends BaseController {
      * @return void
      */
     public function listItems() {
+        $this->needsLoggedInOrPublicMode();
+
         // parse params
         $options = array();
         if(count($_GET)>0)
@@ -132,6 +142,8 @@ class Items extends BaseController {
      * @return void
      */
     public function stats() {
+        $this->needsLoggedInOrPublicMode();
+
         $itemsDao = new \daos\Items();
         $return = array(
             'all'     => $itemsDao->numberOfItems(),

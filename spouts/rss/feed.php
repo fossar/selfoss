@@ -153,6 +153,7 @@ class feed extends \spouts\spout {
         @$this->feed->set_cache_duration(1800);
         @$this->feed->set_feed_url(htmlspecialchars_decode($params['url']));
         @$this->feed->set_autodiscovery_level( SIMPLEPIE_LOCATOR_AUTODISCOVERY | SIMPLEPIE_LOCATOR_LOCAL_EXTENSION | SIMPLEPIE_LOCATOR_LOCAL_BODY);
+        $this->feed->set_useragent($this->getUserAgent(array('SimplePie/'.SIMPLEPIE_VERSION)));
          
         // fetch items
         @$this->feed->init();
@@ -252,8 +253,16 @@ class feed extends \spouts\spout {
         $this->faviconUrl = false;
         $imageHelper = $this->getImageHelper();
         $htmlUrl = $this->getHtmlUrl();
-        if($htmlUrl && $imageHelper->fetchFavicon($htmlUrl))
+        if($htmlUrl && $imageHelper->fetchFavicon($htmlUrl, true)){
             $this->faviconUrl = $imageHelper->getFaviconUrl();
+            \F3::get('logger')->log('icon: using feed homepage favicon: ' . $this->faviconUrl, \DEBUG);
+        }else{
+            $feedLogoUrl = $this->feed->get_image_url();
+            if( $feedLogoUrl && $imageHelper->fetchFavicon($feedLogoUrl) ){
+                $this->faviconUrl = $imageHelper->getFaviconUrl();
+                \F3::get('logger')->log('icon: using feed logo: ' . $this->faviconUrl, \DEBUG);
+           }
+        }
         return $this->faviconUrl;
     }
     

@@ -128,7 +128,8 @@ class Image {
         
         // resize
         if($width!==false && $height!==false) {
-            if($wideImage->getHeight()>$height || $wideImage->getWidth()>$width)
+            if(($height!==null && $wideImage->getHeight()>$height) ||
+               ($width!==null && $wideImage->getWidth()>$width))
                 $wideImage = $wideImage->resize($width, $height);
         }
         
@@ -162,7 +163,7 @@ class Image {
         if($result==0)
             $result = preg_match('/<link [^>]*rel=("|\')icon\1.*>/Ui', $html, $match1);
         if($result>0) {
-            $result = preg_match('/href=("|\')?(.+)\1?/Ui', $match1[0], $match2);
+            $result = preg_match('/href=("|\')?(.+)\1/i', $match1[0], $match2);
             if($result>0)
                 return $match2[2];
         }
