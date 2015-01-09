@@ -176,9 +176,17 @@ class Items extends Database {
     public function cleanup(\DateTime $date = NULL) {
         \F3::get('db')->exec('DELETE items FROM '.\F3::get('db_prefix').'items AS items LEFT JOIN '.\F3::get('db_prefix').'sources AS sources
                                 ON items.source=sources.id WHERE sources.id IS NULL');
-        if ($date !== NULL)
-            \F3::get('db')->exec('DELETE FROM '.\F3::get('db_prefix').'items WHERE starred=0 AND datetime<:date',
+        if ($date !== NULL) {
+            $query = 'DELETE FROM '.\F3::get('db_prefix').'items WHERE starred=0 AND datetime<:date';
+
+            if(0 === \F3::get('delete_unread'))
+                $query .= ' AND unread=0';
+
+            \F3::get('db')->exec($query,
                     array(':date' => $date->format('Y-m-d').' 00:00:00'));
+
+        }
+
     }
     
     
