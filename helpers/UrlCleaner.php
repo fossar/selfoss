@@ -46,25 +46,25 @@ class UrlCleaner {
      * @param string $url
      */
     public function processUrl($url) {
-	$this->realUrl = $url;
-	$urlToken = parse_url($url);
+        $this->realUrl = $url;
+        $urlToken = parse_url($url);
 
-	// Look for host patterns. If found, use curl to get real URL
+        // Look for host patterns. If found, use curl to get real URL
         foreach ( $this->hostPatterns as $pattern ) {
-	    if ( strpos($urlToken['host'], $pattern) !== false ) {
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL,$url);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
-		curl_setopt($ch, CURLOPT_HEADER, TRUE);
-		curl_exec($ch);
-		$this->realUrl = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
-		unset($ch);
-		break;
-	    }
-	}
-	$this->cleanTrackers();
-	return true;
+            if ( strpos($urlToken['host'], $pattern) !== false ) {
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_URL, $url);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+                curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+                curl_setopt($ch, CURLOPT_HEADER, TRUE);
+                curl_exec($ch);
+                $this->realUrl = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
+                unset($ch);
+                break;
+            }
+        }
+        $this->cleanTrackers();
+        return true;
     }
 
     /**
@@ -84,11 +84,11 @@ class UrlCleaner {
     private function cleanTrackers() {
         $url = parse_url($this->realUrl);
 
-	// Start rebuilding URL
+        // Start rebuilding URL
         $realUrl = $url['scheme'] . '://';
         if (isset($url['user']) && isset($url['password']))
-            $realUrl .= $url['user'] . ':' . $url['password'] . '@';
-        $realUrl .= $url['host'] . $url['path'];
+            $realUrl = $realUrl . $url['user'] . ':' . $url['password'] . '@';
+        $realUrl = $realUrl . $url['host'] . $url['path'];
 
         // Query string
         if (isset($url['query'])) {
@@ -96,28 +96,34 @@ class UrlCleaner {
             $realQuery = array();
             foreach ($q_array as $key => $value) {
                 // Remove trackers from URL query string
-		foreach ( $this->queryPatterns as $pattern ) {
-		    if ( strpos($key, $pattern) !== false )
-			$realQuery[]= $key.'='.$value;
-		}
+                foreach ( $this->queryPatterns as $pattern ) {
+                    if ( strpos($key, $pattern) !== false ) {
+                        $realQuery[] = $key . '=' . $value;
+                    }
+                }
             }
-	    $realQuery = http_build_query($q_array);
-            if ( $realQuery )
-                $realUrl .= '?' . $realQuery;
-	    unset($q_array);
-	    unset($realQuery);
+            
+            $realQuery = http_build_query($realQuery);
+            if ($realQuery) {
+                $realUrl = $realUrl . '?' . $realQuery;
+            }
+            
+            unset($q_array);
+            unset($realQuery);
         }
 
         // Fragment
         if (isset($url['fragment'])) {
-	    // Remove trackers from URL fragment
-	    foreach ( $this->fragmentPatterns as $pattern ) {
-		if ( strpos($url['fragment'], 'xtor') === false )
-		    $realUrl .= '#' . $url['fragment'];
-	    }
+            // Remove trackers from URL fragment
+            foreach ( $this->fragmentPatterns as $pattern ) {
+                if (strpos($url['fragment'], 'xtor') === false) {
+                    $realUrl = $realUrl . '#' . $url['fragment'];
+                }
+            }
         }
+        
         $this->realUrl = $realUrl;
-	unset($url);
+        unset($url);
     }
 
 }
