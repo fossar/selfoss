@@ -20,11 +20,16 @@ var selfoss = {
         source: '',
         ajax: true
     },
-
+    
     /**
      * instance of the currently running XHR that is used to reload the items list
      */
     activeAjaxReq: null,
+    
+    /**
+     * interval ID of session keep alive
+     */
+    keepAliveIntervalID: null,
     
     /**
      * initialize application
@@ -36,7 +41,10 @@ var selfoss = {
                 $('#username').focus();
                 return;
             }
-        
+            
+            // init session keep alive
+            selfoss.keepAliveIntervalID = setInterval(selfoss.keepAlive, 590000);
+            
             // set items per page
             selfoss.filter.itemsPerPage = $('#config').data('items_perpage');
             
@@ -48,6 +56,30 @@ var selfoss = {
             
             // init shortcut handler
             selfoss.shortcuts.init();
+        });
+    },
+    
+    
+    /**
+     * keep session alive by sending periodic ajax requests
+     *
+     * @return void
+     */
+    keepAlive: function() {
+        $.ajax({
+            url: $('base').attr('href') + 'keepAlive',
+            type: 'GET',
+            dataType: 'json',
+            success: function(data, textStatus, jqXHR) {
+                // neither logged in nor in public mode
+                // redirect to login page
+                if (!data.publicMode && !data.loggedin) {
+                    location.reload();
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                clearInterval(selfoss.keepAliveIntervalID);
+            }
         });
     },
     
