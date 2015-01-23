@@ -181,7 +181,8 @@ var selfoss = {
                 else if (textStatus == "parsererror")
                     location.reload();
                 else if (errorThrown)
-                    selfoss.showError('Load list error: '+errorThrown);
+                    selfoss.showError('Load list error: '+
+                                      textStatus+' '+errorThrown);
             }
         });
     },
@@ -204,7 +205,8 @@ var selfoss = {
                 selfoss.events.navigation();
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                selfoss.showError('Load tags error: '+errorThrown);
+                selfoss.showError('Load tags error: '+
+                                  textStatus+' '+errorThrown);
             },
             complete: function(jqXHR, textStatus) {
                 $('#nav-tags').removeClass('loading');
@@ -266,10 +268,10 @@ var selfoss = {
     
     
     /**
-     * anonymize links
+     * show error
      *
      * @return void
-     * @param parent element
+     * @param message string
      */
     showError: function(message) {
         if(typeof(message) == 'undefined') {
