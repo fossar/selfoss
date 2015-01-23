@@ -176,12 +176,10 @@ class Database {
                     ');
                 }
                 if(strnatcmp($version, "6") < 0){
-                    \F3::get('db')->exec('
-                        ALTER TABLE sources ADD filter TEXT;
-                    ');
-                    \F3::get('db')->exec('
-                        INSERT INTO version (version) VALUES (6);
-                    ');
+                    \F3::get('db')->exec(array(
+                        'ALTER TABLE sources ADD filter TEXT;',
+                        'INSERT INTO version (version) VALUES (6);'
+                    ));
                 }
             }
             
