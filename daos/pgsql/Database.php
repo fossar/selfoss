@@ -175,7 +175,7 @@ class Database {
                         INSERT INTO version (version) VALUES (5);
                     ');
                 }
-                if(strnatcmp($version, "5") < 0){
+                if(strnatcmp($version, "6") < 0){
                     \F3::get('db')->exec('
                         ALTER TABLE sources ADD filter TEXT;
                     ');
