@@ -53,7 +53,7 @@ class Sources extends Database {
         // sanitize tag list
         $tags = implode(',', preg_split('/\s*,\s*/', trim($tags), -1, PREG_SPLIT_NO_EMPTY));
 
-        \F3::get('db')->exec('UPDATE '.\F3::get('db_prefix').'sources SET title=:title, tags=:tags, filter=:filter, spout=:spout, params=:params, error="" WHERE id=:id',
+        \F3::get('db')->exec('UPDATE '.\F3::get('db_prefix').'sources SET title=:title, tags=:tags, filter=:filter, spout=:spout, params=:params WHERE id=:id',
                     array(
                         ':title'  => trim($title),
                         ':tags'   => $tags,
