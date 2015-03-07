@@ -88,12 +88,21 @@ class Sources extends Database {
      * @param int $id the source id
      * @param string $error error message
      */
-    public function error($id, $error="") {
-        \F3::get('db')->exec('UPDATE '.\F3::get('db_prefix').'sources SET error=:error WHERE id=:id',
-                    array(
-                        ':id'    => $id,
-                        ':error' => $error
-                    ));
+    public function error($id, $error) {
+        if (strlen($error) == 0) {
+            $arr = array(
+                ':id'    => $id
+                );
+            $setarg = 'NULL';
+        } else {
+            $arr = array(
+                ':id'    => $id,
+                ':error' => $error
+            );
+            $setarg = ':error';
+        }
+
+        \F3::get('db')->exec('UPDATE '.\F3::get('db_prefix').'sources SET error='.$setarg.' WHERE id=:id', $arr);
     }
 
 
@@ -132,7 +141,7 @@ class Sources extends Database {
      * @return mixed all sources
      */
     public function get() {
-        $ret = \F3::get('db')->exec('SELECT id, title, tags, spout, params, filter, error FROM '.\F3::get('db_prefix').'sources ORDER BY lower(title) ASC');
+        $ret = \F3::get('db')->exec('SELECT id, title, tags, spout, params, filter, error FROM '.\F3::get('db_prefix').'sources ORDER BY error DESC, lower(title) ASC');
         $spoutLoader = new \helpers\SpoutLoader();
         for($i=0;$i<count($ret);$i++)
             $ret[$i]['spout_obj'] = $spoutLoader->get( $ret[$i]['spout'] );
