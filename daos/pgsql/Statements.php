@@ -26,6 +26,17 @@ class Statements extends \daos\mysql\Statements {
 
 
    /**
+    * sum statement for boolean columns
+    *
+    * @param boolean column to concat
+    * @return full statement
+    */
+    public static function sumBool($column) {
+        return "SUM($column::int)";
+    }
+
+
+   /**
     * bool true statement
     *
     * @param column to check for truth

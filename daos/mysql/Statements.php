@@ -27,6 +27,17 @@ class Statements{
 
 
    /**
+    * sum statement for boolean columns
+    *
+    * @param boolean column to concat
+    * @return full statement
+    */
+    public static function sumBool($column) {
+        return "SUM($column)";
+    }
+
+
+   /**
     * bool true statement
     *
     * @param column to check for truth

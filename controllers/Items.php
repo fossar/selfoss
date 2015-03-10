@@ -145,11 +145,6 @@ class Items extends BaseController {
         $this->needsLoggedInOrPublicMode();
 
         $itemsDao = new \daos\Items();
-        $return = array(
-            'all'     => $itemsDao->numberOfItems(),
-            'unread'  => $itemsDao->numberOfUnread(),
-            'starred' => $itemsDao->numberOfStarred()
-        );
-        $this->view->jsonSuccess($return);
+        $this->view->jsonSuccess($itemsDao->stats());
     }
 }

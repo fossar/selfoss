@@ -383,17 +383,6 @@ class Items extends Database {
     
     
     /**
-     * returns the amount of entries in database
-     *
-     * @return int amount of entries in database
-     */
-    public function numberOfItems() {
-        $res = \F3::get('db')->exec('SELECT count(*) AS amount FROM '.\F3::get('db_prefix').'items');
-        return $res[0]['amount'];
-    }
-    
-    
-    /**
      * returns the amount of entries in database which are unread
      *
      * @return int amount of entries in database which are unread
@@ -404,20 +393,7 @@ class Items extends Database {
                    WHERE '.$this->stmt->isTrue('unread'));
         return $res[0]['amount'];
     }
-    
-    
-    /**
-     * returns the amount of entries in database which are starred
-     *
-     * @return int amount of entries in database which are starred
-     */
-    public function numberOfStarred() {
-        $res = \F3::get('db')->exec('SELECT count(*) AS amount
-                   FROM '.\F3::get('db_prefix').'items 
-                   WHERE '.$this->stmt->isTrue('starred'));
-        return $res[0]['amount'];
-    }
-    
+   
     
     /**
      * returns the amount of unread entries in database per tag
@@ -436,7 +412,18 @@ class Items extends Database {
             array(':tag' => "%,".$tag.",%"));
         return $res[0]['amount'];
     }
-    
+
+
+    /**
+    * returns the amount of total, unread, starred entries in database
+    *
+    * @return array mount of total, unread, starred entries in database
+    */
+    public function stats() {
+        $res = \F3::get('db')->exec('SELECT COUNT(*) AS total, '.$this->stmt->sumBool('unread').' AS unread, '.$this->stmt->sumBool('starred').' AS starred FROM items;');
+        return $res[0];
+    }
+
     
     /**
      * returns the amount of unread entries in database per source
