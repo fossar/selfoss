@@ -374,7 +374,7 @@ class ContentLoader {
      */
     protected function updateSource($source) {
         // remove previous error
-        if (strlen(trim($source['error'])) != 0) {
+        if ( !is_null($source['error']) ) {
             $this->sourceDao->error($source['id'], '');
         }
         // save last update
