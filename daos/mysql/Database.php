@@ -174,6 +174,9 @@ class Database {
             // just initialize once
             $initialized = true;
         }
+
+        $class = 'daos\\' . \F3::get('db_type') . '\\Statements';
+        $this->stmt = new $class();
     }
     
     

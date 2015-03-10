@@ -25,7 +25,7 @@ class Sources extends Database {
         // sanitize tag list
         $tags = implode(',', preg_split('/\s*,\s*/', trim($tags), -1, PREG_SPLIT_NO_EMPTY));
 
-        \F3::get('db')->exec('INSERT INTO '.\F3::get('db_prefix').'sources (title, tags, filter, spout, params, error) VALUES (:title, :tags, :filter, :spout, :params, "")',
+        return $this->stmt->insert('INSERT INTO '.\F3::get('db_prefix').'sources (title, tags, filter, spout, params) VALUES (:title, :tags, :filter, :spout, :params)',
                     array(
                         ':title'  => trim($title),
                         ':tags'   => $tags,
@@ -33,9 +33,6 @@ class Sources extends Database {
                         ':spout'  => $spout,
                         ':params' => htmlentities(json_encode($params))
                     ));
- 
-        $res = \F3::get('db')->exec('SELECT LAST_INSERT_ID() as lastid');
-        return $res[0]['lastid'];
     }
     
     
