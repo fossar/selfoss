@@ -225,7 +225,7 @@ class ContentLoader {
      */
     protected function sanitizeContent($content) {
         return htmLawed(
-            htmlspecialchars_decode($content),
+            $content,
             array(
                 "safe"           => 1,
                 "deny_attribute" => '* -alt -title -src -href -target',
