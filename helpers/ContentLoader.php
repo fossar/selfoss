@@ -136,7 +136,7 @@ class ContentLoader {
             }
 
             // sanitize title
-            $title = $this->sanitizeContent($item->getTitle());
+            $title = $this->sanitizeField($item->getTitle());
             if(strlen(trim($title))==0)
                 $title = "[" . \F3::get('lang_no_title') . "]";
 
@@ -151,8 +151,7 @@ class ContentLoader {
 
 
             // sanitize author
-            $author = htmlspecialchars_decode($item->getAuthor());
-            $author = htmLawed($author, array("deny_attribute" => "*", "elements" => "-*"));
+            $author = $this->sanitizeField($item->getAuthor());
 
             \F3::get('logger')->log('item content sanitized', \DEBUG);
 
@@ -237,6 +236,18 @@ class ContentLoader {
         );
     }
 
+    /**
+     * Sanitize a simple field
+     *
+     * @param $value content of the given field
+     * @return mixed|string sanitized content
+     */
+    protected function sanitizeField($value) {
+        return htmLawed(
+            htmlspecialchars_decode($value),
+            array("deny_attribute" => "*", "elements" => "-*")
+        );
+    }
 
     /**
      * Fetch the thumbanil of a given item
