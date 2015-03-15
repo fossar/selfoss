@@ -232,7 +232,7 @@ class ContentLoader {
             $content,
             array(
                 "safe"           => 1,
-                "deny_attribute" => '* -alt -title -src -href -target -width -height',
+                "deny_attribute" => '* -alt -title -src -href -target -width -height, img +width +height',
                 "keep_bad"       => 0,
                 "comment"        => 1,
                 "cdata"          => 1,
