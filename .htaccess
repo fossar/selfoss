@@ -1,4 +1,6 @@
-AddHandler php5-cgi .php
+<IfModule !mod_php5.c>
+    AddHandler php5-cgi .php
+</IfModule>
 
 # Enable rewrite engine and route requests to framework
 RewriteEngine On
