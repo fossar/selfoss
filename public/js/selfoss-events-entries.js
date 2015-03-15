@@ -98,11 +98,6 @@ selfoss.events.entries = function(e) {
 
                 // scroll to article header
                 parent.get(0).scrollIntoView();
-
-                // turn of column view if entry is too long
-                if(content.height() > $(window).height() ) {
-                    content.addClass('entry-content-nocolumns');
-                }
             }
             
             // load images not on mobile devices
