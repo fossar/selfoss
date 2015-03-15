@@ -27,7 +27,8 @@ selfoss.events.sources = function() {
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 parent.find('.source-edit-delete').removeClass('loading');                     
-                selfoss.showError('Error adding source: '+errorThrown); 
+                selfoss.showError('Error adding source: '+
+                                  textStatus+' '+errorThrown);
             }
         });
     });
