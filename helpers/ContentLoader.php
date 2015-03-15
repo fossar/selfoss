@@ -58,6 +58,11 @@ class ContentLoader {
      */
     public function fetch($source) {
         
+        // at least 20 seconds wait until next update of a given source
+        $this->updateSource($source);
+        if(time() - $source['lastupdate'] < 20)
+            return;
+        
         @set_time_limit(5000);
         @error_reporting(E_ERROR);
         
