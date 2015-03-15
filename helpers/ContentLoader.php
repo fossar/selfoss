@@ -136,7 +136,7 @@ class ContentLoader {
             }
 
             // sanitize title
-            $title = $this->sanitizeContent($item->getTitle());
+            $title = $this->sanitizeField($item->getTitle());
             if(strlen(trim($title))==0)
                 $title = "[" . \F3::get('lang_no_title') . "]";
 
@@ -151,8 +151,7 @@ class ContentLoader {
 
 
             // sanitize author
-            $author = htmlspecialchars_decode($item->getAuthor());
-            $author = htmLawed($author, array("deny_attribute" => "*", "elements" => "-*"));
+            $author = $this->sanitizeField($item->getAuthor());
 
             \F3::get('logger')->log('item content sanitized', \DEBUG);
 
@@ -225,18 +224,33 @@ class ContentLoader {
      */
     protected function sanitizeContent($content) {
         return htmLawed(
-            htmlspecialchars_decode($content),
+            $content,
             array(
                 "safe"           => 1,
-                "deny_attribute" => '* -alt -title -src -href -target',
+                "deny_attribute" => '* -alt -title -src -href -target -width -height',
                 "keep_bad"       => 0,
                 "comment"        => 1,
                 "cdata"          => 1,
-                "elements"       => 'div,p,ul,li,a,img,dl,dt,dd,h1,h2,h3,h4,h5,h6,ol,br,table,tr,td,blockquote,pre,ins,del,th,thead,tbody,b,i,strong,em,tt,sub,sup,s'
+                "elements"       => 'div,p,ul,li,a,img,dl,dt,dd,h1,h2,h3,h4,h5,h6,ol,br,table,tr,td,blockquote,pre,ins,del,th,thead,tbody,b,i,strong,em,tt,sub,sup,s,code'
             )
         );
     }
 
+    /**
+     * Sanitize a simple field
+     *
+     * @param $value content of the given field
+     * @return mixed|string sanitized content
+     */
+    protected function sanitizeField($value) {
+        return htmLawed(
+            htmlspecialchars_decode($value),
+            array(
+                "deny_attribute" => '* -href -title',
+                "elements"       => 'a,br,ins,del,b,i,strong,em,tt,sub,sup,s,code'
+            )
+        );
+    }
 
     /**
      * Fetch the thumbanil of a given item
@@ -363,7 +377,7 @@ class ContentLoader {
      */
     protected function updateSource($source) {
         // remove previous error
-        if (strlen(trim($source['error'])) != 0) {
+        if ( !is_null($source['error']) ) {
             $this->sourceDao->error($source['id'], '');
         }
         // save last update
