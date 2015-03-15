@@ -149,7 +149,8 @@ selfoss.events.entries = function(e) {
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 streamMore.removeClass('loading');
-                selfoss.showError('Load more error: '+errorThrown);
+                selfoss.showError('Load more error: '+
+                                  textStatus+' '+errorThrown);
             }
         });
     });

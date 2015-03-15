@@ -76,7 +76,8 @@ selfoss.events = {
                     if (textStatus == "abort")
                         return;
                     else if (errorThrown)
-                        selfoss.showError('Load list error: '+errorThrown); 
+                        selfoss.showError('Load list error: '+
+                                          textStatus+' '+errorThrown);
                 },
                 complete: function(jqXHR, textStatus) {
                     $('#content').removeClass('loading');
