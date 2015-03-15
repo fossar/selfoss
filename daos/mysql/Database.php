@@ -103,7 +103,7 @@ class Database {
                 ');
                 
                 \F3::get('db')->exec('
-                    INSERT INTO '.\F3::get('db_prefix').'version (version) VALUES (5);
+                    INSERT INTO '.\F3::get('db_prefix').'version (version) VALUES (6);
                 ');
                 
                 \F3::get('db')->exec('
