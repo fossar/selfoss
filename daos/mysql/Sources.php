@@ -145,6 +145,21 @@ class Sources extends Database {
         return $ret;
     }
     
+
+    /**
+     * returns all sources including unread count
+     *
+     * @return mixed all sources
+     */
+    public function getWithUnread() {
+        return \F3::get('db')->exec('SELECT
+            sources.id, sources.title, COUNT(items.id) AS unread
+            FROM '.\F3::get('db_prefix').'sources AS sources
+            LEFT OUTER JOIN '.\F3::get('db_prefix').'items AS items
+                 ON (items.source=sources.id AND '.$this->stmt->isTrue('items.unread').')
+            GROUP BY sources.id, sources.title
+            ORDER BY lower(sources.title) ASC');
+    }
     
     /**
      * test if the value of a specified field is valid

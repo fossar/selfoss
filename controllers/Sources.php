@@ -97,7 +97,7 @@ class Sources extends BaseController {
         foreach($sources as $source) {
             $this->view->source = $source['title'];
             $this->view->sourceid = $source['id'];
-            $this->view->unread = $itemsDao->numberOfUnreadForSource($source['id']);
+            $this->view->unread = $source['unread'];
             $html .= $this->view->render('templates/source-nav.phtml');
         }
         
@@ -114,7 +114,7 @@ class Sources extends BaseController {
      */
     public function sourcesListAsString() {
         $sourcesDao = new \daos\Sources();
-        $sources = $sourcesDao->get();
+        $sources = $sourcesDao->getWithUnread();
         return $this->renderSources($sources);
     }
     
@@ -278,18 +278,8 @@ class Sources extends BaseController {
         
         // load sources
         $sourcesDao = new \daos\Sources();
-        $sources = $sourcesDao->get();
+        $sources = $sourcesDao->getWithUnread();
         
-        // get stats
-        $result = array();
-        for($i=0; $i<count($sources); $i++) {
-            $result[] = array(
-                'id'     => $sources[$i]['id'],
-                'title'  => $sources[$i]['title'],
-                'unread' => $itemDao->numberOfUnreadForSource($sources[$i]['id'])
-            );
-        }
-        
-        $this->view->jsonSuccess($result);
+        $this->view->jsonSuccess($sources);
     }
 }

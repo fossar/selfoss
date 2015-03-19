@@ -56,7 +56,7 @@ class Index extends BaseController {
         
         // prepare sources display list
         $sourcesDao = new \daos\Sources();
-        $sources = $sourcesDao->get();
+        $sources = $sourcesDao->getWithUnread();
         $sourcesController = new \controllers\Sources();
         $this->view->sources = $sourcesController->renderSources($sources);
         
