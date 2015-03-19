@@ -28,7 +28,7 @@ class Database {
      */
     public function __construct() {
         if(self::$initialized===false && \F3::get('db_type')=="mysql") {
-            // establish database connection
+            \F3::get('logger')->log("Establish database connection", \DEBUG);
             \F3::set('db', new \DB\SQL(
                 'mysql:host=' . \F3::get('db_host') . ';port=' . \F3::get('db_port') . ';dbname='.\F3::get('db_database'),
                 \F3::get('db_username'),
@@ -172,7 +172,7 @@ class Database {
             }
             
             // just initialize once
-            $initialized = true;
+            self::$initialized = true;
         }
 
         $class = 'daos\\' . \F3::get('db_type') . '\\Statements';

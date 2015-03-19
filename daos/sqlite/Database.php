@@ -35,7 +35,7 @@ class Database {
                 touch($db_file);
             }
             
-            // establish database connection
+            \F3::get('logger')->log("Establish database connection", \DEBUG);
             \F3::set('db', new \DB\SQL(
                     'sqlite:' . $db_file
                 )
@@ -182,7 +182,7 @@ class Database {
             }
             
             // just initialize once
-            $initialized = true;
+            self::$initialized = true;
         }
     }
     
