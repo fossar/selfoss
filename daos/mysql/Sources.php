@@ -161,6 +161,36 @@ class Sources extends Database {
             ORDER BY lower(sources.title) ASC');
     }
     
+
+    /**
+     * returns all sources including last icon
+     *
+     * @return mixed all sources
+     */
+    public function getWithIcon() {
+        $ret = \F3::get('db')->exec('SELECT
+                sources.id, sources.title, sources.tags, sources.spout,
+                sources.params, sources.filter, sources.error,
+                sourceicons.icon AS icon
+            FROM '.\F3::get('db_prefix').'sources AS sources
+            LEFT OUTER JOIN
+                (SELECT items.source, icon
+                 FROM '.\F3::get('db_prefix').'items,
+                      (SELECT source, MAX(id) as maxid
+                       FROM '.\F3::get('db_prefix').'items
+                       WHERE icon IS NOT NULL AND icon != \'\'
+                       GROUP BY items.source) AS icons
+                 WHERE items.id=icons.maxid AND items.source=icons.source
+                 ) AS sourceicons
+                ON sources.id=sourceicons.source
+            ORDER BY '.$this->stmt->nullFirst('sources.error', 'DESC').', lower(sources.title)');
+        $spoutLoader = new \helpers\SpoutLoader();
+        for($i=0;$i<count($ret);$i++)
+            $ret[$i]['spout_obj'] = $spoutLoader->get( $ret[$i]['spout'] );
+        return $ret;
+    }
+
+
     /**
      * test if the value of a specified field is valid
      *

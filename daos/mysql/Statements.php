@@ -27,6 +27,18 @@ class Statements{
 
 
    /**
+    * null first for order by clause
+    *
+    * @param column to concat
+    * @param order
+    * @return full statement
+    */
+    public static function nullFirst($column, $order) {
+        return "$column $order";
+    }
+
+
+   /**
     * sum statement for boolean columns
     *
     * @param boolean column to concat

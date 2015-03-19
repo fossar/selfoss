@@ -26,6 +26,22 @@ class Statements extends \daos\mysql\Statements {
 
 
    /**
+    * null first for order by clause
+    *
+    * @param column to concat
+    * @param order
+    * @return full statement
+    */
+    public static function nullFirst($column, $order) {
+        if( $order == 'DESC' )
+            $nulls = 'LAST';
+        else if( $order == 'ASC' )
+            $nulls = 'FIRST';
+        return "$column $order NULLS $nulls";
+    }
+
+
+   /**
     * sum statement for boolean columns
     *
     * @param boolean column to concat
