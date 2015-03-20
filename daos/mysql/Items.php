@@ -396,25 +396,6 @@ class Items extends Database {
    
     
     /**
-     * returns the amount of unread entries in database per tag
-     *
-     * @return int amount of entries in database per tag
-     */
-    public function numberOfUnreadForTag($tag) {
-        $select = 'SELECT count(*) AS amount FROM '.\F3::get('db_prefix').'items AS items, '.\F3::get('db_prefix').'sources AS sources';
-        $where = ' WHERE items.source=sources.id AND '.$this->stmt->isTrue('unread');
-        if ( \F3::get( 'db_type' ) == 'mysql' ) {
-            $where .= " AND ( CONCAT( ',' , sources.tags , ',' ) LIKE _utf8 :tag COLLATE utf8_bin ) ";
-        } else {
-            $where .= " AND ( (',' || sources.tags || ',') LIKE :tag ) ";
-        }
-        $res = \F3::get('db')->exec( $select . $where,
-            array(':tag' => "%,".$tag.",%"));
-        return $res[0]['amount'];
-    }
-
-
-    /**
     * returns the amount of total, unread, starred entries in database
     *
     * @return array mount of total, unread, starred entries in database
@@ -423,18 +404,4 @@ class Items extends Database {
         $res = \F3::get('db')->exec('SELECT COUNT(*) AS total, '.$this->stmt->sumBool('unread').' AS unread, '.$this->stmt->sumBool('starred').' AS starred FROM items;');
         return $res[0];
     }
-
-    
-    /**
-     * returns the amount of unread entries in database per source
-     *
-     * @return int amount of entries in database per tag
-     */
-    public function numberOfUnreadForSource($sourceid) {
-        $res = \F3::get('db')->exec(
-            'SELECT count(*) AS amount FROM '.\F3::get('db_prefix').'items WHERE source=:source AND  '.$this->stmt->isTrue('unread'),
-            array(':source' => $sourceid));
-        return $res[0]['amount'];
-    }
-
 }
