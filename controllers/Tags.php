@@ -94,12 +94,8 @@ class Tags extends BaseController {
         $this->needsLoggedInOrPublicMode();
 
         $tagsDao = new \daos\Tags();
-        $tags = $tagsDao->get();
-        
-        $itemsDao = new \daos\Items();
-        for($i=0; $i<count($tags); $i++)
-            $tags[$i]['unread'] = $itemsDao->numberOfUnreadForTag($tags[$i]['tag']);
-        
+        $tags = $tagsDao->getWithUnread();
+
         $this->view->jsonSuccess($tags);
     }
 }
