@@ -45,7 +45,6 @@ class Tags extends BaseController {
      */
     public function renderTags($tags) {
         $html = "";
-        $itemsDao = new \daos\Items();
         foreach($tags as $tag) {
             $this->view->tag = $tag['tag'];
             $this->view->color = $tag['color'];
