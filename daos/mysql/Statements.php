@@ -69,4 +69,19 @@ class Statements{
     public static function isFalse($column) {
         return "$column=0";
     }
+
+
+   /**
+    * check if CSV column matches a value.
+    *
+    * @param CSV column to check
+    * @param value to search in CSV column
+    * @return full statement
+    */
+    public static function csvRowMatches($column, $value) {
+        if( $value[0] == ':' )
+            $value = "_utf8 $value";
+
+        return "CONCAT( ',' , $column , ',' ) LIKE CONCAT('%',$value,'%') COLLATE utf8_bin";
+    }
 }

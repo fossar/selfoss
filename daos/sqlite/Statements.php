@@ -24,4 +24,16 @@ class Statements extends \daos\mysql\Statements {
         $res = \F3::get('db')->exec('SELECT last_insert_rowid() as lastid');
         return $res[0]['lastid'];
     }
+
+
+   /**
+    * check if CSV column matches a value.
+    *
+    * @param CSV column to check
+    * @param value to search in CSV column
+    * @return full statement
+    */
+    public static function csvRowMatches($column, $value) {
+        return "(',' || $column || ',') LIKE ('%' || $value || '%')";
+    }
 }

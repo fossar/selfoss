@@ -37,7 +37,7 @@ class Index extends BaseController {
         
         // load tags
         $tagsDao = new \daos\Tags();
-        $tags = $tagsDao->get();
+        $tags = $tagsDao->getWithUnread();
         
         // load items
         $itemsHtml = $this->loadItems($options, $tags);

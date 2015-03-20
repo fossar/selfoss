@@ -33,7 +33,7 @@ class Tags extends BaseController {
      */
     public function tagsListAsString() {
         $tagsDao = new \daos\Tags();
-        return $this->renderTags($tagsDao->get());
+        return $this->renderTags($tagsDao->getWithUnread());
     }
     
     
@@ -49,7 +49,7 @@ class Tags extends BaseController {
         foreach($tags as $tag) {
             $this->view->tag = $tag['tag'];
             $this->view->color = $tag['color'];
-            $this->view->unread = $itemsDao->numberOfUnreadForTag($tag['tag']);
+            $this->view->unread = $tag['unread'];
             $html .= $this->view->render('templates/tag.phtml');
         }
         

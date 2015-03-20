@@ -72,4 +72,16 @@ class Statements extends \daos\mysql\Statements {
     public static function isFalse($column) {
         return "$column=false";
     }
+
+
+   /**
+    * check if CSV column matches a value.
+    *
+    * @param CSV column to check
+    * @param value to search in CSV column
+    * @return full statement
+    */
+    public static function csvRowMatches($column, $value) {
+        return "$value=ANY(string_to_array($column, ','))";
+    }
 }
