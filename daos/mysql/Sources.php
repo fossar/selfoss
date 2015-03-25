@@ -25,7 +25,7 @@ class Sources extends Database {
         // sanitize tag list
         $tags = implode(',', preg_split('/\s*,\s*/', trim($tags), -1, PREG_SPLIT_NO_EMPTY));
 
-        \F3::get('db')->exec('INSERT INTO '.\F3::get('db_prefix').'sources (title, tags, filter, spout, params, error) VALUES (:title, :tags, :filter, :spout, :params, "")',
+        return $this->stmt->insert('INSERT INTO '.\F3::get('db_prefix').'sources (title, tags, filter, spout, params) VALUES (:title, :tags, :filter, :spout, :params)',
                     array(
                         ':title'  => trim($title),
                         ':tags'   => $tags,
@@ -33,9 +33,6 @@ class Sources extends Database {
                         ':spout'  => $spout,
                         ':params' => htmlentities(json_encode($params))
                     ));
- 
-        $res = \F3::get('db')->exec('SELECT LAST_INSERT_ID() as lastid');
-        return $res[0]['lastid'];
     }
     
     
@@ -148,7 +145,52 @@ class Sources extends Database {
         return $ret;
     }
     
+
+    /**
+     * returns all sources including unread count
+     *
+     * @return mixed all sources
+     */
+    public function getWithUnread() {
+        return \F3::get('db')->exec('SELECT
+            sources.id, sources.title, COUNT(items.id) AS unread
+            FROM '.\F3::get('db_prefix').'sources AS sources
+            LEFT OUTER JOIN '.\F3::get('db_prefix').'items AS items
+                 ON (items.source=sources.id AND '.$this->stmt->isTrue('items.unread').')
+            GROUP BY sources.id, sources.title
+            ORDER BY lower(sources.title) ASC');
+    }
     
+
+    /**
+     * returns all sources including last icon
+     *
+     * @return mixed all sources
+     */
+    public function getWithIcon() {
+        $ret = \F3::get('db')->exec('SELECT
+                sources.id, sources.title, sources.tags, sources.spout,
+                sources.params, sources.filter, sources.error,
+                sourceicons.icon AS icon
+            FROM '.\F3::get('db_prefix').'sources AS sources
+            LEFT OUTER JOIN
+                (SELECT items.source, icon
+                 FROM '.\F3::get('db_prefix').'items,
+                      (SELECT source, MAX(id) as maxid
+                       FROM '.\F3::get('db_prefix').'items
+                       WHERE icon IS NOT NULL AND icon != \'\'
+                       GROUP BY items.source) AS icons
+                 WHERE items.id=icons.maxid AND items.source=icons.source
+                 ) AS sourceicons
+                ON sources.id=sourceicons.source
+            ORDER BY '.$this->stmt->nullFirst('sources.error', 'DESC').', lower(sources.title)');
+        $spoutLoader = new \helpers\SpoutLoader();
+        for($i=0;$i<count($ret);$i++)
+            $ret[$i]['spout_obj'] = $spoutLoader->get( $ret[$i]['spout'] );
+        return $ret;
+    }
+
+
     /**
      * test if the value of a specified field is valid
      *

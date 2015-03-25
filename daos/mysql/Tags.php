@@ -76,7 +76,24 @@ class Tags extends Database {
                    FROM '.\F3::get('db_prefix').'tags 
                    ORDER BY LOWER(tag);');
     }
-    
+
+
+    /**
+     * returns all tags with color and unread count
+     *
+     * @return array of all tags
+     */
+    public function getWithUnread() {
+        $select = 'SELECT tag, color, COUNT(items.id) AS unread
+                   FROM '.\F3::get('db_prefix').'tags AS tags,
+                        '.\F3::get('db_prefix').'sources AS sources
+                   LEFT OUTER JOIN '.\F3::get('db_prefix').'items AS items
+                       ON (items.source=sources.id AND '.$this->stmt->isTrue('items.unread').')
+                   WHERE '.$this->stmt->csvRowMatches('sources.tags', 'tags.tag').'
+                   GROUP BY tags.tag, tags.color
+                   ORDER BY LOWER(tags.tag);';
+        return \F3::get('db')->exec($select);
+    }
     
     /**
      * remove all unused tag color definitions
