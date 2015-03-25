@@ -22,7 +22,6 @@ class View {
      * set global view vars
      */
     function __construct() {
-        $this->genMinifiedJsAndCss();
         $this->base = $this->getBaseUrl();
     }
 
@@ -137,59 +136,6 @@ class View {
      */
     public static function getGlobalCssFileName() {
         return 'all-v' . \F3::get('version') . '.css';
-    }
-    
-    
-    
-    /**
-     * generate minified css and js
-     *
-     * @return void
-     */
-    public function genMinifiedJsAndCss() {
-        // minify js
-        $targetJs = \F3::get('BASEDIR').'/public/'.self::getGlobalJsFileName();
-        if(!file_exists($targetJs) || \F3::get('DEBUG')!=0) {
-            $js = "";
-            foreach(\F3::get('js') as $file)
-                $js = $js . "\n" . $this->minifyJs(file_get_contents(\F3::get('BASEDIR').'/'.$file));
-            file_put_contents($targetJs, $js);
-        }
-    
-        // minify css
-        $targetCss = \F3::get('BASEDIR').'/public/'.self::getGlobalCssFileName();
-        if(!file_exists($targetCss) || \F3::get('DEBUG')!=0) {
-            $css = "";
-            foreach(\F3::get('css') as $file)
-                $css = $css . "\n" . $this->minifyCss(file_get_contents(\F3::get('BASEDIR').'/'.$file));
-            file_put_contents($targetCss, $css);
-        }
-    }
-    
-    
-    /**
-     * minifies javascript if DEBUG mode is disabled
-     *
-     * @return minified javascript
-     * @param javascript to minify
-     */
-    private function minifyJs($content) {
-        if(\F3::get('DEBUG')!=0) 
-            return $content;
-        return \JSMin::minify($content);
-    }
-    
-    
-    /**
-     * minifies css if DEBUG mode is disabled
-     *
-     * @return minified css
-     * @param css to minify
-     */
-    private function minifyCss($content) {
-        if(\F3::get('DEBUG')!=0) 
-            return $content;
-        return \CssMin::minify($content);
     }
     
 }

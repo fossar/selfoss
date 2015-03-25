@@ -19,6 +19,7 @@ RewriteRule !favicons/ - [C]
 RewriteRule !thumbnails - [C]
 RewriteRule !public - [C]
 RewriteRule !index.php - [C]
+RewriteRule !user.css - [C]
 RewriteRule (.*) public/$1 [L]
 
 # deny requests for config files

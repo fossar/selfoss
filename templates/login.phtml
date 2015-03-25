@@ -24,9 +24,12 @@
 
     <!-- all css definitions -->
     <?PHP if(\F3::get('use_system_font')!=true) : ?>
-        <link rel="stylesheet" href="css/fonts.css" />
+        <link rel="stylesheet" href="<?PHP echo $this->base; ?>/css/fonts.css" />
     <?PHP endif; ?>
     <link rel="stylesheet" href="<?PHP echo \helpers\View::getGlobalCssFileName(); ?>" />
+    <?PHP if(\F3::get('user_css')===true) : ?>
+        <link rel="stylesheet" href="<?PHP echo $this->base; ?>/user.css" />
+    <?PHP endif; ?>
 
 </head>
 <body>

@@ -3,6 +3,67 @@ module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         
+
+        uglify: {
+            my_target: {
+                files: {
+                    'public/all-v<%= pkg.ver %>.js' : [
+                        'public/js/jquery-2.1.1.min.js',
+                        'public/js/jquery-ui.js',
+                        'public/js/jquery.mCustomScrollbar.min.js',
+                        'public/js/jquery.mousewheel.min.js',
+                        'public/js/lazy-image-loader.js',
+                        'public/js/spectrum.js',
+                        'public/js/jquery.hotkeys.js',
+                        'public/js/selfoss-base.js',
+                        'public/js/selfoss-events.js',
+                        'public/js/selfoss-events-navigation.js',
+                        'public/js/selfoss-events-search.js',
+                        'public/js/selfoss-events-entries.js',
+                        'public/js/selfoss-events-entriestoolbar.js',
+                        'public/js/selfoss-events-sources.js',
+                        'public/js/selfoss-shortcuts.js',
+                        'public/js/jquery.fancybox.pack.js'
+                    ]
+                }
+            }
+        },
+
+        cssmin: {
+            options: {
+                shorthandCompacting: false,
+                roundingPrecision: -1
+            },
+            target: {
+                files: {
+                    'public/all-v<%= pkg.ver %>.css': [
+                        'public/css/jquery.mCustomScrollbar.css',
+                        'public/css/jquery.fancybox.css',
+                        'public/css/spectrum.css',
+                        'public/css/reset.css',
+                        'public/css/style.css'
+                    ]
+                }
+            }
+        },
+
+        watch: {
+            js: {
+                files: ['public/js/*.js'],
+                tasks: ['js'],
+                options: {
+                    spawn: false,
+                }
+            },
+            css: {
+                files: ['public/css/*.css'],
+                tasks: ['css'],
+                options: {
+                    spawn: false,
+                }
+            }
+        },
+
         /* version text replace */
         replace: {
             version: {
@@ -80,6 +141,9 @@ module.exports = function(grunt) {
 
     grunt.loadNpmTasks('grunt-text-replace');
     grunt.loadNpmTasks('grunt-contrib-compress');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
+    grunt.loadNpmTasks('grunt-contrib-watch');
 
     /* task checks whether newversion is given and start replacement in files if correct format is given */
     grunt.registerTask('versionupdater', 'version update task', function() {
@@ -92,7 +156,10 @@ module.exports = function(grunt) {
         }
     });
 
-    grunt.registerTask('default', ['versionupdater', 'compress']);
+    grunt.registerTask('default', ['version', 'zip']);
     grunt.registerTask('version', ['versionupdater']);
-    grunt.registerTask('zip', ['compress']);
+    grunt.registerTask('zip', ['assets', 'compress']);
+    grunt.registerTask('js', ['uglify']);
+    grunt.registerTask('css', ['cssmin']);
+    grunt.registerTask('assets', ['css', 'js']);
 };
