@@ -150,14 +150,33 @@ class Sources extends BaseController {
 
         $spout = str_replace("_", "\\", $spout);
         
+        // check if source already exists
+        $id = \F3::get('PARAMS["id"]');
+        $sourceExists = $sourcesDao->isValid('id', $id);
+        
+        // load password value if not changed for spouts containing passwords
+        if ($sourceExists) {
+            $spoutLoader = new \helpers\SpoutLoader();
+            $spoutInstance = $spoutLoader->get($spout);
+            
+            foreach($spoutInstance->params as $spoutParamName => $spoutParam)
+            {
+                if ($spoutParam['type'] == 'password' 
+                    && empty($data[$spoutParamName])) {
+                    $oldSource = $sourcesDao->get($id);
+                    $oldParams = json_decode(html_entity_decode(
+                                                   $oldSource['params']), true);
+                    $data[$spoutParamName] = $oldParams[$spoutParamName];
+                }
+            }
+        }
+        
         $validation = $sourcesDao->validate($title, $spout, $data);
         if($validation!==true)
             $this->view->error( json_encode($validation) );
 
         // add/edit source
-        $id = \F3::get('PARAMS["id"]');
-        
-        if (!$sourcesDao->isValid('id', $id))
+        if (!$sourceExists)
             $id = $sourcesDao->add($title, $tags, $filter, $spout, $data);
         else
             $sourcesDao->edit($id, $title, $tags, $filter, $spout, $data);
