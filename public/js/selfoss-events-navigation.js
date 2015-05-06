@@ -93,8 +93,29 @@ selfoss.events.navigation = function() {
     
     // hide/show sources
     $('#nav-sources-title').unbind('click').click(function () {
-        $('#nav-sources').slideToggle("slow");
-        $('#nav-sources-title').toggleClass("nav-sources-collapsed nav-sources-expanded");
+        var toggle = function () {
+            $('#nav-sources').slideToggle("slow");
+            $('#nav-sources-title').toggleClass("nav-sources-collapsed nav-sources-expanded");
+        }
+
+        selfoss.filter.sourcesNav = $('#nav-sources-title').hasClass("nav-sources-collapsed");
+        if( selfoss.filter.sourcesNav && !selfoss.sourcesNavLoaded ) {
+            $.ajax({
+                url: $('base').attr('href') + 'sources/stats',
+                type: 'GET',
+                success: function(data) {
+                    selfoss.refreshSources(data.sources);
+                    selfoss.sourcesNavLoaded = true;
+                    toggle();
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    selfoss.showError('Can not load nav stats: '+
+                                    textStatus+' '+errorThrown);
+                }
+            });
+        }else{
+            toggle();
+        }
     });
     
     // show hide navigation for mobile version

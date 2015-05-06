@@ -54,11 +54,14 @@ class Index extends BaseController {
         $tagsController = new \controllers\Tags();
         $this->view->tags = $tagsController->renderTags($tags);
         
-        // prepare sources display list
-        $sourcesDao = new \daos\Sources();
-        $sources = $sourcesDao->getWithUnread();
-        $sourcesController = new \controllers\Sources();
-        $this->view->sources = $sourcesController->renderSources($sources);
+        if(isset($options['sourcesNav']) && $options['sourcesNav'] == 'true' ) {
+            // prepare sources display list
+            $sourcesDao = new \daos\Sources();
+            $sources = $sourcesDao->getWithUnread();
+            $sourcesController = new \controllers\Sources();
+            $this->view->sources = $sourcesController->renderSources($sources);
+        } else
+            $this->view->sources = '';
         
         // ajax call = only send entries and statistics not full template
         if(isset($options['ajax'])) {
