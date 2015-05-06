@@ -209,8 +209,8 @@ selfoss.events.navigation = function() {
                     if(unreadstats>0)
                         $('.nav-filter-unread span').addClass('unread');
                     
-                    // hide nav on smartphone
-                    if(selfoss.isSmartphone())
+                    // hide nav on smartphone if visible
+                    if(selfoss.isSmartphone() && $('#nav').is(':visible')==true)
                         $('#nav-mobile-settings').click();
                     
                     // refresh list
