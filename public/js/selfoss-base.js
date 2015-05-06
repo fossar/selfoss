@@ -28,6 +28,12 @@ var selfoss = {
     activeAjaxReq: null,
     
     /**
+     * last stats update
+     */
+    lastStatsUpdate: Date.now(),
+
+
+    /**
      * initialize application
      */
     init: function() {
@@ -49,6 +55,9 @@ var selfoss = {
             
             // init shortcut handler
             selfoss.shortcuts.init();
+
+            // setup periodic stats reloader
+            window.setInterval(selfoss.reloadStats, 60*1000);
         });
     },
     
@@ -184,6 +193,41 @@ var selfoss = {
             }
         });
     },
+
+
+    /**
+     * refresh current stats.
+     *
+     * @return void
+     */
+    reloadStats: function() {
+        if( Date.now() - selfoss.lastStatsUpdate < 5*60*1000 )
+            return;
+
+        var stats_url = $('base').attr('href')+'stats?tags=true';
+        if( selfoss.filter.sourcesNav )
+            stats_url = stats_url + '&sources=true';
+
+        $.ajax({
+            url: stats_url,
+            type: 'GET',
+            success: function(data) {
+                if( data.unread>0 && $('.stream-empty').is(':visible') ) {
+                    selfoss.reloadList();
+                } else {
+                    selfoss.refreshStats(data.all, data.unread, data.starred);
+                    selfoss.refreshTags(data.tagshtml);
+
+                    if( 'sourceshtml' in data )
+                        selfoss.refreshSources(data.sourceshtml);
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                selfoss.showError('Could not refresh stats: '+
+                                  textStatus+' '+errorThrown);
+            }
+        });
+    },
     
 
     /**
@@ -195,6 +239,8 @@ var selfoss = {
      * @param new starred stats
      */
     refreshStats: function(all, unread, starred) {
+        selfoss.lastStatsUpdate = Date.now();
+
         $('.nav-filter-newest span').html(all);
         $('.nav-filter-starred span').html(starred);
 
