@@ -163,6 +163,7 @@ class ContentLoader {
             try {
                 $icon = $item->getIcon();
             } catch(\exception $e) {
+                \F3::get('logger')->log('icon: error ' . $e->getMessage(), \DEBUG);
                 return;
             }
 
