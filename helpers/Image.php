@@ -38,7 +38,13 @@ class Image {
         $urlElements = parse_url($url);
 
         // search on base page for <link rel="shortcut icon" url...
-        $html = @file_get_contents($url);
+        $html = null;
+        try {
+            $html = \helpers\WebClient::request($url);
+        }catch( \exception $e ) {
+            \F3::get('logger')->log("icon: failed to get html page: ".$e->getMessage(), \DEBUG);
+        }
+
         $shortcutIcon = $this->parseShortcutIcon($html);
         if($shortcutIcon!==false) {
             if(substr($shortcutIcon,0,4)!='http') {
@@ -82,9 +88,13 @@ class Image {
      */
     public function loadImage($url, $extension='png', $width=false, $height=false) {
         // load image
-        $data = @file_get_contents($url);
-        if($data===false)
+        try{
+            $data = \helpers\WebClient::request($url);
+        }
+        catch ( \exception $e ) {
+            \F3::get('logger')->log("failed to retrieve image $url," . $e->getMessage(), \ERROR);
             return false;
+        }
         
         // get image type
         $tmp = \F3::get('cache') . '/' . md5($url);
