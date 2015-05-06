@@ -76,10 +76,11 @@ class Image {
      *
      * @return bool
      * @param string $url source url
+     * @param string $extension file extension of output file
      * @param int $width
      * @param int $height
      */
-    public function loadImage($url, $width=false, $height=false) {
+    public function loadImage($url, $extension='png', $width=false, $height=false) {
         // load image
         $data = @file_get_contents($url);
         if($data===false)
@@ -133,8 +134,13 @@ class Image {
                 $wideImage = $wideImage->resize($width, $height);
         }
         
-        // return image as png
-        $data = $wideImage->asString('png',0);
+        // return image as jpg or png
+        if($extension=='jpg') {
+            $data = $wideImage->asString('jpg', 75);
+        }
+        else {
+            $data = $wideImage->asString('png', 4, PNG_NO_FILTER);
+        }
         
         return $data;
     }

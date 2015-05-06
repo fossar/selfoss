@@ -266,14 +266,15 @@ class ContentLoader {
      */
     protected function fetchThumbnail($thumbnail, $newItem) {
         if (strlen(trim($thumbnail)) > 0) {
+            $extension = 'jpg';
             $imageHelper = new \helpers\Image();
-            $thumbnailAsPng = $imageHelper->loadImage($thumbnail, 500, 500);
-            if ($thumbnailAsPng !== false) {
+            $thumbnailAsJpg = $imageHelper->loadImage($thumbnail, $extension, 500, 500);
+            if ($thumbnailAsJpg !== false) {
                 file_put_contents(
-                    'data/thumbnails/' . md5($thumbnail) . '.png',
-                    $thumbnailAsPng
+                    'data/thumbnails/' . md5($thumbnail) . '.' . $extension,
+                    $thumbnailAsJpg
                 );
-                $newItem['thumbnail'] = md5($thumbnail) . '.png';
+                $newItem['thumbnail'] = md5($thumbnail) . '.' . $extension;
                 \F3::get('logger')->log('thumbnail generated: ' . $thumbnail, \DEBUG);
             } else {
                 $newItem['thumbnail'] = '';
@@ -295,18 +296,19 @@ class ContentLoader {
      */
     protected function fetchIcon($icon, $newItem, &$lasticon) {
         if(strlen(trim($icon)) > 0) {
+            $extension = 'png';
             if($icon==$lasticon) {
                 \F3::get('logger')->log('use last icon: '.$lasticon, \DEBUG);
-                $newItem['icon'] = md5($lasticon) . '.png';
+                $newItem['icon'] = md5($lasticon) . '.' . $extension;
             } else {
                 $imageHelper = new \helpers\Image();
-                $iconAsPng = $imageHelper->loadImage($icon, 30, null);
+                $iconAsPng = $imageHelper->loadImage($icon, $extension, 30, null);
                 if($iconAsPng!==false) {
                     file_put_contents(
-                        'data/favicons/' . md5($icon) . '.png',
+                        'data/favicons/' . md5($icon) . '.' . $extension,
                         $iconAsPng
                     );
-                    $newItem['icon'] = md5($icon) . '.png';
+                    $newItem['icon'] = md5($icon) . '.' . $extension;
                     $lasticon = $icon;
                     \F3::get('logger')->log('icon generated: '.$icon, \DEBUG);
                 } else {
