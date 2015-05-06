@@ -131,7 +131,7 @@ class WideImage_vendor_de77_BMP
 	    
 		$bps = $header['bits_per_pixel']; //bits per pixel 
 	    $wid2 = ceil(($bps/8 * $header['width']) / 4) * 4;
-		$colors = pow(2, $bps);
+		$colors = $header['colors'];
 	
 	    $wid = $header['width'];
 	    $hei = $header['height'];
