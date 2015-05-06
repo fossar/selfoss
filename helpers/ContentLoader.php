@@ -251,7 +251,7 @@ class ContentLoader {
         return htmLawed(
             htmlspecialchars_decode($value),
             array(
-                "deny_attribute" => '* -href -title',
+                "deny_attribute" => '* -href -title -target',
                 "elements"       => 'a,br,ins,del,b,i,strong,em,tt,sub,sup,s,code'
             )
         );
