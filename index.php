@@ -20,6 +20,7 @@ $js=array(
     'public/js/spectrum.js',
     'public/js/jquery.hotkeys.js',
     'public/js/selfoss-base.js',
+    'public/js/selfoss-shares.js',
     'public/js/selfoss-events.js',
     'public/js/selfoss-events-navigation.js',
     'public/js/selfoss-events-search.js',

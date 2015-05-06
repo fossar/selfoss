@@ -43,6 +43,9 @@ var selfoss = {
             // initialize type by homepage config param
             selfoss.filter.type = $('#nav-filter li.active').attr('id').replace('nav-filter-', '');
             
+            // init shares
+            selfoss.shares.init();
+
             // init events
             selfoss.events.init();
             
