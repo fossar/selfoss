@@ -18,6 +18,7 @@ var selfoss = {
         type: 'newest',
         tag: '',
         source: '',
+        sourcesNav: false,
         ajax: true
     },
 
@@ -166,8 +167,13 @@ var selfoss = {
                 // update tags
                 selfoss.refreshTags(data.tags);
                 
-                // update sources
-                selfoss.refreshSources(data.sources);
+                // drop loaded sources
+                if(selfoss.sourcesNavLoaded) {
+                    $('#nav-sources li').remove();
+                    selfoss.sourcesNavLoaded = false;
+                }
+                if(selfoss.filter.sourcesNav)
+                    selfoss.refreshSources(data.sources);
 
                 selfoss.setUnreadCount(data.unread);
 
@@ -232,6 +238,8 @@ var selfoss = {
     },
     
     
+    sourcesNavLoaded: false,
+
     /**
      * refresh sources list.
      *
