@@ -110,16 +110,17 @@ input {
             color:#777;
         }
         
-        #nav-filter #nav-filter-unread span.unread {
+        span.unread-count.unread {
             background-color: #E74C3C;
             border-radius: 30px;
-            color: white;
-            font-size:0.6em;
+            color: white !important;
+            font-size:0.6em !important;
             font-weight: normal;
             min-width: 8px;
             padding: 0 5px 0 5px;
             margin-left: 5px;
-            vertical-align:baseline;
+            vertical-align:baseline !important;
+            display: inline !important;
         }
     
     #nav h2 {
@@ -1127,6 +1128,14 @@ body.publicmode.notloggedin .entry-unread {
             margin-left:-48px;
             background:url(images/nav-mobile-logo.png) no-repeat;
             background-size:96px 40px;
+        }
+
+        #nav-mobile-logo span {
+            color: white;
+            position: relative;
+            left: 90px;
+            top: 5px;
+            display: none;
         }
 
         #nav-mobile-settings {

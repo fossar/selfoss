@@ -258,15 +258,15 @@ var selfoss = {
      * @param new unread stats
      */
     refreshUnread: function(unread) {
-        $('.nav-filter-unread span').html(unread);
+        $('span.unread-count').html(unread);
 
         // make unread itemcount red and show the unread count in the document
         // title
         if(unread>0) {
-            $('.nav-filter-unread span').addClass('unread');
+            $('span.unread-count').addClass('unread');
             $(document).attr('title', 'selfoss ('+unread+')');
         } else {
-            $('.nav-filter-unread span').removeClass('unread');
+            $('span.unread-count').removeClass('unread');
             $(document).attr('title', 'selfoss');
         }
     },
