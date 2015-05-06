@@ -15,7 +15,7 @@ class Anonymizer {
     /**
      * @return TRUE or FALSE - whether or not we should anonymize urls
      */
-    public static function shouldAnonymize() {
+    private static function shouldAnonymize() {
         return TRUE;
     }
 
