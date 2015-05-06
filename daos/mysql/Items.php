@@ -174,11 +174,14 @@ class Items extends Database {
      * @param DateTime $date date to delete all items older than this value [optional]
      */
     public function cleanup(\DateTime $date = NULL) {
-        \F3::get('db')->exec('DELETE items FROM '.\F3::get('db_prefix').'items AS items LEFT JOIN '.\F3::get('db_prefix').'sources AS sources
-                                ON items.source=sources.id WHERE sources.id IS NULL');
+        \F3::get('db')->exec('DELETE FROM '.\F3::get('db_prefix').'items
+            WHERE source NOT IN (
+                SELECT id FROM '.\F3::get('db_prefix').'sources)');
         if ($date !== NULL)
-            \F3::get('db')->exec('DELETE FROM '.\F3::get('db_prefix').'items WHERE starred=0 AND datetime<:date',
-                    array(':date' => $date->format('Y-m-d').' 00:00:00'));
+            \F3::get('db')->exec('DELETE FROM '.\F3::get('db_prefix').'items
+                WHERE '.$this->stmt->isFalse('starred').' AND datetime<:date',
+                    array(':date' => $date->format('Y-m-d').' 00:00:00')
+            );
     }
     
     
