@@ -154,18 +154,12 @@ var selfoss = {
             dataType: 'json',
             data: selfoss.filter,
             success: function(data) {
-                $('.nav-filter-newest span').html(data.all);
-                $('.nav-filter-unread span').html(data.unread);
-                $('.nav-filter-starred span').html(data.starred);
-                
+                selfoss.refreshStats(data.all, data.unread, data.starred);
+
                 $('#content').html(data.entries);
                 $(document).scrollTop(0);
                 selfoss.events.entries();
                 selfoss.events.search();
-                
-                // make unread itemcount red
-                if(data.unread>0)
-                    $('.nav-filter-unread span').addClass('unread');
                 
                 // update tags
                 selfoss.refreshTags(data.tags);
@@ -177,8 +171,6 @@ var selfoss = {
                 }
                 if(selfoss.filter.sourcesNav)
                     selfoss.refreshSources(data.sources);
-
-                selfoss.setUnreadCount(data.unread);
 
                 // clean up
                 $('#content').removeClass('loading');
@@ -196,7 +188,44 @@ var selfoss = {
         });
     },
     
+
+    /**
+     * refresh stats.
+     *
+     * @return void
+     * @param new all stats
+     * @param new unread stats
+     * @param new starred stats
+     */
+    refreshStats: function(all, unread, starred) {
+        $('.nav-filter-newest span').html(all);
+        $('.nav-filter-starred span').html(starred);
+
+        selfoss.refreshUnread(unread);
+    },
+
     
+    /**
+     * refresh unread stats.
+     *
+     * @return void
+     * @param new unread stats
+     */
+    refreshUnread: function(unread) {
+        $('.nav-filter-unread span').html(unread);
+
+        // make unread itemcount red and show the unread count in the document
+        // title
+        if(unread>0) {
+            $('.nav-filter-unread span').addClass('unread');
+            $(document).attr('title', 'selfoss ('+unread+')');
+        } else {
+            $('.nav-filter-unread span').removeClass('unread');
+            $(document).attr('title', 'selfoss');
+        }
+    },
+
+
     /**
      * refresh current tags.
      *
@@ -316,19 +345,6 @@ var selfoss = {
                 }
             }
         });
-    },
-
-    /**
-     * show the unread count in the document title
-     * 
-     * @param int unread
-     */
-    setUnreadCount: function(unread) {
-        if(unread>0) {
-            $(document).attr('title', 'selfoss ('+unread+')');
-        } else {
-            $(document).attr('title', 'selfoss');
-        }
     }
 
 };

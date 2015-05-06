@@ -204,10 +204,7 @@ selfoss.events.navigation = function() {
                     
                     // update unread stats
                     var unreadstats = parseInt($('.nav-filter-unread span').html()) - ids.length;
-                    $('.nav-filter-unread span').html(unreadstats);
-                    $('.nav-filter-unread span').removeClass('unread');
-                    if(unreadstats>0)
-                        $('.nav-filter-unread span').addClass('unread');
+                    selfoss.refreshUnread(unreadstats);
                     
                     // hide nav on smartphone if visible
                     if(selfoss.isSmartphone() && $('#nav').is(':visible')==true)

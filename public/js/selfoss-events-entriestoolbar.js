@@ -133,10 +133,7 @@ selfoss.events.entriesToolbar = function(parent) {
                 } else {
                     unreadstats++;
                 }
-                $('.nav-filter-unread span').html(unreadstats);
-                $('.nav-filter-unread span').removeClass('unread');
-                if(unreadstats>0)
-                    $('.nav-filter-unread span').addClass('unread');
+                selfoss.refreshUnread(unreadstats);
                     
                 // update unread count on sources
                 var sourceId = $('#entry'+id+' .entry-source').attr('class').substr(25);
@@ -176,7 +173,6 @@ selfoss.events.entriesToolbar = function(parent) {
                         tagsCountEl.html('');
                     
                 } );
-                selfoss.setUnreadCount(unreadstats);
             };
             updateStats(unread);
             
