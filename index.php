@@ -11,7 +11,7 @@ if($lang!='0' && $lang!='')
 $f3->set('auth', new \helpers\Authentication());
 
 // define js files
-$f3->set('js', array(
+$js=array(
     'public/js/jquery-2.1.1.min.js',
     'public/js/jquery-ui.js',
     'public/js/jquery.mCustomScrollbar.min.js',
@@ -28,7 +28,10 @@ $f3->set('js', array(
     'public/js/selfoss-events-sources.js',
     'public/js/selfoss-shortcuts.js',
     'public/js/jquery.fancybox.pack.js'
-));
+);
+if(file_exists("user.js"))
+    $js[] = "user.js";
+$f3->set('js', $js);
 
 // define css files
 $css = array(
