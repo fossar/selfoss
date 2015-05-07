@@ -62,6 +62,7 @@ module.exports = function(grunt) {
                     { src: ['data/cache/.htaccess'], dest: '' },
                     { src: ['data/logs/.htaccess'], dest: '' },
                     { src: ['data/sqlite/.htaccess'], dest: '' },
+                    { expand: true, cwd: 'data/fulltextrss', src: ['**'], dest: '/data/fulltextrss'},
                     
                     { expand: true, cwd: 'spouts/', src: ['**'], dest: '/spouts'},
                     { expand: true, cwd: 'templates/', src: ['**'], dest: '/templates'},
@@ -87,7 +88,7 @@ module.exports = function(grunt) {
         if (typeof grunt.option('newversion') != 'undefined') {
             grunt.log.writeln('replace version ' + grunt.option('newversion'));
             if (version.search(/^\d+\.\d+(\-SNAPSHOT)?$/) == -1)
-                grunt.fail.warn('newversion must have the format n.m.x or n.m.x-SNAPSHOT (n, m and x are integer numbers)');
+                grunt.fail.warn('newversion must have the format n.m or n.m-SNAPSHOT (n and m are integer numbers)');
             grunt.task.run('replace');
         }
     });
