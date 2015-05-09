@@ -16,6 +16,14 @@ $f3->config('defaults.ini');
 if(file_exists('config.ini'))
     $f3->config('config.ini');
 
+// overwrite config with ENV variables
+foreach($f3->get('ENV') as $key => $value) {
+    $env_prefix = $f3->get('env_prefix');
+    if(strncasecmp($key,$env_prefix,strlen($env_prefix)) == 0) {
+        $f3->set(strtolower(substr($key,strlen($env_prefix))),$value);
+    }
+}
+
 // init logger
 $f3->set(
     'logger',
