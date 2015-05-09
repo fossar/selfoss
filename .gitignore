@@ -16,3 +16,4 @@ config.ini
 .project
 node_modules
 _wiki
+.env
