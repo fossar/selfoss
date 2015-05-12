@@ -25,6 +25,11 @@ var selfoss = {
      * instance of the currently running XHR that is used to reload the items list
      */
     activeAjaxReq: null,
+
+	/**
+	 * the html title configured
+	 */
+	htmlTitle: 'selfoss',
     
     /**
      * initialize application
@@ -36,12 +41,15 @@ var selfoss = {
                 $('#username').focus();
                 return;
             }
-        
+       
             // set items per page
             selfoss.filter.itemsPerPage = $('#config').data('items_perpage');
             
             // initialize type by homepage config param
             selfoss.filter.type = $('#nav-filter li.active').attr('id').replace('nav-filter-', '');
+
+			// read the html title configured
+			selfoss.htmlTitle = $('#config').data('html_title');
             
             // init events
             selfoss.events.init();
@@ -314,9 +322,9 @@ var selfoss = {
      */
     setUnreadCount: function(unread) {
         if(unread>0) {
-            $(document).attr('title', 'selfoss ('+unread+')');
+            $(document).attr('title', selfoss.htmlTitle+' ('+unread+')');
         } else {
-            $(document).attr('title', 'selfoss');
+            $(document).attr('title', selfoss.htmlTitle);
         }
     }
 
