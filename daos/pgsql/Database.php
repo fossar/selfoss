@@ -114,7 +114,7 @@ class Database {
                 ');
                 
                 \F3::get('db')->exec('
-                    INSERT INTO version (version) VALUES (5);
+                    INSERT INTO version (version) VALUES (6);
                 ');
                 
                 \F3::get('db')->exec('
