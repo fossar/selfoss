@@ -210,8 +210,24 @@ class Sources extends BaseController {
         
         $this->view->jsonSuccess($return);
     }
-    
-    
+
+
+    /**
+     * return source stats in HTML for nav update
+     * json
+     *
+     * @return void
+     */
+    public function sourcesStats() {
+        $this->needsLoggedIn();
+
+        $this->view->jsonSuccess(array(
+            'success' => true,
+            'sources' => $this->sourcesListAsString()
+        ));
+    }
+
+
     /**
      * delete source
      * json

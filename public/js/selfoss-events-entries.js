@@ -126,9 +126,6 @@ selfoss.events.entries = function(e) {
     
     $('.mark-these-read').unbind('click').click(function () {
         $('#nav-mark').click();
-        // hide nav on smartphone
-        if(selfoss.isSmartphone())
-            $('#nav-mobile-settings').click();
     });
 
     // more
