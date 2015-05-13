@@ -21,6 +21,11 @@ RewriteRule !public - [C]
 RewriteRule !index.php - [C]
 RewriteRule (.*) public/$1 [L]
 
+# set magic_quotes_gpc as f3 wouldn't start otherwise
+<IfModule mod_php5.c>
+    php_value magic_quotes_gpc "1"
+</IfModule>
+
 # deny requests for config files
 <FilesMatch ".(ini)$">
     Order allow,deny
