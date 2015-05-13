@@ -285,24 +285,17 @@ class commits extends \spouts\spout {
      * @return object JSON object
      */
     public function getJsonContent($url) {
-        $options  = array('http' => array(
-            'user_agent' => $this->getUserAgent(),
-            'ignore_errors' => true,
-            'timeout' => 60
-        ));
-
-        $request = \Web::instance()->request($url, $options);
-
-        if( $request['headers'][0] != 'HTTP/1.1 200 OK' ) {
-            throw new \exception('github spout error ' . $request['headers'][0] . ': ' . substr($request['body'], 0, 512));
+        $content = null;
+        try {
+            $content = \helpers\WebClient::request($url);
+        }catch( \exception $e ) {
+            throw new \exception('github spout error ' . $e->getMessage());
         }
-
-        $content = $request['body'];
 
         $json = @json_decode($content);
         
         if (empty($json)) {
-            throw new \exception('github spout error ' . $request['headers'][0] . ': empy json');
+            throw new \exception('github spout error: empy json');
         }
         
         return $json;
