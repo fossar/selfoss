@@ -41,65 +41,20 @@ selfoss.events.entriesToolbar = function(parent) {
         $("#" + id).next('.entry').find('.entry-title').click();
         return false;
     });
-    
-    // share with google plus
-    parent.find('.entry-sharegoogle').unbind('click').click(function(e) {
-        window.open("https://plus.google.com/share?url="+encodeURIComponent($(this).parents(".entry").children(".entry-link").eq(0).attr("href")));
-        e.preventDefault();
-        return false;
-    });
-    
-    // share with twitter
-    parent.find('.entry-sharetwitter').unbind('click').click(function(e) {
-        window.open("https://twitter.com/intent/tweet?source=webclient&text="+encodeURIComponent($(this).parents(".entry").children(".entry-title").html())+" "+encodeURIComponent($(this).parents(".entry").children(".entry-link").eq(0).attr("href")));
-        e.preventDefault();
-        return false;
-    });
-    
-    // share with facebook
-    parent.find('.entry-sharefacebook').unbind('click').click(function(e) {
-        window.open("https://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent($(this).parents(".entry").children(".entry-link").eq(0).attr("href"))+"&t="+encodeURIComponent($(this).parents(".entry").children(".entry-title").html()));
-        e.preventDefault();
-        return false;
-    });
-    
-    // share with pocket
-    parent.find('.entry-sharepocket').unbind('click').click(function(e) {
-        window.open(" https://getpocket.com/save?url="+encodeURIComponent($(this).parents(".entry").children(".entry-link").eq(0).attr("href"))+"&title="+encodeURIComponent($(this).parents(".entry").children(".entry-title").html()));
-        e.preventDefault();
-        return false;
-    });
-  
-    // share with delicious
-    parent.find('.entry-sharedelicious').unbind('click').click(function(e) {
-        var href = $(this).parents(".entry").children(".entry-link").eq(0).attr("href");
-        var title = $(this).parents(".entry").children(".entry-title").html();
-        window.open("https://delicious.com/save?url="+encodeURIComponent(href)+"&title="+encodeURIComponent(title));
-        e.preventDefault();
-        return false;
-    });
 
-    // share with readability
-    parent.find('.entry-sharereadability').unbind('click').click(function(e) {
-        window.open(" http://www.readability.com/save?url="+encodeURIComponent($(this).parents(".entry").children(".entry-link").eq(0).attr("href")));
-        e.preventDefault();
-        return false;
-    });
+    // configure shares
+    var shares = selfoss.shares.getAll();
+    for (var i = 0; i < shares.length; i++) {
+        (function(share){
+            parent.find('.entry-share' + share).unbind('click').click(function(e) {
+              var entry = $(this).parents(".entry");
+              selfoss.shares.share(share, entry.children(".entry-link").eq(0).attr("href"), entry.children(".entry-title").html());
+              e.preventDefault();
+              return false;
+            });
+        })(shares[i]);
+    }
 
-    // share with wallabag
-    parent.find('.entry-sharewallabag').unbind('click').click(function(e) {
-        window.open($('#config').data('wallabag')+'/?action=add&url='+btoa($(this).parents(".entry").children(".entry-link").eq(0).attr("href")));
-        e.preventDefault();
-        return false;
-    });
-
-    // share with e-mail
-    parent.find('.entry-shareemail').unbind('click').click(function(e) {
-        document.location.href = "mailto:?body="+encodeURIComponent($(this).parents(".entry").children(".entry-link").eq(0).attr("href"))+"&subject="+encodeURIComponent($(this).parents(".entry").children(".entry-title").html());
-        e.preventDefault();
-        return false;
-    });
-    
     // only loggedin users
     if($('body').hasClass('loggedin')==true) {
         // starr/unstarr
