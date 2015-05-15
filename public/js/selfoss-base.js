@@ -31,7 +31,11 @@ var selfoss = {
      * last stats update
      */
     lastStatsUpdate: Date.now(),
-
+    
+    /**
+     * the html title configured
+     */
+    htmlTitle: 'selfoss',
 
     /**
      * initialize application
@@ -49,7 +53,10 @@ var selfoss = {
             
             // initialize type by homepage config param
             selfoss.filter.type = $('#nav-filter li.active').attr('id').replace('nav-filter-', '');
-            
+
+            // read the html title configured
+            selfoss.htmlTitle = $('#config').data('html_title')
+
             // init shares
             selfoss.shares.init();
 
@@ -264,10 +271,10 @@ var selfoss = {
         // title
         if(unread>0) {
             $('span.unread-count').addClass('unread');
-            $(document).attr('title', 'selfoss ('+unread+')');
+            $(document).attr('title', selfoss.htmlTitle+' ('+unread+')');
         } else {
             $('span.unread-count').removeClass('unread');
-            $(document).attr('title', 'selfoss');
+            $(document).attr('title', selfoss.htmlTitle);
         }
     },
 
