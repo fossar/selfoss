@@ -145,15 +145,9 @@ class ContentLoader {
             if(strlen(trim($title))==0)
                 $title = "[" . \F3::get('lang_no_title') . "]";
 
-            // Check sanatized title against filter
-            try {
-                if($this->filter($source, $title,$content)===false)
-                    continue;
-            } catch(Exception $e) {
-                $messagesModel->add($feed, 'filter error');
+            // Check sanitized title against filter
+            if($this->filter($source, $title, $content)===false)
                 continue;
-            }
-
 
             // sanitize author
             $author = $this->sanitizeField($item->getAuthor());
@@ -212,8 +206,8 @@ class ContentLoader {
             $resultTitle = @preg_match($source['filter'], $title);
             $resultContent = @preg_match($source['filter'], $content);
             if($resultTitle===false || $resultContent===false) {
-                \F3::get('logger')->log('filter error: ' . $source->fiter, \ERROR);
-                throw new Exception();
+               \F3::get('logger')->log('filter error: ' . $source['filter'], \ERROR);
+                return true; // do not filter out item
             }
             // test filter
             if($resultTitle==0 && $resultContent==0)
