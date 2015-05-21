@@ -34,6 +34,6 @@ class Statements extends \daos\mysql\Statements {
     * @return full statement
     */
     public static function csvRowMatches($column, $value) {
-        return "(',' || $column || ',') LIKE ('%' || $value || '%')";
+        return "(',' || $column || ',') LIKE ('%,' || $value || ',%')";
     }
 }
