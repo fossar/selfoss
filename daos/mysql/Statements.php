@@ -82,6 +82,6 @@ class Statements{
         if( $value[0] == ':' )
             $value = "_utf8 $value";
 
-        return "CONCAT( ',' , $column , ',' ) LIKE CONCAT('%',$value,'%') COLLATE utf8_bin";
+        return "CONCAT(',', $column, ',') LIKE CONCAT('%,', $value, ',%') COLLATE utf8_bin";
     }
 }
