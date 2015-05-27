@@ -74,16 +74,17 @@ class Sources extends Database {
      * @return bool|mixed true on succes or array of 
      * errors on failure
      * @param string $title
+     * @param string $autotitle
      * @param string $spout
      * @param mixed $params
      * 
      * @author Tobias Zeising
      */
-    public function validate($title, $spout, $params) {
+    public function validate($title, $autotitle, $spout, $params) {
         $result = array();
     
         // title
-        if(strlen(trim($title))==0)
+        if(strlen(trim($title))==0 && !$autotitle)
             $result['title'] = 'no text for title given';
     
         // spout type

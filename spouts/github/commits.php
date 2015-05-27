@@ -171,6 +171,8 @@ class commits extends \spouts\spout {
         
         $jsonUrl = "https://api.github.com/repos/" . urlencode($params['owner']) . "/" . urlencode($params['repo']) . "/commits?sha=" . urlencode($params['branch']);
         $this->items = $this->getJsonContent($jsonUrl);
+
+        $this->spoutTitle = $params['owner'].": commits on ".$params['repo']." for branch ".$params['branch'];
     }
     
     
@@ -183,7 +185,7 @@ class commits extends \spouts\spout {
         return $this->htmlUrl;
     }
     
-    
+
     /**
      * returns an unique id for this item
      *

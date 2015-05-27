@@ -48,7 +48,7 @@
     <ul class="source-edit-form">
         <!-- title -->
         <li><label for="title-<?= $idAttr ?>"><?PHP echo \F3::get('lang_source_title')?>:</label> <input id="title-<?= $idAttr ?>" type="text" name="title" value="<?PHP echo isset($this->source) ? $this->source['title'] : '' ; ?>" placeholder="<?PHP echo F3::get('lang_source_new'); ?>" /></li>
-        
+        <li><label for="autotitle-<?= $idAttr ?>"><?PHP echo \F3::get('lang_source_autotitle')?>:</label> <input id="autotitle-<?= $idAttr ?>" type="checkbox" class="source-autotitle" name="autotitle" <?PHP echo !isset($this->source) || $this->source['title'] == "" ? "checked=\"checked\"" : '' ; ?>/></li>
 
         <!-- tags -->
         <li><label for="tags-<?= $idAttr ?>"><?PHP echo \F3::get('lang_source_tags');?>:</label>
