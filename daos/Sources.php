@@ -74,10 +74,10 @@ class Sources extends Database {
     
         // check params
         } else {
-            // params given but not expectet
+            // params given but not expected
             if($spout->params===false) {
                 if(is_array($spout->params) && count($spout->params)>0) {
-                    $result['spout'] = 'this spout doesn\'t excpect any param';
+                    $result['spout'] = 'this spout doesn\'t expect any param';
                 }
             }
         
