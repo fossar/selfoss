@@ -176,51 +176,7 @@ selfoss.events.navigation = function() {
     
     // only loggedin users
     if($('body').hasClass('loggedin')==true) {
-        // mark as read
-        $('#nav-mark').unbind('click').click(function () {
-            var ids = new Array();
-            $('.entry.unread').each(function(index, item) {
-                ids.push( $(item).attr('id').substr(5) );
-            });
-
-            if(ids.length === 0){
-                return;
-            }
-            
-            // show loading
-            var content = $('#content');
-            var articleList = content.html();
-            $('#content').addClass('loading').html("");
-            
-            $.ajax({
-                url: $('base').attr('href') + 'mark',
-                type: 'POST',
-                dataType: 'json',
-                data: {
-                    ids: ids
-                },
-                success: function(response) {
-                    $('.entry').removeClass('unread');
-                    
-                    // update unread stats
-                    var unreadstats = parseInt($('.nav-filter-unread span').html()) - ids.length;
-                    selfoss.refreshUnread(unreadstats);
-                    
-                    // hide nav on smartphone if visible
-                    if(selfoss.isSmartphone() && $('#nav').is(':visible')==true)
-                        $('#nav-mobile-settings').click();
-                    
-                    // refresh list
-                    selfoss.reloadList();
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    content.html(articleList);
-                    $('#content').removeClass('loading');
-                    selfoss.showError('Can not mark all visible item: '+
-                                      textStatus+' '+errorThrown);
-                }
-            });
-        });
+        $('#nav-mark').unbind('click').click(selfoss.markVisibleRead);
         
         // show sources
         $('#nav-settings').unbind('click').click(function () {
