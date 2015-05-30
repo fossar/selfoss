@@ -149,7 +149,7 @@ selfoss.events.navigation = function() {
         $('#content').addClass('loading').html("");
           
         $.ajax({
-            url: $('base').attr('href') + 'update',
+            url: $('base').attr('href') + 'Update',
             type: 'GET',
             dataType: 'text',
             data: {},
