@@ -446,6 +446,7 @@ var selfoss = {
             error: function(jqXHR, textStatus, errorThrown) {
                 content.html(articleList);
                 $('#content').removeClass('loading');
+                selfoss.events.entries();
                 selfoss.showError('Can not mark all visible item: '+
                                     textStatus+' '+errorThrown);
             }
