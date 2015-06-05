@@ -1376,3 +1376,6 @@ body.publicmode.notloggedin .entry-unread {
 .fancybox-overlay {
     background: url('images/fancybox_overlay.png');
 }
+
+/* emojis */
+img[src^='http://s.w.org/images/core/emoji']{display:inline;height: 1em;margin: 0;}
