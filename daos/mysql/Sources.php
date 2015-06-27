@@ -108,13 +108,23 @@ class Sources extends Database {
      *
      * @return void
      * @param int $id the source id
+     * @param boolean newPostAdded true or false depending on whether a post was added
      */
-    public function saveLastUpdate($id) {
+    public function saveLastUpdate($id, $newPostAdded) {
         \F3::get('db')->exec('UPDATE '.\F3::get('db_prefix').'sources SET lastupdate=:lastupdate WHERE id=:id',
                     array(
                         ':id'         => $id,
                         ':lastupdate' => time()
                     ));
+        
+        if ($newPostAdded == TRUE) {
+        	\F3::get('db')->exec('UPDATE '.\F3::get('db_prefix').'sources SET lastentry=:lastentry WHERE id=:id',
+        			array(
+        					':id'         => $id,
+        					':lastentry' => time()
+        			));
+        }
+        
     }
 
 
