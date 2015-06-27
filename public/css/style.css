@@ -968,7 +968,8 @@ body.publicmode.notloggedin .entry-unread {
     .source-showparams,
     .source-delete,
     .source-save,
-    .source-cancel {
+    .source-cancel,
+    .source-days {
         color:#333;
         border:0;
         background:#ededed;

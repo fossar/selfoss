@@ -195,7 +195,7 @@ class Sources extends Database {
     public function getWithIcon() {
         $ret = \F3::get('db')->exec('SELECT
                 sources.id, sources.title, sources.tags, sources.spout,
-                sources.params, sources.filter, sources.error,
+                sources.params, sources.filter, sources.error, sources.lastentry, 
                 sourceicons.icon AS icon
             FROM '.\F3::get('db_prefix').'sources AS sources
             LEFT OUTER JOIN
