@@ -59,7 +59,7 @@ class Database {
                         updatetime DATETIME NOT NULL,
                         author VARCHAR(255),
                         INDEX (source)
-                    ) ENGINE = MYISAM DEFAULT CHARSET=utf8;
+                    ) ENGINE = InnoDB DEFAULT CHARSET=utf8;
                 ');
                 \F3::get('db')->exec('
                     CREATE TRIGGER insert_updatetime_trigger
@@ -90,7 +90,7 @@ class Database {
                         error TEXT,
                         lastupdate INT,
                 		lastentry INT
-                    ) ENGINE = MYISAM DEFAULT CHARSET=utf8;
+                    ) ENGINE = InnoDB DEFAULT CHARSET=utf8;
                 ');
                 $isNewestSourcesTable = true;
             }
@@ -100,7 +100,7 @@ class Database {
                 \F3::get('db')->exec('
                     CREATE TABLE '.\F3::get('db_prefix').'version (
                         version INT
-                    ) ENGINE = MYISAM DEFAULT CHARSET=utf8;
+                    ) ENGINE = InnoDB DEFAULT CHARSET=utf8;
                 ');
                 
                 \F3::get('db')->exec('
@@ -111,7 +111,7 @@ class Database {
                     CREATE TABLE '.\F3::get('db_prefix').'tags (
                         tag         TEXT NOT NULL,
                         color       VARCHAR(7) NOT NULL
-                    ) ENGINE = MYISAM DEFAULT CHARSET=utf8;
+                    ) ENGINE = InnoDB DEFAULT CHARSET=utf8;
                 ');
                 
                 if($isNewestSourcesTable===false) {
