@@ -13,17 +13,6 @@
     $title = $this->viewHelper->lazyimg($title);
     $content = $this->viewHelper->lazyimg($content);
     $date = $this->viewHelper->dateago($this->item['datetime']);
-    $sharecfg = \F3::get('share');
-    $share = array(
-        "g" => "google",
-        "f" => "facebook",
-        "t" => "twitter",
-        "p" => "pocket",
-        "r" => "readability",
-        "d" => "delicious",
-        "w" => "wallabag",
-        "e" => "email"
-    );
 ?>
 <div id="entry<?PHP echo $this->item['id']; ?>"
      class="entry
@@ -77,14 +66,6 @@
         
         <ul class="entry-smartphone-share">
             <li class="entry-newwindow"><?PHP echo \F3::get('lang_open_window')?></li>
-             <?PHP if (strlen($sharecfg) > 0) {
-                foreach (str_split($sharecfg) as $s) {
-                    $name = $share[$s];
-                    if ($name) {
-                       echo '<li class="entry-share'.$name.' entry-share" title="'.$name.'">'.$name.'</li>';
-                    }
-                }
-             } ?>
             <li class="entry-next"><?PHP echo \F3::get('lang_next')?></li>
         </ul>
     </div>
@@ -96,14 +77,6 @@
         <li class="entry-newwindow"><?PHP echo \F3::get('lang_open_window')?></li>
         <li class="entry-loadimages"><?PHP echo \F3::get('lang_load_img')?> </li>
         <li class="entry-next"><?PHP echo \F3::get('lang_next')?></li>
-        <?PHP if (strlen($sharecfg) > 0) {
-            foreach (str_split($sharecfg) as $s) {
-                $name = $share[$s];
-                if ($name) {
-                    echo '<li class="entry-share'.$name.' entry-share" title="'.$name.'">&nbsp;</li>';
-                }
-            }
-        } ?>
         <li class="entry-close"></li>
     </ul>
 </div>

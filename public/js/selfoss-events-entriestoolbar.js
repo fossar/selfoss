@@ -44,6 +44,8 @@ selfoss.events.entriesToolbar = function(parent) {
 
     // configure shares
     var shares = selfoss.shares.getAll();
+    parent.find('ul.entry-smartphone-share li.entry-newwindow').after(selfoss.shares.buildLinks(shares, function(name) { return '<li><span class="entry-share entry-share'+name+'" title="'+name+'"><img class="entry-share" title="'+name+'" src="images/'+name+'.png" height="16" width="16">'+name+'</span></li>'}));
+    parent.find('ul.entry-toolbar li.entry-next').after(selfoss.shares.buildLinks(shares, function(name) { return '<li><img class="entry-share entry-share'+name+'" title="'+name+'" src="images/'+name+'.png" height="16" width="16"></li>'}));
     for (var i = 0; i < shares.length; i++) {
         (function(share){
             parent.find('.entry-share' + share).unbind('click').click(function(e) {
