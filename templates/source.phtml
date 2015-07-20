@@ -32,7 +32,7 @@
         		$now = new DateTime();
         		$now->setTime(0,0,0);      		
         		$diff = $now->diff($old);      		
-        		echo \F3::get('lang_days', $diff->d);
+        		echo \F3::get('lang_days', $diff->format('%a'));
         	}
         }
         else {
