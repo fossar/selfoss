@@ -724,6 +724,7 @@ input {
 }
 
 .source-edit-delete,
+.source-days,
 .source-action {
     display:inline;
     color:#aaa;
@@ -968,8 +969,7 @@ body.publicmode.notloggedin .entry-unread {
     .source-showparams,
     .source-delete,
     .source-save,
-    .source-cancel,
-    .source-days {
+    .source-cancel {
         color:#333;
         border:0;
         background:#ededed;

@@ -13,8 +13,9 @@
     
     <div class="source-edit-delete"><span class="source-showparams"><?PHP echo \F3::get('lang_source_edit')?>
         </span> &bull; <span class="source-delete"><?PHP echo \F3::get('lang_source_delete') ?></span>
+    </div>
         
-        <span class="source-days">       
+    <div class="source-days">
         <?php        
         if (isset($this->source)) {
         	
@@ -38,7 +39,9 @@
         else {
         	\F3::get('lang_source_new'); 
         }
-        ?></span></div>
+        ?>
+    </div>
+        
 
     <!-- edit -->
     <ul class="source-edit-form">
