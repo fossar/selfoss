@@ -139,7 +139,7 @@ selfoss.events.sources = function() {
     
     // show params
     $('.source-showparams').unbind('click').click(function() {
-        $(this).parent().next().show();
+        $(this).parent().parent().find('.source-edit-form').show();
     });
     
     // select new source spout type
