@@ -517,7 +517,7 @@ input {
         
         .entry-content pre,
         .entry-content blockquote {
-            overflow-x: auto;
+            overflow-x: unset;
         }
     
         .entry-content p,
@@ -683,6 +683,7 @@ input {
 }
 
 .source-edit-delete,
+.source-days,
 .source-action {
     display:inline;
     color:#aaa;
@@ -1344,3 +1345,6 @@ body.publicmode.notloggedin .entry-unread {
 .fancybox-overlay {
     background: url('images/fancybox_overlay.png');
 }
+
+/* emojis */
+img[src^='http://s.w.org/images/core/emoji']{display:inline;height: 1em;margin: 0;}

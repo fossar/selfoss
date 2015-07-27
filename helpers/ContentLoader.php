@@ -58,8 +58,10 @@ class ContentLoader {
      */
     public function fetch($source) {
         
+    	$newPostAdded = FALSE;
+    	
         // at least 20 seconds wait until next update of a given source
-        $this->updateSource($source);
+        $this->updateSource($source, $newPostAdded);
         if(time() - $source['lastupdate'] < 20)
             return;
         
@@ -185,6 +187,8 @@ class ContentLoader {
             
             \F3::get('logger')->log('Memory usage: '.memory_get_usage(), \DEBUG);
             \F3::get('logger')->log('Memory peak usage: '.memory_get_peak_usage(), \DEBUG);
+            
+            $newPostAdded = TRUE;
         }
     
         // destroy feed object (prevent memory issues)
@@ -192,7 +196,7 @@ class ContentLoader {
         $spout->destroy();
 
         // remove previous errors and set last update timestamp
-        $this->updateSource($source);
+        $this->updateSource($source, $newPostAdded);
     }
 
     /**
@@ -231,7 +235,7 @@ class ContentLoader {
                 "keep_bad"       => 0,
                 "comment"        => 1,
                 "cdata"          => 1,
-                "elements"       => 'div,p,ul,li,a,img,dl,dt,dd,h1,h2,h3,h4,h5,h6,ol,br,table,tr,td,blockquote,pre,ins,del,th,thead,tbody,b,i,strong,em,tt,sub,sup,s,code'
+                "elements"       => 'div,p,ul,li,a,img,dl,dt,dd,h1,h2,h3,h4,h5,h6,ol,br,table,tr,td,blockquote,pre,ins,del,th,thead,tbody,b,i,strong,em,tt,sub,sup,s,strike,code'
             )
         );
     }
@@ -376,13 +380,15 @@ class ContentLoader {
      * Update source (remove previous errors, update last update)
      *
      * @param $source source object
+     * @param $newPostAdded boolean true or false depending on if a new post was found
+     * 
      */
-    protected function updateSource($source) {
+    protected function updateSource($source, $newPostAdded) {
         // remove previous error
         if ( !is_null($source['error']) ) {
             $this->sourceDao->error($source['id'], '');
         }
         // save last update
-        $this->sourceDao->saveLastUpdate($source['id']);
+        $this->sourceDao->saveLastUpdate($source['id'], $newPostAdded);
     }
 }

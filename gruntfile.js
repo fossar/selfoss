@@ -73,7 +73,7 @@ module.exports = function(grunt) {
                     { src: ['index.php'], dest: '' },
                     { src: ['common.php'], dest: '' },
                     { src: ['run.php'], dest: '' },
-                    { src: ['update.php'], dest: '' }
+                    { src: ['cliupdate.php'], dest: '' }
                 ]
             }
         }

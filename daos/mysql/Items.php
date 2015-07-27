@@ -404,7 +404,11 @@ class Items extends Database {
     * @return array mount of total, unread, starred entries in database
     */
     public function stats() {
-        $res = \F3::get('db')->exec('SELECT COUNT(*) AS total, '.$this->stmt->sumBool('unread').' AS unread, '.$this->stmt->sumBool('starred').' AS starred FROM items;');
+        $res = \F3::get('db')->exec('SELECT
+            COUNT(*) AS total,
+            '.$this->stmt->sumBool('unread').' AS unread,
+            '.$this->stmt->sumBool('starred').' AS starred
+            FROM '.\F3::get('db_prefix').'items;');
         return $res[0];
     }
 }

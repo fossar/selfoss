@@ -14,7 +14,7 @@ INSTALLATION
 2. Make the directories data/cache, data/favicons, data/logs, data/thumbnails, data/sqlite and public/ writeable
 3. Insert database access data in config.ini (see below -- you don't have to change anything if you want to use sqlite)
 3. You don't have to install the database, it will be created automatically (ensure that your database has enought rights for creating triggers)
-4. Create cronjob for updating feeds and point it to http://yourselfossurl.com/update via wget or curl. You can also execute the update.php from commandline.
+4. Create cronjob for updating feeds and point it to http://yourselfossurl.com/update via wget or curl. You can also execute the cliupdate.php from commandline.
 
 For further questions or on any problem use our support forum: http://selfoss.aditu.de/forum
 
