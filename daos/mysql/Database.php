@@ -88,7 +88,8 @@ class Database {
                         params TEXT NOT NULL ,
                         filter TEXT,
                         error TEXT,
-                        lastupdate INT
+                        lastupdate INT,
+                		lastentry INT
                     ) ENGINE = MYISAM DEFAULT CHARSET=utf8;
                 ');
                 $isNewestSourcesTable = true;
@@ -103,7 +104,7 @@ class Database {
                 ');
                 
                 \F3::get('db')->exec('
-                    INSERT INTO '.\F3::get('db_prefix').'version (version) VALUES (6);
+                    INSERT INTO '.\F3::get('db_prefix').'version (version) VALUES (8);
                 ');
                 
                 \F3::get('db')->exec('
@@ -167,6 +168,17 @@ class Database {
                     ');
                     \F3::get('db')->exec('
                         INSERT INTO '.\F3::get('db_prefix').'version (version) VALUES (6);
+                    ');
+                }
+                // Jump straight from v6 to v8 due to bug in previous version of the code
+                // in /daos/sqlite/Database.php which
+                // set the database version to "7" for initial installs.
+                if(strnatcmp($version, "8") < 0){
+                	\F3::get('db')->exec('
+                        ALTER TABLE '.\F3::get('db_prefix').'sources ADD lastentry INT;
+                    ');
+                	\F3::get('db')->exec('
+                        INSERT INTO '.\F3::get('db_prefix').'version (version) VALUES (8);
                     ');
                 }
             }
