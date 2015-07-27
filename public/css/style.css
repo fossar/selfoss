@@ -517,7 +517,7 @@ input {
         
         .entry-content pre,
         .entry-content blockquote {
-            overflow-x: auto;
+            overflow-x: unset;
         }
     
         .entry-content p,
