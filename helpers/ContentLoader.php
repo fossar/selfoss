@@ -58,10 +58,10 @@ class ContentLoader {
      */
     public function fetch($source) {
         
-    	$newPostAdded = FALSE;
+    	$lastEntry = $source['lastentry'];
     	
         // at least 20 seconds wait until next update of a given source
-        $this->updateSource($source, $newPostAdded);
+        $this->updateSource($source, null);
         if(time() - $source['lastupdate'] < 20)
             return;
         
@@ -188,7 +188,7 @@ class ContentLoader {
             \F3::get('logger')->log('Memory usage: '.memory_get_usage(), \DEBUG);
             \F3::get('logger')->log('Memory peak usage: '.memory_get_peak_usage(), \DEBUG);
             
-            $newPostAdded = TRUE;
+            $lastEntry = max($lastEntry, $itemDate->getTimestamp());
         }
     
         // destroy feed object (prevent memory issues)
@@ -196,7 +196,7 @@ class ContentLoader {
         $spout->destroy();
 
         // remove previous errors and set last update timestamp
-        $this->updateSource($source, $newPostAdded);
+        $this->updateSource($source, $lastEntry);
     }
 
     /**
@@ -379,16 +379,15 @@ class ContentLoader {
     /**
      * Update source (remove previous errors, update last update)
      *
-     * @param $source source object
-     * @param $newPostAdded boolean true or false depending on if a new post was found
-     * 
+     * @param mixed $source source object
+     * @param int $lastEntry timestamp of the newest item or NULL when no items were added
      */
-    protected function updateSource($source, $newPostAdded) {
+    protected function updateSource($source, $lastEntry) {
         // remove previous error
         if ( !is_null($source['error']) ) {
             $this->sourceDao->error($source['id'], '');
         }
         // save last update
-        $this->sourceDao->saveLastUpdate($source['id'], $newPostAdded);
+        $this->sourceDao->saveLastUpdate($source['id'], $lastEntry);
     }
 }
