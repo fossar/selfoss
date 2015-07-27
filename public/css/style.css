@@ -658,6 +658,10 @@ input {
             background-image:url(images/wallabag.png);
         }
 
+        .entry-sharewordpress {
+            background-image:url(images/wordpress.png);
+        }
+
         .entry-smartphone-share li.entry-shareemail,
         .entry-toolbar li.entry-shareemail {
             background-image:url(images/mail.png);

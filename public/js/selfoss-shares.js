@@ -28,6 +28,9 @@ selfoss.shares = {
     this.register('wallabag', 'w', true, function(url, title) {
       return $('#config').data('wallabag')+'/?action=add&url='+btoa(url);
     });
+    this.register('wordpress', 's', true, function(url, title) {
+      return $('#config').data('wordpress')+'/wp-admin/press-this.php?u='+encodeURIComponent(url)+'&t='+encodeURIComponent(title);
+    });
     this.register('email', 'e', false, function(url, title) {
       return "mailto:?body="+encodeURIComponent(url)+"&subject="+encodeURIComponent(title);
     });
