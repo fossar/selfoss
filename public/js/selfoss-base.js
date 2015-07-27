@@ -58,7 +58,7 @@ var selfoss = {
             selfoss.htmlTitle = $('#config').data('html_title')
 
             // init shares
-            selfoss.shares.init();
+            selfoss.shares.init($('#config').data('share'));
 
             // init events
             selfoss.events.init();
