@@ -224,7 +224,7 @@ class Database {
     	foreach($sources as $current_src) {
     		//get the date of the newest entry found in the database   		
     		$latestEntryDate = @\F3::get('db')->exec('SELECT datetime FROM items WHERE source=' . 
-    				                              $current_src['id'] . ' ORDER BY id DESC LIMIT 0, 1');
+    				                              $current_src['id'] . ' ORDER BY datetime DESC LIMIT 0, 1');
     		
     		//if an entry for this source was found in the database, write the date of the newest one into the sources table 
             if (isset ($latestEntryDate[0]['datetime']))
