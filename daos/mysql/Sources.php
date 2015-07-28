@@ -108,20 +108,20 @@ class Sources extends Database {
      *
      * @return void
      * @param int $id the source id
-     * @param boolean newPostAdded true or false depending on whether a post was added
+     * @param int $lastEntry timestamp of the newest item or NULL when no items were added
      */
-    public function saveLastUpdate($id, $newPostAdded) {
+    public function saveLastUpdate($id, $lastEntry) {
         \F3::get('db')->exec('UPDATE '.\F3::get('db_prefix').'sources SET lastupdate=:lastupdate WHERE id=:id',
                     array(
                         ':id'         => $id,
                         ':lastupdate' => time()
                     ));
         
-        if ($newPostAdded == TRUE) {
+        if ($lastEntry !== null) {
         	\F3::get('db')->exec('UPDATE '.\F3::get('db_prefix').'sources SET lastentry=:lastentry WHERE id=:id',
         			array(
         					':id'         => $id,
-        					':lastentry' => time()
+        					':lastentry' => $lastEntry
         			));
         }
         
@@ -134,7 +134,7 @@ class Sources extends Database {
      * @return mixed all sources
      */
     public function getByLastUpdate() {
-        $ret = \F3::get('db')->exec('SELECT id, title, tags, spout, params, filter, error, lastupdate FROM '.\F3::get('db_prefix').'sources ORDER BY lastupdate ASC');
+        $ret = \F3::get('db')->exec('SELECT id, title, tags, spout, params, filter, error, lastupdate, lastentry FROM '.\F3::get('db_prefix').'sources ORDER BY lastupdate ASC');
         $spoutLoader = new \helpers\SpoutLoader();
         for($i=0;$i<count($ret);$i++)
             $ret[$i]['spout_obj'] = $spoutLoader->get( $ret[$i]['spout'] );
