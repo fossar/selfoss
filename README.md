@@ -51,7 +51,7 @@ Visit the page http://yourselfossurl.com/opml for importing your OPML File. If y
 APPS
 ----
 
-Third party apps are available for iOS and Android: [Cataracta](https://itunes.apple.com/us/app/cataracta/id817392033?mt=8&ign-mpt=uo%3D4) and [Selfoss](https://play.google.com/store/apps/details?id=fr.ydelouis.selfoss).
+A third party app is available for Android: [Selfoss](https://play.google.com/store/apps/details?id=fr.ydelouis.selfoss).
 
 
 DEVELOPMENT
