@@ -126,6 +126,8 @@ selfoss.events.entries = function(e) {
     
     $('.mark-these-read').unbind('click').click(selfoss.markVisibleRead);
 
+    $('.stream-error').unbind('click').click(selfoss.reloadList);
+
     // more
     $('.stream-more').unbind('click').click(function () {
         var streamMore = $(this);

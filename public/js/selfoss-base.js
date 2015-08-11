@@ -162,6 +162,7 @@ var selfoss = {
             return;
         }
 
+        $('.stream-error').css('display', 'block').hide();
         $('#content').addClass('loading').html("");
 
         selfoss.activeAjaxReq = $.ajax({
@@ -187,19 +188,23 @@ var selfoss = {
                 }
                 if(selfoss.filter.sourcesNav)
                     selfoss.refreshSources(data.sources);
-
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                if (textStatus == "parsererror")
+                    location.reload();
+                else {
+                    if (textStatus == "abort")
+                        return;
+                    else if (errorThrown)
+                        selfoss.showError('Load list error: '+
+                                          textStatus+' '+errorThrown);
+                    $('.stream-error').show();
+                }
+            },
+            complete: function(jqXHR, textStatus) {
                 // clean up
                 $('#content').removeClass('loading');
                 selfoss.activeAjaxReq = null;
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                if (textStatus == "abort")
-                    return;
-                else if (textStatus == "parsererror")
-                    location.reload();
-                else if (errorThrown)
-                    selfoss.showError('Load list error: '+
-                                      textStatus+' '+errorThrown);
             }
         });
     },
@@ -222,7 +227,9 @@ var selfoss = {
             url: stats_url,
             type: 'GET',
             success: function(data) {
-                if( data.unread>0 && $('.stream-empty').is(':visible') ) {
+                if( data.unread>0 &&
+                    ($('.stream-empty').is(':visible') ||
+                     $('.stream-error').is(':visible')) ) {
                     selfoss.reloadList();
                 } else {
                     selfoss.refreshStats(data.all, data.unread, data.starred);
