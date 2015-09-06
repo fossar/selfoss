@@ -56,7 +56,7 @@ class Database {
                         source INT NOT NULL ,
                         uid VARCHAR(255) NOT NULL,
                         link TEXT NOT NULL,
-                        updatetime DATETIME NOT NULL,
+                        updatetime DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
                         author VARCHAR(255),
                         INDEX (source)
                     ) ENGINE = InnoDB DEFAULT CHARSET=utf8;
