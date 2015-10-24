@@ -246,18 +246,36 @@ class Items extends Database {
         
         // first check whether more items are available
         $result = \F3::get('db')->exec('SELECT items.id
-                   FROM '.\F3::get('db_prefix').'items AS items, '.\F3::get('db_prefix').'sources AS sources
-                   WHERE items.source=sources.id '.$where.' 
-                   LIMIT 1 OFFSET ' . ($options['offset']+$options['items']), $params);
+                   FROM '.\F3::get('db_prefix').'items
+                   WHERE 1=1 '.$where.'
+                   LIMIT ' . ($options['offset']+$options['items']) . ', 1', $params);
         $this->hasMore = count($result);
 
-        // get items from database
-        return \F3::get('db')->exec('SELECT 
-                    items.id, datetime, items.title AS title, content, unread, starred, source, thumbnail, icon, uid, link, updatetime, author, sources.title as sourcetitle, sources.tags as tags
-                   FROM '.\F3::get('db_prefix').'items AS items, '.\F3::get('db_prefix').'sources AS sources
-                   WHERE items.source=sources.id '.$where.' 
-                   ORDER BY items.datetime '.$order.' 
-                   LIMIT ' . $options['items'] . ' OFFSET '. $options['offset'], $params);
+        // Build list of items WITHOUT using any join
+        // which is a perf killer if you start having a quite big items number
+        $items_list = \F3::get('db')->exec('SELECT 
+                    id, datetime, title, content, unread, starred, source, thumbnail, icon, uid, link, updatetime, author
+                   FROM '.\F3::get('db_prefix').'items AS items
+                   WHERE 1=1 '.$where.' 
+                   ORDER BY datetime '.$order.' 
+                   LIMIT ' . $options['offset'] . ', ' . $options['items'], $params);
+        // Iterate on each item and get source informations
+        // from databse only if needed (ie. if not already retrieved)
+        $sources_list = array();
+        foreach ($items_list as $key => $item) {
+            if (array_key_exists($item['source'], $sources_list)) {
+                $items_list[$key] = array_merge($items_list[$key], $sources_list[$item['source']]);
+            }else{
+                $source = \F3::get('db')->exec('SELECT 
+                        title as sourcetitle, tags
+                       FROM '.\F3::get('db_prefix').'sources
+                       WHERE id='.$item['source']);
+                $sources_list[$item['source']] = $source[0];
+                $items_list[$key] = array_merge($items_list[$key], $sources_list[$item['source']]);
+            }
+        }
+        // We have the list of items, let's return it
+        return $items_list;
     }
     
     
@@ -376,7 +394,13 @@ class Items extends Database {
         if(is_numeric($sourceid)===false)
             return false;
         
-        $res = \F3::get('db')->exec('SELECT icon FROM '.\F3::get('db_prefix').'items WHERE source=:sourceid AND icon!=\'\' AND icon IS NOT NULL ORDER BY ID DESC LIMIT 1',
+        $res = \F3::get('db')->exec('SELECT icon
+                   FROM '.\F3::get('db_prefix').'items
+                   WHERE source=:sourceid
+                     AND icon!=\'\'
+                     AND icon IS NOT NULL
+                   ORDER BY ID DESC
+                   LIMIT 1',
                     array(':sourceid' => $sourceid));
         if(count($res)==1)
             return $res[0]['icon'];
