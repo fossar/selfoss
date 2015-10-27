@@ -329,11 +329,11 @@ class Items extends Database {
      * @param string $icon file
      */
     public function hasIcon($icon) {
-        $res = \F3::get('db')->exec('SELECT count(*) AS amount
-                   FROM '.\F3::get('db_prefix').'items 
-                   WHERE icon=:icon',
+        $res = \F3::get('db')->exec('SELECT id
+                   FROM items
+                   WHERE icon=:icon limit 1',
                   array(':icon' => $icon));
-        return $res[0]['amount']>0;
+        return sizeof($res)>0;
     }
     
     /**
