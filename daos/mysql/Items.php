@@ -246,9 +246,9 @@ class Items extends Database {
         
         // first check whether more items are available
         $result = \F3::get('db')->exec('SELECT items.id
-                   FROM '.\F3::get('db_prefix').'items
+                   FROM '.\F3::get('db_prefix').'items as items
                    WHERE 1=1 '.$where.'
-                   LIMIT ' . ($options['offset']+$options['items']) . ', 1', $params);
+                   LIMIT 1 OFFSET ' . ($options['offset']+$options['items']), $params);
         $this->hasMore = count($result);
 
         // Build list of items WITHOUT using any join
@@ -258,7 +258,7 @@ class Items extends Database {
                    FROM '.\F3::get('db_prefix').'items AS items
                    WHERE 1=1 '.$where.' 
                    ORDER BY datetime '.$order.' 
-                   LIMIT ' . $options['offset'] . ', ' . $options['items'], $params);
+                   LIMIT ' . $options['offset'] . ' OFFSET ' . $options['items'], $params);
         // Iterate on each item and get source informations
         // from databse only if needed (ie. if not already retrieved)
         $sources_list = array();
