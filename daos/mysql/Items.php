@@ -78,8 +78,44 @@ class Items extends Database {
         \F3::get('db')->exec('UPDATE '.\F3::get('db_prefix').'items SET '.$this->stmt->isFalse('starred').' WHERE id=:id',
                     array(':id' => $id));
     }
-    
-    
+
+
+    /**
+     * mark item as shared (used for source scoring)
+     *
+     * @return void
+     * @param int $id the item
+     */
+    public function shared($id) {
+        \F3::get('db')->exec('UPDATE '.\F3::get('db_prefix').'items SET '.$this->stmt->isTrue('shared').' WHERE id=:id',
+                    array(':id' => $id));
+    }
+
+
+    /**
+     * unshare item (used for source scoring)
+     *
+     * @return void
+     * @param int $id the item
+     */
+    public function unshared($id) {
+        \F3::get('db')->exec('UPDATE '.\F3::get('db_prefix').'items SET '.$this->stmt->isFalse('shared').' WHERE id=:id',
+                    array(':id' => $id));
+    }
+
+
+    /**
+     * mark item as opened (used for source scoring)
+     *
+     * @return void
+     * @param int $id the item
+     */
+    public function opened($id) {
+        \F3::get('db')->exec('UPDATE '.\F3::get('db_prefix').'items SET opened=1 WHERE id=:id',
+                    array(':id' => $id));
+    }
+
+
     /**
      * add new item
      *
@@ -219,11 +255,23 @@ class Items extends Database {
         if(isset($options['tag']) && strlen($options['tag'])>0) {
             $params[':tag'] = array( "%,".$options['tag'].",%" , \PDO::PARAM_STR );
             if ( \F3::get( 'db_type' ) == 'mysql' ) {
-              $where .= " AND ( CONCAT( ',' , sources.tags , ',' ) LIKE _utf8 :tag COLLATE utf8_bin ) ";
+              $source_tags_where = " WHERE ( CONCAT( ',' , sources.tags , ',' ) LIKE _utf8 :tag COLLATE utf8_bin ) ";
             } else {
-              $where .= " AND ( (',' || sources.tags || ',') LIKE :tag ) ";
+              $source_tags_where = " WHERE ( (',' || sources.tags || ',') LIKE :tag ) ";
             }
+            // Get source's id containing tag
+            $resultset = \F3::get('db')->exec('SELECT id FROM sources'.$source_tags_where, $params);
+            // Build source ids list
+            $source_list = array();
+            foreach ($resultset as $source)
+                $sources_list[] = $source['id'];
+            ob_start();
+            var_dump(array_values($sources_list));
+            $result = ob_get_clean();
+            \F3::get('logger')->log('sources_list for tag'.$options['tag'].': '.$result, \ERROR);
+            $where .= " AND source in (".implode(',',$sources_list).")";
         }
+
         // source filter
         elseif(isset($options['source']) && strlen($options['source'])>0) {
             $params[':source'] = array($options['source'], \PDO::PARAM_INT);
@@ -246,19 +294,19 @@ class Items extends Database {
         
         // first check whether more items are available
         $result = \F3::get('db')->exec('SELECT items.id
-                   FROM '.\F3::get('db_prefix').'items as items
+                   FROM '.\F3::get('db_prefix').'items
                    WHERE 1=1 '.$where.'
-                   LIMIT 1 OFFSET ' . ($options['offset']+$options['items']), $params);
+                   LIMIT ' . ($options['offset']+$options['items']) . ', 1', $params);
         $this->hasMore = count($result);
 
         // Build list of items WITHOUT using any join
         // which is a perf killer if you start having a quite big items number
         $items_list = \F3::get('db')->exec('SELECT 
-                    id, datetime, title, content, unread, starred, source, thumbnail, icon, uid, link, updatetime, author
+                    id, datetime, title, content, unread, starred, shared, source, thumbnail, icon, uid, link, updatetime, author
                    FROM '.\F3::get('db_prefix').'items AS items
                    WHERE 1=1 '.$where.' 
                    ORDER BY datetime '.$order.' 
-                   LIMIT ' . $options['offset'] . ' OFFSET ' . $options['items'], $params);
+                   LIMIT ' . $options['offset'] . ', ' . $options['items'], $params);
         // Iterate on each item and get source informations
         // from databse only if needed (ie. if not already retrieved)
         $sources_list = array();
@@ -347,11 +395,11 @@ class Items extends Database {
      * @param string $icon file
      */
     public function hasIcon($icon) {
-        $res = \F3::get('db')->exec('SELECT count(*) AS amount
-                   FROM '.\F3::get('db_prefix').'items 
-                   WHERE icon=:icon',
+        $res = \F3::get('db')->exec('SELECT id
+                   FROM items
+                   WHERE icon=:icon limit 1',
                   array(':icon' => $icon));
-        return $res[0]['amount']>0;
+        return sizeof($res)>0;
     }
     
     /**
@@ -435,4 +483,20 @@ class Items extends Database {
             FROM '.\F3::get('db_prefix').'items;');
         return $res[0];
     }
+
+    /**
+     * Get Items score from source (used for source scoring)
+     */
+    public function getForScore($sourceid, $sourceupdate) {
+        return \F3::get('db')->exec( 'SELECT count(*) AS count,
+                                             sum(starred) AS stars,
+                                             sum(shared)  AS shares,
+                                             sum(opened)  AS opens
+                                      FROM '.\F3::get('db_prefix').'items
+                                      WHERE source = :source
+                                        AND updatetime > :update',
+                                     array(':source' => $sourceid, ':update' => date('Y-m-d H:m:s', $sourceupdate))
+                                   );
+    }
+
 }
