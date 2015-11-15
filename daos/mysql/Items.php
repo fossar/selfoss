@@ -265,10 +265,6 @@ class Items extends Database {
             $source_list = array();
             foreach ($resultset as $source)
                 $sources_list[] = $source['id'];
-            ob_start();
-            var_dump(array_values($sources_list));
-            $result = ob_get_clean();
-            \F3::get('logger')->log('sources_list for tag'.$options['tag'].': '.$result, \ERROR);
             $where .= " AND source in (".implode(',',$sources_list).")";
         }
 
