@@ -84,6 +84,9 @@ selfoss.events.entries = function(e) {
                 parent.find('.entry-toolbar').hide();
                 content.hide();
             } else {
+                if($('#config').data('auto-collapse')=="1"){
+                    $('.entry-content, .entry-toolbar').hide();
+                }
                 content.show();
                 selfoss.events.entriesToolbar(parent);
                 parent.find('.entry-toolbar').show();
