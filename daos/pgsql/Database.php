@@ -195,6 +195,9 @@ class Database {
 					\F3::get('db')->exec('
                         ALTER TABLE items ADD shared BOOLEAN;
                     ');
+					\F3::get('db')->exec('
+                        INSERT INTO version (version) VALUES (9);
+                    ');
 				}
             }
             
