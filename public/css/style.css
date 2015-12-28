@@ -7,6 +7,7 @@ html {
  
 body {
     font: lighter 18px/27px 'OpenSans', Arial, sans-serif;
+    color: black;
     background:url(images/bg.gif) repeat;
     height: 100%;
     position:relative;
