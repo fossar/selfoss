@@ -191,6 +191,11 @@ class Database {
                 			'INSERT INTO version (version) VALUES (8);'
                 	));
                 }
+				if(strnatcmp($version, "9") < 0) {
+					\F3::get('db')->exec('
+                        ALTER TABLE items ADD shared BOOLEAN;
+                    ');
+				}
             }
             
             // just initialize once
