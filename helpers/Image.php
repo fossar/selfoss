@@ -132,7 +132,7 @@ class Image {
         // parse image for saving it later
         @unlink($tmp);
         try {
-            $wideImage = \WideImage::load($data);
+            $wideImage = \WideImage\WideImage::load($data);
         } catch(\Exception $e) {
             return false;
         }
