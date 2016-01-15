@@ -12,6 +12,7 @@
         "linkorb/jsmin-php": "^1.0",
         "natxet/CssMin": "^3.0",
         "mibe/feedwriter": "^1.0",
+        "j0k3r/php-readability": "^1.0",
         "fivefilters/ftr-site-config": "dev-master"
     },
     "license": "GPL-3.0",
