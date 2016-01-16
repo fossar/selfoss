@@ -117,7 +117,14 @@ selfoss.events.navigation = function() {
             toggle();
         }
     });
-    
+
+    // emulate clicking when using keyboard
+    $('#nav-filter > li, #nav-tags > li, #nav-tags-title, #nav-sources > li, #nav-sources-title').unbind('keypress').keypress(function (e) {
+        if(e.keyCode === 13) {
+            $(this).click();
+        }
+    });
+
     // show hide navigation for mobile version
     $('#nav-mobile-settings').unbind('click').click(function () {
         var nav = $('#nav');

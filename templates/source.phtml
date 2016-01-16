@@ -1,4 +1,5 @@
-<div id="source<?PHP echo isset($this->source) ? $this->source['id'] : ''; ?>" 
+<?PHP $idAttr = isset($this->source) ? $this->source['id'] : 'new-' . rand(); ?>
+<div role="form" id="source<?= $idAttr ?>" 
         class="source <?PHP 
                         echo isset($this->source)===false ? 'source-new' : ''; 
                         echo (isset($this->source) && isset($this->source['error']) && strlen($this->source['error'] > 0)) ? 'error' : ''
@@ -11,8 +12,8 @@
     
     <div class="source-title"><?PHP echo isset($this->source) ? $this->source['title'] : \F3::get('lang_source_new') ; ?></div>
     
-    <div class="source-edit-delete"><span class="source-showparams"><?PHP echo \F3::get('lang_source_edit')?>
-        </span> &bull; <span class="source-delete"><?PHP echo \F3::get('lang_source_delete') ?></span>
+    <div class="source-edit-delete"><button class="source-showparams"><?PHP echo \F3::get('lang_source_edit')?>
+        </button> &bull; <button class="source-delete"><?PHP echo \F3::get('lang_source_delete') ?></button>
     </div>
         
     <div class="source-days">
@@ -46,20 +47,20 @@
     <!-- edit -->
     <ul class="source-edit-form">
         <!-- title -->
-        <li><label><?PHP echo \F3::get('lang_source_title')?>:</label> <input type="text" name="title" value="<?PHP echo isset($this->source) ? $this->source['title'] : '' ; ?>" placeholder="<?PHP echo F3::get('lang_source_new'); ?>" /></li>
+        <li><label for="title-<?= $idAttr ?>"><?PHP echo \F3::get('lang_source_title')?>:</label> <input id="title-<?= $idAttr ?>" type="text" name="title" value="<?PHP echo isset($this->source) ? $this->source['title'] : '' ; ?>" placeholder="<?PHP echo F3::get('lang_source_new'); ?>" /></li>
         
 
         <!-- tags -->
-        <li><label><?PHP echo \F3::get('lang_source_tags');?>:</label>
-            <input type="text" name="tags" value="<?PHP echo isset($this->source) ? $this->source['tags'] : ''; ?>" /> <span class="source-edit-form-help"> <?PHP echo \F3::get('lang_source_comma')?></span>
+        <li><label for="tags-<?= $idAttr ?>"><?PHP echo \F3::get('lang_source_tags');?>:</label>
+            <input id="tags-<?= $idAttr ?>" type="text" name="tags" value="<?PHP echo isset($this->source) ? $this->source['tags'] : ''; ?>" /> <span class="source-edit-form-help"> <?PHP echo \F3::get('lang_source_comma')?></span>
         </li>
 
         <!-- filter -->
-        <li><label><?PHP echo \F3::get('lang_source_filter')?>:</label> <input type="text" name="filter" value="<?PHP echo isset($this->source) ? $this->source['filter'] : '' ; ?>" placeholder="<?PHP echo F3::get('lang_source_optional'); ?>" /></li>
+        <li><label for="filter-<?= $idAttr ?>"><?PHP echo \F3::get('lang_source_filter')?>:</label> <input id="filter-<?= $idAttr ?>" type="text" name="filter" value="<?PHP echo isset($this->source) ? $this->source['filter'] : '' ; ?>" placeholder="<?PHP echo F3::get('lang_source_optional'); ?>" /></li>
         
         <!-- type -->
-        <li><label><?PHP echo \F3::get('lang_source_type')?>:</label> 
-            <select class="source-spout" name="spout">
+        <li><label for="type-<?= $idAttr ?>"><?PHP echo \F3::get('lang_source_type')?>:</label> 
+            <select id="type-<?= $idAttr ?>" class="source-spout" name="spout">
                 <option value=""><?PHP echo \F3::get('lang_source_select')?></option>
                 <?PHP foreach($this->spouts as $spouttype=>$spout) : ?>
                 <option value="<?PHP echo str_replace("\\", "_", $spouttype); ?>" <?PHP echo isset($this->source) && $spouttype==$this->source['spout'] ? 'selected="selected"' : ''; ?>>
@@ -76,6 +77,7 @@
                 if($this->spouts[$this->source['spout']]->params!==false) {
                     $this->spout = $this->spouts[$this->source['spout']];
                     $this->params = json_decode(html_entity_decode($this->source['params']), true);
+                    $this->idAttr = $idAttr;
                     echo $this->render('templates/source_params.phtml');
                 }
             }
@@ -91,7 +93,7 @@
         
         <!-- save/delete -->
         <li class="source-action">
-            <span class="source-save"><?PHP echo \F3::get('lang_source_save')?></span> &bull; <span class="source-cancel"><?PHP echo \F3::get('lang_source_cancel')?></span>
+            <button class="source-save"><?PHP echo \F3::get('lang_source_save')?></button> &bull; <button class="source-cancel"><?PHP echo \F3::get('lang_source_cancel')?></button>
         </li>
     </ul>
 

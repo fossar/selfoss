@@ -56,19 +56,18 @@ input {
     }
 
     #nav-logo {
-        position:absolute;
-        left:20px;
-        top:14px;
+        margin-left:20px;
+        margin-top:14px;
         background:url(images/logo.png);
         width:31px;
         height:37px;
     }
     
     #nav-mark {
+        border: none;
         padding:10px;
         margin-left:15px;
         margin-right:15px;
-        margin-top:50px;
         color:#d7d7d7;
         background:#3d6d69;
         font-weight:600;
@@ -85,8 +84,11 @@ input {
             color:#000000;
         }
     
-    #nav-filter {
+    #nav-filter-title {
         margin-top:20px;
+    }
+
+    #nav-filter {
         margin-bottom:30px;
     }
     
@@ -125,7 +127,6 @@ input {
         }
     
     #nav h2 {
-        cursor:pointer;
         color:#494949;
         text-transform:uppercase;
         font-size:0.8em;
@@ -138,11 +139,13 @@ input {
     }
     
         .nav-tags-collapsed {
+            cursor:pointer;
             padding-left: 20px;
             background: url(images/nav-collapsed.png) center left no-repeat;
         }
         
         .nav-tags-expanded {
+            cursor:pointer;
             padding-left: 20px;
             background: url(images/nav-expanded.png) center left no-repeat;
         }
@@ -186,11 +189,13 @@ input {
     }
     
         .nav-sources-collapsed {
+            cursor:pointer;
             padding-left: 20px;
             background: url(images/nav-collapsed.png) center left no-repeat;
         }
         
         .nav-sources-expanded {
+            cursor:pointer;
             padding-left: 20px;
             background: url(images/nav-expanded.png) center left no-repeat;
         }
@@ -238,6 +243,8 @@ input {
     #nav-settings,
     #nav-logout,
     #nav-login {
+        padding: 0;
+        border: none;
         position:absolute;
         top:100%;
         margin-top:-80px;
@@ -325,13 +332,13 @@ input {
         width:250px;
         margin-left:10px;
     }
-    
-    #search-shownav {
-        display:none;
-    }
 
     #search-button,
     #search-remove {
+        box-sizing: content-box;
+        background: transparent;
+        padding: 0;
+        border: none;
         position:absolute;
         width:30px;
         height:20px;
@@ -340,12 +347,7 @@ input {
         cursor:pointer;
     }
     
-    #search-remove {
-        background:url(images/remove.png) no-repeat center center;
-    }
-    
     #search-button {
-        background:url(images/search.png) no-repeat center center;
         left:305px;
     }
     
@@ -582,17 +584,26 @@ input {
         background:#eaeaea;
     }
     
-        .entry-smartphone-share li,
-        .entry-toolbar li {
-            float:left;
+        .entry-smartphone-share button,
+        .entry-toolbar button {
+            background-color: transparent;
+            color: black;
+            border: none;
+            padding: 0 0 0 20px;
             margin-left:10px;
-            padding-left:20px;
+            float: left;
             cursor:pointer;
             background-size:16px 16px;
             background-repeat:no-repeat;
             background-position: left center;
+            vertical-align: middle;
         }
-        
+
+        .entry-smartphone-share button:focus,
+        .entry-toolbar button:focus {
+            outline: 1px dotted #aaa;
+        }
+
         .entry-toolbar .entry-starr {
             background-image:url(images/unstarred.png);
         }
@@ -622,7 +633,11 @@ input {
             background-image:url(images/arrow-right.png);
             display:none;
         }
-        
+
+        .entry-smartphone-share .entry-share,
+        .entry-toolbar .entry-share {
+            padding: 0;
+        }
 
         .entry-toolbar .entry-close {
             display:none;
@@ -700,7 +715,17 @@ input {
     .source-action span {
         cursor:pointer;
     }
-    
+
+.source-showparams,
+.source-delete,
+.source-save,
+.source-cancel {
+    padding: 0;
+    background: transparent;
+    color:#aaa;
+    border: none;
+}
+
 .source-edit-form {
     display:none;
     margin-left:20px;
@@ -750,6 +775,10 @@ input {
 }
 
 .source-add {
+    background: transparent;
+    border: none;
+    color: black;
+    padding: 0;
     cursor:pointer;
     margin-left:20px;
     float:left;
@@ -872,13 +901,7 @@ input {
     
 /* public mode */
 
-body.publicmode.notloggedin #nav-mark {
-    height:3px;
-    padding:0;
-    overflow:hidden;
-    cursor:auto;
-}
-
+body.publicmode.notloggedin #nav-mark,
 body.publicmode.notloggedin .entry-starr,
 body.publicmode.notloggedin .entry-unread {
     display:none;
@@ -1278,12 +1301,12 @@ body.publicmode.notloggedin .entry-unread {
         display:none;
     }
     
-    img.entry-share {
+    .entry-share img {
         float: left;
         margin: 0 5px 0 0;
     }
 
-    span.entry-share {
+    .entry-share span {
         text-align:center;
     }
 
@@ -1298,8 +1321,7 @@ body.publicmode.notloggedin .entry-unread {
         height:50px;
     }
     
-        .entry-smartphone-share li {
-            float:left;
+        .entry-smartphone-share button {
             margin-right:10px;
             margin-bottom:5px;
             list-style:none;
