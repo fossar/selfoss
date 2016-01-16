@@ -138,7 +138,7 @@ class fulltextrss extends feed {
      */
     private function fetchFromWebSite($url) {
 
-        $this->extractor = new \ContentExtractor(\F3::get('FTRSS_DATA_DIR').'/custom', \F3::get('FTRSS_DATA_DIR').'/standard');
+        $this->extractor = new \ContentExtractor('/vendor/j0k3r/graby-site-config', \F3::get('FTRSS_DATA_DIR').'/standard');
         if (\F3::get('logger_level')==="DEBUG") {
             ob_start();
             $this->extractor->debug = true;
