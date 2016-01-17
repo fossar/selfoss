@@ -39,8 +39,8 @@
     <form action="<?PHP echo $this->base; ?>?login=1" method="post">
     <ul id="login">
         <li><h1>selfoss login</h1></li>
-         <li><label><?PHP echo trim(\F3::get('lang_login_username')); ?>:</label> <input type="text" name="username" id="username" /></li>
-         <li><label><?PHP echo trim(\F3::get('lang_login_password')); ?>:</label> <input type="password" name="password" /></li>
+         <li><label for="username"><?PHP echo trim(\F3::get('lang_login_username')); ?>:</label> <input type="text" name="username" id="username"></li>
+         <li><label for="password"><?PHP echo trim(\F3::get('lang_login_password')); ?>:</label> <input type="password" name="password" id="password"></li>
         <?PHP if(isset($this->error)) : ?>
         <li class="error"><?PHP echo $this->error; ?></li>
         <?PHP endif; ?>
@@ -52,7 +52,7 @@
     <form action="<?PHP echo $this->base; ?>password" method="post">
     <ul id="login">
         <li><h1>hash generator</h1></li>
-        <li><label>Password:</label> <input type="password" name="password" /></li>
+        <li><label for="password">Password:</label> <input type="password" name="password" id="password"></li>
         <?PHP if(isset($this->hash)) : ?>
         <li class="error"><label>&nbsp;</label>Generated Password (insert this in config.ini): <input type="text" id="hash" value="<?PHP echo $this->hash; ?>" /></li>
         <?PHP endif; ?>

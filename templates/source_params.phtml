@@ -11,7 +11,8 @@ foreach($this->spout->params as $spoutParamName => $spoutParam) {
     }
     
     if( $spoutParam["type"]=="text"
-        || $spoutParam["type"]=="checkbox")
+        || $spoutParam["type"]=="checkbox"
+        || $spoutParam["type"]=="url")
         echo '<li>
                 <label for="'.$spoutParamName.'-'.$this->idAttr.'">'.$spoutParam['title'].':</label>
                 <input id="'.$spoutParamName.'-'.$this->idAttr.'" type="'.$spoutParam["type"].'" 
