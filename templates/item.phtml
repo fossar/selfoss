@@ -16,12 +16,12 @@
 ?>
 <div id="entry<?PHP echo $this->item['id']; ?>"
      class="entry
-            <?PHP echo $this->item['unread']==1 ? 'unread' : ''; ?>">
+            <?PHP echo $this->item['unread']==1 ? 'unread' : ''; ?>" role="article">
     
     <!-- icon -->
-    <a href="<?PHP echo \helpers\Anonymizer::anonymize($this->item['link']); ?>" class="entry-icon">
+    <a href="<?PHP echo \helpers\Anonymizer::anonymize($this->item['link']); ?>" class="entry-icon" tabindex="-1">
         <?PHP if(strlen(trim($this->item['icon']))>0 && $this->item['icon']!="0") : ?>
-        <img src="<?PHP echo 'favicons/'.$this->item['icon']; ?>" alt="<?PHP echo $sourcetitle ?>" />
+        <img src="<?PHP echo 'favicons/'.$this->item['icon']; ?>" alt="" >
         <?PHP endif; ?>
     </a>
     

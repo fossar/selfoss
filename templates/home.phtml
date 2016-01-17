@@ -90,7 +90,7 @@
     </div>
     
     <!-- navigation -->
-    <div id="nav">
+    <div id="nav" role="navigation">
         <div id="nav-logo"></div>
         <button id="nav-mark"><?PHP echo \F3::get('lang_markread')?></button>
 
@@ -105,12 +105,12 @@
         <hr>
 
         <div id="nav-tags-wrapper">
-        <h2 id="nav-tags-title" class="nav-tags-expanded" tabindex="0"><?PHP echo \F3::get('lang_tags') ?></h2>
+        <h2 id="nav-tags-title" class="nav-tags-expanded" tabindex="0" aria-haspopup="true" aria-expanded="true"><?PHP echo \F3::get('lang_tags') ?></h2>
         <ul id="nav-tags">
             <li class="active nav-tags-all" role="link" tabindex="0"><?PHP echo \F3::get('lang_alltags')?></li>
             <?PHP echo $this->tags; ?>
         </ul>
-        <h2 id="nav-sources-title" class="nav-sources-collapsed" tabindex="0"><?PHP echo \F3::get('lang_sources') ?></h2>
+        <h2 id="nav-sources-title" class="nav-sources-collapsed" tabindex="0" aria-haspopup="true" aria-expanded="false"><?PHP echo \F3::get('lang_sources') ?></h2>
         <ul id="nav-sources">
             <?PHP echo $this->sources; ?>
         </ul>
@@ -153,7 +153,7 @@
     </ul>
     
     <!-- content -->
-    <div id="content">
+    <div id="content" role="main">
         <?PHP echo $this->content; ?>
     </div>
     
