@@ -488,7 +488,7 @@ input {
         .entry-content img {
             max-width:99%;
             display: block;
-            margin: 0 10px 5px 0;
+            margin: 0 auto;
         }
         
         .entry-content p {
