@@ -83,4 +83,4 @@ Special thanks to the great programmers of this libraries which will be used in 
 * twitter oauth library: https://github.com/abraham/twitteroauth
 * FullTextRSS: http://help.fivefilters.org/customer/portal/articles/223153-site-patterns
 
-Icon Source: http://blog.artcore-illustrations.de/aicons/
+Icon Source: http://www.artcoreillustrations.com/

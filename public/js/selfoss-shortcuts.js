@@ -122,6 +122,12 @@ selfoss.shortcuts = {
             e.preventDefault();
             $('#nav-filter-unread').click();
         });
+
+        // 'Shift + r': Refresh sources
+        $(document).bind('keydown', 'Shift+r', function(e) {
+            e.preventDefault();
+            $('#nav-refresh').click();
+        });
         
         // 'Ctrl+m': mark all as read
         $(document).bind('keydown', 'ctrl+m', function(e) {

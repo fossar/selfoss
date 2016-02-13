@@ -47,6 +47,20 @@ class Sources extends Database {
             \F3::get('logger')->log('Unimplemented method for ' . \F3::get('db_type') . ': ' . $name, \ERROR);
     }
     
+    public function get() {
+        $sources = $this->backend->get();
+        // remove items with private tags
+        if(!\F3::get('auth')->showPrivateTags()) {
+            foreach($sources as $idx => $source) {
+                if (strpos($source['tags'], "@") !== false) {
+                    unset($sources[$idx]);
+                }
+            }
+            $sources = array_values($sources);
+        }
+        
+        return $sources;
+    }
     
     /**
      * validate new data for a given source

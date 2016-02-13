@@ -193,6 +193,14 @@ class Database {
 
                 	$this->initLastEntryFieldDuringUpgrade();
                 }
+				if(strnatcmp($version, "9") < 0) {
+					\F3::get('db')->exec('
+                        ALTER TABLE '.\F3::get('db_prefix').'items ADD shared BOOL;
+                    ');
+					\F3::get('db')->exec('
+                        INSERT INTO version (version) VALUES (9);
+                    ');
+				}
             }
             
             // just initialize once
