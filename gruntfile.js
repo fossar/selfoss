@@ -94,7 +94,7 @@ module.exports = function(grunt) {
         }
     });
 
-    grunt.registerTask('default', ['composer:install:no-dev:optimize-autoloader', 'versionupdater', 'compress']);
+    grunt.registerTask('default', ['composer:install:no-dev:optimize-autoloader:prefer-dist', 'versionupdater', 'compress']);
     grunt.registerTask('version', ['versionupdater']);
     grunt.registerTask('zip', ['compress']);
 };
