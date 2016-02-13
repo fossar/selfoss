@@ -1,6 +1,8 @@
 <?php
 
 chdir(__DIR__);
+
+require(__DIR__.'/vendor/autoload.php');
 require(__DIR__.'/common.php');
 
 $f3->set('FTRSS_DATA_DIR', __dir__.'/data/fulltextrss');

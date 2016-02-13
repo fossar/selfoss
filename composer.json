@@ -21,5 +21,13 @@
             "name": "SSilence",
             "email": "tobias.zeising@aditu.de"
         }
-    ]
+    ],
+    "autoload": {
+        "psr-4": {
+            "controllers\\": "controllers/",
+            "daos\\": "daos/",
+            "helpers\\": "helpers/",
+            "spouts\\": "spouts/"
+        }
+    }
 }
