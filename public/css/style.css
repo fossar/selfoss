@@ -64,7 +64,8 @@ input {
     }
     
     #nav-mark {
-        border: none;
+        width:150px;
+		border: none;
         padding:10px;
         margin-left:15px;
         margin-right:15px;
@@ -1149,6 +1150,10 @@ body.publicmode.notloggedin .entry-unread {
         border-bottom:3px solid #3d6d69;
     }
         
+		#nav-mark {
+			width:90%;
+		}
+		
         #nav-search {
             display:block;
             margin-bottom:80px;
@@ -1347,6 +1352,10 @@ body.publicmode.notloggedin .entry-unread {
         width:160px;
     }
    
+	#nav-mark {
+        width:135px;
+	}
+	
     #content {
         margin-left:165px;
         margin-top:0;
