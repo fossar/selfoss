@@ -59,7 +59,7 @@ class readability extends feed {
     public $params = array(
         "url" => array(
             "title"      => "URL",
-            "type"       => "text",
+            "type"       => "url",
             "default"    => "",
             "required"   => true,
             "validation" => array("notempty")

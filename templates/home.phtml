@@ -1,4 +1,5 @@
-<!doctype html>  
+<!doctype html>
+<html lang="<?PHP echo \F3::get('language'); ?>">
 <head>
     <base href="<?PHP echo $this->base; ?>" /> 
 
@@ -89,26 +90,27 @@
     </div>
     
     <!-- navigation -->
-    <div id="nav">
+    <div id="nav" role="navigation">
         <div id="nav-logo"></div>
-        <div id="nav-mark"><?PHP echo \F3::get('lang_markread')?></div>
-        
+        <button id="nav-mark"><?PHP echo \F3::get('lang_markread')?></button>
+
         <?PHP $active = (\F3::get('homepage')) ? \F3::get('homepage') : 'newest' ?>
+        <h2 id="nav-filter-title"><?PHP echo \F3::get('lang_filter') ?></h2>
         <ul id="nav-filter">
-            <li id="nav-filter-newest" class="nav-filter-newest<?PHP if($active=='newest') : ?> active<?PHP endif; ?>"><?PHP echo \F3::get('lang_newest')?> <span><?PHP echo $this->statsAll; ?></span></li>
-            <li id="nav-filter-unread" class="nav-filter-unread<?PHP if($active=='unread') : ?> active<?PHP endif; ?>"><?PHP echo \F3::get('lang_unread')?> <span class="unread-count<?PHP echo $this->statsUnread>0 ? ' unread' : ''; ?>"><?PHP echo $this->statsUnread; ?></span></li>
-            <li id="nav-filter-starred" class="nav-filter-starred<?PHP if($active=='starred') : ?> active<?PHP endif; ?>"><?PHP echo \F3::get('lang_starred') ?> <span><?PHP echo $this->statsStarred; ?></span></li>
+            <li id="nav-filter-newest" class="nav-filter-newest<?PHP if($active=='newest') : ?> active<?PHP endif; ?>" role="link" tabindex="0"><?PHP echo \F3::get('lang_newest')?> <span><?PHP echo $this->statsAll; ?></span></li>
+            <li id="nav-filter-unread" class="nav-filter-unread<?PHP if($active=='unread') : ?> active<?PHP endif; ?>" role="link" tabindex="0"><?PHP echo \F3::get('lang_unread')?> <span class="unread-count<?PHP echo $this->statsUnread>0 ? ' unread' : ''; ?>"><?PHP echo $this->statsUnread; ?></span></li>
+            <li id="nav-filter-starred" class="nav-filter-starred<?PHP if($active=='starred') : ?> active<?PHP endif; ?>" role="link" tabindex="0"><?PHP echo \F3::get('lang_starred') ?> <span><?PHP echo $this->statsStarred; ?></span></li>
         </ul>
-        
+
         <hr>
 
         <div id="nav-tags-wrapper">
-        <h2 id="nav-tags-title" class="nav-tags-expanded"><?PHP echo \F3::get('lang_tags') ?></h2>
+        <h2 id="nav-tags-title" class="nav-tags-expanded" tabindex="0" aria-haspopup="true" aria-expanded="true"><?PHP echo \F3::get('lang_tags') ?></h2>
         <ul id="nav-tags">
-            <li class="active nav-tags-all"><?PHP echo \F3::get('lang_alltags')?></li>
+            <li class="active nav-tags-all" role="link" tabindex="0"><?PHP echo \F3::get('lang_alltags')?></li>
             <?PHP echo $this->tags; ?>
         </ul>
-        <h2 id="nav-sources-title" class="nav-sources-collapsed"><?PHP echo \F3::get('lang_sources') ?></h2>
+        <h2 id="nav-sources-title" class="nav-sources-collapsed" tabindex="0" aria-haspopup="true" aria-expanded="false"><?PHP echo \F3::get('lang_sources') ?></h2>
         <ul id="nav-sources">
             <?PHP echo $this->sources; ?>
         </ul>
@@ -117,42 +119,41 @@
         <hr>
         
         <!-- navigation search input just for smartphone version -->
-        <div id="nav-search">
-            <input type="text" id="nav-search-term" /> <input type="button" id="nav-search-button" value="<?PHP echo \F3::get('lang_searchbutton')?>" />
+        <div id="nav-search" role="search">
+            <input type="search" id="nav-search-term"> <input type="button" id="nav-search-button" value="<?PHP echo \F3::get('lang_searchbutton')?>">
             <hr>
         </div>
         
         <?PHP if($this->loggedin===true && \F3::get('auth')->enabled()===false) : ?>
-        <div id="nav-refresh" title="<?PHP echo trim(\F3::get('lang_refreshbutton')); ?>" class="nologin"></div>
-        <div id="nav-settings" title="<?PHP echo trim(\F3::get('lang_settingsbutton')); ?>" class="nologin"></div>
+        <button id="nav-refresh" title="<?PHP echo trim(\F3::get('lang_refreshbutton')); ?>" class="nologin"></button>
+        <button id="nav-settings" title="<?PHP echo trim(\F3::get('lang_settingsbutton')); ?>" class="nologin"></button>
         <?PHP endif; ?>
         
         <?PHP if($this->loggedin===true && \F3::get('auth')->enabled()===true) : ?>
-        <div id="nav-refresh" title="<?PHP echo trim(\F3::get('lang_refreshbutton')); ?>"></div>
-        <div id="nav-settings" title="<?PHP echo trim(\F3::get('lang_settingsbutton')); ?>"></div>
-        <div id="nav-logout" title="<?PHP echo trim(\F3::get('lang_logoutbutton')); ?>"></div>
+        <button id="nav-refresh" title="<?PHP echo trim(\F3::get('lang_refreshbutton')); ?>"></button>
+        <button id="nav-settings" title="<?PHP echo trim(\F3::get('lang_settingsbutton')); ?>"></button>
+        <button id="nav-logout" title="<?PHP echo trim(\F3::get('lang_logoutbutton')); ?>"></button>
         <?PHP endif; ?>
         
         <?PHP if($this->loggedin===false) : ?>
-        <div id="nav-login" title="<?PHP echo trim(\F3::get('lang_loginbutton')); ?>"></div>
+        <button id="nav-login" title="<?PHP echo trim(\F3::get('lang_loginbutton')); ?>"></button>
         <?PHP endif; ?>
         
         <a id="nav-copyright" href="http://selfoss.aditu.de" target="_blank">selfoss <?PHP echo \F3::get('version'); ?></a>
     </div>
     
     <!-- search -->
-    <div id="search">
-        <input type="text" id="search-term" />
-        <div id="search-remove"></div>
-        <div id="search-button"></div>
-        <div id="search-shownav"></div>
+    <div id="search" role="search">
+        <input type="search" id="search-term">
+        <button id="search-remove" title="<?PHP echo \F3::get('lang_searchremove')?>"><img src="public/images/remove.png" alt=""></button>
+        <button id="search-button" title="<?PHP echo \F3::get('lang_searchbutton')?>"><img src="public/images/search.png" alt=""></button>
     </div>
     
     <ul id="search-list">
     </ul>
     
     <!-- content -->
-    <div id="content">
+    <div id="content" role="main">
         <?PHP echo $this->content; ?>
     </div>
     

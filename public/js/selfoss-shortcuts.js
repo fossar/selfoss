@@ -241,6 +241,9 @@ selfoss.shortcuts = {
         
         // scroll to element
         selfoss.shortcuts.autoscroll(current);
+
+        // focus the icon for better keyboard navigation
+        current.find('.entry-icon').focus();
     },
     
     
