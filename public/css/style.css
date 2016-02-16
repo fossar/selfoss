@@ -590,8 +590,9 @@ input {
             background-color: transparent;
             color: black;
             border: none;
-            padding: 0 0 0 20px;
+            padding: 1px 0 0 20px;
             margin-left:10px;
+			margin-top:5px;
             float: left;
             cursor:pointer;
             background-size:16px 16px;
