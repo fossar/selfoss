@@ -107,7 +107,7 @@ selfoss.events.navigation = function() {
         selfoss.filter.sourcesNav = $('#nav-sources-title').hasClass("nav-sources-collapsed");
         if( selfoss.filter.sourcesNav && !selfoss.sourcesNavLoaded ) {
             $.ajax({
-                url: $('base').attr('href') + 'sources/stats',
+                url: $('base').attr('href') + 'sources/sourcesStats',
                 type: 'GET',
                 success: function(data) {
                     selfoss.refreshSources(data.sources);
