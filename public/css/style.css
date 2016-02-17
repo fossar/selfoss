@@ -23,6 +23,10 @@ input {
     padding:6px;
 }
 
+button:focus {
+	outline:0;
+}
+
 #error {
     display:none;
     position:absolute;
