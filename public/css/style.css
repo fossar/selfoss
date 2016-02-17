@@ -23,6 +23,7 @@ input {
     padding:6px;
 }
 
+#nav-filter li,
 button:focus {
 	outline:0;
 }
