@@ -57,7 +57,7 @@ A third party app is available for Android: [Selfoss](https://play.google.com/st
 DEVELOPMENT
 -----------
 
-Selfoss uses [git submodules](http://www.git-scm.com/book/en/Git-Tools-Submodules) for some external libaries. When you clone the repository you have to issue a `git submodule init` as well as a `git submodule update` to retrieve the external sources.
+Selfoss uses [composer](https://getcomposer.org/) for installing external libraries. When you clone the repository you have to issue `composer install` to retrieve the external sources.
 
 CREDITS
 -------
@@ -66,15 +66,15 @@ Very special thanks to all contributors of pull requests here on github. Your im
 
 Special thanks to the great programmers of this libraries which will be used in selfoss:
 
-* FatFree PHP Framework: http://fatfree.sourceforge.net/
+* FatFree PHP Framework: https://github.com/bcosca/fatfree
 * SimplePie: http://simplepie.org/
 * jQuery: http://jquery.com/
 * jQuery UI: http://jqueryui.com/
-* WideImage: http://wideimage.sourceforge.net/
+* WideImage: https://github.com/smottt/WideImage
 * htmLawed: http://www.bioinformatics.org/phplabware/internal_utilities/htmLawed/
-* PHP Universal Feed Generator: https://github.com/ajaxray/FeedWriter
+* PHP Universal Feed Generator: https://github.com/mibe/FeedWriter
 * twitteroauth: https://github.com/abraham/twitteroauth
-* floIcon: http://www.phpclasses.org/package/3906-PHP-Read-and-write-images-from-ICO-files.html
+* jimIcon: https://github.com/jimparis/jimIcon
 * jQuery hotkeys: https://github.com/tzuryby/jquery.hotkeys
 * jsmin: https://github.com/rgrove/jsmin-php
 * cssmin: http://code.google.com/p/cssmin/

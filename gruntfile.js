@@ -50,7 +50,7 @@ module.exports = function(grunt) {
                     { expand: true, cwd: 'controllers/', src: ['**'], dest: '/controllers'},
                     { expand: true, cwd: 'daos/', src: ['**'], dest: '/daos'},
                     { expand: true, cwd: 'helpers/', src: ['**'], dest: '/helpers'},
-                    { expand: true, cwd: 'libs/', src: ['**'], dest: '/libs'},
+                    { expand: true, cwd: 'vendor/', src: ['**'], dest: '/vendor'},
                     
                     // public = don't zip all.js and all.css
                     { expand: true, cwd: 'public/', src: ['**'], dest: '/public', filter: function(file) {
@@ -81,6 +81,7 @@ module.exports = function(grunt) {
 
     grunt.loadNpmTasks('grunt-text-replace');
     grunt.loadNpmTasks('grunt-contrib-compress');
+    grunt.loadNpmTasks('grunt-composer');
 
     /* task checks whether newversion is given and start replacement in files if correct format is given */
     grunt.registerTask('versionupdater', 'version update task', function() {
@@ -93,7 +94,7 @@ module.exports = function(grunt) {
         }
     });
 
-    grunt.registerTask('default', ['versionupdater', 'compress']);
+    grunt.registerTask('default', ['composer:install:no-dev:optimize-autoloader:prefer-dist', 'versionupdater', 'compress']);
     grunt.registerTask('version', ['versionupdater']);
     grunt.registerTask('zip', ['compress']);
 };
