@@ -182,12 +182,14 @@ var selfoss = {
                 selfoss.refreshTags(data.tags);
                 
                 // drop loaded sources
+                var currentSource = -1;
                 if(selfoss.sourcesNavLoaded) {
+                    currentSource = $('#nav-sources li').index($('#nav-sources .active'));
                     $('#nav-sources li').remove();
                     selfoss.sourcesNavLoaded = false;
                 }
                 if(selfoss.filter.sourcesNav)
-                    selfoss.refreshSources(data.sources);
+                    selfoss.refreshSources(data.sources, currentSource);
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 if (textStatus == "parsererror")
@@ -337,13 +339,14 @@ var selfoss = {
      *
      * @return void
      * @param sources the new sourceslist as html
+     * @param currentSource the index of the active source
      */
-    refreshSources: function(sources) {
-        var currentSource = $('#nav-sources li').index($('#nav-sources .active'));
+    refreshSources: function(sources, currentSource) {
+        var currentSourceIndex = currentSource >= 0 ? currentSource : $('#nav-sources li').index($('#nav-sources .active'));
         $('#nav-sources li').remove();
         $('#nav-sources').append(sources);
-        if(currentSource>=0)
-            $('#nav-sources li:eq('+currentSource+')').addClass('active');
+        if(currentSourceIndex>=0)
+            $('#nav-sources li:eq('+currentSourceIndex+')').addClass('active');
         selfoss.events.navigation();
     },
     
