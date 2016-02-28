@@ -36,6 +36,7 @@ selfoss.events.search = function() {
         
         // execute search
         $('#search').removeClass('active');
+        selfoss.filter.offset = 0;
         selfoss.filter.search = term;
         selfoss.reloadList();
         
