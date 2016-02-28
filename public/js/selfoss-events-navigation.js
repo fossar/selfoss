@@ -197,6 +197,8 @@ selfoss.events.navigation = function() {
             
             if(selfoss.isSmartphone())
                 $('#nav-mobile-settings').click();
+
+            $('#floating-unread').hide();
         });
         
         
