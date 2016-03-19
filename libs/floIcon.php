@@ -225,7 +225,7 @@ class floIcon {
 	 */
 	var $images; // Array of floIconImage objects.
 	var $updated = false;
-	function floIcon() {
+	function __construct() {
 		$this->images = array();
 	}
 	function countImages() {
@@ -823,7 +823,7 @@ class floIconImage {
 	function getEntry() {
 		return $this->_entry;
 	}
-	function floIconImage() {
+	function __construct() {
 	}
 	function getHeaderSize() {
 		return strlen($this->_headerIconFormat);
