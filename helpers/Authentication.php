@@ -98,7 +98,7 @@ class Authentication {
     public function login($username, $password) {
         if($this->enabled()) {
             if(
-                $username == \F3::get('username') && password_verify($password, \F3::get('password'))
+                $username == \F3::get('username') &&  hash("sha512", \F3::get('salt') . $password) == \F3::get('password')
             ) {
                 $this->loggedin = true;
                 $_SESSION['loggedin'] = true;

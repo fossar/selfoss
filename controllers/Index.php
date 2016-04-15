@@ -101,7 +101,7 @@ class Index extends BaseController {
         $this->view = new \helpers\View();
         $this->view->password = true;
         if(isset($_POST['password']))
-            $this->view->hash = password_hash($_POST['password'], PASSWORD_DEFAULT);
+            $this->view->hash = hash("sha512", \F3::get('salt') . $_POST['password']);
         echo $this->view->render('templates/login.phtml');
     }
     
