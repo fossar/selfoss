@@ -4,7 +4,7 @@ selfoss
 Copyright (c) 2015 Tobias Zeising, tobias.zeising@aditu.de  
 http://selfoss.aditu.de  
 Licensed under the GPLv3 license  
-Version 2.15-SNAPSHOT
+Version 2.15
 
 
 INSTALLATION
