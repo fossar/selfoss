@@ -185,8 +185,8 @@ class Database {
 					\F3::get('db')->exec('
                         ALTER TABLE '.\F3::get('db_prefix').'items ADD shared BOOL;
                     ');
-					\F3::get('db')->exec('
-                        INSERT INTO version (version) VALUES (9);
+		 \F3::get('db')->exec('
+                        INSERT INTO '.\F3::get('db_prefix').'version (version) VALUES (9);
                     ');
 				}
             }
