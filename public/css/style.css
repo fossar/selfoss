@@ -87,7 +87,23 @@ body * {
         #nav-mark:hover {
             color:#000000;
         }
+
+    #nav-filter-wrapper  {
+        overflow:hidden;
+    }
     
+        .nav-filter-collapsed {
+            cursor:pointer;
+            padding-left: 20px;
+            background: url(images/nav-collapsed.png) center left no-repeat;
+        }
+        
+        .nav-filter-expanded {
+            cursor:pointer;
+            padding-left: 20px;
+            background: url(images/nav-expanded.png) center left no-repeat;
+        }
+
     #nav-filter-title {
         margin-top:20px;
     }
