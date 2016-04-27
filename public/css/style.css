@@ -6,7 +6,7 @@ html {
 }
  
 body {
-    font: lighter 18px/27px 'OpenSans', Arial, sans-serif;
+    font: lighter 18px/27px MicrosoftYaHei,'微软雅黑',Arial,Tahoma,Helvetica,Georgia,Sans-serif,'STXihei','华文黑体',Hei,'Hiragino Kaku Gothic Pro',SimSun;
     color: black;
     background:url(images/bg.gif) repeat;
     height: 100%;
@@ -435,7 +435,7 @@ body * {
     -webkit-border-radius:4px;
     -khtml-border-radius:4px;
     border-radius:4px;
-    background:rgba(255, 255, 255, 0.4);
+    background:rgba(212, 212, 212, 255);
     position:relative;
     font-weight:normal;
     font-size:0.9em;
@@ -500,10 +500,10 @@ body * {
     
     .entry-content {
         display:none;
-        -moz-column-count: 3;
+        -moz-column-count: 1;
         -moz-column-gap: 2em;
         -moz-column-rule: 1px solid rgba(204, 204, 204, 0.4);
-        -webkit-column-count: 3;
+        -webkit-column-count: 1;
         -webkit-column-gap: 2em;
         -webkit-column-rule: 1px solid rgba(204, 204, 204, 0.4);
         column-count: 3;
@@ -513,7 +513,8 @@ body * {
         margin-top:20px;
         line-height: 1.7em;
         overflow: hidden;
-        padding: 0 1em;
+        padding: 0 5em;
+        margin: 0 auto;
     }
     
         .entry-content a {
@@ -523,7 +524,7 @@ body * {
         .entry-content img {
             max-width:99%;
             display: block;
-            margin: 0 10px 5px 0;
+            margin: 0 auto;
         }
         
         .entry-content p {
@@ -563,6 +564,33 @@ body * {
         .entry-content pre,
         .entry-content blockquote {
             clear: left;
+        }
+
+        .entry-content pre {
+        background: #141414;
+        word-wrap: break-word;
+        margin: 0px;
+        padding: 0px;
+        padding: 10px;
+        color: #fff;
+        font-size: 14px;
+        margin-bottom: 20px;
+        }
+
+        .entry-content code {
+        background: #141414;
+        padding: 2px 4px;
+        -moz-border-radius: 4px;
+        -webkit-border-radius: 4px;
+        -o-border-radius: 4px;
+        -ms-border-radius: 4px;
+        -khtml-border-radius: 5px;
+        margin: 0 4px;
+        color: #fff;
+        }
+
+        .entry-content pre, code {
+        font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
         }
 
         .entry-content dt {
