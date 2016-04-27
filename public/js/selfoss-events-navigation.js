@@ -51,6 +51,15 @@ selfoss.events.navigation = function() {
             $('#nav-mobile-settings').click();
     });
     
+    // hide/show filters
+    $('#nav-filter-title').unbind('click').click(function () {
+        $('#nav-filter').slideToggle("slow");
+        $('#nav-filter-title').toggleClass("nav-filter-collapsed nav-filter-expanded");
+        $('#nav-filter-title').attr('aria-expanded', function (i, attr) {
+            return attr == 'true' ? 'false' : 'true';
+        });
+    });
+    
     // tag
     $('#nav-tags > li').unbind('click').click(function () {
         $('#nav-tags > li').removeClass('active');
