@@ -339,7 +339,9 @@ class Opml extends BaseController {
         \F3::get('logger')->log('finished OPML export', \DEBUG);
 
         // save content as file and suggest file name
-        header('Content-Disposition: attachment; filename="selfoss-subscriptions.xml"');
+        // header('Content-Disposition: attachment; filename="selfoss-subscriptions.xml"');
+        $showtime=date("Y-m-d_H:i:s");
+        header("Content-Disposition: attachment; filename='selfoss-subscriptions_$showtime.xml'");
         header('Content-Type: text/xml; charset=UTF-8');
         echo $this->writer->outputMemory();
     }

@@ -53,7 +53,7 @@ class feed extends \spouts\spout {
     public $params = array(
         "url" => array(
             "title"      => "URL",
-            "type"       => "text",
+            "type"       => "url",
             "default"    => "",
             "required"   => true,
             "validation" => array("notempty")
