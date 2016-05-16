@@ -572,6 +572,10 @@ body * {
         .entry-content blockquote {
             overflow-x: unset;
         }
+        
+        .entry-content pre {
+            white-space: pre-wrap;
+        }
     
         .entry-content p,
         .entry-content ol,
