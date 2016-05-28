@@ -85,8 +85,12 @@ class Items extends Database {
         // remove private posts with private tags
         if(!\F3::get('auth')->showPrivateTags()) {
             foreach($items as $idx => $item) {
-                if (strpos($item['tags'], "@") !== false) {
-                    unset($items[$idx]);
+                $tags = explode(',', $item['tags']);
+                foreach ($tags as $tag) {
+                    if (strpos(trim($tag), '@') === 0) {
+                        unset($items[$idx]);
+                        break;
+                    }
                 }
             }
             $items = array_values($items);
@@ -95,8 +99,12 @@ class Items extends Database {
         // remove posts with hidden tags
         if(!isset($options['tag']) || strlen($options['tag']) === 0) {
             foreach($items as $idx => $item) {
-                if (strpos($item['tags'], "#") !== false) {
-                    unset($items[$idx]);
+                $tags = explode(',', $item['tags']);
+                foreach ($tags as $tag) {
+                    if (strpos(trim($tag), '#') === 0) {
+                        unset($items[$idx]);
+                        break;
+                    }
                 }
             }
             $items = array_values($items);

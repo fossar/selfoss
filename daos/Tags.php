@@ -36,7 +36,7 @@ class Tags extends Database {
         // remove items with private tags
         if(!\F3::get('auth')->showPrivateTags()) {
             foreach($tags as $idx => $tag) {
-                if (strpos($tag['tag'], "@") !== false) {
+                if (strpos($tag['tag'], '@') === 0) {
                     unset($tags[$idx]);
                 }
             }
