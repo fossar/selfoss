@@ -31,6 +31,8 @@ class Authentication {
         $cookie_secure = isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS']!=="off";
         $cookie_httponly = true;
 
+		$remainlogged = false;
+		
         // check for SSL proxy and special cookie options
         if(isset($_SERVER['HTTP_X_FORWARDED_SERVER']) && isset($_SERVER['HTTP_X_FORWARDED_HOST'])
            && ($_SERVER['HTTP_X_FORWARDED_SERVER']===$_SERVER['HTTP_X_FORWARDED_HOST'])) {
@@ -48,18 +50,22 @@ class Authentication {
         session_name();
         if(session_id()=="")
             session_start();
-        if(isset($_SESSION['loggedin']) && $_SESSION['loggedin']===true){
+	if((isset($_SESSION['loggedin']) && $_SESSION['loggedin']===true) || (isset($_COOKIE["remainlogged"]) && $_COOKIE["remainlogged"] == 1)){
             $this->loggedin = true;
             \F3::get('logger')->log('logged in using valid session', \DEBUG);
         } else {
             \F3::get('logger')->log('session does not contain valid auth', \DEBUG);
         }
         
+		if(isset($_REQUEST['remainlogged'])){
+			$remainlogged = true;
+		}
+		
         // autologin if request contains unsername and password
         if($this->loggedin===false
             && isset($_REQUEST['username'])
             && isset($_REQUEST['password'])) {
-            $this->login($_REQUEST['username'], $_REQUEST['password']);
+            $this->login($_REQUEST['username'], $_REQUEST['password'], $remainlogged);
         }
     }
     
@@ -95,13 +101,18 @@ class Authentication {
      * @param string $username
      * @param string $password
      */
-    public function login($username, $password) {
+    public function login($username, $password, $remainlogged = false) {
         if($this->enabled()) {
             if(
                 $username == \F3::get('username') &&  hash("sha512", \F3::get('salt') . $password) == \F3::get('password')
             ) {
                 $this->loggedin = true;
                 $_SESSION['loggedin'] = true;
+				
+				if($remainlogged == "true"){
+					setcookie("remainlogged", 1, (time() + (10 * 365 * 24 * 60 * 60)), "/");
+				}
+				
                 \F3::get('logger')->log('logged in with supplied username and password', \DEBUG);
                 return true;
             } else {
@@ -144,6 +155,7 @@ class Authentication {
         $this->loggedin = false;
         $_SESSION['loggedin'] = false;
         session_destroy();
+		setcookie("remainlogged", 1, (time() - 86400), "/");
         \F3::get('logger')->log('logged out and destroyed session', \DEBUG);
     }
 }
