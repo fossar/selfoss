@@ -27,7 +27,14 @@ class ContentLoader {
      */
     public function __construct() {
         // include htmLawed
-        if(!function_exists('htmLawed'))
+
+		if(\F3::get('pushbullet_token') != ""){
+			require_once(dirname(__FILE__).'/../libs/phpushbullet/vendor/autoload.php');
+
+			$this->pushbullet = new \PHPushbullet\PHPushbullet(\F3::get('pushbullet_token'));
+		}
+        
+		if(!function_exists('htmLawed'))
             require('libs/htmLawed.php');
 
         $this->itemsDao = new \daos\Items();
@@ -57,9 +64,11 @@ class ContentLoader {
      * @param mixed $source the current source
      */
     public function fetch($source) {
-        
+
     	$lastEntry = $source['lastentry'];
     	
+		$newEntries = false;
+		
         // at least 20 seconds wait until next update of a given source
         $this->updateSource($source, null);
         if(time() - $source['lastupdate'] < 20)
@@ -189,8 +198,14 @@ class ContentLoader {
             \F3::get('logger')->log('Memory peak usage: '.memory_get_peak_usage(), \DEBUG);
             
             $lastEntry = max($lastEntry, $itemDate->getTimestamp());
+			$newEntries = true;
         }
-    
+		
+		if($newEntries === true && $this->pushbullet instanceof \PHPushbullet\PHPushbullet){
+
+			$this->pushbullet->device(\F3::get('pushbullet_device'))->note("Selfoss RSS", "Neue Feeds");
+		}
+	
         // destroy feed object (prevent memory issues)
         \F3::get('logger')->log('destroy spout object', \DEBUG);
         $spout->destroy();
