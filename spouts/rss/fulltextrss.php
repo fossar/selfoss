@@ -154,7 +154,7 @@ class fulltextrss extends feed {
                 'method'  => "GET",
                 'header'  => "Accept-language: en-us,en-gb;q=0.8,en;q=0.6,fr;q=0.4,fr-fr;q=0.2\r\n" .
                              "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\n" .
-                             "User-Agent: SimplePie/1.3.1 (Feed Parser; http://simplepie.org; Allow like Gecko) Build/20121030175911" .
+                             "User-Agent: SimplePie/1.3.1 (Feed Parser; http://simplepie.org; Allow like Gecko) Build/20121030175911\r\n" .
                              "DNT: 1"
           )
         );
