@@ -10,6 +10,11 @@
         $title = $this->viewHelper->highlight($title, $this->search);
         $content = $this->viewHelper->highlight($content, $this->search);
     }
+
+    if (\F3::get('camo_key') != '') {
+        $content = $this->viewHelper->camoflauge($content);
+    }
+
     $title = $this->viewHelper->lazyimg($title);
     $content = $this->viewHelper->lazyimg($content);
     $date = $this->viewHelper->dateago($this->item['datetime']);
@@ -17,23 +22,23 @@
 <div id="entry<?PHP echo $this->item['id']; ?>"
      class="entry
             <?PHP echo $this->item['unread']==1 ? 'unread' : ''; ?>" role="article">
-    
+
     <!-- icon -->
     <a href="<?PHP echo \helpers\Anonymizer::anonymize($this->item['link']); ?>" class="entry-icon" tabindex="-1">
         <?PHP if(strlen(trim($this->item['icon']))>0 && $this->item['icon']!="0") : ?>
         <img src="<?PHP echo 'favicons/'.$this->item['icon']; ?>" alt="" >
         <?PHP endif; ?>
     </a>
-    
+
     <!-- title -->
     <h2 class="entry-title"><?PHP echo $title; ?></h2>
-    
+
     <span class="entry-tags">
         <?PHP foreach($this->item['tags'] as $tag => $color) : ?>
             <span class="entry-tags-tag" style="color:<?PHP echo $color['foreColor']; ?>;background-color:<?PHP echo $color['backColor']; ?>"><?PHP echo $tag; ?></span>
         <?PHP endforeach; ?>
     </span>
-    
+
     <!-- source -->
     <a href="<?PHP echo \helpers\Anonymizer::anonymize($this->item['link']); ?>" class="entry-source entry-source<?PHP echo $this->item['source']; ?>" target="_blank"><?PHP echo $sourcetitle ?></a>
     <a href="<?PHP echo $this->item['link']; ?>" class="entry-link"></a>
@@ -50,7 +55,7 @@
     <span class="entry-datetime">
         <?PHP echo $date; ?>
     </span>
-    
+
     <!-- thumbnail -->
     <?PHP if(isset($this->item['thumbnail']) && strlen(trim($this->item['thumbnail']))>0) : ?>
     <div class="entry-thumbnail">
