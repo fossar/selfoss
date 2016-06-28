@@ -78,6 +78,10 @@ class ViewHelper {
      */
     public function camoflauge($content)
     {
+        if (empty($content)) {
+            return $content;
+        }
+
         $camo = new \WillWashburn\Phpamo\Phpamo(\F3::get('camo_key'), \F3::get('camo_domain'));
         $dom = new \DOMDocument();
         $dom->loadHTML($content);
