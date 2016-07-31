@@ -1,16 +1,23 @@
 <?php
 
 /*
-	Copyright (c) 2009-2014 F3::Factory/Bong Cosca, All rights reserved.
 
-	This file is part of the Fat-Free Framework (http://fatfree.sf.net).
+	Copyright (c) 2009-2015 F3::Factory/Bong Cosca, All rights reserved.
 
-	THE SOFTWARE AND DOCUMENTATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF
-	ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
-	IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR
-	PURPOSE.
+	This file is part of the Fat-Free Framework (http://fatfreeframework.com).
 
-	Please see the license.txt file for more information.
+	This is free software: you can redistribute it and/or modify it under the
+	terms of the GNU General Public License as published by the Free Software
+	Foundation, either version 3 of the License, or later.
+
+	Fat-Free Framework is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+	General Public License for more details.
+
+	You should have received a copy of the GNU General Public License along
+	with Fat-Free Framework.  If not, see <http://www.gnu.org/licenses/>.
+
 */
 
 //! XML-style template engine
@@ -50,25 +57,27 @@ class Template extends Preview {
 	protected function _include(array $node) {
 		$attrib=$node['@attrib'];
 		$hive=isset($attrib['with']) &&
-			($attrib['with']=preg_match('/\{\{(.+?)\}\}/',
-				$attrib['with'])?
-					$this->token($attrib['with']):
-					Base::instance()->stringify($attrib['with'])) &&
+			($attrib['with']=$this->token($attrib['with'])) &&
 			preg_match_all('/(\w+)\h*=\h*(.+?)(?=,|$)/',
 				$attrib['with'],$pairs,PREG_SET_ORDER)?
 					'array('.implode(',',
-						array_map(function($pair){
-							return '\''.$pair[1].'\'=>'.$pair[2];
+						array_map(function($pair) {
+							return '\''.$pair[1].'\'=>'.
+								(preg_match('/^\'.*\'$/',$pair[2]) ||
+									preg_match('/\$/',$pair[2])?
+									$pair[2]:
+									\Base::instance()->stringify($pair[2]));
 						},$pairs)).')+get_defined_vars()':
 					'get_defined_vars()';
+		$ttl=isset($attrib['ttl'])?(int)$attrib['ttl']:0;
 		return
 			'<?php '.(isset($attrib['if'])?
 				('if ('.$this->token($attrib['if']).') '):'').
 				('echo $this->render('.
-					(preg_match('/\{\{(.+?)\}\}/',$attrib['href'])?
+					(preg_match('/^\{\{(.+?)\}\}$/',$attrib['href'])?
 						$this->token($attrib['href']):
 						Base::instance()->stringify($attrib['href'])).','.
-					'$this->mime,'.$hive.'); ?>');
+					'$this->mime,'.$hive.','.$ttl.'); ?>');
 	}
 
 	/**
@@ -251,7 +260,7 @@ class Template extends Preview {
 			return call_user_func_array($this->custom[$func],$args);
 		if (method_exists($this,$func))
 			return call_user_func_array(array($this,$func),$args);
-		user_error(sprintf(self::E_Method,$func));
+		user_error(sprintf(self::E_Method,$func),E_USER_ERROR);
 	}
 
 	/**
@@ -261,73 +270,67 @@ class Template extends Preview {
 	**/
 	function parse($text) {
 		// Build tree structure
-		for ($ptr=0,$len=strlen($text),$tree=array(),$node=&$tree,
-			$stack=array(),$depth=0,$tmp='';$ptr<$len;)
-			if (preg_match('/^<(\/?)(?:F3:)?'.
+		for ($ptr=0,$w=5,$len=strlen($text),$tree=array(),$tmp='';$ptr<$len;)
+			if (preg_match('/^(.{0,'.$w.'}?)<(\/?)(?:F3:)?'.
 				'('.$this->tags.')\b((?:\h+[\w-]+'.
-				'(?:\h*=\h*(?:"(?:.+?)"|\'(?:.+?)\'))?|'.
+				'(?:\h*=\h*(?:"(?:.*?)"|\'(?:.*?)\'))?|'.
 				'\h*\{\{.+?\}\})*)\h*(\/?)>/is',
 				substr($text,$ptr),$match)) {
-				if (strlen($tmp))
-					$node[]=$tmp;
+				if (strlen($tmp)||$match[1])
+					$tree[]=$tmp.$match[1];
 				// Element node
-				if ($match[1]) {
+				if ($match[2]) {
 					// Find matching start tag
-					$save=$depth;
-					$found=FALSE;
-					while ($depth>0) {
-						$depth--;
-						foreach ($stack[$depth] as $item)
-							if (is_array($item) && isset($item[$match[2]])) {
-								// Start tag found
-								$found=TRUE;
-								break 2;
-							}
+					$stack=array();
+					for($i=count($tree)-1;$i>=0;$i--) {
+						$item = $tree[$i];
+						if (is_array($item) && array_key_exists($match[3],$item)
+						&& !isset($item[$match[3]][0])) {
+							// Start tag found
+							$tree[$i][$match[3]]+=array_reverse($stack);
+							$tree=array_slice($tree,0,$i+1);
+							break;
+						} else $stack[]=$item;
 					}
-					if (!$found)
-						// Unbalanced tag
-						$depth=$save;
-					$node=&$stack[$depth];
 				}
 				else {
 					// Start tag
-					$stack[$depth]=&$node;
-					$node=&$node[][$match[2]];
-					if ($match[3]) {
+					$node=&$tree[][$match[3]];
+					$node=array();
+					if ($match[4]) {
 						// Process attributes
 						preg_match_all(
 							'/(?:\b([\w-]+)\h*'.
-							'(?:=\h*(?:"(.+?)"|\'(.+?)\'))?|'.
+							'(?:=\h*(?:"(.*?)"|\'(.*?)\'))?|'.
 							'(\{\{.+?\}\}))/s',
-							$match[3],$attr,PREG_SET_ORDER);
+							$match[4],$attr,PREG_SET_ORDER);
 						foreach ($attr as $kv)
 							if (isset($kv[4]))
 								$node['@attrib'][]=$kv[4];
 							else
 								$node['@attrib'][$kv[1]]=
-									(empty($kv[2])?
-										(empty($kv[3])?NULL:$kv[3]):$kv[2]);
+									(isset($kv[2]) && $kv[2]!==''?
+										$kv[2]:
+										(isset($kv[3]) && $kv[3]!==''?
+											$kv[3]:NULL));
 					}
-					if ($match[4])
-						// Empty tag
-						$node=&$stack[$depth];
-					else
-						$depth++;
 				}
 				$tmp='';
 				$ptr+=strlen($match[0]);
+				$w=5;
 			}
 			else {
 				// Text node
-				$tmp.=substr($text,$ptr,1);
-				$ptr++;
+				$tmp.=substr($text,$ptr,$w);
+				$ptr+=$w;
+				if ($w<50)
+					$w++;
 			}
 		if (strlen($tmp))
 			// Append trailing text
-			$node[]=$tmp;
+			$tree[]=$tmp;
 		// Break references
 		unset($node);
-		unset($stack);
 		return $tree;
 	}
 

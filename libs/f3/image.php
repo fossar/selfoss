@@ -1,16 +1,23 @@
 <?php
 
 /*
-	Copyright (c) 2009-2014 F3::Factory/Bong Cosca, All rights reserved.
 
-	This file is part of the Fat-Free Framework (http://fatfree.sf.net).
+	Copyright (c) 2009-2015 F3::Factory/Bong Cosca, All rights reserved.
 
-	THE SOFTWARE AND DOCUMENTATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF
-	ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
-	IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR
-	PURPOSE.
+	This file is part of the Fat-Free Framework (http://fatfreeframework.com).
 
-	Please see the license.txt file for more information.
+	This is free software: you can redistribute it and/or modify it under the
+	terms of the GNU General Public License as published by the Free Software
+	Foundation, either version 3 of the License, or later.
+
+	Fat-Free Framework is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+	General Public License for more details.
+
+	You should have received a copy of the GNU General Public License along
+	with Fat-Free Framework.  If not, see <http://www.gnu.org/licenses/>.
+
 */
 
 //! Image manipulation tools
@@ -19,6 +26,7 @@ class Image {
 	//@{ Messages
 	const
 		E_Color='Invalid color specified: %s',
+		E_File='File not found',
 		E_Font='CAPTCHA font not found',
 		E_Length='Invalid CAPTCHA length: %s';
 	//@}
@@ -51,7 +59,7 @@ class Image {
 	function rgb($color) {
 		$hex=str_pad($hex=dechex($color),$color<4096?3:6,'0',STR_PAD_LEFT);
 		if (($len=strlen($hex))>6)
-			user_error(sprintf(self::E_Color,'0x'.$hex));
+			user_error(sprintf(self::E_Color,'0x'.$hex),E_USER_ERROR);
 		$color=str_split($hex,$len/3);
 		foreach ($color as &$hue) {
 			$hue=hexdec(str_repeat($hue,6/$len));
@@ -220,11 +228,12 @@ class Image {
 	function resize($width,$height,$crop=TRUE,$enlarge=TRUE) {
 		// Adjust dimensions; retain aspect ratio
 		$ratio=($origw=imagesx($this->data))/($origh=imagesy($this->data));
-		if (!$crop)
+		if (!$crop) {
 			if ($width/$ratio<=$height)
-				$height=$width/$ratio;
+				$height=round($width/$ratio);
 			else
-				$width=$height*$ratio;
+				$width=round($height*$ratio);
+		}
 		if (!$enlarge) {
 			$width=min($origw,$width);
 			$height=min($origh,$height);
@@ -236,12 +245,12 @@ class Image {
 		// Resize
 		if ($crop) {
 			if ($width/$ratio<=$height) {
-				$cropw=$origh*$width/$height;
+				$cropw=round($origh*$width/$height);
 				imagecopyresampled($tmp,$this->data,
 					0,0,($origw-$cropw)/2,0,$width,$height,$cropw,$origh);
 			}
 			else {
-				$croph=$origw*$height/$width;
+				$croph=round($origw*$height/$width);
 				imagecopyresampled($tmp,$this->data,
 					0,0,0,($origh-$croph)/2,$width,$height,$origw,$croph);
 			}
@@ -386,7 +395,7 @@ class Image {
 	function captcha($font,$size=24,$len=5,
 		$key=NULL,$path='',$fg=0xFFFFFF,$bg=0x000000) {
 		if ((!$ssl=extension_loaded('openssl')) && ($len<4 || $len>13)) {
-			user_error(sprintf(self::E_Length,$len));
+			user_error(sprintf(self::E_Length,$len),E_USER_ERROR);
 			return FALSE;
 		}
 		$fw=Base::instance();
@@ -432,7 +441,7 @@ class Image {
 					$fw->set($key,$seed);
 				return $this->save();
 			}
-		user_error(self::E_Font);
+		user_error(self::E_Font,E_USER_ERROR);
 		return FALSE;
 	}
 
@@ -478,6 +487,14 @@ class Image {
 		call_user_func_array('image'.$format,
 			array_merge(array($this->data),$args));
 		return ob_get_clean();
+	}
+
+	/**
+	*	Return image resource
+	*	@return resource
+	**/
+	function data() {
+		return $this->data;
 	}
 
 	/**
@@ -552,15 +569,18 @@ class Image {
 	*	@param $flag bool
 	*	@param $path string
 	**/
-	function __construct($file=NULL,$flag=FALSE,$path='') {
+	function __construct($file=NULL,$flag=FALSE,$path=NULL) {
 		$this->flag=$flag;
 		if ($file) {
 			$fw=Base::instance();
 			// Create image from file
 			$this->file=$file;
-			foreach ($fw->split($path?:$fw->get('UI').';./') as $dir)
+			if (!isset($path))
+				$path=$fw->get('UI').';./';
+			foreach ($fw->split($path,FALSE) as $dir)
 				if (is_file($dir.$file))
 					return $this->load($fw->read($dir.$file));
+			user_error(self::E_File,E_USER_ERROR);
 		}
 	}
 
