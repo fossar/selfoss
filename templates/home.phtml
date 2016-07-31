@@ -18,14 +18,12 @@
     <!--  Add support for fullscreen Webapp on iPhone 5 -->
     <meta name="viewport" content="initial-scale=1, user-scalable=no, maximum-scale=1" media="(device-height: 568px)" />
     
-    <!-- app 'behaviour' when adding link to iDevice springboard -->
+    <!-- Web application behavior -->
+    <meta name="application-name" content="selfoss" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    
-    <!-- app 'behaviour' when adding link to Android Home  -->
     <meta name="mobile-web-app-capable" content="yes" />
 
     <!-- app tile and notification when adding link to Windows 8 start screen -->
-    <meta name="application-name" content="Selfoss" />
     <meta name="msapplication-TileColor" content="#3d6d69" />
     <meta name="msapplication-square70x70logo" content="<?php echo $this->base; ?>win8-70-icon.png" />
     <meta name="msapplication-square150x150logo" content="<?php echo $this->base; ?>win8-150-icon.png" />
@@ -148,8 +146,8 @@
     <!-- search -->
     <div id="search" role="search">
         <input type="search" id="search-term">
-        <button id="search-remove" title="<?PHP echo \F3::get('lang_searchremove')?>"><img src="public/images/remove.png" alt=""></button>
-        <button id="search-button" title="<?PHP echo \F3::get('lang_searchbutton')?>"><img src="public/images/search.png" alt=""></button>
+        <button id="search-remove" title="<?PHP echo \F3::get('lang_searchremove')?>"><img src="images/remove.png" alt=""></button>
+        <button id="search-button" title="<?PHP echo \F3::get('lang_searchbutton')?>"><img src="images/search.png" alt=""></button>
     </div>
     
     <ul id="search-list">
