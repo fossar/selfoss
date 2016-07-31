@@ -44,8 +44,8 @@ class View {
                 
         // auto generate base url
         } else {
-            $lastSlash = strrpos($_SERVER['SCRIPT_NAME'], '/');
-            $subdir = $lastSlash!==false ? substr($_SERVER['SCRIPT_NAME'], 0, $lastSlash) : '';
+            $lastSlash = strrpos($_SERVER['REQUEST_URI'], '/');
+            $subdir = $lastSlash!==false ? substr($_SERVER['REQUEST_URI'], 0, $lastSlash) : '';
             
             $protocol = 'http';
             if (isset($_SERVER["HTTPS"]) && ($_SERVER["HTTPS"]=="on" || $_SERVER["HTTPS"]==1) ||
