@@ -31,7 +31,7 @@ UPDATE
 ------
 
 1. backup your database and your "data" folder
-2. (IMPORTANT: don't delete the "data" folder) delete all old files and folders excluding the folder "data"
+2. (IMPORTANT: don't delete the "data" folder) delete all old files and folders excluding the folder "data" and the file config.ini
 3. upload all new files and folders excluding the data folder (IMPORTANT: also upload the invisible .htaccess files)
 4. Rename your folder /data/icons into /data/favicons
 5. Delete the files /public/all-v*.css and /public/all-v*.js
