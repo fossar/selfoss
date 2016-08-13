@@ -20,6 +20,8 @@
     $date = $this->viewHelper->dateago($this->item['datetime']);
 ?>
 <div id="entry<?PHP echo $this->item['id']; ?>"
+     data-entry-id="<?PHP echo $this->item['id']; ?>"
+     data-entry-source="<?PHP echo $this->item['source']; ?>"
      class="entry
             <?PHP echo $this->item['unread']==1 ? 'unread' : ''; ?>" role="article">
 
@@ -40,8 +42,7 @@
     </span>
 
     <!-- source -->
-    <a href="<?PHP echo \helpers\Anonymizer::anonymize($this->item['link']); ?>" class="entry-source entry-source<?PHP echo $this->item['source']; ?>" target="_blank"><?PHP echo $sourcetitle ?></a>
-    <a href="<?PHP echo $this->item['link']; ?>" class="entry-link"></a>
+    <span class="entry-source"><?PHP echo $sourcetitle ?></span>
 
     <span class="entry-separator">&bull;</span>
 
@@ -52,9 +53,10 @@
     <?PHP endif; ?>
 
     <!-- datetime -->
-    <span class="entry-datetime">
+    <a href="<?PHP echo \helpers\Anonymizer::anonymize($this->item['link']); ?>" class="entry-datetime" target="_blank">
         <?PHP echo $date; ?>
-    </span>
+    </a>
+    <a href="<?PHP echo $this->item['link']; ?>" class="entry-link"></a>
 
     <!-- thumbnail -->
     <?PHP if(isset($this->item['thumbnail']) && strlen(trim($this->item['thumbnail']))>0) : ?>

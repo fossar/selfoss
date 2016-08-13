@@ -21,7 +21,7 @@ selfoss.events.entriesToolbar = function(parent) {
     
     // open in new window
     parent.find('.entry-newwindow').unbind('click').click(function(e) {
-        window.open($(this).parents(".entry").children(".entry-source").attr("href"));
+        window.open($(this).parents(".entry").children(".entry-datetime").attr("href"));
         e.preventDefault();
         return false;
     });
@@ -116,7 +116,8 @@ selfoss.events.entriesToolbar = function(parent) {
         
         // read/unread
         parent.find('.entry-unread').unbind('click').click(function() {
-            var id = $(this).parents('.entry').attr('id').substr(5);
+            var entry = $(this).parents('.entry');
+            var id = entry.attr('data-entry-id');
             var unread = $(this).hasClass('active')==true;
             var button = $("#entry"+id+" .entry-unread, #entrr"+id+" .entry-unread");
             var parent = $("#entry"+id+", #entrr"+id);
@@ -147,7 +148,7 @@ selfoss.events.entriesToolbar = function(parent) {
                 selfoss.refreshUnread(unreadstats);
                     
                 // update unread count on sources
-                var sourceId = $('#entry'+id+' .entry-source').attr('class').substr(25);
+                var sourceId = entry.attr('data-entry-source');
                 var sourceNav = $('#source'+sourceId+' .unread');
                 var sourceCount = parseInt(sourceNav.html());
                 if(typeof sourceCount != "number" || isNaN(sourceCount)==true)

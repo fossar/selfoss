@@ -453,6 +453,10 @@ body * {
         cursor:pointer;
     }
 
+    .entry-source {
+        cursor: pointer;
+    }
+
     .entry-title {
         cursor:pointer;
         color:#999999;
