@@ -73,7 +73,7 @@ class Phpamo
 
         $parts = parse_url($url);
 
-        if ( $parts['scheme'] == 'https' ) {
+        if ( isset($parts['scheme']) && $parts['scheme'] == 'https' ) {
             return $url;
         }
 
