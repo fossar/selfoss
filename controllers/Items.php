@@ -146,17 +146,15 @@ class Items extends BaseController {
 
         $itemsDao = new \daos\Items();
         $stats = $itemsDao->stats();
-	$stats['unread'] -= $itemsDao->numberOfUnreadForTag("#");
 
-	$tagsDao = new \daos\Tags();
-	$tags = $tagsDao->getWithUnread();
-        if ($tagsDao->hasTag("#")) {
-            foreach ($tags as $tag) {
-                if (strcmp($tag["tag"], "#") !== 0) {
-                    continue;
-                }
-                $stats['unread'] -= $tag["unread"];
+        $tagsDao = new \daos\Tags();
+        $tags = $tagsDao->getWithUnread();
+
+        foreach ($tags as $tag) {
+            if (strpos($tag['tag'], '#') !== 0) {
+                continue;
             }
+            $stats['unread'] -= $tag['unread'];
         }
 
         if( array_key_exists('tags', $_GET) && $_GET['tags'] == 'true' ) {
