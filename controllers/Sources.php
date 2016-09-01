@@ -221,7 +221,7 @@ class Sources extends BaseController {
      * @return void
      */
     public function sourcesStats() {
-        $this->needsLoggedIn();
+        $this->needsLoggedInOrPublicMode();
 
         $this->view->jsonSuccess(array(
             'success' => true,
