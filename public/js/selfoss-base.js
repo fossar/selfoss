@@ -190,9 +190,6 @@ var selfoss = {
                 }
                 if(selfoss.filter.sourcesNav)
                     selfoss.refreshSources(data.sources, currentSource);
-
-                // update the floating unread count
-                selfoss.events.updateUnreadBelowTheFold();
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 if (textStatus == "parsererror")
@@ -287,24 +284,6 @@ var selfoss = {
         } else {
             $('span.unread-count').removeClass('unread');
             $(document).attr('title', selfoss.htmlTitle);
-        }
-    },
-
-
-    /**
-     * refresh unread below the fold stats.
-     *
-     * @return void
-     * @param new unread stats (might be null when unknown)
-     */
-    refreshUnreadBelowTheFold: function(unread) {
-        var $floatingUnread = $('#floating-unread');
-        if (unread != null && unread <= 0) {
-            $floatingUnread.hide();
-        } else {
-            var $countBelow = $floatingUnread.find('.floating-unread-count');
-            $countBelow.html(unread == null ? '?' : unread);
-            $floatingUnread.show();
         }
     },
 

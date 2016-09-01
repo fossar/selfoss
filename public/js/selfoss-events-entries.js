@@ -101,19 +101,12 @@ selfoss.events.entries = function(e) {
 
                 // scroll to article header
                 parent.get(0).scrollIntoView();
-
-                // update the floating unread count after every image load
-                // since they might resize the entry container
-                content.find('img').load(selfoss.events.updateUnreadBelowTheFold);
             }
             
             // load images not on mobile devices
             if(selfoss.isMobile()==false || $('#config').data('load_images_on_mobile')=="1") {
                 content.lazyLoadImages();
             }
-
-            // update the floating unread count
-            selfoss.events.updateUnreadBelowTheFold();
         } 
     });
 
@@ -132,11 +125,6 @@ selfoss.events.entries = function(e) {
            && $('.stream-more').position().top < $(window).height() + $(window).scrollTop() 
            && $('.stream-more').hasClass('loading')==false)
             $('.stream-more').click();
-
-        if ($('#floating-unread').is(':visible')) {
-            // update the floating unread count
-            selfoss.events.updateUnreadBelowTheFold();
-        }
     });
     
     $('.mark-these-read').unbind('click').click(selfoss.markVisibleRead);
