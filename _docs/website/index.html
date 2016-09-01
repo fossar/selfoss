@@ -2,18 +2,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
     <title>selfoss - the open source web based rss reader and multi source mashup aggregator</title>
-    
+
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta http-equiv="language" content="en" />
     <meta name="copyright" content="Tobias Zeising" />
     <meta name="keywords" content="selfoss rss reader webbased mashup aggregator tobias zeising aditu" />
     <meta name="description" content="selfoss the web based open source rss reader and multi source mashup aggregator" />
     <meta name="robots" content="all" />
-    
+
     <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="feed.php" />
-    
+
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
-    
+
     <link type="text/css" rel="stylesheet" media="screen, handheld, projection, tv" href="style.css" />
     <link rel="stylesheet" type="text/css" href="javascript/fancybox/jquery.fancybox.css" media="screen" />
 </head>
@@ -22,7 +22,7 @@
     <!-- header -->
     <div id="header">
         <h1 id="header-name"><span>selfoss</span></h1>
-        
+
         <ul id="header-navigation">
             <li class="screenshots">screenshots</li>
             <li class="documentation">documentation</li>
@@ -30,28 +30,28 @@
             <li class="forum"><a href="/forum">forum</a></li>
             <li class="download"><a href="https://github.com/SSilence/selfoss/releases/download/2.15/selfoss-2.16-SNAPSHOT.zip">download</a></li>
         </ul>
-        
+
         <a id="header-fork" href="https://github.com/SSilence/selfoss"></a>
-        
+
         <div id="header-logo"></div>
-        
+
         <div id="header-just-updated"></div>
-        
+
         <a id="header-download" href="https://github.com/SSilence/selfoss/releases/download/2.15/selfoss-2.16-SNAPSHOT.zip"><span>download selfoss 2.16-SNAPSHOT</span></a>
-        
+
         <a id="header-donate" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LR67F3T9DMSC8"><span>donate</span></a>
-        
+
         <div id="header-appstores">
             <a href="https://play.google.com/store/apps/details?id=fr.ydelouis.selfoss"><img alt="Android app on Google Play" src="images/googleplay.png" /></a>
         </div>
-        
+
         <div id="header-donate-tooltipp"><span>selfoss is completely free!<br />But if you like selfoss then feel free to donate the programmer a beer</span></div>
-        
+
         <div id="header-teaser">
             <h1>The new multipurpose rss reader, live stream, mashup, aggregation web application</h1>
-            
+
             <h2>Features</h2>
-            
+
             <ul>
                 <li>web based rss reader</li>
                 <li>universal aggregator</li>
@@ -68,27 +68,27 @@
             </ul>
         </div>
     </div>
-    
+
     <!-- Screenshots -->
     <div class="wrapper-dark">
         <div id="screenshots">
             <h1>Screenshots</h1>
-        
+
             <ul>
                 <li><a href="images/screenshot1.png" title="selfoss on desktop" rel="screenshots"><img src="images/screenshot1_thumb.png" alt="selfoss on desktop"  /></a></li>
                 <li><a href="images/screenshot2.png" title="selfoss on ipad" rel="screenshots"><img src="images/screenshot2_thumb.png" alt="selfoss on ipad" /></a></li>
                 <li><a href="images/screenshot3.png" title="selfoss on smartphone" rel="screenshots"><img src="images/screenshot3_thumb.png" alt="selfoss on smartphone" /></a></li>
             </ul>
-            
+
         </div>
     </div>
-    
-    
+
+
     <!-- Documentations -->
     <div class="wrapper-bright">
         <div id="documentation">
             <h1>Documentation</h1>
-        
+
             <h2>Requirements</h2>
             <div class="documentation-entry">
                 <p>selfoss is not a hosted service. It has to be installed on your own webserver. This webserver must fulfill the following requirements (which are available from most providers)</p>
@@ -97,17 +97,17 @@
                     <li>MySQL, PostgreSQL or Sqlite</li>
                     <li>Apache Webserver (ngnix and lighttpd also possible)</li>
                 </ul>
-                
+
                 <p>Ensure that you have mod_rewrite and mod_headers enabled.</p>
-                
+
                 <p>selfoss supports all modern browsers, including Mozilla Firefox, Safari, Google Chrome, Opera and Internet Explorer. selfoss also supports mobile browsers on iPad, iPhone, Android and other devices.</p>
             </div>
-            
-			<a name="installation" /> 
+
+			<a name="installation" />
             <h2>Installation</h2>
             <div class="documentation-entry">
                 <p>selfoss is a lightweight php based application. Just follow the simple installation instructions:</p>
-                
+
                 <ol>
                     <li>Upload all files of this folder (IMPORTANT: also upload the invisible .htaccess files)</li>
                     <li>Make the directories data/cache, data/favicons, data/logs, data/thumbnails, data/sqlite and public/ writeable</li>
@@ -115,11 +115,11 @@
                     <li>You don't have to install the database, it will be created automatically</li>
                     <li>Create cronjob for updating feeds and point it to http://yoururl.com/update via wget or curl. You can also execute the cliupdate.php from commandline.</li>
                 </ol>
-                
+
                 For further questions or any problems, use our <a href="forum">support forum</a>. For a more detailed step-by-step example installation, please visit the <a href="https://github.com/SSilence/selfoss/wiki/">wiki</a>.
             </div>
 
-			<a name="configuration" /> 
+			<a name="configuration" />
             <h2>Configuration</h2>
             <div class="documentation-entry">
                 <p>Configuration is optional. Any settings in config.ini will override the settings in defaults.ini. To customize settings follow these instructions:</p>
@@ -148,7 +148,7 @@ db_password=life0fD4ng3r
 db_port=3306</code>
                 </pre>
             </div>
-            
+
             <h2>Update</h2>
             <div class="documentation-entry">
                 <p>Read carefully following instructions before you update your selfoss installation:</p>
@@ -161,21 +161,21 @@ db_port=3306</code>
                     <li>Delete the files /public/all-v<var>*</var>.css and /public/all-v<var>*</var>.js</li>
                     <li>Clean your browser cache.</li>
                 </ol>
-                
+
                 For further questions or on any problem use our <a href="forum">support forum</a>.
             </div>
-            
+
             <h2>Import your feeds from Google Reader (OPML File)</h2>
             <div class="documentation-entry">
                 Visit the page http://yoururl.com/opml for importing your OPML File.
                 If you are a user of the google reader then use http://www.google.com/reader/subscriptions/export or https://www.google.com/takeout/ to get all your feeds in one opml file.
             </div>
-            
-			<a name="configuration_params" /> 
+
+			<a name="configuration_params" />
             <h2>Configuration</h2>
             <div class="documentation-entry">
                 <p>selfoss offers the following configuration parameters. You can set the config parameters in the <code>config.ini</code> file.</p>
-                
+
                 <table border="1" cellspacing="0" cellpadding="5">
                     <tr>
                         <th class="documentation-first-column">Parameter</th>
@@ -318,13 +318,21 @@ db_port=3306</code>
                         <td class="documentation-first-column">env_prefix</td>
                         <td>only consider ENV variables that start with this prefix as additional config variables. Defaults to "SELFOSS_".</td>
                     </tr>
+                    <tr>
+                        <td class="documentation-first-column">camo_domain</td>
+                        <td>Camo domain used to proxify images (optional). See <a href="https://github.com/atmos/camo">atmos/camo</a> for more details</td>
+                    </tr>
+                    <tr>
+                        <td class="documentation-first-column">camo_key</td>
+                        <td>Camo domain used to proxify images (optional). See <a href="https://github.com/atmos/camo">atmos/camo</a> for more details</td>
+                    </tr>
                 </table>
             </div>
-            
+
             <h2>Shortcuts</h2>
             <div class="documentation-entry">
                 <p>selfoss offers some keyboard shortcuts. They are very similar to the google reader shortcuts.</p>
-            
+
                 <table border="1" cellspacing="0" cellpadding="5">
                     <tr>
                         <th class="documentation-first-column">Shortcut</th>
@@ -416,7 +424,7 @@ db_port=3306</code>
                     </tr>
                 </table>
             </div>
-            
+
             <h2>Extend</h2>
             <div class="documentation-entry">
                 <p>
@@ -440,13 +448,13 @@ db_port=3306</code>
                 <p>
                     Create a new php file under <code>/spouts/your_spouts/your_spout.php</code> (choose a name for <code>your_spouts</code> and <code>your_spout</code>). The easiest way is to copy the <code><a href="https://github.com/SSilence/selfoss/blob/master/spouts/rss/feed.php">/spouts/rss/feed.php</a></code> and to modify this file.
                 </p>
-                
+
                 <h3>Member Variables</h3>
                 <p>
                     Set the <code>$name</code> and <code>$description</code> variable with the name and description of your spout. The <code>$params</code> contain the definition of the input fields which a user will have to fill to add a new source of your spout (e.g. username and password for accessing the source data).
                 </p>
                 <p>A simple example for the member variables of a spout for accessing an IMAP email account:</p>
-                    
+
                 <pre>
         &lt;?PHP
         namespace spouts\mail;
@@ -478,21 +486,21 @@ db_port=3306</code>
             );
         }
                 </pre>
-                
+
                 <h3>Methods</h3>
-                
+
                 <p>
                     Your source will have to implement a few methods. Following UML diagram shows the inheritance structure:
                 </p>
-                
+
                 <p>
                     <img src="images/uml.png" alt="selfoss source uml diagramm" />
                 </p>
-                
+
                 <p>
                     The class has to implement three things:
                 </p>
-                
+
                 <ul>
                     <li>
                         A <code>load($params)</code> function will be executed by selfoss when the content will be updated (the http://your-selfoss-url.com/update will be executed). This <code>load</code> function has one parameter <code>$params</code> which contains the user defined parameters (e.g. username, password or anything which the user has configured (as you can define in the members variable <code>$params</code>). This function contains your source code for fetching the data (e.g. loading the emails from an IMAP email account).
@@ -504,55 +512,55 @@ db_port=3306</code>
                         selfoss iterates over all the entries by using the iterable interface. selfoss will receive all information about the entries by using the functions defined by the abstract class <code>\spouts\spout</code> (e.g. it will get the email subject by executing the <code>getTitle()</code> method).
                     </li>
                 </ul>
-                
+
                 <h3>Thumbnails</h3>
-                
+
                 <p>
                     If you would like to show thumbnails instead of text, you have to implement the optional method <code>getThumbnail()</code>. This method have to return the url of the image. selfoss will load and generate the thumbnail automatically. See <code><a href="https://github.com/SSilence/selfoss/blob/master/spouts/rss/images.php">\spouts\rss\images.php</a></code> for an example. This spout searches for an image in an rss feed and returns it.
                 </p>
-                
+
                 <h3>Your Spouts</h3>
-                
+
                 <p>
                     Feel free to send us your own spouts. We are really happy about new sources we can add to further versions of selfoss. You can send them by email to <a href="tobias.zeising@aditu.de">tobias.zeising@aditu.de</a>.
                 </p>
             </div>
-            
+
             <h2>API</h2>
             <div class="documentation-entry">
                 <p>selfoss offers a restful JSON API for accessing or changing all selfoss data. Just use this API for your selfoss App or any other programm or plugin. Visit this <a href="https://github.com/SSilence/selfoss/wiki/Restful-API-for-Apps-or-any-other-external-access">github wiki page</a> for a detailed API documentation.</p>
             </div>
-            
+
             <h2>License</h2>
             <div class="documentation-entry">
                 <p>selfoss is licensed under the <a href="http://www.gnu.org/licenses/gpl-3.0.html">GPLv3 license</a>.</p>
-                
+
                 <p>You are allowed to use, modifiy or study this program completely for free. If you need any other licence than GPLv3 then feel free to contact me!</p>
             </div>
-            
+
             <h2  id="about">About</h2>
             <div class="documentation-entry">
                 <p>
                     selfoss is a project of <a href="http://www.aditu.de">Tobias Zeising</a> (<a href="mailto:tobias.zeising@aditu.de">tobias.zeising@aditu.de</a>).
                 </p>
-                
+
                 <p>
                     More information about selfoss can be found on my german speaking blog <a href="http://www.aditu.de">http://www.aditu.de</a>.
                     The icon was created by <a href="http://www.artcoreillustrations.com/">Nadja (ArtCore)</a>, thanks for licensing it as CC.
                 </p>
-                
+
                 <p>
                     Selfoss is named by the wonderfull waterfall in Iceland (see <a href="http://en.wikipedia.org/wiki/Selfoss_(waterfall)">Wikipedia</a>). Many single waterfalls converge to produce one big fall. This seems to be a good metaphor for the many sources from the web which will be shown in one stream.
                 </p>
-                
+
                 <p>
                     FancyBox on this page is from <a href="http://www.fancyapps.com/fancybox/">fancyapps.com</a>.
                 </p>
             </div>
         </div>
     </div>
-        
-    
+
+
     <div id="footer">
         <p>
             <a href="https://github.com/SSilence/selfoss">Github</a>
@@ -574,9 +582,9 @@ db_port=3306</code>
     <script type="text/javascript" src="javascript/fancybox/jquery.mousewheel-3.0.6.pack.js"></script>
     <script type="text/javascript" src="javascript/fancybox/jquery.fancybox.pack.js"></script>
     <script type="text/javascript" src="javascript/base.js"></script>
-    
-    
-    <!-- Piwik --> 
+
+
+    <!-- Piwik -->
     <script type="text/javascript">
     var pkBaseURL = (("https:" == document.location.protocol) ? "https://piwik.aditu.de/" : "http://piwik.aditu.de/");
     document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
