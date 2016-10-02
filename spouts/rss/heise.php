@@ -132,7 +132,7 @@ class heise extends feed {
      */
     private $htmLawedConfig = array(
         'abs_url'  => 1,
-        'base_url' => 'http://www.heise.de/',
+        'base_url' => 'https://www.heise.de/',
         'comment'  => 1,
         'safe'     => 1,
     );
