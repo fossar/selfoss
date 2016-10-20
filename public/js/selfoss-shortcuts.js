@@ -97,7 +97,7 @@ selfoss.shortcuts = {
         
         // 'v': open target
         $(document).bind('keydown', 'v', function(e) {
-            window.open($('.entry.selected .entry-source').attr('href'));
+            window.open($('.entry.selected .entry-datetime').attr('href'));
             e.preventDefault();
             return false;
         });
@@ -114,7 +114,7 @@ selfoss.shortcuts = {
             }
             
             // open item in new window
-            $('.entry.selected .entry-source').click();
+            $('.entry.selected .entry-datetime').click();
         });
         
         // 'r': Reload the current view
