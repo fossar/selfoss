@@ -88,21 +88,21 @@ class heise extends feed {
      * addresses of feeds for the sections
      */
     private $feedUrls = array(
-        "main"   => "http://www.heise.de/newsticker/heise-atom.xml",
-        "ct"     => "http://www.heise.de/ct/rss/artikel-atom.xml",
-        "ix"     => "http://www.heise.de/ix/news/news-atom.xml",
-        "tr"     => "http://www.heise.de/tr/news-atom.xml",
-        "mac"    => "http://www.heise.de/mac-and-i/news-atom.xml",
-        "mobil"  => "http://www.heise.de/mobil/newsticker/heise-atom.xml",
-        "sec"    => "http://www.heise.de/security/news/news-atom.xml",
-        "net"    => "http://www.heise.de/netze/rss/netze-atom.xml",
-        "open"   => "http://www.heise.de/open/news/news-atom.xml",
-        "dev"    => "http://www.heise.de/developer/rss/news-atom.xml",
-        "tp"     => "http://www.heise.de/tp/news-atom.xml",
-        "resale" => "http://www.heise.de/resale/rss/resale-atom.xml",
-        "foto"   => "http://www.heise.de/foto/rss/news-atom.xml",
-        "autos"  => "http://www.heise.de/autos/rss/news-atom.xml",
-        "hh"     => "http://www.heise.de/hardware-hacks/rss/hardware-hacks-atom.xml",
+        "main"   => "https://www.heise.de/newsticker/heise-atom.xml",
+        "ct"     => "https://www.heise.de/ct/rss/artikel-atom.xml",
+        "ix"     => "https://www.heise.de/ix/news/news-atom.xml",
+        "tr"     => "https://www.heise.de/tr/news-atom.xml",
+        "mac"    => "https://www.heise.de/mac-and-i/news-atom.xml",
+        "mobil"  => "https://www.heise.de/mobil/newsticker/heise-atom.xml",
+        "sec"    => "https://www.heise.de/security/news/news-atom.xml",
+        "net"    => "https://www.heise.de/netze/rss/netze-atom.xml",
+        "open"   => "https://www.heise.de/open/news/news-atom.xml",
+        "dev"    => "https://www.heise.de/developer/rss/news-atom.xml",
+        "tp"     => "https://www.heise.de/tp/news-atom.xml",
+        "resale" => "https://www.heise.de/resale/rss/resale-atom.xml",
+        "foto"   => "https://www.heise.de/foto/rss/news-atom.xml",
+        "autos"  => "https://www.heise.de/autos/rss/news-atom.xml",
+        "hh"     => "https://www.heise.de/hardware-hacks/rss/hardware-hacks-atom.xml",
     );
 
 
@@ -132,7 +132,7 @@ class heise extends feed {
      */
     private $htmLawedConfig = array(
         'abs_url'  => 1,
-        'base_url' => 'http://www.heise.de/',
+        'base_url' => 'https://www.heise.de/',
         'comment'  => 1,
         'safe'     => 1,
     );
