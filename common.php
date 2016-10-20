@@ -34,16 +34,12 @@ $f3->set(
 $f3->set('ONERROR',
     function($f3) {
         $trace = $f3->get('ERROR.trace');
-        $tracestr = "\n";
-        foreach($trace as $entry) {
-            $tracestr = $tracestr . $entry['file'] . ':' . $entry['line'] . "\n";
-        }
 
-        \F3::get('logger')->log($f3->get('ERROR.text') . $tracestr, \ERROR);
+        \F3::get('logger')->log($f3->get('ERROR.text') . "\n" . $trace, \ERROR);
         if (\F3::get('DEBUG')!=0) {
             echo $f3->get('lang_error') . ": ";
             echo $f3->get('ERROR.text') . "\n";
-            echo $tracestr;
+            echo $trace;
         } else {
             echo $f3->get('lang_error');
         }
