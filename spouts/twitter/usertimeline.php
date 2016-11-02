@@ -65,6 +65,20 @@ class usertimeline extends \spouts\spout {
             "required"   => true,
             "validation" => array("notempty")
         ),
+        "access_token" => array(
+            "title"      => "Access Token (optional)",
+            "type"       => "text",
+            "default"    => "",
+            "required"   => false,
+            "validation" => array()
+        ),
+        "access_token_secret" => array(
+            "title"      => "Access Token Secret (optional)",
+            "type"       => "password",
+            "default"    => "",
+            "required"   => false,
+            "validation" => array()
+        ),
         "username" => array(
             "title"      => "Username",
             "type"       => "text",
@@ -162,7 +176,8 @@ class usertimeline extends \spouts\spout {
      * @param mixed $params the params of this source
      */
     public function load($params) {
-        $twitter = new \TwitterOAuth($params['consumer_key'], $params['consumer_secret']);
+        $access_token_used = !empty($params['access_token']) && !empty($params['access_token_secret']);
+        $twitter = new \TwitterOAuth($params['consumer_key'], $params['consumer_secret'], $access_token_used ? $params['access_token'] : null, $access_token_used ? $params['access_token_secret'] : null);
         $timeline = $twitter->get('statuses/user_timeline', array('screen_name' => $params['username'], 'include_rts' => 1, 'count' => 50));
         
         if(isset($timeline->error))
