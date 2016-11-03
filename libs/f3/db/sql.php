@@ -461,8 +461,7 @@ class SQL {
 		if (!$options)
 			$options=array();
 		if (isset($parts[0]) && strstr($parts[0],':',TRUE)=='mysql')
-			$options+=array(\PDO::MYSQL_ATTR_INIT_COMMAND=>'SET NAMES '.
-				strtolower(str_replace('-','',$fw->get('ENCODING'))).';');
+			$options+=array(\PDO::MYSQL_ATTR_INIT_COMMAND=>'SET NAMES utf8mb4;');
 		$this->pdo=new \PDO($dsn,$user,$pw,$options);
 		$this->engine=$this->pdo->getattribute(\PDO::ATTR_DRIVER_NAME);
 	}

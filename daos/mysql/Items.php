@@ -219,7 +219,7 @@ class Items extends Database {
         if(isset($options['tag']) && strlen($options['tag'])>0) {
             $params[':tag'] = array( "%,".$options['tag'].",%" , \PDO::PARAM_STR );
             if ( \F3::get( 'db_type' ) == 'mysql' ) {
-              $where .= " AND ( CONCAT( ',' , sources.tags , ',' ) LIKE _utf8 :tag COLLATE utf8_bin ) ";
+              $where .= " AND ( CONCAT( ',' , sources.tags , ',' ) LIKE _utf8mb4 :tag COLLATE utf8mb4_general_ci ) ";
             } else {
               $where .= " AND ( (',' || sources.tags || ',') LIKE :tag ) ";
             }
