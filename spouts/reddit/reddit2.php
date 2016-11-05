@@ -106,9 +106,9 @@ class reddit2 extends \spouts\spout {
     /**
      * current fetched items
      *
-     * @var array|bool
+     * @var array|null
      */
-    protected $items = false;
+    protected $items = null;
 
     /**
      * favicon url
@@ -137,7 +137,7 @@ class reddit2 extends \spouts\spout {
                  $this->login($params);
             }
         }
-        $json = json_decode( $this->file_get_contents_curl( "http://www.reddit.com/" . $params['url'] . ".json" ) );
+        $json = json_decode($this->file_get_contents_curl("https://www.reddit.com/" . $params['url'] . ".json"));
         $this->items = $json->data->children;
     }
 
@@ -151,7 +151,7 @@ class reddit2 extends \spouts\spout {
      * @return void
      */
     public function rewind() {
-        if ( $this->items!==false )
+        if ($this->items !== null)
             reset( $this->items );
     }
 
@@ -162,7 +162,7 @@ class reddit2 extends \spouts\spout {
      * @return SimplePie_Item current item
      */
     public function current() {
-        if ( $this->items!==false )
+        if ($this->items !== null)
             return $this;
         return false;
     }
@@ -174,9 +174,9 @@ class reddit2 extends \spouts\spout {
      * @return mixed key of current item
      */
     public function key() {
-        if ( $this->items!==false )
+        if ($this->items !== null)
             return key( $this->items );
-        return false;
+        return null;
     }
 
 
@@ -186,7 +186,7 @@ class reddit2 extends \spouts\spout {
      * @return SimplePie_Item next item
      */
     public function next() {
-        if ( $this->items!==false )
+        if ($this->items !== null)
             next( $this->items );
         return $this;
     }
@@ -198,7 +198,7 @@ class reddit2 extends \spouts\spout {
      * @return bool false if end reached
      */
     public function valid() {
-        if ( $this->items!==false )
+        if ($this->items !== null)
             return current( $this->items ) !== false;
         return false;
     }
@@ -210,7 +210,7 @@ class reddit2 extends \spouts\spout {
      * @return string id as hash
      */
     public function getId() {
-        if ( $this->items!==false && $this->valid() ) {
+        if ($this->items !== null && $this->valid()) {
             $id = @current( $this->items )->data->id;
             if ( strlen( $id )>255 )
                 $id = md5( $id );
@@ -226,7 +226,7 @@ class reddit2 extends \spouts\spout {
      * @return string title
      */
     public function getTitle() {
-        if ( $this->items!==false && $this->valid() )
+        if ($this->items !== null && $this->valid())
             return @current( $this->items )->data->title;
         return false;
     }
@@ -237,7 +237,7 @@ class reddit2 extends \spouts\spout {
      * @return string title
      */
     public function getHtmlUrl() {
-        if ( $this->items!==false && $this->valid() ) {
+        if ($this->items !== null && $this->valid()) {
             if ( preg_match( "/imgur/", @current( $this->items )->data->url ) ) {
                 if ( !preg_match( '/\.(?:gif|jpg|png|svg)$/i', @current( $this->items )->data->url ) ) {
                     $head = $this->get_head(@current( $this->items )->data->url . ".jpg");
@@ -259,7 +259,7 @@ class reddit2 extends \spouts\spout {
      * @return string content
      */
     public function getContent() {
-        if ( $this->items!==false && $this->valid() ) {
+        if ($this->items !== null && $this->valid()) {
             $text = @current( $this->items )->data->selftext_html;
             if (!empty($text)) {
                 return $text;
@@ -315,7 +315,7 @@ class reddit2 extends \spouts\spout {
      * @return string link
      */
     public function getLink() {
-        if ( $this->items!==false && $this->valid() )
+        if ($this->items !== null && $this->valid())
             return "http://reddit.com" . @current( $this->items )->data->permalink;
         return false;
     }
@@ -326,7 +326,7 @@ class reddit2 extends \spouts\spout {
      * @return string thumbnail url
      */
     public function getThumbnail() {
-        if ( $this->items!==false && $this->valid() )
+        if ($this->items !== null && $this->valid())
             return @current( $this->items )->data->thumbnail;
         return false;
     }
@@ -337,7 +337,7 @@ class reddit2 extends \spouts\spout {
      * @return string date
      */
     public function getdate() {
-        if ( $this->items!==false && $this->valid() )
+        if ($this->items !== null && $this->valid())
             $date = date( 'Y-m-d H:i:s', @current( $this->items )->data->created_utc );
         return $date;
     }
@@ -348,7 +348,7 @@ class reddit2 extends \spouts\spout {
      */
     public function destroy() {
         unset( $this->items );
-        $this->items = false;
+        $this->items = null;
     }
 
 
