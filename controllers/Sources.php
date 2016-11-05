@@ -257,8 +257,32 @@ class Sources extends BaseController {
             'success' => true
         ));
     }
-    
-    
+
+
+    /**
+     * update source
+     * text
+     *
+     * @return void
+     */
+    public function update() {
+        $id = \F3::get('PARAMS["id"]');
+
+        // only allow access for localhost and authenticated users
+        if (\F3::get('allow_public_update_access') != 1
+                && $_SERVER['REMOTE_ADDR'] !== $_SERVER['SERVER_ADDR']
+                && $_SERVER['REMOTE_ADDR'] !== "127.0.0.1"
+                && \F3::get('auth')->isLoggedin() != 1) {
+            die("unallowed access");
+        }
+
+        // update the feed
+        $loader = new \helpers\ContentLoader();
+        $loader->updateSingle($id);
+        echo "finished";
+    }
+
+
     /**
      * returns all available sources
      * json

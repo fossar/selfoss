@@ -795,8 +795,9 @@ body * {
     text-decoration:none;
 }
 
-.source-add, .source-export {
+.source-add, .source-export, .refresh-source {
     font-size:0.85em;
+    line-height: 2;
 }
 
 .source-add {
@@ -807,6 +808,15 @@ body * {
     cursor:pointer;
     margin-left:20px;
     float:left;
+}
+
+.refresh-source {
+    background: transparent;
+    border: none;
+    color: black;
+    padding: 0;
+    cursor: pointer;
+    margin-left: 20px;
 }
 
 .source-export {

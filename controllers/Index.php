@@ -223,11 +223,18 @@ class Index extends BaseController {
      */
     private function loadItems($options, $tags) {
         $tagColors = $this->convertTagsToAssocArray($tags);
-        
         $itemDao = new \daos\Items();
-        $itemsHtml = "";
+        $itemsHtml = '';
+
+        $canUpdate = \F3::get('allow_public_update_access') == 1
+                        || $_SERVER['REMOTE_ADDR'] === $_SERVER['SERVER_ADDR']
+                        || $_SERVER['REMOTE_ADDR'] === "127.0.0.1"
+                        || \F3::get('auth')->isLoggedin() == 1;
+        if ($options['source'] && $canUpdate) {
+            $itemsHtml = '<button type="button" id="refresh-source" class="refresh-source">' . \F3::get('lang_source_refresh') . '</button>';
+        }
+
         foreach($itemDao->get($options) as $item) {
-        
             // parse tags and assign tag colors
             $itemsTags = explode(",",$item['tags']);
             $item['tags'] = array();
