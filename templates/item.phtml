@@ -53,7 +53,7 @@
     <?PHP endif; ?>
 
     <!-- datetime -->
-    <a href="<?PHP echo \helpers\Anonymizer::anonymize($this->item['link']); ?>" class="entry-datetime" target="_blank">
+    <a href="<?PHP echo \helpers\Anonymizer::anonymize($this->item['link']); ?>" class="entry-datetime" target="_blank" rel="noopener noreferrer">
         <?PHP echo $date; ?>
     </a>
     <a href="<?PHP echo $this->item['link']; ?>" class="entry-link"></a>
@@ -61,7 +61,7 @@
     <!-- thumbnail -->
     <?PHP if(isset($this->item['thumbnail']) && strlen(trim($this->item['thumbnail']))>0) : ?>
     <div class="entry-thumbnail">
-        <a href="<?PHP echo \helpers\Anonymizer::anonymize($this->item['link']); ?>" target="_blank">
+        <a href="<?PHP echo \helpers\Anonymizer::anonymize($this->item['link']); ?>" target="_blank" rel="noopener noreferrer">
             <img src="<?PHP echo 'thumbnails/'.$this->item['thumbnail']; ?>" alt="<?PHP echo require_once('libs/htmLawed.php'); htmLawed(htmlspecialchars_decode($this->item['title']), array("deny_attribute" => "*", "elements" => "-*")); ?>" />
         </a>
     </div>
