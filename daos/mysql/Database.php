@@ -32,7 +32,8 @@ class Database {
             \F3::set('db', new \DB\SQL(
                 'mysql:host=' . \F3::get('db_host') . ';port=' . \F3::get('db_port') . ';dbname='.\F3::get('db_database'),
                 \F3::get('db_username'),
-                \F3::get('db_password')
+                \F3::get('db_password'),
+                array(\PDO::MYSQL_ATTR_INIT_COMMAND=>'SET NAMES utf8mb4;')
             ));
             
             // create tables if necessary
@@ -59,7 +60,7 @@ class Database {
                         updatetime DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
                         author VARCHAR(255),
                         INDEX (source)
-                    ) ENGINE = InnoDB DEFAULT CHARSET=utf8;
+                    ) ENGINE = InnoDB DEFAULT CHARSET=utf8mb4;
                 ');
                 \F3::get('db')->exec('
                     CREATE TRIGGER insert_updatetime_trigger
@@ -90,7 +91,7 @@ class Database {
                         error TEXT,
                         lastupdate INT,
                 		lastentry INT
-                    ) ENGINE = InnoDB DEFAULT CHARSET=utf8;
+                    ) ENGINE = InnoDB DEFAULT CHARSET=utf8mb4;
                 ');
                 $isNewestSourcesTable = true;
             }
@@ -100,7 +101,7 @@ class Database {
                 \F3::get('db')->exec('
                     CREATE TABLE '.\F3::get('db_prefix').'version (
                         version INT
-                    ) ENGINE = InnoDB DEFAULT CHARSET=utf8;
+                    ) ENGINE = InnoDB DEFAULT CHARSET=utf8mb4;
                 ');
                 
                 \F3::get('db')->exec('
@@ -111,7 +112,7 @@ class Database {
                     CREATE TABLE '.\F3::get('db_prefix').'tags (
                         tag         TEXT NOT NULL,
                         color       VARCHAR(7) NOT NULL
-                    ) ENGINE = InnoDB DEFAULT CHARSET=utf8;
+                    ) ENGINE = InnoDB DEFAULT CHARSET=utf8mb4;
                 ');
                 
                 if($isNewestSourcesTable===false) {
@@ -189,6 +190,15 @@ class Database {
                         INSERT INTO '.\F3::get('db_prefix').'version (version) VALUES (9);
                     ');
 				}
+                if(strnatcmp($version, "10") < 0) {
+                    \F3::get('db')->exec(array(
+                        'ALTER TABLE `' . \F3::get('db_prefix') . 'items` CONVERT TO CHARACTER SET utf8mb4;',
+                        'ALTER TABLE `' . \F3::get('db_prefix') . 'sources` CONVERT TO CHARACTER SET utf8mb4;',
+                        'ALTER TABLE `' . \F3::get('db_prefix') . 'tags` CONVERT TO CHARACTER SET utf8mb4;',
+                        'ALTER TABLE `' . \F3::get('db_prefix') . 'version` CONVERT TO CHARACTER SET utf8mb4;',
+                        'INSERT INTO `' . \F3::get('db_prefix') . 'version` (version) VALUES (10);'
+                    ));
+                }
             }
             
             // just initialize once
