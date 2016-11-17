@@ -80,8 +80,8 @@ class Statements{
     */
     public static function csvRowMatches($column, $value) {
         if( $value[0] == ':' )
-            $value = "_utf8 $value";
+            $value = "_utf8mb4 $value";
 
-        return "CONCAT(',', $column, ',') LIKE CONCAT('%,', $value, ',%') COLLATE utf8_bin";
+        return "CONCAT(',', $column, ',') LIKE CONCAT('%,', $value, ',%') COLLATE utf8mb4_general_ci";
     }
 }

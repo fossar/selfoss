@@ -130,7 +130,7 @@ class Tags extends Database {
      */
     public function hasTag($tag) {
         if ( \F3::get( 'db_type' ) == 'mysql' ) {
-            $where = 'WHERE tag = _utf8 :tag COLLATE utf8_bin';
+            $where = 'WHERE tag = _utf8mb4 :tag COLLATE utf8mb4_general_ci';
         } else {
             $where = 'WHERE tag=:tag';
         }
