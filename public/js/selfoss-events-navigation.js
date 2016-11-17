@@ -113,7 +113,9 @@ selfoss.events.navigation = function() {
             $('#nav-sources-title').attr('aria-expanded', function (i, attr) {
                 return attr == 'true' ? 'false' : 'true';
             });
-            onExpand();
+            if (typeof onExpand == 'function') {
+                onExpand();
+            }
         }
 
         selfoss.filter.sourcesNav = $('#nav-sources-title').hasClass("nav-sources-collapsed");
