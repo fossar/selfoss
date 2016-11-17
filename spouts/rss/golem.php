@@ -165,7 +165,7 @@ class golem extends feed {
     private function cleanContent($content) {
         $content = preg_replace('|<!-- begin ad tag \(tile=4\) -->(.*?)<!-- end ad tag \(tile=4\) -->|ims', '', $content);
         $content = preg_replace('|<figure id="([^"]+)"></figure>|ims', '', $content);
-        $content = preg_replace('|<a class="golem-gallery2-nojs" href="([^"]+)">(.*?)<img src="([^"]+)" alt="([^"]+)" title="([^"]+)" data-src="([^"]+)" data-src-full="([^"]+)">(.*?)</a>|ims', '<p><a href="$1" target="_blank"><img src="$3" alt="$4" title="$5" /></a></p>', $content);
+        $content = preg_replace('|<a class="golem-gallery2-nojs" href="([^"]+)">(.*?)<img src="([^"]+)" alt="([^"]+)" title="([^"]+)" data-src="([^"]+)" data-src-full="([^"]+)">(.*?)</a>|ims', '<p><a href="$1" target="_blank" rel="noopener noreferrer"><img src="$3" alt="$4" title="$5" /></a></p>', $content);
         return $content;
     }
 
