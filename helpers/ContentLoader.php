@@ -47,8 +47,25 @@ class ContentLoader {
         }
         $this->cleanup();
     }
-    
-    
+
+    /**
+     * updates single source
+     *
+     * @param $id int id of the source to update
+     * @return void
+	 * @throws FileNotFoundException it there is no source with the id.
+     */
+    public function updateSingle($id) {
+        $sourcesDao = new \daos\Sources();
+        $source = $sourcesDao->get($id);
+        if ($source) {
+            $this->fetch($source);
+            $this->cleanup();
+        } else {
+            throw new FileNotFoundException("Unknown source: $id");
+        }
+    }
+
     /**
      * updates a given source
      * returns an error or true on success
