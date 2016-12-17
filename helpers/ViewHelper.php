@@ -85,7 +85,7 @@ class ViewHelper {
         $camo = new \WillWashburn\Phpamo\Phpamo(\F3::get('camo_key'), \F3::get('camo_domain'));
 
         return preg_replace_callback("/<img([^<]+)src=(['\"])([^\"']*)(['\"])([^<]*)>/i", function($matches) use ($camo) {
-            return '<img' . $matches[1] . 'src=' . $matches[2] . $camo->camoHttpOnly($matches[3]) . $matches[2] . $matches[3] . '>';
+            return '<img' . $matches[1] . 'src=' . $matches[2] . $camo->camoHttpOnly($matches[3]) . $matches[4] . $matches[5] . '>';
         }, $content);
     }
 }
