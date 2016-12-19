@@ -199,6 +199,13 @@ class Database {
                         INSERT INTO version (version) VALUES (9);
                     ');
 				}
+                if(strnatcmp($version, "11") < 0) {
+                    \F3::get('db')->exec(array(
+                        'ALTER TABLE `' . \F3::get('db_prefix') . 'sources` ADD waitperiod INT NOT NULL DEFAULT 0;'
+                        'INSERT INTO `' . \F3::get('db_prefix') . 'version` (version) VALUES (11);'
+                    ));
+                }
+				
             }
             
             // just initialize once

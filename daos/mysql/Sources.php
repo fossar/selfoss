@@ -21,15 +21,16 @@ class Sources extends Database {
      * @param string $spout the source type
      * @param mixed $params depends from spout
      */
-    public function add($title, $tags, $filter, $spout, $params) {
+    public function add($title, $tags, $filter, $waitperiod, $spout, $params) {
         // sanitize tag list
         $tags = implode(',', preg_split('/\s*,\s*/', trim($tags), -1, PREG_SPLIT_NO_EMPTY));
 
-        return $this->stmt->insert('INSERT INTO '.\F3::get('db_prefix').'sources (title, tags, filter, spout, params) VALUES (:title, :tags, :filter, :spout, :params)',
+        return $this->stmt->insert('INSERT INTO '.\F3::get('db_prefix').'sources (title, tags, filter, waitperiod, spout, params) VALUES (:title, :tags, :filter, :waitperiod, :spout, :params)',
                     array(
                         ':title'  => trim($title),
                         ':tags'   => $tags,
                         ':filter' => $filter,
+                        ':waitperiod'  => $waitperiod,
                         ':spout'  => $spout,
                         ':params' => htmlentities(json_encode($params))
                     ));
@@ -46,15 +47,16 @@ class Sources extends Database {
      * @param string $spout new spout
      * @param mixed $params the new params
      */
-    public function edit($id, $title, $tags, $filter, $spout, $params) {
+    public function edit($id, $title, $tags, $filter, $waitperiod, $spout, $params) {
         // sanitize tag list
         $tags = implode(',', preg_split('/\s*,\s*/', trim($tags), -1, PREG_SPLIT_NO_EMPTY));
 
-        \F3::get('db')->exec('UPDATE '.\F3::get('db_prefix').'sources SET title=:title, tags=:tags, filter=:filter, spout=:spout, params=:params WHERE id=:id',
+        \F3::get('db')->exec('UPDATE '.\F3::get('db_prefix').'sources SET title=:title, tags=:tags, filter=:filter, waitperiod=:waitperiod, spout=:spout, params=:params WHERE id=:id',
                     array(
                         ':title'  => trim($title),
                         ':tags'   => $tags,
                         ':filter' => $filter,
+                        ':waitperiod'  => $waitperiod,
                         ':spout'  => $spout,
                         ':params' => htmlentities(json_encode($params)),
                         ':id'     => $id
@@ -134,7 +136,7 @@ class Sources extends Database {
      * @return mixed all sources
      */
     public function getByLastUpdate() {
-        $ret = \F3::get('db')->exec('SELECT id, title, tags, spout, params, filter, error, lastupdate, lastentry FROM '.\F3::get('db_prefix').'sources ORDER BY lastupdate ASC');
+        $ret = \F3::get('db')->exec('SELECT id, title, tags, spout, params, filter, error, lastupdate, lastentry, waitperiod FROM '.\F3::get('db_prefix').'sources ORDER BY lastupdate ASC');
         $spoutLoader = new \helpers\SpoutLoader();
         for($i=0;$i<count($ret);$i++)
             $ret[$i]['spout_obj'] = $spoutLoader->get( $ret[$i]['spout'] );
@@ -152,7 +154,7 @@ class Sources extends Database {
     public function get($id = null) {
         // select source by id if specified or return all sources
         if (isset($id)) {
-            $ret = \F3::get('db')->exec('SELECT id, title, tags, spout, params, filter, error FROM '.\F3::get('db_prefix').'sources WHERE id=:id',
+            $ret = \F3::get('db')->exec('SELECT id, title, tags, spout, params, filter, error, waitperiod FROM '.\F3::get('db_prefix').'sources WHERE id=:id',
                                     array(':id' => $id));
             $spoutLoader = new \helpers\SpoutLoader();
             if (isset($ret[0])) {
@@ -162,7 +164,7 @@ class Sources extends Database {
                 $ret = false;    
             }
         } else { 
-            $ret = \F3::get('db')->exec('SELECT id, title, tags, spout, params, filter, error FROM '.\F3::get('db_prefix').'sources ORDER BY error DESC, lower(title) ASC');
+            $ret = \F3::get('db')->exec('SELECT id, title, tags, spout, params, filter, error, waitperiod FROM '.\F3::get('db_prefix').'sources ORDER BY error DESC, lower(title) ASC');
             $spoutLoader = new \helpers\SpoutLoader();
             for($i=0;$i<count($ret);$i++)
                 $ret[$i]['spout_obj'] = $spoutLoader->get( $ret[$i]['spout'] );
@@ -196,7 +198,7 @@ class Sources extends Database {
         $ret = \F3::get('db')->exec('SELECT
                 sources.id, sources.title, sources.tags, sources.spout,
                 sources.params, sources.filter, sources.error, sources.lastentry, 
-                sourceicons.icon AS icon
+                sourceicons.icon AS icon, sources.waitperiod
             FROM '.\F3::get('db_prefix').'sources AS sources
             LEFT OUTER JOIN
                 (SELECT items.source, icon

@@ -142,11 +142,13 @@ class Sources extends BaseController {
         $tags = htmlspecialchars($data['tags']);
         $spout = $data['spout'];
         $filter = $data['filter'];
+        $waitperiod = $data['waitperiod'];
         $isAjax = isset($data['ajax']);
         
         unset($data['title']);
         unset($data['spout']);
         unset($data['filter']);
+        unset($data['waitperiod']);
         unset($data['tags']);
         unset($data['ajax']);
 
@@ -181,9 +183,9 @@ class Sources extends BaseController {
 
         // add/edit source
         if (!$sourceExists)
-            $id = $sourcesDao->add($title, $tags, $filter, $spout, $data);
+            $id = $sourcesDao->add($title, $tags, $filter, $waitperiod, $spout, $data);
         else
-            $sourcesDao->edit($id, $title, $tags, $filter, $spout, $data);
+            $sourcesDao->edit($id, $title, $tags, $filter, $waitperiod, $spout, $data);
         
         // autocolor tags
         $tagsDao = new \daos\Tags();

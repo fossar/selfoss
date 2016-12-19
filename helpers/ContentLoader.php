@@ -43,7 +43,13 @@ class ContentLoader {
     public function update() {
         $sourcesDao = new \daos\Sources();
         foreach($sourcesDao->getByLastUpdate() as $source) {
-            $this->fetch($source);
+        	  $last = $source['lastupdate'];
+        	  $wait = $source['waitperiod'];
+        	  if (($last + $wait) < time()){
+	            $this->fetch($source);
+//            } else {
+//            	echo "   skipped: last Update (".date('Y-m-d H:i:s',$source['lastupdate']).") + Waittime (".$source['waitperiod']." seconds) = ".date('Y-m-d H:i:s',$source['lastupdate'] + $source['waitperiod']);
+            }
         }
         $this->cleanup();
     }
