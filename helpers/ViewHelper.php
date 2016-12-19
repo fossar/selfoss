@@ -83,16 +83,9 @@ class ViewHelper {
         }
 
         $camo = new \WillWashburn\Phpamo\Phpamo(\F3::get('camo_key'), \F3::get('camo_domain'));
-        $dom = new \DOMDocument();
-        $dom->loadHTML($content);
 
-        foreach ($dom->getElementsByTagName('img') as $item) {
-            if ($item->hasAttribute('src')) {
-                $src = $item->getAttribute('src');
-                $item->setAttribute('src', $camo->camoHttpOnly($src));
-            }
-        }
-
-        return $dom->saveHTML();
+        return preg_replace_callback("/<img([^<]+)src=(['\"])([^\"']*)(['\"])([^<]*)>/i", function($matches) use ($camo) {
+            return '<img' . $matches[1] . 'src=' . $matches[2] . $camo->camoHttpOnly($matches[3]) . $matches[4] . $matches[5] . '>';
+        }, $content);
     }
 }
