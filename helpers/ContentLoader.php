@@ -47,8 +47,8 @@ class ContentLoader {
         	  $wait = $source['waitperiod'];
         	  if (($last + $wait) < time()){
 	            $this->fetch($source);
-//            } else {
-//            	echo "   skipped: last Update (".date('Y-m-d H:i:s',$source['lastupdate']).") + Waittime (".$source['waitperiod']." seconds) = ".date('Y-m-d H:i:s',$source['lastupdate'] + $source['waitperiod']);
+            } else {
+		\F3::get('logger')->log($source['title'] . ' (id: '.$source['id'].') skipped: last Update (' . date('Y-m-d H:i:s',$source['lastupdate']) . ') + Waittime (' . $source['waitperiod'] . ' seconds) = ' . date('Y-m-d H:i:s',$source['lastupdate'] + $source['waitperiod']), \INFO);
             }
         }
         $this->cleanup();
