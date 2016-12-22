@@ -45,6 +45,7 @@ selfoss.events.navigation = function() {
         $(this).addClass('active');
         
         selfoss.filter.offset = 0;
+        selfoss.filter.extra_ids.length = 0;
         selfoss.reloadList();
         
         if(selfoss.isSmartphone())
@@ -74,6 +75,7 @@ selfoss.events.navigation = function() {
             selfoss.filter.tag = $(this).find('span').html();
             
         selfoss.filter.offset = 0;
+        selfoss.filter.extra_ids.length = 0;
         selfoss.reloadList();
         
         if(selfoss.isSmartphone())
@@ -99,6 +101,7 @@ selfoss.events.navigation = function() {
         selfoss.filter.source = $(this).attr('id').substr(6);
             
         selfoss.filter.offset = 0;
+        selfoss.filter.extra_ids.length = 0;
         selfoss.reloadList();
         
         if(selfoss.isSmartphone())

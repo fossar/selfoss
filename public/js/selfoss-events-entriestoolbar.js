@@ -192,6 +192,10 @@ selfoss.events.entriesToolbar = function(parent) {
                 url: $('base').attr('href') + (unread ? 'mark/' : 'unmark/') + id,
                 data: { ajax: true },
                 type: 'POST',
+                success: function(data) {
+                    if( unread )
+                        selfoss.filter.extra_ids.push(id);
+                },
                 error: function(jqXHR, textStatus, errorThrown) {
                     // rollback ui changes
                     updateStats(!unread);
