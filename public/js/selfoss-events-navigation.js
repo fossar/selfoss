@@ -40,15 +40,16 @@ selfoss.events.navigation = function() {
             selfoss.filter.type='unread';
         else if($(this).hasClass('nav-filter-starred'))
             selfoss.filter.type='starred';
+
+        if( selfoss.events.section != selfoss.filter.type ) {
+            location.hash = '#' + selfoss.filter.type
+                            + '/' + selfoss.events.subsection;
+        }
         
         $('#nav-filter > li').removeClass('active');
         $(this).addClass('active');
         
-        selfoss.filter.offset = 0;
-        selfoss.filter.extra_ids.length = 0;
-        selfoss.reloadList();
-        
-        if(selfoss.isSmartphone())
+        if(selfoss.isSmartphone() && $('#nav').is(':visible'))
             $('#nav-mobile-settings').click();
     });
     
@@ -69,16 +70,13 @@ selfoss.events.navigation = function() {
         $('#nav-sources > li').removeClass('active');
         $(this).addClass('active');
         
-        selfoss.filter.source = '';
-        selfoss.filter.tag = '';
-        if($(this).hasClass('nav-tags-all')==false)
-            selfoss.filter.tag = $(this).find('span').html();
+        if($(this).hasClass('nav-tags-all')==false) {
+            location.hash = '#' + selfoss.filter.type + '/tag-' + $(this).find('span').html();
+        } else {
+            location.hash = '#' + selfoss.filter.type + '/all';
+        }
             
-        selfoss.filter.offset = 0;
-        selfoss.filter.extra_ids.length = 0;
-        selfoss.reloadList();
-        
-        if(selfoss.isSmartphone())
+        if(selfoss.isSmartphone() && $('#nav').is(':visible'))
             $('#nav-mobile-settings').click();
     });
     
@@ -96,15 +94,10 @@ selfoss.events.navigation = function() {
         $('#nav-tags > li').removeClass('active');
         $('#nav-sources > li').removeClass('active');
         $(this).addClass('active');
+
+        location.hash = '#' + selfoss.filter.type + '/source-' + $(this).attr('id').substr(6);
         
-        selfoss.filter.tag = '';
-        selfoss.filter.source = $(this).attr('id').substr(6);
-            
-        selfoss.filter.offset = 0;
-        selfoss.filter.extra_ids.length = 0;
-        selfoss.reloadList();
-        
-        if(selfoss.isSmartphone())
+        if(selfoss.isSmartphone() && $('#nav').is(':visible'))
             $('#nav-mobile-settings').click();
     });
     
