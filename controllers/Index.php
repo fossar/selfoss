@@ -26,11 +26,19 @@ class Index extends BaseController {
         $options = array();
         if (\F3::get('homepage')!='')
             $options = array( 'type' => \F3::get('homepage') );
-        
+
         // use ajax given params?
         if(count($_GET)>0)
             $options = $_GET;
-        
+
+        if(!isset($options['ajax'])) {
+            // show as full html page
+            $this->view->publicMode = \F3::get('auth')->isLoggedin()!==true && \F3::get('public')==1;
+            $this->view->loggedin = \F3::get('auth')->isLoggedin()===true;
+            echo $this->view->render('templates/home.phtml');
+            return;
+        }
+
         // get search param
         if(isset($options['search']) && strlen($options['search'])>0)
             $this->view->search = $options['search'];
@@ -81,11 +89,6 @@ class Index extends BaseController {
                 "sources"  => $this->view->sources
             ));
         }
-        
-        // show as full html page
-        $this->view->publicMode = \F3::get('auth')->isLoggedin()!==true && \F3::get('public')==1;
-        $this->view->loggedin = \F3::get('auth')->isLoggedin()===true;
-        echo $this->view->render('templates/home.phtml');
     }
     
     

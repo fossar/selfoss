@@ -70,6 +70,7 @@
 
     <!-- other settings -->
     <span id="config"
+        data-homepage="<?PHP echo (\F3::get('homepage')) ? \F3::get('homepage') : 'newest' ?>"
         data-anonymizer="<?PHP echo \helpers\Anonymizer::getAnonymizer(); ?>"
         data-share="<?PHP echo \F3::get('share'); ?>"
         data-wallabag="<?PHP echo \F3::get('wallabag'); ?>"
@@ -85,7 +86,7 @@
 
     <!-- menue open for smartphone -->
     <div id="nav-mobile">
-        <div id="nav-mobile-logo"><span class="unread-count<?PHP echo $this->statsUnread>0 ? ' unread' : ''; ?>"><?PHP echo $this->statsUnread; ?></span></div>
+        <div id="nav-mobile-logo"><span class="unread-count"></span></div>
         <div id="nav-mobile-settings"></div>
     </div>
     
@@ -94,13 +95,12 @@
         <div id="nav-logo"></div>
         <button id="nav-mark"><?PHP echo \F3::get('lang_markread')?></button>
 
-        <?PHP $active = (\F3::get('homepage')) ? \F3::get('homepage') : 'newest' ?>
         <div id="nav-filter-wrapper">
         <h2 id="nav-filter-title" class="nav-filter-expanded" tabindex="0" aria-haspopup="true" aria-expanded="true"><?PHP echo \F3::get('lang_filter') ?></h2>
         <ul id="nav-filter">
-            <li id="nav-filter-newest" class="nav-filter-newest<?PHP if($active=='newest') : ?> active<?PHP endif; ?>" role="link" tabindex="0"><?PHP echo \F3::get('lang_newest')?> <span><?PHP echo $this->statsAll; ?></span></li>
-            <li id="nav-filter-unread" class="nav-filter-unread<?PHP if($active=='unread') : ?> active<?PHP endif; ?>" role="link" tabindex="0"><?PHP echo \F3::get('lang_unread')?> <span class="unread-count<?PHP echo $this->statsUnread>0 ? ' unread' : ''; ?>"><?PHP echo $this->statsUnread; ?></span></li>
-            <li id="nav-filter-starred" class="nav-filter-starred<?PHP if($active=='starred') : ?> active<?PHP endif; ?>" role="link" tabindex="0"><?PHP echo \F3::get('lang_starred') ?> <span><?PHP echo $this->statsStarred; ?></span></li>
+            <li id="nav-filter-newest" class="nav-filter-newest" role="link" tabindex="0"><?PHP echo \F3::get('lang_newest')?> <span></span></li>
+            <li id="nav-filter-unread" class="nav-filter-unread" role="link" tabindex="0"><?PHP echo \F3::get('lang_unread')?> <span class="unread-count"></span></li>
+            <li id="nav-filter-starred" class="nav-filter-starred" role="link" tabindex="0"><?PHP echo \F3::get('lang_starred') ?> <span></span></li>
         </ul>
         </div>
 
@@ -110,11 +110,9 @@
         <h2 id="nav-tags-title" class="nav-tags-expanded" tabindex="0" aria-haspopup="true" aria-expanded="true"><?PHP echo \F3::get('lang_tags') ?></h2>
         <ul id="nav-tags">
             <li class="active nav-tags-all" role="link" tabindex="0"><?PHP echo \F3::get('lang_alltags')?></li>
-            <?PHP echo $this->tags; ?>
         </ul>
         <h2 id="nav-sources-title" class="nav-sources-collapsed" tabindex="0" aria-haspopup="true" aria-expanded="false"><?PHP echo \F3::get('lang_sources') ?></h2>
         <ul id="nav-sources">
-            <?PHP echo $this->sources; ?>
         </ul>
         </div>
         
