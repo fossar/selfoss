@@ -25,10 +25,10 @@ selfoss.events.entries = function(e) {
         // anonymize
         selfoss.anonymize(parent.find('.entry-content'));
         
+        var entryId = parent.attr('data-entry-id');
+
          // show entry in popup
         if(selfoss.isSmartphone()) {
-            location.hash = "show";
-            
             // hide nav
             if($('#nav').is(':visible')) {
                 var scrollTop = $(window).scrollTop();
@@ -48,6 +48,7 @@ selfoss.events.entries = function(e) {
             var fullscreen = $('#fullscreen-entry');
             fullscreen.html('<div id="entrr'+parent.attr('data-entry-id')+'" class="entry fullscreen" data-entry-id="'+parent.attr('data-entry-id')+'">'+parent.html()+'</div>');
             fullscreen.show();
+            location.hash = selfoss.events.path + '/' + entryId;
 
             // lazy load images in fullscreen
             if($('#config').data('load_images_on_mobile')=="1") {
@@ -66,7 +67,7 @@ selfoss.events.entries = function(e) {
                     $('#'+parent.attr('id')).hide();
                 }
                 content.show();
-                location.hash = "";
+                location.hash = selfoss.events.path;
                 $(window).scrollTop(scrollTop);
                 fullscreen.hide();
             });
@@ -83,11 +84,13 @@ selfoss.events.entries = function(e) {
             if(content.is(':visible')) {
                 parent.find('.entry-toolbar').hide();
                 content.hide();
+                location.hash = selfoss.events.path;
             } else {
                 if($('#config').data('auto_collapse')=="1"){
                     $('.entry-content, .entry-toolbar').hide();
                 }
                 content.show();
+                location.hash = selfoss.events.path + '/' + entryId;
                 selfoss.events.entriesToolbar(parent);
                 parent.find('.entry-toolbar').show();
                 
@@ -220,4 +223,9 @@ selfoss.events.entries = function(e) {
             }
         });
     });
+
+    // open selected entry
+    if( selfoss.events.entryId) {
+        $('#entry' + selfoss.events.entryId).children('.entry-title').click();
+    }
 };
