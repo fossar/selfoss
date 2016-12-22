@@ -19,6 +19,7 @@ var selfoss = {
         tag: '',
         source: '',
         sourcesNav: false,
+        extra_ids: [],
         ajax: true
     },
 
