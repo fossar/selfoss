@@ -148,16 +148,12 @@ selfoss.events.navigation = function() {
         // show
         if(nav.is(':visible')==false) {
             nav.slideDown(400, function() {
-                location.hash = "nav";
                 $(window).scrollTop(0);
             });
             
         // hide
         } else {
             nav.slideUp(400, function() {
-                if(location.hash=="#nav") {
-                    location.hash = "";
-                }
                 $(window).scrollTop(0);
             });
         }
