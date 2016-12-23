@@ -158,9 +158,8 @@ class Items extends BaseController {
         }
 
         if( array_key_exists('tags', $_GET) && $_GET['tags'] == 'true' ) {
-            $tagsDao = new \daos\Tags();
             $tagsController = new \controllers\Tags();
-            $stats['tagshtml'] = $tagsController->renderTags($tagsDao->getWithUnread());
+            $stats['tagshtml'] = $tagsController->renderTags($tags);
         }
         if( array_key_exists('sources', $_GET) && $_GET['sources'] == 'true' ) {
             $sourcesDao = new \daos\Sources();
