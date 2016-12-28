@@ -31,8 +31,7 @@ RewriteRule (.*) public/$1 [L]
 
 # deny requests for config files
 <FilesMatch ".(ini)$">
-    Order allow,deny
-    Deny from all
+    Require all denied
 </FilesMatch>
 
 # Disable ETags
