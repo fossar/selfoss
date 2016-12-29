@@ -81,7 +81,7 @@ selfoss.events = {
             selfoss.filter.tag = '';
             selfoss.filter.source = '';
             if( selfoss.events.subsection.substr(0, 4) == 'tag-') {
-                selfoss.filter.tag = selfoss.events.subsection.substr(4);
+                selfoss.filter.tag = decodeURIComponent(selfoss.events.subsection.substr(4));
             } else if( selfoss.events.subsection.substr(0, 7) == 'source-') {
                 var sourceId = parseInt(selfoss.events.subsection.substr(7));
                 if( sourceId ) {
