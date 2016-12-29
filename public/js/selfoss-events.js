@@ -46,11 +46,14 @@ selfoss.events = {
      * handle History change
      */
     hashChange: function() {
-        if( location.hash == selfoss.events.lasthash )
+        // assume the hash is encoded
+        var hash = decodeURIComponent(location.href.split('#').splice(1).join('#'));
+
+        if( hash == selfoss.events.lasthash )
             return;
 
         // parse hash
-        var hashPath = location.hash.substring(1).split('/');
+        var hashPath = hash.split('/');
 
         selfoss.events.section = hashPath[0];
 
@@ -69,7 +72,7 @@ selfoss.events = {
         else
             selfoss.events.entryId = null;
 
-        selfoss.events.lasthash = location.hash;
+        selfoss.events.lasthash = hash;
 
         // do not reload list if list is the same
         if ( selfoss.events.lastpath == selfoss.events.path )
@@ -81,7 +84,7 @@ selfoss.events = {
             selfoss.filter.tag = '';
             selfoss.filter.source = '';
             if( selfoss.events.subsection.substr(0, 4) == 'tag-') {
-                selfoss.filter.tag = decodeURIComponent(selfoss.events.subsection.substr(4));
+                selfoss.filter.tag = selfoss.events.subsection.substr(4);
             } else if( selfoss.events.subsection.substr(0, 7) == 'source-') {
                 var sourceId = parseInt(selfoss.events.subsection.substr(7));
                 if( sourceId ) {
@@ -94,7 +97,7 @@ selfoss.events = {
 
             $('#nav-filter-'+selfoss.events.section).click();
             selfoss.reloadList();
-        } else if(location.hash=="#sources") { // load sources
+        } else if(hash=="sources") { // load sources
             if (selfoss.activeAjaxReq !== null)
                 selfoss.activeAjaxReq.abort();
 
