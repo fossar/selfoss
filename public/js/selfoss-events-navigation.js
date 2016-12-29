@@ -71,7 +71,7 @@ selfoss.events.navigation = function() {
         $(this).addClass('active');
         
         if($(this).hasClass('nav-tags-all')==false) {
-            location.hash = '#' + selfoss.filter.type + '/tag-' + $(this).find('span').html();
+            location.hash = '#' + selfoss.filter.type + '/tag-' + $(this).find('span').html().replace('%', '%25');
         } else {
             location.hash = '#' + selfoss.filter.type + '/all';
         }
