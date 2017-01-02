@@ -36,8 +36,7 @@ selfoss.events.search = function() {
         
         // execute search
         $('#search').removeClass('active');
-        selfoss.filter.offset = 0;
-        selfoss.filter.extra_ids.length = 0;
+        selfoss.filterReset();
         selfoss.filter.search = term;
         selfoss.reloadList();
         
@@ -90,8 +89,7 @@ selfoss.events.search = function() {
             return;
         }
         
-        selfoss.filter.offset = 0;
-        selfoss.filter.extra_ids.length = 0;
+        selfoss.filterReset();
         selfoss.filter.search = '';
         $('#search-list').hide();
         $('#search-list').html('');
