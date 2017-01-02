@@ -364,7 +364,15 @@ var selfoss = {
     refreshSources: function(sources, currentSource) {
         $('#nav-sources li').remove();
         $('#nav-sources').append(sources);
-        $('#source' + selfoss.filter.source).addClass('active');
+        if( selfoss.filter.source ) {
+            $('#source' + selfoss.filter.source).addClass('active');
+            $('#nav-tags > li').removeClass('active');
+        }
+
+        selfoss.sourcesNavLoaded = true;
+        if( $('#nav-sources-title').hasClass("nav-sources-collapsed") )
+            $('#nav-sources-title').click(); // expand sources nav
+
         selfoss.events.navigation();
     },
     

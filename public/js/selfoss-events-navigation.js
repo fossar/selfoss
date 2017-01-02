@@ -121,8 +121,6 @@ selfoss.events.navigation = function() {
                 type: 'GET',
                 success: function(data) {
                     selfoss.refreshSources(data.sources);
-                    selfoss.sourcesNavLoaded = true;
-                    toggle();
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     selfoss.showError('Can not load nav stats: '+
