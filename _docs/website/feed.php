@@ -83,7 +83,7 @@ echo '<?xml version="1.0" encoding="utf-8"?>'; ?>
         <description><?php echo $repo["description"] ?></description>
         <language>en</language>
         <copyright>Copyright <?php echo date("Y") ?>, <?php echo $username ?></copyright>
-        <docs>http://blogs.law.harvard.edu/tech/rss</docs>
+        <docs>https://cyber.harvard.edu/rss/rss.html</docs>
         <pubDate><?php echo date("r", strtotime($repo["pushed_at"])) ?></pubDate>
         <lastBuildDate><?php echo date("r", strtotime($repo["updated_at"])) ?></lastBuildDate>
         

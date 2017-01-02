@@ -8,8 +8,8 @@ namespace spouts\rss;
  * @package    plugins
  * @subpackage news
  * @copyright  Copyright (c) Daniel Rudolf
- * @license    GPLv3 (http://www.gnu.org/licenses/gpl-3.0.html)
- * @author     Daniel Rudolf <http://daniel-rudolf.de/>
+ * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
+ * @author     Daniel Rudolf <https://daniel-rudolf.de/>
  */
 class enclosures extends feed
 {

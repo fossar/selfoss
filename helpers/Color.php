@@ -6,7 +6,7 @@ namespace helpers;
  *
  * @package    helpers
  * @copyright  Copyright (c) Tobias Zeising (http://www.aditu.de)
- * @license    GPLv3 (http://www.gnu.org/licenses/gpl-3.0.html)
+ * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class Color {
@@ -37,7 +37,7 @@ class Color {
       * @param string $brightColor bright color value
       * @return string dark OR bright color value
       * 
-      * @link http://24ways.org/2010/calculating-color-contrast/
+      * @link https://24ways.org/2010/calculating-color-contrast/
       */
      public static function colorByBrightness($color, $darkColor = '#555', $brightColor = '#EEE') {
         $color = trim($color, '#');

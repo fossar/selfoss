@@ -8,7 +8,7 @@ namespace spouts\twitter;
  * @package    spouts
  * @subpackage rss
  * @copyright  Copyright (c) Tobias Zeising (http://www.aditu.de)
- * @license    GPLv3 (http://www.gnu.org/licenses/gpl-3.0.html)
+ * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class hometimeline extends \spouts\twitter\usertimeline {
@@ -100,6 +100,6 @@ class hometimeline extends \spouts\twitter\usertimeline {
         
         $this->items = $timeline;
         
-        $this->htmlUrl = 'http://twitter.com/';
+        $this->htmlUrl = 'https://twitter.com/';
     }
 }

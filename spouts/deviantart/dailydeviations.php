@@ -8,7 +8,7 @@ namespace spouts\deviantart;
  * @package    spouts
  * @subpackage rss
  * @copyright  Copyright (c) Tobias Zeising (http://www.aditu.de)
- * @license    GPLv3 (http://www.gnu.org/licenses/gpl-3.0.html)
+ * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class dailydeviations extends \spouts\rss\images {
@@ -73,6 +73,6 @@ class dailydeviations extends \spouts\rss\images {
      * @param mixed $params params for the source
      */
     public function getXmlUrl($params = null) {
-        return 'http://backend.deviantart.com/rss.xml?q=special%3Add&type=deviation&offset=0';
+        return 'https://backend.deviantart.com/rss.xml?q=special%3Add&type=deviation&offset=0';
     }
 }

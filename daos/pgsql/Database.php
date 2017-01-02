@@ -6,7 +6,7 @@ namespace daos\pgsql;
  * Base class for database access -- postgresql
  *
  * Note that before use you'll want to create the database itself. See 
- * http://www.postgresql.org/docs/8.4/static/manage-ag-createdb.html for full information.
+ * https://www.postgresql.org/docs/9.6/static/manage-ag-createdb.html for full information.
  * In a nutshell (from the command line), as the administrative user (postgres),
  * execute "createdb -O USER DBNAME" where USER is the user you will be connecting as
  * and DBNAME is the database to create. Administering users (roles) and authentication
@@ -14,7 +14,7 @@ namespace daos\pgsql;
  *
  * @package     daos
  * @copyright   Copyright (c) Michael Jackson <michael.o.jackson@gmail.com>
- * @license     GPLv3 (http://www.gnu.org/licenses/gpl-3.0.html)
+ * @license     GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author      Michael Jackson <michael.o.jackson@gmail.com>
  * @author      Tobias Zeising <tobias.zeising@aditu.de>
  */
@@ -212,7 +212,7 @@ class Database {
      *
      * Note that for pg, for full optimization you'd run "vacuum full analyze {table}".  This does require
      * an exclusive lock on the table though and so this is probably best run offline during scheduled
-     * downtime.  See http://www.postgresql.org/docs/8.4/static/sql-vacuum.html for more information
+     * downtime.  See https://www.postgresql.org/docs/9.6/static/sql-vacuum.html for more information
      * (particularly the notes in the footer of that page leading to further DBA-related info e.g. the
      * autovacuum daemon).
      *
