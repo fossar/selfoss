@@ -103,7 +103,8 @@ selfoss.events.entries = function(e) {
                 selfoss.setupFancyBox(content, parent.attr('id').substr(5));
 
                 // scroll to article header
-                if ($('#config').data('scroll_to_article_header') == '1') {
+                if ($('#config').data('scroll_to_article_header') == '1' ||
+                    selfoss.events.entryId ) {
                   parent.get(0).scrollIntoView();
                 }
             }
