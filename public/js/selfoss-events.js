@@ -89,11 +89,11 @@ selfoss.events = {
                 var sourceId = parseInt(selfoss.events.subsection.substr(7));
                 if( sourceId ) {
                     selfoss.filter.source = sourceId;
+                    selfoss.filter.sourcesNav = true;
                 }
             }
 
-            selfoss.filter.offset = 0;
-            selfoss.filter.extra_ids.length = 0;
+            selfoss.filterReset();
 
             $('#nav-filter-'+selfoss.events.section).click();
             selfoss.reloadList();
