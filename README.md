@@ -46,7 +46,7 @@ For further questions or on any problem use our support forum: http://selfoss.ad
 OPML Import
 -----------
 
-Visit the page https://yourselfossurl.com/opml for importing your OPML File. If you are a user of the google reader then use https://www.google.com/takeout/ to get all your feeds in one opml file.
+Selfoss supports importing OPML files. Find the OPML export in the old application, it is usually located somewhere in settings. Then visit the page https://yourselfossurl.com/opml and upload it there.
 
 
 APPS
