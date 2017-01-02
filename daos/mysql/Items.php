@@ -233,9 +233,34 @@ class Items extends Database {
             $where[] = "items.updatetime > :updatedsince ";
         }
 
+        // seek pagination (alternative to offset)
+        if( isset($options['offset_from_datetime'])
+            && strlen($options['offset_from_datetime']) > 0
+            && isset($options['offset_from_id'])
+            && is_numeric($options['offset_from_id']) ) {
+
+            $params[':offset_from_datetime'] = array(
+                $options['offset_from_datetime'], \PDO::PARAM_STR
+            );
+            $params[':offset_from_id'] = array(
+                $options['offset_from_id'], \PDO::PARAM_INT
+            );
+            $ltgt = null;
+            if( $order == 'ASC' )
+                $ltgt = '>';
+            else
+                $ltgt = '<';
+
+            $where[] = "(items.datetime, items.id) $ltgt (:offset_from_datetime, :offset_from_id)";
+        }
+
         $where_ids = '';
         // extra ids to include in stream
-        if( isset($options['extra_ids']) ) {
+        if( isset($options['extra_ids'])
+            && count($options['extra_ids']) > 0
+            // limit the query to a sensible max
+            && count($options['extra_ids']) <= \F3::get('items_perpage') ) {
+
             $extra_ids_stmt = $this->stmt->intRowMatches('items.id',
                                                          $options['extra_ids']);
             if( !is_null($extra_ids_stmt) )

@@ -13,6 +13,8 @@ var selfoss = {
      */
     filter: {
         offset: 0,
+        offset_from_datetime: null,
+        offset_from_id: null,
         itemsPerPage: 0,
         search: '',
         type: 'newest',
@@ -146,6 +148,19 @@ var selfoss = {
         if($(window).width()<=640)
             return true;
         return false;
+    },
+
+
+    /**
+     * reset filter
+     *
+     * @return void
+     */
+    filterReset: function() {
+        selfoss.filter.offset = 0;
+        selfoss.filter.offset_from_datetime = null;
+        selfoss.filter.offset_from_id = null;
+        selfoss.filter.extra_ids.length = 0;
     },
     
     
@@ -434,8 +449,7 @@ var selfoss = {
 
         // close opened entry and list
         location.hash = selfoss.events.path;
-        selfoss.filter.extra_ids.length = 0;
-        selfoss.filter.offset = 0;
+        selfoss.filterReset();
 
         $.ajax({
             url: $('base').attr('href') + 'mark',
