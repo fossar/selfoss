@@ -233,7 +233,10 @@ class Index extends BaseController {
                         || $_SERVER['REMOTE_ADDR'] === $_SERVER['SERVER_ADDR']
                         || $_SERVER['REMOTE_ADDR'] === "127.0.0.1"
                         || \F3::get('auth')->isLoggedin() == 1;
-        if ($options['source'] && $canUpdate) {
+        $firstPage = $options['offset'] == 0
+                        && $options['offset_from_id'] == ''
+                        && $options['offset_from_datetime'] == '';
+        if ($options['source'] && $canUpdate && $firstPage) {
             $itemsHtml = '<button type="button" id="refresh-source" class="refresh-source">' . \F3::get('lang_source_refresh') . '</button>';
         }
 
