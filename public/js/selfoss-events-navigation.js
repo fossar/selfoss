@@ -102,16 +102,13 @@ selfoss.events.navigation = function() {
     });
     
     // hide/show sources
-    $('#nav-sources-title').unbind('click').click(function (e, onExpand) {
+    $('#nav-sources-title').unbind('click').click(function () {
         var toggle = function () {
             $('#nav-sources').slideToggle("slow");
             $('#nav-sources-title').toggleClass("nav-sources-collapsed nav-sources-expanded");
             $('#nav-sources-title').attr('aria-expanded', function (i, attr) {
                 return attr == 'true' ? 'false' : 'true';
             });
-            if (typeof onExpand == 'function') {
-                onExpand();
-            }
         }
 
         selfoss.filter.sourcesNav = $('#nav-sources-title').hasClass("nav-sources-collapsed");
