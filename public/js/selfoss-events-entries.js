@@ -167,22 +167,7 @@ selfoss.events.entries = function(e) {
     if (selfoss.isSmartphone() == false) {
         $('.entry-source').unbind('click').click(function(e) {
             var entry = $(this).parents('.entry');
-            var deferred = $.Deferred();
-            if ($('#nav-sources-title').is('.nav-sources-collapsed')) {
-                $('#nav-sources-title').trigger('click', deferred.resolve);
-            } else {
-                deferred.resolve();
-            }
-
-            deferred.then(function() {
-                var source = entry.attr('data-entry-source');
-                $('#nav-sources li').each(function(index, item) {
-                    if ($(item).attr('data-source-id') == source) {
-                        $(item).click();
-                        return false;
-                    }
-                });
-            });
+            location.hash = '#' + selfoss.filter.type + '/source-' + entry.attr('data-entry-source');
         });
     }
 
