@@ -215,6 +215,7 @@ var selfoss = {
                 else if (errorThrown)
                     selfoss.showError('Load list error: '+
                                         textStatus+' '+errorThrown);
+                selfoss.events.entries();
                 $('.stream-error').show();
             },
             complete: function(jqXHR, textStatus) {
