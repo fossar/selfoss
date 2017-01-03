@@ -140,7 +140,7 @@ selfoss.events.entries = function(e) {
     // more
     $('.stream-more').unbind('click').click(function () {
         var streamMore = $(this);
-        var lastEntry = $('.entry').filter(':last');
+        var lastEntry = $('.entry').not('.fullscreen').filter(':last');
         selfoss.filter.offset_from_datetime = lastEntry.data('entry-datetime');
         selfoss.filter.offset_from_id = lastEntry.data('entry-id');
         
