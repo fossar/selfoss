@@ -212,8 +212,9 @@ selfoss.events.entries = function(e) {
         });
     });
 
-    // open selected entry
-    if( selfoss.events.entryId) {
+    // open selected entry only if entry was request (i.e. if not streaming
+    // more)
+    if( selfoss.events.entryId && selfoss.filter.offset_from_id == null ) {
         $('#entry' + selfoss.events.entryId).children('.entry-title').click();
     }
 };
