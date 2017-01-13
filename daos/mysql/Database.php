@@ -28,9 +28,19 @@ class Database {
      */
     public function __construct() {
         if(self::$initialized===false && \F3::get('db_type')=="mysql") {
+            $host = \F3::get('db_host');
+            $port = \F3::get('db_port');
+            $database = \F3::get('db_database');
+
+            if ($port) {
+                $dsn = "mysql:host=$host; port=$port; dbname=$database";
+            } else {
+                $dsn = "mysql:host=$host; dbname=$database";
+            }
+
             \F3::get('logger')->log("Establish database connection", \DEBUG);
             \F3::set('db', new \DB\SQL(
-                'mysql:host=' . \F3::get('db_host') . ';port=' . \F3::get('db_port') . ';dbname='.\F3::get('db_database'),
+                $dsn,
                 \F3::get('db_username'),
                 \F3::get('db_password'),
                 array(\PDO::MYSQL_ATTR_INIT_COMMAND=>'SET NAMES utf8mb4;')

@@ -35,9 +35,19 @@ class Database {
      */
     public function __construct() {
         if (self::$initialized === false && \F3::get('db_type')=="pgsql") {
+            $host = \F3::get('db_host');
+            $port = \F3::get('db_port');
+            $database = \F3::get('db_database');
+
+            if ($port) {
+                $dsn = "pgsql:host=$host; port=$port; dbname=$database";
+            } else {
+                $dsn = "pgsql:host=$host; dbname=$database";
+            }
+
             \F3::get('logger')->log("Establish database connection", \DEBUG);
             \F3::set('db', new \DB\SQL(
-                'pgsql:host=' . \F3::get('db_host') . ';port=' . \F3::get('db_port') . ';dbname='.\F3::get('db_database'),
+                $dsn,
                 \F3::get('db_username'),
                 \F3::get('db_password')
             ));
