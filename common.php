@@ -6,7 +6,7 @@ $f3 = $f3 = Base::instance();
 
 $f3->set('DEBUG',0);
 $f3->set('version','2.17-SNAPSHOT');
-$f3->set('AUTOLOAD',__dir__.'/;libs/;daos/;libs/fulltextrss/content-extractor/');
+$f3->set('AUTOLOAD', false);
 $f3->set('cache',__dir__.'/data/cache');
 $f3->set('BASEDIR',__dir__);
 $f3->set('LOCALES',__dir__.'/public/lang/');

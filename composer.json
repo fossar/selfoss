@@ -20,5 +20,14 @@
             "name": "SSilence",
             "email": "tobias.zeising@aditu.de"
         }
-    ]
+    ],
+    "autoload": {
+        "classmap": [
+            "controllers/",
+            "daos/",
+            "helpers/",
+            "libs/",
+            "spouts/"
+        ]
+    }
 }
