@@ -97,9 +97,8 @@ class Authentication {
      */
     public function login($username, $password) {
         if($this->enabled()) {
-            if(
-                $username == \F3::get('username') &&  hash("sha512", \F3::get('salt') . $password) == \F3::get('password')
-            ) {
+            $crypt = \Bcrypt::instance();
+            if ($username === \F3::get('username') && $crypt->verify($password, \F3::get('password'))) {
                 $this->loggedin = true;
                 $_SESSION['loggedin'] = true;
                 \F3::get('logger')->log('logged in with supplied username and password', \DEBUG);

@@ -33,7 +33,7 @@ UPDATE
 1. backup your database and your "data" folder
 2. (IMPORTANT: don't delete the "data" folder) delete all old files and folders excluding the folder "data" and the file config.ini
 3. upload all new files and folders excluding the data folder (IMPORTANT: also upload the invisible .htaccess files)
-4. Rename your folder /data/icons into /data/favicons
+4. *When upgrading from 2.16 or older:* Generate new password hash by going to https://yourselfossurl.com/password
 5. Delete the files /public/all-v*.css and /public/all-v*.js
 6. Clean your browser cache
 7. insert your current database connection and your individual configuration in config.ini. Important: we change the config.ini and add new options in newer versions. You have to update the config.ini too.
