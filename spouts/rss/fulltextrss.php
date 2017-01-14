@@ -2,9 +2,6 @@
 
 namespace spouts\rss;
 
-if(!function_exists('htmLawed'))
-    require('libs/htmLawed.php');
-
 /**
  * Plugin for fetching the news with fivefilters Full-Text RSS
  *

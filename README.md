@@ -57,7 +57,9 @@ A third party app is available for Android: [Selfoss](https://play.google.com/st
 DEVELOPMENT
 -----------
 
-Selfoss uses [git submodules](https://www.git-scm.com/book/en/v2/Git-Tools-Submodules) for some external libaries. When you clone the repository you have to issue a `git submodule init` as well as a `git submodule update` to retrieve the external sources.
+Selfoss uses [composer](https://getcomposer.org/) for installing external libraries. When you clone the repository you have to issue `composer install` to retrieve the external sources.
+
+Additionally, [git submodules](https://www.git-scm.com/book/en/v2/Git-Tools-Submodules) are used for obtaining fultextrss filters. When you clone the repository you have to issue a `git submodule init` as well as a `git submodule update` to retrieve them.
 
 CREDITS
 -------

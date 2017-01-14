@@ -2,6 +2,8 @@
 
 namespace controllers;
 
+use FeedWriter\RSS2;
+
 /**
  * Controller for rss access
  *
@@ -20,7 +22,7 @@ class Rss extends BaseController {
     public function rss() {
         $this->needsLoggedInOrPublicMode();
 
-        $feedWriter = new \RSS2FeedWriter();
+        $feedWriter = new RSS2;
         $feedWriter->setTitle(\F3::get('rss_title'));
         
         $feedWriter->setLink($this->view->base);

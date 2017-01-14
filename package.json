@@ -8,6 +8,7 @@
   },
   "devDependencies": {
     "grunt": "~0.4.5",
+    "grunt-composer": "^0.4.5",
     "grunt-contrib-compress": "^0.10.0",
     "grunt-text-replace": "~0.3"
   }

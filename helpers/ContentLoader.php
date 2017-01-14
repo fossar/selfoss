@@ -26,10 +26,6 @@ class ContentLoader {
      * ctor
      */
     public function __construct() {
-        // include htmLawed
-        if(!function_exists('htmLawed'))
-            require('libs/htmLawed.php');
-
         $this->itemsDao = new \daos\Items();
         $this->sourceDao = new \daos\Sources();
     }

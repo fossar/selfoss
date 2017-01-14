@@ -1,0 +1,24 @@
+{
+    "name": "ssilence/selfoss",
+    "description": "Multipurpose rss reader, live stream, mashup, aggregation web application",
+    "type": "project",
+    "require": {
+        "abraham/twitteroauth": "^0.7.2",
+        "bcosca/fatfree-core": "^3.6",
+        "htmlawed/htmlawed": "^1.1",
+        "j0k3r/php-readability": "^1.1.5",
+        "linkorb/jsmin-php": "^1.0",
+        "mibe/feedwriter": "^1.0",
+        "natxet/CssMin": "^3.0",
+        "simplepie/simplepie": "^1.3",
+        "smottt/wideimage": "^1.1",
+        "willwashburn/phpamo": "^1.0"
+    },
+    "license": "GPL-3.0",
+    "authors": [
+        {
+            "name": "SSilence",
+            "email": "tobias.zeising@aditu.de"
+        }
+    ]
+}
