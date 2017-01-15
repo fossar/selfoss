@@ -177,7 +177,7 @@ var selfoss = {
             return;
         }
 
-        if( selfoss.events.entryId )
+        if( selfoss.events.entryId && selfoss.filter.offset_from_id == null )
             selfoss.filter.extra_ids.push(selfoss.events.entryId);
 
         $('.stream-error').css('display', 'block').hide();
