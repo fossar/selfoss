@@ -149,6 +149,7 @@ selfoss.events = {
             if (selfoss.activeAjaxReq !== null)
                 selfoss.activeAjaxReq.abort();
 
+            selfoss.ui.refreshStreamButtons();
             $('#content').addClass('loading').html("");
             selfoss.activeAjaxReq = $.ajax({
                 url: $('base').attr('href')+'sources',

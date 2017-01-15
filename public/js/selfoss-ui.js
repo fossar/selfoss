@@ -46,6 +46,25 @@ selfoss.ui = {
                 selfoss.ui.entryMark(id, new_status.unread);
             }
         });
+    },
+
+
+    refreshStreamButtons: function(entries=false,
+                                   hasEntries=false, hasMore=false) {
+        $('.stream-button, .stream-empty').css('display', 'block').hide();
+        if( entries ) {
+            if( hasEntries ) {
+                $('.stream-empty').hide();
+                if( selfoss.isSmartphone() )
+                    $('.mark-these-read').show();
+                if( hasMore )
+                    $('.stream-more').show();
+            } else {
+                $('.stream-empty').show();
+                if( selfoss.isSmartphone() )
+                    $('.mark-these-read').hide();
+            }
+        }
     }
 
 

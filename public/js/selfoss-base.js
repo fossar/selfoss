@@ -185,7 +185,7 @@ var selfoss = {
         if( selfoss.events.entryId && selfoss.filter.offset_from_id == null )
             selfoss.filter.extra_ids.push(selfoss.events.entryId);
 
-        $('.stream-error').css('display', 'block').hide();
+        selfoss.ui.refreshStreamButtons();
         $('#content').addClass('loading').html("");
 
         selfoss.activeAjaxReq = $.ajax({
@@ -200,6 +200,8 @@ var selfoss = {
                 selfoss.refreshStats(data.all, data.unread, data.starred);
 
                 $('#content').html(data.entries);
+                selfoss.ui.refreshStreamButtons(true,
+                    $('.entry').not('.fullscreen').length > 0, data.hasMore);
                 $(document).scrollTop(0);
                 selfoss.events.entries();
                 selfoss.events.search();
@@ -224,6 +226,7 @@ var selfoss = {
                     selfoss.showError('Load list error: '+
                                         textStatus+' '+errorThrown);
                 selfoss.events.entries();
+                selfoss.ui.refreshStreamButtons();
                 $('.stream-error').show();
             },
             complete: function(jqXHR, textStatus) {
@@ -277,6 +280,10 @@ var selfoss = {
 
                     if( 'items' in data )
                         selfoss.ui.refreshItemStatuses(data.items);
+
+                    if( selfoss.filter.type == 'unread' &&
+                        data.stats.unread > $('.entry.unread').length )
+                        $('.stream-more').show();
                 }
                 selfoss.lastUpdate = dataDate;
             },
@@ -478,7 +485,13 @@ var selfoss = {
             ids.push( $(item).attr('id').substr(5) );
         });
 
-        if(ids.length === 0){
+        if( ids.length === 0 ) {
+            $('.entry').remove();
+            if( selfoss.filter.type == 'unread' &&
+                parseInt($('span.unread-count').html()) > 0 )
+                selfoss.reloadList()
+            else
+                selfoss.ui.refreshStreamButtons(true);
             return;
         }
 
@@ -486,6 +499,8 @@ var selfoss = {
         var content = $('#content');
         var articleList = content.html();
         $('#content').addClass('loading').html("");
+        var hadMore = $('.stream-more').is(':visible');
+        selfoss.ui.refreshStreamButtons();
 
         // close opened entry and list
         selfoss.events.setHash();
@@ -515,6 +530,7 @@ var selfoss = {
             error: function(jqXHR, textStatus, errorThrown) {
                 content.html(articleList);
                 $('#content').removeClass('loading');
+                selfoss.ui.refreshStreamButtons(true, true, hadMore);
                 selfoss.events.entries();
                 selfoss.showError('Can not mark all visible item: '+
                                     textStatus+' '+errorThrown);

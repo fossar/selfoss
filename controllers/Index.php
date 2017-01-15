@@ -48,8 +48,8 @@ class Index extends BaseController {
         $tags = $tagsDao->getWithUnread();
         
         // load items
-        $itemsHtml = $this->loadItems($options, $tags);
-        $this->view->content = $itemsHtml;
+        $items = $this->loadItems($options, $tags);
+        $this->view->content = $items['html'];
         
         // load stats
         $itemsDao = new \daos\Items();
@@ -82,6 +82,7 @@ class Index extends BaseController {
         if(isset($options['ajax'])) {
             $this->view->jsonSuccess(array(
                 "lastUpdate" => \helpers\ViewHelper::date_iso8601($itemsDao->lastUpdate()),
+                "hasMore"    => $items['hasMore'],
                 "entries"    => $this->view->content,
                 "all"        => $this->view->statsAll,
                 "unread"     => $this->view->statsUnread,
@@ -255,15 +256,10 @@ class Index extends BaseController {
             $itemsHtml .= $this->view->render('templates/item.phtml');
         }
 
-        if(strlen($itemsHtml)==0) {
-            $itemsHtml = '<div class="stream-empty">'. \F3::get('lang_no_entries').'</div>';
-        } else {
-            if($itemDao->hasMore())
-                $itemsHtml .= '<div class="stream-more"><span>'. \F3::get('lang_more').'</span></div>';
-                $itemsHtml .= '<div class="mark-these-read"><span>'. \F3::get('lang_markread').'</span></div>';
-        }
-        
-        return $itemsHtml;
+        return array(
+            'html'    => $itemsHtml,
+            'hasMore' => $itemDao->hasMore()
+        );
     }
     
     
