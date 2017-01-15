@@ -72,19 +72,8 @@ selfoss.events.entriesToolbar = function(parent) {
             var parent = $(this).parents('.entry');
             var id = parent.attr('id').substr(5);
             var starr = $(this).hasClass('active')==false;
-            var button = $("#entry"+id+" .entry-starr, #entrr"+id+" .entry-starr");
-            
-            // update button
-            var setButton = function(starr) {
-                if(starr) {
-                    button.addClass('active');
-                    button.html($('#lang').data('unstar'));
-                } else {
-                    button.removeClass('active');
-                    button.html($('#lang').data('star'));
-                }
-            };
-            setButton(starr);
+
+            selfoss.ui.entryStarr(id, starr);
             
             // update statistics in main menue
             var updateStats = function(starr) {
@@ -104,7 +93,7 @@ selfoss.events.entriesToolbar = function(parent) {
                 type: 'POST',
                 error: function(jqXHR, textStatus, errorThrown) {
                     // rollback ui changes
-                    setButton(!starr);
+                    selfoss.ui.entryStarr(id, starr);
                     updateStats(!starr);
                     selfoss.showError('Can not star/unstar item: '+
                                       textStatus+' '+errorThrown);
@@ -119,22 +108,8 @@ selfoss.events.entriesToolbar = function(parent) {
             var entry = $(this).parents('.entry');
             var id = entry.attr('data-entry-id');
             var unread = $(this).hasClass('active')==true;
-            var button = $("#entry"+id+" .entry-unread, #entrr"+id+" .entry-unread");
-            var parent = $("#entry"+id+", #entrr"+id);
 
-            // update button
-            var setButton = function(unread) {
-                if(unread) {
-                    button.removeClass('active');
-                    button.html($('#lang').data('unmark'));
-                    parent.removeClass('unread');
-                } else {
-                    button.addClass('active');
-                    button.html($('#lang').data('mark'));
-                    parent.addClass('unread');
-                }
-            };
-            setButton(unread);
+            selfoss.ui.entryMark(id, !unread);
             
             // update statistics in main menue and the currently active tag
             var updateStats = function(unread) {
@@ -147,20 +122,22 @@ selfoss.events.entriesToolbar = function(parent) {
                 }
                 selfoss.refreshUnread(unreadstats);
                     
-                // update unread count on sources
-                var sourceId = entry.attr('data-entry-source');
-                var sourceNav = $('#source'+sourceId+' .unread');
-                var sourceCount = parseInt(sourceNav.html());
-                if(typeof sourceCount != "number" || isNaN(sourceCount)==true)
-                    sourceCount = 0;
-                sourceCount = unread ? sourceCount-1 : sourceCount+1;
-                if(sourceCount<=0) {
-                    sourceCount = "";
-                    $('#source'+sourceId+'').removeClass('unread');
-                } else {
-                    $('#source'+sourceId+'').addClass('unread');
+                if( selfoss.sourceNavLoaded ) {
+                    // update unread count on sources
+                    var sourceId = entry.attr('data-entry-source');
+                    var sourceNav = $('#source'+sourceId+' .unread');
+                    var sourceCount = parseInt(sourceNav.html());
+                    if(typeof sourceCount != "number" || isNaN(sourceCount)==true)
+                        sourceCount = 0;
+                    sourceCount = unread ? sourceCount-1 : sourceCount+1;
+                    if(sourceCount<=0) {
+                        sourceCount = "";
+                        $('#source'+sourceId+'').removeClass('unread');
+                    } else {
+                        $('#source'+sourceId+'').addClass('unread');
+                    }
+                    sourceNav.html(sourceCount);
                 }
-                sourceNav.html(sourceCount);
                 
                 // update unread on tags
                 $('#entry'+id+' .entry-tags-tag').each( function(index) {
@@ -194,8 +171,8 @@ selfoss.events.entriesToolbar = function(parent) {
                 type: 'POST',
                 error: function(jqXHR, textStatus, errorThrown) {
                     // rollback ui changes
+                    selfoss.ui.entryMark(id, unread);
                     updateStats(!unread);
-                    setButton(!unread);
                     selfoss.showError('Can not mark/unmark item: '+
                                       textStatus+' '+errorThrown);
                 }

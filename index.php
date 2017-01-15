@@ -22,6 +22,7 @@ $js=array(
     'public/js/selfoss-base.js',
     'public/js/selfoss-shares.js',
     'public/js/selfoss-db.js',
+    'public/js/selfoss-ui.js',
     'public/js/selfoss-events.js',
     'public/js/selfoss-events-navigation.js',
     'public/js/selfoss-events-search.js',

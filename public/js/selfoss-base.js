@@ -274,6 +274,9 @@ var selfoss = {
 
                     if( 'sourceshtml' in data )
                         selfoss.refreshSources(data.sourceshtml);
+
+                    if( 'items' in data )
+                        selfoss.ui.refreshItemStatuses(data.items);
                 }
                 selfoss.lastUpdate = dataDate;
             },
