@@ -38,7 +38,7 @@ selfoss.events = {
         window.onhashchange = selfoss.events.hashChange;
 
         // process current hash
-        selfoss.events.hashChange();
+        selfoss.events.processHash();
     },
     
     
@@ -46,11 +46,29 @@ selfoss.events = {
      * handle History change
      */
     hashChange: function() {
+        if( selfoss.events.processHashChange )
+            selfoss.events.processHash();
+    },
+
+    processHashChange: true,
+
+    processHash: function(hash=false) {
+        var done = function() {
+            selfoss.events.processHashChange = true;
+        };
+
+        if( hash ) {
+            selfoss.events.processHashChange = false;
+            location.hash = hash
+        }
+
         // assume the hash is encoded
         var hash = decodeURIComponent(location.href.split('#').splice(1).join('#'));
 
-        if( hash == selfoss.events.lasthash )
+        if( hash == selfoss.events.lasthash ) {
+            done();
             return;
+        }
 
         // parse hash
         var hashPath = hash.split('/');
@@ -75,8 +93,10 @@ selfoss.events = {
         selfoss.events.lasthash = hash;
 
         // do not reload list if list is the same
-        if ( selfoss.events.lastpath == selfoss.events.path )
+        if ( selfoss.events.lastpath == selfoss.events.path ) {
+            done();
             return;
+        }
 
         // load items
         if( $.inArray(selfoss.events.section,
@@ -121,6 +141,7 @@ selfoss.events = {
                 }
             });
         }
+        done();
     },
     
     
