@@ -68,6 +68,7 @@ $f3->route('GET /items',         'controllers\Items->listItems');   // json
 $f3->route('GET /tags',          'controllers\Tags->listTags');     // json
 $f3->route('GET /tagslist',      'controllers\Tags->tagslist');     // html
 $f3->route('GET /stats',         'controllers\Items->stats');       // json
+$f3->route('GET /items/sync',    'controllers\Items->sync');        // json
 $f3->route('GET /sources/stats', 'controllers\Sources->stats');     // json
 
 // only loggedin users

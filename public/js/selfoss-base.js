@@ -33,7 +33,12 @@ var selfoss = {
     /**
      * last stats update
      */
-    lastStatsUpdate: Date.now(),
+    lastSync: Date.now(),
+
+    /**
+     * last db timestamp known client side
+     */
+    lastUpdate: null,
     
     /**
      * the html title configured
@@ -70,7 +75,7 @@ var selfoss = {
             selfoss.shortcuts.init();
 
             // setup periodic stats reloader
-            window.setInterval(selfoss.reloadStats, 60*1000);
+            window.setInterval(selfoss.sync, 60*1000);
         });
     },
     
@@ -189,6 +194,9 @@ var selfoss = {
             dataType: 'json',
             data: selfoss.filter,
             success: function(data) {
+                selfoss.lastSync = Date.now();
+                selfoss.lastUpdate = new Date(data.lastUpdate);
+
                 selfoss.refreshStats(data.all, data.unread, data.starred);
 
                 $('#content').html(data.entries);
@@ -228,36 +236,49 @@ var selfoss = {
 
 
     /**
-     * refresh current stats.
+     * sync server status.
      *
      * @return void
      */
-    reloadStats: function() {
-        if( Date.now() - selfoss.lastStatsUpdate < 5*60*1000 )
+    sync: function() {
+        if( selfoss.lastUpdate == null ||
+            Date.now() - selfoss.lastSync < 5*60*1000 )
             return;
 
-        var stats_url = $('base').attr('href')+'stats?tags=true';
-        if( selfoss.filter.sourcesNav )
-            stats_url = stats_url + '&sources=true';
-
         $.ajax({
-            url: stats_url,
+            url: 'items/sync',
             type: 'GET',
+            data: {
+                since:          selfoss.lastUpdate.toISOString(),
+                tags:           true,
+                sources:        selfoss.filter.sourcesNav,
+                items_statuses: true
+            },
             success: function(data) {
-                if( data.unread>0 &&
+                selfoss.lastSync = Date.now();
+
+                var dataDate = new Date(data.last_update);
+
+                if( dataDate <= selfoss.lastUpdate )
+                    return;
+
+                if( data.stats.unread>0 &&
                     ($('.stream-empty').is(':visible') ||
                      $('.stream-error').is(':visible')) ) {
                     selfoss.reloadList();
                 } else {
-                    selfoss.refreshStats(data.all, data.unread, data.starred);
+                    selfoss.refreshStats(data.stats.all,
+                                         data.stats.unread,
+                                         data.stats.starred);
                     selfoss.refreshTags(data.tagshtml);
 
                     if( 'sourceshtml' in data )
                         selfoss.refreshSources(data.sourceshtml);
                 }
+                selfoss.lastUpdate = dataDate;
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                selfoss.showError('Could not refresh stats: '+
+                selfoss.showError('Could not sync last changes from server: '+
                                   textStatus+' '+errorThrown);
             }
         });
@@ -273,8 +294,6 @@ var selfoss = {
      * @param new starred stats
      */
     refreshStats: function(all, unread, starred) {
-        selfoss.lastStatsUpdate = Date.now();
-
         $('.nav-filter-newest span').html(all);
         $('.nav-filter-starred span').html(starred);
 

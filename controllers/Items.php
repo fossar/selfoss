@@ -169,4 +169,48 @@ class Items extends BaseController {
 
         $this->view->jsonSuccess($stats);
     }
+
+
+    /**
+     * returns updated database info (stats, item statuses)
+     * json
+     *
+     * @return void
+     */
+    public function sync() {
+        $this->needsLoggedInOrPublicMode();
+
+        if( !array_key_exists('since', $_GET) )
+            $this->view->jsonError(array('sync' => 'missing since argument'));
+
+        $since = new \DateTime($_GET['since']);
+
+        $itemsDao = new \daos\Items();
+        $last_update = new \DateTime($itemsDao->lastUpdate());
+
+        $sync = array(
+            'last_update' => $last_update->format(\DateTime::ISO8601),
+        );
+
+        if( $last_update > $since ) {
+            $sync['stats'] = $itemsDao->stats();
+
+            if( array_key_exists('tags', $_GET) && $_GET['tags'] == 'true' ) {
+                $tagsDao = new \daos\Tags();
+                $tagsController = new \controllers\Tags();
+                $sync['tagshtml'] = $tagsController->renderTags($tagsDao->getWithUnread());
+            }
+            if( array_key_exists('sources', $_GET) && $_GET['sources'] == 'true' ) {
+                $sourcesDao = new \daos\Sources();
+                $sourcesController = new \controllers\Sources();
+                $sync['sourceshtml'] = $sourcesController->renderSources($sourcesDao->getWithUnread());
+            }
+
+            $wantItemsStatuses = array_key_exists('items_statuses', $_GET) && $_GET['items_statuses'] == 'true';
+            if( $wantItemsStatuses ) {
+                $sync['items'] = $itemsDao->statuses($since->format(\DateTime::ISO8601));
+            }
+        }
+        $this->view->jsonSuccess($sync);
+    }
 }

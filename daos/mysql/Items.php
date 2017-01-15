@@ -478,4 +478,32 @@ class Items extends Database {
             FROM '.\F3::get('db_prefix').'items;');
         return $res[0];
     }
+
+
+    /**
+     * returns the datetime of the last item update or user action in db
+     *
+     * @return timestamp
+     */
+    public function lastUpdate() {
+        $res = \F3::get('db')->exec('SELECT
+            MAX(updatetime) AS last_update_time
+            FROM '.\F3::get('db_prefix').'items;');
+        return $res[0]['last_update_time'];
+    }
+
+
+    /**
+     * returns the statuses of items last update
+     *
+     * @param date since to return item statuses
+     * @return array of unread, starred, etc. status of specified items
+     */
+    public function statuses($since) {
+        $res = \F3::get('db')->exec('SELECT id, unread, starred
+            FROM '.\F3::get('db_prefix').'items
+            WHERE '.\F3::get('db_prefix').'items.updatetime > :since;',
+                array(':since' => array($since, \PDO::PARAM_STR)));
+        return $res;
+    }
 }

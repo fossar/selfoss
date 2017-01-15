@@ -81,12 +81,13 @@ class Index extends BaseController {
         // ajax call = only send entries and statistics not full template
         if(isset($options['ajax'])) {
             $this->view->jsonSuccess(array(
-                "entries"  => $this->view->content,
-                "all"      => $this->view->statsAll,
-                "unread"   => $this->view->statsUnread,
-                "starred"  => $this->view->statsStarred,
-                "tags"     => $this->view->tags,
-                "sources"  => $this->view->sources
+                "lastUpdate" => \helpers\ViewHelper::date_iso8601($itemsDao->lastUpdate()),
+                "entries"    => $this->view->content,
+                "all"        => $this->view->statsAll,
+                "unread"     => $this->view->statsUnread,
+                "starred"    => $this->view->statsStarred,
+                "tags"       => $this->view->tags,
+                "sources"    => $this->view->sources
             ));
         }
     }
