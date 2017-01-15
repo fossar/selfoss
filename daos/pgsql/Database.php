@@ -195,7 +195,6 @@ class Database {
                         'INSERT INTO version (version) VALUES (9);'
                     ));
                 }
-                }
             }
             
             // just initialize once
