@@ -205,6 +205,13 @@ class Database {
                         'INSERT INTO version (version) VALUES (9);'
                     ));
                 }
+                if(strnatcmp($version, "10") < 0) {
+                    \F3::get('db')->exec(array(
+                        'ALTER TABLE items ALTER COLUMN datetime SET DATA TYPE timestamp(0) with time zone;',
+                        'ALTER TABLE items ALTER COLUMN updatetime SET DATA TYPE timestamp(0) with time zone;',
+                        'INSERT INTO version (version) VALUES (10);'
+                    ));
+                }
             }
             
             // just initialize once
