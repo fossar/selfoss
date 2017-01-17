@@ -179,10 +179,17 @@ class usertimeline extends \spouts\spout {
         $access_token_used = !empty($params['access_token']) && !empty($params['access_token_secret']);
         $twitter = new \TwitterOAuth($params['consumer_key'], $params['consumer_secret'], $access_token_used ? $params['access_token'] : null, $access_token_used ? $params['access_token_secret'] : null);
         $timeline = $twitter->get('statuses/user_timeline', array('screen_name' => $params['username'], 'include_rts' => 1, 'count' => 50));
-        
-        if(isset($timeline->error))
-            throw new \exception($timeline->error);
-        
+
+        if (isset($timeline->errors)) {
+            $errors = '';
+
+            foreach ($timeline->errors as $error) {
+                $errors .= $error->message . "\n";
+            }
+
+            throw new \Exception($errors);
+        }
+
         if(!is_array($timeline))
             throw new \exception('invalid twitter response');
         

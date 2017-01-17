@@ -79,10 +79,17 @@ class listtimeline extends \spouts\twitter\usertimeline {
                                   'owner_screen_name' => $params['owner_screen_name'], 
                                   'include_rts' => 1, 
                                   'count' => 50));
-        
-        if(isset($timeline->error))
-            throw new \exception($timeline->error);
-        
+
+        if (isset($timeline->errors)) {
+            $errors = '';
+
+            foreach ($timeline->errors as $error) {
+                $errors .= $error->message . "\n";
+            }
+
+            throw new \Exception($errors);
+        }
+
         if(!is_array($timeline))
             throw new \exception('invalid twitter response');
         
