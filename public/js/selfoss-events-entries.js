@@ -127,7 +127,7 @@ selfoss.events.entries = function(e) {
             return;
     
         var content = $('#content');
-        if($('.stream-more').length > 0 
+        if($('.stream-more').is(':visible')
            && $('.stream-more').position().top < $(window).height() + $(window).scrollTop() 
            && $('.stream-more').hasClass('loading')==false)
             $('.stream-more').click();
