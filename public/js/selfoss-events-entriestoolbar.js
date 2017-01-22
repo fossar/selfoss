@@ -93,7 +93,7 @@ selfoss.events.entriesToolbar = function(parent) {
                 type: 'POST',
                 error: function(jqXHR, textStatus, errorThrown) {
                     // rollback ui changes
-                    selfoss.ui.entryStarr(id, starr);
+                    selfoss.ui.entryStarr(id, !starr);
                     updateStats(!starr);
                     selfoss.showError('Can not star/unstar item: '+
                                       textStatus+' '+errorThrown);
