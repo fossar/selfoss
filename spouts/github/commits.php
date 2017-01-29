@@ -171,6 +171,8 @@ class commits extends \spouts\spout {
         
         $jsonUrl = "https://api.github.com/repos/" . urlencode($params['owner']) . "/" . urlencode($params['repo']) . "/commits?sha=" . urlencode($params['branch']);
         $this->items = $this->getJsonContent($jsonUrl);
+
+        $this->spoutTitle = "Recent Commits to {$params['repo']}:{$params['branch']}";
     }
     
     

@@ -189,6 +189,8 @@ class usertimeline extends \spouts\spout {
         $this->items = $timeline;
         
         $this->htmlUrl = 'https://twitter.com/' . urlencode($params['username']);
+
+        $this->spoutTitle = "@{$params['username']}";
     }
     
     

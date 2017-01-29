@@ -173,8 +173,10 @@ class feed extends \spouts\spout {
             $this->items = @$this->feed->get_items();
         }
         
-        // return html url
+        // set html url
         $this->htmlUrl = @$this->feed->get_link();
+
+        $this->spoutTitle = $this->feed->get_title();
     }
 
 
