@@ -326,6 +326,7 @@ class usertimeline extends \spouts\spout {
      * @param string $text unformated text
      */
     public function formatLinks($text) {
+        $text = htmlspecialchars($text);
         $text = preg_replace("/([\w-?&;#~=\.\/]+\@(\[?)[a-zA-Z0-9\-\.]+\.([a-zA-Z]{2,3}|[0-9]{1,3})(\]?))/i","<a href=\"mailto:$1\">$1</a>",$text);
         $text = str_replace("http://www.","www.",$text);
         $text = str_replace("www.","http://www.",$text);
