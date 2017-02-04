@@ -91,10 +91,17 @@ class hometimeline extends \spouts\twitter\usertimeline {
     public function load($params) {
         $twitter = new \TwitterOAuth($params['consumer_key'], $params['consumer_secret'], $params['access_key'], $params['access_secret']);
         $timeline = $twitter->get('statuses/home_timeline', array('include_rts' => 1, 'count' => 50));
-        
-        if(isset($timeline->error))
-            throw new \exception($timeline->error);
-        
+
+        if (isset($timeline->errors)) {
+            $errors = '';
+
+            foreach ($timeline->errors as $error) {
+                $errors .= $error->message . "\n";
+            }
+
+            throw new \Exception($errors);
+        }
+
         if(!is_array($timeline))
             throw new \exception('invalid twitter response');
         
