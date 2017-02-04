@@ -773,6 +773,11 @@ body * {
         color:#999;
         font-size:0.75em;
     }
+
+    .source-edit-form .input-disabled {
+        background-color:#EBEBE4;
+        color:#888;
+    }
     
 .source-edit-delete.loadi1ng,
 .source-action.loading {

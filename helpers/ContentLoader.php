@@ -109,6 +109,18 @@ class ContentLoader {
             $this->sourceDao->error($source['id'], date('Y-m-d H:i:s') . 'error loading feed content: ' . $e->getMessage());
             return;
         }
+
+        // update title if auto
+        if( $source['title'] == "autotitle" ) {
+            $title = htmlspecialchars(trim($spout->getSpoutTitle()));
+            if( $title )
+                $source['title'] = $title;
+            else
+                $source['title'] = "No title found for source, please fill-in manually";
+
+            $sourcesDao = new \daos\Sources();
+            $sourcesDao->saveTitle($source['id'], $source['title']);
+        }
         
         // current date
         $minDate = new \DateTime();

@@ -132,19 +132,25 @@ class Sources extends BaseController {
         // read data
         parse_str(\F3::get('BODY'),$data);
 
-        if(!isset($data['title']))
+        $autotitle = ($data['autotitle']=="1");
+
+        if(!$autotitle && !isset($data['title']))
             $this->view->jsonError(array('title' => 'no data for title given'));
         if(!isset($data['spout']))
             $this->view->jsonError(array('spout' => 'no data for spout given'));
 
         // clean up title and tag data to prevent XSS
-        $title = htmlspecialchars($data['title']);
+        if( $autotitle )
+            $title = "autotitle";
+        else
+            $title = htmlspecialchars($data['title']);
         $tags = htmlspecialchars($data['tags']);
         $spout = $data['spout'];
         $filter = $data['filter'];
         $isAjax = isset($data['ajax']);
         
         unset($data['title']);
+        unset($data['autotitle']);
         unset($data['spout']);
         unset($data['filter']);
         unset($data['tags']);
@@ -175,7 +181,7 @@ class Sources extends BaseController {
             }
         }
         
-        $validation = $sourcesDao->validate($title, $spout, $data);
+        $validation = $sourcesDao->validate($title, $autotitle, $spout, $data);
         if($validation!==true)
             $this->view->error( json_encode($validation) );
 

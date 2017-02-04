@@ -102,6 +102,20 @@ class Sources extends Database {
         \F3::get('db')->exec('UPDATE '.\F3::get('db_prefix').'sources SET error='.$setarg.' WHERE id=:id', $arr);
     }
 
+    /**
+     * update source title
+     *
+     * @return void
+     * @param int $id the source id
+     */
+    public function saveTitle($id, $newtitle) {
+        \F3::get('db')->exec('UPDATE '.\F3::get('db_prefix').'sources SET title=:title WHERE id=:id',
+                    array(
+                        ':id'    => $id,
+                        ':title' => $newtitle
+                    ));
+    }
+
 
     /**
      * sets the last updated timestamp

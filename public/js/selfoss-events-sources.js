@@ -167,4 +167,21 @@ selfoss.events.sources = function() {
             }
         });
     });
+
+    var updateForm = function(form) {
+        var checked = form.find("[name='autotitle']").is(':checked');
+        var titleInput = form.find("[name='title']");
+
+        titleInput.attr('readonly', checked);
+        titleInput.toggleClass('input-disabled', checked);
+    };
+
+    // grey out title if auto
+    $('.source-autotitle').unbind('check').change(function() {
+        updateForm($(this).parent().parent());
+    });
+
+    $('.source-edit-form').each(function(index) {
+        updateForm($(this));
+    });
 };

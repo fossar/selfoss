@@ -86,7 +86,7 @@ var selfoss = {
             if($.trim($(el).attr('name')).length!=0) {
                 values[$(el).attr('name')] = $(el).val();
                 if($(el).attr('type')=='checkbox')
-                    values[$(el).attr('name')] = $(el).attr('checked') ? 1 : 0;
+                    values[$(el).attr('name')] = $(el).is(':checked') ? 1 : 0;
             }
         });
         
