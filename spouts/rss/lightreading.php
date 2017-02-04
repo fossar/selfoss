@@ -88,16 +88,6 @@ class lightreading extends feed {
 
 
     /**
-     * ctor
-     */
-    public function __construct() {
-        // include htmLawed
-        if(!function_exists('htmLawed'))
-            require('libs/htmLawed.php');
-    }
-
-
-    /**
      * loads content for given source
      *
      * @return void

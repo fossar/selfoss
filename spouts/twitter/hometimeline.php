@@ -2,6 +2,8 @@
 
 namespace spouts\twitter;
 
+use Abraham\TwitterOAuth\TwitterOAuth;
+
 /**
  * Spout for fetching the twitter timeline of your twitter account
  *
@@ -89,7 +91,7 @@ class hometimeline extends \spouts\twitter\usertimeline {
      * @param mixed $params the params of this source
      */
     public function load($params) {
-        $twitter = new \TwitterOAuth($params['consumer_key'], $params['consumer_secret'], $params['access_key'], $params['access_secret']);
+        $twitter = new TwitterOAuth($params['consumer_key'], $params['consumer_secret'], $params['access_key'], $params['access_secret']);
         $timeline = $twitter->get('statuses/home_timeline', array('include_rts' => 1, 'count' => 50));
 
         if (isset($timeline->errors)) {

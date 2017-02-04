@@ -1,3 +1,35 @@
+const path = require('path');
+
+function isNotUnimportant(dest) {
+    const filename = path.basename(dest);
+
+    const filenameDisallowed = [
+        /^changelog/i,
+        /^copying/i,
+        /^readme/i,
+        /^licen[cs]e/i,
+        /^version/i,
+        /^phpunit/,
+        /^l?gpl\.txt$/,
+        /^composer\.(json|lock)$/,
+        /^build\.xml$/,
+        /^phpcs-ruleset\.xml$/,
+        /^phpmd\.xml$/
+    ].some(expr => expr.test(filename));
+
+    const destDisallowed = [
+        /^vendor\/htmlawed\/htmlawed\/htmLawed(Test\.php|(.*\.(htm|txt)))$/,
+        /^vendor\/smottt\/wideimage\/demo/,
+        /^vendor\/simplepie\/simplepie\/(db\.sql|autoload\.php)$/,
+        /^vendor\/composer\/installed\.json$/,
+        /^vendor\/[^/]+\/[^/]+\/tests?/
+    ].some(expr => expr.test(dest));
+
+    const allowed = !(filenameDisallowed || destDisallowed);
+
+    return allowed;
+}
+
 module.exports = function(grunt) {
 
     grunt.initConfig({
@@ -51,7 +83,8 @@ module.exports = function(grunt) {
                     { expand: true, cwd: 'daos/', src: ['**'], dest: '/daos'},
                     { expand: true, cwd: 'helpers/', src: ['**'], dest: '/helpers'},
                     { expand: true, cwd: 'libs/', src: ['**'], dest: '/libs'},
-                    
+                    { expand: true, cwd: 'vendor/', src: ['**'], dest: '/vendor', filter: isNotUnimportant},
+
                     // public = don't zip all.js and all.css
                     { expand: true, cwd: 'public/', src: ['**'], dest: '/public', filter: function(file) {
                         return file.indexOf('all.js') === -1 && file.indexOf('all.css') === -1;
@@ -81,6 +114,7 @@ module.exports = function(grunt) {
 
     grunt.loadNpmTasks('grunt-text-replace');
     grunt.loadNpmTasks('grunt-contrib-compress');
+    grunt.loadNpmTasks('grunt-composer');
 
     /* task checks whether newversion is given and start replacement in files if correct format is given */
     grunt.registerTask('versionupdater', 'version update task', function() {
@@ -93,7 +127,7 @@ module.exports = function(grunt) {
         }
     });
 
-    grunt.registerTask('default', ['versionupdater', 'compress']);
+    grunt.registerTask('default', ['composer:install:no-dev:optimize-autoloader:prefer-dist', 'versionupdater', 'compress']);
     grunt.registerTask('version', ['versionupdater']);
     grunt.registerTask('zip', ['compress']);
 };

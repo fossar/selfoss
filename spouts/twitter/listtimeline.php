@@ -2,6 +2,8 @@
 
 namespace spouts\twitter;
 
+use Abraham\TwitterOAuth\TwitterOAuth;
+
 /**
  * Spout for fetching a twitter list
  *
@@ -73,7 +75,7 @@ class listtimeline extends \spouts\twitter\usertimeline {
      */
     public function load($params) {
         $access_token_used = !empty($params['access_token']) && !empty($params['access_token_secret']);
-        $twitter = new \TwitterOAuth($params['consumer_key'], $params['consumer_secret'], $access_token_used ? $params['access_token'] : null, $access_token_used ? $params['access_token_secret'] : null);
+        $twitter = new TwitterOAuth($params['consumer_key'], $params['consumer_secret'], $access_token_used ? $params['access_token'] : null, $access_token_used ? $params['access_token_secret'] : null);
         $timeline = $twitter->get('lists/statuses', 
                             array('slug' => $params['slug'], 
                                   'owner_screen_name' => $params['owner_screen_name'], 
