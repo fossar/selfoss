@@ -193,16 +193,16 @@ class Items extends Database {
      */
     public function get($options = array()) {
         $params = array();
-        $where = array('TRUE');
+        $where = '';
         $order = 'DESC';
                 
         // only starred
         if(isset($options['type']) && $options['type']=='starred')
-            $where[] = $this->stmt->isTrue('starred');
+            $where .= ' AND '.$this->stmt->isTrue('starred');
             
         // only unread
         else if(isset($options['type']) && $options['type']=='unread'){
-            $where[] = $this->stmt->isTrue('unread');
+            $where .= ' AND '.$this->stmt->isTrue('unread');
             if(\F3::get('unread_order')=='asc'){
                 $order = 'ASC';
             }
@@ -212,64 +212,29 @@ class Items extends Database {
         if(isset($options['search']) && strlen($options['search'])>0) {
             $search = implode('%', \helpers\Search::splitTerms($options['search']));
             $params[':search'] = $params[':search2'] = $params[':search3'] = array("%".$search."%", \PDO::PARAM_STR);
-            $where[] = '(items.title LIKE :search OR items.content LIKE :search2 OR sources.title LIKE :search3) ';
+            $where .= ' AND (items.title LIKE :search OR items.content LIKE :search2 OR sources.title LIKE :search3) ';
         }
         
         // tag filter
         if(isset($options['tag']) && strlen($options['tag'])>0) {
-            $params[':tag'] = $options['tag'];
-            $where[] = "items.source=sources.id";
-            $where[] = $this->stmt->csvRowMatches('sources.tags', ':tag');
+            $params[':tag'] = array( "%,".$options['tag'].",%" , \PDO::PARAM_STR );
+            if ( \F3::get( 'db_type' ) == 'mysql' ) {
+              $where .= " AND ( CONCAT( ',' , sources.tags , ',' ) LIKE _utf8mb4 :tag COLLATE utf8mb4_general_ci ) ";
+            } else {
+              $where .= " AND ( (',' || sources.tags || ',') LIKE :tag ) ";
+            }
         }
         // source filter
         elseif(isset($options['source']) && strlen($options['source'])>0) {
             $params[':source'] = array($options['source'], \PDO::PARAM_INT);
-            $where[] = "items.source=:source ";
+            $where .= " AND items.source=:source ";
         }
 
         // update time filter
         if(isset($options['updatedsince']) && strlen($options['updatedsince'])>0) {
             $params[':updatedsince'] = array($options['updatedsince'], \PDO::PARAM_STR);
-            $where[] = "items.updatetime > :updatedsince ";
+            $where .= " AND items.updatetime > :updatedsince ";
         }
-
-        // seek pagination (alternative to offset)
-        if( isset($options['offset_from_datetime'])
-            && strlen($options['offset_from_datetime']) > 0
-            && isset($options['offset_from_id'])
-            && is_numeric($options['offset_from_id']) ) {
-
-            $params[':offset_from_datetime'] = array(
-                $options['offset_from_datetime'], \PDO::PARAM_STR
-            );
-            $params[':offset_from_id'] = array(
-                $options['offset_from_id'], \PDO::PARAM_INT
-            );
-            $ltgt = null;
-            if( $order == 'ASC' )
-                $ltgt = '>';
-            else
-                $ltgt = '<';
-
-            $where[] = "(items.datetime, items.id) $ltgt (:offset_from_datetime, :offset_from_id)";
-        }
-
-        $where_ids = '';
-        // extra ids to include in stream
-        if( isset($options['extra_ids'])
-            && count($options['extra_ids']) > 0
-            // limit the query to a sensible max
-            && count($options['extra_ids']) <= \F3::get('items_perpage') ) {
-
-            $extra_ids_stmt = $this->stmt->intRowMatches('items.id',
-                                                         $options['extra_ids']);
-            if( !is_null($extra_ids_stmt) )
-                $where_ids = $extra_ids_stmt;
-        }
-
-        // finalize items filter
-        $where_sql = implode(' AND ', $where);
-        if( $where_ids != '' ) $where_sql = "(($where_sql) OR $where_ids)";
 
         // set limit
         if(!is_numeric($options['items']) || $options['items']>200)
@@ -282,16 +247,16 @@ class Items extends Database {
         // first check whether more items are available
         $result = \F3::get('db')->exec('SELECT items.id
                    FROM '.\F3::get('db_prefix').'items AS items, '.\F3::get('db_prefix').'sources AS sources
-                   WHERE items.source=sources.id AND '.$where_sql.'
+                   WHERE items.source=sources.id '.$where.' 
                    LIMIT 1 OFFSET ' . ($options['offset']+$options['items']), $params);
         $this->hasMore = count($result);
 
         // get items from database
-        return \F3::get('db')->exec('SELECT
+        return \F3::get('db')->exec('SELECT 
                     items.id, datetime, items.title AS title, content, unread, starred, source, thumbnail, icon, uid, link, updatetime, author, sources.title as sourcetitle, sources.tags as tags
                    FROM '.\F3::get('db_prefix').'items AS items, '.\F3::get('db_prefix').'sources AS sources
-                   WHERE items.source=sources.id AND '.$where_sql.'
-                   ORDER BY items.datetime '.$order.'
+                   WHERE items.source=sources.id '.$where.' 
+                   ORDER BY items.datetime '.$order.' 
                    LIMIT ' . $options['items'] . ' OFFSET '. $options['offset'], $params);
     }
     
