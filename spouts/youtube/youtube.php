@@ -1,19 +1,18 @@
-<?PHP
+<?php
 
 namespace spouts\youtube;
 
 /**
- * Spout for fetching an Youtube rss feed
+ * Spout for fetching a YouTube rss feed
  *
  * @package    spouts
- * @subpackage rss
+ * @subpackage youtube
  * @copyright  Copyright (c) Tobias Zeising (http://www.aditu.de)
  * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  * @copywork   Arndt Staudinger <info@clucose.com> April 2013
  */
 class youtube extends \spouts\rss\feed {
-
     /**
      * name of source
      *
@@ -26,51 +25,34 @@ class youtube extends \spouts\rss\feed {
      *
      * @var string
      */
-    public $description = 'An YouTube channel as source';
+    public $description = 'A YouTube channel as source';
 
     /**
      * config params
      * array of arrays with name, type, default value, required, validation type
      *
-     * - Values for type: text, password, checkbox
-     * - Values for validation: alpha, email, numeric, int, alnum, notempty
-     * 
-     * e.g.
-     * array(
-     *   "id" => array(
-     *     "title"      => "URL",
-     *     "type"       => "text",
-     *     "default"    => "",
-     *     "required"   => true,
-     *     "validation" => array("alnum")
-     *   ),
-     *   ....
-     * )
-     *
-     * @var bool|mixed
+     * @var array
      */
     public $params = array(
-        "channel" => array(
-            "title"      => "channel",
-            "type"       => "text",
-            "default"    => "",
-            "required"   => true,
-            "validation" => array("notempty")
+        'channel' => array(
+            'title' => 'Channel',
+            'type' => 'text',
+            'default' => '',
+            'required' => true,
+            'validation' => array('notempty')
         )
     );
 
     /**
      * loads content for given source
-     * I supress all Warnings of SimplePie for ensuring
-     * working plugin in PHP Strict mode
      *
      * @return void
-     * @param mixed $params the params of this source
+     * @param array $params the params of this source
      */
     public function load($params) {
-        parent::load(array( 'url' => $this->getXmlUrl($params)) );
+        $url = $this->getXmlUrl($params);
+        parent::load(array('url' => $url));
     }
-
 
     /**
      * returns the xml feed url for the source
@@ -79,56 +61,54 @@ class youtube extends \spouts\rss\feed {
      * @param mixed $params params for the source
      */
     public function getXmlUrl($params) {
-        return "http://gdata.youtube.com/feeds/api/users/" . $params['channel'] . "/uploads?alt=rss&orderby=published";
+        $channel = $params['channel'];
+        if (preg_match('(^https?://www.youtube.com/channel/([a-zA-Z0-9_]+)$)', $params['channel'], $matched)) {
+            $channel = $matched[1];
+            $channel_type = 'channel_id';
+        } elseif (preg_match('(^https?://www.youtube.com/([a-zA-Z0-9_]+)$)', $params['channel'], $matched)) {
+            $channel = $matched[1];
+            $channel_type = 'username';
+        } else {
+            $channel_type = 'username';
+        }
+
+        if ($channel_type === 'username') {
+            return 'https://www.youtube.com/feeds/videos.xml?user=' . $channel;
+        } else {
+            return 'https://www.youtube.com/feeds/videos.xml?channel_id=' . $channel;
+        }
     }
-
-
-    /**
-     * returns the date of this item
-     *
-     * @return string date
-     */
-    public function getDate() {
-        if($this->items!==false && $this->valid()){
-            $date1 = @current($this->items)->get_item_tags('', 'pubDate');
-            $date = date('Y-m-d H:i:s', strtotime($date1[0]['data']));
-        } 
-        if(strlen($date)==0)
-            $date = date('Y-m-d H:i:s');
-        return $date;         
-    }
-
 
     /**
      * returns the thumbnail of this item (for multimedia feeds)
      *
-     * @return mixed thumbnail data
+     * @return string|null thumbnail data
      */
     public function getThumbnail() {
-        if($this->items===false || $this->valid()===false)
-            return "";
+        if ($this->items === false || $this->valid() === false) {
+            return null;
+        }
 
         $item = current($this->items);
 
         // search enclosures (media tags)
-        if(count(@$item->get_enclosures()) > 0) {
-
-            // thumbnail given?
-            if(@$item->get_enclosure(0)->get_thumbnail())
+        if (count(@$item->get_enclosures()) > 0) {
+            if (@$item->get_enclosure(0)->get_thumbnail()) {
+                // thumbnail given
                 return @$item->get_enclosure(0)->get_thumbnail();
-
-            // link given?
-            elseif(@$item->get_enclosure(0)->get_link())
+            } elseif (@$item->get_enclosure(0)->get_link()) {
+                // link given
                 return @$item->get_enclosure(0)->get_link();
+            }
 
         // no enclosures: search image link in content
         } else {
-
-            $image = $this->getImage(@$item->get_content());  
-            if($image!==false)
+            $image = $this->getImage(@$item->get_content());
+            if ($image !== false) {
                 return $image;
+            }
         }
 
-        return "";
+        return null;
     }
 }
