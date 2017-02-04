@@ -8,7 +8,7 @@ namespace spouts\reddit;
  * @package    spouts
  * @subpackage reddit
  * @copyright  Copyright (c) Tobias Zeising (http://www.aditu.de)
- * @license    GPLv3 (http://www.gnu.org/licenses/gpl-3.0.html)
+ * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class reddit2 extends \spouts\spout {
@@ -316,7 +316,7 @@ class reddit2 extends \spouts\spout {
      */
     public function getLink() {
         if ($this->items !== null && $this->valid())
-            return "http://reddit.com" . @current( $this->items )->data->permalink;
+            return "https://www.reddit.com" . @current( $this->items )->data->permalink;
         return false;
     }
 
@@ -392,10 +392,10 @@ class reddit2 extends \spouts\spout {
      */
     private function fetchFromInstapaper( $url ) {
         if ( function_exists( 'curl_init' ) ) {
-            $content = $this->file_get_contents_curl( "http://www.instapaper.com/text?u=" . urlencode( $url ) );
+            $content = $this->file_get_contents_curl( "https://www.instapaper.com/text?u=" . urlencode( $url ) );
         }
         else {
-            $content = @file_get_contents( "http://www.instapaper.com/text?u=" . urlencode( $url ) );
+            $content = @file_get_contents( "https://www.instapaper.com/text?u=" . urlencode( $url ) );
         }
         $dom = new \DOMDocument();
         @$dom->loadHTML( $content );

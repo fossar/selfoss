@@ -112,7 +112,7 @@
                     <li>Make the directories data/cache, data/favicons, data/logs, data/thumbnails, data/sqlite and public/ writeable</li>
                     <li>Insert database access data in config.ini (see below &mdash; you have not to change anything if you would like to use sqlite)</li>
                     <li>You don't have to install the database, it will be created automatically</li>
-                    <li>Create cronjob for updating feeds and point it to http://yoururl.com/update via wget or curl. You can also execute the cliupdate.php from commandline.</li>
+                    <li>Create cronjob for updating feeds and point it to https://yoururl.com/update via wget or curl. You can also execute the cliupdate.php from commandline.</li>
                 </ol>
 
                 For further questions or any problems, use our <a href="forum">support forum</a>. For a more detailed step-by-step example installation, please visit the <a href="https://github.com/SSilence/selfoss/wiki/">wiki</a>.
@@ -165,8 +165,8 @@ db_port=3306</code>
 
             <h2>Import your feeds from Google Reader (OPML File)</h2>
             <div class="documentation-entry">
-                Visit the page http://yoururl.com/opml for importing your OPML File.
-                If you are a user of the google reader then use http://www.google.com/reader/subscriptions/export or https://www.google.com/takeout/ to get all your feeds in one opml file.
+                Visit the page https://yoururl.com/opml for importing your OPML File.
+                If you are a user of the google reader then use https://www.google.com/reader/subscriptions/export or https://www.google.com/takeout/ to get all your feeds in one opml file.
             </div>
 
             <h2 id="configuration_params">Configuration</h2>
@@ -232,11 +232,11 @@ db_port=3306</code>
                     </tr>
                     <tr>
                         <td class="documentation-first-column">password</td>
-                        <td>password hash for optional login. You can generate a password hash by using following page of your selfoss installation. http://your_selfoss_url.com/password</td>
+                        <td>password hash for optional login. You can generate a password hash by using following page of your selfoss installation. https://your_selfoss_url.com/password</td>
                     </tr>
                     <tr>
                         <td class="documentation-first-column">salt</td>
-                        <td>salt for hashing the password (see <a href="http://en.wikipedia.org/wiki/Salt_(cryptography)">Wikipedia</a>)</td>
+                        <td>salt for hashing the password (see <a href="https://en.wikipedia.org/wiki/Salt_(cryptography)">Wikipedia</a>)</td>
                     </tr>
                     <tr>
                         <td class="documentation-first-column">public</td>
@@ -276,7 +276,7 @@ db_port=3306</code>
                     </tr>
                     <tr>
                         <td class="documentation-first-column">anonymizer</td>
-                        <td>set here your anonymizer service url. e.g.: anonymizer=http://anonym.to/?</td>
+                        <td>set here your anonymizer service url. e.g.: anonymizer=https://anonym.to/?</td>
                     </tr>
                     <tr>
                         <td class="documentation-first-column">use_system_font</td>
@@ -503,10 +503,10 @@ db_port=3306</code>
 
                 <ul>
                     <li>
-                        A <code>load($params)</code> function will be executed by selfoss when the content will be updated (the http://your-selfoss-url.com/update will be executed). This <code>load</code> function has one parameter <code>$params</code> which contains the user defined parameters (e.g. username, password or anything which the user has configured (as you can define in the members variable <code>$params</code>). This function contains your source code for fetching the data (e.g. loading the emails from an IMAP email account).
+                        A <code>load($params)</code> function will be executed by selfoss when the content will be updated (the https://your-selfoss-url.com/update will be executed). This <code>load</code> function has one parameter <code>$params</code> which contains the user defined parameters (e.g. username, password or anything which the user has configured (as you can define in the members variable <code>$params</code>). This function contains your source code for fetching the data (e.g. loading the emails from an IMAP email account).
                     </li>
                     <li>
-                        You have to implement the <code>Iterable</code> interface. selfoss will use it to iterate over all single entries of your source (e.g. the emails which were fetched by the load function). See <a href="http://www.php.net/manual/en/language.oop5.iterations.php">php.net manual (OOP5 iterators)</a> for more informations about this iterator functions.
+                        You have to implement the <code>Iterable</code> interface. selfoss will use it to iterate over all single entries of your source (e.g. the emails which were fetched by the load function). See <a href="https://secure.php.net/manual/en/language.oop5.iterations.php">php.net manual (OOP5 iterators)</a> for more informations about this iterator functions.
                     </li>
                     <li>
                         selfoss iterates over all the entries by using the iterable interface. selfoss will receive all information about the entries by using the functions defined by the abstract class <code>\spouts\spout</code> (e.g. it will get the email subject by executing the <code>getTitle()</code> method).
@@ -533,7 +533,7 @@ db_port=3306</code>
 
             <h2>License</h2>
             <div class="documentation-entry">
-                <p>selfoss is licensed under the <a href="http://www.gnu.org/licenses/gpl-3.0.html">GPLv3 license</a>.</p>
+                <p>selfoss is licensed under the <a href="https://www.gnu.org/licenses/gpl-3.0.html">GPLv3 license</a>.</p>
 
                 <p>You are allowed to use, modifiy or study this program completely for free. If you need any other licence than GPLv3 then feel free to contact me!</p>
             </div>
@@ -550,7 +550,7 @@ db_port=3306</code>
                 </p>
 
                 <p>
-                    Selfoss is named by the wonderfull waterfall in Iceland (see <a href="http://en.wikipedia.org/wiki/Selfoss_(waterfall)">Wikipedia</a>). Many single waterfalls converge to produce one big fall. This seems to be a good metaphor for the many sources from the web which will be shown in one stream.
+                    Selfoss is named by the wonderfull waterfall in Iceland (see <a href="https://en.wikipedia.org/wiki/Selfoss_(waterfall)">Wikipedia</a>). Many single waterfalls converge to produce one big fall. This seems to be a good metaphor for the many sources from the web which will be shown in one stream.
                 </p>
 
                 <p>

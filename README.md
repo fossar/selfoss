@@ -14,7 +14,7 @@ INSTALLATION
 2. Make the directories data/cache, data/favicons, data/logs, data/thumbnails, data/sqlite and public/ writeable
 3. Insert database access data in config.ini (see below -- you don't have to change anything if you want to use sqlite)
 3. You don't have to install the database, it will be created automatically (ensure that your database has enought rights for creating triggers)
-4. Create cronjob for updating feeds and point it to http://yourselfossurl.com/update via wget or curl. You can also execute the cliupdate.php from commandline.
+4. Create cronjob for updating feeds and point it to https://yourselfossurl.com/update via wget or curl. You can also execute the cliupdate.php from commandline.
 
 For further questions or on any problem use our support forum: http://selfoss.aditu.de/forum/
 
@@ -45,7 +45,7 @@ For further questions or on any problem use our support forum: http://selfoss.ad
 OPML Import
 -----------
 
-Visit the page http://yourselfossurl.com/opml for importing your OPML File. If you are a user of the google reader then use https://www.google.com/takeout/ to get all your feeds in one opml file.
+Visit the page https://yourselfossurl.com/opml for importing your OPML File. If you are a user of the google reader then use https://www.google.com/takeout/ to get all your feeds in one opml file.
 
 
 APPS
@@ -68,13 +68,13 @@ Special thanks to the great programmers of this libraries which will be used in 
 
 * FatFree PHP Framework: https://github.com/bcosca/fatfree
 * SimplePie: http://simplepie.org/
-* jQuery: http://jquery.com/
-* jQuery UI: http://jqueryui.com/
+* jQuery: https://jquery.com/
+* jQuery UI: https://jqueryui.com/
 * WideImage: http://wideimage.sourceforge.net/
 * htmLawed: http://www.bioinformatics.org/phplabware/internal_utilities/htmLawed/
 * PHP Universal Feed Generator: https://github.com/ajaxray/FeedWriter
 * twitteroauth: https://github.com/abraham/twitteroauth
-* floIcon: http://www.phpclasses.org/package/3906-PHP-Read-and-write-images-from-ICO-files.html
+* floIcon: https://www.phpclasses.org/package/3906-PHP-Read-and-write-images-from-ICO-files.html
 * jQuery hotkeys: https://github.com/tzuryby/jquery.hotkeys
 * jsmin: https://github.com/rgrove/jsmin-php
 * cssmin: https://code.google.com/archive/p/cssmin

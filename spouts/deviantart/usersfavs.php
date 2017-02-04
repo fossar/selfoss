@@ -8,7 +8,7 @@ namespace spouts\deviantart;
  * @package    spouts
  * @subpackage rss
  * @copyright  Copyright (c) Tobias Zeising (http://www.aditu.de)
- * @license    GPLv3 (http://www.gnu.org/licenses/gpl-3.0.html)
+ * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class usersfavs extends \spouts\rss\images {
@@ -81,6 +81,6 @@ class usersfavs extends \spouts\rss\images {
      * @param mixed $params params for the source
      */
     public function getXmlUrl($params) {
-        return 'http://backend.deviantart.com/rss.xml?q=%20sort%3Atime%20favby%3A' . urlencode($params['username']) . '&type=deviation';
+        return 'https://backend.deviantart.com/rss.xml?q=%20sort%3Atime%20favby%3A' . urlencode($params['username']) . '&type=deviation';
     }
 }

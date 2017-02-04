@@ -8,7 +8,7 @@ namespace spouts\rss;
  * @package    plugins
  * @subpackage news
  * @copyright  Copyright (c) Tobias Zeising (http://www.aditu.de)
- * @license    GPLv3 (http://www.gnu.org/licenses/gpl-3.0.html)
+ * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class golem extends feed {
@@ -93,27 +93,27 @@ class golem extends feed {
      * addresses of feeds for the sections
      */
     private $feedUrls = array(
-        "main"           => "http://rss.golem.de/rss.php?feed=RSS2.0",
-        "audiovideo"     => "http://rss.golem.de/rss.php?tp=av&feed=RSS2.0",
-        "foto"           => "http://rss.golem.de/rss.php?tp=foto&feed=RSS2.0",
-        "games"          => "http://rss.golem.de/rss.php?tp=games&feed=RSS2.0",
-        "handy"          => "http://rss.golem.de/rss.php?tp=handy&feed=RSS2.0",
-        "internet"       => "http://rss.golem.de/rss.php?tp=inet&feed=ATOM1.0",
-        "mobil"          => "http://rss.golem.de/rss.php?tp=mc&feed=RSS2.0",
-        "oss"            => "http://rss.golem.de/rss.php?tp=oss&feed=RSS2.0",
-        "politik"        => "http://rss.golem.de/rss.php?tp=pol&feed=RSS2.0",
-        "security"       => "http://rss.golem.de/rss.php?tp=sec&feed=RSS2.0",
-        "desktop"        => "http://rss.golem.de/rss.php?tp=apps&feed=RSS2.0",
-        "se"             => "http://rss.golem.de/rss.php?tp=dev&feed=RSS2.0",
-        "wirtschaft"     => "http://rss.golem.de/rss.php?tp=wirtschaft&feed=RSS2.0",
-        "hardware"       => "http://rss.golem.de/rss.php?r=hw&feed=RSS2.0",
-        "software"       => "http://rss.golem.de/rss.php?r=sw&feed=RSS2.0",
-        "networld"       => "http://rss.golem.de/rss.php?r=nw&feed=RSS2.0",
-        "entertainment"  => "http://rss.golem.de/rss.php?r=et&feed=RSS2.0",
-        "tk"             => "http://rss.golem.de/rss.php?r=tk&feed=RSS2.0",
-        "wirtschaft"     => "http://rss.golem.de/rss.php?r=wi&feed=RSS2.0",
-        "ecommerce"      => "http://rss.golem.de/rss.php?r=ec&feed=RSS2.0",
-        "forum"          => "http://forum.golem.de/rss.php?feed=RSS2.0"
+        "main"           => "https://rss.golem.de/rss.php?feed=RSS2.0",
+        "audiovideo"     => "https://rss.golem.de/rss.php?tp=av&feed=RSS2.0",
+        "foto"           => "https://rss.golem.de/rss.php?tp=foto&feed=RSS2.0",
+        "games"          => "https://rss.golem.de/rss.php?tp=games&feed=RSS2.0",
+        "handy"          => "https://rss.golem.de/rss.php?tp=handy&feed=RSS2.0",
+        "internet"       => "https://rss.golem.de/rss.php?tp=inet&feed=ATOM1.0",
+        "mobil"          => "https://rss.golem.de/rss.php?tp=mc&feed=RSS2.0",
+        "oss"            => "https://rss.golem.de/rss.php?tp=oss&feed=RSS2.0",
+        "politik"        => "https://rss.golem.de/rss.php?tp=pol&feed=RSS2.0",
+        "security"       => "https://rss.golem.de/rss.php?tp=sec&feed=RSS2.0",
+        "desktop"        => "https://rss.golem.de/rss.php?tp=apps&feed=RSS2.0",
+        "se"             => "https://rss.golem.de/rss.php?tp=dev&feed=RSS2.0",
+        "wirtschaft"     => "https://rss.golem.de/rss.php?tp=wirtschaft&feed=RSS2.0",
+        "hardware"       => "https://rss.golem.de/rss.php?r=hw&feed=RSS2.0",
+        "software"       => "https://rss.golem.de/rss.php?r=sw&feed=RSS2.0",
+        "networld"       => "https://rss.golem.de/rss.php?r=nw&feed=RSS2.0",
+        "entertainment"  => "https://rss.golem.de/rss.php?r=et&feed=RSS2.0",
+        "tk"             => "https://rss.golem.de/rss.php?r=tk&feed=RSS2.0",
+        "wirtschaft"     => "https://rss.golem.de/rss.php?r=wi&feed=RSS2.0",
+        "ecommerce"      => "https://rss.golem.de/rss.php?r=ec&feed=RSS2.0",
+        "forum"          => "https://forum.golem.de/rss.php?feed=RSS2.0"
     );
 
 

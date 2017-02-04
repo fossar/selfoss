@@ -1417,4 +1417,8 @@ body.publicmode.notloggedin .entry-unread {
 }
 
 /* emojis */
-img[src^='http://s.w.org/images/core/emoji']{display:inline;height: 1em;margin: 0;}
+img[src^='http://s.w.org/images/core/emoji'], img[src^='https://s.w.org/images/core/emoji'] {
+    display: inline;
+    height: 1em;
+    margin: 0;
+}

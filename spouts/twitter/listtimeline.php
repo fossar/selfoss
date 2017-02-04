@@ -7,8 +7,8 @@ namespace spouts\twitter;
  *
  * @package    spouts
  * @subpackage twitter
- * @copyright  Copyright (c) Nicola Malizia (http://unnikked.ga)
- * @license    GPLv3 (http://www.gnu.org/licenses/gpl-3.0.html)
+ * @copyright  Copyright (c) Nicola Malizia (https://unnikked.ga/)
+ * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Nicola Malizia <unnikked@gmail.com>
  */
 
@@ -88,7 +88,7 @@ class listtimeline extends \spouts\twitter\usertimeline {
         
         $this->items = $timeline;
         
-        $this->htmlUrl = 'http://twitter.com/' . urlencode($params['owner_screen_name']);
+        $this->htmlUrl = 'https://twitter.com/' . urlencode($params['owner_screen_name']);
     }
 
 }

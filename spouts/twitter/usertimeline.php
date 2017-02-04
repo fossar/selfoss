@@ -8,7 +8,7 @@ namespace spouts\twitter;
  * @package    spouts
  * @subpackage rss
  * @copyright  Copyright (c) Tobias Zeising (http://www.aditu.de)
- * @license    GPLv3 (http://www.gnu.org/licenses/gpl-3.0.html)
+ * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class usertimeline extends \spouts\spout {
@@ -188,7 +188,7 @@ class usertimeline extends \spouts\spout {
         
         $this->items = $timeline;
         
-        $this->htmlUrl = 'http://twitter.com/' . urlencode($params['username']);
+        $this->htmlUrl = 'https://twitter.com/' . urlencode($params['username']);
     }
     
     
@@ -271,7 +271,7 @@ class usertimeline extends \spouts\spout {
     public function getLink() {
         if($this->items!==false) {
             $item = @current($this->items);
-            return 'http://twitter.com/'.$item->user->screen_name.'/status/'.$item->id_str;
+            return 'https://twitter.com/'.$item->user->screen_name.'/status/'.$item->id_str;
         }
         return false;
     }
