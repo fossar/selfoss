@@ -96,6 +96,8 @@ class listtimeline extends \spouts\twitter\usertimeline {
         $this->items = $timeline;
         
         $this->htmlUrl = 'https://twitter.com/' . urlencode($params['owner_screen_name']);
+
+        $this->spoutTitle = "@{$params['owner_screen_name']}/{$params['slug']}";
     }
 
 }

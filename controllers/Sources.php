@@ -138,8 +138,19 @@ class Sources extends BaseController {
             parse_str($body,$data);
         }
 
-        if(!isset($data['title']))
-            $this->view->jsonError(array('title' => 'no data for title given'));
+        $data['spout'] = str_replace("_", "\\", $data['spout']);
+        if (!isset($data['title']) || strlen(trim($data['title'])) === 0) {
+            // try to fetch title, if it is not filled in
+            $loader = new \helpers\ContentLoader();
+            $title = $loader->fetchTitle($data);
+
+            if ($title) {
+                $data['title'] = $title;
+            } else {
+                $this->view->jsonError(array('title' => 'no title given and could not fetch it'));
+            }
+        }
+
         if(!isset($data['spout']))
             $this->view->jsonError(array('spout' => 'no data for spout given'));
 
@@ -156,8 +167,6 @@ class Sources extends BaseController {
         unset($data['tags']);
         unset($data['ajax']);
 
-        $spout = str_replace("_", "\\", $spout);
-        
         // check if source already exists
         $id = \F3::get('PARAMS["id"]');
         $sourceExists = $sourcesDao->isValid('id', $id);
@@ -202,7 +211,8 @@ class Sources extends BaseController {
         
         $return = array(
             'success' => true,
-            'id'      => $id
+            'id' => $id,
+            'title' => $title
         );
         
         // only for selfoss ui (update stats in navigation)

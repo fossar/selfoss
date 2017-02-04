@@ -108,5 +108,7 @@ class hometimeline extends \spouts\twitter\usertimeline {
         $this->items = $timeline;
         
         $this->htmlUrl = 'https://twitter.com/';
+
+        $this->spoutTitle = "Home timeline";
     }
 }

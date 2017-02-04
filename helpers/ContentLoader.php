@@ -338,6 +338,41 @@ class ContentLoader {
 
 
     /**
+     * Obtain title for given data
+     *
+     * @param $data
+     */
+     public function fetchTitle($data) {
+         \F3::get('logger')->log('Start fetching spout title', \DEBUG);
+
+         // get spout
+         $spoutLoader = new \helpers\SpoutLoader();
+         $spout = $spoutLoader->get($data['spout']);
+
+         if ($spout === false) {
+             \F3::get('logger')->log("Unknown spout “{$data['spout']}” when fetching title", \ERROR);
+             return null;
+         }
+
+         // receive content
+         try {
+             @set_time_limit(5000);
+             @error_reporting(E_ERROR);
+
+             $spout->load($data);
+         } catch (\Exception $e) {
+             \F3::get('logger')->log('Error fetching title: ' . $e->getMessage(), \ERROR);
+             return null;
+         }
+
+         $title = $spout->getSpoutTitle();
+         $spout->destroy();
+
+         return $title;
+     }
+
+
+    /**
      * clean up messages, thumbnails etc.
      *
      * @return void

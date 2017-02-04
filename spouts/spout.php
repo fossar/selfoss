@@ -57,6 +57,13 @@ abstract class spout implements \Iterator {
      */
     public $params = false;
 
+    /**
+    * title of the spout
+    *
+    * @var ?string
+    */
+    protected $spoutTitle = null;
+
 
     /**
      * loads content for given source
@@ -84,8 +91,18 @@ abstract class spout implements \Iterator {
      * @return string url as html
      */
     abstract public function getHtmlUrl();
-    
-    
+
+
+    /**
+     * Returns the spout title
+     *
+     * @return ?string title as loaded by the spout
+     */
+    public function getSpoutTitle() {
+        return $this->spoutTitle;
+    }
+
+
     /**
      * returns an unique id for this item
      *
