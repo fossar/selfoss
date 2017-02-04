@@ -57,6 +57,9 @@
 
         <!-- filter -->
         <li><label for="filter-<?= $idAttr ?>"><?PHP echo \F3::get('lang_source_filter')?>:</label> <input id="filter-<?= $idAttr ?>" type="text" name="filter" value="<?PHP echo isset($this->source) ? $this->source['filter'] : '' ; ?>" placeholder="<?PHP echo F3::get('lang_source_optional'); ?>" /></li>
+
+        <!-- waitperiod -->
+        <li><label for="waitperiod-<?= $idAttr ?>"><?PHP echo \F3::get('lang_source_waitperiod')?>:</label> <input id="waitperiod-<?= $idAttr ?>" type="text" name="waitperiod" value="<?PHP echo isset($this->source) ? $this->source['waitperiod'] : '' ; ?>" placeholder="<?PHP echo F3::get('lang_source_seconds'); ?>" /></li>
         
         <!-- type -->
         <li><label for="type-<?= $idAttr ?>"><?PHP echo \F3::get('lang_source_type')?>:</label> 
