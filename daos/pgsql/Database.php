@@ -169,12 +169,10 @@ class Database {
                     ');
                 }
                 if(strnatcmp($version, "5") < 0){
-                    \F3::get('db')->exec('
-                        ALTER TABLE items ADD author TEXT;
-                    ');
-                    \F3::get('db')->exec('
-                        INSERT INTO version (version) VALUES (5);
-                    ');
+                    \F3::get('db')->exec(array(
+                        'ALTER TABLE items ADD author TEXT;',
+                        'INSERT INTO version (version) VALUES (5);'
+                    ));
                 }
                 if(strnatcmp($version, "6") < 0){
                     \F3::get('db')->exec(array(
@@ -186,19 +184,17 @@ class Database {
                 // in /daos/sqlite/Database.php which
                 // set the database version to "7" for initial installs.
                 if(strnatcmp($version, "8") < 0){
-                	\F3::get('db')->exec(array(
-                			'ALTER TABLE sources ADD lastentry INT;',
-                			'INSERT INTO version (version) VALUES (8);'
-                	));
+                    \F3::get('db')->exec(array(
+                        'ALTER TABLE sources ADD lastentry INT;',
+                        'INSERT INTO version (version) VALUES (8);'
+                    ));
                 }
-				if(strnatcmp($version, "9") < 0) {
-					\F3::get('db')->exec('
-                        ALTER TABLE items ADD shared BOOLEAN;
-                    ');
-					\F3::get('db')->exec('
-                        INSERT INTO version (version) VALUES (9);
-                    ');
-				}
+                if(strnatcmp($version, "9") < 0) {
+                    \F3::get('db')->exec(array(
+                        'ALTER TABLE items ADD shared BOOLEAN;',
+                        'INSERT INTO version (version) VALUES (9);'
+                    ));
+                }
             }
             
             // just initialize once

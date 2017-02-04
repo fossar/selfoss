@@ -37,8 +37,7 @@ class Authentication {
             $cookie_path = '/'.$_SERVER['SERVER_NAME'].preg_replace('/\/[^\/]+$/','',$_SERVER['PHP_SELF']).'/';
             $cookie_domain = $_SERVER['HTTP_X_FORWARDED_SERVER'];
         } else {
-            // cookie path is script dir.
-            $cookie_path = dirname($_SERVER['REQUEST_URI'])==='/'?'/':dirname($_SERVER['REQUEST_URI']).'/';
+            $cookie_path = \F3::get('BASE').'/';
             $cookie_domain = $_SERVER['SERVER_NAME'];
         }
         session_set_cookie_params($cookie_expire, $cookie_path, $cookie_domain,
