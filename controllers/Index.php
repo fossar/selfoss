@@ -26,19 +26,11 @@ class Index extends BaseController {
         $options = array();
         if (\F3::get('homepage')!='')
             $options = array( 'type' => \F3::get('homepage') );
-
+        
         // use ajax given params?
         if(count($_GET)>0)
             $options = $_GET;
-
-        if(!isset($options['ajax'])) {
-            // show as full html page
-            $this->view->publicMode = \F3::get('auth')->isLoggedin()!==true && \F3::get('public')==1;
-            $this->view->loggedin = \F3::get('auth')->isLoggedin()===true;
-            echo $this->view->render('templates/home.phtml');
-            return;
-        }
-
+        
         // get search param
         if(isset($options['search']) && strlen($options['search'])>0)
             $this->view->search = $options['search'];
@@ -89,6 +81,11 @@ class Index extends BaseController {
                 "sources"  => $this->view->sources
             ));
         }
+        
+        // show as full html page
+        $this->view->publicMode = \F3::get('auth')->isLoggedin()!==true && \F3::get('public')==1;
+        $this->view->loggedin = \F3::get('auth')->isLoggedin()===true;
+        echo $this->view->render('templates/home.phtml');
     }
     
     
@@ -233,10 +230,7 @@ class Index extends BaseController {
                         || $_SERVER['REMOTE_ADDR'] === $_SERVER['SERVER_ADDR']
                         || $_SERVER['REMOTE_ADDR'] === "127.0.0.1"
                         || \F3::get('auth')->isLoggedin() == 1;
-        $firstPage = $options['offset'] == 0
-                        && $options['offset_from_id'] == ''
-                        && $options['offset_from_datetime'] == '';
-        if ($options['source'] && $canUpdate && $firstPage) {
+        if ($options['source'] && $canUpdate) {
             $itemsHtml = '<button type="button" id="refresh-source" class="refresh-source">' . \F3::get('lang_source_refresh') . '</button>';
         }
 

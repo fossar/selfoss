@@ -25,10 +25,10 @@ selfoss.events.entries = function(e) {
         // anonymize
         selfoss.anonymize(parent.find('.entry-content'));
         
-        var entryId = parent.attr('data-entry-id');
-
          // show entry in popup
         if(selfoss.isSmartphone()) {
+            location.hash = "show";
+            
             // hide nav
             if($('#nav').is(':visible')) {
                 var scrollTop = $(window).scrollTop();
@@ -48,7 +48,6 @@ selfoss.events.entries = function(e) {
             var fullscreen = $('#fullscreen-entry');
             fullscreen.html('<div id="entrr'+parent.attr('data-entry-id')+'" class="entry fullscreen" data-entry-id="'+parent.attr('data-entry-id')+'">'+parent.html()+'</div>');
             fullscreen.show();
-            location.hash = selfoss.events.path + '/' + entryId;
 
             // lazy load images in fullscreen
             if($('#config').data('load_images_on_mobile')=="1") {
@@ -67,7 +66,7 @@ selfoss.events.entries = function(e) {
                     $('#'+parent.attr('id')).hide();
                 }
                 content.show();
-                location.hash = selfoss.events.path;
+                location.hash = "";
                 $(window).scrollTop(scrollTop);
                 fullscreen.hide();
             });
@@ -84,13 +83,11 @@ selfoss.events.entries = function(e) {
             if(content.is(':visible')) {
                 parent.find('.entry-toolbar').hide();
                 content.hide();
-                location.hash = selfoss.events.path;
             } else {
                 if($('#config').data('auto_collapse')=="1"){
                     $('.entry-content, .entry-toolbar').hide();
                 }
                 content.show();
-                location.hash = selfoss.events.path + '/' + entryId;
                 selfoss.events.entriesToolbar(parent);
                 parent.find('.entry-toolbar').show();
                 
@@ -103,8 +100,7 @@ selfoss.events.entries = function(e) {
                 selfoss.setupFancyBox(content, parent.attr('id').substr(5));
 
                 // scroll to article header
-                if ($('#config').data('scroll_to_article_header') == '1' ||
-                    selfoss.events.entryId ) {
+                if ($('#config').data('scroll_to_article_header') == '1') {
                   parent.get(0).scrollIntoView();
                 }
             }
@@ -140,9 +136,7 @@ selfoss.events.entries = function(e) {
     // more
     $('.stream-more').unbind('click').click(function () {
         var streamMore = $(this);
-        var lastEntry = $('.entry').not('.fullscreen').filter(':last');
-        selfoss.filter.offset_from_datetime = lastEntry.data('entry-datetime');
-        selfoss.filter.offset_from_id = lastEntry.data('entry-id');
+        selfoss.filter.offset += selfoss.filter.itemsPerPage;
         
         streamMore.addClass('loading');
         $.ajax({
@@ -167,7 +161,22 @@ selfoss.events.entries = function(e) {
     if (selfoss.isSmartphone() == false) {
         $('.entry-source').unbind('click').click(function(e) {
             var entry = $(this).parents('.entry');
-            location.hash = '#' + selfoss.filter.type + '/source-' + entry.attr('data-entry-source');
+            var deferred = $.Deferred();
+            if ($('#nav-sources-title').is('.nav-sources-collapsed')) {
+                $('#nav-sources-title').trigger('click', deferred.resolve);
+            } else {
+                deferred.resolve();
+            }
+
+            deferred.then(function() {
+                var source = entry.attr('data-entry-source');
+                $('#nav-sources li').each(function(index, item) {
+                    if ($(item).attr('data-source-id') == source) {
+                        $(item).click();
+                        return false;
+                    }
+                });
+            });
         });
     }
 
@@ -211,10 +220,4 @@ selfoss.events.entries = function(e) {
             }
         });
     });
-
-    // open selected entry only if entry was request (i.e. if not streaming
-    // more)
-    if( selfoss.events.entryId && selfoss.filter.offset_from_id == null ) {
-        $('#entry' + selfoss.events.entryId).children('.entry-title').click();
-    }
 };
