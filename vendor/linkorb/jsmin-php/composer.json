@@ -1,0 +1,36 @@
+{
+    "name": "linkorb/jsmin-php",
+    "description": "Unofficial package of jsmin-php",
+    "homepage": "http://www.github.com/linkorb/jsmin-php",
+    "keywords": ["minify", "jsmin", "javascript"],
+    "type": "library",
+    "authors": [
+        {
+            "name": "Joost Faassen",
+            "email": "j.faassen@linkorb.com",
+	    "role": "Packaging for composer"
+        },
+        {
+            "name": "Douglas Crockford",
+            "email": "douglas@crockford.com",
+	    "role": ""
+        },
+        {
+            "name": "Ryan Grove",
+            "email": "ryan@wonko.com",
+	    "role": "PHP port"
+        },
+        {
+            "name": "Adam Gofort",
+	    "email": "aag@adamgoforth.com",
+	    "role": "Updates to the PHP port"
+        }
+    ],
+    "require": {
+        "php": ">=5.0.0"
+    },
+    "autoload": {
+	    "classmap": ["src/"]
+    },
+    "license": "MIT"
+}

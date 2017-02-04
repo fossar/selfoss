@@ -17,4 +17,3 @@ config.ini
 node_modules
 _wiki
 .env
-vendor/

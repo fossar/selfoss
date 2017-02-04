@@ -1,0 +1,75 @@
+{
+    "name": "mibe/feedwriter",
+    "description": "Generate feeds in either RSS 1.0, RSS 2.0 or ATOM formats",
+    "keywords": ["RSS", "RSS 1.0", "RSS 2.0", "RSS2", "ATOM", "feed"],
+    "homepage": "https://github.com/mibe/FeedWriter",
+    "type": "library",
+    "license": "GPL-3.0",
+    "authors": [
+        {
+            "name": "Anis uddin Ahmad",
+            "email": "anis.programmer@gmail.com"
+        },
+        {
+            "name": "Michael Bemmerl",
+            "email": "mail@mx-server.de"
+        },
+        {
+            "name": "Phil Freo"
+        },
+        {
+            "name": "Paul Ferrett"
+        },
+        {
+            "name": "Brennen Bearnes"
+        },
+        {
+            "name": "Michael Robinson",
+            "email": "mike@pagesofinterest.net"
+        },
+        {
+            "name": "Baptiste Fontaine"
+        },
+        {
+            "name": "Kristián Valentín"
+        },
+        {
+            "name": "Brandtley McMinn"
+        },
+        {
+            "name": "Julian Bogdani"
+        },
+        {
+            "name": "Cedric Gampert"
+        },
+        {
+            "name": "Yamek"
+        },
+        {
+            "name": "thielj"
+        },
+        {
+            "name": "Pavel Khakhlou"
+        },
+        {
+            "name": "Daniel"
+        },
+        {
+            "name": "Tino Goratsch"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "FeedWriter\\": ""
+        }
+    },
+    "require" : {
+        "php": ">=5.3.0"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.1.x-dev"
+        }
+    }
+}

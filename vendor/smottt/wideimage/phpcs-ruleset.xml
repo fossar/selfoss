@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<ruleset name="WideImage-cs-ruleset">
+ <description></description>
+
+ <!-- Include some sniffs from all around the place -->
+ <rule ref="Generic.Functions.FunctionCallArgumentSpacing"/>
+ <rule ref="Generic.Functions.OpeningFunctionBraceBsdAllman"/>
+ <rule ref="Generic.PHP.DisallowShortOpenTag"/>
+ <rule ref="PEAR.Functions.FunctionCallSignature"/>
+ <rule ref="PEAR.Functions.ValidDefaultValue"/>
+ <rule ref="PEAR.WhiteSpace.ScopeClosingBrace"/>
+ <rule ref="Squiz.Functions.GlobalFunction"/>
+
+ <rule ref="Generic.Files.LineLength">
+  <properties>
+   <property name="lineLimit" value="100"/>
+   <property name="absoluteLineLimit" value="120"/>
+  </properties>
+ </rule>
+
+ <!-- Use Unix newlines -->
+ <rule ref="Generic.Files.LineEndings">
+  <properties>
+   <property name="eolChar" value="\n"/>
+  </properties>
+ </rule>
+
+</ruleset>
