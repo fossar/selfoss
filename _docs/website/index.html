@@ -131,8 +131,7 @@
                     <code>
 [globals]
 username=secretagent
-password=5d95c032abce4865d49ee225d28a8a939ea39a924a158f0056ebb1880d9
-salt=1291929@9394$95%939201098*61234324(@#$(!*@#981923123</code>
+password=$2y$10$V6bKIW6ng2irocjsVFqT7e3GrdJAnJHwhcQ/pNkH39AlmgaNd3/RO</code>
                 </pre>
                 <p>Sample config.ini file with a MySQL database connection:</p>
                 <pre>
@@ -155,7 +154,7 @@ db_port=3306</code>
                     <li>Backup your database and your "data" folder</li>
                     <li><b>IMPORTANT: don't delete the "data" folder</b>. Delete all old files and folders excluding the folder "data".</li>
                     <li>Upload all new files and folders excluding the data folder (IMPORTANT: also upload the invisible .htaccess files).</li>
-                    <li>Rename your folder /data/icons into /data/favicons</li>
+                    <li><em>When upgrading from 2.16 or older:</em> Generate new <a href="#configuration-password">password hash</a>.</li>
                     <li>Delete the files /public/all-v<var>*</var>.css and /public/all-v<var>*</var>.js</li>
                     <li>Clean your browser cache.</li>
                 </ol>
@@ -231,12 +230,8 @@ db_port=3306</code>
                         <td>username for optional login. Just set username and password for enabling login.</td>
                     </tr>
                     <tr>
-                        <td class="documentation-first-column">password</td>
+                        <td class="documentation-first-column" id="configuration-password">password</td>
                         <td>password hash for optional login. You can generate a password hash by using following page of your selfoss installation. http://your_selfoss_url.com/password</td>
-                    </tr>
-                    <tr>
-                        <td class="documentation-first-column">salt</td>
-                        <td>salt for hashing the password (see <a href="http://en.wikipedia.org/wiki/Salt_(cryptography)">Wikipedia</a>)</td>
                     </tr>
                     <tr>
                         <td class="documentation-first-column">public</td>
