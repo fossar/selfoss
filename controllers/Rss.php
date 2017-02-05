@@ -88,8 +88,7 @@ class Rss extends BaseController {
             $newestEntryDate = date(\DATE_ATOM , time());
         $feedWriter->setChannelElement('updated', $newestEntryDate);
 
-        
-        $feedWriter->generateFeed();
+        $feedWriter->printFeed();
     }
 
     private function UTF8entities($content="") { 
