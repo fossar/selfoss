@@ -76,11 +76,13 @@ class listtimeline extends \spouts\twitter\usertimeline {
     public function load($params) {
         $access_token_used = !empty($params['access_token']) && !empty($params['access_token_secret']);
         $twitter = new TwitterOAuth($params['consumer_key'], $params['consumer_secret'], $access_token_used ? $params['access_token'] : null, $access_token_used ? $params['access_token_secret'] : null);
-        $timeline = $twitter->get('lists/statuses', 
-                            array('slug' => $params['slug'], 
-                                  'owner_screen_name' => $params['owner_screen_name'], 
-                                  'include_rts' => 1, 
-                                  'count' => 50));
+        $timeline = $twitter->get('lists/statuses',
+            array(
+                'slug' => $params['slug'],
+                'owner_screen_name' => $params['owner_screen_name'],
+                'include_rts' => 1,
+                'count' => 50
+            ));
 
         if (isset($timeline->errors)) {
             $errors = '';
@@ -93,7 +95,7 @@ class listtimeline extends \spouts\twitter\usertimeline {
         }
 
         if(!is_array($timeline))
-            throw new \exception('invalid twitter response');
+            throw new \Exception('invalid twitter response');
         
         $this->items = $timeline;
         

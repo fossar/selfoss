@@ -123,24 +123,21 @@ class Index extends BaseController {
         }
         
         // login
-        if( 
-            isset($_GET['login']) || (\F3::get('auth')->isLoggedin()!==true && \F3::get('public')!=1)
-           ) {
-
+        $loginRequired = \F3::get('public') != 1 && \F3::get('auth')->isLoggedin() !== true;
+        $showLoginForm = isset($_GET['login']) || $loginRequired;
+        if($showLoginForm) {
             // authenticate?
             if(count($_POST)>0) {
                 if(!isset($_POST['username']))
                     $this->view->error = 'no username given';
                 else if(!isset($_POST['password']))
                     $this->view->error = 'no password given';
-                else {
-                    if(\F3::get('auth')->login($_POST['username'], $_POST['password'])===false)
-                        $this->view->error = 'invalid username/password';
-                }
+                else if(!\F3::get('auth')->login($_POST['username'], $_POST['password']))
+                    $this->view->error = 'invalid username/password';
             }
             
             // show login
-            if(count($_POST)==0 || isset($this->view->error))
+            if(count($_POST)===0 || isset($this->view->error))
                 die($this->view->render('templates/login.phtml'));
             else
                 \F3::reroute($this->view->base);
@@ -159,7 +156,7 @@ class Index extends BaseController {
         $username = isset($_REQUEST["username"]) ? $_REQUEST["username"] : '';
         $password = isset($_REQUEST["password"]) ? $_REQUEST["password"] : '';
         
-        if(\F3::get('auth')->login($username,$password)==true)
+        if(\F3::get('auth')->login($username,$password))
             $view->jsonSuccess(array(
                 'success' => true
             ));
@@ -266,8 +263,8 @@ class Index extends BaseController {
     /**
      * return tag => color array
      *
-     * @return tag color array
      * @param array $tags
+     * @return tag color array
      */
     private function convertTagsToAssocArray($tags) {
         $assocTags = array();

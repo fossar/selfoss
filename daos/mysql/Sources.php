@@ -112,17 +112,17 @@ class Sources extends Database {
      */
     public function saveLastUpdate($id, $lastEntry) {
         \F3::get('db')->exec('UPDATE '.\F3::get('db_prefix').'sources SET lastupdate=:lastupdate WHERE id=:id',
-                    array(
-                        ':id'         => $id,
-                        ':lastupdate' => time()
-                    ));
-        
+            array(
+                ':id'         => $id,
+                ':lastupdate' => time()
+            ));
+
         if ($lastEntry !== null) {
-        	\F3::get('db')->exec('UPDATE '.\F3::get('db_prefix').'sources SET lastentry=:lastentry WHERE id=:id',
-        			array(
-        					':id'         => $id,
-        					':lastentry' => $lastEntry
-        			));
+            \F3::get('db')->exec('UPDATE '.\F3::get('db_prefix').'sources SET lastentry=:lastentry WHERE id=:id',
+                array(
+                    ':id'         => $id,
+                    ':lastentry' => $lastEntry
+                ));
         }
         
     }
@@ -245,10 +245,7 @@ class Sources extends Database {
      * @return mixed tags of a source
      */
     public function getTags($id) {
-      $result = \F3::get('db')->exec('SELECT tags FROM '.\F3::get('db_prefix').'sources WHERE id=:id',
-                                     array(
-                                           ':id' => $id
-                                           ));
+        $result = \F3::get('db')->exec('SELECT tags FROM '.\F3::get('db_prefix').'sources WHERE id=:id', array(':id' => $id));
         $tags = array();
         $tags = array_merge($tags, explode(",",$result[0]['tags']));
         $tags = array_unique($tags);
@@ -263,7 +260,6 @@ class Sources extends Database {
      * @param  string  $title
      * @param  string  $spout the source type
      * @param  mixed   $params depends from spout     
-     * @return mixed   all sources
      */
     public function checkIfExists($title, $spout, $params) {
          // Check if a entry exists with same title, spout and params

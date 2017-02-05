@@ -167,7 +167,7 @@ class feed extends \spouts\spout {
         
         // check for error
         if(@$this->feed->error()) {
-            throw new \exception($this->feed->error());
+            throw new \Exception($this->feed->error());
         } else {
             // save fetched items
             $this->items = @$this->feed->get_items();

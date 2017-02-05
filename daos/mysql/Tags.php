@@ -22,8 +22,10 @@ class Tags extends Database {
     public function saveTagColor($tag, $color) {
         if($this->hasTag($tag)===true) {
             \F3::get('db')->exec('UPDATE '.\F3::get('db_prefix').'tags SET color=:color WHERE tag=:tag',
-                    array(':tag'   => $tag,
-                          ':color' => $color));
+                array(
+                    ':tag'   => $tag,
+                    ':color' => $color
+                ));
         } else {
             \F3::get('db')->exec('INSERT INTO '.\F3::get('db_prefix').'tags (
                     tag, 

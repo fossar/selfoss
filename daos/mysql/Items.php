@@ -35,7 +35,10 @@ class Items extends Database {
             $id = implode(",", $id);
         
         // i used string concatenation after validating $id
-        \F3::get('db')->exec('UPDATE '.\F3::get('db_prefix').'items SET '.$this->stmt->isFalse('unread').' WHERE id IN (' . $id . ')');
+        \F3::get('db')->exec('UPDATE ' . \F3::get('db_prefix') . 'items SET unread=:bool WHERE id IN (:id)', [
+            ':bool' => false,
+            ':id' => $id
+        ]);
     }
     
     
@@ -51,8 +54,10 @@ class Items extends Database {
         } else if(!is_numeric($id)) {
             return;
         }
-        \F3::get('db')->exec('UPDATE '.\F3::get('db_prefix').'items SET '.$this->stmt->isTrue('unread').' WHERE id IN (:id)',
-                    array(':id' => $id));
+        \F3::get('db')->exec('UPDATE ' . \F3::get('db_prefix') . 'items SET unread=:bool WHERE id IN (:id)', [
+            ':bool' => true,
+            ':id' => $id
+        ]);
     }
     
     
@@ -63,8 +68,10 @@ class Items extends Database {
      * @param int $id the item
      */
     public function starr($id) {
-        \F3::get('db')->exec('UPDATE '.\F3::get('db_prefix').'items SET '.$this->stmt->isTrue('starred').' WHERE id=:id',
-                    array(':id' => $id));
+        \F3::get('db')->exec('UPDATE ' . \F3::get('db_prefix') . 'items SET starred=:bool WHERE id=:id', [
+            ':bool' => true,
+            ':id' => $id
+        ]);
     }
     
     
@@ -75,8 +82,10 @@ class Items extends Database {
      * @param int $id the item
      */
     public function unstarr($id) {
-        \F3::get('db')->exec('UPDATE '.\F3::get('db_prefix').'items SET '.$this->stmt->isFalse('starred').' WHERE id=:id',
-                    array(':id' => $id));
+        \F3::get('db')->exec('UPDATE ' . \F3::get('db_prefix') . 'items SET starred=:bool WHERE id=:id', [
+            ':bool' => false,
+            ':id' => $id
+        ]);
     }
     
     

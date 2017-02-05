@@ -52,7 +52,7 @@ class WebClient {
         }
 
         if( $http_status != '200' ) {
-            throw new \exception(substr($request['body'], 0, 512));
+            throw new \Exception(substr($request['body'], 0, 512));
         }
         return $request['body'];
     }

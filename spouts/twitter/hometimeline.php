@@ -105,7 +105,7 @@ class hometimeline extends \spouts\twitter\usertimeline {
         }
 
         if(!is_array($timeline))
-            throw new \exception('invalid twitter response');
+            throw new \Exception('invalid twitter response');
         
         $this->items = $timeline;
         

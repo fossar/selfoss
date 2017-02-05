@@ -193,7 +193,7 @@ class usertimeline extends \spouts\spout {
         }
 
         if(!is_array($timeline))
-            throw new \exception('invalid twitter response');
+            throw new \Exception('invalid twitter response');
         
         $this->items = $timeline;
         

@@ -182,8 +182,7 @@ class Sources extends BaseController {
                     && empty($data[$spoutParamName])) {
                     if (!isset($oldSource)) {
                         $oldSource = $sourcesDao->get($id);
-                        $oldParams = json_decode(html_entity_decode(
-                                                   $oldSource['params']), true);    
+                        $oldParams = json_decode(html_entity_decode($oldSource['params']), true);
                     }
                     $data[$spoutParamName] = $oldParams[$spoutParamName];
                 }

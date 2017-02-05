@@ -290,14 +290,14 @@ class commits extends \spouts\spout {
         $content = null;
         try {
             $content = \helpers\WebClient::request($url);
-        }catch( \exception $e ) {
-            throw new \exception('github spout error ' . $e->getMessage());
+        }catch( \Exception $e ) {
+            throw new \Exception('github spout error ' . $e->getMessage());
         }
 
         $json = @json_decode($content);
         
         if (empty($json)) {
-            throw new \exception('github spout error: empy json');
+            throw new \Exception('github spout error: empy json');
         }
         
         return $json;
