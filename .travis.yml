@@ -7,6 +7,7 @@ matrix:
     include:
         - php: 7.1
         - php: 7.0
+          env: CS_FIXER=true
         - php: 5.6
         - php: 5.5
         - php: 5.4
@@ -26,6 +27,9 @@ cache:
 before_install:
     - nvm install 6
     - if [ -n "$GH_TOKEN" ]; then composer config github-oauth.github.com ${GH_TOKEN}; fi
+    # We need to use our modified version until the fixers are merged upstream.
+    - "export FIXER_REPO=--repository='{\"type\": \"vcs\", \"url\": \"https://github.com/jtojnar/php-cs-fixer\"}'"
+    - if [ "$CS_FIXER" = true ]; then composer create-project --no-dev --no-interaction "$FIXER_REPO" friendsofphp/php-cs-fixer utils/php-cs-fixer dev-selfoss; fi
     - composer create-project --no-dev --no-interaction jakub-onderka/php-parallel-lint utils/php-parallel-lint
 
 install:
@@ -36,6 +40,7 @@ before_script:
 
 script:
     - utils/php-parallel-lint/parallel-lint controllers daos helpers spouts templates
+    - if [ "$CS_FIXER" = true ]; then utils/php-cs-fixer/php-cs-fixer fix --verbose --dry-run; fi
 
 before_deploy:
     - source utils/package.sh
@@ -55,4 +60,3 @@ deploy:
       on:
           tags: true
           condition: $DEPLOY = true
-
