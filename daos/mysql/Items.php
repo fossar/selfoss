@@ -193,7 +193,7 @@ class Items extends Database {
      */
     public function get($options = array()) {
         $params = array();
-        $where = array('TRUE');
+        $where = array($this->stmt->bool(true));
         $order = 'DESC';
                 
         // only starred

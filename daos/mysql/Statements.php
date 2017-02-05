@@ -108,4 +108,13 @@ class Statements{
 
         return null;
     }
+
+    /**
+     * Convert boolean into a representation recognized by the database engine.
+     *
+     * @return string representation of boolean
+     */
+    public static function bool($bool) {
+        return $bool ? 'TRUE' : 'FALSE';
+    }
 }
