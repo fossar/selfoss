@@ -129,7 +129,7 @@ class reddit2 extends \spouts\spout {
         
         if (!empty($params['password']) && !empty($params['username'])) {
             if (function_exists("apc_fetch")) {
-                $this->reddit_session = apc_fetch("{$params['username']}_slefoss_reddit_session");
+                $this->reddit_session = apc_fetch("{$params['username']}_selfoss_reddit_session");
                 if (empty($this->reddit_session)) {
                     $this->login($params);
                 }
@@ -137,7 +137,17 @@ class reddit2 extends \spouts\spout {
                  $this->login($params);
             }
         }
+
         $json = json_decode($this->file_get_contents_curl("https://www.reddit.com/" . $params['url'] . ".json"));
+
+        if ($json === null) {
+            throw new \Exception("Cannot parse the response.");
+        }
+
+        if (isset($json->error)) {
+            throw new \Exception($json->message);
+        }
+
         $this->items = $json->data->children;
     }
 
@@ -480,11 +490,15 @@ class reddit2 extends \spouts\spout {
         $response = curl_exec($ch);
         $response = json_decode($response);
         if (curl_errno($ch)) {
-            print(curl_error($ch));
+            throw new \Exception(curl_error($ch));
         } else {
             curl_close($ch);
             if (count($response->json->errors) > 0){
-                print($response);    
+                $errors = '';
+                foreach ($response->json->errors as $error) {
+                    $errors .= $error[1] . PHP_EOL;
+                }
+                throw new \Exception($errors);
             } else {
                 $this->reddit_session = "reddit_session={$response->json->data->cookie}";
                 if (function_exists("apc_store")) {
