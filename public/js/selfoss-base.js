@@ -341,6 +341,9 @@ var selfoss = {
         $('#nav-tags li:not(:first)').remove();
         $('#nav-tags').append(tags);
         if( selfoss.filter.tag ) {
+            if(!selfoss.db.isValidTag(selfoss.filter.tag))
+                selfoss.showError('Unknown tag: ' + selfoss.filter.tag);
+
             $('#nav-tags li:first').removeClass('active');
             $('#nav-tags > li').filter(function( index ) {
                 if( $('.tag', this) )
@@ -366,6 +369,10 @@ var selfoss = {
         $('#nav-sources li').remove();
         $('#nav-sources').append(sources);
         if( selfoss.filter.source ) {
+            if(!selfoss.db.isValidSource(selfoss.filter.source))
+                selfoss.showError('Unknown source id: '
+                                  + selfoss.filter.source);
+
             $('#source' + selfoss.filter.source).addClass('active');
             $('#nav-tags > li').removeClass('active');
         }

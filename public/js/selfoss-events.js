@@ -116,6 +116,11 @@ selfoss.events = {
                         selfoss.filter.source = sourceId;
                         selfoss.filter.sourcesNav = true;
                     }
+                } else if( selfoss.events.subsection != 'all' ) {
+                    selfoss.showError('Invalid subsection: '
+                                      + selfoss.events.subsection);
+                    done();
+                    return;
                 }
             }
 
@@ -124,6 +129,13 @@ selfoss.events = {
             $('#nav-filter-'+selfoss.events.section).click();
             selfoss.reloadList();
         } else if(hash=="sources") { // load sources
+            if( selfoss.events.subsection ) {
+                selfoss.showError('Invalid subsection: '
+                                  + selfoss.events.subsection);
+                done();
+                return;
+            }
+
             if (selfoss.activeAjaxReq !== null)
                 selfoss.activeAjaxReq.abort();
 
@@ -146,6 +158,8 @@ selfoss.events = {
                     $('#content').removeClass('loading');
                 }
             });
+        } else {
+            selfoss.showError('Invalid section: ' + selfoss.events.section);
         }
         done();
     },
