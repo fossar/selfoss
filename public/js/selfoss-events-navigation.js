@@ -194,7 +194,7 @@ selfoss.events.navigation = function() {
         
         // show sources
         $('#nav-settings').unbind('click').click(function () {
-            selfoss.events.setHash('sources');
+            selfoss.events.setHash('sources', false);
             
             if(selfoss.isSmartphone())
                 $('#nav-mobile-settings').click();
