@@ -6,7 +6,7 @@ selfoss.events = {
     path:       null,
     lastpath:   null,
     section:    null,
-    subsection: 'all',
+    subsection: false,
     entryId:    null,
 
     /**
@@ -32,7 +32,7 @@ selfoss.events = {
         selfoss.events.resize();
 
         if( location.hash == '' )
-            location.hash = '#' + $('#config').data('homepage') + '/all';
+            selfoss.events.setHash($('#config').data('homepage'), 'all');
         
         // hash change event
         window.onhashchange = selfoss.events.hashChange;
@@ -78,7 +78,7 @@ selfoss.events = {
         if( hashPath.length > 1 ) {
             selfoss.events.subsection = hashPath[1];
         } else
-            selfoss.events.subsection = 'all';
+            selfoss.events.subsection = false;
 
         selfoss.events.lastpath = selfoss.events.path;
         selfoss.events.path = selfoss.events.section
@@ -144,7 +144,24 @@ selfoss.events = {
         done();
     },
     
-    
+
+    setHash: function(section='same', subsection='same', entryId=false) {
+        if( section == 'same' )
+            section = selfoss.events.section;
+        newHash = new Array(section);
+
+        if(subsection == 'same')
+            subsection = selfoss.events.subsection;
+        if(subsection)
+            newHash.push(subsection.replace('%', '%25'));
+
+        if(entryId)
+            newHash.push(entryId);
+
+        selfoss.events.processHash('#' + newHash.join('/'));
+    },
+
+
     /**
      * set automatically the height of the tags and set scrollbar for div scrolling
      */

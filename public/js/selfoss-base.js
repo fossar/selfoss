@@ -457,7 +457,7 @@ var selfoss = {
         $('#content').addClass('loading').html("");
 
         // close opened entry and list
-        selfoss.events.processHash(selfoss.events.path);
+        selfoss.events.setHash();
         selfoss.filterReset();
 
         $.ajax({
