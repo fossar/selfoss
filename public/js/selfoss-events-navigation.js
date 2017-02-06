@@ -69,10 +69,10 @@ selfoss.events.navigation = function() {
         $(this).addClass('active');
         
         if($(this).hasClass('nav-tags-all')==false) {
-            selfoss.events.setHash('same',
+            selfoss.events.setHash(selfoss.filter.type,
                                    'tag-' + $(this).find('span').html());
         } else {
-            selfoss.events.setHash('same', 'all');
+            selfoss.events.setHash(selfoss.filter.type, 'all');
         }
             
         if(selfoss.isSmartphone() && $('#nav').is(':visible'))
@@ -94,7 +94,7 @@ selfoss.events.navigation = function() {
         $('#nav-sources > li').removeClass('active');
         $(this).addClass('active');
 
-        selfoss.events.setHash('same',
+        selfoss.events.setHash(selfoss.filter.type,
                                'source-' + $(this).attr('id').substr(6));
         
         if(selfoss.isSmartphone() && $('#nav').is(':visible'))
