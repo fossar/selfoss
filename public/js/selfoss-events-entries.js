@@ -48,7 +48,7 @@ selfoss.events.entries = function(e) {
             var fullscreen = $('#fullscreen-entry');
             fullscreen.html('<div id="entrr'+parent.attr('data-entry-id')+'" class="entry fullscreen" data-entry-id="'+parent.attr('data-entry-id')+'">'+parent.html()+'</div>');
             fullscreen.show();
-            location.hash = selfoss.events.path + '/' + entryId;
+            selfoss.events.setHash('same', 'same', entryId);
 
             // lazy load images in fullscreen
             if($('#config').data('load_images_on_mobile')=="1") {
@@ -67,7 +67,7 @@ selfoss.events.entries = function(e) {
                     $('#'+parent.attr('id')).hide();
                 }
                 content.show();
-                location.hash = selfoss.events.path;
+                selfoss.events.setHash();
                 $(window).scrollTop(scrollTop);
                 fullscreen.hide();
             });
@@ -84,13 +84,13 @@ selfoss.events.entries = function(e) {
             if(content.is(':visible')) {
                 parent.find('.entry-toolbar').hide();
                 content.hide();
-                location.hash = selfoss.events.path;
+                selfoss.events.setHash();
             } else {
                 if($('#config').data('auto_collapse')=="1"){
                     $('.entry-content, .entry-toolbar').hide();
                 }
                 content.show();
-                location.hash = selfoss.events.path + '/' + entryId;
+                selfoss.events.setHash('same', 'same', entryId);
                 selfoss.events.entriesToolbar(parent);
                 parent.find('.entry-toolbar').show();
                 
@@ -167,7 +167,8 @@ selfoss.events.entries = function(e) {
     if (selfoss.isSmartphone() == false) {
         $('.entry-source').unbind('click').click(function(e) {
             var entry = $(this).parents('.entry');
-            location.hash = '#' + selfoss.filter.type + '/source-' + entry.attr('data-entry-source');
+            selfoss.events.setHash('same',
+                                   'source-' + entry.attr('data-entry-source'));
         });
     }
 

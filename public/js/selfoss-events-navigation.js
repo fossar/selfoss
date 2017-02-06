@@ -41,11 +41,9 @@ selfoss.events.navigation = function() {
         else if($(this).hasClass('nav-filter-starred'))
             selfoss.filter.type='starred';
 
-        if( selfoss.events.section != selfoss.filter.type ) {
-            location.hash = '#' + selfoss.filter.type
-                            + '/' + selfoss.events.subsection;
-        }
-        
+        if(selfoss.events.section != selfoss.filter.type)
+            selfoss.events.setHash(selfoss.filter.type, 'same');
+
         $('#nav-filter > li').removeClass('active');
         $(this).addClass('active');
         
@@ -71,9 +69,10 @@ selfoss.events.navigation = function() {
         $(this).addClass('active');
         
         if($(this).hasClass('nav-tags-all')==false) {
-            location.hash = '#' + selfoss.filter.type + '/tag-' + $(this).find('span').html().replace('%', '%25');
+            selfoss.events.setHash('same',
+                                   'tag-' + $(this).find('span').html());
         } else {
-            location.hash = '#' + selfoss.filter.type + '/all';
+            selfoss.events.setHash('same', 'all');
         }
             
         if(selfoss.isSmartphone() && $('#nav').is(':visible'))
@@ -95,7 +94,8 @@ selfoss.events.navigation = function() {
         $('#nav-sources > li').removeClass('active');
         $(this).addClass('active');
 
-        location.hash = '#' + selfoss.filter.type + '/source-' + $(this).attr('id').substr(6);
+        selfoss.events.setHash('same',
+                               'source-' + $(this).attr('id').substr(6));
         
         if(selfoss.isSmartphone() && $('#nav').is(':visible'))
             $('#nav-mobile-settings').click();
@@ -194,7 +194,7 @@ selfoss.events.navigation = function() {
         
         // show sources
         $('#nav-settings').unbind('click').click(function () {
-            location.hash = "sources";
+            selfoss.events.setHash('sources');
             
             if(selfoss.isSmartphone())
                 $('#nav-mobile-settings').click();

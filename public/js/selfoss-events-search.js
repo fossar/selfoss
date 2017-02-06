@@ -38,7 +38,7 @@ selfoss.events.search = function() {
         $('#search').removeClass('active');
         selfoss.filterReset();
         selfoss.filter.search = term;
-        selfoss.events.processHash(selfoss.events.path);
+        selfoss.events.setHash();
         selfoss.reloadList();
         
         if(term=="")
@@ -92,7 +92,7 @@ selfoss.events.search = function() {
         
         selfoss.filterReset();
         selfoss.filter.search = '';
-        selfoss.events.processHash(selfoss.events.path);
+        selfoss.events.setHash();
         $('#search-list').hide();
         $('#search-list').html('');
         $('#search').removeClass('active');
