@@ -3,11 +3,14 @@ selfoss.events = {
     /* last hash before hash change */
     lasthash: "",
 
-    path:       null,
-    lastpath:   null,
-    section:    null,
-    subsection: false,
-    entryId:    null,
+    path:           null,
+    lastpath:       null,
+
+    section:        null,
+    subsection:     false,
+    lastSubsection: null,
+
+    entryId:        null,
 
     /**
      * init events when page loads first time
@@ -104,6 +107,7 @@ selfoss.events = {
             selfoss.filter.tag = '';
             selfoss.filter.source = '';
             if( selfoss.events.subsection ) {
+                selfoss.events.lastSubsection = selfoss.events.subsection;
                 if( selfoss.events.subsection.substr(0, 4) == 'tag-') {
                     selfoss.filter.tag = selfoss.events.subsection.substr(4);
                 } else if( selfoss.events.subsection.substr(0, 7) == 'source-') {
@@ -153,7 +157,7 @@ selfoss.events = {
         newHash = new Array(section);
 
         if(subsection == 'same')
-            subsection = selfoss.events.subsection;
+            subsection = selfoss.events.lastSubsection;
         if(subsection)
             newHash.push(subsection.replace('%', '%25'));
 
