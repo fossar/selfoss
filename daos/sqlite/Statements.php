@@ -45,4 +45,19 @@ class Statements extends \daos\mysql\Statements {
     public static function bool($bool) {
         return $bool ? '1' : '0';
     }
+
+
+    /**
+     * Convert a date string into a representation suitable for comparison by
+     * the database engine.
+     *
+     * @param datestr ISO8601 datetime
+     * @return string representation of datetime
+     */
+    public static function datetime($datestr) {
+        $date = new \DateTime($datestr);
+        return $date->format('Y-m-d H:i:s');
+    }
+
+
 }
