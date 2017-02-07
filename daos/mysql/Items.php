@@ -239,8 +239,12 @@ class Items extends Database {
             && isset($options['offset_from_id'])
             && is_numeric($options['offset_from_id']) ) {
 
+            $offset_from_datetime_sql = $this->stmt->datetime($options['offset_from_datetime']);
             $params[':offset_from_datetime'] = array(
-                $options['offset_from_datetime'], \PDO::PARAM_STR
+                $offset_from_datetime_sql, \PDO::PARAM_STR
+            );
+            $params[':offset_from_datetime2'] = array(
+                $offset_from_datetime_sql, \PDO::PARAM_STR
             );
             $params[':offset_from_id'] = array(
                 $options['offset_from_id'], \PDO::PARAM_INT
@@ -251,7 +255,12 @@ class Items extends Database {
             else
                 $ltgt = '<';
 
-            $where[] = "(items.datetime, items.id) $ltgt (:offset_from_datetime, :offset_from_id)";
+            // Because of sqlite lack of tuple comparison support, we use a
+            // more complicated condition.
+            $where[] = "(items.datetime $ltgt :offset_from_datetime OR
+                         (items.datetime = :offset_from_datetime2 AND
+                          items.id $ltgt :offset_from_id)
+                        )";
         }
 
         $where_ids = '';

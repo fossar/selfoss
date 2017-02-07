@@ -117,4 +117,18 @@ class Statements{
     public static function bool($bool) {
         return $bool ? 'TRUE' : 'FALSE';
     }
+
+
+    /**
+     * Convert a date string into a representation suitable for comparison by
+     * the database engine.
+     *
+     * @param datestr ISO8601 datetime
+     * @return string representation of datetime
+     */
+    public static function datetime($datestr) {
+        return $datestr; // mysql supports ISO8601 datetime comparisons
+    }
+
+
 }
