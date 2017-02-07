@@ -351,7 +351,9 @@ var selfoss = {
                 else
                     return false;
             }).addClass('active');
-        }
+        } else
+            $('.nav-tags-all').addClass('active');
+
         selfoss.events.navigation();
     },
     
