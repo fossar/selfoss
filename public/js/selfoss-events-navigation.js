@@ -41,8 +41,12 @@ selfoss.events.navigation = function() {
         else if($(this).hasClass('nav-filter-starred'))
             selfoss.filter.type='starred';
 
-        if(selfoss.events.section != selfoss.filter.type)
+        if(selfoss.events.section == selfoss.filter.type) {
+            selfoss.filterReset();
+            selfoss.reloadList();
+        } else {
             selfoss.events.setHash(selfoss.filter.type, 'same');
+        }
 
         $('#nav-filter > li').removeClass('active');
         $(this).addClass('active');
