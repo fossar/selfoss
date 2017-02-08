@@ -36,4 +36,13 @@ class Statements extends \daos\mysql\Statements {
     public static function csvRowMatches($column, $value) {
         return "(',' || $column || ',') LIKE ('%,' || $value || ',%')";
     }
+
+    /**
+     * Convert boolean into a representation recognized by the database engine.
+     *
+     * @return string representation of boolean
+     */
+    public static function bool($bool) {
+        return $bool ? '1' : '0';
+    }
 }

@@ -13,12 +13,15 @@ var selfoss = {
      */
     filter: {
         offset: 0,
+        offset_from_datetime: null,
+        offset_from_id: null,
         itemsPerPage: 0,
         search: '',
         type: 'newest',
         tag: '',
         source: '',
         sourcesNav: false,
+        extra_ids: [],
         ajax: true
     },
 
@@ -50,9 +53,9 @@ var selfoss = {
         
             // set items per page
             selfoss.filter.itemsPerPage = $('#config').data('items_perpage');
-            
+
             // initialize type by homepage config param
-            selfoss.filter.type = $('#nav-filter li.active').attr('id').replace('nav-filter-', '');
+            selfoss.filter.type = $('#config').data('homepage');
 
             // read the html title configured
             selfoss.htmlTitle = $('#config').data('html_title')
@@ -146,6 +149,19 @@ var selfoss = {
             return true;
         return false;
     },
+
+
+    /**
+     * reset filter
+     *
+     * @return void
+     */
+    filterReset: function() {
+        selfoss.filter.offset = 0;
+        selfoss.filter.offset_from_datetime = null;
+        selfoss.filter.offset_from_id = null;
+        selfoss.filter.extra_ids.length = 0;
+    },
     
     
     /**
@@ -158,9 +174,11 @@ var selfoss = {
             selfoss.activeAjaxReq.abort();
 
         if (location.hash == "#sources") {
-            location.hash = "";
             return;
         }
+
+        if( selfoss.events.entryId && selfoss.filter.offset_from_id == null )
+            selfoss.filter.extra_ids.push(selfoss.events.entryId);
 
         $('.stream-error').css('display', 'block').hide();
         $('#content').addClass('loading').html("");
@@ -192,16 +210,13 @@ var selfoss = {
                     selfoss.refreshSources(data.sources, currentSource);
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                if (textStatus == "parsererror")
-                    location.reload();
-                else {
-                    if (textStatus == "abort")
-                        return;
-                    else if (errorThrown)
-                        selfoss.showError('Load list error: '+
-                                          textStatus+' '+errorThrown);
-                    $('.stream-error').show();
-                }
+                if (textStatus == "abort")
+                    return;
+                else if (errorThrown)
+                    selfoss.showError('Load list error: '+
+                                        textStatus+' '+errorThrown);
+                selfoss.events.entries();
+                $('.stream-error').show();
             },
             complete: function(jqXHR, textStatus) {
                 // clean up
@@ -322,12 +337,18 @@ var selfoss = {
      * @param tags the new taglist as html
      */
     refreshTags: function(tags) {
-        var currentTag = $('#nav-tags li').index($('#nav-tags .active'));
         $('.color').spectrum('destroy');
         $('#nav-tags li:not(:first)').remove();
         $('#nav-tags').append(tags);
-        if(currentTag>=0)
-            $('#nav-tags li:eq('+currentTag+')').addClass('active');
+        if( selfoss.filter.tag ) {
+            $('#nav-tags li:first').removeClass('active');
+            $('#nav-tags > li').filter(function( index ) {
+                if( $('.tag', this) )
+                    return $('.tag', this).html() == selfoss.filter.tag;
+                else
+                    return false;
+            }).addClass('active');
+        }
         selfoss.events.navigation();
     },
     
@@ -342,11 +363,17 @@ var selfoss = {
      * @param currentSource the index of the active source
      */
     refreshSources: function(sources, currentSource) {
-        var currentSourceIndex = currentSource >= 0 ? currentSource : $('#nav-sources li').index($('#nav-sources .active'));
         $('#nav-sources li').remove();
         $('#nav-sources').append(sources);
-        if(currentSourceIndex>=0)
-            $('#nav-sources li:eq('+currentSourceIndex+')').addClass('active');
+        if( selfoss.filter.source ) {
+            $('#source' + selfoss.filter.source).addClass('active');
+            $('#nav-tags > li').removeClass('active');
+        }
+
+        selfoss.sourcesNavLoaded = true;
+        if( $('#nav-sources-title').hasClass("nav-sources-collapsed") )
+            $('#nav-sources-title').click(); // expand sources nav
+
         selfoss.events.navigation();
     },
     
@@ -429,6 +456,10 @@ var selfoss = {
         var articleList = content.html();
         $('#content').addClass('loading').html("");
 
+        // close opened entry and list
+        selfoss.events.processHash(selfoss.events.path);
+        selfoss.filterReset();
+
         $.ajax({
             url: $('base').attr('href') + 'mark',
             type: 'POST',
@@ -446,9 +477,6 @@ var selfoss = {
                 // hide nav on smartphone if visible
                 if(selfoss.isSmartphone() && $('#nav').is(':visible')==true)
                     $('#nav-mobile-settings').click();
-
-                // close opened entry
-                selfoss.events.itemId = null;
 
                 // refresh list
                 selfoss.reloadList();

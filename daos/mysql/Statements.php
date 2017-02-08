@@ -84,4 +84,37 @@ class Statements{
 
         return "CONCAT(',', $column, ',') LIKE CONCAT('%,', $value, ',%') COLLATE utf8mb4_general_ci";
     }
+
+   /**
+     * check column against int list.
+     *
+     * @param int column to check
+     * @param array of string or int values to match column against
+     * @return full statement
+     */
+    public static function intRowMatches($column, $ints) {
+        // checks types
+        if( !is_array($ints) && sizeof($ints) < 1 ) return null;
+        $all_ints = array();
+        foreach( $ints as $ints_str ) {
+            $i = (int)$ints_str;
+            if( $i > 0 ) $all_ints[] = $i;
+        }
+
+        if( sizeof($all_ints) > 0 ) {
+            $comma_ints = implode(',', $all_ints);
+            return $column." IN ($comma_ints)";
+        }
+
+        return null;
+    }
+
+    /**
+     * Convert boolean into a representation recognized by the database engine.
+     *
+     * @return string representation of boolean
+     */
+    public static function bool($bool) {
+        return $bool ? 'TRUE' : 'FALSE';
+    }
 }
