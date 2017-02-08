@@ -13,7 +13,7 @@ namespace helpers;
 class Anonymizer {
 
     /**
-     * @return TRUE or FALSE - whether or not we should anonymize urls
+     * @return bool whether or not we should anonymize urls
      */
     private static function shouldAnonymize() {
         return TRUE;

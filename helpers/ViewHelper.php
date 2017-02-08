@@ -12,13 +12,15 @@ namespace helpers;
  */
 class ViewHelper {
 
-    /** encloses all searchWords with <span class=found>$word</span>
-      * for later highlitning with CSS
-      *
-      * @return string with highlited words
-        * @param string $content which contains words
-        * @param array|string $searchWords words for highlighting
-      */
+    /**
+     * Enclose all searchWords with <span class="found">$word</span>
+     * for later highlighing with CSS
+     *
+     * @param string $content which contains words
+     * @param array|string $searchWords words for highlighting
+     *
+     * @return string with highlited words
+     */
     public function highlight($content, $searchWords) {
         if(strlen(trim($searchWords))==0)
             return $content;
@@ -27,7 +29,7 @@ class ViewHelper {
             $searchWords = \helpers\Search::splitTerms($searchWords);
 
         foreach($searchWords as $word)
-            $content = preg_replace('/(?!<[^<>])('.$word.')(?![^<>]*>)/i','<span class=found>$0</span>',$content);
+            $content = preg_replace('/(?!<[^<>])('.$word.')(?![^<>]*>)/i','<span class="found">$0</span>',$content);
 
         return $content;
     }

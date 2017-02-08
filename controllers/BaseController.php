@@ -15,7 +15,7 @@ class BaseController {
     /**
      * view helper
      *
-     * @var helpers_View
+     * @var \helpers\View
      */
     protected $view;
 
