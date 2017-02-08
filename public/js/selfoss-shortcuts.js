@@ -217,28 +217,11 @@ selfoss.shortcuts = {
         // load more
         if(current.hasClass('stream-more'))
             current.click().removeClass('selected').prev().addClass('selected');
-        
-        // open?
-        if(open) {
-            var content = current.find('.entry-content');
-            // load images not on mobile devices
-            if(selfoss.isMobile()==false) {
-                content.lazyLoadImages();
-                current.next().find('.entry-content').lazyLoadImages();
-            }
-            // anonymize
-            selfoss.anonymize(content);
-            content.show();
-            selfoss.events.setHash('same', 'same', current.data('entry-id'));
-            current.find('.entry-toolbar').show();
-            selfoss.events.entriesToolbar(current);
-            // automark as read
-            if($('#config').data('auto_mark_as_read')=="1" && current.hasClass('unread'))
-                current.find('.entry-unread').click();
 
-            // setup fancyBox image viewer
-            selfoss.setupFancyBox(content, content.parent().attr('id').substr(5));
-        } else
+        // open?
+        if(!current.hasClass('stream-more') && open)
+            current.find('.entry-title').click();
+        else
             selfoss.events.setHash();
         
         // scroll to element

@@ -5,6 +5,7 @@ selfoss.events = {
 
     path:           null,
     lastpath:       null,
+    reloadSamePath: false,
 
     section:        null,
     subsection:     false,
@@ -68,7 +69,8 @@ selfoss.events = {
         // assume the hash is encoded
         var hash = decodeURIComponent(location.href.split('#').splice(1).join('#'));
 
-        if( hash == selfoss.events.lasthash ) {
+        if( !selfoss.events.reloadSamePath &&
+            hash == selfoss.events.lasthash ) {
             done();
             return;
         }
@@ -95,8 +97,18 @@ selfoss.events = {
 
         selfoss.events.lasthash = hash;
 
-        // do not reload list if list is the same
-        if ( selfoss.events.lastpath == selfoss.events.path ) {
+        // do not reload list if list is the same and not explicitely requested
+        if ( !selfoss.events.reloadSamePath &&
+             selfoss.events.lastpath == selfoss.events.path ) {
+            if( selfoss.events.entryId ) {
+                var entry = $('#entry' + selfoss.events.entryId);
+                if( entry ) {
+                    if( !entry.find('.entry-content').is(':visible') )
+                        entry.find('.entry-title').click();
+                    else
+                        entry.get(0).scrollIntoView();
+                }
+            }
             done();
             return;
         }
@@ -124,9 +136,11 @@ selfoss.events = {
                 }
             }
 
+            selfoss.events.reloadSamePath = false;
             selfoss.filterReset();
 
-            $('#nav-filter-'+selfoss.events.section).click();
+            $('#nav-filter > li').removeClass('active');
+            $('#nav-filter-'+selfoss.events.section).addClass('active');
             selfoss.reloadList();
         } else if(hash=="sources") { // load sources
             if( selfoss.events.subsection ) {
