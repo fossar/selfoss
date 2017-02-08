@@ -229,6 +229,7 @@ selfoss.shortcuts = {
             // anonymize
             selfoss.anonymize(content);
             content.show();
+            selfoss.events.setHash('same', 'same', current.data('entry-id'));
             current.find('.entry-toolbar').show();
             selfoss.events.entriesToolbar(current);
             // automark as read
@@ -237,7 +238,8 @@ selfoss.shortcuts = {
 
             // setup fancyBox image viewer
             selfoss.setupFancyBox(content, content.parent().attr('id').substr(5));
-        }
+        } else
+            selfoss.events.setHash();
         
         // scroll to element
         selfoss.shortcuts.autoscroll(current);
