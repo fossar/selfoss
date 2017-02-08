@@ -43,6 +43,7 @@ selfoss.events.navigation = function() {
 
         if(selfoss.events.section == selfoss.filter.type) {
             selfoss.filterReset();
+            selfoss.events.setHash();
             selfoss.reloadList();
         } else {
             selfoss.events.setHash(selfoss.filter.type, 'same');
