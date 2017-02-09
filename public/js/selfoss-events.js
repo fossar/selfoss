@@ -84,7 +84,6 @@ selfoss.events = {
             selfoss.events.subsection = hashPath[1];
         } else
             selfoss.events.subsection = false;
-
         selfoss.events.lastpath = selfoss.events.path;
         selfoss.events.path = selfoss.events.section
                               + '/' + selfoss.events.subsection;
@@ -102,12 +101,8 @@ selfoss.events = {
              selfoss.events.lastpath == selfoss.events.path ) {
             if( selfoss.events.entryId ) {
                 var entry = $('#entry' + selfoss.events.entryId);
-                if( entry ) {
-                    if( !entry.find('.entry-content').is(':visible') )
-                        entry.find('.entry-title').click();
-                    else
-                        entry.get(0).scrollIntoView();
-                }
+                if( entry )
+                    entry.get(0).scrollIntoView();
             }
             done();
             return;
