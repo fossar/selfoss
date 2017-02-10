@@ -239,6 +239,10 @@ class Items extends Database {
             && isset($options['offset_from_id'])
             && is_numeric($options['offset_from_id']) ) {
 
+            // discard offset as it makes no sense to mix offset pagination
+            // with seek pagination.
+            $options['offset'] = 0;
+
             $offset_from_datetime_sql = $this->stmt->datetime($options['offset_from_datetime']);
             $params[':offset_from_datetime'] = array(
                 $offset_from_datetime_sql, \PDO::PARAM_STR
