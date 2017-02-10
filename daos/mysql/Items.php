@@ -306,6 +306,14 @@ class Items extends Database {
         $order = 'ORDER BY items.datetime,items.id '.$order;
 
         if( $where_ids != '' ) {
+            // This UNION is required for the extra explicitely requested items
+            // to be included whether or not they would have been excluded by
+            // seek, filter, offset rules.
+            //
+            // SQLite note: the 'entries' SELECT is encapsulated into a
+            // SELECT * FROM (...) to fool the SQLite engine into not
+            // complaining about 'order by clause should come after union not
+            // before'.
             $query = "SELECT * FROM (
                         SELECT * FROM ($select $where_sql $order LIMIT " . $options['items'] . ' OFFSET '. $options['offset'] . ") AS entries
                       UNION
