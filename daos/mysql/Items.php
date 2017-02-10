@@ -282,7 +282,6 @@ class Items extends Database {
 
         // finalize items filter
         $where_sql = implode(' AND ', $where);
-        if( $where_ids != '' ) $where_sql = "(($where_sql) OR $where_ids)";
 
         // set limit
         if(!is_numeric($options['items']) || $options['items']>200)
@@ -300,12 +299,24 @@ class Items extends Database {
         $this->hasMore = count($result);
 
         // get items from database
-        return \F3::get('db')->exec('SELECT
-                    items.id, datetime, items.title AS title, content, unread, starred, source, thumbnail, icon, uid, link, updatetime, author, sources.title as sourcetitle, sources.tags as tags
-                   FROM '.\F3::get('db_prefix').'items AS items, '.\F3::get('db_prefix').'sources AS sources
-                   WHERE items.source=sources.id AND '.$where_sql.'
-                   ORDER BY items.datetime '.$order.'
-                   LIMIT ' . $options['items'] . ' OFFSET '. $options['offset'], $params);
+        $select = 'SELECT
+            items.id, datetime, items.title AS title, content, unread, starred, source, thumbnail, icon, uid, link, updatetime, author, sources.title as sourcetitle, sources.tags as tags
+            FROM '.\F3::get('db_prefix').'items AS items, '.\F3::get('db_prefix').'sources AS sources
+            WHERE items.source=sources.id AND';
+        $order = 'ORDER BY items.datetime,items.id '.$order;
+
+        if( $where_ids != '' ) {
+            $query = "SELECT * FROM (
+                        SELECT * FROM ($select $where_sql $order LIMIT " . $options['items'] . ' OFFSET '. $options['offset'] . ") AS entries
+                      UNION
+                        $select $where_ids
+                      ) AS items
+                      $order";
+        } else {
+            $query = "$select $where_sql $order LIMIT " . $options['items'] . ' OFFSET '. $options['offset'];
+        }
+
+        return \F3::get('db')->exec($query, $params);
     }
     
     
