@@ -303,7 +303,7 @@ class Items extends Database {
             items.id, datetime, items.title AS title, content, unread, starred, source, thumbnail, icon, uid, link, updatetime, author, sources.title as sourcetitle, sources.tags as tags
             FROM '.\F3::get('db_prefix').'items AS items, '.\F3::get('db_prefix').'sources AS sources
             WHERE items.source=sources.id AND';
-        $order = 'ORDER BY items.datetime,items.id '.$order;
+        $order_sql = 'ORDER BY items.datetime ' . $order . ', items.id ' . $order;
 
         if( $where_ids != '' ) {
             // This UNION is required for the extra explicitely requested items
@@ -315,13 +315,13 @@ class Items extends Database {
             // complaining about 'order by clause should come after union not
             // before'.
             $query = "SELECT * FROM (
-                        SELECT * FROM ($select $where_sql $order LIMIT " . $options['items'] . ' OFFSET '. $options['offset'] . ") AS entries
+                        SELECT * FROM ($select $where_sql $order_sql LIMIT " . $options['items'] . ' OFFSET '. $options['offset'] . ") AS entries
                       UNION
                         $select $where_ids
                       ) AS items
-                      $order";
+                      $order_sql";
         } else {
-            $query = "$select $where_sql $order LIMIT " . $options['items'] . ' OFFSET '. $options['offset'];
+            $query = "$select $where_sql $order_sql LIMIT " . $options['items'] . ' OFFSET '. $options['offset'];
         }
 
         return \F3::get('db')->exec($query, $params);
