@@ -243,9 +243,9 @@ var selfoss = {
      *
      * @return void
      */
-    sync: function() {
-        if( selfoss.lastUpdate == null ||
-            Date.now() - selfoss.lastSync < 5*60*1000 )
+    sync: function(force=false) {
+        if( !force && (selfoss.lastUpdate == null ||
+                       Date.now() - selfoss.lastSync < 5*60*1000) )
             return;
 
         $.ajax({

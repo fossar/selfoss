@@ -281,6 +281,10 @@ body * {
     #nav-refresh {
         background:url(images/nav-refresh.png) no-repeat center center #272325;
     }
+
+    #nav-refresh.loading {
+        background:url(images/ajax-loader.gif) center center no-repeat;
+    }
     
     #nav-settings {
         background:url(images/nav-sources.png) no-repeat center center #272325;
