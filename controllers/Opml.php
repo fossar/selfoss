@@ -32,6 +32,14 @@ class Opml extends BaseController {
     */
     private $imported = array();
 
+    /** @var \helpers\SpoutLoader */
+    private $spoutLoader;
+
+    public function __construct() {
+        parent::__construct();
+
+        $this->spoutLoader = new \helpers\SpoutLoader($this);
+    }
 
     /** 
      * Shows a simple html form
@@ -230,7 +238,7 @@ class Opml extends BaseController {
     private function writeSource($source) {
         // retrieve the feed url of the source
         $params = json_decode(html_entity_decode($source['params']), true);
-        $feedUrl = $source['spout_obj']->getXmlUrl($params);
+        $feedUrl = $this->spoutLoader->get($source['spout'])->getXmlUrl($params);
 
         // if the spout doesn't return a feed url, the source isn't an RSS feed
         if ($feedUrl !== false)
