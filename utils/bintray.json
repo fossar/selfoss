@@ -1,0 +1,16 @@
+{
+    "package": {
+        "name": "selfoss-git",
+        "repo": "selfoss",
+        "subject": "fossar"
+    },
+
+    "version": {
+        "name": "SELFOSS_VERSION"
+    },
+
+    "files": [
+        {"includePattern": "SELFOSS_ZIPBALL", "uploadPattern": "SELFOSS_ZIPBALL"}
+    ],
+    "publish": true
+}

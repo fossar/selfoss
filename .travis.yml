@@ -7,7 +7,13 @@ matrix:
         - php: 5.6
         - php: 5.5
         - php: 5.4
+          env: DEPLOY=true
     fast_finish: true
+
+addons:
+    apt:
+        packages:
+            - jq
 
 cache:
     directories:
@@ -15,6 +21,7 @@ cache:
         - $HOME/.composer/cache
 
 before_install:
+    - nvm install 6
     - if [ -n "$GH_TOKEN" ]; then composer config github-oauth.github.com ${GH_TOKEN}; fi
     - composer create-project --no-dev --no-interaction jakub-onderka/php-parallel-lint utils/php-parallel-lint
 
@@ -26,3 +33,15 @@ before_script:
 
 script:
     - utils/php-parallel-lint/parallel-lint controllers daos helpers spouts templates
+
+before_deploy:
+    - source utils/package.sh
+    - source utils/bintray.sh
+
+deploy:
+    - provider: bintray
+      file: utils/bintray.json
+      user: $BINTRAY_USER
+      key: $BINTRAY_KEY
+      on:
+          condition: $DEPLOY = true
