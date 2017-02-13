@@ -3,8 +3,8 @@
     "description": "Multipurpose rss reader, live stream, mashup, aggregation web application",
     "type": "project",
     "require": {
-        "abraham/twitteroauth": "^0.7.2",
         "bcosca/fatfree-core": "^3.6",
+        "fossar/twitteroauth-php54": "^0.7.3-beta",
         "htmlawed/htmlawed": "^1.1",
         "j0k3r/php-readability": "^1.1.5",
         "linkorb/jsmin-php": "^1.0",
