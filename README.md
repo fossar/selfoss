@@ -6,6 +6,12 @@ http://selfoss.aditu.de
 Licensed under the GPLv3 license  
 Version 2.17-SNAPSHOT
 
+DOWNLOAD
+--------
+
+* [Stable releases](https://github.com/SSilence/selfoss/releases) – if you just want to use selfoss.
+* [Development builds](https://bintray.com/fossar/selfoss/selfoss-git) ([latest](https://bintray.com/fossar/selfoss/selfoss-git/_latestVersion#files)) – if you want to try unreleased features or bug fixes, or help testing them.
+* [Git-tracked source code](https://github.com/SSilence/selfoss) – if you want to join selfoss development. Some assembly required.
 
 INSTALLATION
 ------------
