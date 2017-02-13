@@ -316,7 +316,6 @@ class Sources extends BaseController {
         for($i=0; $i<count($sources); $i++) {
             $sources[$i]['params'] = json_decode(html_entity_decode($sources[$i]['params']), true);
             $sources[$i]['error'] = $sources[$i]['error']==null ? '' : $sources[$i]['error'];
-            unset($sources[$i]['spout_obj']);
         }
         
         $this->view->jsonSuccess($sources);

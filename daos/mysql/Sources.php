@@ -135,9 +135,6 @@ class Sources extends Database {
      */
     public function getByLastUpdate() {
         $ret = \F3::get('db')->exec('SELECT id, title, tags, spout, params, filter, error, lastupdate, lastentry FROM '.\F3::get('db_prefix').'sources ORDER BY lastupdate ASC');
-        $spoutLoader = new \helpers\SpoutLoader();
-        for($i=0;$i<count($ret);$i++)
-            $ret[$i]['spout_obj'] = $spoutLoader->get( $ret[$i]['spout'] );
         return $ret;
     }
     
@@ -154,18 +151,13 @@ class Sources extends Database {
         if (isset($id)) {
             $ret = \F3::get('db')->exec('SELECT id, title, tags, spout, params, filter, error FROM '.\F3::get('db_prefix').'sources WHERE id=:id',
                                     array(':id' => $id));
-            $spoutLoader = new \helpers\SpoutLoader();
             if (isset($ret[0])) {
                 $ret = $ret[0];
-                $ret['spout_obj'] = $spoutLoader->get( $ret['spout'] );
             } else {
                 $ret = false;    
             }
         } else { 
             $ret = \F3::get('db')->exec('SELECT id, title, tags, spout, params, filter, error FROM '.\F3::get('db_prefix').'sources ORDER BY error DESC, lower(title) ASC');
-            $spoutLoader = new \helpers\SpoutLoader();
-            for($i=0;$i<count($ret);$i++)
-                $ret[$i]['spout_obj'] = $spoutLoader->get( $ret[$i]['spout'] );
         }
         return $ret;
     }
@@ -209,9 +201,6 @@ class Sources extends Database {
                  ) AS sourceicons
                 ON sources.id=sourceicons.source
             ORDER BY '.$this->stmt->nullFirst('sources.error', 'DESC').', lower(sources.title)');
-        $spoutLoader = new \helpers\SpoutLoader();
-        for($i=0;$i<count($ret);$i++)
-            $ret[$i]['spout_obj'] = $spoutLoader->get( $ret[$i]['spout'] );
         return $ret;
     }
 
