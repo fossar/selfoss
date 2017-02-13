@@ -6,9 +6,7 @@ matrix:
         - php: 7.0
         - php: 5.6
         - php: 5.5
-          env: REMOVE_TWITEROAUTH=true
         - php: 5.4
-          env: REMOVE_TWITEROAUTH=true
     fast_finish: true
 
 cache:
@@ -24,8 +22,6 @@ install:
     - composer self-update
 
 before_script:
-    # TwitterOAuth specifies PHP ^5.6 as a requirement
-    - if [ $REMOVE_TWITEROAUTH = true ]; then composer remove --no-interaction abraham/twitteroauth; fi
     - composer install --prefer-dist --no-interaction
 
 script:
