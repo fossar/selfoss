@@ -1,3 +1,6 @@
+# This file lints the code, builds a package and then deploys it.
+# For the deployment, $BINTRAY_USER, $BINTRAY_KEY and $GH_TOKEN environment
+# variables need to be set.
 language: php
 
 matrix:
@@ -45,3 +48,11 @@ deploy:
       key: $BINTRAY_KEY
       on:
           condition: $DEPLOY = true
+    - provider: releases
+      api_key: $GH_TOKEN
+      file: $SELFOSS_ZIPBALL
+      skip_cleanup: true
+      on:
+          tags: true
+          condition: $DEPLOY = true
+
