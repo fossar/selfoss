@@ -243,7 +243,9 @@ var selfoss = {
      *
      * @return void
      */
-    sync: function(force=false) {
+    sync: function(force) {
+        var force = (typeof force !== 'undefined') ? force : false;
+
         if( !force && (selfoss.lastUpdate == null ||
                        Date.now() - selfoss.lastSync < 5*60*1000) )
             return;
@@ -251,6 +253,7 @@ var selfoss = {
         $.ajax({
             url: 'items/sync',
             type: 'GET',
+            dataType: 'json',
             data: {
                 since:          selfoss.lastUpdate.toISOString(),
                 tags:           true,

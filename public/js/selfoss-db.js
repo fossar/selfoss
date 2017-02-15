@@ -21,7 +21,7 @@ selfoss.db = {
             return !isValid; // break the loop if valid
         });
         return isValid;
-    },
+    }
 
 
 };
