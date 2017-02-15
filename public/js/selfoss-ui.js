@@ -45,7 +45,7 @@ selfoss.ui = {
                 return newStatus;
             });
             if( newStatus ) {
-                selfoss.ui.entryStarr(id, newStatus.starr);
+                selfoss.ui.entryStarr(id, newStatus.starred);
                 selfoss.ui.entryMark(id, newStatus.unread);
             }
         });
