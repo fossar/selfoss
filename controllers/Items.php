@@ -189,7 +189,7 @@ class Items extends BaseController {
         $last_update = new \DateTime($itemsDao->lastUpdate());
 
         $sync = array(
-            'last_update' => $last_update->format(\DateTime::ISO8601),
+            'last_update' => $last_update->format(\DateTime::ATOM),
         );
 
         if( $last_update > $since ) {
@@ -208,7 +208,7 @@ class Items extends BaseController {
 
             $wantItemsStatuses = array_key_exists('items_statuses', $_GET) && $_GET['items_statuses'] == 'true';
             if( $wantItemsStatuses ) {
-                $sync['items'] = $itemsDao->statuses($since->format(\DateTime::ISO8601));
+                $sync['items'] = $itemsDao->statuses($since->format(\DateTime::ATOM));
             }
         }
         $this->view->jsonSuccess($sync);

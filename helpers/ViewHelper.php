@@ -79,7 +79,7 @@ class ViewHelper {
      */
     public static function date_iso8601($datestr) {
         $date = new \DateTime($datestr);
-        return $date->format(\DateTime::ISO8601);
+        return $date->format(\DateTime::ATOM);
     }
 
 
