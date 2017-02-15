@@ -41,7 +41,7 @@ selfoss.ui = {
             var newStatus = false;
             entryStatuses.some(function(entryStatus) {
                 if( entryStatus.id == id )
-                    newStatus = entryStatus.id;
+                    newStatus = entryStatus;
                 return newStatus;
             });
             if( newStatus ) {
