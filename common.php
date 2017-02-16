@@ -1,5 +1,9 @@
 <?php
 
+use Monolog\Logger;
+use Monolog\Formatter\LineFormatter;
+use Monolog\Handler\StreamHandler;
+
 require __DIR__ . '/vendor/autoload.php';
 
 $f3 = $f3 = Base::instance();
@@ -27,18 +31,28 @@ foreach($f3->get('ENV') as $key => $value) {
 }
 
 // init logger
-$f3->set(
-    'logger',
-    new \helpers\Logger( __dir__.'/data/logs/default.log', $f3->get('logger_level') )
-);
+$log = new Logger('selfoss');
+if ($f3->get('logger_level') !== 'NONE') {
+    $handler = new StreamHandler(__DIR__ . '/data/logs/default.log', $f3->get('logger_level'));
+    $formatter = new LineFormatter(null, null, true, true);
+    $formatter->includeStacktraces(true);
+    $handler->setFormatter($formatter);
+    $log->pushHandler($handler);
+}
+$f3->set('logger', $log);
 
 // init error handling
 $f3->set('ONERROR',
     function($f3) {
-        $trace = $f3->get('ERROR.trace');
+        $exception = $f3->get('EXCEPTION');
 
-        \F3::get('logger')->log($f3->get('ERROR.text') . "\n" . $trace, \ERROR);
-        if (\F3::get('DEBUG')!=0) {
+        if ($exception) {
+            \F3::get('logger')->error($exception->getMessage(), array('exception' => $exception));
+        } else {
+            \F3::get('logger')->error($f3->get('ERROR.text'));
+        }
+
+        if (\F3::get('DEBUG') != 0) {
             echo $f3->get('lang_error') . ": ";
             echo $f3->get('ERROR.text') . "\n";
             echo $trace;

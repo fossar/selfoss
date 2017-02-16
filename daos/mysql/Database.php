@@ -38,7 +38,7 @@ class Database {
                 $dsn = "mysql:host=$host; dbname=$database";
             }
 
-            \F3::get('logger')->log("Establish database connection", \DEBUG);
+            \F3::get('logger')->debug("Establish database connection");
             \F3::set('db', new \DB\SQL(
                 $dsn,
                 \F3::get('db_username'),

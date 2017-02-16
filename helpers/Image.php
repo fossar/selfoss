@@ -43,8 +43,8 @@ class Image {
         $html = null;
         try {
             $html = \helpers\WebClient::request($url);
-        }catch( \exception $e ) {
-            \F3::get('logger')->log("icon: failed to get html page: ".$e->getMessage(), \DEBUG);
+        } catch (\Exception $e) {
+            \F3::get('logger')->debug("icon: failed to get html page: ", array('exception' => $e));
         }
 
         $shortcutIcon = $this->parseShortcutIcon($html);
@@ -92,9 +92,8 @@ class Image {
         // load image
         try{
             $data = \helpers\WebClient::request($url);
-        }
-        catch ( \exception $e ) {
-            \F3::get('logger')->log("failed to retrieve image $url," . $e->getMessage(), \ERROR);
+        } catch (\Exception $e) {
+            \F3::get('logger')->error("failed to retrieve image $url,", array('exception' => $e));
             return false;
         }
         

@@ -257,12 +257,12 @@ class feed extends \spouts\spout {
         $htmlUrl = $this->getHtmlUrl();
         if($htmlUrl && $imageHelper->fetchFavicon($htmlUrl, true)){
             $this->faviconUrl = $imageHelper->getFaviconUrl();
-            \F3::get('logger')->log('icon: using feed homepage favicon: ' . $this->faviconUrl, \DEBUG);
+            \F3::get('logger')->debug('icon: using feed homepage favicon: ' . $this->faviconUrl);
         }else{
             $feedLogoUrl = $this->feed->get_image_url();
             if( $feedLogoUrl && $imageHelper->fetchFavicon($feedLogoUrl) ){
                 $this->faviconUrl = $imageHelper->getFaviconUrl();
-                \F3::get('logger')->log('icon: using feed logo: ' . $this->faviconUrl, \DEBUG);
+                \F3::get('logger')->debug('icon: using feed logo: ' . $this->faviconUrl);
            }
         }
         return $this->faviconUrl;

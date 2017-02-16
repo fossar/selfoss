@@ -44,7 +44,7 @@ class Sources extends Database {
         if(method_exists($this->backend, $name))
             return call_user_func_array(array($this->backend, $name), $args);
         else
-            \F3::get('logger')->log('Unimplemented method for ' . \F3::get('db_type') . ': ' . $name, \ERROR);
+            \F3::get('logger')->error('Unimplemented method for ' . \F3::get('db_type') . ': ' . $name);
     }
     
     public function get($id = null) {

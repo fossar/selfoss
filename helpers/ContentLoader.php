@@ -82,26 +82,26 @@ class ContentLoader {
         @error_reporting(E_ERROR);
         
         // logging
-        \F3::get('logger')->log('---', \DEBUG);
-        \F3::get('logger')->log('start fetching source "'. $source['title'] . ' (id: '.$source['id'].') ', \DEBUG);
+        \F3::get('logger')->debug('---');
+        \F3::get('logger')->debug('start fetching source "'. $source['title'] . ' (id: '.$source['id'].') ');
         
         // get spout
         $spoutLoader = new \helpers\SpoutLoader();
         $spout = $spoutLoader->get($source['spout']);
         if($spout===false) {
-            \F3::get('logger')->log('unknown spout: ' . $source['spout'], \ERROR);
+            \F3::get('logger')->error('unknown spout: ' . $source['spout']);
             return;
         }
-        \F3::get('logger')->log('spout successfully loaded: ' . $source['spout'], \DEBUG);
+        \F3::get('logger')->debug('spout successfully loaded: ' . $source['spout']);
         
         // receive content
-        \F3::get('logger')->log('fetch content', \DEBUG);
+        \F3::get('logger')->debug('fetch content');
         try {
             $spout->load(
                 json_decode(html_entity_decode($source['params']), true)
             );
-        } catch(\exception $e) {
-            \F3::get('logger')->log('error loading feed content for ' . $source['title'] . ': ' . $e->getMessage(), \ERROR);
+        } catch(\Exception $e) {
+            \F3::get('logger')->error('error loading feed content for ' . $source['title'], array('exception' => $e));
             $this->sourceDao->error($source['id'], date('Y-m-d H:i:s') . 'error loading feed content: ' . $e->getMessage());
             return;
         }
@@ -109,10 +109,10 @@ class ContentLoader {
         // current date
         $minDate = new \DateTime();
         $minDate->sub(new \DateInterval('P'.\F3::get('items_lifetime').'D'));
-        \F3::get('logger')->log('minimum date: ' . $minDate->format('Y-m-d H:i:s'), \DEBUG);
+        \F3::get('logger')->debug('minimum date: ' . $minDate->format('Y-m-d H:i:s'));
         
         // insert new items in database
-        \F3::get('logger')->log('start item fetching', \DEBUG);
+        \F3::get('logger')->debug('start item fetching');
 
         $itemsInFeed = array();
         foreach ($spout as $item) {
@@ -131,7 +131,7 @@ class ContentLoader {
             // test date: continue with next if item too old
             $itemDate = new \DateTime($item->getDate());
             if($itemDate < $minDate) {
-                \F3::get('logger')->log('item "' . $item->getTitle() . '" (' . $item->getDate() . ') older than '.\F3::get('items_lifetime').' days', \DEBUG);
+                \F3::get('logger')->debug('item "' . $item->getTitle() . '" (' . $item->getDate() . ') older than '.\F3::get('items_lifetime').' days');
                 continue;
             }
             
@@ -141,7 +141,7 @@ class ContentLoader {
                 $itemDate = $now;
             
             // insert new item
-            \F3::get('logger')->log('start insertion of new item "'.$item->getTitle().'"', \DEBUG);
+            \F3::get('logger')->debug('start insertion of new item "'.$item->getTitle().'"');
             
             $content = "";
             try {
@@ -150,9 +150,9 @@ class ContentLoader {
                 
                 // sanitize content html
                 $content = $this->sanitizeContent($content);
-            } catch(\exception $e) {
+            } catch (\Exception $e) {
                 $content = 'Error: Content not fetched. Reason: ' . $e->getMessage();
-                \F3::get('logger')->log('Can not fetch "'.$item->getTitle().'" : ' . $e->getMessage(), \ERROR);
+                \F3::get('logger')->error('Can not fetch "'.$item->getTitle().'"', array('exception' => $e));
             }
 
             // sanitize title
@@ -167,12 +167,12 @@ class ContentLoader {
             // sanitize author
             $author = $this->sanitizeField($item->getAuthor());
 
-            \F3::get('logger')->log('item content sanitized', \DEBUG);
+            \F3::get('logger')->debug('item content sanitized');
 
             try {
                 $icon = $item->getIcon();
-            } catch(\exception $e) {
-                \F3::get('logger')->log('icon: error ' . $e->getMessage(), \DEBUG);
+            } catch (\Exception $e) {
+                \F3::get('logger')->debug('icon: error', array('exception' => $e));
                 return;
             }
 
@@ -196,16 +196,16 @@ class ContentLoader {
 
             // insert new item
             $this->itemsDao->add($newItem);
-            \F3::get('logger')->log('item inserted', \DEBUG);
+            \F3::get('logger')->debug('item inserted');
             
-            \F3::get('logger')->log('Memory usage: '.memory_get_usage(), \DEBUG);
-            \F3::get('logger')->log('Memory peak usage: '.memory_get_peak_usage(), \DEBUG);
+            \F3::get('logger')->debug('Memory usage: '.memory_get_usage());
+            \F3::get('logger')->debug('Memory peak usage: '.memory_get_peak_usage());
             
             $lastEntry = max($lastEntry, $itemDate->getTimestamp());
         }
     
         // destroy feed object (prevent memory issues)
-        \F3::get('logger')->log('destroy spout object', \DEBUG);
+        \F3::get('logger')->debug('destroy spout object');
         $spout->destroy();
 
         // remove previous errors and set last update timestamp
@@ -223,7 +223,7 @@ class ContentLoader {
             $resultTitle = @preg_match($source['filter'], $title);
             $resultContent = @preg_match($source['filter'], $content);
             if($resultTitle===false || $resultContent===false) {
-               \F3::get('logger')->log('filter error: ' . $source['filter'], \ERROR);
+               \F3::get('logger')->error('filter error: ' . $source['filter']);
                 return true; // do not filter out item
             }
             // test filter
@@ -287,10 +287,10 @@ class ContentLoader {
                     $thumbnailAsJpg
                 );
                 $newItem['thumbnail'] = md5($thumbnail) . '.' . $extension;
-                \F3::get('logger')->log('thumbnail generated: ' . $thumbnail, \DEBUG);
+                \F3::get('logger')->debug('thumbnail generated: ' . $thumbnail);
             } else {
                 $newItem['thumbnail'] = '';
-                \F3::get('logger')->log('thumbnail generation error: ' . $thumbnail, \ERROR);
+                \F3::get('logger')->error('thumbnail generation error: ' . $thumbnail);
             }
         }
 
@@ -310,7 +310,7 @@ class ContentLoader {
         if(strlen(trim($icon)) > 0) {
             $extension = 'png';
             if($icon==$lasticon) {
-                \F3::get('logger')->log('use last icon: '.$lasticon, \DEBUG);
+                \F3::get('logger')->debug('use last icon: '.$lasticon);
                 $newItem['icon'] = md5($lasticon) . '.' . $extension;
             } else {
                 $imageHelper = new \helpers\Image();
@@ -322,10 +322,10 @@ class ContentLoader {
                     );
                     $newItem['icon'] = md5($icon) . '.' . $extension;
                     $lasticon = $icon;
-                    \F3::get('logger')->log('icon generated: '.$icon, \DEBUG);
+                    \F3::get('logger')->debug('icon generated: '.$icon);
                 } else {
                     $newItem['icon'] = '';
-                    \F3::get('logger')->log('icon generation error: '.$icon, \ERROR);
+                    \F3::get('logger')->error('icon generation error: '.$icon);
                 }
             }
         }
@@ -339,14 +339,14 @@ class ContentLoader {
      * @param $data
      */
      public function fetchTitle($data) {
-         \F3::get('logger')->log('Start fetching spout title', \DEBUG);
+         \F3::get('logger')->debug('Start fetching spout title');
 
          // get spout
          $spoutLoader = new \helpers\SpoutLoader();
          $spout = $spoutLoader->get($data['spout']);
 
          if ($spout === false) {
-             \F3::get('logger')->log("Unknown spout “{$data['spout']}” when fetching title", \ERROR);
+             \F3::get('logger')->error("Unknown spout '{$data['spout']}' when fetching title");
              return null;
          }
 
@@ -357,7 +357,7 @@ class ContentLoader {
 
              $spout->load($data);
          } catch (\Exception $e) {
-             \F3::get('logger')->log('Error fetching title: ' . $e->getMessage(), \ERROR);
+             \F3::get('logger')->error('Error fetching title', array('exception' => $e));
              return null;
          }
 
@@ -375,25 +375,25 @@ class ContentLoader {
      */
     public function cleanup() {
         // cleanup orphaned and old items
-        \F3::get('logger')->log('cleanup orphaned and old items', \DEBUG);
+        \F3::get('logger')->debug('cleanup orphaned and old items');
         $this->itemsDao->cleanup(\F3::get('items_lifetime'));
-        \F3::get('logger')->log('cleanup orphaned and old items finished', \DEBUG);
+        \F3::get('logger')->debug('cleanup orphaned and old items finished');
         
         // delete orphaned thumbnails
-        \F3::get('logger')->log('delete orphaned thumbnails', \DEBUG);
+        \F3::get('logger')->debug('delete orphaned thumbnails');
         $this->cleanupFiles('thumbnails');
-        \F3::get('logger')->log('delete orphaned thumbnails finished', \DEBUG);
+        \F3::get('logger')->debug('delete orphaned thumbnails finished');
         
         // delete orphaned icons
-        \F3::get('logger')->log('delete orphaned icons', \DEBUG);
+        \F3::get('logger')->debug('delete orphaned icons');
         $this->cleanupFiles('icons');
-        \F3::get('logger')->log('delete orphaned icons finished', \DEBUG);
+        \F3::get('logger')->debug('delete orphaned icons finished');
         
         // optimize database
-        \F3::get('logger')->log('optimize database', \DEBUG);
+        \F3::get('logger')->debug('optimize database');
         $database = new \daos\Database();
         $database->optimize();
-        \F3::get('logger')->log('optimize database finished', \DEBUG);
+        \F3::get('logger')->debug('optimize database finished');
     }
     
     
