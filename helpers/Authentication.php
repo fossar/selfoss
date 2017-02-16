@@ -42,16 +42,16 @@ class Authentication {
         }
         session_set_cookie_params($cookie_expire, $cookie_path, $cookie_domain,
                                   $cookie_secure, $cookie_httponly);
-        \F3::get('logger')->log("set cookie on $cookie_domain$cookie_path expiring in $cookie_expire seconds", \DEBUG);
+        \F3::get('logger')->debug("set cookie on $cookie_domain$cookie_path expiring in $cookie_expire seconds");
         
         session_name();
         if(session_id()=="")
             session_start();
         if(isset($_SESSION['loggedin']) && $_SESSION['loggedin']===true){
             $this->loggedin = true;
-            \F3::get('logger')->log('logged in using valid session', \DEBUG);
+            \F3::get('logger')->debug('logged in using valid session');
         } else {
-            \F3::get('logger')->log('session does not contain valid auth', \DEBUG);
+            \F3::get('logger')->debug('session does not contain valid auth');
         }
         
         // autologin if request contains unsername and password
@@ -101,10 +101,10 @@ class Authentication {
             ) {
                 $this->loggedin = true;
                 $_SESSION['loggedin'] = true;
-                \F3::get('logger')->log('logged in with supplied username and password', \DEBUG);
+                \F3::get('logger')->debug('logged in with supplied username and password');
                 return true;
             } else {
-                \F3::get('logger')->log('failed to log in with supplied username and password', \DEBUG);
+                \F3::get('logger')->debug('failed to log in with supplied username and password');
                 return false;
             }
         }
@@ -143,6 +143,6 @@ class Authentication {
         $this->loggedin = false;
         $_SESSION['loggedin'] = false;
         session_destroy();
-        \F3::get('logger')->log('logged out and destroyed session', \DEBUG);
+        \F3::get('logger')->debug('logged out and destroyed session');
     }
 }

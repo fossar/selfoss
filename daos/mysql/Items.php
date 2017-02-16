@@ -384,7 +384,7 @@ class Items extends Database {
                   array(':thumbnail' => $thumbnail));
         $amount = $res[0]['amount'];
         if($amount==0)
-            \F3::get('logger')->log('thumbnail not found: '.$thumbnail, \DEBUG);
+            \F3::get('logger')->debug('thumbnail not found: '.$thumbnail);
         return $amount>0;
     }
     

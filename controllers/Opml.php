@@ -77,7 +77,7 @@ class Opml extends BaseController {
             $this->sourcesDao = new \daos\Sources();
             $this->tagsDao = new \daos\Tags();
 
-            \F3::get('logger')->log('start OPML import ', \DEBUG);
+            \F3::get('logger')->debug('start OPML import ');
 
             $subs = simplexml_load_file($opml['tmp_name']);
             $errors = $this->processGroup($subs->body);
@@ -85,7 +85,7 @@ class Opml extends BaseController {
             // cleanup tags
             $this->tagsDao->cleanup($this->sourcesDao->getAllTags());
 
-            \F3::get('logger')->log('finished OPML import ', \DEBUG);
+            \F3::get('logger')->debug('finished OPML import ');
 
             // show errors
             if (count($errors) > 0) {
@@ -181,9 +181,9 @@ class Opml extends BaseController {
         // set spout for new item
         if ($nsattrs->spout || $nsattrs->params) {
             if (!($nsattrs->spout && $nsattrs->params)) {
-                \F3::get('logger')->log('OPML import: failed to import      "' . $title . '"', \WARNING);
-                \F3::get('logger')->log('                                     missing attribute ' .
-                                        ($nsattrs->spout ? '"selfoss:params"' : '"selfoss:spout"'), \DEBUG);
+                \F3::get('logger')->warning("OPML import: failed to import '$title'");
+                $missingAttr = $nsattrs->spout ? '"selfoss:params"' : '"selfoss:spout"';
+                \F3::get('logger')->debug("Missing attribute: $missingAttr");
                 return $title;
             }
             $spout = (string)$nsattrs->spout;
@@ -191,18 +191,17 @@ class Opml extends BaseController {
         } else if (in_array((string)$attrs->type, array('rss', 'atom'))) {
             $spout = 'spouts\rss\feed';
         } else {
-            \F3::get('logger')->log('OPML import: failed to import      "' . $title . '"', \WARNING);
-            \F3::get('logger')->log('                                     invalid type "' . (string)$attrs->type .
-                                    '": only "rss" and "atom" are supported', \DEBUG);
+            \F3::get('logger')->warning("OPML import: failed to import '$title'");
+            \F3::get('logger')->debug('Invalid type "' . (string)$attrs->type .
+                                    '": only "rss" and "atom" are supported');
             return $title;
         }
 
         // validate new item
         $validation = @$this->sourcesDao->validate($title, $spout, $data);
         if ($validation !== true) {
-            \F3::get('logger')->log('OPML import: failed to import      "' . $title . '"', \WARNING);
-            foreach ($validation as $id => $param)
-                \F3::get('logger')->log('                                     ' . $id . ': ' . $param, \DEBUG);
+            \F3::get('logger')->warning("OPML import: failed to import '$title'");
+            \F3::get('logger')->debug('Invalid source', $validation);
             return $title;
         }
 
@@ -212,16 +211,16 @@ class Opml extends BaseController {
             $this->imported[$hash]['tags'] = array_unique(array_merge($this->imported[$hash]['tags'], $tags));
             $tags = implode(',', $this->imported[$hash]['tags']);
             $this->sourcesDao->edit($this->imported[$hash]['id'], $title, $tags, '', $spout, $data);
-            \F3::get('logger')->log('  OPML import: updated tags for      "' . $title . '"', \DEBUG);
+            \F3::get('logger')->debug("OPML import: updated tags for '$title'");
         } elseif ($id = $this->sourcesDao->checkIfExists($title, $spout, $data)) {
             $tags = array_unique(array_merge($this->sourcesDao->getTags($id), $tags));
             $this->sourcesDao->edit($id, $title, implode(',', $tags), '', $spout, $data);
             $this->imported[$hash] = Array('id' => $id, 'tags' => $tags);
-            \F3::get('logger')->log('  OPML import: updated tags for  "' . $title . '"', \DEBUG);
+            \F3::get('logger')->debug("OPML import: updated tags for '$title'");
         } else {
             $id = $this->sourcesDao->add($title, implode(',', $tags), '', $spout, $data);
             $this->imported[$hash] = Array('id' => $id, 'tags' => $tags);
-            \F3::get('logger')->log('  OPML import: successfully imported "' . $title . '"', \DEBUG);
+            \F3::get('logger')->debug("OPML import: successfully imported '$title'");
         }
 
         // success
@@ -259,7 +258,7 @@ class Opml extends BaseController {
         $this->writer->writeAttributeNS('selfoss', 'params', null, html_entity_decode($source['params']));
 
         $this->writer->endElement();  // outline
-        \F3::get('logger')->log("done exporting source ".$source['title'], \DEBUG);
+        \F3::get('logger')->debug("done exporting source " . $source['title']);
     }
 
 
@@ -274,7 +273,7 @@ class Opml extends BaseController {
         $this->sourcesDao = new \daos\Sources();
         $this->tagsDao = new \daos\Tags();
 
-        \F3::get('logger')->log('start OPML export', \DEBUG);
+        \F3::get('logger')->debug('start OPML export');
         $this->writer = new \XMLWriter();
         $this->writer->openMemory();
         $this->writer->setIndent(1);
@@ -292,13 +291,13 @@ class Opml extends BaseController {
         $this->writer->writeAttribute('version', '1.0');
         $this->writer->writeAttribute('createdOn', date('r'));
         $this->writer->endElement();  // meta
-        \F3::get('logger')->log('OPML export: finished writing meta', \DEBUG);
+        \F3::get('logger')->debug('OPML export: finished writing meta');
 
         $this->writer->startElement('head');
         $user = \F3::get('username');
         $this->writer->writeElement('title', ($user?$user.'\'s':'My') . ' subscriptions in selfoss');
         $this->writer->endElement();  // head
-        \F3::get('logger')->log('OPML export: finished writing head', \DEBUG);
+        \F3::get('logger')->debug('OPML export: finished writing head');
 
         $this->writer->startElement('body');
 
@@ -316,13 +315,13 @@ class Opml extends BaseController {
         // create associative array with tag names as keys, colors as values
         $tagColors = array();
         foreach ($this->tagsDao->get() as $key => $tag) {
-            \F3::get('logger')->log("OPML export: tag ".$tag['tag']." has color ".$tag['color'], \DEBUG);
+            \F3::get('logger')->debug("OPML export: tag ".$tag['tag']." has color ".$tag['color']);
             $tagColors[$tag['tag']] = $tag['color'];
         }
 
         // generate outline elements for all sources
         foreach ($sources['tagged'] as $tag => $children) {
-            \F3::get('logger')->log("OPML export: exporting tag $tag sources", \DEBUG);
+            \F3::get('logger')->debug("OPML export: exporting tag $tag sources");
             $this->writer->startElement('outline');
             $this->writer->writeAttribute('title', $tag);
             $this->writer->writeAttribute('text', $tag);
@@ -336,7 +335,7 @@ class Opml extends BaseController {
             $this->writer->endElement();  // outline
         }
 
-        \F3::get('logger')->log("OPML export: exporting untagged sources", \DEBUG);
+        \F3::get('logger')->debug("OPML export: exporting untagged sources");
         foreach ($sources['untagged'] as $key => $source) {
             $this->writeSource($source);
         }
@@ -344,7 +343,7 @@ class Opml extends BaseController {
         $this->writer->endElement();  // body
 
         $this->writer->endDocument();
-        \F3::get('logger')->log('finished OPML export', \DEBUG);
+        \F3::get('logger')->debug('finished OPML export');
 
         // save content as file and suggest file name
         header('Content-Disposition: attachment; filename="selfoss-subscriptions.xml"');

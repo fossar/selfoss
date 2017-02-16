@@ -101,26 +101,26 @@ class fulltextrss extends feed {
     public function getContent() {
 
         $url = parent::getLink();
-        \F3::get('logger')->log($this->tag . ' - Loading page: ' . $url, \INFO);
+        \F3::get('logger')->info($this->tag . ' - Loading page: ' . $url);
         $content = $this->fetchFromWebSite($url);
         if ($content===false) {
-            \F3::get('logger')->log($this->tag . ' - Failed loading page', \ERROR);
+            \F3::get('logger')->error($this->tag . ' - Failed loading page');
             return parent::getContent() .
                    "<p><strong>Failed to get web page</strong></p>";
         }
 
-        \F3::get('logger')->log($this->tag . ' - Extracting content', \INFO);
+        \F3::get('logger')->info($this->tag . ' - Extracting content');
         $content = @$this->extractContent($content, parent::getLink());
         if ($content===false) {
-            \F3::get('logger')->log($this->tag . ' - Failed extracting content', \ERROR);
+            \F3::get('logger')->error($this->tag . ' - Failed extracting content');
             return parent::getContent() .
                    "<p><strong>Full Text RSS extracting error</strong></p>";
         }
 
-        \F3::get('logger')->log($this->tag . ' - Cleaning content', \INFO);
+        \F3::get('logger')->info($this->tag . ' - Cleaning content');
         $content = $this->cleanContent($content);
         if ($content===false) {
-            \F3::get('logger')->log($this->tag . ' - Failed cleaning content from', \ERROR);
+            \F3::get('logger')->error($this->tag . ' - Failed cleaning content from');
             return parent::getContent() .
                    "<p><strong>Full Text RSS cleaning error</strong></p>";
         }
@@ -213,7 +213,7 @@ class fulltextrss extends feed {
      * @param string $html
      */
     private function extractContent($html, $url) {
-        \F3::get('logger')->log($this->tag . ' - Cleaning content', \DEBUG);
+        \F3::get('logger')->debug($this->tag . ' - Cleaning content');
         // remove strange things
         $html = str_replace('</[>', '', $html);
         $html = $this->convert_to_utf8($html, $response['headers']);
@@ -258,7 +258,7 @@ class fulltextrss extends feed {
      */
     private function cleanContent($html){
         // post-processing cleanup
-        \F3::get('logger')->log($this->tag . ' - Post process cleaning & anti-XSS', \DEBUG);
+        \F3::get('logger')->debug($this->tag . ' - Post process cleaning & anti-XSS');
         $html = preg_replace('!<p>[\s\h\v]*</p>!u', '', $html);
         $html = preg_replace('!<a[^>]*/>!', '', $html);
 
@@ -276,7 +276,7 @@ class fulltextrss extends feed {
                 if (is_array($header)) $header = implode("\n", $header);
                 if (!$header || !preg_match_all('/^Content-Type:\s+([^;]+)(?:;\s*charset=["\']?([^;"\'\n]*))?/im', $header, $match, PREG_SET_ORDER)) {
                         // error parsing the response
-                        \F3::get('logger')->log($this->tag . ' - Could not find Content-Type header in HTTP response', \DEBUG);
+                        \F3::get('logger')->debug($this->tag . ' - Could not find Content-Type header in HTTP response');
                 } else {
                         $match = end($match); // get last matched element (in case of redirects)
                         if (isset($match[2])) $encoding = trim($match[2], "\"' \r\n\0\x0B\t");
@@ -335,10 +335,10 @@ class fulltextrss extends feed {
                         $html = strtr($html, $trans);
                 }
                 if (!$encoding) {
-                        \F3::get('logger')->log($this->tag . ' - No character encoding found, so treating as UTF-8', \DEBUG);
+                        \F3::get('logger')->debug($this->tag . ' - No character encoding found, so treating as UTF-8');
                         $encoding = 'utf-8';
                 } else {
-                        \F3::get('logger')->log($this->tag . ' - Character encoding: '.$encoding, \DEBUG);
+                        \F3::get('logger')->debug($this->tag . ' - Character encoding: '.$encoding);
                         if (strtolower($encoding) != 'utf-8') {
                                 //('Converting to UTF-8');
                                 $html = \SimplePie_Misc::change_encoding($html, $encoding, 'utf-8');
