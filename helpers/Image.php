@@ -14,10 +14,7 @@ use WideImage\WideImage;
  */
 class Image {
     
-    /**
-     * url of last fetched favicon
-     * @var string
-     */
+    /** @var string url of last fetched favicon */
     private $faviconUrl = false;
     
     

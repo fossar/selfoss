@@ -14,19 +14,11 @@ namespace spouts;
  */
 abstract class spout implements \Iterator {
     
-    /**
-     * name of source
-     *
-     * @var string
-     */
+    /** @var string name of source */
     public $name = '';
     
     
-    /**
-     * description of this source type
-     *
-     * @var string
-     */
+    /** @var string description of this source type */
     public $description = '';
     
     
@@ -57,11 +49,7 @@ abstract class spout implements \Iterator {
      */
     public $params = false;
 
-    /**
-    * title of the spout
-    *
-    * @var ?string
-    */
+    /** @var ?string title of the spout */
     protected $spoutTitle = null;
 
 

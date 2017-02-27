@@ -12,11 +12,7 @@ namespace daos;
  */
 
 class Tags extends Database {
-    /**
-     * Instance of backend specific sources class
-     *
-     * @var     object
-     */
+    /** @var object Instance of backend specific sources class */
     private $backend = null;
     
     

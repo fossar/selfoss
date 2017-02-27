@@ -13,26 +13,13 @@ namespace spouts\youtube;
  * @copywork   Arndt Staudinger <info@clucose.com> April 2013
  */
 class youtube extends \spouts\rss\feed {
-    /**
-     * name of source
-     *
-     * @var string
-     */
+    /** @var string name of source */
     public $name = 'YouTube Channel';
 
-    /**
-     * description of this source type
-     *
-     * @var string
-     */
+    /** @var string description of this source type */
     public $description = 'A YouTube channel as source';
 
-    /**
-     * config params
-     * array of arrays with name, type, default value, required, validation type
-     *
-     * @var array
-     */
+    /** @var array config params */
     public $params = array(
         'channel' => array(
             'title' => 'Channel',

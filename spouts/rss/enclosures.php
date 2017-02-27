@@ -13,19 +13,11 @@ namespace spouts\rss;
  */
 class enclosures extends feed
 {
-    /**
-     * name of spout
-     *
-     * @var string
-     */
+    /** @var string name of spout */
     public $name = 'RSS Feed (with enclosures)';
 
 
-    /**
-     * description of this source type
-     *
-     * @var string
-     */
+    /** @var string description of this source type */
     public $description = 'This feed type adds image enclosures to the feed content';
 
 

@@ -13,19 +13,11 @@ namespace spouts\tumblr;
  */
 class user extends \spouts\rss\images {
 
-    /**
-     * name of source
-     *
-     * @var string
-     */
+    /** @var string name of source */
     public $name = 'tumblr User';
     
     
-    /**
-     * description of this source type
-     *
-     * @var string
-     */
+    /** @var string description of this source type */
     public $description = 'entries of a tumblr user';
     
     

@@ -13,19 +13,11 @@ namespace spouts\rss;
  */
 class feed extends \spouts\spout {
 
-    /**
-     * name of source
-     *
-     * @var string
-     */
+    /** @var string name of source */
     public $name = 'RSS Feed';
     
     
-    /**
-     * description of this source type
-     *
-     * @var string
-     */
+    /** @var string description of this source type */
     public $description = 'An default RSS Feed as source';
     
     
@@ -61,11 +53,7 @@ class feed extends \spouts\spout {
     );
     
     
-    /**
-     * current fetched items
-     *
-     * @var array|bool
-     */
+    /** @var array|bool current fetched items */
     protected $items = false;
     
     

@@ -17,19 +17,11 @@ namespace spouts\rss;
 class prolinux extends feed {
 
 
-    /**
-     * name of spout
-     *
-     * @var string
-     */
+    /** @var string name of spout */
     public $name = 'News: Pro-Linux';
 
 
-    /**
-     * description of this source type
-     *
-     * @var string
-     */
+    /** @var string description of this source type */
     public $description = 'This feed fetches the pro-linux news with full content (not only the header as content)';
 
 

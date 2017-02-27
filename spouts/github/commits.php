@@ -14,19 +14,11 @@ namespace spouts\github;
  */
 class commits extends \spouts\spout {
 
-    /**
-     * name of source
-     *
-     * @var string
-     */
+    /** @var string name of source */
     public $name = 'GitHub';
     
     
-    /**
-     * description of this source type
-     *
-     * @var string
-     */
+    /** @var string description of this source type */
     public $description = 'List commits on a repository';
     
     
@@ -76,19 +68,11 @@ class commits extends \spouts\spout {
     );
     
     
-    /**
-     * current fetched items
-     *
-     * @var array|bool
-     */
+    /** @var array|bool current fetched items */
     protected $items = false;
     
     
-    /**
-     * global html url for the source
-     *
-     * @var string
-     */
+    /** @var string global html url for the source */
     protected $htmlUrl = '';
     
     

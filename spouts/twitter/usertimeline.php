@@ -15,19 +15,11 @@ use Abraham\TwitterOAuth\TwitterOAuth;
  */
 class usertimeline extends \spouts\spout {
 
-    /**
-     * name of source
-     *
-     * @var string
-     */
+    /** @var string name of source */
     public $name = 'Twitter - User timeline';
     
     
-    /**
-     * description of this source type
-     *
-     * @var string
-     */
+    /** @var string description of this source type */
     public $description = 'The timeline of a given user';
     
     
@@ -91,11 +83,7 @@ class usertimeline extends \spouts\spout {
     );
     
     
-    /**
-     * current fetched items
-     *
-     * @var array|bool
-     */
+    /** @var array|bool current fetched items */
     protected $items = false;
     
 

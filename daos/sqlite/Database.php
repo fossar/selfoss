@@ -13,11 +13,7 @@ namespace daos\sqlite;
  */
 class Database {
 
-    /**
-     * indicates whether database connection was initialized
-     *
-     * @var bool
-     */
+    /** @var bool indicates whether database connection was initialized */
     static private $initialized = false;
 
     
@@ -225,20 +221,25 @@ class Database {
      *
      * @return void
      */
-    private function initLastEntryFieldDuringUpgrade() { 	
-    	$sources = @\F3::get('db')->exec('SELECT id FROM sources');
-   
-    	// have a look at each entry in the source table
-    	foreach($sources as $current_src) {
-    		//get the date of the newest entry found in the database   		
-    		$latestEntryDate = @\F3::get('db')->exec('SELECT datetime FROM items WHERE source=' . 
-    				                              $current_src['id'] . ' ORDER BY datetime DESC LIMIT 0, 1');
-    		
-    		//if an entry for this source was found in the database, write the date of the newest one into the sources table 
+    private function initLastEntryFieldDuringUpgrade() {
+        $sources = @\F3::get('db')->exec('SELECT id FROM sources');
+
+        // have a look at each entry in the source table
+        foreach($sources as $current_src) {
+            // get the date of the newest entry found in the database
+            $latestEntryDate = @\F3::get('db')->exec(
+                'SELECT datetime FROM items WHERE source=? ORDER BY datetime DESC LIMIT 0, 1',
+                $current_src['id']
+            );
+
+            // if an entry for this source was found in the database, write the date of the newest one into the sources table 
             if (isset ($latestEntryDate[0]['datetime']))
-            	@\F3::get('db')->exec('UPDATE sources SET lastentry=' . strtotime($latestEntryDate[0]['datetime']) . 
-            			              ' WHERE id=' . $current_src['id']);          	 
-    	}
+                @\F3::get('db')->exec(
+                    'UPDATE sources SET lastentry=? WHERE id=?',
+                    strtotime($latestEntryDate[0]['datetime']),
+                    $current_src['id']
+                );
+        }
 
     }
     

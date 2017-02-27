@@ -13,19 +13,11 @@ namespace spouts\reddit;
  */
 class reddit2 extends \spouts\spout {
 
-    /**
-     * name of spout
-     *
-     * @var string
-     */
+    /** @var string name of spout */
     public $name = 'Reddit';
 
 
-    /**
-     * description of this source type
-     *
-     * @var string
-     */
+    /** @var string description of this source type */
     public $description = 'Get your fix from Reddit';
 
 
@@ -79,42 +71,22 @@ class reddit2 extends \spouts\spout {
     );
 
 
-    /**
-     * the readability api key
-     *
-     * @var string
-     */
+    /** @var string the readability api key */
     private $apiKey = "";
 
 
-    /**
-     * the reddit_session cookie
-     *
-     * @var string
-     */
+    /** @var string the reddit_session cookie */
     private $reddit_session = "";
 
 
-    /**
-     * the scrape urls
-     *
-     * @var string
-     */
+    /** @var string the scrape urls */
     private $scrape = true;
 
 
-    /**
-     * current fetched items
-     *
-     * @var array|null
-     */
+    /** @var array|null current fetched items */
     protected $items = null;
 
-    /**
-     * favicon url
-     *
-     * @var string
-     */
+    /** @var string favicon url */
     private $faviconUrl = '';
 
     /**

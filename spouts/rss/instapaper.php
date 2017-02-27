@@ -15,19 +15,11 @@ namespace spouts\rss;
 class instapaper extends feed {
 
 
-    /**
-     * name of spout
-     *
-     * @var string
-     */
+    /** @var string name of spout */
     public $name = 'RSS Feed (with instapaper)';
     
     
-    /**
-     * description of this source type
-     *
-     * @var string
-     */
+    /** @var string description of this source type */
     public $description = 'This feed cleaning the content with instapaper.com';
     
     

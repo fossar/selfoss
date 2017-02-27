@@ -14,19 +14,11 @@ namespace spouts\rss;
 class golem extends feed {
 
 
-    /**
-     * name of spout
-     *
-     * @var string
-     */
+    /** @var string name of spout */
     public $name = 'News: Golem';
     
     
-    /**
-     * description of this source type
-     *
-     * @var string
-     */
+    /** @var string description of this source type */
     public $description = 'This feed fetches the golem news with full content (not only the header as content)';
     
     

@@ -12,11 +12,7 @@ namespace daos;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class Database {
-    /**
-     * Instance of backend specific database access class
-     *
-     * @var     object
-     */
+    /** @var object Instance of backend specific database access class */
     private $backend = null;
     
     

@@ -12,10 +12,7 @@ namespace helpers;
  */
 class View {
 
-    /**
-     * current base url
-     * @var string
-     */
+    /** @var string current base url */
     public $base = '';
 
     /**

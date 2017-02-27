@@ -14,19 +14,11 @@ namespace spouts\facebook;
  */
 class page extends \spouts\rss\feed {
 
-    /**
-     * name of source
-     *
-     * @var string
-     */
+    /** @var string name of source */
     public $name = 'Facebook page feed';
     
     
-    /**
-     * description of this source type
-     *
-     * @var string
-     */
+    /** @var string description of this source type */
     public $description = 'Page wall';
     
     

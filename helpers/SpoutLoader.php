@@ -13,11 +13,7 @@ namespace helpers;
  */
 class SpoutLoader {
     
-    /**
-     * array of available spouts
-     *
-     * @var bool|array
-     */
+    /** @var bool|array array of available spouts */
     public $spouts = false;
     
     

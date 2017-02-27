@@ -20,11 +20,7 @@ namespace daos\pgsql;
  */
 class Database {
 
-    /**
-     * indicates whether database connection was initialized
-     *
-     * @var bool
-     */
+    /** @var bool indicates whether database connection was initialized */
     static private $initialized = false;
 
     

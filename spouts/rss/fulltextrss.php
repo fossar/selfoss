@@ -13,18 +13,10 @@ namespace spouts\rss;
  */
 class fulltextrss extends feed {
 
-    /**
-     * name of spout
-     *
-     * @var string
-     */
+    /** @var string name of spout */
     public $name = 'RSS Feed (with FullTextRss)';
 
-    /**
-     * description of this source type
-     *
-     * @var string
-     */
+    /** @var string description of this source type */
     public $description = 'This feed extracts full text article from webpages with an embedded version of Full-Text RSS';
 
     /**
@@ -62,11 +54,7 @@ class fulltextrss extends feed {
         ),
     );
 
-    /**
-     * tag for logger
-     *
-     * @var string
-     */
+    /** @var string tag for logger */
     public $tag = 'ftrss';
 
     private $extractor;

@@ -14,22 +14,13 @@ namespace controllers;
 
 class Opml extends BaseController {
 
-    /**
-     * Passed to opml.phtml
-     * @var String
-     */
+    /** @var string Passed to opml.phtml */
     private $msgclass = 'error'; 
     
-    /**
-     * Passed to opml.phtml
-     * @var String
-     */
+    /** @var string Passed to opml.phtml */
     private $msg;
 
-    /**
-    * Sources that have been imported from the OPML file
-    * @var Array
-    */
+    /** @var array Sources that have been imported from the OPML file */
     private $imported = array();
 
     /** @var \helpers\SpoutLoader */

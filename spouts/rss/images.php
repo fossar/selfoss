@@ -13,19 +13,11 @@ namespace spouts\rss;
  */
 class images extends feed {
 
-    /**
-     * name of spout
-     *
-     * @var string
-     */
+    /** @var string name of spout */
     public $name = 'RSS Feed Images';
     
     
-    /**
-     * description of this source type
-     *
-     * @var string
-     */
+    /** @var string description of this source type */
     public $description = 'Fetching images from given rss feed';
     
     

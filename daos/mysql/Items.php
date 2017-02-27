@@ -13,11 +13,7 @@ namespace daos\mysql;
  */
 class Items extends Database {
 
-    /**
-     * indicates whether last run has more
-     * results or not
-     * @var bool
-     */
+    /** @var bool indicates whether last run has more results or not */
     protected $hasMore = false;
 
     

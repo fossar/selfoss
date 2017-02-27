@@ -14,19 +14,11 @@ namespace spouts\rss;
 class mmospy extends feed {
 
 
-    /**
-     * name of spout
-     *
-     * @var string
-     */
+    /** @var string name of spout */
     public $name = 'News: MMOspy';
     
     
-    /**
-     * description of this source type
-     *
-     * @var string
-     */
+    /** @var string description of this source type */
     public $description = 'This feed fetches the mmospy news with full content (not only the header as content)';
     
     

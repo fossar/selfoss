@@ -12,11 +12,7 @@ namespace controllers;
  */
 class BaseController {
 
-    /**
-     * view helper
-     *
-     * @var \helpers\View
-     */
+    /** @var \helpers\View view helper */
     protected $view;
 
     

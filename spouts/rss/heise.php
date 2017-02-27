@@ -15,19 +15,11 @@ namespace spouts\rss;
 class heise extends feed {
 
 
-    /**
-     * name of spout
-     *
-     * @var string
-     */
+    /** @var string name of spout */
     public $name = 'News: Heise';
     
     
-    /**
-     * description of this source type
-     *
-     * @var string
-     */
+    /** @var string description of this source type */
     public $description = 'This feed fetches the heise news with full content (not only the header as content)';
     
     

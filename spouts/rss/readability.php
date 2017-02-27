@@ -15,19 +15,11 @@ namespace spouts\rss;
 class readability extends feed {
 
 
-    /**
-     * name of spout
-     *
-     * @var string
-     */
+    /** @var string name of spout */
     public $name = 'RSS Feed (with readability)';
     
     
-    /**
-     * description of this source type
-     *
-     * @var string
-     */
+    /** @var string description of this source type */
     public $description = 'This feed cleaning the content with readability.com';
     
     
@@ -74,11 +66,7 @@ class readability extends feed {
     );
 
     
-    /**
-     * the readability api key
-     *
-     * @var string
-     */
+    /** @var string the readability api key */
     private $apiKey = "";
 
 

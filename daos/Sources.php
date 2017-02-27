@@ -13,11 +13,7 @@ namespace daos;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class Sources extends Database {
-    /**
-     * Instance of backend specific sources class
-     *
-     * @var     object
-     */
+    /** @var object Instance of backend specific sources class */
     private $backend = null;
     
     

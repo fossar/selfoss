@@ -12,10 +12,7 @@ namespace helpers;
  */
 class Authentication {
 
-    /**
-     * loggedin
-     * @var bool
-     */
+    /** @var bool loggedin */
     private $loggedin = false;
     
     
