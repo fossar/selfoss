@@ -177,15 +177,15 @@ class ContentLoader {
             }
 
             $newItem = array(
-                    'title'        => $title,
-                    'content'      => $content,
-                    'source'       => $source['id'],
-                    'datetime'     => $itemDate->format('Y-m-d H:i:s'),
-                    'uid'          => $item->getId(),
-                    'thumbnail'    => $item->getThumbnail(),
-                    'icon'         => $icon!==false ? $icon : "",
-                    'link'         => htmLawed($item->getLink(), array("deny_attribute" => "*", "elements" => "-*")),
-                    'author'       => $author
+                'title'        => $title,
+                'content'      => $content,
+                'source'       => $source['id'],
+                'datetime'     => $itemDate->format('Y-m-d H:i:s'),
+                'uid'          => $item->getId(),
+                'thumbnail'    => $item->getThumbnail(),
+                'icon'         => $icon!==false ? $icon : "",
+                'link'         => htmLawed($item->getLink(), array("deny_attribute" => "*", "elements" => "-*")),
+                'author'       => $author
             );
             
             // save thumbnail

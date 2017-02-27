@@ -236,12 +236,12 @@ class Database {
      * Ensure row values have the appropriate PHP type. This assumes we are
      * using buffered queries (sql results are in PHP memory).
      *
-     * @param expectedRowTypes associative array mapping columns to PDO types
      * @param rows array of associative array representing row results
+     * @param expectedRowTypes associative array mapping columns to PDO types
      * @return array of associative array representing row results having
      *         expected types
      */
-    public function ensureRowTypes($expectedRowTypes, $rows) {
+    public function ensureRowTypes($rows, $expectedRowTypes) {
         return $rows; // pgsql returns correct PHP types
     }
 }

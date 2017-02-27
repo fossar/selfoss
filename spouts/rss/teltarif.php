@@ -112,9 +112,11 @@ class teltarif extends feed {
                 $text_end_pos= strrpos ($originalContent, $end_marker);
                 
                 if (($text_start_pos != false) && ($text_end_pos != false)) {
-                    $content = substr ($originalContent, 
-                                       $text_start_pos + strlen ($start_marker), 
-                                       $text_end_pos - $text_start_pos - strlen ($start_marker));
+                    $content = substr(
+                        $originalContent,
+                        $text_start_pos + strlen($start_marker),
+                        $text_end_pos - $text_start_pos - strlen($start_marker)
+                    );
 
                     // remove most html coding and return result
                     return htmLawed($content, $this->htmLawedConfig);

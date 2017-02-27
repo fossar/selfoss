@@ -1,9 +1,6 @@
 <?PHP $idAttr = isset($this->source) ? $this->source['id'] : 'new-' . rand(); ?>
 <div role="form" id="source<?= $idAttr ?>" 
-        class="source <?PHP 
-                        echo isset($this->source)===false ? 'source-new' : ''; 
-                        echo (isset($this->source) && isset($this->source['error']) && strlen($this->source['error'] > 0)) ? 'error' : ''
-                        ?>">
+        class="source <?= isset($this->source)===false ? 'source-new' : '' ?> <?= (isset($this->source) && isset($this->source['error']) && strlen($this->source['error'] > 0)) ? 'error' : '' ?>">
     <div class="source-icon">
         <?PHP if(isset($this->source) && isset($this->source['icon']) && $this->source['icon']!==false && $this->source['icon']!="0") : ?>
         <img src="<?PHP echo 'favicons/'.$this->source['icon']; ?>" alt="<?PHP echo isset($this->source) ? $this->source['title'] : ''; ?>" />
@@ -19,26 +16,26 @@
     <div class="source-days">
         <?php        
         if (isset($this->source)) {
-        	
-        	if (isset($this->source['lastentry'])) {  
-        		echo '&bull; ' . \F3::get('lang_source_last_post') . ' ';
-        		
-        		// Get number of days between now and when the last entry was seen
-        		// Note: The time of the two dates is set to midnight (0,0,0)
-        		// to get the difference of the two dates in calendar days
-        		// instead of a day equaling any 24 hour period which makes it 
-        		// impossible to distinguish today and yesterday.
-        		$old = new DateTime();
-        		$old->setTimestamp($this->source['lastentry']);
-        		$old->setTime(0,0,0);
-        		$now = new DateTime();
-        		$now->setTime(0,0,0);      		
-        		$diff = $now->diff($old);      		
-        		echo \F3::get('lang_days', $diff->format('%a'));
-        	}
+            
+            if (isset($this->source['lastentry'])) {  
+                echo '&bull; ' . \F3::get('lang_source_last_post') . ' ';
+                
+                // Get number of days between now and when the last entry was seen
+                // Note: The time of the two dates is set to midnight (0,0,0)
+                // to get the difference of the two dates in calendar days
+                // instead of a day equaling any 24 hour period which makes it 
+                // impossible to distinguish today and yesterday.
+                $old = new DateTime();
+                $old->setTimestamp($this->source['lastentry']);
+                $old->setTime(0,0,0);
+                $now = new DateTime();
+                $now->setTime(0,0,0);              
+                $diff = $now->diff($old);              
+                echo \F3::get('lang_days', $diff->format('%a'));
+            }
         }
         else {
-        	\F3::get('lang_source_new'); 
+            \F3::get('lang_source_new'); 
         }
         ?>
     </div>

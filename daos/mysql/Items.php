@@ -93,26 +93,26 @@ class Items extends Database {
      */
     public function add($values) {
         \F3::get('db')->exec('INSERT INTO '.\F3::get('db_prefix').'items (
-                    datetime, 
-                    title, 
-                    content, 
-                    unread, 
-                    starred, 
-                    source, 
-                    thumbnail, 
-                    icon, 
+                    datetime,
+                    title,
+                    content,
+                    unread,
+                    starred,
+                    source,
+                    thumbnail,
+                    icon,
                     uid,
                     link,
                     author
                   ) VALUES (
-                    :datetime, 
-                    :title, 
-                    :content, 
+                    :datetime,
+                    :title,
+                    :content,
                     :unread,
-                    :starred, 
-                    :source, 
-                    :thumbnail, 
-                    :icon, 
+                    :starred,
+                    :source,
+                    :thumbnail,
+                    :icon,
                     :uid,
                     :link,
                     :author
@@ -142,7 +142,7 @@ class Items extends Database {
      */
     public function exists($uid) {
         $res = \F3::get('db')->exec('SELECT COUNT(*) AS amount FROM '.\F3::get('db_prefix').'items WHERE uid=:uid',
-                    array( ':uid' => array($uid, \PDO::PARAM_STR) ) );
+            array( ':uid' => array($uid, \PDO::PARAM_STR) ) );
         return $res[0]['amount']>0;
     }
     
@@ -279,8 +279,7 @@ class Items extends Database {
             // limit the query to a sensible max
             && count($options['extra_ids']) <= \F3::get('items_perpage') ) {
 
-            $extra_ids_stmt = $this->stmt->intRowMatches('items.id',
-                                                         $options['extra_ids']);
+            $extra_ids_stmt = $this->stmt->intRowMatches('items.id', $options['extra_ids']);
             if( !is_null($extra_ids_stmt) )
                 $where_ids = $extra_ids_stmt;
         }
@@ -449,7 +448,7 @@ class Items extends Database {
             return false;
         
         $res = \F3::get('db')->exec('SELECT icon FROM '.\F3::get('db_prefix').'items WHERE source=:sourceid AND icon!=\'\' AND icon IS NOT NULL ORDER BY ID DESC LIMIT 1',
-                    array(':sourceid' => $sourceid));
+            array(':sourceid' => $sourceid));
         if(count($res)==1)
             return $res[0]['icon'];
             
@@ -481,10 +480,11 @@ class Items extends Database {
             '.$this->stmt->sumBool('unread').' AS unread,
             '.$this->stmt->sumBool('starred').' AS starred
             FROM '.\F3::get('db_prefix').'items;');
-        $res = $this->ensureRowTypes(array('total'   => \PDO::PARAM_INT,
-                                           'unread'  => \PDO::PARAM_INT,
-                                           'starred' => \PDO::PARAM_INT),
-                                     $res);
+        $res = $this->ensureRowTypes($res, array(
+            'total'   => \PDO::PARAM_INT,
+            'unread'  => \PDO::PARAM_INT,
+            'starred' => \PDO::PARAM_INT
+        ));
         return $res[0];
     }
 
@@ -513,10 +513,11 @@ class Items extends Database {
             FROM '.\F3::get('db_prefix').'items
             WHERE '.\F3::get('db_prefix').'items.updatetime > :since;',
                 array(':since' => array($since, \PDO::PARAM_STR)));
-        $res = $this->ensureRowTypes(array('id'      => \PDO::PARAM_INT,
-                                           'unread'  => \PDO::PARAM_BOOL,
-                                           'starred' => \PDO::PARAM_BOOL),
-                                     $res);
+        $res = $this->ensureRowTypes($res, array(
+            'id'      => \PDO::PARAM_INT,
+            'unread'  => \PDO::PARAM_BOOL,
+            'starred' => \PDO::PARAM_BOOL
+        ));
         return $res;
     }
 }

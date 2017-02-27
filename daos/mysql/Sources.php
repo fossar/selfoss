@@ -25,14 +25,13 @@ class Sources extends Database {
         // sanitize tag list
         $tags = implode(',', preg_split('/\s*,\s*/', trim($tags), -1, PREG_SPLIT_NO_EMPTY));
 
-        return $this->stmt->insert('INSERT INTO '.\F3::get('db_prefix').'sources (title, tags, filter, spout, params) VALUES (:title, :tags, :filter, :spout, :params)',
-                    array(
-                        ':title'  => trim($title),
-                        ':tags'   => $tags,
-                        ':filter' => $filter,
-                        ':spout'  => $spout,
-                        ':params' => htmlentities(json_encode($params))
-                    ));
+        return $this->stmt->insert('INSERT INTO '.\F3::get('db_prefix').'sources (title, tags, filter, spout, params) VALUES (:title, :tags, :filter, :spout, :params)', array(
+            ':title'  => trim($title),
+            ':tags'   => $tags,
+            ':filter' => $filter,
+            ':spout'  => $spout,
+            ':params' => htmlentities(json_encode($params))
+        ));
     }
     
     
@@ -50,15 +49,14 @@ class Sources extends Database {
         // sanitize tag list
         $tags = implode(',', preg_split('/\s*,\s*/', trim($tags), -1, PREG_SPLIT_NO_EMPTY));
 
-        \F3::get('db')->exec('UPDATE '.\F3::get('db_prefix').'sources SET title=:title, tags=:tags, filter=:filter, spout=:spout, params=:params WHERE id=:id',
-                    array(
-                        ':title'  => trim($title),
-                        ':tags'   => $tags,
-                        ':filter' => $filter,
-                        ':spout'  => $spout,
-                        ':params' => htmlentities(json_encode($params)),
-                        ':id'     => $id
-                    ));
+        \F3::get('db')->exec('UPDATE '.\F3::get('db_prefix').'sources SET title=:title, tags=:tags, filter=:filter, spout=:spout, params=:params WHERE id=:id', array(
+            ':title'  => trim($title),
+            ':tags'   => $tags,
+            ':filter' => $filter,
+            ':spout'  => $spout,
+            ':params' => htmlentities(json_encode($params)),
+            ':id'     => $id
+        ));
     }
     
     
@@ -69,12 +67,10 @@ class Sources extends Database {
      * @param int $id
      */
     public function delete($id) {
-        \F3::get('db')->exec('DELETE FROM '.\F3::get('db_prefix').'sources WHERE id=:id',
-                    array(':id' => $id));
+        \F3::get('db')->exec('DELETE FROM '.\F3::get('db_prefix').'sources WHERE id=:id', array(':id' => $id));
         
         // delete items of this source
-        \F3::get('db')->exec('DELETE FROM '.\F3::get('db_prefix').'items WHERE source=:id',
-                    array(':id' => $id));
+        \F3::get('db')->exec('DELETE FROM '.\F3::get('db_prefix').'items WHERE source=:id', array(':id' => $id));
     }
     
     
@@ -149,8 +145,7 @@ class Sources extends Database {
     public function get($id = null) {
         // select source by id if specified or return all sources
         if (isset($id)) {
-            $ret = \F3::get('db')->exec('SELECT id, title, tags, spout, params, filter, error FROM '.\F3::get('db_prefix').'sources WHERE id=:id',
-                                    array(':id' => $id));
+            $ret = \F3::get('db')->exec('SELECT id, title, tags, spout, params, filter, error FROM '.\F3::get('db_prefix').'sources WHERE id=:id', array(':id' => $id));
             if (isset($ret[0])) {
                 $ret = $ret[0];
             } else {
@@ -262,16 +257,15 @@ class Sources extends Database {
      * @param  mixed   $params depends from spout     
      */
     public function checkIfExists($title, $spout, $params) {
-         // Check if a entry exists with same title, spout and params
-         $result = \F3::get('db')->exec('SELECT id FROM '.\F3::get('db_prefix').'sources WHERE title=:title AND spout=:spout AND params=:params',
-                 array(
-                     ':title'  => trim($title),
-                     ':spout'  => $spout,
-                     ':params' => htmlentities(json_encode($params))
-                ));
-         if ($result) {
-             return $result[0]['id'];
-         }
-         return 0;
-     }   
+        // Check if a entry exists with same title, spout and params
+        $result = \F3::get('db')->exec('SELECT id FROM '.\F3::get('db_prefix').'sources WHERE title=:title AND spout=:spout AND params=:params', array(
+            ':title'  => trim($title),
+            ':spout'  => $spout,
+            ':params' => htmlentities(json_encode($params))
+        ));
+        if ($result) {
+            return $result[0]['id'];
+        }
+        return 0;
+    }
 }

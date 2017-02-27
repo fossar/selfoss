@@ -33,9 +33,8 @@ class Database {
             
             \F3::get('logger')->debug("Establish database connection");
             \F3::set('db', new \DB\SQL(
-                    'sqlite:' . $db_file
-                )
-            );
+                'sqlite:' . $db_file
+            ));
             
             // create tables if necessary
             $result = @\F3::get('db')->exec('SELECT name FROM sqlite_master WHERE type = "table"');

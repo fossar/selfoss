@@ -87,8 +87,8 @@ class Opml extends BaseController {
             // On success bring them back to their subscription list
             } else {
                 $amount = count($this->imported);
-                $this->msg = "Success! " . $amount . " feed" . ($amount!=1?"s have":" has") . " been imported.<br />" .
-                             "You might want to <a href='update'>update now</a> or <a href='./'>view your feeds</a>.";
+                $this->msg = "Success! " . $amount . " feed" . ($amount!=1?"s have":" has") . " been imported.<br>" .
+                    'You might want to <a href="update">update now</a> or <a href="./">view your feeds</a>.';
                 $this->msgclass = 'success';
                 $this->show();
             }
@@ -183,8 +183,7 @@ class Opml extends BaseController {
             $spout = 'spouts\rss\feed';
         } else {
             \F3::get('logger')->warning("OPML import: failed to import '$title'");
-            \F3::get('logger')->debug('Invalid type "' . (string)$attrs->type .
-                                    '": only "rss" and "atom" are supported');
+            \F3::get('logger')->debug("Invalid type '$attrs->type': only 'rss' and 'atom' are supported");
             return $title;
         }
 

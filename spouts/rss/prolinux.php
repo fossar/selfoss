@@ -131,11 +131,11 @@ class prolinux extends feed {
                 if(is_array($content) && count($content)>=1) {
                     $content = $content[0];
                     $content = preg_replace_callback(',<a([^>]+)href="([^>"\s]+)",i', function($matches) {
-                                            return "<a\1href=\"" . \spouts\rss\prolinux::absolute("\2", "http://www.pro-linux.de") . "\"";},
-                                            $content);
+                        return "<a\1href=\"" . \spouts\rss\prolinux::absolute("\2", "http://www.pro-linux.de") . "\"";
+                    }, $content);
                     $content = preg_replace_callback(',<img([^>]+)src="([^>"\s]+)",i', function($matches) {
-                                            return "<img\1src=\"" . \spouts\rss\prolinux::absolute("\2", "http://www.pro-linux.de") . "\"";},
-                                            $content);
+                        return "<img\1src=\"" . \spouts\rss\prolinux::absolute("\2", "http://www.pro-linux.de") . "\"";
+                    }, $content);
                     return $content;
                 }
             }

@@ -37,8 +37,9 @@ class Authentication {
             $cookie_path = \F3::get('BASE').'/';
             $cookie_domain = $_SERVER['SERVER_NAME'];
         }
-        session_set_cookie_params($cookie_expire, $cookie_path, $cookie_domain,
-                                  $cookie_secure, $cookie_httponly);
+        session_set_cookie_params(
+            $cookie_expire, $cookie_path, $cookie_domain, $cookie_secure, $cookie_httponly
+        );
         \F3::get('logger')->debug("set cookie on $cookie_domain$cookie_path expiring in $cookie_expire seconds");
         
         session_name();

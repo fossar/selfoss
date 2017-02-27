@@ -91,11 +91,11 @@ class mmospy extends feed {
                 $content = utf8_encode($matches[0][0]);
                 
                 $content = preg_replace_callback(',<a([^>]+)href="([^>"\s]+)",i', function($matches) {
-                                            return "<a\1href=\"" . \spouts\rss\mmospy::absolute("\2", "http://www.mmo-spy.de") . "\"";},
-                                            $content);
+                    return "<a\1href=\"" . \spouts\rss\mmospy::absolute("\2", "http://www.mmo-spy.de") . "\"";
+                }, $content);
                 $content = preg_replace_callback(',<img([^>]+)src="([^>"\s]+)",i', function($matches) {
-                                        return "<img\1src=\"" . \spouts\rss\mmospy::absolute("\2", "http://www.mmo-spy.de") . "\"";},
-                                        $content);
+                    return "<img\1src=\"" . \spouts\rss\mmospy::absolute("\2", "http://www.mmo-spy.de") . "\"";
+                }, $content);
             
                 return $content;
             }
