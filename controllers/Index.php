@@ -190,10 +190,7 @@ class Index extends BaseController {
      */
     public function update() {
         // only allow access for localhost and loggedin users
-        if (\F3::get('allow_public_update_access')!=1 
-                && $_SERVER['REMOTE_ADDR'] !== $_SERVER['SERVER_ADDR'] 
-                && $_SERVER['REMOTE_ADDR'] !== "127.0.0.1"
-                && \F3::get('auth')->isLoggedin() != 1)
+        if (!$this->allowedToUpdate())
             die("unallowed access");
     
         // update feeds
@@ -228,14 +225,10 @@ class Index extends BaseController {
         $itemDao = new \daos\Items();
         $itemsHtml = '';
 
-        $canUpdate = \F3::get('allow_public_update_access') == 1
-                        || $_SERVER['REMOTE_ADDR'] === $_SERVER['SERVER_ADDR']
-                        || $_SERVER['REMOTE_ADDR'] === "127.0.0.1"
-                        || \F3::get('auth')->isLoggedin() == 1;
         $firstPage = $options['offset'] == 0
-                        && $options['offset_from_id'] == ''
-                        && $options['offset_from_datetime'] == '';
-        if ($options['source'] && $canUpdate && $firstPage) {
+            && $options['offset_from_id'] == ''
+            && $options['offset_from_datetime'] == '';
+        if ($options['source'] && $this->allowedToUpdate() && $firstPage) {
             $itemsHtml = '<button type="button" id="refresh-source" class="refresh-source">' . \F3::get('lang_source_refresh') . '</button>';
         }
 
