@@ -240,7 +240,7 @@ class Database {
      * @return array of associative array representing row results having
      *         expected types
      */
-    public function ensureRowTypes($expectedRowTypes, &$rows) {
+    public function ensureRowTypes($expectedRowTypes, $rows) {
         foreach($rows as $rowIndex => $row) {
             foreach($expectedRowTypes as $column => $type) {
                 if( array_key_exists($column, $row) ) {

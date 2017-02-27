@@ -245,7 +245,7 @@ class Database {
      * @return array of associative array representing row results having
      *         expected types
      */
-    public function ensureRowTypes($expectedRowTypes, &$rows) {
+    public function ensureRowTypes($expectedRowTypes, $rows) {
         return $rows; // pgsql returns correct PHP types
     }
 }
