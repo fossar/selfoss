@@ -156,8 +156,13 @@
     <div id="content" role="main">
         <?PHP echo $this->content; ?>
     </div>
-    
-    <div class="stream-error"><?PHP echo trim(\F3::get('lang_streamerror')); ?></div>
+
+    <div id="stream-buttons">
+        <div class="stream-empty"><?PHP echo trim(\F3::get('lang_no_entries')); ?></div>
+        <div class="stream-button stream-more"><span><?PHP echo trim(\F3::get('lang_more')); ?></span></div>
+        <div class="stream-button mark-these-read"><span><?PHP echo trim(\F3::get('lang_markread')); ?></span></div>
+        <div class="stream-button stream-error"><?PHP echo trim(\F3::get('lang_streamerror')); ?></div>
+    </div>
 
     <!-- fullscreen popup -->
     <div id="fullscreen-entry"></div>

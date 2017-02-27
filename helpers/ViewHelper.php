@@ -70,6 +70,19 @@ class ViewHelper {
         return \F3::get('lang_timestamp', $date->getTimestamp());
     }
 
+
+    /**
+     * Return ISO8601 formatted date
+     *
+     * @param sql date
+     * @return string
+     */
+    public static function date_iso8601($datestr) {
+        $date = new \DateTime($datestr);
+        return $date->format(\DateTime::ATOM);
+    }
+
+
     /**
      * Proxify imgs through atmos/camo when not https
      *

@@ -33,7 +33,12 @@ var selfoss = {
     /**
      * last stats update
      */
-    lastStatsUpdate: Date.now(),
+    lastSync: Date.now(),
+
+    /**
+     * last db timestamp known client side
+     */
+    lastUpdate: null,
     
     /**
      * the html title configured
@@ -70,7 +75,7 @@ var selfoss = {
             selfoss.shortcuts.init();
 
             // setup periodic stats reloader
-            window.setInterval(selfoss.reloadStats, 60*1000);
+            window.setInterval(selfoss.sync, 60*1000);
         });
     },
     
@@ -180,7 +185,7 @@ var selfoss = {
         if( selfoss.events.entryId && selfoss.filter.offset_from_id == null )
             selfoss.filter.extra_ids.push(selfoss.events.entryId);
 
-        $('.stream-error').css('display', 'block').hide();
+        selfoss.ui.refreshStreamButtons();
         $('#content').addClass('loading').html("");
 
         selfoss.activeAjaxReq = $.ajax({
@@ -189,9 +194,14 @@ var selfoss = {
             dataType: 'json',
             data: selfoss.filter,
             success: function(data) {
+                selfoss.lastSync = Date.now();
+                selfoss.lastUpdate = new Date(data.lastUpdate);
+
                 selfoss.refreshStats(data.all, data.unread, data.starred);
 
                 $('#content').html(data.entries);
+                selfoss.ui.refreshStreamButtons(true,
+                    $('.entry').not('.fullscreen').length > 0, data.hasMore);
                 $(document).scrollTop(0);
                 selfoss.events.entries();
                 selfoss.events.search();
@@ -216,6 +226,7 @@ var selfoss = {
                     selfoss.showError('Load list error: '+
                                         textStatus+' '+errorThrown);
                 selfoss.events.entries();
+                selfoss.ui.refreshStreamButtons();
                 $('.stream-error').show();
             },
             complete: function(jqXHR, textStatus) {
@@ -228,36 +239,59 @@ var selfoss = {
 
 
     /**
-     * refresh current stats.
+     * sync server status.
      *
      * @return void
      */
-    reloadStats: function() {
-        if( Date.now() - selfoss.lastStatsUpdate < 5*60*1000 )
+    sync: function(force) {
+        var force = (typeof force !== 'undefined') ? force : false;
+
+        if( !force && (selfoss.lastUpdate == null ||
+                       Date.now() - selfoss.lastSync < 5*60*1000) )
             return;
 
-        var stats_url = $('base').attr('href')+'stats?tags=true';
-        if( selfoss.filter.sourcesNav )
-            stats_url = stats_url + '&sources=true';
-
         $.ajax({
-            url: stats_url,
+            url: 'items/sync',
             type: 'GET',
+            dataType: 'json',
+            data: {
+                since:          selfoss.lastUpdate.toISOString(),
+                tags:           true,
+                sources:        selfoss.filter.sourcesNav,
+                items_statuses: true
+            },
             success: function(data) {
-                if( data.unread>0 &&
+                selfoss.lastSync = Date.now();
+
+                var dataDate = new Date(data.last_update);
+
+                if( dataDate <= selfoss.lastUpdate )
+                    return;
+
+                if( data.stats.unread>0 &&
                     ($('.stream-empty').is(':visible') ||
                      $('.stream-error').is(':visible')) ) {
                     selfoss.reloadList();
                 } else {
-                    selfoss.refreshStats(data.all, data.unread, data.starred);
+                    selfoss.refreshStats(data.stats.all,
+                                         data.stats.unread,
+                                         data.stats.starred);
                     selfoss.refreshTags(data.tagshtml);
 
                     if( 'sourceshtml' in data )
                         selfoss.refreshSources(data.sourceshtml);
+
+                    if( 'items' in data )
+                        selfoss.ui.refreshItemStatuses(data.items);
+
+                    if( selfoss.filter.type == 'unread' &&
+                        data.stats.unread > $('.entry.unread').length )
+                        $('.stream-more').show();
                 }
+                selfoss.lastUpdate = dataDate;
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                selfoss.showError('Could not refresh stats: '+
+                selfoss.showError('Could not sync last changes from server: '+
                                   textStatus+' '+errorThrown);
             }
         });
@@ -273,8 +307,6 @@ var selfoss = {
      * @param new starred stats
      */
     refreshStats: function(all, unread, starred) {
-        selfoss.lastStatsUpdate = Date.now();
-
         $('.nav-filter-newest span').html(all);
         $('.nav-filter-starred span').html(starred);
 
@@ -456,7 +488,13 @@ var selfoss = {
             ids.push( $(item).attr('id').substr(5) );
         });
 
-        if(ids.length === 0){
+        if( ids.length === 0 ) {
+            $('.entry').remove();
+            if( selfoss.filter.type == 'unread' &&
+                parseInt($('span.unread-count').html()) > 0 )
+                selfoss.reloadList()
+            else
+                selfoss.ui.refreshStreamButtons(true);
             return;
         }
 
@@ -464,6 +502,8 @@ var selfoss = {
         var content = $('#content');
         var articleList = content.html();
         $('#content').addClass('loading').html("");
+        var hadMore = $('.stream-more').is(':visible');
+        selfoss.ui.refreshStreamButtons();
 
         // close opened entry and list
         selfoss.events.setHash();
@@ -493,6 +533,7 @@ var selfoss = {
             error: function(jqXHR, textStatus, errorThrown) {
                 content.html(articleList);
                 $('#content').removeClass('loading');
+                selfoss.ui.refreshStreamButtons(true, true, hadMore);
                 selfoss.events.entries();
                 selfoss.showError('Can not mark all visible item: '+
                                     textStatus+' '+errorThrown);

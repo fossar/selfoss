@@ -56,7 +56,9 @@ selfoss.events = {
 
     processHashChange: true,
 
-    processHash: function(hash=false) {
+    processHash: function(hash) {
+        var hash = (typeof hash != 'undefined') ? hash : false;
+
         var done = function() {
             selfoss.events.processHashChange = true;
         };
@@ -149,6 +151,7 @@ selfoss.events = {
             if (selfoss.activeAjaxReq !== null)
                 selfoss.activeAjaxReq.abort();
 
+            selfoss.ui.refreshStreamButtons();
             $('#content').addClass('loading').html("");
             selfoss.activeAjaxReq = $.ajax({
                 url: $('base').attr('href')+'sources',
@@ -175,7 +178,11 @@ selfoss.events = {
     },
     
 
-    setHash: function(section='same', subsection='same', entryId=false) {
+    setHash: function(section, subsection, entryId) {
+        var section = (typeof section !== 'undefined') ? section : 'same';
+        var subsection = (typeof subsection !== 'undefined') ? subsection : 'same';
+        var entryId = (typeof entryId !== 'undefined') ? entryId : false;
+
         if( section == 'same' )
             section = selfoss.events.section;
         newHash = new Array(section);

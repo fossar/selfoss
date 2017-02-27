@@ -281,6 +281,10 @@ body * {
     #nav-refresh {
         background:url(images/nav-refresh.png) no-repeat center center #272325;
     }
+
+    #nav-refresh.loading {
+        background:url(images/ajax-loader.gif) center center no-repeat;
+    }
     
     #nav-settings {
         background:url(images/nav-sources.png) no-repeat center center #272325;
@@ -398,14 +402,18 @@ body * {
     
 /* content */
 
-#content {
+#content, #stream-buttons {
     margin-left:220px;
+}
+
+#content {
     padding-top:20px;
     padding-bottom:20px;
 }
 
-    #content .stream-empty {
+    .stream-empty {
         text-align:center;
+        display: none;
     }
 
     #content.loading {
@@ -686,6 +694,7 @@ body * {
         font-weight:bold;
         cursor:pointer;
         text-align:center;
+        display: none;
     }
     
         .touch .stream-more {
@@ -1244,10 +1253,14 @@ body.publicmode.notloggedin .entry-unread {
         margin-left:10px;
     }
     
-    #content {
+    #content, #stream-buttons {
         margin:0;
         padding:0;
         width:100%;
+    }
+
+    .stream-empty {
+        padding-top: 20px;
     }
     
         .source,
@@ -1390,11 +1403,15 @@ body.publicmode.notloggedin .entry-unread {
         width:135px;
 	}
 	
-    #content {
+    #content, #stream-buttons {
         margin-left:165px;
         margin-top:0;
         margin-right:0;
         padding:0;
+    }
+
+    .stream-empty {
+        padding-top: 20px;
     }
     
  }

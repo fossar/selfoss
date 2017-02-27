@@ -127,7 +127,7 @@ selfoss.events.entries = function(e) {
             return;
     
         var content = $('#content');
-        if($('.stream-more').length > 0 
+        if($('.stream-more').is(':visible')
            && $('.stream-more').position().top < $(window).height() + $(window).scrollTop() 
            && $('.stream-more').hasClass('loading')==false)
             $('.stream-more').click();
@@ -153,8 +153,9 @@ selfoss.events.entries = function(e) {
             dataType: 'json',
             data: selfoss.filter,
             success: function(data) {
-                streamMore.siblings('.mark-these-read').remove();
-                $('.stream-more').replaceWith(data.entries);
+                streamMore.removeClass('loading');
+                lastEntry.after(data.entries);
+                selfoss.ui.refreshStreamButtons(true, true, data.hasMore)
                 selfoss.events.entries();
             },
             error: function(jqXHR, textStatus, errorThrown) {

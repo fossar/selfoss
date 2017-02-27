@@ -229,4 +229,37 @@ class Database {
     public function optimize() {
         @\F3::get('db')->exec('OPTIMIZE TABLE `'.\F3::get('db_prefix').'sources`, `'.\F3::get('db_prefix').'items`');
     }
+
+
+    /**
+     * Ensure row values have the appropriate PHP type. This assumes we are
+     * using buffered queries (sql results are in PHP memory).
+     *
+     * @param expectedRowTypes associative array mapping columns to PDO types
+     * @param rows array of associative array representing row results
+     * @return array of associative array representing row results having
+     *         expected types
+     */
+    public function ensureRowTypes($expectedRowTypes, $rows) {
+        foreach($rows as $rowIndex => $row) {
+            foreach($expectedRowTypes as $column => $type) {
+                if( array_key_exists($column, $row) ) {
+                    switch($type) {
+                        case \PDO::PARAM_INT:
+                            $value = intval($row[$column]);
+                            break;
+                        case \PDO::PARAM_BOOL:
+                            if( $row[$column] == "1" )
+                                $value = true;
+                            else
+                                $value = false;
+                            break;
+                    }
+                    // $row is only a reference, so we change $rows[$rowIndex]
+                    $rows[$rowIndex][$column] = $value;
+                }
+            }
+        }
+        return $rows;
+    }
 }
