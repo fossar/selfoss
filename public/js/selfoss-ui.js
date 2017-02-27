@@ -37,7 +37,7 @@ selfoss.ui = {
 
     refreshItemStatuses: function(entryStatuses) {
         $('.entry').each(function(index, item) {
-            var id = $(this).data(('entry-id'));
+            var id = $(this).data('entry-id');
             var newStatus = false;
             entryStatuses.some(function(entryStatus) {
                 if( entryStatus.id == id )
