@@ -22,7 +22,7 @@ function isNotUnimportant(dest) {
         /^vendor\/smottt\/wideimage\/demo/,
         /^vendor\/simplepie\/simplepie\/(db\.sql|autoload\.php)$/,
         /^vendor\/composer\/installed\.json$/,
-        /^vendor\/[^/]+\/[^/]+\/tests?/
+        /^vendor\/[^/]+\/[^/]+\/(test|doc)s?/
     ].some(expr => expr.test(dest));
 
     const allowed = !(filenameDisallowed || destDisallowed);
@@ -34,7 +34,7 @@ module.exports = function(grunt) {
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
-        
+
         /* version text replace */
         replace: {
             version: {
@@ -51,19 +51,19 @@ module.exports = function(grunt) {
                     from: /"ver": "\d+\.\d+(\-SNAPSHOT)?"/,
                     to: ('"ver": "' + grunt.option('newversion') + '"')
                 },
-                
+
                 // rule for README.md
                 {
                     from: /'version','\d+\.\d+(\-SNAPSHOT)?'/,
                     to: ("'version','" + grunt.option('newversion') + "'")
                 },
-                
+
                 // rule for common.php
                 {
                     from: /Version \d+\.\d+(\-SNAPSHOT)?/,
                     to: ("Version " + grunt.option('newversion'))
                 },
-                
+
                 // rule for website/index.html
                 {
                     from: /selfoss( |\-)\d+\.\d+(\-SNAPSHOT)?/g,
@@ -71,7 +71,7 @@ module.exports = function(grunt) {
                 }]
             }
         },
-        
+
         /* create zip */
         compress: {
             main: {
@@ -89,17 +89,17 @@ module.exports = function(grunt) {
                     { expand: true, cwd: 'public/', src: ['**'], dest: '/public', filter: function(file) {
                         return file.indexOf('all.js') === -1 && file.indexOf('all.css') === -1;
                     }},
-                    
+
                     // copy data: only directory structure and .htaccess for deny
                     { expand: true, cwd: 'data/', src: ['**'], dest: '/data', filter: 'isDirectory'},
                     { src: ['data/cache/.htaccess'], dest: '' },
                     { src: ['data/logs/.htaccess'], dest: '' },
                     { src: ['data/sqlite/.htaccess'], dest: '' },
                     { expand: true, cwd: 'data/fulltextrss', src: ['**'], dest: '/data/fulltextrss'},
-                    
+
                     { expand: true, cwd: 'spouts/', src: ['**'], dest: '/spouts'},
                     { expand: true, cwd: 'templates/', src: ['**'], dest: '/templates'},
-                    
+
                     { src: ['.htaccess'], dest: '' },
                     { src: ['README.md'], dest: '' },
                     { src: ['defaults.ini'], dest: '' },
