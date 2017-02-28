@@ -1,5 +1,7 @@
 <li role="link" tabindex="0">
-    <span class="tag"><?PHP echo $this->tag; ?></span>
-    <span class="unread"><?PHP if ($this->unread>0) echo $this->unread; ?></span>
-    <div class="color" style="background-color:<?PHP echo $this->color; ?>"></div>
+    <span class="tag"><?= $this->tag; ?></span>
+    <span class="unread"><?php if ($this->unread > 0) {
+    echo $this->unread;
+} ?></span>
+    <div class="color" style="background-color:<?= $this->color; ?>"></div>
 </li>

@@ -8,25 +8,26 @@ require __DIR__ . '/vendor/autoload.php';
 
 $f3 = $f3 = Base::instance();
 
-$f3->set('DEBUG',0);
-$f3->set('version','2.17-SNAPSHOT');
+$f3->set('DEBUG', 0);
+$f3->set('version', '2.17-SNAPSHOT');
 $f3->set('AUTOLOAD', false);
-$f3->set('cache',__DIR__.'/data/cache');
-$f3->set('BASEDIR',__DIR__);
-$f3->set('LOCALES',__DIR__.'/public/lang/');
+$f3->set('cache', __DIR__ . '/data/cache');
+$f3->set('BASEDIR', __DIR__);
+$f3->set('LOCALES', __DIR__ . '/public/lang/');
 
 // read defaults
 $f3->config('defaults.ini');
 
 // read config, if it exists
-if(file_exists('config.ini'))
+if (file_exists('config.ini')) {
     $f3->config('config.ini');
+}
 
 // overwrite config with ENV variables
 $env_prefix = $f3->get('env_prefix');
-foreach($f3->get('ENV') as $key => $value) {
-    if(strncasecmp($key,$env_prefix,strlen($env_prefix)) == 0) {
-        $f3->set(strtolower(substr($key,strlen($env_prefix))),$value);
+foreach ($f3->get('ENV') as $key => $value) {
+    if (strncasecmp($key, $env_prefix, strlen($env_prefix)) == 0) {
+        $f3->set(strtolower(substr($key, strlen($env_prefix))), $value);
     }
 }
 
@@ -47,13 +48,13 @@ $f3->set('ONERROR',
         $exception = $f3->get('EXCEPTION');
 
         if ($exception) {
-            \F3::get('logger')->error($exception->getMessage(), array('exception' => $exception));
+            \F3::get('logger')->error($exception->getMessage(), ['exception' => $exception]);
         } else {
             \F3::get('logger')->error($f3->get('ERROR.text'));
         }
 
         if (\F3::get('DEBUG') != 0) {
-            echo $f3->get('lang_error') . ": ";
+            echo $f3->get('lang_error') . ': ';
             echo $f3->get('ERROR.text') . "\n";
             echo $trace;
         } else {
@@ -62,5 +63,6 @@ $f3->set('ONERROR',
     }
 );
 
-if (\F3::get('DEBUG')!=0)
-    ini_set('display_errors',0);
+if (\F3::get('DEBUG') != 0) {
+    ini_set('display_errors', 0);
+}

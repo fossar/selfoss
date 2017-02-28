@@ -1,77 +1,75 @@
-<?PHP $idAttr = isset($this->source) ? $this->source['id'] : 'new-' . rand(); ?>
-<div role="form" id="source<?= $idAttr ?>" 
-        class="source <?= isset($this->source)===false ? 'source-new' : '' ?> <?= (isset($this->source) && isset($this->source['error']) && strlen($this->source['error'] > 0)) ? 'error' : '' ?>">
+<?php $idAttr = isset($this->source) ? $this->source['id'] : 'new-' . rand(); ?>
+<div role="form" id="source<?= $idAttr ?>"
+        class="source <?= isset($this->source) === false ? 'source-new' : '' ?> <?= (isset($this->source) && isset($this->source['error']) && strlen($this->source['error'] > 0)) ? 'error' : '' ?>">
     <div class="source-icon">
-        <?PHP if(isset($this->source) && isset($this->source['icon']) && $this->source['icon']!==false && $this->source['icon']!="0") : ?>
-        <img src="<?PHP echo 'favicons/'.$this->source['icon']; ?>" alt="<?PHP echo isset($this->source) ? $this->source['title'] : ''; ?>" />
-        <?PHP endif; ?>
+        <?php if (isset($this->source) && isset($this->source['icon']) && $this->source['icon'] !== false && $this->source['icon'] != '0') : ?>
+        <img src="<?= 'favicons/' . $this->source['icon']; ?>" alt="<?= isset($this->source) ? $this->source['title'] : ''; ?>" />
+        <?php endif; ?>
     </div>
-    
-    <div class="source-title"><?PHP echo isset($this->source) ? $this->source['title'] : \F3::get('lang_source_new') ; ?></div>
-    
-    <div class="source-edit-delete"><button class="source-showparams"><?PHP echo \F3::get('lang_source_edit')?>
-        </button> &bull; <button class="source-delete"><?PHP echo \F3::get('lang_source_delete') ?></button>
+
+    <div class="source-title"><?= isset($this->source) ? $this->source['title'] : \F3::get('lang_source_new'); ?></div>
+
+    <div class="source-edit-delete"><button class="source-showparams"><?= \F3::get('lang_source_edit')?>
+        </button> &bull; <button class="source-delete"><?= \F3::get('lang_source_delete') ?></button>
     </div>
-        
+
     <div class="source-days">
-        <?php        
+        <?php
         if (isset($this->source)) {
-            
-            if (isset($this->source['lastentry'])) {  
+            if (isset($this->source['lastentry'])) {
                 echo '&bull; ' . \F3::get('lang_source_last_post') . ' ';
-                
+
                 // Get number of days between now and when the last entry was seen
                 // Note: The time of the two dates is set to midnight (0,0,0)
                 // to get the difference of the two dates in calendar days
-                // instead of a day equaling any 24 hour period which makes it 
+                // instead of a day equaling any 24 hour period which makes it
                 // impossible to distinguish today and yesterday.
                 $old = new DateTime();
                 $old->setTimestamp($this->source['lastentry']);
-                $old->setTime(0,0,0);
+                $old->setTime(0, 0, 0);
                 $now = new DateTime();
-                $now->setTime(0,0,0);              
-                $diff = $now->diff($old);              
+                $now->setTime(0, 0, 0);
+                $diff = $now->diff($old);
                 echo \F3::get('lang_days', $diff->format('%a'));
             }
-        }
-        else {
-            \F3::get('lang_source_new'); 
+        } else {
+            \F3::get('lang_source_new');
         }
         ?>
     </div>
-        
+
 
     <!-- edit -->
     <ul class="source-edit-form">
         <!-- title -->
-        <li><label for="title-<?= $idAttr ?>"><?PHP echo \F3::get('lang_source_title')?>:</label> <input id="title-<?= $idAttr ?>" type="text" name="title" value="<?PHP echo isset($this->source) ? $this->source['title'] : '' ; ?>" placeholder="<?PHP echo F3::get('lang_source_autotitle_hint'); ?>" /></li>
-        
+        <li><label for="title-<?= $idAttr ?>"><?= \F3::get('lang_source_title')?>:</label> <input id="title-<?= $idAttr ?>" type="text" name="title" value="<?= isset($this->source) ? $this->source['title'] : ''; ?>" placeholder="<?= F3::get('lang_source_autotitle_hint'); ?>" /></li>
+
 
         <!-- tags -->
-        <li><label for="tags-<?= $idAttr ?>"><?PHP echo \F3::get('lang_source_tags');?>:</label>
-            <input id="tags-<?= $idAttr ?>" type="text" name="tags" value="<?PHP echo isset($this->source) ? $this->source['tags'] : ''; ?>" /> <span class="source-edit-form-help"> <?PHP echo \F3::get('lang_source_comma')?></span>
+        <li><label for="tags-<?= $idAttr ?>"><?= \F3::get('lang_source_tags'); ?>:</label>
+            <input id="tags-<?= $idAttr ?>" type="text" name="tags" value="<?= isset($this->source) ? $this->source['tags'] : ''; ?>" /> <span class="source-edit-form-help"> <?= \F3::get('lang_source_comma')?></span>
         </li>
 
         <!-- filter -->
-        <li><label for="filter-<?= $idAttr ?>"><?PHP echo \F3::get('lang_source_filter')?>:</label> <input id="filter-<?= $idAttr ?>" type="text" name="filter" value="<?PHP echo isset($this->source) ? $this->source['filter'] : '' ; ?>" placeholder="<?PHP echo F3::get('lang_source_optional'); ?>" /></li>
-        
+        <li><label for="filter-<?= $idAttr ?>"><?= \F3::get('lang_source_filter')?>:</label> <input id="filter-<?= $idAttr ?>" type="text" name="filter" value="<?= isset($this->source) ? $this->source['filter'] : ''; ?>" placeholder="<?= F3::get('lang_source_optional'); ?>" /></li>
+
         <!-- type -->
-        <li><label for="type-<?= $idAttr ?>"><?PHP echo \F3::get('lang_source_type')?>:</label> 
+        <li><label for="type-<?= $idAttr ?>"><?= \F3::get('lang_source_type')?>:</label>
             <select id="type-<?= $idAttr ?>" class="source-spout" name="spout">
-                <option value=""><?PHP echo \F3::get('lang_source_select')?></option>
-                <?PHP foreach($this->spouts as $spouttype=>$spout) : ?>
-                <option value="<?PHP echo str_replace("\\", "_", $spouttype); ?>" <?PHP echo isset($this->source) && $spouttype==$this->source['spout'] ? 'selected="selected"' : ''; ?>>
-                    <?PHP echo $spout->name; ?>
+                <option value=""><?= \F3::get('lang_source_select')?></option>
+                <?php foreach ($this->spouts as $spouttype => $spout) : ?>
+                <option value="<?= str_replace('\\', '_', $spouttype); ?>" <?= isset($this->source) && $spouttype == $this->source['spout'] ? 'selected="selected"' : ''; ?>>
+                    <?= $spout->name; ?>
                 </option>
-                <?PHP endforeach; ?>
+                <?php endforeach; ?>
             </select>
         </li>
-        
+
         <!-- settings -->
         <li class="source-params">
-        <?PHP
-            if(isset($this->source) && isset($this->spouts[$this->source['spout']])) {
-                if($this->spouts[$this->source['spout']]->params!==false) {
+        <?php
+            if (isset($this->source) && isset($this->spouts[$this->source['spout']])) {
+                if ($this->spouts[$this->source['spout']]->params !== false) {
                     $this->spout = $this->spouts[$this->source['spout']];
                     $this->params = json_decode(html_entity_decode($this->source['params']), true);
                     $this->idAttr = $idAttr;
@@ -80,17 +78,17 @@
             }
         ?>
         </li>
-        
+
         <!-- error messages -->
-        <?PHP if(isset($this->source) && isset($this->source['error'])) : ?>
+        <?php if (isset($this->source) && isset($this->source['error'])) : ?>
         <li class="source-error">
-            <?PHP echo $this->source['error']; ?>
+            <?= $this->source['error']; ?>
         </li>
-        <?PHP endif; ?>
-        
+        <?php endif; ?>
+
         <!-- save/delete -->
         <li class="source-action">
-            <button class="source-save"><?PHP echo \F3::get('lang_source_save')?></button> &bull; <button class="source-cancel"><?PHP echo \F3::get('lang_source_cancel')?></button>
+            <button class="source-save"><?= \F3::get('lang_source_save')?></button> &bull; <button class="source-cancel"><?= \F3::get('lang_source_cancel')?></button>
         </li>
     </ul>
 

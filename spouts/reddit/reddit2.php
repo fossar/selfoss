@@ -3,23 +3,18 @@
 namespace spouts\reddit;
 
 /**
- * Spout for fetching from reddit 
+ * Spout for fetching from reddit
  *
- * @package    spouts
- * @subpackage reddit
  * @copyright  Copyright (c) Tobias Zeising (http://www.aditu.de)
  * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class reddit2 extends \spouts\spout {
-
     /** @var string name of spout */
     public $name = 'Reddit';
 
-
     /** @var string description of this source type */
     public $description = 'Get your fix from Reddit';
-
 
     /**
      * config params
@@ -46,42 +41,38 @@ class reddit2 extends \spouts\spout {
      *
      * @var bool|mixed
      */
-    public $params = array(
-        "url" => array(
-            "title"      => "Subreddit or multireddit url",
-            "type"       => "text",
-            "default"    => "r/worldnews/top",
-            "required"   => true,
-            "validation" => array( "notempty" )
-        ),
-        "username" => array(
-            "title"      => "Username",
-            "type"       => "text",
-            "default"    => "",
-            "required"   => false,
-            "validation" => ""
-        ),
-        "password" => array(
-            "title"      => "Password",
-            "type"       => "password",
-            "default"    => "",
-            "required"   => false,
-            "validation" => ""
-        )
-    );
-
+    public $params = [
+        'url' => [
+            'title' => 'Subreddit or multireddit url',
+            'type' => 'text',
+            'default' => 'r/worldnews/top',
+            'required' => true,
+            'validation' => ['notempty']
+        ],
+        'username' => [
+            'title' => 'Username',
+            'type' => 'text',
+            'default' => '',
+            'required' => false,
+            'validation' => ''
+        ],
+        'password' => [
+            'title' => 'Password',
+            'type' => 'password',
+            'default' => '',
+            'required' => false,
+            'validation' => ''
+        ]
+    ];
 
     /** @var string the readability api key */
-    private $apiKey = "";
-
+    private $apiKey = '';
 
     /** @var string the reddit_session cookie */
-    private $reddit_session = "";
-
+    private $reddit_session = '';
 
     /** @var string the scrape urls */
     private $scrape = true;
-
 
     /** @var array|null current fetched items */
     protected $items = null;
@@ -92,28 +83,28 @@ class reddit2 extends \spouts\spout {
     /**
      * loads content for given source
      *
-     * @return void
      * @param string  $url
+     *
+     * @return void
      */
-    public function load( $params ) {
+    public function load($params) {
+        $this->apiKey = \F3::get('readability');
 
-        $this->apiKey = \F3::get( 'readability' );
-        
         if (!empty($params['password']) && !empty($params['username'])) {
-            if (function_exists("apc_fetch")) {
+            if (function_exists('apc_fetch')) {
                 $this->reddit_session = apc_fetch("{$params['username']}_selfoss_reddit_session");
                 if (empty($this->reddit_session)) {
                     $this->login($params);
                 }
-            }else{
-                 $this->login($params);
+            } else {
+                $this->login($params);
             }
         }
 
-        $json = json_decode($this->file_get_contents_curl("https://www.reddit.com/" . $params['url'] . ".json"));
+        $json = json_decode($this->file_get_contents_curl('https://www.reddit.com/' . $params['url'] . '.json'));
 
         if ($json === null) {
-            throw new \Exception("Cannot parse the response.");
+            throw new \Exception('Cannot parse the response.');
         }
 
         if (isset($json->error)) {
@@ -133,10 +124,10 @@ class reddit2 extends \spouts\spout {
      * @return void
      */
     public function rewind() {
-        if ($this->items !== null)
-            reset( $this->items );
+        if ($this->items !== null) {
+            reset($this->items);
+        }
     }
-
 
     /**
      * receive current item
@@ -144,11 +135,12 @@ class reddit2 extends \spouts\spout {
      * @return SimplePie_Item current item
      */
     public function current() {
-        if ($this->items !== null)
+        if ($this->items !== null) {
             return $this;
+        }
+
         return false;
     }
-
 
     /**
      * receive key of current item
@@ -156,11 +148,12 @@ class reddit2 extends \spouts\spout {
      * @return mixed key of current item
      */
     public function key() {
-        if ($this->items !== null)
-            return key( $this->items );
+        if ($this->items !== null) {
+            return key($this->items);
+        }
+
         return null;
     }
-
 
     /**
      * select next item
@@ -168,11 +161,12 @@ class reddit2 extends \spouts\spout {
      * @return SimplePie_Item next item
      */
     public function next() {
-        if ($this->items !== null)
-            next( $this->items );
+        if ($this->items !== null) {
+            next($this->items);
+        }
+
         return $this;
     }
-
 
     /**
      * end reached
@@ -180,11 +174,12 @@ class reddit2 extends \spouts\spout {
      * @return bool false if end reached
      */
     public function valid() {
-        if ($this->items !== null)
-            return current( $this->items ) !== false;
+        if ($this->items !== null) {
+            return current($this->items) !== false;
+        }
+
         return false;
     }
-
 
     /**
      * returns an unique id for this item
@@ -193,14 +188,16 @@ class reddit2 extends \spouts\spout {
      */
     public function getId() {
         if ($this->items !== null && $this->valid()) {
-            $id = @current( $this->items )->data->id;
-            if ( strlen( $id )>255 )
-                $id = md5( $id );
+            $id = @current($this->items)->data->id;
+            if (strlen($id) > 255) {
+                $id = md5($id);
+            }
+
             return $id;
         }
+
         return false;
     }
-
 
     /**
      * returns the current title as string
@@ -208,8 +205,10 @@ class reddit2 extends \spouts\spout {
      * @return string title
      */
     public function getTitle() {
-        if ($this->items !== null && $this->valid())
-            return @current( $this->items )->data->title;
+        if ($this->items !== null && $this->valid()) {
+            return @current($this->items)->data->title;
+        }
+
         return false;
     }
 
@@ -220,20 +219,22 @@ class reddit2 extends \spouts\spout {
      */
     public function getHtmlUrl() {
         if ($this->items !== null && $this->valid()) {
-            if ( preg_match( "/imgur/", @current( $this->items )->data->url ) ) {
-                if ( !preg_match( '/\.(?:gif|jpg|png|svg)$/i', @current( $this->items )->data->url ) ) {
-                    $head = $this->get_head(@current( $this->items )->data->url . ".jpg");
-                    if (preg_match( "/404 Not Found/",$head)) {
-                        return @current( $this->items )->data->url . "/embed";
+            if (preg_match('/imgur/', @current($this->items)->data->url)) {
+                if (!preg_match('/\.(?:gif|jpg|png|svg)$/i', @current($this->items)->data->url)) {
+                    $head = $this->get_head(@current($this->items)->data->url . '.jpg');
+                    if (preg_match('/404 Not Found/', $head)) {
+                        return @current($this->items)->data->url . '/embed';
                     }
-                    return @current( $this->items )->data->url . ".jpg";
+
+                    return @current($this->items)->data->url . '.jpg';
                 }
             }
-            return @current( $this->items )->data->url;
+
+            return @current($this->items)->data->url;
         }
+
         return false;
     }
-
 
     /**
      * returns the content of this item
@@ -242,40 +243,39 @@ class reddit2 extends \spouts\spout {
      */
     public function getContent() {
         if ($this->items !== null && $this->valid()) {
-            $text = @current( $this->items )->data->selftext_html;
+            $text = @current($this->items)->data->selftext_html;
             if (!empty($text)) {
                 return $text;
             }
 
-            if ( preg_match( '/\.(?:gif|jpg|png|svg)/i', $this->getHtmlUrl() ) ) {
-                return "<img src=\"". $this->getHtmlUrl() ."\" />";
+            if (preg_match('/\.(?:gif|jpg|png|svg)/i', $this->getHtmlUrl())) {
+                return '<img src="' . $this->getHtmlUrl() . '" />';
             }
 
             //albums, embeds other strange thigs
-            if ( preg_match( '/embed$/i', $this->getHtmlUrl() ) ) {
-
-                if ( function_exists( 'curl_init' ) ) {
-                    $content = $this->file_get_contents_curl( $this->getHtmlUrl() );
-                }else {
-                    $content = @file_get_contents( $this->getHtmlUrl() );
+            if (preg_match('/embed$/i', $this->getHtmlUrl())) {
+                if (function_exists('curl_init')) {
+                    $content = $this->file_get_contents_curl($this->getHtmlUrl());
+                } else {
+                    $content = @file_get_contents($this->getHtmlUrl());
                 }
 
-                return '<a href="'.$this->getHtmlUrl().'"><img src="' . preg_replace("/s\./", ".", $this->getImage($content)) . '"/></a>';
+                return '<a href="' . $this->getHtmlUrl() . '"><img src="' . preg_replace("/s\./", '.', $this->getImage($content)) . '"/></a>';
             }
-            if ( $this->scrape ) {
- 
-                if ( $contentFromReadability = $this->fetchFromReadability( $this->getHtmlUrl() ) ) {
+            if ($this->scrape) {
+                if ($contentFromReadability = $this->fetchFromReadability($this->getHtmlUrl())) {
                     return $contentFromReadability;
                 }
-                if ( $contentFromInstapaper = $this->fetchFromInstapaper( $this->getHtmlUrl() ) ) {
+                if ($contentFromInstapaper = $this->fetchFromInstapaper($this->getHtmlUrl())) {
                     return $contentFromInstapaper;
                 }
             }
-            return @current( $this->items )->data->url;
+
+            return @current($this->items)->data->url;
         }
+
         return false;
     }
-
 
     /**
      * returns the icon of this item
@@ -285,11 +285,12 @@ class reddit2 extends \spouts\spout {
     public function getIcon() {
         $imageHelper = $this->getImageHelper();
         $htmlUrl = $this->getHtmlUrl();
-        if ( $htmlUrl && $imageHelper->fetchFavicon( $htmlUrl ) )
+        if ($htmlUrl && $imageHelper->fetchFavicon($htmlUrl)) {
             $this->faviconUrl = $imageHelper->getFaviconUrl();
+        }
+
         return $this->faviconUrl;
     }
-
 
     /**
      * returns the link of this item
@@ -297,8 +298,10 @@ class reddit2 extends \spouts\spout {
      * @return string link
      */
     public function getLink() {
-        if ($this->items !== null && $this->valid())
-            return "https://www.reddit.com" . @current( $this->items )->data->permalink;
+        if ($this->items !== null && $this->valid()) {
+            return 'https://www.reddit.com' . @current($this->items)->data->permalink;
+        }
+
         return false;
     }
 
@@ -308,61 +311,67 @@ class reddit2 extends \spouts\spout {
      * @return string thumbnail url
      */
     public function getThumbnail() {
-        if ($this->items !== null && $this->valid())
-            return @current( $this->items )->data->thumbnail;
+        if ($this->items !== null && $this->valid()) {
+            return @current($this->items)->data->thumbnail;
+        }
+
         return false;
     }
-    
+
     /**
      * returns the date of this item
      *
      * @return string date
      */
     public function getdate() {
-        if ($this->items !== null && $this->valid())
-            $date = date( 'Y-m-d H:i:s', @current( $this->items )->data->created_utc );
+        if ($this->items !== null && $this->valid()) {
+            $date = date('Y-m-d H:i:s', @current($this->items)->data->created_utc);
+        }
+
         return $date;
     }
-
 
     /**
      * destroy the plugin (prevent memory issues)
      */
     public function destroy() {
-        unset( $this->items );
+        unset($this->items);
         $this->items = null;
     }
-
 
     /**
      * returns the xml feed url for the source
      *
-     * @return string url as xml
      * @param mixed $params params for the source
+     *
+     * @return string url as xml
      */
     public function getXmlUrl($params) {
-        return  "reddit://".urlencode($params['url']);
+        return  'reddit://' . urlencode($params['url']);
     }
 
     /**
      * fetch content from readability.com
      *
      * @author oxman @github
+     *
      * @return string content
      */
-    private function fetchFromReadability( $url ) {
-        if ( empty( $this->apiKey ) ) {
+    private function fetchFromReadability($url) {
+        if (empty($this->apiKey)) {
             return false;
         }
-        if ( function_exists( 'curl_init' ) ) {
-            $content = $this->file_get_contents_curl( "https://readability.com/api/content/v1/parser?token=" . $this->apiKey . "&url=" . urlencode( $url ) );
-        }else {
-            $content = @file_get_contents( "https://readability.com/api/content/v1/parser?token=" . $this->apiKey . "&url=" . urlencode( $url ) );
+        if (function_exists('curl_init')) {
+            $content = $this->file_get_contents_curl('https://readability.com/api/content/v1/parser?token=' . $this->apiKey . '&url=' . urlencode($url));
+        } else {
+            $content = @file_get_contents('https://readability.com/api/content/v1/parser?token=' . $this->apiKey . '&url=' . urlencode($url));
         }
 
-        $data = json_decode( $content );
-        if ( isset( $data->content )===false )
+        $data = json_decode($content);
+        if (isset($data->content) === false) {
             return false;
+        }
+
         return $data->content;
     }
 
@@ -370,45 +379,47 @@ class reddit2 extends \spouts\spout {
      * fetch content from instapaper.com
      *
      * @author janeczku @github
+     *
      * @return string content
      */
-    private function fetchFromInstapaper( $url ) {
-        if ( function_exists( 'curl_init' ) ) {
-            $content = $this->file_get_contents_curl( "https://www.instapaper.com/text?u=" . urlencode( $url ) );
-        }
-        else {
-            $content = @file_get_contents( "https://www.instapaper.com/text?u=" . urlencode( $url ) );
+    private function fetchFromInstapaper($url) {
+        if (function_exists('curl_init')) {
+            $content = $this->file_get_contents_curl('https://www.instapaper.com/text?u=' . urlencode($url));
+        } else {
+            $content = @file_get_contents('https://www.instapaper.com/text?u=' . urlencode($url));
         }
         $dom = new \DOMDocument();
-        @$dom->loadHTML( $content );
-        if ( !$dom )
+        @$dom->loadHTML($content);
+        if (!$dom) {
             return false;
-        $xpath = new \DOMXPath( $dom );
-        $elements = $xpath->query( "//div[@id='story']" );
-        $content = $dom->saveXML( $elements->item( 0 ), LIBXML_NOEMPTYTAG );
+        }
+        $xpath = new \DOMXPath($dom);
+        $elements = $xpath->query("//div[@id='story']");
+        $content = $dom->saveXML($elements->item(0), LIBXML_NOEMPTYTAG);
+
         return $content;
     }
 
-    private function file_get_contents_curl( $url ) {
+    private function file_get_contents_curl($url) {
         $ch = curl_init();
-        curl_setopt( $ch, CURLOPT_CONNECTTIMEOUT, 15 );
-        curl_setopt( $ch, CURLOPT_TIMEOUT, 15 );
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 15);
         if (!empty($this->reddit_session)) {
             curl_setopt($ch, CURLOPT_COOKIE, $this->reddit_session);
         }
-        curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
-        curl_setopt( $ch, CURLOPT_URL, $url );
-        $data = @curl_exec( $ch );
-        curl_close( $ch );
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        $data = @curl_exec($ch);
+        curl_close($ch);
 
         return $data;
     }
 
-    private function get_head( $url ) {
+    private function get_head($url) {
         $ch = curl_init();
-        curl_setopt( $ch, CURLOPT_CONNECTTIMEOUT, 15 );
-        curl_setopt( $ch, CURLOPT_TIMEOUT, 15 );
-        curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 15);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         // Only calling the head
         if (!empty($this->reddit_session)) {
             curl_setopt($ch, CURLOPT_COOKIE, $this->reddit_session);
@@ -417,9 +428,9 @@ class reddit2 extends \spouts\spout {
         curl_setopt($ch, CURLOPT_NOBODY, true);
         curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1); // ADD THIS
 
-        curl_setopt( $ch, CURLOPT_URL, $url );
-        $data = @curl_exec( $ch );
-        curl_close( $ch );
+        curl_setopt($ch, CURLOPT_URL, $url);
+        $data = @curl_exec($ch);
+        curl_close($ch);
 
         return $data;
     }
@@ -429,7 +440,9 @@ class reddit2 extends \spouts\spout {
      * Searches for the first occurence of an html <img> element in a string
      * and extracts the src if it finds it. Returns boolean false in case an
      * <img> element is not found.
+     *
      * @param    string  $str    An HTML string
+     *
      * @return   mixed           The contents of the src attribute in the
      *                           found <img> or boolean false if no <img>
      *                           is found
@@ -450,14 +463,13 @@ class reddit2 extends \spouts\spout {
         }
     }
 
-    private function login($params)
-    {
-        $login = sprintf("api_type=json&user=%s&passwd=%s", $params['username'], $params['password']);
+    private function login($params) {
+        $login = sprintf('api_type=json&user=%s&passwd=%s', $params['username'], $params['password']);
         $ch = curl_init("https://ssl.reddit.com/api/login/{$params['username']}");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt( $ch, CURLOPT_CONNECTTIMEOUT, 15 );
-        curl_setopt( $ch, CURLOPT_TIMEOUT, 15 );
-        curl_setopt( $ch, CURLOPT_CUSTOMREQUEST, "POST" );
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 15);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
         curl_setopt($ch, CURLOPT_POSTFIELDS, $login);
         $response = curl_exec($ch);
         $response = json_decode($response);
@@ -465,7 +477,7 @@ class reddit2 extends \spouts\spout {
             throw new \Exception(curl_error($ch));
         } else {
             curl_close($ch);
-            if (count($response->json->errors) > 0){
+            if (count($response->json->errors) > 0) {
                 $errors = '';
                 foreach ($response->json->errors as $error) {
                     $errors .= $error[1] . PHP_EOL;
@@ -473,7 +485,7 @@ class reddit2 extends \spouts\spout {
                 throw new \Exception($errors);
             } else {
                 $this->reddit_session = "reddit_session={$response->json->data->cookie}";
-                if (function_exists("apc_store")) {
+                if (function_exists('apc_store')) {
                     apc_store("{$params['username']}_slefoss_reddit_session", $this->reddit_session, 3600);
                 }
             }

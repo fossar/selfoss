@@ -1,11 +1,10 @@
-<?PHP
+<?php
 
 namespace daos;
 
 /**
  * Class for accessing persistent saved items
  *
- * @package    daos
  * @copyright  Copyright (c) Tobias Zeising (http://www.aditu.de)
  * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Harald Lapp <harald.lapp@gmail.com>
@@ -14,8 +13,7 @@ namespace daos;
 class Items extends Database {
     /** @var object Instance of backend specific items class */
     private $backend = null;
-    
-    
+
     /**
      * Constructor.
      *
@@ -26,61 +24,62 @@ class Items extends Database {
         $this->backend = new $class();
         parent::__construct();
     }
-    
-    
+
     /**
      * pass any method call to the backend.
-     * 
-     * @return methods return value
+     *
      * @param string $name name of the function
      * @param array $args arguments
+     *
+     * @return methods return value
      */
     public function __call($name, $args) {
-        if(method_exists($this->backend, $name))
-            return call_user_func_array(array($this->backend, $name), $args);
-        else
+        if (method_exists($this->backend, $name)) {
+            return call_user_func_array([$this->backend, $name], $args);
+        } else {
             \F3::get('logger')->error('Unimplemented method for ' . \F3::get('db_type') . ': ' . $name);
+        }
     }
-    
-    
+
     /**
      * cleanup orphaned and old items
      *
-     * @return void
      * @param int $days delete all items older than this value [optional]
+     *
+     * @return void
      */
     public function cleanup($days) {
-        $minDate = NULL;
-        if ($days !== "") {
+        $minDate = null;
+        if ($days !== '') {
             $minDate = new \DateTime();
-            $minDate->sub(new \DateInterval('P'.$days.'D'));
+            $minDate->sub(new \DateInterval('P' . $days . 'D'));
         }
         $this->backend->cleanup($minDate);
     }
-    
-    
+
     /**
      * returns items
      *
-     * @return mixed items as array
      * @param mixed $options search, offset and filter params
+     *
+     * @return mixed items as array
      */
-    public function get($options = array()) {
+    public function get($options = []) {
         $options = array_merge(
-            array(
+            [
                 'starred' => false,
-                'offset'  => 0,
-                'search'  => false,
-                'items'   => \F3::get('items_perpage')
-            ),
+                'offset' => 0,
+                'search' => false,
+                'items' => \F3::get('items_perpage')
+            ],
             $options
         );
-        
+
         $items = $this->backend->get($options);
 
         // remove private posts with private tags
-        if(!\F3::get('auth')->showPrivateTags()) {
-            foreach($items as $idx => $item) {
+        if (!\F3::get('auth')->showPrivateTags()) {
+            foreach ($items as $idx => $item) {
                 $tags = explode(',', $item['tags']);
                 foreach ($tags as $tag) {
                     if (strpos(trim($tag), '@') === 0) {
@@ -93,8 +92,8 @@ class Items extends Database {
         }
 
         // remove posts with hidden tags
-        if(!isset($options['tag']) || strlen($options['tag']) === 0) {
-            foreach($items as $idx => $item) {
+        if (!isset($options['tag']) || strlen($options['tag']) === 0) {
+            foreach ($items as $idx => $item) {
                 $tags = explode(',', $item['tags']);
                 foreach ($tags as $tag) {
                     if (strpos(trim($tag), '#') === 0) {

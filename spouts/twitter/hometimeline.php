@@ -1,4 +1,4 @@
-<?PHP 
+<?php
 
 namespace spouts\twitter;
 
@@ -7,29 +7,24 @@ use Abraham\TwitterOAuth\TwitterOAuth;
 /**
  * Spout for fetching the twitter timeline of your twitter account
  *
- * @package    spouts
- * @subpackage rss
  * @copyright  Copyright (c) Tobias Zeising (http://www.aditu.de)
  * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class hometimeline extends \spouts\twitter\usertimeline {
-
     /** @var string name of source */
     public $name = 'Twitter - Your timeline';
-    
-    
+
     /** @var string description of this source type */
     public $description = 'Your timeline on twitter';
-    
-    
+
     /**
      * config params
      * array of arrays with name, type, default value, required, validation type
      *
      * - Values for type: text, password, checkbox
      * - Values for validation: alpha, email, numeric, int, alnum, notempty
-     * 
+     *
      * e.g.
      * array(
      *   "id" => array(
@@ -44,47 +39,47 @@ class hometimeline extends \spouts\twitter\usertimeline {
      *
      * @var bool|mixed
      */
-    public $params = array(
-        "consumer_key" => array(
-            "title"      => "Consumer Key",
-            "type"       => "text",
-            "default"    => "",
-            "required"   => true,
-            "validation" => array("notempty")
-        ),
-        "consumer_secret" => array(
-            "title"      => "Consumer Secret",
-            "type"       => "password",
-            "default"    => "",
-            "required"   => true,
-            "validation" => array("notempty")
-        ),
-        "access_key" => array(
-            "title"      => "Access Key",
-            "type"       => "password",
-            "default"    => "",
-            "required"   => true,
-            "validation" => array("notempty")
-        ),
-        "access_secret" => array(
-            "title"      => "Access Secret",
-            "type"       => "password",
-            "default"    => "",
-            "required"   => true,
-            "validation" => array("notempty")
-        )
-    );
-    
-    
+    public $params = [
+        'consumer_key' => [
+            'title' => 'Consumer Key',
+            'type' => 'text',
+            'default' => '',
+            'required' => true,
+            'validation' => ['notempty']
+        ],
+        'consumer_secret' => [
+            'title' => 'Consumer Secret',
+            'type' => 'password',
+            'default' => '',
+            'required' => true,
+            'validation' => ['notempty']
+        ],
+        'access_key' => [
+            'title' => 'Access Key',
+            'type' => 'password',
+            'default' => '',
+            'required' => true,
+            'validation' => ['notempty']
+        ],
+        'access_secret' => [
+            'title' => 'Access Secret',
+            'type' => 'password',
+            'default' => '',
+            'required' => true,
+            'validation' => ['notempty']
+        ]
+    ];
+
     /**
      * loads content for given twitter user
      *
-     * @return void
      * @param mixed $params the params of this source
+     *
+     * @return void
      */
     public function load($params) {
         $twitter = new TwitterOAuth($params['consumer_key'], $params['consumer_secret'], $params['access_key'], $params['access_secret']);
-        $timeline = $twitter->get('statuses/home_timeline', array('include_rts' => 1, 'count' => 50));
+        $timeline = $twitter->get('statuses/home_timeline', ['include_rts' => 1, 'count' => 50]);
 
         if (isset($timeline->errors)) {
             $errors = '';
@@ -96,13 +91,13 @@ class hometimeline extends \spouts\twitter\usertimeline {
             throw new \Exception($errors);
         }
 
-        if(!is_array($timeline))
+        if (!is_array($timeline)) {
             throw new \Exception('invalid twitter response');
-        
+        }
         $this->items = $timeline;
-        
+
         $this->htmlUrl = 'https://twitter.com/';
 
-        $this->spoutTitle = "Home timeline";
+        $this->spoutTitle = 'Home timeline';
     }
 }
