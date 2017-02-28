@@ -1,23 +1,23 @@
 <!doctype html>
-<html lang="<?PHP echo \F3::get('language'); ?>">
+<html lang="<?= \F3::get('language'); ?>">
 <head>
-    <base href="<?PHP echo $this->base; ?>" /> 
+    <base href="<?= $this->base; ?>" />
 
     <meta charset="utf-8">
 
-    <title><?PHP echo trim(\F3::get('html_title')); echo $this->statsUnread>0 ? ' ('.$this->statsUnread.')' : ''; ?></title>
-    
+    <title><?= trim(\F3::get('html_title')); echo $this->statsUnread > 0 ? ' (' . $this->statsUnread . ')' : ''; ?></title>
+
     <meta name="description" content="selfoss" />
     <meta name="author" content="Tobias Zeising" />
-    <meta name="version" content="<?PHP echo \F3::get('version'); ?>" />
+    <meta name="version" content="<?= \F3::get('version'); ?>" />
     <meta name="referrer" content="no-referrer" />
 
     <!--  Mobile viewport optimized: j.mp/bplateviewport -->
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1" />
-    
+
     <!--  Add support for fullscreen Webapp on iPhone 5 -->
     <meta name="viewport" content="initial-scale=1, user-scalable=no, maximum-scale=1" media="(device-height: 568px)" />
-    
+
     <!-- Web application behavior -->
     <meta name="application-name" content="selfoss" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -25,16 +25,16 @@
 
     <!-- app tile and notification when adding link to Windows 8 start screen -->
     <meta name="msapplication-TileColor" content="#3d6d69" />
-    <meta name="msapplication-square70x70logo" content="<?php echo $this->base; ?>win8-70-icon.png" />
-    <meta name="msapplication-square150x150logo" content="<?php echo $this->base; ?>win8-150-icon.png" />
-    <meta name="msapplication-wide310x150logo" content="<?php echo $this->base; ?>win8-150-icon.png" />
-    <meta name="msapplication-square310x310logo" content="<?php echo $this->base; ?>win8-310-icon.png" />
-    <meta name="msapplication-notification" content="cycle=1; frequency=30; polling-uri=<?php echo $this->base; ?>win8notifs" />
-    <meta name="msapplication-badge" content="frequency=30; polling-uri=<?php echo $this->base; ?>badge" />
+    <meta name="msapplication-square70x70logo" content="<?= $this->base; ?>win8-70-icon.png" />
+    <meta name="msapplication-square150x150logo" content="<?= $this->base; ?>win8-150-icon.png" />
+    <meta name="msapplication-wide310x150logo" content="<?= $this->base; ?>win8-150-icon.png" />
+    <meta name="msapplication-square310x310logo" content="<?= $this->base; ?>win8-310-icon.png" />
+    <meta name="msapplication-notification" content="cycle=1; frequency=30; polling-uri=<?= $this->base; ?>win8notifs" />
+    <meta name="msapplication-badge" content="frequency=30; polling-uri=<?= $this->base; ?>badge" />
 
     <!--  RSS Feed -->
     <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="feed" />
-    
+
     <!-- icons -->
     <link rel="apple-touch-icon-precomposed" href="icon-128x128.png" />
     <link rel="icon" type="image/png" href="icon-32x32.png" />
@@ -44,129 +44,129 @@
     <meta name="theme-color" content="#191718" />
 
     <!-- all css definitions -->
-    <?PHP if(\F3::get('use_system_font')!=true) : ?>
+    <?php if (\F3::get('use_system_font') != true) : ?>
         <link rel="stylesheet" href="css/fonts.css" />
-    <?PHP endif; ?>
-    <link rel="stylesheet" href="<?PHP echo \helpers\View::getGlobalCssFileName(); ?>" />
+    <?php endif; ?>
+    <link rel="stylesheet" href="<?= \helpers\View::getGlobalCssFileName(); ?>" />
 
 </head>
 <body class="
-    <?PHP echo $this->publicMode===true ? "publicmode" : ""; ?>
-    <?PHP echo $this->loggedin===true ? "loggedin" : "notloggedin"; ?> 
-    <?PHP echo \F3::get('auto_mark_as_read')==1 ? "auto_mark_as_read" : ""; ?>
+    <?= $this->publicMode === true ? 'publicmode' : ''; ?>
+    <?= $this->loggedin === true ? 'loggedin' : 'notloggedin'; ?>
+    <?= \F3::get('auto_mark_as_read') == 1 ? 'auto_mark_as_read' : ''; ?>
 ">
-    
+
     <div id="error"></div>
-    
+
     <!-- language settings for jQuery -->
     <span id="lang"
-        data-mark="<?PHP echo \F3::get('lang_mark'); ?>"
-        data-unmark="<?PHP echo \F3::get('lang_unmark'); ?>"
-        data-star="<?PHP echo \F3::get('lang_star'); ?>"
-        data-unstar="<?PHP echo \F3::get('lang_unstar'); ?>"
-        data-source_warn="<?PHP echo \F3::get('lang_source_warn'); ?>"
-        data-source_saved="<?PHP echo \F3::get('lang_source_saved'); ?>"
-        data-source_edit="<?PHP echo \F3::get('lang_source_edit'); ?>"></span>
+        data-mark="<?= \F3::get('lang_mark'); ?>"
+        data-unmark="<?= \F3::get('lang_unmark'); ?>"
+        data-star="<?= \F3::get('lang_star'); ?>"
+        data-unstar="<?= \F3::get('lang_unstar'); ?>"
+        data-source_warn="<?= \F3::get('lang_source_warn'); ?>"
+        data-source_saved="<?= \F3::get('lang_source_saved'); ?>"
+        data-source_edit="<?= \F3::get('lang_source_edit'); ?>"></span>
 
     <!-- other settings -->
     <span id="config"
-        data-homepage="<?PHP echo (\F3::get('homepage')) ? \F3::get('homepage') : 'newest' ?>"
-        data-anonymizer="<?PHP echo \helpers\Anonymizer::getAnonymizer(); ?>"
-        data-share="<?PHP echo \F3::get('share'); ?>"
-        data-wallabag="<?PHP echo \F3::get('wallabag'); ?>"
-        data-wordpress="<?PHP echo \F3::get('wordpress'); ?>"
-        data-auto_mark_as_read="<?PHP echo \F3::get('auto_mark_as_read'); ?>"
-        data-auto_collapse="<?PHP echo \F3::get('auto_collapse'); ?>"
-        data-auto_stream_more="<?PHP echo \F3::get('auto_stream_more'); ?>"
-        data-load_images_on_mobile="<?PHP echo \F3::get('load_images_on_mobile'); ?>"
-        data-items_perpage="<?PHP echo \F3::get('items_perpage'); ?>"
-        data-auto_hide_read_on_mobile="<?PHP echo \F3::get('auto_hide_read_on_mobile'); ?>"
-        data-scroll_to_article_header="<?PHP echo \F3::get('scroll_to_article_header'); ?>"
-        data-html_title="<?PHP echo trim(\F3::get('html_title')); ?>"></span>
+        data-homepage="<?= (\F3::get('homepage')) ? \F3::get('homepage') : 'newest' ?>"
+        data-anonymizer="<?= \helpers\Anonymizer::getAnonymizer(); ?>"
+        data-share="<?= \F3::get('share'); ?>"
+        data-wallabag="<?= \F3::get('wallabag'); ?>"
+        data-wordpress="<?= \F3::get('wordpress'); ?>"
+        data-auto_mark_as_read="<?= \F3::get('auto_mark_as_read'); ?>"
+        data-auto_collapse="<?= \F3::get('auto_collapse'); ?>"
+        data-auto_stream_more="<?= \F3::get('auto_stream_more'); ?>"
+        data-load_images_on_mobile="<?= \F3::get('load_images_on_mobile'); ?>"
+        data-items_perpage="<?= \F3::get('items_perpage'); ?>"
+        data-auto_hide_read_on_mobile="<?= \F3::get('auto_hide_read_on_mobile'); ?>"
+        data-scroll_to_article_header="<?= \F3::get('scroll_to_article_header'); ?>"
+        data-html_title="<?= trim(\F3::get('html_title')); ?>"></span>
 
     <!-- menue open for smartphone -->
     <div id="nav-mobile">
         <div id="nav-mobile-logo"><span class="unread-count"></span></div>
         <div id="nav-mobile-settings"></div>
     </div>
-    
+
     <!-- navigation -->
     <div id="nav" role="navigation">
         <div id="nav-logo"></div>
-        <button id="nav-mark"><?PHP echo \F3::get('lang_markread')?></button>
+        <button id="nav-mark"><?= \F3::get('lang_markread')?></button>
 
         <div id="nav-filter-wrapper">
-        <h2 id="nav-filter-title" class="nav-filter-expanded" tabindex="0" aria-haspopup="true" aria-expanded="true"><?PHP echo \F3::get('lang_filter') ?></h2>
+        <h2 id="nav-filter-title" class="nav-filter-expanded" tabindex="0" aria-haspopup="true" aria-expanded="true"><?= \F3::get('lang_filter') ?></h2>
         <ul id="nav-filter">
-            <li id="nav-filter-newest" class="nav-filter-newest" role="link" tabindex="0"><?PHP echo \F3::get('lang_newest')?> <span></span></li>
-            <li id="nav-filter-unread" class="nav-filter-unread" role="link" tabindex="0"><?PHP echo \F3::get('lang_unread')?> <span class="unread-count"></span></li>
-            <li id="nav-filter-starred" class="nav-filter-starred" role="link" tabindex="0"><?PHP echo \F3::get('lang_starred') ?> <span></span></li>
+            <li id="nav-filter-newest" class="nav-filter-newest" role="link" tabindex="0"><?= \F3::get('lang_newest')?> <span></span></li>
+            <li id="nav-filter-unread" class="nav-filter-unread" role="link" tabindex="0"><?= \F3::get('lang_unread')?> <span class="unread-count"></span></li>
+            <li id="nav-filter-starred" class="nav-filter-starred" role="link" tabindex="0"><?= \F3::get('lang_starred') ?> <span></span></li>
         </ul>
         </div>
 
         <hr>
 
         <div id="nav-tags-wrapper">
-        <h2 id="nav-tags-title" class="nav-tags-expanded" tabindex="0" aria-haspopup="true" aria-expanded="true"><?PHP echo \F3::get('lang_tags') ?></h2>
+        <h2 id="nav-tags-title" class="nav-tags-expanded" tabindex="0" aria-haspopup="true" aria-expanded="true"><?= \F3::get('lang_tags') ?></h2>
         <ul id="nav-tags">
-            <li class="active nav-tags-all" role="link" tabindex="0"><?PHP echo \F3::get('lang_alltags')?></li>
+            <li class="active nav-tags-all" role="link" tabindex="0"><?= \F3::get('lang_alltags')?></li>
         </ul>
-        <h2 id="nav-sources-title" class="nav-sources-collapsed" tabindex="0" aria-haspopup="true" aria-expanded="false"><?PHP echo \F3::get('lang_sources') ?></h2>
+        <h2 id="nav-sources-title" class="nav-sources-collapsed" tabindex="0" aria-haspopup="true" aria-expanded="false"><?= \F3::get('lang_sources') ?></h2>
         <ul id="nav-sources">
         </ul>
         </div>
-        
+
         <hr>
-        
+
         <!-- navigation search input just for smartphone version -->
         <div id="nav-search" role="search">
-            <input type="search" id="nav-search-term"> <input type="button" id="nav-search-button" value="<?PHP echo \F3::get('lang_searchbutton')?>">
+            <input type="search" id="nav-search-term"> <input type="button" id="nav-search-button" value="<?= \F3::get('lang_searchbutton')?>">
             <hr>
         </div>
-        
-        <?PHP if($this->loggedin===true && \F3::get('auth')->enabled()===false) : ?>
-        <button id="nav-refresh" title="<?PHP echo trim(\F3::get('lang_refreshbutton')); ?>" class="nologin"></button>
-        <button id="nav-settings" title="<?PHP echo trim(\F3::get('lang_settingsbutton')); ?>" class="nologin"></button>
-        <?PHP endif; ?>
-        
-        <?PHP if($this->loggedin===true && \F3::get('auth')->enabled()===true) : ?>
-        <button id="nav-refresh" title="<?PHP echo trim(\F3::get('lang_refreshbutton')); ?>"></button>
-        <button id="nav-settings" title="<?PHP echo trim(\F3::get('lang_settingsbutton')); ?>"></button>
-        <button id="nav-logout" title="<?PHP echo trim(\F3::get('lang_logoutbutton')); ?>"></button>
-        <?PHP endif; ?>
-        
-        <?PHP if($this->loggedin===false) : ?>
-        <button id="nav-login" title="<?PHP echo trim(\F3::get('lang_loginbutton')); ?>"></button>
-        <?PHP endif; ?>
-        
-        <a id="nav-copyright" href="http://selfoss.aditu.de" target="_blank" rel="noopener noreferrer">selfoss <?PHP echo \F3::get('version'); ?></a>
+
+        <?php if ($this->loggedin === true && \F3::get('auth')->enabled() === false) : ?>
+        <button id="nav-refresh" title="<?= trim(\F3::get('lang_refreshbutton')); ?>" class="nologin"></button>
+        <button id="nav-settings" title="<?= trim(\F3::get('lang_settingsbutton')); ?>" class="nologin"></button>
+        <?php endif; ?>
+
+        <?php if ($this->loggedin === true && \F3::get('auth')->enabled() === true) : ?>
+        <button id="nav-refresh" title="<?= trim(\F3::get('lang_refreshbutton')); ?>"></button>
+        <button id="nav-settings" title="<?= trim(\F3::get('lang_settingsbutton')); ?>"></button>
+        <button id="nav-logout" title="<?= trim(\F3::get('lang_logoutbutton')); ?>"></button>
+        <?php endif; ?>
+
+        <?php if ($this->loggedin === false) : ?>
+        <button id="nav-login" title="<?= trim(\F3::get('lang_loginbutton')); ?>"></button>
+        <?php endif; ?>
+
+        <a id="nav-copyright" href="http://selfoss.aditu.de" target="_blank" rel="noopener noreferrer">selfoss <?= \F3::get('version'); ?></a>
     </div>
-    
+
     <!-- search -->
     <div id="search" role="search">
         <input type="search" id="search-term">
-        <button id="search-remove" title="<?PHP echo \F3::get('lang_searchremove')?>"><img src="images/remove.png" alt=""></button>
-        <button id="search-button" title="<?PHP echo \F3::get('lang_searchbutton')?>"><img src="images/search.png" alt=""></button>
+        <button id="search-remove" title="<?= \F3::get('lang_searchremove')?>"><img src="images/remove.png" alt=""></button>
+        <button id="search-button" title="<?= \F3::get('lang_searchbutton')?>"><img src="images/search.png" alt=""></button>
     </div>
-    
+
     <ul id="search-list">
     </ul>
-    
+
     <!-- content -->
     <div id="content" role="main">
-        <?PHP echo $this->content; ?>
+        <?= $this->content; ?>
     </div>
 
     <div id="stream-buttons">
-        <div class="stream-empty"><?PHP echo trim(\F3::get('lang_no_entries')); ?></div>
-        <div class="stream-button stream-more"><span><?PHP echo trim(\F3::get('lang_more')); ?></span></div>
-        <div class="stream-button mark-these-read"><span><?PHP echo trim(\F3::get('lang_markread')); ?></span></div>
-        <div class="stream-button stream-error"><?PHP echo trim(\F3::get('lang_streamerror')); ?></div>
+        <div class="stream-empty"><?= trim(\F3::get('lang_no_entries')); ?></div>
+        <div class="stream-button stream-more"><span><?= trim(\F3::get('lang_more')); ?></span></div>
+        <div class="stream-button mark-these-read"><span><?= trim(\F3::get('lang_markread')); ?></span></div>
+        <div class="stream-button stream-error"><?= trim(\F3::get('lang_streamerror')); ?></div>
     </div>
 
     <!-- fullscreen popup -->
     <div id="fullscreen-entry"></div>
-    
-    <script src="<?PHP echo \helpers\View::getGlobalJsFileName(); ?>"></script>
+
+    <script src="<?= \helpers\View::getGlobalJsFileName(); ?>"></script>
 </body>
 </html>

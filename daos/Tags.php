@@ -1,25 +1,18 @@
-<?PHP
+<?php
 
 namespace daos;
 
 /**
  * Class for accessing tag colors
  *
- * @package    daos\mysql
  * @copyright  Copyright (c) Tobias Zeising (http://www.aditu.de)
  * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
-
 class Tags extends Database {
-    /**
-     * Instance of backend specific sources class
-     *
-     * @var     object
-     */
+    /** @var object Instance of backend specific sources class */
     private $backend = null;
-    
-    
+
     /**
      * Constructor.
      *
@@ -34,8 +27,8 @@ class Tags extends Database {
     public function get() {
         $tags = $this->backend->get();
         // remove items with private tags
-        if(!\F3::get('auth')->showPrivateTags()) {
-            foreach($tags as $idx => $tag) {
+        if (!\F3::get('auth')->showPrivateTags()) {
+            foreach ($tags as $idx => $tag) {
                 if (strpos($tag['tag'], '@') === 0) {
                     unset($tags[$idx]);
                 }
@@ -45,18 +38,20 @@ class Tags extends Database {
 
         return $tags;
     }
-    
+
     /**
      * pass any method call to the backend.
-     * 
-     * @return methods return value
+     *
      * @param string $name name of the function
      * @param array $args arguments
+     *
+     * @return methods return value
      */
     public function __call($name, $args) {
-        if(method_exists($this->backend, $name))
-            return call_user_func_array(array($this->backend, $name), $args);
-        else
+        if (method_exists($this->backend, $name)) {
+            return call_user_func_array([$this->backend, $name], $args);
+        } else {
             \F3::get('logger')->error('Unimplemented method for ' . \F3::get('db_type') . ': ' . $name);
+        }
     }
 }

@@ -1,55 +1,58 @@
-<?PHP
+<?php
 
 namespace helpers;
 
 /**
  * Helper class for loading extern items
  *
- * @package    helpers
  * @copyright  Copyright (c) Tobias Zeising (http://www.aditu.de)
  * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class ViewHelper {
-
-    /** encloses all searchWords with <span class=found>$word</span>
-      * for later highlitning with CSS
-      *
-      * @return string with highlited words
-        * @param string $content which contains words
-        * @param array|string $searchWords words for highlighting
-      */
+    /**
+     * Enclose all searchWords with <span class="found">$word</span>
+     * for later highlighing with CSS
+     *
+     * @param string $content which contains words
+     * @param array|string $searchWords words for highlighting
+     *
+     * @return string with highlited words
+     */
     public function highlight($content, $searchWords) {
-        if(strlen(trim($searchWords))==0)
+        if (strlen(trim($searchWords)) == 0) {
             return $content;
+        }
 
-        if(!is_array($searchWords))
+        if (!is_array($searchWords)) {
             $searchWords = \helpers\Search::splitTerms($searchWords);
+        }
 
-        foreach($searchWords as $word)
-            $content = preg_replace('/(?!<[^<>])('.$word.')(?![^<>]*>)/i','<span class=found>$0</span>',$content);
+        foreach ($searchWords as $word) {
+            $content = preg_replace('/(?!<[^<>])(' . $word . ')(?![^<>]*>)/i', '<span class="found">$0</span>', $content);
+        }
 
         return $content;
     }
-
 
     /**
      * removes img src attribute and saves the value in ref for
      * loading it later
      *
-     * @return string with replaced img tags
      * @param string $content which contains img tags
+     *
+     * @return string with replaced img tags
      */
     public function lazyimg($content) {
-        return preg_replace("/<img([^<]+)src=(['\"])([^\"']*)(['\"])([^<]*)>/i","<img$1ref='$3'$5>",$content);
+        return preg_replace("/<img([^<]+)src=(['\"])([^\"']*)(['\"])([^<]*)>/i", "<img$1ref='$3'$5>", $content);
     }
-
 
     /**
      * format given date as "x days ago"
      *
-     * @return string with replaced formateddate
      * @param
+     *
+     * @return string with replaced formateddate
      */
     public function dateago($datestr) {
         $date = new \DateTime($datestr);
@@ -59,38 +62,41 @@ class ViewHelper {
         $ageInHours = $ageInMinutes / 60;
         $ageInDays = $ageInHours / 24;
 
-        if($ageInMinutes<1)
-            return \F3::get('lang_seconds',round($ageInSeconds, 0));
-        if($ageInHours<1)
-            return \F3::get('lang_minutes',round($ageInMinutes, 0));
-        if($ageInDays<1)
-            return \F3::get('lang_hours',round($ageInHours, 0));
+        if ($ageInMinutes < 1) {
+            return \F3::get('lang_seconds', round($ageInSeconds, 0));
+        }
+        if ($ageInHours < 1) {
+            return \F3::get('lang_minutes', round($ageInMinutes, 0));
+        }
+        if ($ageInDays < 1) {
+            return \F3::get('lang_hours', round($ageInHours, 0));
+        }
 
         //return $datestr;
         return \F3::get('lang_timestamp', $date->getTimestamp());
     }
 
-
     /**
      * Return ISO8601 formatted date
      *
      * @param sql date
+     *
      * @return string
      */
     public static function date_iso8601($datestr) {
         $date = new \DateTime($datestr);
+
         return $date->format(\DateTime::ATOM);
     }
-
 
     /**
      * Proxify imgs through atmos/camo when not https
      *
      * @param  string $content item content
+     *
      * @return string          item content
      */
-    public function camoflauge($content)
-    {
+    public function camoflauge($content) {
         if (empty($content)) {
             return $content;
         }

@@ -1,52 +1,53 @@
 <ul>
-<?PHP
-foreach($this->spout->params as $spoutParamName => $spoutParam) {
+<?php
+foreach ($this->spout->params as $spoutParamName => $spoutParam) {
     $checked = '';
-    
+
     $value = $spoutParam['default'];
-    if(isset($this->params) && isset($this->params[$spoutParamName])) {
+    if (isset($this->params) && isset($this->params[$spoutParamName])) {
         $value = $this->params[$spoutParamName];
-        if($spoutParam["type"]=="checkbox" && $value=='1')
+        if ($spoutParam['type'] == 'checkbox' && $value == '1') {
             $checked = 'checked="checked"';
+        }
     }
-    
-    if( $spoutParam["type"]=="text"
-        || $spoutParam["type"]=="checkbox"
-        || $spoutParam["type"]=="url")
+
+    if ($spoutParam['type'] == 'text'
+        || $spoutParam['type'] == 'checkbox'
+        || $spoutParam['type'] == 'url') {
         echo '<li>
-                <label for="'.$spoutParamName.'-'.$this->idAttr.'">'.$spoutParam['title'].':</label>
-                <input id="'.$spoutParamName.'-'.$this->idAttr.'" type="'.$spoutParam["type"].'" 
-                       name="'.$spoutParamName.'" 
-                       value="'.$value.'" 
-                       '.$checked.' />
+                <label for="' . $spoutParamName . '-' . $this->idAttr . '">' . $spoutParam['title'] . ':</label>
+                <input id="' . $spoutParamName . '-' . $this->idAttr . '" type="' . $spoutParam['type'] . '"
+                       name="' . $spoutParamName . '"
+                       value="' . $value . '"
+                       ' . $checked . ' />
               </li>';
-    
-    if ($spoutParam["type"]=="password") {
+    }
+
+    if ($spoutParam['type'] == 'password') {
         if (empty($value)) {
             echo '<li>
-                    <label for="'.$spoutParamName.'-'.$this->idAttr.'">'.$spoutParam['title'].':</label>
-                    <input id="'.$spoutParamName.'-'.$this->idAttr.'" type="'.$spoutParam["type"].'" 
-                           name="'.$spoutParamName.'" />
+                    <label for="' . $spoutParamName . '-' . $this->idAttr . '">' . $spoutParam['title'] . ':</label>
+                    <input id="' . $spoutParamName . '-' . $this->idAttr . '" type="' . $spoutParam['type'] . '"
+                           name="' . $spoutParamName . '" />
                   </li>';
         } else {
             echo '<li>
-                    <label for="'.$spoutParamName.'-'.$this->idAttr.'">'.$spoutParam['title'].':</label>
-                    <input id="'.$spoutParamName.'-'.$this->idAttr.'" type="'.$spoutParam["type"].'" 
-                           name="'.$spoutParamName.'"
-                           placeholder="'.\F3::get('lang_source_pwd_placeholder').'" />
+                    <label for="' . $spoutParamName . '-' . $this->idAttr . '">' . $spoutParam['title'] . ':</label>
+                    <input id="' . $spoutParamName . '-' . $this->idAttr . '" type="' . $spoutParam['type'] . '"
+                           name="' . $spoutParamName . '"
+                           placeholder="' . \F3::get('lang_source_pwd_placeholder') . '" />
                   </li>';
         }
-    }
-    else if($spoutParam["type"]=="select") {
+    } elseif ($spoutParam['type'] == 'select') {
         $options = '';
-        foreach($spoutParam["values"] as $optionName => $optionTitle) {
-            $selected = ($optionName==$value) ? 'selected="selected"' : '';
-            $options .= "\n".'<option value="'.$optionName.'" '.$selected.'>'.$optionTitle.'</option>';
+        foreach ($spoutParam['values'] as $optionName => $optionTitle) {
+            $selected = ($optionName == $value) ? 'selected="selected"' : '';
+            $options .= "\n" . '<option value="' . $optionName . '" ' . $selected . '>' . $optionTitle . '</option>';
         }
 
         echo '<li>
-                <label for="'.$spoutParamName.'-'.$this->idAttr.'">'.$spoutParam['title'].':</label>
-                <select id="'.$spoutParamName.'-'.$this->idAttr.'" name="'.$spoutParamName.'" size="1">'.$options.'
+                <label for="' . $spoutParamName . '-' . $this->idAttr . '">' . $spoutParam['title'] . ':</label>
+                <select id="' . $spoutParamName . '-' . $this->idAttr . '" name="' . $spoutParamName . '" size="1">' . $options . '
                 </select>
             </li>';
     }

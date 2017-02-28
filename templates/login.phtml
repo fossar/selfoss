@@ -1,20 +1,20 @@
-<!doctype html>  
+<!doctype html>
 <head>
-    <base href="<?PHP echo $this->base; ?>" /> 
+    <base href="<?= $this->base; ?>" />
 
     <meta charset="utf-8">
 
-    <title><?PHP echo trim(\F3::get('html_title')); ?></title>
-    
+    <title><?= trim(\F3::get('html_title')); ?></title>
+
     <meta name="description" content="selfoss" />
     <meta name="author" content="Tobias Zeising" />
 
     <!--  Mobile viewport optimized: j.mp/bplateviewport -->
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1" />
-    
+
     <!--  Add support for fullscreen Webapp on iPhone 5 -->
     <meta name="viewport" content="initial-scale=1, user-scalable=no, maximum-scale=1" media="(device-height: 568px)" />
-    
+
     <!-- Web application behavior -->
     <meta name="application-name" content="selfoss" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -29,40 +29,40 @@
     <meta name="theme-color" content="#191718" />
 
     <!-- all css definitions -->
-    <?PHP if(\F3::get('use_system_font')!=true) : ?>
+    <?php if (\F3::get('use_system_font') != true) : ?>
         <link rel="stylesheet" href="css/fonts.css" />
-    <?PHP endif; ?>
-    <link rel="stylesheet" href="<?PHP echo \helpers\View::getGlobalCssFileName(); ?>" />
+    <?php endif; ?>
+    <link rel="stylesheet" href="<?= \helpers\View::getGlobalCssFileName(); ?>" />
 
 </head>
 <body>
 
-    <?PHP if(!isset($this->password)) : ?>
-    <form action="<?PHP echo $this->base; ?>?login=1" method="post">
+    <?php if (!isset($this->password)) : ?>
+    <form action="<?= $this->base; ?>?login=1" method="post">
     <ul id="login">
         <li><h1>selfoss login</h1></li>
-         <li><label for="username"><?PHP echo trim(\F3::get('lang_login_username')); ?>:</label> <input type="text" name="username" id="username"></li>
-         <li><label for="password"><?PHP echo trim(\F3::get('lang_login_password')); ?>:</label> <input type="password" name="password" id="password"></li>
-        <?PHP if(isset($this->error)) : ?>
-        <li class="error"><?PHP echo $this->error; ?></li>
-        <?PHP endif; ?>
-        <li class="button"><label>&nbsp;</label><input type="submit" value="<?PHP echo \F3::get('lang_login'); ?>" /></li>
+         <li><label for="username"><?= trim(\F3::get('lang_login_username')); ?>:</label> <input type="text" name="username" id="username"></li>
+         <li><label for="password"><?= trim(\F3::get('lang_login_password')); ?>:</label> <input type="password" name="password" id="password"></li>
+        <?php if (isset($this->error)) : ?>
+        <li class="error"><?= $this->error; ?></li>
+        <?php endif; ?>
+        <li class="button"><label>&nbsp;</label><input type="submit" value="<?= \F3::get('lang_login'); ?>" /></li>
     </ul>
     </form>
-    
-    <?PHP else : ?>
-    <form action="<?PHP echo $this->base; ?>password" method="post">
+
+    <?php else : ?>
+    <form action="<?= $this->base; ?>password" method="post">
     <ul id="login">
         <li><h1>hash generator</h1></li>
         <li><label for="password">Password:</label> <input type="password" name="password" id="password"></li>
-        <?PHP if(isset($this->hash)) : ?>
-        <li class="error"><label>&nbsp;</label>Generated Password (insert this in config.ini): <input type="text" id="hash" value="<?PHP echo $this->hash; ?>" /></li>
-        <?PHP endif; ?>
+        <?php if (isset($this->hash)) : ?>
+        <li class="error"><label>&nbsp;</label>Generated Password (insert this in config.ini): <input type="text" id="hash" value="<?= $this->hash; ?>" /></li>
+        <?php endif; ?>
         <li><label>&nbsp;</label><input class="button" type="submit" value="generate password" /></li>
     </ul>
     </form>
-    <?PHP endif; ?>
-    
-    <script src="<?PHP echo \helpers\View::getGlobalJsFileName(); ?>"></script>
+    <?php endif; ?>
+
+    <script src="<?= \helpers\View::getGlobalJsFileName(); ?>"></script>
 </body>
 </html>

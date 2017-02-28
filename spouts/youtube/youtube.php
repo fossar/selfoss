@@ -5,60 +5,47 @@ namespace spouts\youtube;
 /**
  * Spout for fetching a YouTube rss feed
  *
- * @package    spouts
- * @subpackage youtube
  * @copyright  Copyright (c) Tobias Zeising (http://www.aditu.de)
  * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  * @copywork   Arndt Staudinger <info@clucose.com> April 2013
  */
 class youtube extends \spouts\rss\feed {
-    /**
-     * name of source
-     *
-     * @var string
-     */
+    /** @var string name of source */
     public $name = 'YouTube Channel';
 
-    /**
-     * description of this source type
-     *
-     * @var string
-     */
+    /** @var string description of this source type */
     public $description = 'A YouTube channel as source';
 
-    /**
-     * config params
-     * array of arrays with name, type, default value, required, validation type
-     *
-     * @var array
-     */
-    public $params = array(
-        'channel' => array(
+    /** @var array config params */
+    public $params = [
+        'channel' => [
             'title' => 'Channel',
             'type' => 'text',
             'default' => '',
             'required' => true,
-            'validation' => array('notempty')
-        )
-    );
+            'validation' => ['notempty']
+        ]
+    ];
 
     /**
      * loads content for given source
      *
-     * @return void
      * @param array $params the params of this source
+     *
+     * @return void
      */
     public function load($params) {
         $url = $this->getXmlUrl($params);
-        parent::load(array('url' => $url));
+        parent::load(['url' => $url]);
     }
 
     /**
      * returns the xml feed url for the source
      *
-     * @return string url as xml
      * @param mixed $params params for the source
+     *
+     * @return string url as xml
      */
     public function getXmlUrl($params) {
         $channel = $params['channel'];
