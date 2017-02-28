@@ -31,10 +31,7 @@ class Items extends Database {
         }
 
         // i used string concatenation after validating $id
-        \F3::get('db')->exec('UPDATE ' . \F3::get('db_prefix') . 'items SET unread=:bool WHERE id IN (:id)', [
-            ':bool' => false,
-            ':id' => $id
-        ]);
+        \F3::get('db')->exec('UPDATE ' . \F3::get('db_prefix') . "items SET unread=? WHERE id IN ($id)", false);
     }
 
     /**
@@ -50,10 +47,7 @@ class Items extends Database {
         } elseif (!is_numeric($id)) {
             return;
         }
-        \F3::get('db')->exec('UPDATE ' . \F3::get('db_prefix') . 'items SET unread=:bool WHERE id IN (:id)', [
-            ':bool' => true,
-            ':id' => $id
-        ]);
+        \F3::get('db')->exec('UPDATE ' . \F3::get('db_prefix') . "items SET unread=? WHERE id IN ($id)", true);
     }
 
     /**
