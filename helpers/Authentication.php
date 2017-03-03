@@ -21,20 +21,15 @@ class Authentication {
             return;
         }
 
+        $base_url = parse_url(\helpers\View::getBaseUrl());
+
         // session cookie will be valid for one month.
         $cookie_expire = 3600 * 24 * 30;
-        $cookie_secure = isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off';
+        $cookie_secure = $base_url['scheme'] == 'https';
         $cookie_httponly = true;
+        $cookie_path = $base_url['path'];
+        $cookie_domain = $base_url['host'];
 
-        // check for SSL proxy and special cookie options
-        if (isset($_SERVER['HTTP_X_FORWARDED_SERVER']) && isset($_SERVER['HTTP_X_FORWARDED_HOST'])
-           && ($_SERVER['HTTP_X_FORWARDED_SERVER'] === $_SERVER['HTTP_X_FORWARDED_HOST'])) {
-            $cookie_path = '/' . $_SERVER['SERVER_NAME'] . preg_replace('/\/[^\/]+$/', '', $_SERVER['PHP_SELF']) . '/';
-            $cookie_domain = $_SERVER['HTTP_X_FORWARDED_SERVER'];
-        } else {
-            $cookie_path = \F3::get('BASE') . '/';
-            $cookie_domain = $_SERVER['SERVER_NAME'];
-        }
         session_set_cookie_params(
             $cookie_expire, $cookie_path, $cookie_domain, $cookie_secure, $cookie_httponly
         );
