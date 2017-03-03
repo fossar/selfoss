@@ -153,7 +153,7 @@ class Sources extends BaseController {
 
         // clean up title and tag data to prevent XSS
         $title = htmlspecialchars($data['title']);
-        $tags = htmlspecialchars($data['tags']);
+        $tags = array_map('htmlspecialchars', $data['tags']);
         $spout = $data['spout'];
         $filter = $data['filter'];
         $isAjax = isset($data['ajax']);
@@ -199,7 +199,6 @@ class Sources extends BaseController {
 
         // autocolor tags
         $tagsDao = new \daos\Tags();
-        $tags = explode(',', $tags);
         foreach ($tags as $tag) {
             $tagsDao->autocolorTag(trim($tag));
         }
@@ -209,7 +208,7 @@ class Sources extends BaseController {
 
         $return = [
             'success' => true,
-            'id' => $id,
+            'id' => (int) $id,
             'title' => $title
         ];
 

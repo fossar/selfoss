@@ -7,6 +7,9 @@
 ### Bug fixes
 - Reddit spout allows wider range of URLs, including absolute URLs and searches ([#1033](https://github.com/SSilence/selfoss/pull/1033))
 
+### API changes
+- `tags` attribute is now consistently array of strings, numbers are numbers and booleans are booleans.
+
 ### Other changes
 - Removed broken instapaper scraping from Reddit spout ([#1033](https://github.com/SSilence/selfoss/pull/1033))
 

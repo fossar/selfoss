@@ -344,7 +344,13 @@ class Items extends Database {
             $query = "$select $where_sql $order_sql LIMIT " . $options['items'] . ' OFFSET ' . $options['offset'];
         }
 
-        return \F3::get('db')->exec($query, $params);
+        return $this->stmt->ensureRowTypes(\F3::get('db')->exec($query, $params), [
+            'id' => \daos\PARAM_INT,
+            'unread' => \daos\PARAM_BOOL,
+            'starred' => \daos\PARAM_BOOL,
+            'source' => \daos\PARAM_INT,
+            'tags' => \daos\PARAM_CSV
+        ]);
     }
 
     /**
@@ -503,9 +509,9 @@ class Items extends Database {
             ' . $this->stmt->sumBool('starred') . ' AS starred
             FROM ' . \F3::get('db_prefix') . 'items;');
         $res = $this->stmt->ensureRowTypes($res, [
-            'total' => \PDO::PARAM_INT,
-            'unread' => \PDO::PARAM_INT,
-            'starred' => \PDO::PARAM_INT
+            'total' => \daos\PARAM_INT,
+            'unread' => \daos\PARAM_INT,
+            'starred' => \daos\PARAM_INT
         ]);
 
         return $res[0];
@@ -537,9 +543,9 @@ class Items extends Database {
             WHERE ' . \F3::get('db_prefix') . 'items.updatetime > :since;',
                 [':since' => [$since, \PDO::PARAM_STR]]);
         $res = $this->stmt->ensureRowTypes($res, [
-            'id' => \PDO::PARAM_INT,
-            'unread' => \PDO::PARAM_BOOL,
-            'starred' => \PDO::PARAM_BOOL
+            'id' => \daos\PARAM_INT,
+            'unread' => \daos\PARAM_BOOL,
+            'starred' => \daos\PARAM_BOOL
         ]);
 
         return $res;

@@ -98,6 +98,24 @@ class Statements extends \daos\mysql\Statements {
      *         expected types
      */
     public function ensureRowTypes(array $rows, array $expectedRowTypes) {
-        return $rows; // pgsql returns correct PHP types
+        foreach ($rows as $rowIndex => $row) {
+            foreach ($expectedRowTypes as $columnIndex => $type) {
+                if (array_key_exists($columnIndex, $row)) {
+                    switch ($type) {
+                        // pgsql returns correct PHP types for INT and BOOL
+                        case \daos\PARAM_CSV:
+                            $value = explode(',', $row[$columnIndex]);
+                            break;
+                        default:
+                            $value = null;
+                    }
+                    if ($value !== null) {
+                        $rows[$rowIndex][$columnIndex] = $value;
+                    }
+                }
+            }
+        }
+
+        return $rows;
     }
 }

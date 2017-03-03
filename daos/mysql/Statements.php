@@ -22,7 +22,7 @@ class Statements {
         \F3::get('db')->exec($query, $params);
         $res = \F3::get('db')->exec('SELECT LAST_INSERT_ID() as lastid');
 
-        return $res[0]['lastid'];
+        return (int) $res[0]['lastid'];
     }
 
     /**
@@ -152,22 +152,48 @@ class Statements {
             foreach ($expectedRowTypes as $columnIndex => $type) {
                 if (array_key_exists($columnIndex, $row)) {
                     switch ($type) {
-                        case \PDO::PARAM_INT:
-                            $value = intval($row[$columnIndex]);
+                        case \daos\PARAM_INT:
+                            $value = (int) $row[$columnIndex];
                             break;
-                        case \PDO::PARAM_BOOL:
+                        case \daos\PARAM_BOOL:
                             if ($row[$columnIndex] == '1') {
                                 $value = true;
                             } else {
                                 $value = false;
                             }
                             break;
+                        case \daos\PARAM_CSV:
+                            $value = explode(',', $row[$columnIndex]);
+                            break;
+                        default:
+                            $value = null;
                     }
-                    $rows[$rowIndex][$columnIndex] = $value;
+                    if ($value !== null) {
+                        $rows[$rowIndex][$columnIndex] = $value;
+                    }
                 }
             }
         }
 
         return $rows;
+    }
+
+    /**
+     * convert string array to string for storage in table row
+     *
+     * @param string[] $a
+     *
+     * @return string
+     */
+    public function csvRow(array $a) {
+        $filtered = [];
+        foreach ($a as $s) {
+            $t = trim($s);
+            if ($t) {
+                $filtered[] = $t;
+            }
+        }
+
+        return implode(',', $filtered);
     }
 }

@@ -462,7 +462,7 @@
                     {
                       "id": "2",
                       "title": "devart",
-                      "tags": "da",
+                      "tags": ["da"],
                       "spout": "spouts\\deviantart\\dailydeviations",
                       "params": [],
                       "error": "",
@@ -471,7 +471,7 @@
                     {
                       "id": "1",
                       "title": "Tobis Blog",
-                      "tags": "blog",
+                      "tags": ["blog"],
                       "spout": "spouts\\rss\\feed",
                       "params": {
                         "url": "http://blog.aditu.de/feed"
@@ -925,7 +925,10 @@
           },
           "tags": {
             "description": "all tags of the source of this article",
-            "type": "string"
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
@@ -942,7 +945,10 @@
           },
           "tags": {
             "description": "user given tags",
-            "type": "string"
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "spout": {
             "description": "the spout type. You can also get all available spout types by using the json api",
@@ -980,7 +986,10 @@
           },
           "tags": {
             "description": "tags for this source",
-            "type": "string"
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "username": {
             "description": "Username in “deviantART - user”, “deviantART - favs of a user”, Tumblr, Reddit anf “Twitter - User timeline” spouts",

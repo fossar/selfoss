@@ -47,7 +47,7 @@
 
         <!-- tags -->
         <li><label for="tags-<?= $idAttr ?>"><?= \F3::get('lang_source_tags'); ?></label>
-            <input id="tags-<?= $idAttr ?>" type="text" name="tags" value="<?= isset($this->source) ? $this->source['tags'] : ''; ?>" /> <span class="source-edit-form-help"> <?= \F3::get('lang_source_comma')?></span>
+            <input id="tags-<?= $idAttr ?>" type="text" name="tags" value="<?= isset($this->source) ? implode(',', $this->source['tags']) : ''; ?>" /> <span class="source-edit-form-help"> <?= \F3::get('lang_source_comma')?></span>
         </li>
 
         <!-- filter -->

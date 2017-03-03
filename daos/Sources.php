@@ -48,8 +48,7 @@ class Sources extends Database {
             // remove items with private tags
             if (!\F3::get('auth')->showPrivateTags()) {
                 foreach ($sources as $idx => $source) {
-                    $tags = explode(',', $source['tags']);
-                    foreach ($tags as $tag) {
+                    foreach ($source['tags'] as $tag) {
                         if (strpos(trim($tag), '@') === 0) {
                             unset($sources[$idx]);
                             break;

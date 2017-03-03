@@ -22,7 +22,7 @@ class Statements extends \daos\mysql\Statements {
         \F3::get('db')->exec($query, $params);
         $res = \F3::get('db')->exec('SELECT last_insert_rowid() as lastid');
 
-        return $res[0]['lastid'];
+        return (int) $res[0]['lastid'];
     }
 
     /**

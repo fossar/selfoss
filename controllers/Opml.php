@@ -301,7 +301,7 @@ class Opml extends BaseController {
         $sources = ['tagged' => [], 'untagged' => []];
         foreach ($this->sourcesDao->get() as $source) {
             if ($source['tags']) {
-                foreach (explode(',', $source['tags']) as $tag) {
+                foreach ($source['tags'] as $tag) {
                     $sources['tagged'][$tag][] = $source;
                 }
             } else {

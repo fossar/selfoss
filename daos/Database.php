@@ -2,6 +2,10 @@
 
 namespace daos;
 
+const PARAM_INT = 1;
+const PARAM_BOOL = 2;
+const PARAM_CSV = 3;
+
 /**
  * Base class for database access
  *

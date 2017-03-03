@@ -217,8 +217,7 @@ class Index extends BaseController {
         $tagsController = new \controllers\Tags();
         foreach ($itemDao->get($options) as $item) {
             // parse tags and assign tag colors
-            $itemTags = explode(',', $item['tags']);
-            $item['tags'] = $tagsController->tagsAddColors($itemTags, $tags);
+            $item['tags'] = $tagsController->tagsAddColors($item['tags'], $tags);
 
             $this->view->item = $item;
             $itemsHtml .= $this->view->render('templates/item.phtml');

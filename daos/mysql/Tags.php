@@ -87,7 +87,7 @@ class Tags extends Database {
                    GROUP BY tags.tag, tags.color
                    ORDER BY LOWER(tags.tag);';
 
-        return \F3::get('db')->exec($select);
+        return $this->stmt->ensureRowTypes(\F3::get('db')->exec($select), ['unread' => \daos\PARAM_INT]);
     }
 
     /**
