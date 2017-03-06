@@ -40,7 +40,7 @@ before_script:
 
 script:
     - utils/php-parallel-lint/parallel-lint controllers daos helpers spouts templates
-    - if [ "$CS_FIXER" = true ]; then utils/php-cs-fixer/php-cs-fixer fix --verbose --dry-run; fi
+    - if [ "$CS_FIXER" = true ]; then utils/php-cs-fixer/php-cs-fixer fix --verbose --dry-run --diff; fi
 
 before_deploy:
     - source utils/package.sh
