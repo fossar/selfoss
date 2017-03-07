@@ -489,7 +489,7 @@ class Items extends Database {
             ' . $this->stmt->sumBool('unread') . ' AS unread,
             ' . $this->stmt->sumBool('starred') . ' AS starred
             FROM ' . \F3::get('db_prefix') . 'items;');
-        $res = $this->ensureRowTypes($res, [
+        $res = $this->stmt->ensureRowTypes($res, [
             'total' => \PDO::PARAM_INT,
             'unread' => \PDO::PARAM_INT,
             'starred' => \PDO::PARAM_INT
@@ -523,7 +523,7 @@ class Items extends Database {
             FROM ' . \F3::get('db_prefix') . 'items
             WHERE ' . \F3::get('db_prefix') . 'items.updatetime > :since;',
                 [':since' => [$since, \PDO::PARAM_STR]]);
-        $res = $this->ensureRowTypes($res, [
+        $res = $this->stmt->ensureRowTypes($res, [
             'id' => \PDO::PARAM_INT,
             'unread' => \PDO::PARAM_BOOL,
             'starred' => \PDO::PARAM_BOOL

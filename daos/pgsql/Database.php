@@ -227,18 +227,4 @@ class Database {
     public function optimize() {
         \F3::get('db')->exec('VACUUM ANALYZE');
     }
-
-    /**
-     * Ensure row values have the appropriate PHP type. This assumes we are
-     * using buffered queries (sql results are in PHP memory).
-     *
-     * @param rows array of associative array representing row results
-     * @param expectedRowTypes associative array mapping columns to PDO types
-     *
-     * @return array of associative array representing row results having
-     *         expected types
-     */
-    public function ensureRowTypes($rows, $expectedRowTypes) {
-        return $rows; // pgsql returns correct PHP types
-    }
 }
