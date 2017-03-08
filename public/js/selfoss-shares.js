@@ -28,7 +28,11 @@ selfoss.shares = {
       return "http://www.readability.com/save?url="+encodeURIComponent(url);
     });
     this.register('wallabag', 'w', true, function(url, title) {
-      return $('#config').data('wallabag')+'/?action=add&url='+btoa(url);
+        if($('#config').data('wallabag2')){
+            return $('#config').data('wallabag2')+'/bookmarklet?url='+encodeURIComponent(url);
+        }else{
+            return $('#config').data('wallabag')+'/?action=add&url='+btoa(url);
+        }
     });
     this.register('wordpress', 's', true, function(url, title) {
       return $('#config').data('wordpress')+'/wp-admin/press-this.php?u='+encodeURIComponent(url)+'&t='+encodeURIComponent(title);
