@@ -28,8 +28,8 @@ selfoss.shares = {
       return "http://www.readability.com/save?url="+encodeURIComponent(url);
     });
     this.register('wallabag', 'w', true, function(url, title) {
-        if($('#config').data('wallabag2')){
-            return $('#config').data('wallabag2')+'/bookmarklet?url='+encodeURIComponent(url);
+        if($('#config').data('wallabag_version') == 2){
+            return $('#config').data('wallabag')+'/bookmarklet?url='+encodeURIComponent(url);
         }else{
             return $('#config').data('wallabag')+'/?action=add&url='+btoa(url);
         }
