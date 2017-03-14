@@ -103,8 +103,7 @@ selfoss.events.entries = function(e) {
                 selfoss.setupFancyBox(content, parent.attr('id').substr(5));
 
                 // scroll to article header
-                if ($('#config').data('scroll_to_article_header') == '1' ||
-                    selfoss.events.entryId ) {
+                if ($('#config').data('scroll_to_article_header') == '1') {
                   parent.get(0).scrollIntoView();
                 }
             }
@@ -216,9 +215,14 @@ selfoss.events.entries = function(e) {
         });
     });
 
-    // open selected entry only if entry was request (i.e. if not streaming
+    // open selected entry only if entry was requested (i.e. if not streaming
     // more)
     if( selfoss.events.entryId && selfoss.filter.offset_from_id == null ) {
-        $('#entry' + selfoss.events.entryId).children('.entry-title').click();
+        var entry = $('#entry' + selfoss.events.entryId);
+        entry.children('.entry-title').click();
+        // ensure scrolling to requested entry even if scrolling to article
+        // header is disabled
+        if ($('#config').data('scroll_to_article_header') == '0')
+            entry.get(0).scrollIntoView();
     }
 };

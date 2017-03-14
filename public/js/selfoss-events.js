@@ -101,7 +101,8 @@ selfoss.events = {
         // do not reload list if list is the same and not explicitely requested
         if ( !selfoss.events.reloadSamePath &&
              selfoss.events.lastpath == selfoss.events.path ) {
-            if( selfoss.events.entryId ) {
+            // scroll to entry if navigating using browser buttons
+            if (selfoss.events.entryId && selfoss.events.processHashChange) {
                 var entry = $('#entry' + selfoss.events.entryId);
                 if( entry )
                     entry.get(0).scrollIntoView();
