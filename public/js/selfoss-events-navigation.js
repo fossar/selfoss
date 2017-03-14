@@ -42,6 +42,8 @@ selfoss.events.navigation = function() {
             selfoss.filter.type='starred';
 
         selfoss.events.reloadSamePath = true;
+        if (selfoss.events.lastSubsection == null)
+            selfoss.events.lastSubsection = 'all';
         selfoss.events.setHash(selfoss.filter.type, 'same');
 
         $('#nav-filter > li').removeClass('active');
