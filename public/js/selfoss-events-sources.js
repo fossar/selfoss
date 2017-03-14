@@ -95,7 +95,7 @@ selfoss.events.sources = function() {
                 selfoss.events.navigation();
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                selfoss.ui.showErrors(parent, $.parseJSON(jqXHR.responseText));
+                selfoss.showErrors(parent, $.parseJSON(jqXHR.responseText));
             },
             complete: function(jqXHR, textStatus) {
                 parent.find('.source-action').removeClass('loading');
