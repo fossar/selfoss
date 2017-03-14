@@ -24,8 +24,8 @@ selfoss.events.navigation = function() {
                     selfoss.reloadList();
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
-                    selfoss.showError('Can not save new color: '+
-                                      textStatus+' '+errorThrown);
+                    selfoss.ui.showError('Can not save new color: '+
+                                         textStatus+' '+errorThrown);
                 }
             });
             
@@ -120,8 +120,8 @@ selfoss.events.navigation = function() {
                     selfoss.refreshSources(data.sources);
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
-                    selfoss.showError('Can not load nav stats: '+
-                                    textStatus+' '+errorThrown);
+                    selfoss.ui.showError('Can not load nav stats: '+
+                                         textStatus+' '+errorThrown);
                 }
             });
         }else{
@@ -168,12 +168,20 @@ selfoss.events.navigation = function() {
                 // hide nav on smartphone
                 if(selfoss.isSmartphone())
                     $('#nav-mobile-settings').click();
-                    
-                // refresh list
-                selfoss.sync(true);
+
+                // probe stats and prompt reload to the user
+                selfoss.sync(true).done(function() {
+                    var refreshed = 'Sources have been refreshed';
+                    if( $('.unread-count').hasClass('unread') ) {
+                        selfoss.ui.showMessage(refreshed, 'Reload list',
+                                               function() {
+                            $('#nav-filter-unread').click();
+                        });
+                    }
+                });
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                selfoss.showError('Cannot refresh sources: ' + errorThrown);
+                selfoss.ui.showError('Cannot refresh sources: ' + errorThrown);
             },
             complete: function(data) {
                 $('#nav-refresh').removeClass('loading');

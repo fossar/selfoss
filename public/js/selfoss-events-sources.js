@@ -27,8 +27,8 @@ selfoss.events.sources = function() {
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 parent.find('.source-edit-delete').removeClass('loading');                     
-                selfoss.showError('Error adding source: '+
-                                  textStatus+' '+errorThrown);
+                selfoss.ui.showError('Error adding source: '+
+                                     textStatus+' '+errorThrown);
             }
         });
     });
@@ -95,7 +95,7 @@ selfoss.events.sources = function() {
                 selfoss.events.navigation();
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                selfoss.showErrors(parent, $.parseJSON(jqXHR.responseText));
+                selfoss.ui.showErrors(parent, $.parseJSON(jqXHR.responseText));
             },
             complete: function(jqXHR, textStatus) {
                 parent.find('.source-action').removeClass('loading');
@@ -134,7 +134,7 @@ selfoss.events.sources = function() {
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 parent.find('.source-edit-delete').removeClass('loading');
-                selfoss.showError('Error deleting source: '+errorThrown); 
+                selfoss.ui.showError('Error deleting source: '+errorThrown);
             }
         }); 
     });
