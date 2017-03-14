@@ -253,6 +253,9 @@ var selfoss = {
             return d; // ensure any chained function runs
         }
 
+        if (selfoss.lastUpdate == null)
+            selfoss.lastUpdate = new Date(0);
+
         return $.ajax({
             url: 'items/sync',
             type: 'GET',
@@ -261,7 +264,7 @@ var selfoss = {
                 since:          selfoss.lastUpdate.toISOString(),
                 tags:           true,
                 sources:        selfoss.filter.sourcesNav,
-                items_statuses: true
+                items_statuses: selfoss.lastUpdate !== null
             },
             success: function(data) {
                 selfoss.lastSync = Date.now();
