@@ -27,13 +27,13 @@ body * {
 	outline:0;
 }
 
-#error {
+#message {
     display:none;
     position:absolute;
     width:100%;
-    background:#f2dede;
-    border:1px solid #eed3d7;
-    color:#b94a48;
+    background:#e6e6fa;
+    border:1px solid #00008b;
+    color:#00008b;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
     filter: alpha(opacity=90);
     -moz-opacity: 0.9;
@@ -42,6 +42,20 @@ body * {
     z-index:100;
     text-align:center;
     padding:10px;
+}
+
+#message a {
+    font-size:0.9em;
+    text-align:center;
+    border-radius:2px;
+    cursor:pointer;
+    background:#cccccc;
+}
+
+#message.error {
+    background:#f2dede;
+    border-color:#eed3d7;
+    color:#b94a48;
 }
 
 

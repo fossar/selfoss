@@ -95,8 +95,8 @@ selfoss.events.entriesToolbar = function(parent) {
                     // rollback ui changes
                     selfoss.ui.entryStarr(id, !starr);
                     updateStats(!starr);
-                    selfoss.showError('Can not star/unstar item: '+
-                                      textStatus+' '+errorThrown);
+                    selfoss.ui.showError('Can not star/unstar item: '+
+                                         textStatus+' '+errorThrown);
                 }
             });
             
@@ -173,8 +173,8 @@ selfoss.events.entriesToolbar = function(parent) {
                     // rollback ui changes
                     selfoss.ui.entryMark(id, unread);
                     updateStats(!unread);
-                    selfoss.showError('Can not mark/unmark item: '+
-                                      textStatus+' '+errorThrown);
+                    selfoss.ui.showError('Can not mark/unmark item: '+
+                                         textStatus+' '+errorThrown);
                 }
             });
             

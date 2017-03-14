@@ -223,8 +223,8 @@ var selfoss = {
                 if (textStatus == "abort")
                     return;
                 else if (errorThrown)
-                    selfoss.showError('Load list error: '+
-                                        textStatus+' '+errorThrown);
+                    selfoss.ui.showError('Load list error: '+
+                                         textStatus+' '+errorThrown);
                 selfoss.events.entries();
                 selfoss.ui.refreshStreamButtons();
                 $('.stream-error').show();
@@ -247,10 +247,13 @@ var selfoss = {
         var force = (typeof force !== 'undefined') ? force : false;
 
         if( !force && (selfoss.lastUpdate == null ||
-                       Date.now() - selfoss.lastSync < 5*60*1000) )
-            return;
+                       Date.now() - selfoss.lastSync < 5*60*1000) ) {
+            var d = $.Deferred();
+            d.resolve();
+            return d; // ensure any chained function runs
+        }
 
-        $.ajax({
+        return $.ajax({
             url: 'items/sync',
             type: 'GET',
             dataType: 'json',
@@ -291,8 +294,8 @@ var selfoss = {
                 selfoss.lastUpdate = dataDate;
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                selfoss.showError('Could not sync last changes from server: '+
-                                  textStatus+' '+errorThrown);
+                selfoss.ui.showError('Could not sync last changes from server: '+
+                                     textStatus+' '+errorThrown);
             }
         });
     },
@@ -352,8 +355,8 @@ var selfoss = {
                 selfoss.events.navigation();
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                selfoss.showError('Load tags error: '+
-                                  textStatus+' '+errorThrown);
+                selfoss.ui.showError('Load tags error: '+
+                                     textStatus+' '+errorThrown);
             },
             complete: function(jqXHR, textStatus) {
                 $('#nav-tags').removeClass('loading');
@@ -374,7 +377,7 @@ var selfoss = {
         $('#nav-tags').append(tags);
         if( selfoss.filter.tag ) {
             if(!selfoss.db.isValidTag(selfoss.filter.tag))
-                selfoss.showError('Unknown tag: ' + selfoss.filter.tag);
+                selfoss.ui.showError('Unknown tag: ' + selfoss.filter.tag);
 
             $('#nav-tags li:first').removeClass('active');
             $('#nav-tags > li').filter(function( index ) {
@@ -404,8 +407,8 @@ var selfoss = {
         $('#nav-sources').append(sources);
         if( selfoss.filter.source ) {
             if(!selfoss.db.isValidSource(selfoss.filter.source))
-                selfoss.showError('Unknown source id: '
-                                  + selfoss.filter.source);
+                selfoss.ui.showError('Unknown source id: '
+                                     + selfoss.filter.source);
 
             $('#source' + selfoss.filter.source).addClass('active');
             $('#nav-tags > li').removeClass('active');
@@ -436,28 +439,7 @@ var selfoss = {
             });
         }
     },
-    
-    
-    /**
-     * show error
-     *
-     * @return void
-     * @param message string
-     */
-    showError: function(message) {
-        if(typeof(message) == 'undefined') {
-            var message = "Oops! Something went wrong";
-        }
-        var error = $('#error');
-        error.html(message);
-        error.show();
-        window.setTimeout(function() {
-            error.click();
-        }, 10000);
-        error.unbind('click').click(function() {
-            error.fadeOut();
-        });
-    },
+
 
     /**
      * Setup fancyBox image viewer
@@ -535,8 +517,8 @@ var selfoss = {
                 $('#content').removeClass('loading');
                 selfoss.ui.refreshStreamButtons(true, true, hadMore);
                 selfoss.events.entries();
-                selfoss.showError('Can not mark all visible item: '+
-                                    textStatus+' '+errorThrown);
+                selfoss.ui.showError('Can not mark all visible item: '+
+                                     textStatus+' '+errorThrown);
             }
         });
     }

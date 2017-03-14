@@ -71,6 +71,53 @@ selfoss.ui = {
                     $('.mark-these-read').hide();
             }
         }
+    },
+
+
+    /**
+     * show error
+     *
+     * @return void
+     * @param message string
+     */
+    showError: function(message) {
+        selfoss.ui.showMessage(message, undefined, undefined, true);
+    },
+
+
+    showMessage: function(message, actionText, action, error) {
+        var actionText = (typeof actionText !== 'undefined') ? actionText: false;
+        var action = (typeof action !== 'undefined') ? action : false;
+        var error = (typeof error !== 'undefined') ? error: false;
+
+        if(typeof(message) == 'undefined') {
+            var message = "Oops! Something went wrong";
+        }
+
+        if( actionText && action ) {
+            message = message + '. <a>' + actionText + '</a>';
+        }
+
+        var messageContainer = $('#message');
+        messageContainer.html(message);
+
+        if( action ) {
+            messageContainer.find('a').unbind('click').click(action);
+        }
+
+        if( error ) {
+            messageContainer.addClass('error');
+        } else {
+            messageContainer.removeClass('error');
+        }
+
+        messageContainer.show();
+        window.setTimeout(function() {
+            messageContainer.click();
+        }, 15000);
+        messageContainer.unbind('click').click(function() {
+            messageContainer.fadeOut();
+        });
     }
 
 
