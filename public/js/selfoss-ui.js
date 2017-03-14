@@ -81,7 +81,7 @@ selfoss.ui = {
      * @param message string
      */
     showError: function(message) {
-        selfoss.ui.showMessage(message, 'undefined', 'undefined', true);
+        selfoss.ui.showMessage(message, undefined, undefined, true);
     },
 
 
