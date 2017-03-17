@@ -15,7 +15,7 @@ function isNotUnimportant(dest) {
         /^build\.xml$/,
         /^phpcs-ruleset\.xml$/,
         /^phpmd\.xml$/
-    ].some(expr => expr.test(filename));
+    ].some(function(expr) { expr.test(filename) });
 
     const destDisallowed = [
         /^vendor\/htmlawed\/htmlawed\/htmLawed(Test\.php|(.*\.(htm|txt)))$/,
@@ -23,7 +23,7 @@ function isNotUnimportant(dest) {
         /^vendor\/simplepie\/simplepie\/(db\.sql|autoload\.php)$/,
         /^vendor\/composer\/installed\.json$/,
         /^vendor\/[^/]+\/[^/]+\/(test|doc)s?/
-    ].some(expr => expr.test(dest));
+    ].some(function(expr) { expr.test(dest) });
 
     const allowed = !(filenameDisallowed || destDisallowed);
 
