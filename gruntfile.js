@@ -54,8 +54,8 @@ module.exports = function(grunt) {
 
                 // rule for README.md
                 {
-                    from: /'version','\d+\.\d+(\-SNAPSHOT)?'/,
-                    to: ("'version','" + grunt.option('newversion') + "'")
+                    from: /'version', '\d+\.\d+(\-SNAPSHOT)?'/,
+                    to: ("'version', '" + grunt.option('newversion') + "'")
                 },
 
                 // rule for common.php
