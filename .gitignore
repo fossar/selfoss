@@ -19,3 +19,4 @@ _wiki
 .env
 vendor/
 .php_cs.cache
+.vscode
