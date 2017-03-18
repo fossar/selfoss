@@ -24,7 +24,6 @@ function isNotUnimportant(dest) {
         /^vendor\/simplepie\/simplepie\/(db\.sql|autoload\.php)$/,
         /^vendor\/composer\/installed\.json$/,
         /^vendor\/[^/]+\/[^/]+\/(test|doc)s?/i,
-        /^vendor\/wallabag/,
         /^vendor\/smalot\/pdfparser\/samples/,
         /^vendor\/smalot\/pdfparser\/src\/Smalot\/PdfParser\/Tests/,
     ].some(function(expr) { return expr.test(dest); });

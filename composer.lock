@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "e8e81e8adbd02d27b4654a2f05f982fa",
+    "content-hash": "1ea86fe032fd37e5d2eaa7de2879b9a9",
     "packages": [
         {
             "name": "bcosca/fatfree-core",
@@ -36,6 +36,64 @@
             "description": "A powerful yet easy-to-use PHP micro-framework designed to help you build dynamic and robust Web applications - fast!",
             "homepage": "http://fatfreeframework.com/",
             "time": "2016-11-19T13:22:46+00:00"
+        },
+        {
+            "name": "fossar/tcpdf-parser",
+            "version": "6.2.16",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fossar/tcpdf-parser.git",
+                "reference": "70d8956893417b1a9db37365e01d056d5c4e542a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fossar/tcpdf-parser/zipball/70d8956893417b1a9db37365e01d056d5c4e542a",
+                "reference": "70d8956893417b1a9db37365e01d056d5c4e542a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "replace": {
+                "tecnickcom/tcpdf": "6.2.*",
+                "wallabag/tcpdf": "6.2.*"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "tcpdf_parser.php",
+                    "include/tcpdf_filters.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Nicola Asuni",
+                    "email": "info@tecnick.com",
+                    "homepage": "http://nicolaasuni.tecnick.com",
+                    "role": "Main developer"
+                },
+                {
+                    "name": "wallabag/core",
+                    "homepage": "https://www.wallabag.org",
+                    "role": "Developers"
+                }
+            ],
+            "description": "Extracted the parser from tcpdf.",
+            "homepage": "https://www.wallabag.org/",
+            "keywords": [
+                "PDFD32000-2008",
+                "TCPDF",
+                "barcodes",
+                "datamatrix",
+                "pdf",
+                "pdf417",
+                "qrcode"
+            ],
+            "time": "2017-03-18T13:19:42+00:00"
         },
         {
             "name": "fossar/twitteroauth-php54",
@@ -535,7 +593,7 @@
                 {
                     "name": "Joost Faassen",
                     "email": "j.faassen@linkorb.com",
-                    "role": "Packaging for composer"
+                    "role": "Packaging for Composer"
                 },
                 {
                     "name": "Ryan Grove",
@@ -1218,78 +1276,6 @@
                 "punycode"
             ],
             "time": "2016-11-16T10:37:54+00:00"
-        },
-        {
-            "name": "wallabag/tcpdf",
-            "version": "6.2.15",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/wallabag/TCPDF.git",
-                "reference": "f67b0b0cadb10d9bd4af2da769374b0820f05a02"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/wallabag/TCPDF/zipball/f67b0b0cadb10d9bd4af2da769374b0820f05a02",
-                "reference": "f67b0b0cadb10d9bd4af2da769374b0820f05a02",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "replace": {
-                "tecnickcom/tcpdf": "6.2.*"
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "fonts",
-                    "config",
-                    "include",
-                    "tcpdf.php",
-                    "tcpdf_parser.php",
-                    "tcpdf_import.php",
-                    "tcpdf_barcodes_1d.php",
-                    "tcpdf_barcodes_2d.php",
-                    "include/tcpdf_colors.php",
-                    "include/tcpdf_filters.php",
-                    "include/tcpdf_font_data.php",
-                    "include/tcpdf_fonts.php",
-                    "include/tcpdf_images.php",
-                    "include/tcpdf_static.php",
-                    "include/barcodes/datamatrix.php",
-                    "include/barcodes/pdf417.php",
-                    "include/barcodes/qrcode.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL-3.0"
-            ],
-            "authors": [
-                {
-                    "name": "Nicola Asuni",
-                    "email": "info@tecnick.com",
-                    "homepage": "http://nicolaasuni.tecnick.com",
-                    "role": "Main developer"
-                },
-                {
-                    "name": "wallabag/core",
-                    "homepage": "https://www.wallabag.org",
-                    "role": "Developers"
-                }
-            ],
-            "description": "Keeping a working 6.2.x TCPDF version.",
-            "homepage": "https://www.wallabag.org/",
-            "keywords": [
-                "PDFD32000-2008",
-                "TCPDF",
-                "barcodes",
-                "datamatrix",
-                "pdf",
-                "pdf417",
-                "qrcode"
-            ],
-            "time": "2017-02-24T13:01:16+00:00"
         },
         {
             "name": "willwashburn/phpamo",
