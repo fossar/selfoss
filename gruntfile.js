@@ -12,18 +12,22 @@ function isNotUnimportant(dest) {
         /^phpunit/,
         /^l?gpl\.txt$/,
         /^composer\.(json|lock)$/,
+        /^Makefile$/,
         /^build\.xml$/,
         /^phpcs-ruleset\.xml$/,
         /^phpmd\.xml$/
-    ].some(function(expr) { expr.test(filename) });
+    ].some(function(expr) { return expr.test(filename); });
 
     const destDisallowed = [
         /^vendor\/htmlawed\/htmlawed\/htmLawed(Test\.php|(.*\.(htm|txt)))$/,
         /^vendor\/smottt\/wideimage\/demo/,
         /^vendor\/simplepie\/simplepie\/(db\.sql|autoload\.php)$/,
         /^vendor\/composer\/installed\.json$/,
-        /^vendor\/[^/]+\/[^/]+\/(test|doc)s?/
-    ].some(function(expr) { expr.test(dest) });
+        /^vendor\/[^/]+\/[^/]+\/(test|doc)s?/i,
+        /^vendor\/wallabag/,
+        /^vendor\/smalot\/pdfparser\/samples/,
+        /^vendor\/smalot\/pdfparser\/src\/Smalot\/PdfParser\/Tests/,
+    ].some(function(expr) { return expr.test(dest); });
 
     const allowed = !(filenameDisallowed || destDisallowed);
 
