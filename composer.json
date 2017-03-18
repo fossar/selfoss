@@ -7,7 +7,7 @@
         "bcosca/fatfree-core": "^3.6",
         "fossar/twitteroauth-php54": "^0.7.3-beta",
         "htmlawed/htmlawed": "^1.1",
-        "j0k3r/php-readability": "^1.1.5",
+        "j0k3r/graby": "^1.6",
         "linkorb/jsmin-php": "^1.0",
         "mibe/feedwriter": "^1.0",
         "monolog/monolog": "^1.0",
@@ -32,5 +32,10 @@
             "libs/",
             "spouts/"
         ]
+    },
+    "config": {
+        "platform": {
+            "php": "5.4.45"
+        }
     }
 }
