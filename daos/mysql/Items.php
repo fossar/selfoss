@@ -145,10 +145,11 @@ class Items extends Database {
      * search whether given ids are already in database or not
      *
      * @param array $itemsInFeed list with ids for checking whether they are already in database or not
+     * @param int $sourceId the id of the source to search for the items
      *
      * @return array with all existing ids from itemsInFeed (array (id => true))
      */
-    public function findAll($itemsInFeed) {
+    public function findAll($itemsInFeed, $sourceId) {
         $itemsFound = [];
         if (count($itemsInFeed) < 1) {
             return $itemsFound;
@@ -157,7 +158,7 @@ class Items extends Database {
         array_walk($itemsInFeed, function(&$value) {
             $value = \F3::get('db')->quote($value);
         });
-        $query = 'SELECT uid AS uid FROM ' . \F3::get('db_prefix') . 'items WHERE uid IN (' . implode(',', $itemsInFeed) . ')';
+        $query = 'SELECT uid AS uid FROM ' . \F3::get('db_prefix') . 'items WHERE source = ' . \F3::get('db')->quote($sourceId) . ' AND uid IN (' . implode(',', $itemsInFeed) . ')';
         $res = \F3::get('db')->query($query);
         if ($res) {
             $all = $res->fetchAll();

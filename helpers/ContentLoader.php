@@ -120,7 +120,7 @@ class ContentLoader {
         foreach ($spout as $item) {
             $itemsInFeed[] = $item->getId();
         }
-        $itemsFound = $this->itemsDao->findAll($itemsInFeed);
+        $itemsFound = $this->itemsDao->findAll($itemsInFeed, $source['id']);
 
         $lasticon = false;
         foreach ($spout as $item) {
