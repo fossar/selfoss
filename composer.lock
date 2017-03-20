@@ -350,16 +350,16 @@
         },
         {
             "name": "j0k3r/graby",
-            "version": "1.6.1",
+            "version": "1.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/j0k3r/graby.git",
-                "reference": "41c6291dd0e2b0352e9398674b4475d3fc6060c7"
+                "reference": "6e3e6081e1fb257a6b74415585c153677021a4e3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/j0k3r/graby/zipball/41c6291dd0e2b0352e9398674b4475d3fc6060c7",
-                "reference": "41c6291dd0e2b0352e9398674b4475d3fc6060c7",
+                "url": "https://api.github.com/repos/j0k3r/graby/zipball/6e3e6081e1fb257a6b74415585c153677021a4e3",
+                "reference": "6e3e6081e1fb257a6b74415585c153677021a4e3",
                 "shasum": ""
             },
             "require": {
@@ -404,7 +404,7 @@
                 }
             ],
             "description": "Graby helps you extract article content from web pages",
-            "time": "2017-03-07T20:40:49+00:00"
+            "time": "2017-03-19T16:00:33+00:00"
         },
         {
             "name": "j0k3r/graby-site-config",
@@ -444,26 +444,31 @@
         },
         {
             "name": "j0k3r/php-readability",
-            "version": "1.1.5",
+            "version": "1.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/j0k3r/php-readability.git",
-                "reference": "a505a13d0ca972a115411504248fc4506ddaece9"
+                "reference": "6def74390204a954aeec29cf03910d79b6011ee7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/j0k3r/php-readability/zipball/a505a13d0ca972a115411504248fc4506ddaece9",
-                "reference": "a505a13d0ca972a115411504248fc4506ddaece9",
+                "url": "https://api.github.com/repos/j0k3r/php-readability/zipball/6def74390204a954aeec29cf03910d79b6011ee7",
+                "reference": "6def74390204a954aeec29cf03910d79b6011ee7",
                 "shasum": ""
             },
             "require": {
+                "ext-mbstring": "*",
                 "php": ">=5.3.3",
                 "psr/log": "^1.0"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "<2",
                 "monolog/monolog": "^1.13",
-                "satooshi/php-coveralls": "~0.6"
+                "satooshi/php-coveralls": "~0.6",
+                "symfony/phpunit-bridge": "^3.2"
+            },
+            "suggest": {
+                "ext-tidy": "Used to clean up given HTML and to avoid problems with bad HTML structure."
             },
             "type": "library",
             "autoload": {
@@ -508,7 +513,7 @@
                 "extraction",
                 "html"
             ],
-            "time": "2017-01-14T16:09:58+00:00"
+            "time": "2017-03-18T08:16:30+00:00"
         },
         {
             "name": "j0k3r/safecurl",
@@ -593,7 +598,7 @@
                 {
                     "name": "Joost Faassen",
                     "email": "j.faassen@linkorb.com",
-                    "role": "Packaging for Composer"
+                    "role": "Packaging for composer"
                 },
                 {
                     "name": "Ryan Grove",
@@ -718,16 +723,16 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "1.22.0",
+            "version": "1.22.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "bad29cb8d18ab0315e6c477751418a82c850d558"
+                "reference": "1e044bc4b34e91743943479f1be7a1d5eb93add0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/bad29cb8d18ab0315e6c477751418a82c850d558",
-                "reference": "bad29cb8d18ab0315e6c477751418a82c850d558",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/1e044bc4b34e91743943479f1be7a1d5eb93add0",
+                "reference": "1e044bc4b34e91743943479f1be7a1d5eb93add0",
                 "shasum": ""
             },
             "require": {
@@ -792,7 +797,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2016-11-26T00:15:39+00:00"
+            "time": "2017-03-13T07:08:03+00:00"
         },
         {
             "name": "natxet/CssMin",
@@ -1279,16 +1284,16 @@
         },
         {
             "name": "willwashburn/phpamo",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/willwashburn/phpamo.git",
-                "reference": "f89734acf7ff9b0bc49d3acfe64a93705527eef3"
+                "reference": "4c8e579bc9be5d8eabc06ed4de22235386b2dbf1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/willwashburn/phpamo/zipball/f89734acf7ff9b0bc49d3acfe64a93705527eef3",
-                "reference": "f89734acf7ff9b0bc49d3acfe64a93705527eef3",
+                "url": "https://api.github.com/repos/willwashburn/phpamo/zipball/4c8e579bc9be5d8eabc06ed4de22235386b2dbf1",
+                "reference": "4c8e579bc9be5d8eabc06ed4de22235386b2dbf1",
                 "shasum": ""
             },
             "require": {
@@ -1324,7 +1329,7 @@
                 "tls",
                 "tls proxy"
             ],
-            "time": "2016-02-20T05:25:18+00:00"
+            "time": "2017-01-30T13:21:01+00:00"
         }
     ],
     "packages-dev": [],
