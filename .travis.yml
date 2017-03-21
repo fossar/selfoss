@@ -27,9 +27,7 @@ cache:
 before_install:
     - nvm install 6
     - if [ -n "$GH_TOKEN" ]; then composer config github-oauth.github.com ${GH_TOKEN}; fi
-    # We need to use our modified version until the fixers are merged upstream.
-    - "export FIXER_REPO=--repository='{\"type\": \"vcs\", \"url\": \"https://github.com/jtojnar/php-cs-fixer\"}'"
-    - if [ "$CS_FIXER" = true ]; then composer create-project --no-dev --no-interaction "$FIXER_REPO" friendsofphp/php-cs-fixer utils/php-cs-fixer dev-selfoss; fi
+    - if [ "$CS_FIXER" = true ]; then composer create-project --no-dev --no-interaction friendsofphp/php-cs-fixer utils/php-cs-fixer; fi
     - composer create-project --no-dev --no-interaction jakub-onderka/php-parallel-lint utils/php-parallel-lint
 
 install:

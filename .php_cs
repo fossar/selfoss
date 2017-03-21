@@ -19,7 +19,6 @@ $rules = [
     'trailing_comma_in_multiline_array' => false,
     // additional rules
     'array_syntax' => ['syntax' => 'short'],
-    'opening_tag_plus_echo_to_short_echo_tag' => true,
     'phpdoc_order' => true,
 ];
 
