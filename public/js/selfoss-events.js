@@ -54,6 +54,13 @@ selfoss.events = {
             selfoss.events.processHash();
     },
 
+    /**
+     * whether to process hash change events: when the hash is changed
+     * programatically, the hash is set and this change event should not be
+     * processed once more. In that case, the variable is set to false. The
+     * default is to process hash change events that trigger for instance when
+     * navigating using browser buttons (variable set to true).
+     */
     processHashChange: true,
 
     processHash: function(hash) {
@@ -98,15 +105,38 @@ selfoss.events = {
 
         selfoss.events.lasthash = hash;
 
-        // do not reload list if list is the same and not explicitely requested
+        // hash change indicates an entry open or close event (the path is
+        // the same): do not reload list if list is the same and not
+        // explicitely requested.
         if ( !selfoss.events.reloadSamePath &&
              selfoss.events.lastpath == selfoss.events.path ) {
-            // scroll to entry if navigating using browser buttons
-            if (selfoss.events.entryId && selfoss.events.processHashChange) {
-                var entry = $('#entry' + selfoss.events.entryId);
-                if( entry )
-                    entry.get(0).scrollIntoView();
+
+            if (selfoss.isSmartphone()) {
+                // if navigating using browser buttons and entry in hash,
+                // open it.
+                if (selfoss.events.entryId
+                    && selfoss.events.processHashChange) {
+                    $('#entry' + selfoss.events.entryId).click();
+                }
+
+                // if navigating using browser buttons and entry opened,
+                // close opened entry.
+                if (!selfoss.events.entryId
+                    && selfoss.events.processHashChange
+                    && $('#fullscreen-entry').is(':visible')) {
+                    $('.entry.fullscreen').click();
+                }
+            } else {
+                // if navigating using browser buttons and entry selected,
+                // scroll to entry.
+                if (selfoss.events.entryId
+                    && selfoss.events.processHashChange) {
+                    var entry = $('#entry' + selfoss.events.entryId);
+                    if( entry )
+                        entry.get(0).scrollIntoView();
+                }
             }
+
             done();
             return;
         }
