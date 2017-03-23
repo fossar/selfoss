@@ -58,7 +58,7 @@ Selfoss supports importing OPML files. Find the OPML export in the old applicati
 APPS
 ----
 
-A third party app is available for Android: [Selfoss](https://play.google.com/store/apps/details?id=fr.ydelouis.selfoss).
+Two third party apps are available for Android: [Selfoss](https://play.google.com/store/apps/details?id=fr.ydelouis.selfoss) and [Reader For Selfoss](https://play.google.com/store/apps/details?id=apps.amine.bou.readerforselfoss).
 
 
 DEVELOPMENT
