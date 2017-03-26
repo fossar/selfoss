@@ -41,10 +41,9 @@ UPDATE
 3. Upload all new files and folders excluding the data folder (IMPORTANT: also upload the invisible .htaccess files)
 4. Make the folder "public" writeable
 5. Rename your folder /data/icons into /data/favicons
-6. Delete the files /public/all-v*.css and /public/all-v*.js
-7. Clean your browser cache
-8. Insert your current database connection and your individual configuration in config.ini. Important: we change the config.ini and add new options in newer versions. You have to update the config.ini too.
-9. The database will be updated automatically (ensure that your database has enought rights for creating triggers)
+6. Clean your browser cache
+7. Insert your current database connection and your individual configuration in config.ini. Important: we change the config.ini and add new options in newer versions. You have to update the config.ini too.
+8. The database will be updated automatically (ensure that your database has enought rights for creating triggers)
 
 For further questions or on any problem use our support forum: http://selfoss.aditu.de/forum
 

@@ -13,11 +13,23 @@ class View {
     /** @var string current base url */
     public $base = '';
 
+    /** @internal JS static resource type */
+    const STATIC_RESOURCE_JS = 'js';
+    /** @internal CSS static resource type */
+    const STATIC_RESOURCE_CSS = 'css';
+
+    public static $staticmtime = [
+        self::STATIC_RESOURCE_JS => 0,
+        self::STATIC_RESOURCE_CSS => 0
+    ];
+    public static $staticPrefix = 'all';
+
     /**
      * set global view vars
      */
     public function __construct() {
-        $this->genMinifiedJsAndCss();
+        $this->genMinified(self::STATIC_RESOURCE_JS);
+        $this->genMinified(self::STATIC_RESOURCE_CSS);
         $this->base = $this->getBaseUrl();
     }
 
@@ -125,12 +137,28 @@ class View {
     }
 
     /**
+     * returns max mtime for file paths given in array
+     *
+     * @param filePaths array of file paths
+     * @returns int max mtime (unix timestamp)
+     */
+    public static function maxmtime(array $filePaths) {
+        $maxmtime = 0;
+        foreach ($filePaths as $filePath) {
+            $fullPath = \F3::get('BASEDIR') . '/' . $filePath;
+            $maxmtime = max($maxmtime, filemtime($fullPath));
+        }
+
+        return $maxmtime;
+    }
+
+    /**
      * returns global JavaScript file name (all.js)
      *
      * @return string all.js file name
      */
     public static function getGlobalJsFileName() {
-        return 'all-v' . \F3::get('version') . '.js';
+        return self::$staticPrefix . '.js?v=' . self::$staticmtime[self::STATIC_RESOURCE_JS];
     }
 
     /**
@@ -139,33 +167,38 @@ class View {
      * @return string all.css file name
      */
     public static function getGlobalCssFileName() {
-        return 'all-v' . \F3::get('version') . '.css';
+        return self::$staticPrefix . '.css?v=' . self::$staticmtime[self::STATIC_RESOURCE_CSS];
     }
 
     /**
      * generate minified css and js
      *
+     * @param string type
+     *
      * @return void
      */
-    public function genMinifiedJsAndCss() {
-        // minify js
-        $targetJs = \F3::get('BASEDIR') . '/public/' . self::getGlobalJsFileName();
-        if (!file_exists($targetJs) || \F3::get('DEBUG') != 0) {
-            $js = '';
-            foreach (\F3::get('js') as $file) {
-                $js = $js . "\n" . $this->minifyJs(file_get_contents(\F3::get('BASEDIR') . '/' . $file));
-            }
-            file_put_contents($targetJs, $js);
-        }
+    private function genMinified($type) {
+        self::$staticmtime[$type] = self::maxmtime(\F3::get($type));
 
-        // minify css
-        $targetCss = \F3::get('BASEDIR') . '/public/' . self::getGlobalCssFileName();
-        if (!file_exists($targetCss) || \F3::get('DEBUG') != 0) {
-            $css = '';
-            foreach (\F3::get('css') as $file) {
-                $css = $css . "\n" . $this->minifyCss(file_get_contents(\F3::get('BASEDIR') . '/' . $file));
+        if ($type == self::STATIC_RESOURCE_JS) {
+            $filename = self::getGlobalJsFileName();
+        } elseif ($type == self::STATIC_RESOURCE_CSS) {
+            $filename = self::getGlobalCssFileName();
+        }
+        $target = \F3::get('BASEDIR') . '/public/' . self::$staticPrefix . '.' . $type;
+
+        // build if needed
+        if (!file_exists($target) || filemtime($target) < self::$staticmtime[$type]) {
+            $minified = '';
+            foreach (\F3::get($type) as $file) {
+                if ($type == self::STATIC_RESOURCE_JS) {
+                    $minifiedFile = $this->minifyJs(file_get_contents(\F3::get('BASEDIR') . '/' . $file));
+                } elseif ($type == self::STATIC_RESOURCE_CSS) {
+                    $minifiedFile = $this->minifyCss(file_get_contents(\F3::get('BASEDIR') . '/' . $file));
+                }
+                $minified = $minified . "\n" . $minifiedFile;
             }
-            file_put_contents($targetCss, $css);
+            file_put_contents($target, $minified);
         }
     }
 

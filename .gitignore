@@ -7,7 +7,6 @@
 /data/logs/*.log
 /data/sqlite/*.db
 /public/all.*
-/public/all-v*.*
 user.css
 user.js
 /_bin/*.*
