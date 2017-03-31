@@ -216,15 +216,13 @@ class Database {
     /**
      * optimize database by the database's own optimize statement
      *
-     * Note that for pg, for full optimization you'd run "vacuum full analyze {table}".  This does require
-     * an exclusive lock on the table though and so this is probably best run offline during scheduled
-     * downtime.  See https://www.postgresql.org/docs/9.6/static/sql-vacuum.html for more information
-     * (particularly the notes in the footer of that page leading to further DBA-related info e.g. the
-     * autovacuum daemon).
+     * Note that for pg, no optimization is needed because autovacuuming is
+     * enabled by default.
+     * See
+     * https://www.postgresql.org/docs/9.1/static/runtime-config-autovacuum.html
      *
      * @return  void
      */
     public function optimize() {
-        \F3::get('db')->exec('VACUUM ANALYZE');
     }
 }
