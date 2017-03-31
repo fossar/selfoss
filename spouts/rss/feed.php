@@ -212,7 +212,7 @@ class feed extends \spouts\spout {
      */
     public function getTitle() {
         if ($this->items !== false && $this->valid()) {
-            return @current($this->items)->get_title();
+            return htmlspecialchars_decode(@current($this->items)->get_title());
         }
 
         return false;
@@ -300,9 +300,9 @@ class feed extends \spouts\spout {
             if (isset($author)) {
                 $name = $author->get_name();
                 if (isset($name)) {
-                    return $name;
+                    return htmlspecialchars_decode($name);
                 } else {
-                    return $author->get_email();
+                    return htmlspecialchars_decode($author->get_email());
                 }
             }
         }

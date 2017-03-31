@@ -91,14 +91,18 @@ abstract class spout implements \Iterator {
     abstract public function getId();
 
     /**
-     * returns the current title as string
+     * returns the current title as string. If the spout allows HTML in the
+     * title, HTML special chars are expected to be decoded by the spout (for
+     * instance when the spout feed is XML).
      *
      * @return string title
      */
     abstract public function getTitle();
 
     /**
-     * returns the content of this item
+     * returns the content of this item as string. HTML special chars are
+     * expected to be decoded by the spout (for instance when the spout
+     * feed is XML).
      *
      * @return string content
      */
@@ -137,7 +141,8 @@ abstract class spout implements \Iterator {
     abstract public function getDate();
 
     /**
-     * returns the author of this item
+     * returns the author of this item with html special chars decoded if
+     * applicable.
      *
      * @return string author
      */

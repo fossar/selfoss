@@ -186,7 +186,7 @@ class commits extends \spouts\spout {
         if ($this->items !== false && $this->valid()) {
             $message = @current($this->items)->commit->message;
 
-            return self::cutTitle($message);
+            return htmlspecialchars(self::cutTitle($message));
         }
 
         return false;
@@ -201,7 +201,7 @@ class commits extends \spouts\spout {
         if ($this->items !== false && $this->valid()) {
             $message = @current($this->items)->commit->message;
 
-            return nl2br($message, false);
+            return nl2br(htmlspecialchars($message), false);
         }
 
         return false;

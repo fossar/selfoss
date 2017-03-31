@@ -272,7 +272,7 @@ class ContentLoader {
      */
     protected function sanitizeField($value) {
         return htmLawed(
-            htmlspecialchars_decode($value),
+            $value,
             [
                 'deny_attribute' => '* -href -title -target',
                 'elements' => 'a,br,ins,del,b,i,strong,em,tt,sub,sup,s,code'
