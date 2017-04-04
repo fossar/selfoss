@@ -106,7 +106,7 @@ class Opml extends BaseController {
     private function processGroup($xml, $tags = []) {
         $errors = [];
 
-        $xml->registerXPathNamespace('selfoss', 'http://selfoss.aditu.de/');
+        $xml->registerXPathNamespace('selfoss', 'https://selfoss.aditu.de/');
 
         // tags are the words of the outline parent
         $title = (string) $xml->attributes(null)->title;
@@ -271,7 +271,7 @@ class Opml extends BaseController {
 
         $this->writer->startElement('opml');
         $this->writer->writeAttribute('version', '2.0');
-        $this->writer->writeAttribute('xmlns:selfoss', 'http://selfoss.aditu.de/');
+        $this->writer->writeAttribute('xmlns:selfoss', 'https://selfoss.aditu.de/');
 
         // selfoss version, XML format version and creation date
         $this->writer->startElementNS('selfoss', 'meta', null);

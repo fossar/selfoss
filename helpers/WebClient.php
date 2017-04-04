@@ -22,7 +22,7 @@ class WebClient {
             $agentInfo = [];
         }
 
-        $agentInfo[] = '+http://selfoss.aditu.de';
+        $agentInfo[] = '+https://selfoss.aditu.de';
 
         return $userAgent . ' (' . implode('; ', $agentInfo) . ')';
     }

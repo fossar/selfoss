@@ -2,7 +2,7 @@ selfoss
 =======
 
 Copyright (c) 2015 Tobias Zeising, tobias.zeising@aditu.de  
-http://selfoss.aditu.de  
+https://selfoss.aditu.de  
 Licensed under the GPLv3 license  
 Version 2.18-SNAPSHOT
 
@@ -22,7 +22,7 @@ INSTALLATION
 3. You don't have to install the database, it will be created automatically (ensure that your database has enought rights for creating triggers)
 4. Create cronjob for updating feeds and point it to https://yourselfossurl.com/update via wget or curl. You can also execute the cliupdate.php from commandline.
 
-For further questions or on any problem use our support forum: http://selfoss.aditu.de/forum/
+For further questions or on any problem use our support forum: https://selfoss.aditu.de/forum/
 
 CONFIGURATION
 -------------
@@ -30,7 +30,7 @@ CONFIGURATION
 1. Copy defaults.ini to config.ini
 2. Edit config.ini and delete any lines you do not wish to override
 3. Do not delete the [globals] line
-4. See http://selfoss.aditu.de/ for examples
+4. See https://selfoss.aditu.de/ for examples
 
 
 UPDATE
@@ -45,7 +45,7 @@ UPDATE
 7. Insert your current database connection and your individual configuration in config.ini. Important: we change the config.ini and add new options in newer versions. You have to update the config.ini too.
 8. The database will be updated automatically (ensure that your database has enought rights for creating triggers)
 
-For further questions or on any problem use our support forum: http://selfoss.aditu.de/forum
+For further questions or on any problem use our support forum: https://selfoss.aditu.de/forum
 
 
 SUPPORT
