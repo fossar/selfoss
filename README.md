@@ -48,6 +48,14 @@ UPDATE
 For further questions or on any problem use our support forum: http://selfoss.aditu.de/forum
 
 
+SUPPORT
+-------
+
+* [Issue tracker](https://github.com/SSilence/selfoss/issues) for reporting problems and requesting new features
+* [Forum](https://selfoss.aditu.de/forum/) for general questions about usage
+* [Chat](https://gitter.im/fossar/selfoss) for discussing selfoss development
+
+
 OPML Import
 -----------
 
