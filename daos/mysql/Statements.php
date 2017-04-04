@@ -13,12 +13,12 @@ class Statements {
     /**
      * wrap insert statement to return id
      *
-     * @param sql statement
-     * @param sql params
+     * @param string $query sql statement
+     * @param array $params sql params
      *
-     * @return id after insert
+     * @return int id after insert
      */
-    public static function insert($query, $params) {
+    public static function insert($query, array $params) {
         \F3::get('db')->exec($query, $params);
         $res = \F3::get('db')->exec('SELECT LAST_INSERT_ID() as lastid');
 
@@ -31,7 +31,7 @@ class Statements {
      * @param column to concat
      * @param order
      *
-     * @return full statement
+     * @return string full statement
      */
     public static function nullFirst($column, $order) {
         return "$column $order";
@@ -42,7 +42,7 @@ class Statements {
      *
      * @param bool column to concat
      *
-     * @return full statement
+     * @return string full statement
      */
     public static function sumBool($column) {
         return "SUM($column)";
@@ -53,7 +53,7 @@ class Statements {
      *
      * @param column to check for truth
      *
-     * @return full statement
+     * @return string full statement
      */
     public static function isTrue($column) {
         return "$column=1";
@@ -64,7 +64,7 @@ class Statements {
      *
      * @param column to check for false
      *
-     * @return full statement
+     * @return string full statement
      */
     public static function isFalse($column) {
         return "$column=0";
@@ -76,7 +76,7 @@ class Statements {
      * @param CSV column to check
      * @param value to search in CSV column
      *
-     * @return full statement
+     * @return string full statement
      */
     public static function csvRowMatches($column, $value) {
         if ($value[0] == ':') {
@@ -89,12 +89,12 @@ class Statements {
     /**
      * check column against int list.
      *
-     * @param int column to check
-     * @param array of string or int values to match column against
+     * @param int $column column to check
+     * @param array $ints of string or int values to match column against
      *
-     * @return full statement
+     * @return ?string full statement
      */
-    public static function intRowMatches($column, $ints) {
+    public static function intRowMatches($column, array $ints) {
         // checks types
         if (!is_array($ints) && sizeof($ints) < 1) {
             return null;
@@ -129,7 +129,7 @@ class Statements {
      * Convert a date string into a representation suitable for comparison by
      * the database engine.
      *
-     * @param datestr ISO8601 datetime
+     * @param string $datestr ISO8601 datetime
      *
      * @return string representation of datetime
      */
@@ -141,13 +141,13 @@ class Statements {
      * Ensure row values have the appropriate PHP type. This assumes we are
      * using buffered queries (sql results are in PHP memory).
      *
-     * @param rows array of associative array representing row results
-     * @param expectedRowTypes associative array mapping columns to PDO types
+     * @param array $rows array of associative array representing row results
+     * @param array $expectedRowTypes associative array mapping columns to PDO types
      *
      * @return array of associative array representing row results having
      *         expected types
      */
-    public function ensureRowTypes($rows, $expectedRowTypes) {
+    public function ensureRowTypes(array $rows, array $expectedRowTypes) {
         foreach ($rows as $rowIndex => $row) {
             foreach ($expectedRowTypes as $columnIndex => $type) {
                 if (array_key_exists($columnIndex, $row)) {

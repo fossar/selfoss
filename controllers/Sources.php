@@ -85,7 +85,7 @@ class Sources extends BaseController {
      * return all Sources suitable for navigation panel
      * html
      *
-     * @return htmltext
+     * @return string htmltext
      */
     public function renderSources($sources) {
         $html = '';
@@ -105,7 +105,7 @@ class Sources extends BaseController {
      * for navigation panel
      * html
      *
-     * @return htmltext
+     * @return string htmltext
      */
     public function sourcesListAsString() {
         $sourcesDao = new \daos\Sources();

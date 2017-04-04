@@ -10,14 +10,10 @@ namespace helpers;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class ContentLoader {
-    /**
-     * @var \daos\Items database access for saving new item
-     */
+    /** @var \daos\Items database access for saving new item */
     private $itemsDao;
 
-    /**
-     * @var \daos\Sourcesdatabase access for saveing sources last update
-     */
+    /** @var \daos\Sources database access for saving source’s last update */
     private $sourceDao;
 
     /**
@@ -286,7 +282,7 @@ class ContentLoader {
      * @param $thumbnail the thumbnail url
      * @param $newItem new item for saving in database
      *
-     * @return the newItem Object with thumbnail
+     * @return array the newItem Object with thumbnail
      */
     protected function fetchThumbnail($thumbnail, $newItem) {
         if (strlen(trim($thumbnail)) > 0) {

@@ -2,6 +2,8 @@
 
 namespace controllers;
 
+use SimpleXMLElement;
+
 /**
  * OPML loading and exporting controller
  *
@@ -23,10 +25,19 @@ class Opml extends BaseController {
     /** @var \helpers\SpoutLoader */
     private $spoutLoader;
 
+    /** @var \XMLWriter */
+    private $writer;
+
+    /** @var \daos\Sources */
+    private $sourcesDao;
+
+    /** @var \daos\Tags */
+    private $tagsDao;
+
     public function __construct() {
         parent::__construct();
 
-        $this->spoutLoader = new \helpers\SpoutLoader($this);
+        $this->spoutLoader = new \helpers\SpoutLoader();
     }
 
     /**
@@ -97,13 +108,13 @@ class Opml extends BaseController {
     /**
      * Process a group of outlines
      *
-     * @param $xml (SimpleXML) A SimpleXML object with <outline> children
-     * @param $tags (Array) An array of tags for the current <outline>
+     * @param SimpleXMLElement $xml A SimpleXML object with <outline> children
+     * @param array $tags An array of tags for the current <outline>
      * @note Recursive
      * @note We use non-rss outline's text as tags
      * @note Reads outline elements from both the default and selfoss namespace
      */
-    private function processGroup($xml, $tags = []) {
+    private function processGroup(SimpleXMLElement $xml, array $tags = []) {
         $errors = [];
 
         $xml->registerXPathNamespace('selfoss', 'https://selfoss.aditu.de/');
@@ -143,12 +154,12 @@ class Opml extends BaseController {
     /**
      * Add new feed subscription
      *
-     * @param $xml xml feed entry for item
-     * @param $tags of the entry
+     * @param SimpleXMLElement $xml xml feed entry for item
+     * @param array $tags of the entry
      *
-     * @return true on success or item title on error
+     * @return bool true on success or item title on error
      */
-    private function addSubscription($xml, $tags) {
+    private function addSubscription(SimpleXMLElement $xml, array $tags) {
         // OPML Required attributes: text, xmlUrl, type
         // Optional attributes: title, htmlUrl, language, title, version
         // Selfoss namespaced attributes: spout, params
@@ -219,10 +230,10 @@ class Opml extends BaseController {
     /**
      * Generate an OPML outline element from a source
      *
-     * @param $source source
+     * @param array $source source
      * @note Uses the selfoss namespace to store information about spouts
      */
-    private function writeSource($source) {
+    private function writeSource(array $source) {
         // retrieve the feed url of the source
         $params = json_decode(html_entity_decode($source['params']), true);
         $feedUrl = $this->spoutLoader->get($source['spout'])->getXmlUrl($params);

@@ -22,14 +22,14 @@ class Anonymizer {
      *
      * @param string $url which is the url to anonymize
      *
-     * @return anonymized string
+     * @return string anonymized string
      */
     public static function anonymize($url) {
         return self::getAnonymizer() . $url;
     }
 
     /**
-     * @return the anonymizer string if we should anonymize otherwise blank
+     * @return string the anonymizer string if we should anonymize otherwise blank
      */
     public static function getAnonymizer() {
         return self::shouldAnonymize() ? trim(\F3::get('anonymizer')) : '';

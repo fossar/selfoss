@@ -68,6 +68,9 @@ class commits extends \spouts\spout {
     /** @var string global html url for the source */
     protected $htmlUrl = '';
 
+    /** @var string URL of the favicon */
+    protected $faviconUrl = '';
+
     //
     // Iterator Interface
     //
@@ -86,7 +89,7 @@ class commits extends \spouts\spout {
     /**
      * receive current item
      *
-     * @return SimplePie_Item current item
+     * @return \SimplePie_Item current item
      */
     public function current() {
         if ($this->items !== false) {
@@ -112,7 +115,7 @@ class commits extends \spouts\spout {
     /**
      * select next item
      *
-     * @return SimplePie_Item next item
+     * @return \SimplePie_Item next item
      */
     public function next() {
         if ($this->items !== false) {

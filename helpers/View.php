@@ -139,8 +139,9 @@ class View {
     /**
      * returns max mtime for file paths given in array
      *
-     * @param filePaths array of file paths
-     * @returns int max mtime (unix timestamp)
+     * @param array $filePaths array of file paths
+     *
+     * @return int max mtime (unix timestamp)
      */
     public static function maxmtime(array $filePaths) {
         $maxmtime = 0;
@@ -173,7 +174,7 @@ class View {
     /**
      * generate minified css and js
      *
-     * @param string type
+     * @param string $type
      *
      * @return void
      */
@@ -205,9 +206,9 @@ class View {
     /**
      * minifies javascript if DEBUG mode is disabled
      *
-     * @param javascript to minify
+     * @param string $content javascript to minify
      *
-     * @return minified javascript
+     * @return string minified javascript
      */
     private function minifyJs($content) {
         if (\F3::get('DEBUG') != 0) {
@@ -220,9 +221,9 @@ class View {
     /**
      * minifies css if DEBUG mode is disabled
      *
-     * @param css to minify
+     * @param string $content css to minify
      *
-     * @return minified css
+     * @return string minified css
      */
     private function minifyCss($content) {
         if (\F3::get('DEBUG') != 0) {

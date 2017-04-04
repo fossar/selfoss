@@ -1,0 +1,3 @@
+parameters:
+    ignoreErrors:
+        - '(Call to an undefined static method F3::([sg]et|error|reroute)\(\))'

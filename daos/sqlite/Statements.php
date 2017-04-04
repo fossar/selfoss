@@ -13,12 +13,12 @@ class Statements extends \daos\mysql\Statements {
     /**
      * wrap insert statement to return id
      *
-     * @param sql statement
-     * @param sql params
+     * @param string $query sql statement
+     * @param array $params sql params
      *
-     * @return id after insert
+     * @return int id after insert
      */
-    public static function insert($query, $params) {
+    public static function insert($query, array $params) {
         \F3::get('db')->exec($query, $params);
         $res = \F3::get('db')->exec('SELECT last_insert_rowid() as lastid');
 
@@ -28,10 +28,10 @@ class Statements extends \daos\mysql\Statements {
     /**
      * check if CSV column matches a value.
      *
-     * @param CSV column to check
-     * @param value to search in CSV column
+     * @param string $column CSV column to check
+     * @param string $value value to search in CSV column
      *
-     * @return full statement
+     * @return string full statement
      */
     public static function csvRowMatches($column, $value) {
         return "(',' || $column || ',') LIKE ('%,' || $value || ',%')";
@@ -50,7 +50,7 @@ class Statements extends \daos\mysql\Statements {
      * Convert a date string into a representation suitable for comparison by
      * the database engine.
      *
-     * @param datestr ISO8601 datetime
+     * @param string $datestr ISO8601 datetime
      *
      * @return string representation of datetime
      */

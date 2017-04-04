@@ -221,7 +221,7 @@ class Index extends BaseController {
     /**
      * load items
      *
-     * @return html with items
+     * @return string html with items
      */
     private function loadItems($options, $tags) {
         $tagColors = $this->convertTagsToAssocArray($tags);
@@ -261,7 +261,7 @@ class Index extends BaseController {
      *
      * @param array $tags
      *
-     * @return tag color array
+     * @return array tag color array
      */
     private function convertTagsToAssocArray($tags) {
         $assocTags = [];

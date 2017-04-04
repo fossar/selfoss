@@ -132,7 +132,7 @@ class reddit2 extends \spouts\spout {
     /**
      * receive current item
      *
-     * @return SimplePie_Item current item
+     * @return \SimplePie_Item current item
      */
     public function current() {
         if ($this->items !== null) {
@@ -158,7 +158,7 @@ class reddit2 extends \spouts\spout {
     /**
      * select next item
      *
-     * @return SimplePie_Item next item
+     * @return \SimplePie_Item next item
      */
     public function next() {
         if ($this->items !== null) {

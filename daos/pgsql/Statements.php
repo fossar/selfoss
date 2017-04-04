@@ -13,12 +13,12 @@ class Statements extends \daos\mysql\Statements {
     /**
      * wrap insert statement to return id
      *
-     * @param sql statement
-     * @param sql params
+     * @param string $query sql statement
+     * @param array $params sql params
      *
-     * @return id after insert
+     * @return int id after insert
      */
-    public static function insert($query, $params) {
+    public static function insert($query, array $params) {
         $res = \F3::get('db')->exec("$query RETURNING id", $params);
 
         return $res[0]['id'];
@@ -30,7 +30,7 @@ class Statements extends \daos\mysql\Statements {
      * @param column to concat
      * @param order
      *
-     * @return full statement
+     * @return string full statement
      */
     public static function nullFirst($column, $order) {
         if ($order == 'DESC') {
@@ -47,7 +47,7 @@ class Statements extends \daos\mysql\Statements {
      *
      * @param bool column to concat
      *
-     * @return full statement
+     * @return string full statement
      */
     public static function sumBool($column) {
         return "SUM($column::int)";
@@ -58,7 +58,7 @@ class Statements extends \daos\mysql\Statements {
      *
      * @param column to check for truth
      *
-     * @return full statement
+     * @return string full statement
      */
     public static function isTrue($column) {
         return "$column=true";
@@ -69,7 +69,7 @@ class Statements extends \daos\mysql\Statements {
      *
      * @param column to check for false
      *
-     * @return full statement
+     * @return string full statement
      */
     public static function isFalse($column) {
         return "$column=false";
@@ -78,10 +78,10 @@ class Statements extends \daos\mysql\Statements {
     /**
      * check if CSV column matches a value.
      *
-     * @param CSV column to check
-     * @param value to search in CSV column
+     * @param string $column CSV column to check
+     * @param string $value value to search in CSV column
      *
-     * @return full statement
+     * @return string full statement
      */
     public static function csvRowMatches($column, $value) {
         return "$value=ANY(string_to_array($column, ','))";
@@ -91,13 +91,13 @@ class Statements extends \daos\mysql\Statements {
      * Ensure row values have the appropriate PHP type. This assumes we are
      * using buffered queries (sql results are in PHP memory).
      *
-     * @param rows array of associative array representing row results
-     * @param expectedRowTypes associative array mapping columns to PDO types
+     * @param array $rows array of associative array representing row results
+     * @param array $expectedRowTypes associative array mapping columns to PDO types
      *
      * @return array of associative array representing row results having
      *         expected types
      */
-    public function ensureRowTypes($rows, $expectedRowTypes) {
+    public function ensureRowTypes(array $rows, array $expectedRowTypes) {
         return $rows; // pgsql returns correct PHP types
     }
 }

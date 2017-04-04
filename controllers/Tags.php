@@ -26,7 +26,7 @@ class Tags extends BaseController {
      * returns all tags
      * html
      *
-     * @return void
+     * @return string
      */
     public function tagsListAsString() {
         $tagsDao = new \daos\Tags();
@@ -38,7 +38,7 @@ class Tags extends BaseController {
      * returns all tags
      * html
      *
-     * @return void
+     * @return string
      */
     public function renderTags($tags) {
         $html = '';

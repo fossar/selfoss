@@ -448,7 +448,7 @@ class Items extends Database {
     /**
      * returns the icon of the last fetched item.
      *
-     * @param number $sourceid id of the source
+     * @param int $sourceid id of the source
      *
      * @return bool|string false if none was found
      */
@@ -502,7 +502,7 @@ class Items extends Database {
     /**
      * returns the datetime of the last item update or user action in db
      *
-     * @return timestamp
+     * @return string timestamp
      */
     public function lastUpdate() {
         $res = \F3::get('db')->exec('SELECT

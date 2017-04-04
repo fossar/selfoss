@@ -80,6 +80,9 @@ class usertimeline extends \spouts\spout {
     /** @var array|bool current fetched items */
     protected $items = false;
 
+    /** @var string URL of the source */
+    protected $htmlUrl = '';
+
     //
     // Iterator Interface
     //
@@ -98,7 +101,7 @@ class usertimeline extends \spouts\spout {
     /**
      * receive current item
      *
-     * @return SimplePie_Item current item
+     * @return \SimplePie_Item current item
      */
     public function current() {
         if ($this->items !== false) {
@@ -124,7 +127,7 @@ class usertimeline extends \spouts\spout {
     /**
      * select next item
      *
-     * @return SimplePie_Item next item
+     * @return \SimplePie_Item next item
      */
     public function next() {
         if ($this->items !== false) {

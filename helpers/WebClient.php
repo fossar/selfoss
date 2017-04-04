@@ -13,7 +13,7 @@ class WebClient {
     /**
      * get the user agent to use for web based spouts
      *
-     * @return the user agent string for this spout
+     * @return string the user agent string for this spout
      */
     public static function getUserAgent($agentInfo = null) {
         $userAgent = 'Selfoss/' . \F3::get('version');
@@ -32,7 +32,7 @@ class WebClient {
      *
      * @param string $subagent Extra user agent info to use in the request
      *
-     * @return request data
+     * @return string request data
      */
     public static function request($url, $agentInfo = null) {
         $options = [
