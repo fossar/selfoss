@@ -206,6 +206,20 @@ class Database {
                         'INSERT INTO version (version) VALUES (10);'
                     ]);
                 }
+                if (strnatcmp($version, '11') < 0) {
+                    \F3::get('db')->exec([
+                        'DROP TRIGGER update_updatetime_trigger ON items',
+                        'ALTER TABLE items ADD lastseen TIMESTAMP(0) WITH TIME ZONE NOT NULL DEFAULT NOW()',
+                        'CREATE TRIGGER update_updatetime_trigger
+                            BEFORE UPDATE ON items FOR EACH ROW
+                            WHEN (
+                                OLD.unread IS DISTINCT FROM NEW.unread OR
+                                OLD.starred IS DISTINCT FROM NEW.starred
+                            )
+                            EXECUTE PROCEDURE update_updatetime_procedure();',
+                        'INSERT INTO version (version) VALUES (11);'
+                    ]);
+                }
             }
 
             // just initialize once

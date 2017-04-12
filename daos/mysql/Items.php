@@ -142,12 +142,12 @@ class Items extends Database {
     }
 
     /**
-     * search whether given ids are already in database or not
+     * search whether given uids are already in database or not
      *
      * @param array $itemsInFeed list with ids for checking whether they are already in database or not
      * @param int $sourceId the id of the source to search for the items
      *
-     * @return array with all existing ids from itemsInFeed (array (id => true))
+     * @return array with all existing uids from itemsInFeed (array (uid => id))
      */
     public function findAll($itemsInFeed, $sourceId) {
         $itemsFound = [];
@@ -158,13 +158,13 @@ class Items extends Database {
         array_walk($itemsInFeed, function(&$value) {
             $value = \F3::get('db')->quote($value);
         });
-        $query = 'SELECT uid AS uid FROM ' . \F3::get('db_prefix') . 'items WHERE source = ' . \F3::get('db')->quote($sourceId) . ' AND uid IN (' . implode(',', $itemsInFeed) . ')';
+        $query = 'SELECT id, uid AS uid FROM ' . \F3::get('db_prefix') . 'items WHERE source = ' . \F3::get('db')->quote($sourceId) . ' AND uid IN (' . implode(',', $itemsInFeed) . ')';
         $res = \F3::get('db')->query($query);
         if ($res) {
             $all = $res->fetchAll();
             foreach ($all as $row) {
                 $uid = $row['uid'];
-                $itemsFound[$uid] = true;
+                $itemsFound[$uid] = $row['id'];
             }
         }
 
@@ -172,9 +172,21 @@ class Items extends Database {
     }
 
     /**
+     * Update the time items were last seen in the feed to prevent unwanted cleanup.
+     *
+     * @param array $itemIds
+     *
+     * @return void
+     */
+    public function updateLastSeen(array $itemIds) {
+        \F3::get('db')->exec('UPDATE ' . \F3::get('db_prefix') . 'items SET lastseen = CURRENT_TIMESTAMP
+            WHERE ' . $this->stmt->intRowMatches('id', $itemIds));
+    }
+
+    /**
      * cleanup orphaned and old items
      *
-     * @param DateTime $date date to delete all items older than this value [optional]
+     * @param ?DateTime $date date to delete all items older than this value
      *
      * @return void
      */
@@ -184,7 +196,7 @@ class Items extends Database {
                 SELECT id FROM ' . \F3::get('db_prefix') . 'sources)');
         if ($date !== null) {
             \F3::get('db')->exec('DELETE FROM ' . \F3::get('db_prefix') . 'items
-                WHERE ' . $this->stmt->isFalse('starred') . ' AND datetime<:date',
+                WHERE ' . $this->stmt->isFalse('starred') . ' AND lastseen<:date',
                     [':date' => $date->format('Y-m-d') . ' 00:00:00']
             );
         }

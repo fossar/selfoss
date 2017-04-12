@@ -119,9 +119,12 @@ class ContentLoader {
         $itemsFound = $this->itemsDao->findAll($itemsInFeed, $source['id']);
 
         $lasticon = false;
+        $itemsSeen = [];
         foreach ($spout as $item) {
             // item already in database?
             if (isset($itemsFound[$item->getId()])) {
+                \F3::get('logger')->debug('item "' . $item->getTitle() . '" already in database.');
+                $itemsSeen[] = $itemsFound[$item->getId()];
                 continue;
             }
 
@@ -211,6 +214,11 @@ class ContentLoader {
 
         // remove previous errors and set last update timestamp
         $this->updateSource($source, $lastEntry);
+
+        // mark items seen in the feed to prevent premature garbage removal
+        if (count($itemsSeen) > 0) {
+            $this->itemsDao->updateLastSeen($itemsSeen);
+        }
     }
 
     /**
