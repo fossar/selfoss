@@ -49,9 +49,12 @@ class youtube extends \spouts\rss\feed {
      */
     public function getXmlUrl($params) {
         $channel = $params['channel'];
-        if (preg_match('(^https?://www.youtube.com/channel/([a-zA-Z0-9_]+)$)', $params['channel'], $matched)) {
+        if (preg_match('(^https?://www.youtube.com/channel/([a-zA-Z0-9_-]+)$)', $params['channel'], $matched)) {
             $channel = $matched[1];
             $channel_type = 'channel_id';
+        } elseif (preg_match('(^https?://www.youtube.com/user/([a-zA-Z0-9_]+)$)', $params['channel'], $matched)) {
+            $channel = $matched[1];
+            $channel_type = 'username';
         } elseif (preg_match('(^https?://www.youtube.com/([a-zA-Z0-9_]+)$)', $params['channel'], $matched)) {
             $channel = $matched[1];
             $channel_type = 'username';
