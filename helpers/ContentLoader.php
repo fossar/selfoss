@@ -336,6 +336,8 @@ class ContentLoader {
                     \F3::get('logger')->error('icon generation error: ' . $icon);
                 }
             }
+        } else {
+            \F3::get('logger')->debug('no icon for this feed');
         }
 
         return $newItem;

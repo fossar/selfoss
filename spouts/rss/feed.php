@@ -54,7 +54,7 @@ class feed extends \spouts\spout {
     protected $htmlUrl = '';
 
     /** @var string URL of the favicon */
-    protected $faviconUrl = '';
+    protected $faviconUrl = null;
 
     //
     // Iterator Interface
@@ -243,7 +243,7 @@ class feed extends \spouts\spout {
      * @return string icon url
      */
     public function getIcon() {
-        if (isset($this->faviconUrl)) {
+        if ($this->faviconUrl !== null) {
             return $this->faviconUrl;
         }
 
