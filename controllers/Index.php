@@ -229,8 +229,8 @@ class Index extends BaseController {
         $itemsHtml = '';
 
         $firstPage = $options['offset'] == 0
-            && $options['offset_from_id'] == ''
-            && $options['offset_from_datetime'] == '';
+            && $options['fromId'] == ''
+            && $options['fromDatetime'] == '';
         if ($options['source'] && $this->allowedToUpdate() && $firstPage) {
             $itemsHtml = '<button type="button" id="refresh-source" class="refresh-source">' . \F3::get('lang_source_refresh') . '</button>';
         }

@@ -141,9 +141,9 @@ selfoss.events.entries = function(e) {
         var streamMore = $(this);
         var lastEntry = $('.entry').not('.fullscreen').filter(':last');
         selfoss.events.setHash();
-        selfoss.filter.extra_ids.length = 0;
-        selfoss.filter.offset_from_datetime = lastEntry.data('entry-datetime');
-        selfoss.filter.offset_from_id = lastEntry.data('entry-id');
+        selfoss.filter.extraIds.length = 0;
+        selfoss.filter.fromDatetime = lastEntry.data('entry-datetime');
+        selfoss.filter.fromId = lastEntry.data('entry-id');
         
         streamMore.addClass('loading');
         $.ajax({
@@ -217,7 +217,7 @@ selfoss.events.entries = function(e) {
 
     // open selected entry only if entry was requested (i.e. if not streaming
     // more)
-    if( selfoss.events.entryId && selfoss.filter.offset_from_id == null ) {
+    if( selfoss.events.entryId && selfoss.filter.fromId == null ) {
         var entry = $('#entry' + selfoss.events.entryId);
         entry.children('.entry-title').click();
         // ensure scrolling to requested entry even if scrolling to article

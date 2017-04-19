@@ -13,15 +13,15 @@ var selfoss = {
      */
     filter: {
         offset: 0,
-        offset_from_datetime: null,
-        offset_from_id: null,
+        fromDatetime: undefined,
+        fromId: undefined,
         itemsPerPage: 0,
         search: '',
         type: 'newest',
         tag: '',
         source: '',
         sourcesNav: false,
-        extra_ids: [],
+        extraIds: [],
         ajax: true
     },
 
@@ -163,9 +163,9 @@ var selfoss = {
      */
     filterReset: function() {
         selfoss.filter.offset = 0;
-        selfoss.filter.offset_from_datetime = null;
-        selfoss.filter.offset_from_id = null;
-        selfoss.filter.extra_ids.length = 0;
+        selfoss.filter.fromDatetime = undefined;
+        selfoss.filter.fromId = undefined;
+        selfoss.filter.extraIds.length = 0;
     },
     
     
@@ -182,8 +182,8 @@ var selfoss = {
             return;
         }
 
-        if( selfoss.events.entryId && selfoss.filter.offset_from_id == null )
-            selfoss.filter.extra_ids.push(selfoss.events.entryId);
+        if( selfoss.events.entryId && selfoss.filter.fromId == null )
+            selfoss.filter.extraIds.push(selfoss.events.entryId);
 
         selfoss.ui.refreshStreamButtons();
         $('#content').addClass('loading').html("");
@@ -256,7 +256,7 @@ var selfoss = {
         var getStatuses = true;
         if (selfoss.lastUpdate == null) {
             selfoss.lastUpdate = new Date(0);
-            getStatuses = false;
+            getStatuses = undefined;
         }
 
         return $.ajax({
@@ -264,15 +264,15 @@ var selfoss = {
             type: 'GET',
             dataType: 'json',
             data: {
-                since:          selfoss.lastUpdate.toISOString(),
-                tags:           true,
-                sources:        selfoss.filter.sourcesNav,
-                items_statuses: getStatuses
+                since:         selfoss.db.lastUpdate.toISOString(),
+                tags:          true,
+                sources:       selfoss.filter.sourcesNav ? true : undefined,
+                itemsStatuses: getStatuses
             },
             success: function(data) {
                 selfoss.lastSync = Date.now();
 
-                var dataDate = new Date(data.last_update);
+                var dataDate = new Date(data.lastUpdate);
 
                 if( dataDate <= selfoss.lastUpdate )
                     return;
@@ -290,8 +290,9 @@ var selfoss = {
                     if( 'sourceshtml' in data )
                         selfoss.refreshSources(data.sourceshtml);
 
-                    if( 'items' in data )
-                        selfoss.ui.refreshItemStatuses(data.items);
+                    if( 'itemUpdates' in data ) {
+                        selfoss.ui.refreshEntryStatuses(data.itemUpdates);
+                    }
 
                     if( selfoss.filter.type == 'unread' &&
                         data.stats.unread > $('.entry.unread').length )

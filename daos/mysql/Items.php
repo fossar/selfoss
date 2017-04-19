@@ -253,15 +253,15 @@ class Items extends Database {
         }
 
         // seek pagination (alternative to offset)
-        if (isset($options['offset_from_datetime'])
-            && strlen($options['offset_from_datetime']) > 0
-            && isset($options['offset_from_id'])
-            && is_numeric($options['offset_from_id'])) {
+        if (isset($options['fromDatetime'])
+            && strlen($options['fromDatetime']) > 0
+            && isset($options['fromId'])
+            && is_numeric($options['fromId'])) {
             // discard offset as it makes no sense to mix offset pagination
             // with seek pagination.
             $options['offset'] = 0;
 
-            $offset_from_datetime_sql = $this->stmt->datetime($options['offset_from_datetime']);
+            $offset_from_datetime_sql = $this->stmt->datetime($options['fromDatetime']);
             $params[':offset_from_datetime'] = [
                 $offset_from_datetime_sql, \PDO::PARAM_STR
             ];
@@ -269,7 +269,7 @@ class Items extends Database {
                 $offset_from_datetime_sql, \PDO::PARAM_STR
             ];
             $params[':offset_from_id'] = [
-                $options['offset_from_id'], \PDO::PARAM_INT
+                $options['fromId'], \PDO::PARAM_INT
             ];
             $ltgt = null;
             if ($order == 'ASC') {
@@ -288,11 +288,11 @@ class Items extends Database {
 
         $where_ids = '';
         // extra ids to include in stream
-        if (isset($options['extra_ids'])
-            && count($options['extra_ids']) > 0
+        if (isset($options['extraIds'])
+            && count($options['extraIds']) > 0
             // limit the query to a sensible max
-            && count($options['extra_ids']) <= \F3::get('items_perpage')) {
-            $extra_ids_stmt = $this->stmt->intRowMatches('items.id', $options['extra_ids']);
+            && count($options['extraIds']) <= \F3::get('items_perpage')) {
+            $extra_ids_stmt = $this->stmt->intRowMatches('items.id', $options['extraIds']);
             if (!is_null($extra_ids_stmt)) {
                 $where_ids = $extra_ids_stmt;
             }
