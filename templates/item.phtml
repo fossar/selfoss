@@ -17,7 +17,6 @@
 
     $title = $this->viewHelper->lazyimg($title);
     $content = $this->viewHelper->lazyimg($content);
-    $date = $this->viewHelper->dateago($this->item['datetime']);
 ?>
 <div id="entry<?= $this->item['id']; ?>"
      data-entry-id="<?= $this->item['id']; ?>"
@@ -53,9 +52,8 @@
     <?php endif; ?>
 
     <!-- datetime -->
-    <a href="<?= \helpers\Anonymizer::anonymize($this->item['link']); ?>" class="entry-datetime" target="_blank" rel="noopener noreferrer">
-        <?= $date; ?>
-    </a>
+    <a href="<?= \helpers\Anonymizer::anonymize($this->item['link']); ?>" class="entry-datetime" target="_blank" rel="noopener noreferrer"></a>
+
     <a href="<?= $this->item['link']; ?>" class="entry-link"></a>
 
     <!-- thumbnail -->

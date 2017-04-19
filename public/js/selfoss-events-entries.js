@@ -155,6 +155,7 @@ selfoss.events.entries = function(e) {
                 streamMore.removeClass('loading');
                 lastEntry.after(data.entries);
                 selfoss.ui.refreshStreamButtons(true, true, data.hasMore)
+                selfoss.ui.refreshEntryDatetimes();
                 selfoss.events.entries();
             },
             error: function(jqXHR, textStatus, errorThrown) {

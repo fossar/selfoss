@@ -76,6 +76,8 @@ var selfoss = {
 
             // setup periodic stats reloader
             window.setInterval(selfoss.sync, 60*1000);
+
+            window.setInterval(selfoss.ui.refreshEntryDatetimes, 60*1000);
         });
     },
     
@@ -203,6 +205,7 @@ var selfoss = {
                 selfoss.ui.refreshStreamButtons(true,
                     $('.entry').not('.fullscreen').length > 0, data.hasMore);
                 $(document).scrollTop(0);
+                selfoss.ui.refreshEntryDatetimes();
                 selfoss.events.entries();
                 selfoss.events.search();
                 

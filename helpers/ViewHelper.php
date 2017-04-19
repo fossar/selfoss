@@ -48,35 +48,6 @@ class ViewHelper {
     }
 
     /**
-     * format given date as "x days ago"
-     *
-     * @param
-     *
-     * @return string with replaced formateddate
-     */
-    public function dateago($datestr) {
-        $date = new \DateTime($datestr);
-        $now = new \DateTime();
-        $ageInSeconds = $now->getTimestamp() - $date->getTimestamp();
-        $ageInMinutes = $ageInSeconds / 60;
-        $ageInHours = $ageInMinutes / 60;
-        $ageInDays = $ageInHours / 24;
-
-        if ($ageInMinutes < 1) {
-            return \F3::get('lang_seconds', round($ageInSeconds, 0));
-        }
-        if ($ageInHours < 1) {
-            return \F3::get('lang_minutes', round($ageInMinutes, 0));
-        }
-        if ($ageInDays < 1) {
-            return \F3::get('lang_hours', round($ageInHours, 0));
-        }
-
-        //return $datestr;
-        return \F3::get('lang_timestamp', $date->getTimestamp());
-    }
-
-    /**
      * Return ISO8601 formatted date
      *
      * @param sql date
