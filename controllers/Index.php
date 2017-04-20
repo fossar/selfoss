@@ -224,7 +224,6 @@ class Index extends BaseController {
      * @return string html with items
      */
     private function loadItems($options, $tags) {
-        $tagColors = $this->convertTagsToAssocArray($tags);
         $itemDao = new \daos\Items();
         $itemsHtml = '';
 
@@ -235,16 +234,11 @@ class Index extends BaseController {
             $itemsHtml = '<button type="button" id="refresh-source" class="refresh-source">' . \F3::get('lang_source_refresh') . '</button>';
         }
 
+        $tagsController = new \controllers\Tags();
         foreach ($itemDao->get($options) as $item) {
             // parse tags and assign tag colors
-            $itemsTags = explode(',', $item['tags']);
-            $item['tags'] = [];
-            foreach ($itemsTags as $tag) {
-                $tag = trim($tag);
-                if (strlen($tag) > 0 && isset($tagColors[$tag])) {
-                    $item['tags'][$tag] = $tagColors[$tag];
-                }
-            }
+            $itemTags = explode(',', $item['tags']);
+            $item['tags'] = $tagsController->tagsAddColors($itemTags, $tags);
 
             $this->view->item = $item;
             $itemsHtml .= $this->view->render('templates/item.phtml');
@@ -254,22 +248,5 @@ class Index extends BaseController {
             'html' => $itemsHtml,
             'hasMore' => $itemDao->hasMore()
         ];
-    }
-
-    /**
-     * return tag => color array
-     *
-     * @param array $tags
-     *
-     * @return array tag color array
-     */
-    private function convertTagsToAssocArray($tags) {
-        $assocTags = [];
-        foreach ($tags as $tag) {
-            $assocTags[$tag['tag']]['backColor'] = $tag['color'];
-            $assocTags[$tag['tag']]['foreColor'] = \helpers\Color::colorByBrightness($tag['color']);
-        }
-
-        return $assocTags;
     }
 }
