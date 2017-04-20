@@ -45,15 +45,7 @@ class Image {
 
         $shortcutIcon = $this->parseShortcutIcon($html);
         if ($shortcutIcon !== null) {
-            if (substr($shortcutIcon, 0, 4) != 'http') {
-                if (substr($shortcutIcon, 0, 2) == '//') {
-                    $shortcutIcon = $urlElements['scheme'] . ':' . $shortcutIcon;
-                } elseif (substr($shortcutIcon, 0, 1) == '/') {
-                    $shortcutIcon = $urlElements['scheme'] . '://' . $urlElements['host'] . $shortcutIcon;
-                } else {
-                    $shortcutIcon = (strrpos($url, '/') === strlen($url) - 1) ? $url . $shortcutIcon : $url . '/' . $shortcutIcon;
-                }
-            }
+            $shortcutIcon = (string) \SimplePie_IRI::absolutize($url, $shortcutIcon);
 
             $faviconAsPng = $this->loadImage($shortcutIcon, $width, $height);
             if ($faviconAsPng !== false) {
