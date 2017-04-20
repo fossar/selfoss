@@ -44,7 +44,7 @@ class Image {
         }
 
         $shortcutIcon = $this->parseShortcutIcon($html);
-        if ($shortcutIcon !== false) {
+        if ($shortcutIcon !== null) {
             if (substr($shortcutIcon, 0, 4) != 'http') {
                 if (substr($shortcutIcon, 0, 2) == '//') {
                     $shortcutIcon = $urlElements['scheme'] . ':' . $shortcutIcon;
@@ -172,23 +172,30 @@ class Image {
      *
      * @param string $html
      *
-     * @return string favicon url
+     * @return ?string favicon url
      */
     private function parseShortcutIcon($html) {
-        $result = preg_match('/<link .*rel=("|\')apple-touch-icon\1.*>/Ui', $html, $match1);
-        if ($result == 0) {
-            $result = preg_match('/<link [^>]*rel=("|\')shortcut icon\1.*>/Ui', $html, $match1);
+        $dom = new \DomDocument();
+        if (@$dom->loadHTML($html) !== true) {
+            return null;
         }
-        if ($result == 0) {
-            $result = preg_match('/<link [^>]*rel=("|\')icon\1.*>/Ui', $html, $match1);
+
+        $xpath = new \DOMXPath($dom);
+        $elems = $xpath->query("//link[@rel='apple-touch-icon']");
+        if ($elems->length === 0) {
+            $elems = $xpath->query("//link[@rel='shortcut icon']");
         }
-        if ($result > 0) {
-            $result = preg_match('/href=("|\')(.+)\1/Ui', $match1[0], $match2);
-            if ($result > 0) {
-                return $match2[2];
+        if ($elems->length === 0) {
+            $elems = $xpath->query("//link[@rel='icon']");
+        }
+
+        if ($elems->length > 0) {
+            $icon = $elems->item(0);
+            if ($icon->hasAttribute('href')) {
+                return $icon->getAttribute('href');
             }
         }
 
-        return false;
+        return null;
     }
 }
