@@ -17,7 +17,7 @@ class youtube extends \spouts\rss\feed {
     /** @var string description of this source type */
     public $description = 'Fetch posts from a YouTube channel.';
 
-    /** @var array config params */
+    /** @var array configurable parameters */
     public $params = [
         'channel' => [
             'title' => 'Channel',
@@ -35,7 +35,7 @@ class youtube extends \spouts\rss\feed {
      *
      * @return void
      */
-    public function load($params) {
+    public function load(array $params) {
         $url = $this->getXmlUrl($params);
         parent::load(['url' => $url]);
     }
@@ -43,11 +43,11 @@ class youtube extends \spouts\rss\feed {
     /**
      * returns the xml feed url for the source
      *
-     * @param mixed $params params for the source
+     * @param array $params params for the source
      *
      * @return string url as xml
      */
-    public function getXmlUrl($params) {
+    public function getXmlUrl(array $params) {
         $channel = $params['channel'];
         if (preg_match('(^https?://www.youtube.com/channel/([a-zA-Z0-9_-]+)$)', $params['channel'], $matched)) {
             $channel = $matched[1];

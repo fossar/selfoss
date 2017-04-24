@@ -22,27 +22,7 @@ class page extends \spouts\spout {
     /** @var string description of this source type */
     public $description = 'Get posts from given Facebook page wall.';
 
-    /**
-     * config params
-     * array of arrays with name, type, default value, required, validation type
-     *
-     * - Values for type: text, password, checkbox
-     * - Values for validation: alpha, email, numeric, int, alnum, notempty
-     *
-     * e.g.
-     * array(
-     *   "id" => array(
-     *     "title"      => "URL",
-     *     "type"       => "text",
-     *     "default"    => "",
-     *     "required"   => true,
-     *     "validation" => array("alnum")
-     *   ),
-     *   ....
-     * )
-     *
-     * @var bool|mixed
-     */
+    /** @var array configurable parameters */
     public $params = [
         'user' => [
             'title' => 'Page name',
@@ -76,11 +56,11 @@ class page extends \spouts\spout {
     /**
      * loads content for given source
      *
-     * @param mixed $params the params of this source
+     * @param array $params the params of this source
      *
      * @return void
      */
-    public function load($params) {
+    public function load(array $params) {
         $http = WebClient::getHttpClient();
         $url = new Uri('https://graph.facebook.com/' . urlencode($params['user']));
         $url = $url->withQueryValues($url, [

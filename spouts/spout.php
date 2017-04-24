@@ -29,20 +29,20 @@ abstract class spout implements \Iterator {
      * See /spouts/rss/heise for an example.
      *
      * e.g.
-     * array(
-     *   "id" => array(
+     * [
+     *   "id" => [
      *     "title"      => "URL",
      *     "type"       => "text",
      *     "default"    => "",
      *     "required"   => true,
-     *     "validation" => array("alnum")
-     *   ),
+     *     "validation" => ["alnum"]
+     *   ],
      *   ....
-     * )
+     * ]
      *
-     * @var bool|mixed
+     * @var array
      */
-    public $params = false;
+    public $params = [];
 
     /** @var ?string title of the spout */
     protected $spoutTitle = null;
@@ -50,20 +50,20 @@ abstract class spout implements \Iterator {
     /**
      * loads content for given source
      *
-     * @param mixed $params params of this source
+     * @param array $params params of this source
      *
      * @return void
      */
-    abstract public function load($params);
+    abstract public function load(array $params);
 
     /**
      * returns the xml feed url for the source
      *
-     * @param mixed $params params for the source
+     * @param array $params params for the source
      *
      * @return string url as xml
      */
-    public function getXmlUrl($params) {
+    public function getXmlUrl(array $params) {
         return false;
     }
 

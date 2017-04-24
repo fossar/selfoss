@@ -20,7 +20,7 @@ class fulltextrss extends feed {
     /** @var string description of this source type */
     public $description = 'Use “Graby” library to get full content of feed posts instead of partial content provided by some websites.';
 
-    /** @var array config params */
+    /** @var array configurable parameters */
     public $params = [
         'url' => [
             'title' => 'URL',

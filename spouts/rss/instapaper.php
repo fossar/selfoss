@@ -17,31 +17,7 @@ class instapaper extends feed {
     /** @var string description of this source type */
     public $description = 'Get feed and clean the content with instapaper.com service.';
 
-    /**
-     * config params
-     * array of arrays with name, type, default value, required, validation type
-     *
-     * - Values for type: text, password, checkbox, select
-     * - Values for validation: alpha, email, numeric, int, alnum, notempty
-     *
-     * When type is "select", a new entry "values" must be supplied, holding
-     * key/value pairs of internal names (key) and displayed labels (value).
-     * See /spouts/rss/heise for an example.
-     *
-     * e.g.
-     * array(
-     *   "id" => array(
-     *     "title"      => "URL",
-     *     "type"       => "text",
-     *     "default"    => "",
-     *     "required"   => true,
-     *     "validation" => array("alnum")
-     *   ),
-     *   ....
-     * )
-     *
-     * @var bool|mixed
-     */
+    /** @var array configurable parameters */
     public $params = [
         'url' => [
             'title' => 'URL',
@@ -55,11 +31,11 @@ class instapaper extends feed {
     /**
      * loads content for given source
      *
-     * @param string $url
+     * @param array $params
      *
      * @return void
      */
-    public function load($params) {
+    public function load(array $params) {
         parent::load(['url' => $params['url']]);
     }
 

@@ -19,27 +19,7 @@ class commits extends \spouts\spout {
     /** @var string description of this source type */
     public $description = 'List commits on a repository.';
 
-    /**
-     * config params
-     * array of arrays with name, type, default value, required, validation type
-     *
-     * - Values for type: text, password, checkbox
-     * - Values for validation: alpha, email, numeric, int, alnum, notempty
-     *
-     * e.g.
-     * array(
-     *   "id" => array(
-     *     "title"      => "URL",
-     *     "type"       => "text",
-     *     "default"    => "",
-     *     "required"   => true,
-     *     "validation" => array("alnum")
-     *   ),
-     *   ....
-     * )
-     *
-     * @var bool|mixed
-     */
+    /** @var array configurable parameters */
     public $params = [
         'owner' => [
             'title' => 'Owner',
@@ -147,13 +127,13 @@ class commits extends \spouts\spout {
     /**
      * loads content for given source
      *
-     * @param mixed $params the params of this source
+     * @param array $params the params of this source
      *
      * @throws \GuzzleHttp\Exception\RequestException When an error is encountered
      *
      * @return void
      */
-    public function load($params) {
+    public function load(array $params) {
         $this->htmlUrl = 'https://github.com/' . urlencode($params['owner']) . '/' . urlencode($params['repo']) . '/' . urlencode($params['branch']);
 
         $jsonUrl = 'https://api.github.com/repos/' . urlencode($params['owner']) . '/' . urlencode($params['repo']) . '/commits?sha=' . urlencode($params['branch']);

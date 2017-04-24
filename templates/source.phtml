@@ -69,7 +69,7 @@
         <li class="source-params">
         <?php
             if (isset($this->source) && isset($this->spouts[$this->source['spout']])) {
-                if ($this->spouts[$this->source['spout']]->params !== false) {
+                if (count($this->spouts[$this->source['spout']]->params) > 0) {
                     $this->spout = $this->spouts[$this->source['spout']];
                     $this->params = json_decode(html_entity_decode($this->source['params']), true);
                     $this->idAttr = $idAttr;

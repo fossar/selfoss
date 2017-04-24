@@ -16,27 +16,7 @@ class feed extends \spouts\spout {
     /** @var string description of this source type */
     public $description = 'Get posts from plain RSS/Atom feed.';
 
-    /**
-     * config params
-     * array of arrays with name, type, default value, required, validation type
-     *
-     * - Values for type: text, password, checkbox
-     * - Values for validation: alpha, email, numeric, int, alnum, notempty
-     *
-     * e.g.
-     * array(
-     *   "id" => array(
-     *     "title"      => "URL",
-     *     "type"       => "text",
-     *     "default"    => "",
-     *     "required"   => true,
-     *     "validation" => array("alnum")
-     *   ),
-     *   ....
-     * )
-     *
-     * @var bool|mixed
-     */
+    /** @var array configurable parameters */
     public $params = [
         'url' => [
             'title' => 'URL',
@@ -132,11 +112,11 @@ class feed extends \spouts\spout {
      * I supress all Warnings of SimplePie for ensuring
      * working plugin in PHP Strict mode
      *
-     * @param mixed $params the params of this source
+     * @param array $params the params of this source
      *
      * @return void
      */
-    public function load($params) {
+    public function load(array $params) {
         // initialize simplepie feed loader
         $this->feed = @new \SimplePie();
         @$this->feed->set_cache_location(\F3::get('cache'));
@@ -173,12 +153,12 @@ class feed extends \spouts\spout {
     /**
      * returns the xml feed url for the source
      *
-     * @param mixed $params params for the source
+     * @param array $params params for the source
      *
      * @return string url as xml
      */
-    public function getXmlUrl($params) {
         return isset($params['url']) ? html_entity_decode($params['url']) : false;
+    public function getXmlUrl(array $params) {
     }
 
     /**

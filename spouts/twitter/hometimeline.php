@@ -18,27 +18,7 @@ class hometimeline extends \spouts\twitter\usertimeline {
     /** @var string description of this source type */
     public $description = 'Fetch your twitter timeline.';
 
-    /**
-     * config params
-     * array of arrays with name, type, default value, required, validation type
-     *
-     * - Values for type: text, password, checkbox
-     * - Values for validation: alpha, email, numeric, int, alnum, notempty
-     *
-     * e.g.
-     * array(
-     *   "id" => array(
-     *     "title"      => "URL",
-     *     "type"       => "text",
-     *     "default"    => "",
-     *     "required"   => true,
-     *     "validation" => array("alnum")
-     *   ),
-     *   ....
-     * )
-     *
-     * @var bool|mixed
-     */
+    /** @var array configurable parameters */
     public $params = [
         'consumer_key' => [
             'title' => 'Consumer Key',
@@ -73,11 +53,11 @@ class hometimeline extends \spouts\twitter\usertimeline {
     /**
      * loads content for given twitter user
      *
-     * @param mixed $params the params of this source
+     * @param array $params the params of this source
      *
      * @return void
      */
-    public function load($params) {
+    public function load(array $params) {
         $twitter = new TwitterOAuth($params['consumer_key'], $params['consumer_secret'], $params['access_key'], $params['access_secret']);
         $timeline = $twitter->get('statuses/home_timeline', [
             'include_rts' => 1,

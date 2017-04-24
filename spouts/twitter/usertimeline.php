@@ -19,27 +19,7 @@ class usertimeline extends \spouts\spout {
     /** @var string description of this source type */
     public $description = 'Fetch the timeline of a given user.';
 
-    /**
-     * config params
-     * array of arrays with name, type, default value, required, validation type
-     *
-     * - Values for type: text, password, checkbox
-     * - Values for validation: alpha, email, numeric, int, alnum, notempty
-     *
-     * e.g.
-     * array(
-     *   "id" => array(
-     *     "title"      => "URL",
-     *     "type"       => "text",
-     *     "default"    => "",
-     *     "required"   => true,
-     *     "validation" => array("alnum")
-     *   ),
-     *   ....
-     * )
-     *
-     * @var bool|mixed
-     */
+    /** @var array configurable parameters */
     public $params = [
         'consumer_key' => [
             'title' => 'Consumer Key',
@@ -160,11 +140,11 @@ class usertimeline extends \spouts\spout {
      * I supress all Warnings of SimplePie for ensuring
      * working plugin in PHP Strict mode
      *
-     * @param mixed $params the params of this source
+     * @param array $params the params of this source
      *
      * @return void
      */
-    public function load($params) {
+    public function load(array $params) {
         $access_token_used = !empty($params['access_token']) && !empty($params['access_token_secret']);
         $twitter = new TwitterOAuth($params['consumer_key'], $params['consumer_secret'], $access_token_used ? $params['access_token'] : null, $access_token_used ? $params['access_token_secret'] : null);
         $timeline = $twitter->get('statuses/user_timeline', [

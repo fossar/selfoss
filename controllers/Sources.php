@@ -75,7 +75,7 @@ class Sources extends BaseController {
             $this->view->error('invalid spout type given');
         }
 
-        if ($this->view->spout->params !== false) {
+        if (count($this->view->spout->params) > 0) {
             $this->view->idAttr = 'new-' . rand();
             echo $this->view->render('templates/source_params.phtml');
         }

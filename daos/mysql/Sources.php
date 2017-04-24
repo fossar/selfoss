@@ -16,11 +16,11 @@ class Sources extends Database {
      * @param string $title
      * @param string[] $tags
      * @param string $spout the source type
-     * @param mixed $params depends from spout
+     * @param array $params depends from spout
      *
      * @return int new id
      */
-    public function add($title, array $tags, $filter, $spout, $params) {
+    public function add($title, array $tags, $filter, $spout, array $params) {
         return $this->stmt->insert('INSERT INTO ' . \F3::get('db_prefix') . 'sources (title, tags, filter, spout, params) VALUES (:title, :tags, :filter, :spout, :params)', [
             ':title' => trim($title),
             ':tags' => $this->stmt->csvRow($tags),
@@ -37,11 +37,11 @@ class Sources extends Database {
      * @param string $title new title
      * @param string[] $tags new tags
      * @param string $spout new spout
-     * @param mixed $params the new params
+     * @param array $params the new params
      *
      * @return void
      */
-    public function edit($id, $title, array $tags, $filter, $spout, $params) {
+    public function edit($id, $title, array $tags, $filter, $spout, array $params) {
         \F3::get('db')->exec('UPDATE ' . \F3::get('db_prefix') . 'sources SET title=:title, tags=:tags, filter=:filter, spout=:spout, params=:params WHERE id=:id', [
             ':title' => trim($title),
             ':tags' => $this->stmt->csvRow($tags),
@@ -262,11 +262,11 @@ class Sources extends Database {
      *
      * @param  string  $title
      * @param  string  $spout the source type
-     * @param  mixed   $params depends from spout
+     * @param  array   $params depends from spout
      *
      * @return int id if any record is found
      */
-    public function checkIfExists($title, $spout, $params) {
+    public function checkIfExists($title, $spout, array $params) {
         // Check if a entry exists with same title, spout and params
         $result = \F3::get('db')->exec('SELECT id FROM ' . \F3::get('db_prefix') . 'sources WHERE title=:title AND spout=:spout AND params=:params', [
             ':title' => trim($title),
