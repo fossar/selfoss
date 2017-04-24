@@ -217,4 +217,30 @@ class Image {
 
         return null;
     }
+
+    /**
+     * taken from: http://zytzagoo.net/blog/2008/01/23/extracting-images-from-html-using-regular-expressions/
+     * Searches for the first occurence of an html <img> element in a string
+     * and extracts the src if it finds it. Returns null in case an <img>
+     * element is not found.
+     *
+     * @param string $html An HTML string
+     *
+     * @return ?string content of the src attribute of the first image
+     */
+    public static function findFirstImageSource($html) {
+        if (stripos($html, '<img') !== false) {
+            $imgsrc_regex = '#<\s*img [^\>]*src\s*=\s*(["\'])(.*?)\1#im';
+            preg_match($imgsrc_regex, $html, $matches);
+            unset($imgsrc_regex);
+            unset($html);
+            if (is_array($matches) && !empty($matches)) {
+                return $matches[2];
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
 }

@@ -40,40 +40,12 @@ class images extends feed {
                 return @$item->get_enclosure(0)->get_link();
             }
         } else { // no enclosures: search image link in content
-            $image = $this->getImage(@$item->get_content());
-            if ($image !== false) {
+            $image = \helpers\Image::findFirstImageSource(@$item->get_content());
+            if ($image !== null) {
                 return $image;
             }
         }
 
         return '';
-    }
-
-    /**
-     * taken from: http://zytzagoo.net/blog/2008/01/23/extracting-images-from-html-using-regular-expressions/
-     * Searches for the first occurence of an html <img> element in a string
-     * and extracts the src if it finds it. Returns boolean false in case an
-     * <img> element is not found.
-     *
-     * @param    string  $str    An HTML string
-     *
-     * @return   mixed           The contents of the src attribute in the
-     *                           found <img> or boolean false if no <img>
-     *                           is found
-     */
-    public function getImage($html) {
-        if (stripos($html, '<img') !== false) {
-            $imgsrc_regex = '#<\s*img [^\>]*src\s*=\s*(["\'])(.*?)\1#im';
-            preg_match($imgsrc_regex, $html, $matches);
-            unset($imgsrc_regex);
-            unset($html);
-            if (is_array($matches) && !empty($matches)) {
-                return $matches[2];
-            } else {
-                return false;
-            }
-        } else {
-            return false;
-        }
     }
 }

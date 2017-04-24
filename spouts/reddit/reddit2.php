@@ -319,6 +319,8 @@ class reddit2 extends \spouts\spout {
     }
 
     /**
+     * @param array $params
+     *
      * @throws GuzzleHttp\Exception\RequestException When an error is encountered
      * @throws \RuntimeException if the response body is not in JSON format
      * @throws \Exception if the credentials are invalid
