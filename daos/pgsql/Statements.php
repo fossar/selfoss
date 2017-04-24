@@ -33,9 +33,9 @@ class Statements extends \daos\mysql\Statements {
      * @return string full statement
      */
     public static function nullFirst($column, $order) {
-        if ($order == 'DESC') {
+        if ($order === 'DESC') {
             $nulls = 'LAST';
-        } elseif ($order == 'ASC') {
+        } elseif ($order === 'ASC') {
             $nulls = 'FIRST';
         }
 

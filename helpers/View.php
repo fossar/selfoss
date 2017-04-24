@@ -46,14 +46,14 @@ class View {
         if (strlen(trim(\F3::get('base_url'))) > 0) {
             $base = \F3::get('base_url');
             $length = strlen($base);
-            if ($length > 0 && substr($base, $length - 1, 1) != '/') {
+            if ($length > 0 && substr($base, $length - 1, 1) !== '/') {
                 $base .= '/';
             }
         } else { // auto generate base url
             $protocol = 'http';
             if ((isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ||
-                (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') ||
-                (isset($_SERVER['HTTP_HTTPS']) && $_SERVER['HTTP_HTTPS'] == 'https')) {
+                (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') ||
+                (isset($_SERVER['HTTP_HTTPS']) && $_SERVER['HTTP_HTTPS'] === 'https')) {
                 $protocol = 'https';
             }
 
@@ -68,8 +68,8 @@ class View {
             }
 
             $port = '';
-            if (($protocol == 'http' && $_SERVER['SERVER_PORT'] != '80') ||
-                ($protocol == 'https' && $_SERVER['SERVER_PORT'] != '443')) {
+            if (($protocol === 'http' && $_SERVER['SERVER_PORT'] != '80') ||
+                ($protocol === 'https' && $_SERVER['SERVER_PORT'] != '443')) {
                 $port = ':' . $_SERVER['SERVER_PORT'];
             }
             //Override the port if nginx is the front end and the traffic is being forwarded
@@ -186,9 +186,9 @@ class View {
     private function genMinified($type) {
         self::$staticmtime[$type] = self::maxmtime(\F3::get($type));
 
-        if ($type == self::STATIC_RESOURCE_JS) {
+        if ($type === self::STATIC_RESOURCE_JS) {
             $filename = self::getGlobalJsFileName();
-        } elseif ($type == self::STATIC_RESOURCE_CSS) {
+        } elseif ($type === self::STATIC_RESOURCE_CSS) {
             $filename = self::getGlobalCssFileName();
         }
         $target = \F3::get('BASEDIR') . '/public/' . self::$staticPrefix . '.' . $type;
@@ -197,9 +197,9 @@ class View {
         if (!file_exists($target) || filemtime($target) < self::$staticmtime[$type]) {
             $minified = '';
             foreach (\F3::get($type) as $file) {
-                if ($type == self::STATIC_RESOURCE_JS) {
+                if ($type === self::STATIC_RESOURCE_JS) {
                     $minifiedFile = $this->minifyJs(file_get_contents(\F3::get('BASEDIR') . '/' . $file));
-                } elseif ($type == self::STATIC_RESOURCE_CSS) {
+                } elseif ($type === self::STATIC_RESOURCE_CSS) {
                     $minifiedFile = $this->minifyCss(file_get_contents(\F3::get('BASEDIR') . '/' . $file));
                 }
                 $minified = $minified . "\n" . $minifiedFile;

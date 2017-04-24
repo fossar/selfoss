@@ -50,7 +50,7 @@ class Items extends Database {
      */
     public function cleanup($days) {
         $minDate = null;
-        if ($days !== '') {
+        if ($days !== 0) {
             $minDate = new \DateTime();
             $minDate->sub(new \DateInterval('P' . $days . 'D'));
         }

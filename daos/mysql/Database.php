@@ -23,7 +23,7 @@ class Database {
      * @return void
      */
     public function __construct() {
-        if (self::$initialized === false && \F3::get('db_type') == 'mysql') {
+        if (self::$initialized === false && \F3::get('db_type') === 'mysql') {
             $host = \F3::get('db_host');
             $port = \F3::get('db_port');
             $database = \F3::get('db_database');
@@ -51,7 +51,7 @@ class Database {
                 }
             }
 
-            if (!in_array(\F3::get('db_prefix') . 'items', $tables)) {
+            if (!in_array(\F3::get('db_prefix') . 'items', $tables, true)) {
                 \F3::get('db')->exec('
                     CREATE TABLE ' . \F3::get('db_prefix') . 'items (
                         id INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
@@ -87,7 +87,7 @@ class Database {
             }
 
             $isNewestSourcesTable = false;
-            if (!in_array(\F3::get('db_prefix') . 'sources', $tables)) {
+            if (!in_array(\F3::get('db_prefix') . 'sources', $tables, true)) {
                 \F3::get('db')->exec('
                     CREATE TABLE ' . \F3::get('db_prefix') . 'sources (
                         id INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
@@ -105,7 +105,7 @@ class Database {
             }
 
             // version 1 or new
-            if (!in_array(\F3::get('db_prefix') . 'version', $tables)) {
+            if (!in_array(\F3::get('db_prefix') . 'version', $tables, true)) {
                 \F3::get('db')->exec('
                     CREATE TABLE ' . \F3::get('db_prefix') . 'version (
                         version INT

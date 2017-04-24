@@ -75,7 +75,7 @@ class Sources extends Database {
      * @return void
      */
     public function error($id, $error) {
-        if (strlen($error) == 0) {
+        if (strlen($error) === 0) {
             $arr = [
                 ':id' => $id
                 ];

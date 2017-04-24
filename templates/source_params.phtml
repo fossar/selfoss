@@ -6,14 +6,14 @@ foreach ($this->spout->params as $spoutParamName => $spoutParam) {
     $value = $spoutParam['default'];
     if (isset($this->params) && isset($this->params[$spoutParamName])) {
         $value = $this->params[$spoutParamName];
-        if ($spoutParam['type'] == 'checkbox' && $value == '1') {
+        if ($spoutParam['type'] === 'checkbox' && $value == '1') {
             $checked = 'checked="checked"';
         }
     }
 
-    if ($spoutParam['type'] == 'text'
-        || $spoutParam['type'] == 'checkbox'
-        || $spoutParam['type'] == 'url') {
+    if ($spoutParam['type'] === 'text'
+        || $spoutParam['type'] === 'checkbox'
+        || $spoutParam['type'] === 'url') {
         echo '<li>
                 <label for="' . $spoutParamName . '-' . $this->idAttr . '">' . $spoutParam['title'] . '</label>
                 <input id="' . $spoutParamName . '-' . $this->idAttr . '" type="' . $spoutParam['type'] . '"
@@ -23,7 +23,7 @@ foreach ($this->spout->params as $spoutParamName => $spoutParam) {
               </li>';
     }
 
-    if ($spoutParam['type'] == 'password') {
+    if ($spoutParam['type'] === 'password') {
         if (empty($value)) {
             echo '<li>
                     <label for="' . $spoutParamName . '-' . $this->idAttr . '">' . $spoutParam['title'] . '</label>
@@ -38,10 +38,10 @@ foreach ($this->spout->params as $spoutParamName => $spoutParam) {
                            placeholder="' . \F3::get('lang_source_pwd_placeholder') . '" />
                   </li>';
         }
-    } elseif ($spoutParam['type'] == 'select') {
+    } elseif ($spoutParam['type'] === 'select') {
         $options = '';
         foreach ($spoutParam['values'] as $optionName => $optionTitle) {
-            $selected = ($optionName == $value) ? 'selected="selected"' : '';
+            $selected = ($optionName === $value) ? 'selected="selected"' : '';
             $options .= "\n" . '<option value="' . $optionName . '" ' . $selected . '>' . $optionTitle . '</option>';
         }
 

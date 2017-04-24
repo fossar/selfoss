@@ -39,7 +39,7 @@ class Image {
      */
     public function fetchFavicon($url, $isHtmlUrl = false, $width = false, $height = false) {
         // try given url
-        if ($isHtmlUrl == false) {
+        if ($isHtmlUrl === false) {
             $faviconAsPng = $this->loadImage($url, $width, $height);
             if ($faviconAsPng !== false) {
                 $this->faviconUrl = $url;
@@ -108,20 +108,20 @@ class Image {
         $imgInfo = @getimagesizefromstring($data);
         if (in_array(strtolower($imgInfo['mime']), self::$faviconMimeTypes, true)) {
             $type = 'ico';
-        } elseif (strtolower($imgInfo['mime']) == 'image/png') {
+        } elseif (strtolower($imgInfo['mime']) === 'image/png') {
             $type = 'png';
-        } elseif (strtolower($imgInfo['mime']) == 'image/jpeg') {
+        } elseif (strtolower($imgInfo['mime']) === 'image/jpeg') {
             $type = 'jpg';
-        } elseif (strtolower($imgInfo['mime']) == 'image/gif') {
+        } elseif (strtolower($imgInfo['mime']) === 'image/gif') {
             $type = 'gif';
-        } elseif (strtolower($imgInfo['mime']) == 'image/x-ms-bmp') {
+        } elseif (strtolower($imgInfo['mime']) === 'image/x-ms-bmp') {
             $type = 'bmp';
         } else {
             return false;
         }
 
         // convert ico to png
-        if ($type == 'ico') {
+        if ($type === 'ico') {
             $loader = new IcoFileService();
             try {
                 $icon = $loader->fromString($data);
@@ -168,7 +168,7 @@ class Image {
         }
 
         // return image as jpg or png
-        if ($extension == 'jpg') {
+        if ($extension === 'jpg') {
             $data = $wideImage->asString('jpg', 75);
         } else {
             $data = $wideImage->asString('png', 4, PNG_NO_FILTER);

@@ -99,10 +99,10 @@ class Tags extends BaseController {
         $tag = $data['tag'];
         $color = $data['color'];
 
-        if (!isset($tag) || strlen(trim($tag)) == 0) {
+        if (!isset($tag) || strlen(trim($tag)) === 0) {
             $this->view->error('invalid or no tag given');
         }
-        if (!isset($color) || strlen(trim($color)) == 0) {
+        if (!isset($color) || strlen(trim($color)) === 0) {
             $this->view->error('invalid or no color given');
         }
 

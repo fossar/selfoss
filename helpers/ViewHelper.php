@@ -20,7 +20,7 @@ class ViewHelper {
      * @return string with highlited words
      */
     public function highlight($content, $searchWords) {
-        if (strlen(trim($searchWords)) == 0) {
+        if (strlen(trim($searchWords)) === 0) {
             return $content;
         }
 

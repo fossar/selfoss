@@ -63,10 +63,10 @@ class Opml extends BaseController {
 
         try {
             $opml = $_FILES['opml'];
-            if ($opml['error'] == UPLOAD_ERR_NO_FILE) {
+            if ($opml['error'] === UPLOAD_ERR_NO_FILE) {
                 throw new \Exception('No file uploaded!');
             }
-            if (!in_array($opml['type'], ['application/xml', 'text/xml', 'text/x-opml+xml', 'text/x-opml'])) {
+            if (!in_array($opml['type'], ['application/xml', 'text/xml', 'text/x-opml+xml', 'text/x-opml'], true)) {
                 throw new \Exception('Unsupported file type: ' . $opml['type']);
             }
 
@@ -90,7 +90,7 @@ class Opml extends BaseController {
                 $this->show();
             } else { // On success bring them back to their subscription list
                 $amount = count($this->imported);
-                $this->msg = 'Success! ' . $amount . ' feed' . ($amount != 1 ? 's have' : ' has') . ' been imported.<br>' .
+                $this->msg = 'Success! ' . $amount . ' feed' . ($amount !== 1 ? 's have' : ' has') . ' been imported.<br>' .
                     'You might want to <a href="update">update now</a> or <a href="./">view your feeds</a>.';
                 $this->msgclass = 'success';
                 $this->show();
@@ -118,12 +118,12 @@ class Opml extends BaseController {
 
         // tags are the words of the outline parent
         $title = (string) $xml->attributes(null)->title;
-        if ($title != null && $title != '/') {
+        if ($title !== '' && $title !== '/') {
             $tags[] = $title;
             // for new tags, try to import tag color, otherwise use random color
             if (!$this->tagsDao->hasTag($title)) {
                 $tagColor = (string) $xml->attributes('selfoss', true)->color;
-                if ($tagColor != null) {
+                if ($tagColor !== '') {
                     $this->tagsDao->saveTagColor($title, $tagColor);
                 } else {
                     $this->tagsDao->autocolorTag($title);
@@ -166,7 +166,7 @@ class Opml extends BaseController {
 
         // description
         $title = (string) $attrs->text;
-        if ($title == null) {
+        if ($title === '') {
             $title = (string) $attrs->title;
         }
 
@@ -184,7 +184,7 @@ class Opml extends BaseController {
             }
             $spout = (string) $nsattrs->spout;
             $data = json_decode(html_entity_decode((string) $nsattrs->params), true);
-        } elseif (in_array((string) $attrs->type, ['rss', 'atom'])) {
+        } elseif (in_array((string) $attrs->type, ['rss', 'atom'], true)) {
             $spout = 'spouts\rss\feed';
         } else {
             \F3::get('logger')->warning("OPML import: failed to import '$title'");

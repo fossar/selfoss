@@ -25,7 +25,7 @@ class enclosures extends feed {
         if ($this->items !== false && $this->valid()) {
             $content = parent::getContent();
             foreach (@current($this->items)->get_enclosures() as $enclosure) {
-                if ($enclosure->get_medium() == 'image') {
+                if ($enclosure->get_medium() === 'image') {
                     $title = htmlspecialchars(strip_tags($enclosure->get_title()));
                     $content .= '<img src="' . $enclosure->get_link() . '" alt="' . $title . '" title="' . $title . '" />';
                 }

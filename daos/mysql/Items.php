@@ -215,14 +215,14 @@ class Items extends Database {
         $order = 'DESC';
 
         // only starred
-        if (isset($options['type']) && $options['type'] == 'starred') {
+        if (isset($options['type']) && $options['type'] === 'starred') {
             $where[] = $this->stmt->isTrue('starred');
         }
 
         // only unread
-        elseif (isset($options['type']) && $options['type'] == 'unread') {
+        elseif (isset($options['type']) && $options['type'] === 'unread') {
             $where[] = $this->stmt->isTrue('unread');
-            if (\F3::get('unread_order') == 'asc') {
+            if (\F3::get('unread_order') === 'asc') {
                 $order = 'ASC';
             }
         }
@@ -272,7 +272,7 @@ class Items extends Database {
                 $options['fromId'], \PDO::PARAM_INT
             ];
             $ltgt = null;
-            if ($order == 'ASC') {
+            if ($order === 'ASC') {
                 $ltgt = '>';
             } else {
                 $ltgt = '<';
@@ -293,7 +293,7 @@ class Items extends Database {
             // limit the query to a sensible max
             && count($options['extraIds']) <= \F3::get('items_perpage')) {
             $extra_ids_stmt = $this->stmt->intRowMatches('items.id', $options['extraIds']);
-            if (!is_null($extra_ids_stmt)) {
+            if ($extra_ids_stmt !== null) {
                 $where_ids = $extra_ids_stmt;
             }
         }
@@ -325,7 +325,7 @@ class Items extends Database {
             WHERE items.source=sources.id AND';
         $order_sql = 'ORDER BY items.datetime ' . $order . ', items.id ' . $order;
 
-        if ($where_ids != '') {
+        if ($where_ids !== '') {
             // This UNION is required for the extra explicitely requested items
             // to be included whether or not they would have been excluded by
             // seek, filter, offset rules.
@@ -550,7 +550,7 @@ class Items extends Database {
 
         $res = \F3::get('db')->exec('SELECT icon FROM ' . \F3::get('db_prefix') . 'items WHERE source=:sourceid AND icon!=\'\' AND icon IS NOT NULL ORDER BY ID DESC LIMIT 1',
             [':sourceid' => $sourceid]);
-        if (count($res) == 1) {
+        if (count($res) === 1) {
             return $res[0]['icon'];
         }
 

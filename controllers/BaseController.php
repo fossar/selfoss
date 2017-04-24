@@ -54,7 +54,7 @@ class BaseController {
      * @return bool
      */
     public function allowedToUpdate() {
-        return \F3::get('auth')->isLoggedin() == 1
+        return \F3::get('auth')->isLoggedin() === true
             || $_SERVER['REMOTE_ADDR'] === $_SERVER['SERVER_ADDR']
             || $_SERVER['REMOTE_ADDR'] === '127.0.0.1'
             || \F3::get('allow_public_update_access') == 1;

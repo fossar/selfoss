@@ -38,19 +38,19 @@ class Rss extends BaseController {
             $options = $_GET;
         }
         $options['items'] = \F3::get('rss_max_items');
-        if (\F3::get('PARAMS["tag"]') != null) {
+        if (\F3::get('PARAMS["tag"]') !== null) {
             $options['tag'] = \F3::get('PARAMS["tag"]');
         }
-        if (\F3::get('PARAMS["type"]') != null) {
+        if (\F3::get('PARAMS["type"]') !== null) {
             $options['type'] = \F3::get('PARAMS["type"]');
         }
 
         // get items
-        $newestEntryDate = false;
-        $lastid = -1;
+        $newestEntryDate = null;
+        $lastid = null;
         $itemDao = new \daos\Items();
         foreach ($itemDao->get($options) as $item) {
-            if ($newestEntryDate === false) {
+            if ($newestEntryDate === null) {
                 $newestEntryDate = $item['datetime'];
             }
             $newItem = $feedWriter->createNewItem();
@@ -84,12 +84,12 @@ class Rss extends BaseController {
             $lastid = $item['id'];
 
             // mark as read
-            if (\F3::get('rss_mark_as_read') == 1 && $lastid != -1) {
+            if (\F3::get('rss_mark_as_read') == 1 && $lastid !== null) {
                 $itemDao->mark($lastid);
             }
         }
 
-        if ($newestEntryDate === false) {
+        if ($newestEntryDate === null) {
             $newestEntryDate = date(\DATE_ATOM, time());
         }
         $feedWriter->setDate($newestEntryDate);

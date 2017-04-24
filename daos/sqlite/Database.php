@@ -42,7 +42,7 @@ class Database {
                 }
             }
 
-            if (!in_array('items', $tables)) {
+            if (!in_array('items', $tables, true)) {
                 \F3::get('db')->exec('
                     CREATE TABLE items (
                         id          INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -78,7 +78,7 @@ class Database {
             }
 
             $isNewestSourcesTable = false;
-            if (!in_array('sources', $tables)) {
+            if (!in_array('sources', $tables, true)) {
                 \F3::get('db')->exec('
                     CREATE TABLE sources (
                         id          INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -96,7 +96,7 @@ class Database {
             }
 
             // version 1
-            if (!in_array('version', $tables)) {
+            if (!in_array('version', $tables, true)) {
                 \F3::get('db')->exec('
                     CREATE TABLE version (
                         version INT

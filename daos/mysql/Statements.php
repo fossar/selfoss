@@ -79,7 +79,7 @@ class Statements {
      * @return string full statement
      */
     public static function csvRowMatches($column, $value) {
-        if ($value[0] == ':') {
+        if ($value[0] === ':') {
             $value = "_utf8mb4 $value";
         }
 
@@ -96,7 +96,7 @@ class Statements {
      */
     public static function intRowMatches($column, array $ints) {
         // checks types
-        if (!is_array($ints) && sizeof($ints) < 1) {
+        if (!is_array($ints) && count($ints) === 0) {
             return null;
         }
         $all_ints = [];
@@ -107,7 +107,7 @@ class Statements {
             }
         }
 
-        if (sizeof($all_ints) > 0) {
+        if (count($all_ints) > 0) {
             $comma_ints = implode(',', $all_ints);
 
             return $column . " IN ($comma_ints)";
@@ -166,7 +166,7 @@ class Statements {
                             $value = (int) $row[$columnIndex];
                             break;
                         case \daos\PARAM_BOOL:
-                            if ($row[$columnIndex] == '1') {
+                            if ($row[$columnIndex] === '1') {
                                 $value = true;
                             } else {
                                 $value = false;

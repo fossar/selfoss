@@ -27,7 +27,7 @@ class Database {
      * @return  void
      */
     public function __construct() {
-        if (self::$initialized === false && \F3::get('db_type') == 'pgsql') {
+        if (self::$initialized === false && \F3::get('db_type') === 'pgsql') {
             $host = \F3::get('db_host');
             $port = \F3::get('db_port');
             $database = \F3::get('db_database');
@@ -54,7 +54,7 @@ class Database {
                 }
             }
 
-            if (!in_array('items', $tables)) {
+            if (!in_array('items', $tables, true)) {
                 \F3::get('db')->exec('
                     CREATE TABLE items (
                         id          SERIAL PRIMARY KEY,
@@ -94,7 +94,7 @@ class Database {
             }
 
             $isNewestSourcesTable = false;
-            if (!in_array('sources', $tables)) {
+            if (!in_array('sources', $tables, true)) {
                 \F3::get('db')->exec('
                     CREATE TABLE sources (
                         id          SERIAL PRIMARY KEY,
@@ -112,7 +112,7 @@ class Database {
             }
 
             // version 1
-            if (!in_array('version', $tables)) {
+            if (!in_array('version', $tables, true)) {
                 \F3::get('db')->exec('
                     CREATE TABLE version (
                         version INTEGER

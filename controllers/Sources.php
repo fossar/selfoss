@@ -174,7 +174,7 @@ class Sources extends BaseController {
             $spoutInstance = $spoutLoader->get($spout);
 
             foreach ($spoutInstance->params as $spoutParamName => $spoutParam) {
-                if ($spoutParam['type'] == 'password'
+                if ($spoutParam['type'] === 'password'
                     && empty($data[$spoutParamName])) {
                     if (!isset($oldSource)) {
                         $oldSource = $sourcesDao->get($id);
@@ -306,7 +306,7 @@ class Sources extends BaseController {
         // get last icon
         for ($i = 0; $i < count($sources); ++$i) {
             $sources[$i]['params'] = json_decode(html_entity_decode($sources[$i]['params']), true);
-            $sources[$i]['error'] = $sources[$i]['error'] == null ? '' : $sources[$i]['error'];
+            $sources[$i]['error'] = $sources[$i]['error'] === null ? '' : $sources[$i]['error'];
         }
 
         $this->view->jsonSuccess($sources);

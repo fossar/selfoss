@@ -289,7 +289,7 @@ class feed extends \spouts\spout {
         if ($this->items !== false && $this->valid()) {
             $date = @current($this->items)->get_date('Y-m-d H:i:s');
         }
-        if (strlen($date) == 0) {
+        if (strlen($date) === 0) {
             $date = date('Y-m-d H:i:s');
         }
 

@@ -248,7 +248,7 @@ class commits extends \spouts\spout {
         if ($this->items !== false && $this->valid()) {
             $date = date('Y-m-d H:i:s', strtotime(@current($this->items)['commit']['author']['date']));
         }
-        if (strlen($date) == 0) {
+        if (strlen($date) === 0) {
             $date = date('Y-m-d H:i:s');
         }
 

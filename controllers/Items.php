@@ -19,7 +19,7 @@ class Items extends BaseController {
     public function mark() {
         $this->needsLoggedIn();
 
-        if (\F3::get('PARAMS["item"]') != null) {
+        if (\F3::get('PARAMS["item"]') !== null) {
             $lastid = \F3::get('PARAMS["item"]');
         } elseif (isset($_POST['ids'])) {
             $lastid = $_POST['ids'];
@@ -197,7 +197,7 @@ class Items extends BaseController {
 
         $sinceId = 0;
         if (array_key_exists('itemsSinceId', $params)) {
-            $sinceId = intval($params['itemsSinceId']);
+            $sinceId = (int) $params['itemsSinceId'];
             if ($sinceId >= 0) {
                 $notBefore = date_create($params['itemsNotBefore']);
                 if ($sinceId < 1 || !$notBefore) {

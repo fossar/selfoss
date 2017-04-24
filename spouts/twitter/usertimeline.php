@@ -339,7 +339,7 @@ class usertimeline extends \spouts\spout {
         if ($this->items !== false) {
             $date = date('Y-m-d H:i:s', strtotime(@current($this->items)->created_at));
         }
-        if (strlen($date) == 0) {
+        if (strlen($date) === 0) {
             $date = date('Y-m-d H:i:s');
         }
 

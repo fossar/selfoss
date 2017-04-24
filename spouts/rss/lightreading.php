@@ -123,13 +123,13 @@ class lightreading extends feed {
      * @return string $tag optional tag
      */
     private function getTag($attr, $value, $xml, $tag = null, $end = null) {
-        if (is_null($tag)) {
+        if ($tag === null) {
             $tag = '\w+';
         } else {
             $tag = preg_quote($tag);
         }
 
-        if (is_null($end)) {
+        if ($end === null) {
             $end = '</\1>';
         } else {
             $end = preg_quote($end);
