@@ -2,6 +2,8 @@
 
 namespace daos\mysql;
 
+use DateTime;
+
 /**
  * Class for accessing persistent saved items -- mysql
  *
@@ -190,7 +192,7 @@ class Items extends Database {
      *
      * @return void
      */
-    public function cleanup(\DateTime $date = null) {
+    public function cleanup(DateTime $date = null) {
         \F3::get('db')->exec('DELETE FROM ' . \F3::get('db_prefix') . 'items
             WHERE source NOT IN (
                 SELECT id FROM ' . \F3::get('db_prefix') . 'sources)');
@@ -606,15 +608,15 @@ class Items extends Database {
     /**
      * returns the statuses of items last update
      *
-     * @param date since to return item statuses
+     * @param DateTime $since minimal date of returned items
      *
      * @return array of unread, starred, etc. status of specified items
      */
-    public function statuses($since) {
+    public function statuses(DateTime $since) {
         $res = \F3::get('db')->exec('SELECT id, unread, starred
             FROM ' . \F3::get('db_prefix') . 'items
             WHERE ' . \F3::get('db_prefix') . 'items.updatetime > :since;',
-                [':since' => [$since, \PDO::PARAM_STR]]);
+                [':since' => [$since->format(DateTime::ATOM), \PDO::PARAM_STR]]);
         $res = $this->stmt->ensureRowTypes($res, [
             'id' => \daos\PARAM_INT,
             'unread' => \daos\PARAM_BOOL,
