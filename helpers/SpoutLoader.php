@@ -2,6 +2,8 @@
 
 namespace helpers;
 
+use spouts\spout;
+
 /**
  * Helper class for loading spouts (special spouts which
  * defines an spout for this application)
@@ -11,8 +13,8 @@ namespace helpers;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class SpoutLoader {
-    /** @var bool|array array of available spouts */
-    public $spouts = false;
+    /** @var ?array array of available spouts */
+    private $spouts = null;
 
     /**
      * returns all available spouts
@@ -30,12 +32,12 @@ class SpoutLoader {
      *
      * @param string $spout a given spout type
      *
-     * @return mixed|bool an instance of the spout, false if this spout doesn't exist
+     * @return ?spout an instance of the spout, null if this spout doesn't exist
      */
     public function get($spout) {
         $this->readSpouts();
         if (!array_key_exists($spout, $this->spouts)) {
-            return false;
+            return null;
         } else {
             return $this->spouts[$spout];
         }
@@ -51,8 +53,8 @@ class SpoutLoader {
      * @return void
      */
     protected function readSpouts() {
-        if ($this->spouts === false) {
-            $this->spouts = $this->loadClass('spouts', 'spouts\spout');
+        if ($this->spouts === null) {
+            $this->spouts = $this->loadClasses('spouts', 'spouts\spout');
 
             // sort spouts by name
             uasort($this->spouts, ['self', 'compareSpoutsByName']);
@@ -67,7 +69,7 @@ class SpoutLoader {
      *
      * @return array with classname (key) and an instance of a class (value)
      */
-    protected function loadClass($location, $parentclass) {
+    protected function loadClasses($location, $parentclass) {
         $return = [];
 
         foreach (scandir($location) as $dir) {

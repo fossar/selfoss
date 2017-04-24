@@ -71,7 +71,7 @@ class Sources extends BaseController {
         $spout = str_replace('_', '\\', $_GET['spout']);
         $this->view->spout = $spoutLoader->get($spout);
 
-        if ($this->view->spout === false) {
+        if ($this->view->spout === null) {
             $this->view->error('invalid spout type given');
         }
 
