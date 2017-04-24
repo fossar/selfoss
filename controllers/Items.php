@@ -177,11 +177,16 @@ class Items extends BaseController {
     public function sync() {
         $this->needsLoggedInOrPublicMode();
 
-        if (!array_key_exists('since', $_GET)) {
+        $params = null;
+        if (isset($_GET['since'])) {
+            $params = $_GET;
+        } elseif (isset($_POST['since'])) {
+            $params = $_POST;
+        } else {
             $this->view->jsonError(['sync' => 'missing since argument']);
         }
 
-        $since = new \DateTime($_GET['since']);
+        $since = new \DateTime($params['since']);
 
         $itemsDao = new \daos\Items();
         $last_update = new \DateTime($itemsDao->lastUpdate());
@@ -190,26 +195,87 @@ class Items extends BaseController {
             'lastUpdate' => $last_update->format(\DateTime::ATOM),
         ];
 
+        $sinceId = 0;
+        if (array_key_exists('itemsSinceId', $params)) {
+            $sinceId = intval($params['itemsSinceId']);
+            if ($sinceId >= 0) {
+                $notBefore = date_create($params['itemsNotBefore']);
+                if ($sinceId < 1 || !$notBefore) {
+                    $sinceId = $itemsDao->lowestIdOfInterest() - 1;
+                    // only send 1 day worth of items
+                    $notBefore = new \DateTime();
+                    $notBefore->sub(new \DateInterval('P1D'));
+                }
+
+                $itemsHowMany = \F3::get('items_perpage');
+                if (array_key_exists('itemsHowMany', $params)
+                    && is_int($params['itemsHowMany'])) {
+                    $itemsHowMany = min($params['itemsHowMany'],
+                                        2 * $itemsHowMany);
+                }
+
+                $tagsController = new \controllers\Tags();
+                $sync['newItems'] = [];
+                foreach ($itemsDao->sync($sinceId, $notBefore, $since, $itemsHowMany)
+                         as $newItem) {
+                    $newItem['tags'] = $tagsController->tagsAddColors(explode(',', $newItem['tags']));
+                    $this->view->item = $newItem;
+
+                    $sync['newItems'][] = [
+                        'id' => $newItem['id'],
+                        'datetime' => \helpers\ViewHelper::date_iso8601($newItem['datetime']),
+                        'unread' => $newItem['unread'],
+                        'starred' => $newItem['starred'],
+                        'html' => $this->view->render('templates/item.phtml'),
+                        'source' => $newItem['source'],
+                        'tags' => array_keys($newItem['tags'])
+                    ];
+                }
+                if ($sync['newItems']) {
+                    $sync['lastId'] = $itemsDao->lastId();
+                } else {
+                    unset($sync['newItems']);
+                }
+            }
+        }
+
         if ($last_update > $since) {
             $sync['stats'] = $itemsDao->stats();
 
-            if (array_key_exists('tags', $_GET) && $_GET['tags'] == 'true') {
+            if (array_key_exists('tags', $params) && $_GET['tags'] == 'true') {
                 $tagsDao = new \daos\Tags();
                 $tagsController = new \controllers\Tags();
                 $sync['tagshtml'] = $tagsController->renderTags($tagsDao->getWithUnread());
             }
-            if (array_key_exists('sources', $_GET) && $_GET['sources'] == 'true') {
+            if (array_key_exists('sources', $params) && $_GET['sources'] == 'true') {
                 $sourcesDao = new \daos\Sources();
                 $sourcesController = new \controllers\Sources();
                 $sync['sourceshtml'] = $sourcesController->renderSources($sourcesDao->getWithUnread());
             }
 
-            $wantItemsStatuses = array_key_exists('itemsStatuses', $_GET) && $_GET['itemsStatuses'] == 'true';
+            $wantItemsStatuses = array_key_exists('itemsStatuses', $params) && $params['itemsStatuses'] == 'true';
             if ($wantItemsStatuses) {
                 $sync['itemUpdates'] = $itemsDao->statuses($since->format(\DateTime::ATOM));
             }
         }
 
         $this->view->jsonSuccess($sync);
+    }
+
+    /**
+     * Items statuses bulk update.
+     *
+     * @return void
+     */
+    public function updateStatuses() {
+        $this->needsLoggedIn();
+
+        if (isset($_POST['updatedStatuses'])
+            && is_array($_POST['updatedStatuses'])) {
+            $itemsDao = new \daos\Items();
+            $itemsDao->bulkStatusUpdate($_POST['updatedStatuses']);
+        }
+
+        $this->sync($_POST);
     }
 }

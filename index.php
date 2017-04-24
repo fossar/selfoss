@@ -57,6 +57,7 @@ $f3->route('POST /mark', 'controllers\Items->mark'); // json
 $f3->route('POST /unmark/@item', 'controllers\Items->unmark'); // json
 $f3->route('POST /starr/@item', 'controllers\Items->starr'); // json
 $f3->route('POST /unstarr/@item', 'controllers\Items->unstarr'); // json
+$f3->route('POST /items/sync', 'controllers\Items->updateStatuses'); // json
 
 $f3->route('GET /source/params', 'controllers\Sources->params'); // html
 $f3->route('GET /sources', 'controllers\Sources->show'); // html

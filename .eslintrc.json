@@ -40,6 +40,6 @@
     },
     "globals": {
         "selfoss": {},
-        "Cookies": {}
+        "Dexie": {}
     }
 }

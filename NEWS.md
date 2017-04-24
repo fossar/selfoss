@@ -5,6 +5,7 @@
 ### New features
 - Thumbnails can be disabled ([#897](https://github.com/SSilence/selfoss/pull/897))
 - Reddit spout replaced fragile imgur heuristics with previews provided by the JSON API ([#1033](https://github.com/SSilence/selfoss/pull/1033))
+- Support for **using selfoss offline** was added. Note that this is only available in [secure contexts](https://developer.mozilla.org/en-US/docs/Web/Security/Secure_Contexts), that is, over HTTPS. ([#1014](https://github.com/SSilence/selfoss/issues/1014))
 
 ### Bug fixes
 - Reddit spout allows wider range of URLs, including absolute URLs and searches ([#1033](https://github.com/SSilence/selfoss/pull/1033))

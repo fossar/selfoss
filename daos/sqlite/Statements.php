@@ -26,6 +26,16 @@ class Statements extends \daos\mysql\Statements {
     }
 
     /**
+     * Return the statement required to update a datetime column to the current
+     * datetime.
+     *
+     * @return string full statement
+     */
+    public static function rowTouch($column) {
+        return $column . '=datetime(\'now\')';
+    }
+
+    /**
      * check if CSV column matches a value.
      *
      * @param string $column CSV column to check

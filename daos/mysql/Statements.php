@@ -117,6 +117,16 @@ class Statements {
     }
 
     /**
+     * Return the statement required to update a datetime column to the current
+     * datetime.
+     *
+     * @return string full statement
+     */
+    public static function rowTouch($column) {
+        return $column . '=NOW()';
+    }
+
+    /**
      * Convert boolean into a representation recognized by the database engine.
      *
      * @return string representation of boolean

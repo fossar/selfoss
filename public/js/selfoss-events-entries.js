@@ -143,36 +143,17 @@ selfoss.events.entries = function() {
 
     $('.mark-these-read').unbind('click').click(selfoss.markVisibleRead);
 
-    $('.stream-error').unbind('click').click(selfoss.dbOnline.reloadList);
+    $('.stream-error').unbind('click').click(selfoss.db.reloadList);
 
     // more
     $('.stream-more').unbind('click').click(function() {
-        var streamMore = $(this);
         var lastEntry = $('.entry').not('.fullscreen').filter(':last');
         selfoss.events.setHash();
         selfoss.filter.extraIds.length = 0;
         selfoss.filter.fromDatetime = lastEntry.data('entry-datetime');
         selfoss.filter.fromId = lastEntry.data('entry-id');
 
-        streamMore.addClass('loading');
-        $.ajax({
-            url: $('base').attr('href'),
-            type: 'GET',
-            dataType: 'json',
-            data: selfoss.filter,
-            success: function(data) {
-                streamMore.removeClass('loading');
-                lastEntry.after(data.entries);
-                selfoss.ui.refreshStreamButtons(true, true, data.hasMore);
-                selfoss.ui.refreshEntryDatetimes();
-                selfoss.events.entries();
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                streamMore.removeClass('loading');
-                selfoss.ui.showError($('#lang').data('error_loading') + ' ' +
-                                     textStatus + ' ' + errorThrown);
-            }
-        });
+        selfoss.db.reloadList(true);
     });
 
     // click a source
@@ -215,7 +196,7 @@ selfoss.events.entries = function() {
                     $('#nav-mobile-settings').click();
                 }
                 // refresh list
-                selfoss.dbOnline.reloadList();
+                selfoss.db.reloadList();
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 content.html(articleList);
@@ -227,7 +208,7 @@ selfoss.events.entries = function() {
 
     // open selected entry only if entry was requested (i.e. if not streaming
     // more)
-    if (selfoss.events.entryId && selfoss.filter.fromId == null) {
+    if (selfoss.events.entryId && selfoss.filter.fromId === undefined) {
         var entry = $('#entry' + selfoss.events.entryId);
         entry.children('.entry-title').click();
         // ensure scrolling to requested entry even if scrolling to article

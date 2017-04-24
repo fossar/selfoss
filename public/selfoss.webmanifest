@@ -1,0 +1,10 @@
+{
+    "name": "selfoss",
+    "background_color": "grey",
+    "icons": [{
+        "src": "images/logo_big.png",
+        "sizes": "48x48 72x72 96x96 128x128 256x256 512x512"
+    }],
+    "display": "standalone",
+    "orientation": "portrait-primary"
+}

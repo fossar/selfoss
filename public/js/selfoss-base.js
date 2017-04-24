@@ -31,16 +31,6 @@ var selfoss = {
     activeAjaxReq: null,
 
     /**
-     * last stats update
-     */
-    lastSync: Date.now(),
-
-    /**
-     * last db timestamp known client side
-     */
-    lastUpdate: null,
-
-    /**
      * the html title configured
      */
     htmlTitle: 'selfoss',
@@ -49,6 +39,31 @@ var selfoss = {
      * initialize application
      */
     init: function() {
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('selfoss-sw-offline.js')
+                    .then(function(reg) {
+                        selfoss.listenWaitingSW(reg, function(reg) {
+                            selfoss.ui.notifyNewVersion(function() {
+                                if (reg.waiting) {
+                                    reg.waiting.postMessage('skipWaiting');
+                                }
+                            });
+                        });
+                    });
+            });
+
+            navigator.serviceWorker.addEventListener('controllerchange',
+                function() {
+                    window.location.reload();
+                }
+            );
+        }
+
+        // offline db consistency requires ajax calls to fail reliably,
+        // so we enforce a default timeout on ajax calls
+        jQuery.ajaxSetup({timeout: 60000 });
+
         jQuery(document).ready(function() {
             if (selfoss.hasSession() || !$('body').hasClass('authenabled')) {
                 selfoss.ui.login();
@@ -82,17 +97,17 @@ var selfoss = {
             // init shares
             selfoss.shares.init($('#config').data('share'));
 
-            // init events
-            selfoss.events.init();
-
             // init FancyBox
             selfoss.initFancyBox();
+
+            // init offline if supported and events
+            selfoss.dbOffline.init().catch(selfoss.events.init);
 
             // init shortcut handler
             selfoss.shortcuts.init();
 
-            // setup periodic stats reloader
-            window.setInterval(selfoss.dbOnline.sync, 60 * 1000);
+            // setup periodic server status sync
+            window.setInterval(selfoss.db.sync, 60 * 1000);
 
             window.setInterval(selfoss.ui.refreshEntryDatetimes, 60 * 1000);
 
@@ -128,28 +143,32 @@ var selfoss = {
 
 
     setSession: function() {
-        Cookies.set('onlineSession', 'true', {
-            expires: 10,
-            path: window.location.pathname
-        });
+        window.localStorage.setItem('onlineSession', true);
         selfoss.loggedin = true;
     },
 
 
     clearSession: function() {
-        Cookies.remove('onlineSession', {path: window.location.pathname});
+        window.localStorage.removeItem('onlineSession');
         selfoss.loggedin = false;
     },
 
 
     hasSession: function() {
-        selfoss.loggedin = Cookies.get('onlineSession') == 'true';
+        selfoss.loggedin = window.localStorage.getItem('onlineSession') == 'true';
         return selfoss.loggedin;
     },
 
 
     login: function(e) {
         $('#loginform').addClass('loading');
+
+        selfoss.db.enableOffline = $('#enableoffline').is(':checked');
+        window.localStorage.setItem('enableOffline', selfoss.db.enableOffline);
+        if (!selfoss.db.enableOffline) {
+            selfoss.db.clear();
+        }
+
         var f = $('#loginform form');
         $.ajax({
             type: 'POST',
@@ -163,6 +182,11 @@ var selfoss = {
                     selfoss.ui.login();
                     selfoss.ui.showMainUi();
                     selfoss.initUi();
+                    if (selfoss.db.storage || !selfoss.db.enableOffline) {
+                        selfoss.db.reloadList();
+                    } else {
+                        selfoss.dbOffline.init().catch(selfoss.events.init);
+                    }
                     selfoss.events.initHash();
                 } else {
                     selfoss.events.setHash('login', false);
@@ -275,8 +299,8 @@ var selfoss = {
      * @param new starred stats
      */
     refreshStats: function(all, unread, starred) {
-        $('.nav-filter-newest span').html(all);
-        $('.nav-filter-starred span').html(starred);
+        $('.nav-filter-newest span.count').html(all);
+        $('.nav-filter-starred span.count').html(starred);
 
         selfoss.refreshUnread(unread);
     },
@@ -289,12 +313,12 @@ var selfoss = {
      * @param new unread stats
      */
     refreshUnread: function(unread) {
-        $('span.unread-count').html(unread);
+        $('.unread-count .count').html(unread);
 
         if (unread > 0) {
-            $('span.unread-count').addClass('unread');
+            $('.unread-count').addClass('unread');
         } else {
-            $('span.unread-count').removeClass('unread');
+            $('.unread-count').removeClass('unread');
         }
 
         selfoss.ui.refreshTitle(unread);
@@ -308,12 +332,12 @@ var selfoss = {
      */
     reloadTags: function() {
         $('#nav-tags').addClass('loading');
-        $('#nav-tags li:not(:first)').remove();
 
         $.ajax({
             url: $('base').attr('href') + 'tagslist',
             type: 'GET',
             success: function(data) {
+                $('#nav-tags li:not(:first)').remove();
                 $('#nav-tags').append(data);
                 selfoss.events.navigation();
             },
@@ -435,31 +459,85 @@ var selfoss = {
      */
     markVisibleRead: function() {
         var ids = [];
+        var tagUnreadDiff = [];
+        var sourceUnreadDiff = [];
+        var found = false;
         $('.entry.unread').each(function(index, item) {
             ids.push($(item).attr('id').substr(5));
-        });
 
-        if (ids.length === 0) {
-            $('.entry').remove();
-            if (selfoss.filter.type == 'unread' &&
-                parseInt($('span.unread-count').html()) > 0) {
-                selfoss.dbOnline.reloadList();
-            } else {
-                selfoss.ui.refreshStreamButtons(true);
+            $('.entry-tags-tag', item).each(function(index, tagEl) {
+                found = false;
+                var tag = $(tagEl).html();
+                tagUnreadDiff.forEach(function(tagCount) {
+                    if (tagCount.tag == tag) {
+                        found = true;
+                        tagCount.count = tagCount.count - 1;
+                    }
+                });
+                if (!found) {
+                    tagUnreadDiff.push({tag: tag, count: -1});
+                }
+            });
+
+            if (selfoss.sourcesNavLoaded) {
+                found = false;
+                var source = $(item).data('entry-source');
+                sourceUnreadDiff.forEach(function(sourceCount) {
+                    if (sourceCount.source == source) {
+                        found = true;
+                        sourceCount.count = sourceCount.count - 1;
+                    }
+                });
+                if (!found) {
+                    sourceUnreadDiff.push({source: source, count: -1});
+                }
             }
-            return;
-        }
-
-        // show loading
-        var content = $('#content');
-        var articleList = content.html();
-        $('#content').addClass('loading').html('');
-        var hadMore = $('.stream-more').is(':visible');
-        selfoss.ui.refreshStreamButtons();
+        });
 
         // close opened entry and list
         selfoss.events.setHash();
         selfoss.filterReset();
+
+        if (ids.length === 0 && selfoss.filter.type == 'unread') {
+            $('.entry').remove();
+            if (selfoss.filter.type == 'unread' &&
+                parseInt($('.unread-count .count').html()) > 0) {
+                selfoss.db.reloadList();
+            } else {
+                selfoss.ui.refreshStreamButtons(true);
+            }
+        }
+
+        if (ids.length === 0) {
+            return;
+        }
+
+        var content = $('#content');
+        var articleList = content.html();
+        var hadMore = $('.stream-more').is(':visible');
+
+        selfoss.ui.beforeReloadList(true);
+
+        var unreadstats = parseInt($('.nav-filter-unread span.count').html()) -
+            ids.length;
+        var displayed = false;
+        var displayNextUnread = function() {
+            if (!displayed) {
+                displayed = true;
+                selfoss.refreshUnread(unreadstats);
+                selfoss.ui.refreshTagSourceUnread(tagUnreadDiff,
+                    sourceUnreadDiff);
+
+                selfoss.ui.hideMobileNav();
+
+                selfoss.db.reloadList(false, false);
+            }
+        };
+
+        if (selfoss.db.storage) {
+            selfoss.refreshUnread(unreadstats);
+            selfoss.dbOffline.entriesMark(ids, false).then(displayNextUnread);
+        }
 
         $.ajax({
             url: $('base').attr('href') + 'mark',
@@ -469,30 +547,83 @@ var selfoss = {
                 ids: ids
             },
             success: function() {
-                $('.entry').removeClass('unread');
-
-                // update unread stats
-                var unreadstats = parseInt($('.nav-filter-unread span').html()) - ids.length;
-                selfoss.refreshUnread(unreadstats);
-
-                // hide nav on smartphone if visible
-                if (selfoss.isSmartphone() && $('#nav').is(':visible') == true) {
-                    $('#nav-mobile-settings').click();
-                }
-
-                // refresh list
-                selfoss.dbOnline.reloadList();
+                selfoss.db.setOnline();
+                displayNextUnread();
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                content.html(articleList);
-                $('#content').removeClass('loading');
-                selfoss.ui.refreshStreamButtons(true, true, hadMore);
-                selfoss.events.entries();
-                selfoss.ui.showError($('#lang').data('error_mark_items') + ' ' +
-                                     textStatus + ' ' + errorThrown);
+                selfoss.handleAjaxError(jqXHR.status).then(function() {
+                    var statuses = [];
+                    ids.forEach(function(id) {
+                        statuses.push({
+                            entryId: id,
+                            name: 'unread',
+                            value: false
+                        });
+                    });
+                    selfoss.dbOffline.enqueueStatuses(statuses);
+                }, function() {
+                    content.html(articleList);
+                    selfoss.ui.refreshStreamButtons(true, hadMore);
+                    selfoss.ui.listReady();
+                    selfoss.ui.showError($('#lang').data('error_mark_items') +
+                                         ' ' + textStatus + ' ' + errorThrown);
+                });
             }
         });
+    },
+
+
+    handleAjaxError: function(httpCode, tryOffline) {
+        tryOffline = (typeof tryOffline !== 'undefined') ? tryOffline : true;
+
+        if (tryOffline && httpCode != 403) {
+            return selfoss.db.setOffline();
+        } else {
+            var handled  = $.Deferred();
+            handled.reject();
+            if (httpCode == 403) {
+                selfoss.ui.logout();
+                selfoss.ui.showLogin($('#lang').data('error_session_expired'));
+            }
+            return handled;
+        }
+    },
+
+
+    listenWaitingSW: function(reg, callback) {
+        function awaitStateChange() {
+            reg.installing.addEventListener('statechange', function() {
+                if (this.state === 'installed') {
+                    callback(reg);
+                }
+            });
+        }
+
+        if (!reg) {
+            return;
+        } else if (reg.waiting) {
+            return callback(reg);
+        } else if (reg.installing) {
+            awaitStateChange();
+            reg.addEventListener('updatefound', awaitStateChange);
+        }
+    },
+
+
+    /*
+     * Handy function that can be used for debugging purposes.
+     */
+    nukeLocalData: function() {
+        selfoss.db.clear(); // will not work after a failure, since storage is nulled
+        window.localStorage.clear();
+        navigator.serviceWorker.getRegistrations().then(function(registrations) {
+            registrations.forEach(function(reg) {
+                reg.unregister();
+            });
+        });
+        selfoss.logout();
     }
+
 
 };
 

@@ -31,6 +31,7 @@ class View {
         $this->genMinified(self::STATIC_RESOURCE_JS);
         $this->genMinified(self::STATIC_RESOURCE_CSS);
         $this->base = $this->getBaseUrl();
+        $this->genOfflineSW();
     }
 
     /**
@@ -144,6 +145,7 @@ class View {
     public static function maxmtime(array $filePaths) {
         $maxmtime = 0;
         foreach ($filePaths as $filePath) {
+            $filePath = explode('?', $filePath)[0]; // strip query string
             $fullPath = \F3::get('BASEDIR') . '/' . $filePath;
 
             if (!file_exists($fullPath)) {
@@ -234,5 +236,82 @@ class View {
         }
 
         return \CssMin::minify($content);
+    }
+
+    /**
+     * List files according to globbing pattern from selfoss base.
+     *
+     * @param string relative globbing pattern
+     *
+     * @return array list of files paths relative to base
+     */
+    private static function ls($relativePattern) {
+        $files = [];
+        $absolutePattern = \F3::get('BASEDIR') . '/' . $relativePattern;
+        $basePathLength = strlen(\F3::get('BASEDIR')) + 1;
+        foreach (glob($absolutePattern) as $fn) {
+            if ($fn[0] != '.') {
+                $files[] = substr($fn, $basePathLength);
+            }
+        }
+
+        return $files;
+    }
+
+    public static function offlineFiles() {
+        $offlineFiles = array_merge([
+                'public/' . self::getGlobalJsFileName(),
+                'public/' . self::getGlobalCssFileName()
+            ],
+            self::ls('public/images/*')
+        );
+
+        return $offlineFiles;
+    }
+
+    public static function offlineMtime(array $offlineFiles) {
+        $indirectResources = [
+            'defaults.ini',
+            'config.ini',
+            'templates/home.phtml',
+            'public/js/selfoss-sw-offline.js'
+        ];
+
+        return self::maxmtime(array_merge($offlineFiles, $indirectResources));
+    }
+
+    /**
+     * Build the offline service worker source from static resources.
+     *
+     * @return void
+     */
+    public function genOfflineSW() {
+        $offlineFiles = self::offlineFiles();
+        $staticmtime = self::offlineMtime($offlineFiles);
+
+        $target = \F3::get('BASEDIR') . '/public/selfoss-sw-offline.js';
+
+        if (!file_exists($target) || filemtime($target) < $staticmtime) {
+            $subdir = parse_url($this->base)['path'];
+
+            $data = [
+                'subdir' => $subdir,
+                'version' => $staticmtime,
+                'files' => [$subdir]
+            ];
+
+            foreach ($offlineFiles as $fn) {
+                if (substr($fn, 0, 7) == 'public/') {
+                    $fn = substr($fn, 7);
+                }
+                $data['files'][] = $subdir . $fn;
+            }
+
+            $offlineWorker = 'var offlineManifest = ';
+            $offlineWorker .= json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+            $offlineWorker .= ";\n\n\n";
+            $offlineWorker .= file_get_contents(\F3::get('BASEDIR') . '/public/js/selfoss-sw-offline.js');
+            file_put_contents($target, $offlineWorker);
+        }
     }
 }

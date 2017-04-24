@@ -144,20 +144,62 @@ body * {
             font-size:0.55em;
             color:#777;
         }
+
+        .unread-count {
+            display: inline;
+        }
+
+        #nav-mobile-count.unread-count {
+            display: none;
+        }
         
-        span.unread-count.unread {
+        .unread-count.unread {
             background-color: #E74C3C;
             border-radius: 30px;
             color: white !important;
             font-size:0.6em !important;
-            font-weight: normal;
-            min-width: 8px;
             padding: 0 5px 0 5px;
             margin-left: 5px;
             vertical-align:baseline !important;
             display: inline !important;
         }
-    
+
+        .unread-count.unread span {
+            color: white !important;
+            font-weight: normal;
+            font-size:1em !important;
+        }
+
+        .unread-count.online span.count::before {
+            content: "\2601\a0"; /* cloud and non breaking space */
+        }
+
+        .unread-count.unread.offline {
+            background-color: #187fff;
+        }
+
+        span.offline-count {
+            display: none;
+            color: #187fff !important;
+        }
+
+        .unread-count span.offline-count {
+            color: white !important;
+        }
+
+        span.offline-count::after {
+            content: " / ";
+            color: #187fff !important;
+        }
+
+        .unread-count span.offline-count::after {
+            color: white !important;
+        }
+
+        span.offline-count.diff {
+            display: inline !important;
+        }
+
     #nav h2 {
         color:#494949;
         text-transform:uppercase;
@@ -284,6 +326,12 @@ body * {
         cursor:pointer;
     }
     
+    #nav-refresh.offline,
+    #nav-settings.offline,
+    #nav-logout.offline {
+        border: solid #187fff 1px;
+    }
+
     #nav-refresh {
         background:url(images/nav-refresh.png) no-repeat center center #272325;
     }
@@ -352,6 +400,10 @@ body * {
     -webkit-transition: left 0.5s ease-in-out ;
     -o-transition: left 0.5s ease-in-out ;
     -moz-transition: left 0.5s ease-in-out ;
+}
+
+#search.offline {
+    display: none;
 }
     
     #search.active {
@@ -1191,12 +1243,12 @@ body.authenabled.loggedin #nav-logout {
             background-size:96px 40px;
         }
 
-        #nav-mobile-logo span {
+        #nav-mobile-count {
             color: white;
+            font-weight: normal;
             position: relative;
-            left: 90px;
+            left: 95px;
             top: 5px;
-            display: none;
         }
 
         #nav-mobile-settings {
@@ -1231,6 +1283,10 @@ body.authenabled.loggedin #nav-logout {
             margin-bottom:80px;
         }
         
+        #nav-search.offline {
+            display:none;
+        }
+
             #nav-search-term {
                 background:#ccc;
                 width:50%;

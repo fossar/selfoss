@@ -21,7 +21,9 @@ selfoss.events.navigation = function() {
                     color: color.toHexString()
                 },
                 success: function() {
+                    selfoss.ui.beforeReloadList();
                     selfoss.dbOnline.reloadList();
+                    selfoss.ui.afterReloadList();
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     selfoss.ui.showError($('#lang').data('error_saving_color') + ' ' +
@@ -67,6 +69,10 @@ selfoss.events.navigation = function() {
 
     // tag
     $('#nav-tags > li').unbind('click').click(function() {
+        if (!selfoss.db.online) {
+            return;
+        }
+
         $('#nav-tags > li').removeClass('active');
         $('#nav-sources > li').removeClass('active');
         $(this).addClass('active');
@@ -92,6 +98,10 @@ selfoss.events.navigation = function() {
 
     // source
     $('#nav-sources > li').unbind('click').click(function() {
+        if (!selfoss.db.online) {
+            return;
+        }
+
         $('#nav-tags > li').removeClass('active');
         $('#nav-sources > li').removeClass('active');
         $(this).addClass('active');
@@ -104,6 +114,10 @@ selfoss.events.navigation = function() {
 
     // hide/show sources
     $('#nav-sources-title').unbind('click').click(function() {
+        if (!selfoss.db.online) {
+            return;
+        }
+
         var toggle = function() {
             $('#nav-sources').slideToggle('slow');
             $('#nav-sources-title').toggleClass('nav-sources-collapsed nav-sources-expanded');
@@ -158,6 +172,10 @@ selfoss.events.navigation = function() {
 
     // updates sources
     $('#nav-refresh').unbind('click').click(function() {
+        if (!selfoss.db.online) {
+            return;
+        }
+
         $('#nav-refresh').addClass('loading');
 
         $.ajax({
@@ -172,7 +190,7 @@ selfoss.events.navigation = function() {
                 }
 
                 // probe stats and prompt reload to the user
-                selfoss.dbOnline.sync(true).done(function() {
+                selfoss.dbOnline.sync().done(function() {
                     if ($('.unread-count').hasClass('unread')) {
                         selfoss.ui.showMessage($('#lang').data('sources_refreshed'), $('#lang').data('reload_list'),
                             function() {
@@ -201,6 +219,10 @@ selfoss.events.navigation = function() {
 
         // show sources
         $('#nav-settings').unbind('click').click(function() {
+            if (!selfoss.db.online) {
+                return;
+            }
+
             selfoss.events.setHash('sources', false);
 
             if (selfoss.isSmartphone()) {
@@ -210,6 +232,13 @@ selfoss.events.navigation = function() {
 
 
         // logout
-        $('#nav-logout').unbind('click').click(selfoss.logout);
+        $('#nav-logout').unbind('click').click(function() {
+            if (!selfoss.db.online) {
+                return;
+            }
+
+            selfoss.db.clear();
+            selfoss.logout();
+        });
     }
 };

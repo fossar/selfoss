@@ -76,11 +76,11 @@ selfoss.events.entriesToolbar = function(parent) {
             var id = parent.attr('id').substr(5);
             var starr = $(this).hasClass('active') == false;
 
-            selfoss.ui.entryStarr(id, starr);
+            selfoss.ui.entryStar(id, starr);
 
             // update statistics in main menue
             var updateStats = function(starr) {
-                var starred = parseInt($('.nav-filter-starred span').html());
+                var starred = parseInt($('.nav-filter-starred span.count').html());
                 if (starr) {
                     starred++;
                 } else {
@@ -90,16 +90,27 @@ selfoss.events.entriesToolbar = function(parent) {
             };
             updateStats(starr);
 
+            if (selfoss.db.storage) {
+                selfoss.dbOffline.entryStar(id, starr);
+            }
+
             $.ajax({
                 url: $('base').attr('href') + (starr ? 'starr/' : 'unstarr/') + id,
                 data: { ajax: true },
                 type: 'POST',
+                success: function() {
+                    selfoss.db.setOnline();
+                },
                 error: function(jqXHR, textStatus, errorThrown) {
-                    // rollback ui changes
-                    selfoss.ui.entryStarr(id, !starr);
-                    updateStats(!starr);
-                    selfoss.ui.showError($('#lang').data('error_star_item') + ' ' +
-                                         textStatus + ' ' + errorThrown);
+                    selfoss.handleAjaxError(jqXHR.status).then(function() {
+                        selfoss.dbOffline.enqueueStatus(id, 'starred', starr);
+                    }, function() {
+                        // rollback ui changes
+                        selfoss.ui.entryStar(id, !starr);
+                        updateStats(!starr);
+                        selfoss.ui.showError($('#lang').data('error_star_item') + ' ' +
+                                             textStatus + ' ' + errorThrown);
+                    });
                 }
             });
 
@@ -116,72 +127,45 @@ selfoss.events.entriesToolbar = function(parent) {
 
             // update statistics in main menue and the currently active tag
             var updateStats = function(unread) {
-                // update all unread counter
-                var unreadstats = parseInt($('.nav-filter-unread span').html());
-                if (unread) {
-                    unreadstats--;
-                } else {
-                    unreadstats++;
-                }
-                selfoss.refreshUnread(unreadstats);
+                // update all unread counters
+                var unreadstats = parseInt($('.nav-filter-unread span.count').html());
+                var diff = unread ? -1 : 1;
 
-                if (selfoss.sourceNavLoaded) {
-                    // update unread count on sources
-                    var sourceId = entry.attr('data-entry-source');
-                    var sourceNav = $('#source' + sourceId + ' .unread');
-                    var sourceCount = parseInt(sourceNav.html());
-                    if (typeof sourceCount != 'number' || isNaN(sourceCount) == true) {
-                        sourceCount = 0;
-                    }
-                    sourceCount = unread ? sourceCount - 1 : sourceCount + 1;
-                    if (sourceCount <= 0) {
-                        sourceCount = '';
-                        $('#source' + sourceId + '').removeClass('unread');
-                    } else {
-                        $('#source' + sourceId + '').addClass('unread');
-                    }
-                    sourceNav.html(sourceCount);
-                }
+                selfoss.refreshUnread(unreadstats + diff);
 
-                // update unread on tags
+                // update unread on tags and sources
+                var entryTags = [];
                 $('#entry' + id + ' .entry-tags-tag').each(function() {
-                    var tag = $(this).html();
-
-                    var tagsCountEl = $('#nav-tags > li > span.tag').filter(function() {
-                        return $(this).html() == tag;
-                    }).next();
-
-                    var unreadstats = 0;
-                    if (tagsCountEl.html() != '') {
-                        unreadstats = parseInt(tagsCountEl.html());
-                    }
-
-                    if (unread) {
-                        unreadstats--;
-                    } else {
-                        unreadstats++;
-                    }
-
-                    if (unreadstats > 0) {
-                        tagsCountEl.html(unreadstats);
-                    } else {
-                        tagsCountEl.html('');
-                    }
-
+                    entryTags.push({tag: $(this).html(), count: diff});
                 });
+                selfoss.ui.refreshTagSourceUnread(
+                    entryTags,
+                    [{source: entry.attr('data-entry-source'), count: diff}]
+                );
             };
             updateStats(unread);
+
+            if (selfoss.db.storage) {
+                selfoss.dbOffline.entryMark(id, !unread);
+            }
 
             $.ajax({
                 url: $('base').attr('href') + (unread ? 'mark/' : 'unmark/') + id,
                 data: { ajax: true },
                 type: 'POST',
+                success: function() {
+                    selfoss.db.setOnline();
+                },
                 error: function(jqXHR, textStatus, errorThrown) {
-                    // rollback ui changes
-                    selfoss.ui.entryMark(id, unread);
-                    updateStats(!unread);
-                    selfoss.ui.showError($('#lang').data('error_mark_item') + ' ' +
-                                         textStatus + ' ' + errorThrown);
+                    selfoss.handleAjaxError(jqXHR.status).then(function() {
+                        selfoss.dbOffline.enqueueStatus(id, 'unread', !unread);
+                    }, function() {
+                        // rollback ui changes
+                        selfoss.ui.entryMark(id, unread);
+                        updateStats(!unread);
+                        selfoss.ui.showError($('#lang').data('error_mark_item') + ' ' +
+                                             textStatus + ' ' + errorThrown);
+                    });
                 }
             });
 

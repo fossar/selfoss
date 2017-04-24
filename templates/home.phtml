@@ -46,6 +46,8 @@
     <!-- all css definitions -->
     <link rel="stylesheet" href="<?= \helpers\View::getGlobalCssFileName(); ?>" />
 
+    <!-- web application manifest -->
+    <link rel="manifest" href="selfoss.webmanifest">
 </head>
 <body class="
     <?= $this->publicMode === true ? 'publicmode' : ''; ?>
@@ -66,6 +68,8 @@
         data-source_edit="<?= \F3::get('lang_source_edit'); ?>"
         data-reload_list="<?= \F3::get('lang_reload_list'); ?>"
         data-sources_refreshed="<?= \F3::get('lang_sources_refreshed'); ?>"
+        data-app_update="<?= \F3::get('lang_app_update'); ?>"
+        data-app_reload="<?= \F3::get('lang_app_reload'); ?>"
         data-error_session_expired="<?= \F3::get('lang_error_session_expired'); ?>"
         data-error_add_source="<?= \F3::get('lang_error_add_source'); ?>"
         data-error_delete_source="<?= \F3::get('lang_error_delete_source'); ?>"
@@ -81,6 +85,7 @@
         data-error_saving_color="<?= \F3::get('lang_error_saving_color'); ?>"
         data-error_refreshing_source="<?= \F3::get('lang_error_refreshing_source'); ?>"
         data-error_sync="<?= \F3::get('lang_error_sync'); ?>"
+        data-error_offline_storage="<?= \F3::get('lang_error_offline_storage'); ?>"
         data-error_invalid_subsection="<?= \F3::get('lang_error_invalid_subsection'); ?>"
         data-seconds="<?= \F3::get('lang_seconds'); ?>"
         data-minutes="<?= \F3::get('lang_minutes'); ?>"
@@ -99,6 +104,7 @@
         data-auto_stream_more="<?= \F3::get('auto_stream_more'); ?>"
         data-load_images_on_mobile="<?= \F3::get('load_images_on_mobile'); ?>"
         data-items_perpage="<?= \F3::get('items_perpage'); ?>"
+        data-unread_order="<?= \F3::get('unread_order'); ?>"
         data-auto_hide_read_on_mobile="<?= \F3::get('auto_hide_read_on_mobile'); ?>"
         data-scroll_to_article_header="<?= \F3::get('scroll_to_article_header'); ?>"
         data-html_title="<?= trim(\F3::get('html_title')); ?>"></span>
@@ -110,6 +116,7 @@
             <li><h1>selfoss login</h1></li>
             <li><label for="username"><?= trim(\F3::get('lang_login_username')); ?></label> <input type="text" name="username" id="username"></li>
             <li><label for="password"><?= trim(\F3::get('lang_login_password')); ?></label> <input type="password" name="password" id="password"></li>
+            <li><label for="enableoffline"><?= trim(\F3::get('lang_login_offline')); ?></label> <input type="checkbox" name="enableoffline" id="enableoffline"></li>
             <li class="error"></li>
             <li class="button"><label>&nbsp;</label><input type="submit" value="<?= \F3::get('lang_login'); ?>" /></li>
         </ul>
@@ -119,7 +126,12 @@
     <div id="mainui">
         <!-- menu open for smartphone -->
         <div id="nav-mobile">
-            <div id="nav-mobile-logo"><span class="unread-count"></span></div>
+            <div id="nav-mobile-logo">
+                <div id="nav-mobile-count" class="unread-count offlineable">
+                    <span class="offline-count offlineable"></span>
+                    <span class="count"></span>
+                </div>
+            </div>
             <div id="nav-mobile-settings"></div>
         </div>
 
@@ -131,9 +143,14 @@
             <div id="nav-filter-wrapper">
             <h2 id="nav-filter-title" class="nav-filter-expanded" tabindex="0" aria-haspopup="true" aria-expanded="true"><?= \F3::get('lang_filter') ?></h2>
             <ul id="nav-filter">
-                <li id="nav-filter-newest" class="nav-filter-newest" role="link" tabindex="0"><?= \F3::get('lang_newest')?> <span></span></li>
-                <li id="nav-filter-unread" class="nav-filter-unread" role="link" tabindex="0"><?= \F3::get('lang_unread')?> <span class="unread-count"></span></li>
-                <li id="nav-filter-starred" class="nav-filter-starred" role="link" tabindex="0"><?= \F3::get('lang_starred') ?> <span></span></li>
+                <li id="nav-filter-newest" class="nav-filter-newest" role="link" tabindex="0"><?= \F3::get('lang_newest')?> <span class="offline-count offlineable" title="<?= \F3::get('lang_offline_count')?>"></span><span class="count" title="<?= \F3::get('lang_online_count')?>"></span></li>
+                <li id="nav-filter-unread" class="nav-filter-unread" role="link" tabindex="0"><?= \F3::get('lang_unread')?>
+                    <div class="unread-count offlineable">
+                        <span class="offline-count offlineable" title="<?= \F3::get('lang_offline_count')?>"></span>
+                        <span class="count" title="<?= \F3::get('lang_online_count')?>"></span>
+                    </div>
+                </li>
+                <li id="nav-filter-starred" class="nav-filter-starred" role="link" tabindex="0"><?= \F3::get('lang_starred') ?> <span class="offline-count offlineable" title="<?= \F3::get('lang_offline_count')?>"></span><span class="count" title="<?= \F3::get('lang_online_count')?>"></span></li>
             </ul>
             </div>
 
@@ -152,7 +169,7 @@
             <hr>
 
             <!-- navigation search input just for smartphone version -->
-            <div id="nav-search" role="search">
+            <div id="nav-search" class="offlineable" role="search">
                 <input type="search" id="nav-search-term"> <input type="button" id="nav-search-button" value="<?= \F3::get('lang_searchbutton')?>">
                 <hr>
             </div>
@@ -169,7 +186,7 @@
         </div>
 
         <!-- search -->
-        <div id="search" role="search">
+        <div id="search" role="search" class="offlineable">
             <input type="search" id="search-term">
             <button id="search-remove" title="<?= \F3::get('lang_searchremove')?>"><img src="images/remove.png" alt=""></button>
             <button id="search-button" title="<?= \F3::get('lang_searchbutton')?>"><img src="images/search.png" alt=""></button>
