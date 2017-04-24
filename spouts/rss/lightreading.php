@@ -73,7 +73,7 @@ class lightreading extends feed {
      * @return string content
      */
     public function getContent() {
-        if ($this->items !== false && $this->valid()) {
+        if ($this->items !== null && $this->valid()) {
             $originalContent = @file_get_contents($this->getLink());
             foreach ($this->textDivs as $div) {
                 $content = $this->getTag($div[1], $div[2], $originalContent, $div[0], $div[3]);

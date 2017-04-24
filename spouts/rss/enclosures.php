@@ -22,7 +22,7 @@ class enclosures extends feed {
      * @return string content
      */
     public function getContent() {
-        if ($this->items !== false && $this->valid()) {
+        if ($this->items !== null && $this->valid()) {
             $content = parent::getContent();
             foreach (@current($this->items)->get_enclosures() as $enclosure) {
                 if ($enclosure->get_medium() === 'image') {

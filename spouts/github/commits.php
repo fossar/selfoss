@@ -44,8 +44,8 @@ class commits extends \spouts\spout {
         ]
     ];
 
-    /** @var array|bool current fetched items */
-    protected $items = false;
+    /** @var ?array current fetched items */
+    protected $items = null;
 
     /** @var string global html url for the source */
     protected $htmlUrl = '';
@@ -63,7 +63,7 @@ class commits extends \spouts\spout {
      * @return void
      */
     public function rewind() {
-        if ($this->items !== false) {
+        if ($this->items !== null) {
             reset($this->items);
         }
     }
@@ -74,7 +74,7 @@ class commits extends \spouts\spout {
      * @return \SimplePie_Item current item
      */
     public function current() {
-        if ($this->items !== false) {
+        if ($this->items !== null) {
             return $this;
         }
 
@@ -87,7 +87,7 @@ class commits extends \spouts\spout {
      * @return mixed key of current item
      */
     public function key() {
-        if ($this->items !== false) {
+        if ($this->items !== null) {
             return key($this->items);
         }
 
@@ -100,7 +100,7 @@ class commits extends \spouts\spout {
      * @return \SimplePie_Item next item
      */
     public function next() {
-        if ($this->items !== false) {
+        if ($this->items !== null) {
             next($this->items);
         }
 
@@ -113,7 +113,7 @@ class commits extends \spouts\spout {
      * @return bool false if end reached
      */
     public function valid() {
-        if ($this->items !== false) {
+        if ($this->items !== null) {
             return current($this->items) !== false;
         }
 
@@ -160,7 +160,7 @@ class commits extends \spouts\spout {
      * @return string id as hash
      */
     public function getId() {
-        if ($this->items !== false && $this->valid()) {
+        if ($this->items !== null && $this->valid()) {
             return @current($this->items)['sha'];
         }
 
@@ -173,7 +173,7 @@ class commits extends \spouts\spout {
      * @return string title
      */
     public function getTitle() {
-        if ($this->items !== false && $this->valid()) {
+        if ($this->items !== null && $this->valid()) {
             $message = @current($this->items)['commit']['message'];
 
             return htmlspecialchars(self::cutTitle($message));
@@ -188,7 +188,7 @@ class commits extends \spouts\spout {
      * @return string content
      */
     public function getContent() {
-        if ($this->items !== false && $this->valid()) {
+        if ($this->items !== null && $this->valid()) {
             $message = @current($this->items)['commit']['message'];
 
             return nl2br(htmlspecialchars($message), false);
@@ -212,7 +212,7 @@ class commits extends \spouts\spout {
      * @return string link
      */
     public function getLink() {
-        if ($this->items !== false && $this->valid()) {
+        if ($this->items !== null && $this->valid()) {
             return @current($this->items)['html_url'];
         }
 
@@ -225,7 +225,7 @@ class commits extends \spouts\spout {
      * @return string date
      */
     public function getDate() {
-        if ($this->items !== false && $this->valid()) {
+        if ($this->items !== null && $this->valid()) {
             $date = date('Y-m-d H:i:s', strtotime(@current($this->items)['commit']['author']['date']));
         }
         if (strlen($date) === 0) {
@@ -240,7 +240,7 @@ class commits extends \spouts\spout {
      */
     public function destroy() {
         unset($this->items);
-        $this->items = false;
+        $this->items = null;
     }
 
     /**

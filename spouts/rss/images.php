@@ -22,7 +22,7 @@ class images extends feed {
      * @return mixed thumbnail data
      */
     public function getThumbnail() {
-        if ($this->items === false || $this->valid() === false) {
+        if ($this->items === null || $this->valid() === false) {
             return '';
         }
 

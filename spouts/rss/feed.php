@@ -27,8 +27,8 @@ class feed extends \spouts\spout {
         ]
     ];
 
-    /** @var array|bool current fetched items */
-    protected $items = false;
+    /** @var ?array current fetched items */
+    protected $items = null;
 
     /** @var string URL of the source */
     protected $htmlUrl = '';
@@ -46,7 +46,7 @@ class feed extends \spouts\spout {
      * @return void
      */
     public function rewind() {
-        if ($this->items !== false) {
+        if ($this->items !== null) {
             reset($this->items);
         }
     }
@@ -57,7 +57,7 @@ class feed extends \spouts\spout {
      * @return \SimplePie_Item current item
      */
     public function current() {
-        if ($this->items !== false) {
+        if ($this->items !== null) {
             return $this;
         }
 
@@ -70,7 +70,7 @@ class feed extends \spouts\spout {
      * @return mixed key of current item
      */
     public function key() {
-        if ($this->items !== false) {
+        if ($this->items !== null) {
             return key($this->items);
         }
 
@@ -83,7 +83,7 @@ class feed extends \spouts\spout {
      * @return \SimplePie_Item next item
      */
     public function next() {
-        if ($this->items !== false) {
+        if ($this->items !== null) {
             next($this->items);
         }
 
@@ -96,7 +96,7 @@ class feed extends \spouts\spout {
      * @return bool false if end reached
      */
     public function valid() {
-        if ($this->items !== false) {
+        if ($this->items !== null) {
             return current($this->items) !== false;
         }
 
@@ -180,7 +180,7 @@ class feed extends \spouts\spout {
      * @return string id as hash
      */
     public function getId() {
-        if ($this->items !== false && $this->valid()) {
+        if ($this->items !== null && $this->valid()) {
             $id = @current($this->items)->get_id();
             if (strlen($id) > 255) {
                 $id = md5($id);
@@ -198,7 +198,7 @@ class feed extends \spouts\spout {
      * @return string title
      */
     public function getTitle() {
-        if ($this->items !== false && $this->valid()) {
+        if ($this->items !== null && $this->valid()) {
             return htmlspecialchars_decode(@current($this->items)->get_title());
         }
 
@@ -211,7 +211,7 @@ class feed extends \spouts\spout {
      * @return string content
      */
     public function getContent() {
-        if ($this->items !== false && $this->valid()) {
+        if ($this->items !== null && $this->valid()) {
             return @current($this->items)->get_content();
         }
 
@@ -251,7 +251,7 @@ class feed extends \spouts\spout {
      * @return string link
      */
     public function getLink() {
-        if ($this->items !== false && $this->valid()) {
+        if ($this->items !== null && $this->valid()) {
             $link = @current($this->items)->get_link();
 
             return $link;
@@ -266,7 +266,7 @@ class feed extends \spouts\spout {
      * @return string date
      */
     public function getDate() {
-        if ($this->items !== false && $this->valid()) {
+        if ($this->items !== null && $this->valid()) {
             $date = @current($this->items)->get_date('Y-m-d H:i:s');
         }
         if (strlen($date) === 0) {
@@ -282,7 +282,7 @@ class feed extends \spouts\spout {
      * @return string author
      */
     public function getAuthor() {
-        if ($this->items !== false && $this->valid()) {
+        if ($this->items !== null && $this->valid()) {
             $author = @current($this->items)->get_author();
             if (isset($author)) {
                 $name = $author->get_name();
@@ -303,6 +303,6 @@ class feed extends \spouts\spout {
     public function destroy() {
         $this->feed->__destruct();
         unset($this->items);
-        $this->items = false;
+        $this->items = null;
     }
 }

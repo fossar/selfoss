@@ -105,7 +105,7 @@ class golem extends feed {
      * @return string content
      */
     public function getContent() {
-        if ($this->items !== false && $this->valid()) {
+        if ($this->items !== null && $this->valid()) {
             $originalContent = $this->cleanContent(file_get_contents($this->getLink()));
             preg_match_all('|<!--content-->(.*?)<!--/content-->|ims', $originalContent, $matches, PREG_PATTERN_ORDER);
             if (is_array($matches) && is_array($matches[0]) && isset($matches[0][0])) {
