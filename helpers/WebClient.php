@@ -3,9 +3,9 @@
 namespace helpers;
 
 use Exception;
+use Fossar\GuzzleTranscoder\GuzzleTranscoder;
 use GuzzleHttp;
 use GuzzleHttp\Subscriber\Log\LogSubscriber;
-use Fossar\GuzzleTranscoder\GuzzleTranscoder;
 
 /**
  * Helper class for web request

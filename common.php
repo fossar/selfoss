@@ -1,8 +1,8 @@
 <?php
 
-use Monolog\Logger;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 
 $autoloader = @include __DIR__ . '/vendor/autoload.php'; // we will show custom error
 if ($autoloader === false) {
