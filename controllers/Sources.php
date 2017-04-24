@@ -85,9 +85,11 @@ class Sources extends BaseController {
      * return all Sources suitable for navigation panel
      * html
      *
+     * @param array $sources
+     *
      * @return string htmltext
      */
-    public function renderSources($sources) {
+    public function renderSources(array $sources) {
         $html = '';
         $itemsDao = new \daos\Items();
         foreach ($sources as $source) {

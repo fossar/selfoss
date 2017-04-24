@@ -105,11 +105,14 @@ class Opml extends BaseController {
     /**
      * Process a group of outlines
      *
+     * - Recursive
+     * - We use non-rss outline’s text as tags
+     * - Reads outline elements from both the default and selfoss namespace
+     *
      * @param SimpleXMLElement $xml A SimpleXML object with <outline> children
      * @param array $tags An array of tags for the current <outline>
-     * @note Recursive
-     * @note We use non-rss outline's text as tags
-     * @note Reads outline elements from both the default and selfoss namespace
+     *
+     * @return string[] titles of feeds that could not be added to subscriptions
      */
     private function processGroup(SimpleXMLElement $xml, array $tags = []) {
         $errors = [];
@@ -154,7 +157,7 @@ class Opml extends BaseController {
      * @param SimpleXMLElement $xml xml feed entry for item
      * @param array $tags of the entry
      *
-     * @return bool true on success or item title on error
+     * @return bool|string true on success or item title on error
      */
     private function addSubscription(SimpleXMLElement $xml, array $tags) {
         // OPML Required attributes: text, xmlUrl, type
@@ -227,8 +230,11 @@ class Opml extends BaseController {
     /**
      * Generate an OPML outline element from a source
      *
-     * @param array $source source
      * @note Uses the selfoss namespace to store information about spouts
+     *
+     * @param array $source source
+     *
+     * @return void
      */
     private function writeSource(array $source) {
         // retrieve the feed url of the source
@@ -262,6 +268,8 @@ class Opml extends BaseController {
      * Export user's subscriptions to OPML file
      *
      * @note Uses the selfoss namespace to store selfoss-specific information
+     *
+     * @return void
      */
     public function export() {
         $this->needsLoggedIn();

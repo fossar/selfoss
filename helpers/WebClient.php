@@ -53,6 +53,8 @@ class WebClient {
     /**
      * get the user agent to use for web based spouts
      *
+     * @param ?string $agentInfo
+     *
      * @return string the user agent string for this spout
      */
     public static function getUserAgent($agentInfo = null) {
@@ -70,7 +72,8 @@ class WebClient {
     /**
      * Retrieve content from url
      *
-     * @param string $subagent Extra user agent info to use in the request
+     * @param string $url
+     * @param ?string $agentInfo Extra user agent info to use in the request
      *
      * @throws GuzzleHttp\Exception\RequestException When an error is encountered
      * @throws Exception Unless 200 0K response is received

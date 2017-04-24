@@ -27,8 +27,8 @@ class Statements extends \daos\mysql\Statements {
     /**
      * null first for order by clause
      *
-     * @param column to concat
-     * @param order
+     * @param string $column column to concat
+     * @param string $order
      *
      * @return string full statement
      */
@@ -45,7 +45,7 @@ class Statements extends \daos\mysql\Statements {
     /**
      * sum statement for boolean columns
      *
-     * @param bool column to concat
+     * @param string $column column to concat
      *
      * @return string full statement
      */
@@ -56,7 +56,7 @@ class Statements extends \daos\mysql\Statements {
     /**
      * bool true statement
      *
-     * @param column to check for truth
+     * @param string $column column to check for truth
      *
      * @return string full statement
      */
@@ -67,7 +67,7 @@ class Statements extends \daos\mysql\Statements {
     /**
      * bool false statement
      *
-     * @param column to check for false
+     * @param string $column column to check for false
      *
      * @return string full statement
      */

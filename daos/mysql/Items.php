@@ -83,7 +83,7 @@ class Items extends Database {
     /**
      * add new item
      *
-     * @param mixed $values
+     * @param array $values
      *
      * @return void
      */
@@ -368,9 +368,14 @@ class Items extends Database {
     /**
      * sync new db items starting from id
      *
+     * @param int $sinceId
+     * @param DateTime $notBefore
+     * @param DateTime $since
+     * @param int $howMany
+     *
      * @return array of items
      */
-    public function sync($sinceId, $notBefore, $since, $howMany) {
+    public function sync($sinceId, DateTime $notBefore, DateTime $since, $howMany) {
         $query = 'SELECT
         items.id, datetime, items.title AS title, content, unread, starred, source, thumbnail, icon, uid, link, updatetime, author, sources.title as sourcetitle, sources.tags as tags
         FROM ' . \F3::get('db_prefix') . 'items AS items, ' . \F3::get('db_prefix') . 'sources AS sources
@@ -629,7 +634,7 @@ class Items extends Database {
     /**
      * bulk update of item status
      *
-     * @param array of statuses updates
+     * @param array $statuses array of statuses updates
      *
      * @return void
      */

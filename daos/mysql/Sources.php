@@ -15,6 +15,7 @@ class Sources extends Database {
      *
      * @param string $title
      * @param string[] $tags
+     * @param string $filter
      * @param string $spout the source type
      * @param array $params depends from spout
      *
@@ -36,6 +37,7 @@ class Sources extends Database {
      * @param int $id the source id
      * @param string $title new title
      * @param string[] $tags new tags
+     * @param string $filter
      * @param string $spout new spout
      * @param array $params the new params
      *

@@ -92,11 +92,13 @@ class lightreading extends feed {
      * get tag by attribute
      * taken from http://www.catswhocode.com/blog/15-php-regular-expressions-for-web-developers
      *
+     * @param string $attr attribute
+     * @param string $value necessary value
+     * @param string $xml data string
+     * @param ?string $tag optional tag
+     * @param ?string $end optional ending
+     *
      * @return string content
-     * @return string $attr attribute
-     * @return string $value necessary value
-     * @return string $xml data string
-     * @return string $tag optional tag
      */
     private function getTag($attr, $value, $xml, $tag = null, $end = null) {
         if ($tag === null) {

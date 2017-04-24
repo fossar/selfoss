@@ -38,9 +38,11 @@ class Tags extends BaseController {
      * returns all tags
      * html
      *
+     * @param array $tags
+     *
      * @return string
      */
-    public function renderTags($tags) {
+    public function renderTags(array $tags) {
         $html = '';
         foreach ($tags as $tag) {
             $this->view->tag = $tag['tag'];

@@ -13,6 +13,8 @@ class Search {
     /**
      * return search terms as array
      *
+     * @param string $search
+     *
      * @return array search terms
      */
     public static function splitTerms($search) {

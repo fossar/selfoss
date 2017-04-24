@@ -28,8 +28,8 @@ class Statements {
     /**
      * null first for order by clause
      *
-     * @param column to concat
-     * @param order
+     * @param string $column column to concat
+     * @param string $order
      *
      * @return string full statement
      */
@@ -40,7 +40,7 @@ class Statements {
     /**
      * sum statement for boolean columns
      *
-     * @param bool column to concat
+     * @param string $column column to concat
      *
      * @return string full statement
      */
@@ -51,7 +51,7 @@ class Statements {
     /**
      * bool true statement
      *
-     * @param column to check for truth
+     * @param string $column column to check for truth
      *
      * @return string full statement
      */
@@ -62,7 +62,7 @@ class Statements {
     /**
      * bool false statement
      *
-     * @param column to check for false
+     * @param string $column column to check for false
      *
      * @return string full statement
      */
@@ -73,8 +73,8 @@ class Statements {
     /**
      * check if CSV column matches a value.
      *
-     * @param CSV column to check
-     * @param value to search in CSV column
+     * @param string $column CSV column to check
+     * @param mixed $value value to search in CSV column
      *
      * @return string full statement
      */
@@ -89,7 +89,7 @@ class Statements {
     /**
      * check column against int list.
      *
-     * @param int $column column to check
+     * @param string $column column to check
      * @param array $ints of string or int values to match column against
      *
      * @return ?string full statement
@@ -120,6 +120,8 @@ class Statements {
      * Return the statement required to update a datetime column to the current
      * datetime.
      *
+     * @param string $column
+     *
      * @return string full statement
      */
     public static function rowTouch($column) {
@@ -128,6 +130,8 @@ class Statements {
 
     /**
      * Convert boolean into a representation recognized by the database engine.
+     *
+     * @param bool $bool
      *
      * @return string representation of boolean
      */

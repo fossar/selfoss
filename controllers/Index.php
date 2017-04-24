@@ -201,9 +201,12 @@ class Index extends BaseController {
     /**
      * load items
      *
+     * @param array $options
+     * @param array $tags
+     *
      * @return string html with items
      */
-    private function loadItems($options, $tags) {
+    private function loadItems(array $options, array $tags) {
         $itemDao = new \daos\Items();
         $itemsHtml = '';
 

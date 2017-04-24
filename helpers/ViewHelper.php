@@ -50,7 +50,7 @@ class ViewHelper {
     /**
      * Return ISO8601 formatted date
      *
-     * @param sql date
+     * @param string $datestr sql date
      *
      * @return string
      */

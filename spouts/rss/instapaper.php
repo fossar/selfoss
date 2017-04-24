@@ -58,6 +58,8 @@ class instapaper extends feed {
      *
      * @author janeczku @github
      *
+     * @param string $url
+     *
      * @return string content
      */
     private function fetchFromInstapaper($url) {

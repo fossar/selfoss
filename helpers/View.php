@@ -114,7 +114,7 @@ class View {
     /**
      * send error message as json string
      *
-     * @param mixed $datan
+     * @param mixed $data
      *
      * @return void
      */
@@ -126,7 +126,7 @@ class View {
     /**
      * send success message as json string
      *
-     * @param mixed $datan
+     * @param mixed $data
      *
      * @return void
      */
@@ -241,7 +241,7 @@ class View {
     /**
      * List files according to globbing pattern from selfoss base.
      *
-     * @param string relative globbing pattern
+     * @param string $relativePattern relative globbing pattern
      *
      * @return array list of files paths relative to base
      */

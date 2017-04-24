@@ -69,8 +69,7 @@ class Sources extends Database {
      * @param string $spout
      * @param array $params
      *
-     * @return bool|mixed true on succes or array of
-     * errors on failure
+     * @return bool|array true on success or array of errors on failure
      *
      * @author Tobias Zeising
      */
