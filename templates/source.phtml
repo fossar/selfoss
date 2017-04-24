@@ -2,7 +2,7 @@
 <div role="form" id="source<?= $idAttr ?>"
         class="source <?= isset($this->source) === false ? 'source-new' : '' ?> <?= (isset($this->source) && isset($this->source['error']) && strlen($this->source['error']) > 0) ? 'error' : '' ?>">
     <div class="source-icon">
-        <?php if (isset($this->source) && isset($this->source['icon']) && $this->source['icon'] !== false && $this->source['icon'] != '0') : ?>
+        <?php if (isset($this->source) && isset($this->source['icon']) && $this->source['icon'] != '0') : ?>
         <img src="<?= 'favicons/' . $this->source['icon']; ?>" alt="" />
         <?php endif; ?>
     </div>

@@ -164,7 +164,7 @@ class commits extends \spouts\spout {
             return @current($this->items)['sha'];
         }
 
-        return false;
+        return null;
     }
 
     /**
@@ -179,7 +179,7 @@ class commits extends \spouts\spout {
             return htmlspecialchars(self::cutTitle($message));
         }
 
-        return false;
+        return null;
     }
 
     /**
@@ -194,7 +194,7 @@ class commits extends \spouts\spout {
             return nl2br(htmlspecialchars($message), false);
         }
 
-        return false;
+        return null;
     }
 
     /**
@@ -216,7 +216,7 @@ class commits extends \spouts\spout {
             return @current($this->items)['html_url'];
         }
 
-        return false;
+        return null;
     }
 
     /**

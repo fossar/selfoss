@@ -184,7 +184,7 @@ class usertimeline extends \spouts\spout {
             return $this->htmlUrl;
         }
 
-        return false;
+        return null;
     }
 
     /**
@@ -197,7 +197,7 @@ class usertimeline extends \spouts\spout {
             return @current($this->items)->id_str;
         }
 
-        return false;
+        return null;
     }
 
     /**
@@ -220,7 +220,7 @@ class usertimeline extends \spouts\spout {
             return $tweet;
         }
 
-        return false;
+        return null;
     }
 
     /**
@@ -273,7 +273,7 @@ class usertimeline extends \spouts\spout {
             return $item->user->profile_image_url_https;
         }
 
-        return false;
+        return null;
     }
 
     /**
@@ -288,7 +288,7 @@ class usertimeline extends \spouts\spout {
             return 'https://twitter.com/' . $item->user->screen_name . '/status/' . $item->id_str;
         }
 
-        return false;
+        return null;
     }
 
     /**

@@ -46,7 +46,7 @@ class instapaper extends feed {
      */
     public function getContent() {
         $contentFromInstapaper = $this->fetchFromInstapaper(parent::getLink());
-        if ($contentFromInstapaper === false) {
+        if ($contentFromInstapaper === null) {
             return 'instapaper parse error <br />' . parent::getContent();
         }
 
@@ -69,7 +69,7 @@ class instapaper extends feed {
         $dom = new \DOMDocument();
         @$dom->loadHTML($content);
         if (!$dom) {
-            return false;
+            return null;
         }
         $xpath = new \DOMXPath($dom);
         $elements = $xpath->query("//div[@id='story']");

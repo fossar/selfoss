@@ -127,12 +127,12 @@ class Sources extends Database {
     }
 
     /**
-     * returns specified source (false if it doesnt exist)
+     * returns specified source (null if it doesnt exist)
      * or all sources if no id specified
      *
-     * @param int $id (optional) specification of source id
+     * @param ?int $id specification of source id
      *
-     * @return mixed specified source or all sources
+     * @return ?mixed specified source or all sources
      */
     public function get($id = null) {
         // select source by id if specified or return all sources
@@ -142,7 +142,7 @@ class Sources extends Database {
             if (isset($ret[0])) {
                 $ret = $ret[0];
             } else {
-                $ret = false;
+                $ret = null;
             }
         } else {
             $ret = \F3::get('db')->exec('SELECT id, title, tags, spout, params, filter, error FROM ' . \F3::get('db_prefix') . 'sources ORDER BY error DESC, lower(title) ASC');

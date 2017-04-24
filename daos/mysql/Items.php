@@ -543,11 +543,11 @@ class Items extends Database {
      *
      * @param int $sourceid id of the source
      *
-     * @return bool|string false if none was found
+     * @return ?string
      */
     public function getLastIcon($sourceid) {
         if (is_numeric($sourceid) === false) {
-            return false;
+            return null;
         }
 
         $res = \F3::get('db')->exec('SELECT icon FROM ' . \F3::get('db_prefix') . 'items WHERE source=:sourceid AND icon!=\'\' AND icon IS NOT NULL ORDER BY ID DESC LIMIT 1',
@@ -556,7 +556,7 @@ class Items extends Database {
             return $res[0]['icon'];
         }
 
-        return false;
+        return null;
     }
 
     /**

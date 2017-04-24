@@ -236,7 +236,7 @@ class Opml extends BaseController {
         $feedUrl = $this->spoutLoader->get($source['spout'])->getXmlUrl($params);
 
         // if the spout doesn't return a feed url, the source isn't an RSS feed
-        if ($feedUrl !== false) {
+        if ($feedUrl !== null) {
             $this->writer->startElement('outline');
         } else {
             $this->writer->startElementNS('selfoss', 'outline', null);
@@ -245,7 +245,7 @@ class Opml extends BaseController {
         $this->writer->writeAttribute('title', $source['title']);
         $this->writer->writeAttribute('text', $source['title']);
 
-        if ($feedUrl !== false) {
+        if ($feedUrl !== null) {
             $this->writer->writeAttribute('xmlUrl', $feedUrl);
             $this->writer->writeAttribute('type', 'rss');
         }

@@ -144,7 +144,7 @@ abstract class spout implements \Iterator {
      * returns the author of this item with html special chars decoded if
      * applicable.
      *
-     * @return string author
+     * @return ?string author
      */
     public function getAuthor() {
         return null;
