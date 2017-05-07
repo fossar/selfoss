@@ -2,6 +2,8 @@
 
 namespace controllers;
 
+use Base;
+
 /**
  * Controller for sources handling
  *
@@ -120,9 +122,12 @@ class Sources extends BaseController {
      * render spouts params
      * json
      *
+     * @param Base $f3 fatfree base instance
+     * @param array $params query string parameters
+     *
      * @return void
      */
-    public function write() {
+    public function write(Base $f3, array $params) {
         $this->needsLoggedIn();
 
         $sourcesDao = new \daos\Sources();
@@ -167,7 +172,7 @@ class Sources extends BaseController {
         unset($data['ajax']);
 
         // check if source already exists
-        $id = \F3::get('PARAMS["id"]');
+        $id = $params['id'];
         $sourceExists = $sourcesDao->isValid('id', $id);
 
         // load password value if not changed for spouts containing passwords
@@ -247,12 +252,15 @@ class Sources extends BaseController {
      * delete source
      * json
      *
+     * @param Base $f3 fatfree base instance
+     * @param array $params query string parameters
+     *
      * @return void
      */
-    public function remove() {
+    public function remove(Base $f3, array $params) {
         $this->needsLoggedIn();
 
-        $id = \F3::get('PARAMS["id"]');
+        $id = $params['id'];
 
         $sourceDao = new \daos\Sources();
 
@@ -276,10 +284,13 @@ class Sources extends BaseController {
      * update source
      * text
      *
+     * @param Base $f3 fatfree base instance
+     * @param array $params query string parameters
+     *
      * @return void
      */
-    public function update() {
-        $id = \F3::get('PARAMS["id"]');
+    public function update(Base $f3, array $params) {
+        $id = $params['id'];
 
         // only allow access for localhost and authenticated users
         if (!$this->allowedToUpdate()) {

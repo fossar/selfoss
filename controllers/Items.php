@@ -2,6 +2,8 @@
 
 namespace controllers;
 
+use Base;
+
 /**
  * Controller for item handling
  *
@@ -14,13 +16,16 @@ class Items extends BaseController {
      * mark items as read. Allows one id or an array of ids
      * json
      *
+     * @param Base $f3 fatfree base instance
+     * @param array $params query string parameters
+     *
      * @return void
      */
-    public function mark() {
+    public function mark(Base $f3, array $params) {
         $this->needsLoggedIn();
 
-        if (\F3::get('PARAMS["item"]') !== null) {
-            $lastid = \F3::get('PARAMS["item"]');
+        if (isset($params['item'])) {
+            $lastid = $params['item'];
         } elseif (isset($_POST['ids'])) {
             $lastid = $_POST['ids'];
         }
@@ -45,12 +50,15 @@ class Items extends BaseController {
      * mark item as unread
      * json
      *
+     * @param Base $f3 fatfree base instance
+     * @param array $params query string parameters
+     *
      * @return void
      */
-    public function unmark() {
+    public function unmark(Base $f3, array $params) {
         $this->needsLoggedIn();
 
-        $lastid = \F3::get('PARAMS["item"]');
+        $lastid = $params['item'];
 
         $itemDao = new \daos\Items();
 
@@ -69,12 +77,15 @@ class Items extends BaseController {
      * starr item
      * json
      *
+     * @param Base $f3 fatfree base instance
+     * @param array $params query string parameters
+     *
      * @return void
      */
-    public function starr() {
+    public function starr(Base $f3, array $params) {
         $this->needsLoggedIn();
 
-        $id = \F3::get('PARAMS["item"]');
+        $id = $params['item'];
 
         $itemDao = new \daos\Items();
 
@@ -92,12 +103,15 @@ class Items extends BaseController {
      * unstarr item
      * json
      *
+     * @param Base $f3 fatfree base instance
+     * @param array $params query string parameters
+     *
      * @return void
      */
-    public function unstarr() {
+    public function unstarr(Base $f3, array $params) {
         $this->needsLoggedIn();
 
-        $id = \F3::get('PARAMS["item"]');
+        $id = $params['item'];
 
         $itemDao = new \daos\Items();
 

@@ -2,6 +2,7 @@
 
 namespace controllers;
 
+use Base;
 use FeedWriter\RSS2;
 
 /**
@@ -15,9 +16,12 @@ class Rss extends BaseController {
     /**
      * rss feed
      *
+     * @param Base $f3 fatfree base instance
+     * @param array $params query string parameters
+     *
      * @return void
      */
-    public function rss() {
+    public function rss(Base $f3, array $params) {
         $this->needsLoggedInOrPublicMode();
 
         $feedWriter = new RSS2();
@@ -38,11 +42,11 @@ class Rss extends BaseController {
             $options = $_GET;
         }
         $options['items'] = \F3::get('rss_max_items');
-        if (\F3::get('PARAMS["tag"]') !== null) {
-            $options['tag'] = \F3::get('PARAMS["tag"]');
+        if (isset($params['tag'])) {
+            $options['tag'] = $params['tag'];
         }
-        if (\F3::get('PARAMS["type"]') !== null) {
-            $options['type'] = \F3::get('PARAMS["type"]');
+        if (isset($params['type'])) {
+            $options['type'] = $params['type'];
         }
 
         // get items
