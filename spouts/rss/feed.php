@@ -249,12 +249,8 @@ class feed extends \spouts\spout {
 
         $this->faviconUrl = false;
         $imageHelper = $this->getImageHelper();
-        $link = $this->getLink();
-        if (!$link) {
-            $link = $this->getHtmlUrl();
-        }
-
-        if ($link && $imageHelper->fetchFavicon($link, true)) {
+        $htmlUrl = $this->getHtmlUrl();
+        if ($htmlUrl && $imageHelper->fetchFavicon($htmlUrl, true)) {
             $this->faviconUrl = $imageHelper->getFaviconUrl();
             \F3::get('logger')->debug('icon: using feed homepage favicon: ' . $this->faviconUrl);
         } else {
