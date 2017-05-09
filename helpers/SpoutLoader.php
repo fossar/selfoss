@@ -97,12 +97,12 @@ class SpoutLoader {
     /**
      * compare spouts by name
      *
-     * @param \spouts\spout $spout1 Spout 1
-     * @param \spouts\spout $spout2 Spout 2
+     * @param spout $spout1 Spout 1
+     * @param spout $spout2 Spout 2
      *
      * @return int
      */
-    private static function compareSpoutsByName($spout1, $spout2) {
+    private static function compareSpoutsByName(spout $spout1, spout $spout2) {
         return strcasecmp($spout1->name, $spout2->name);
     }
 }
