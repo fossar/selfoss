@@ -15,6 +15,18 @@ class Image {
     /** @var string url of last fetched favicon */
     private $faviconUrl = false;
 
+    private static $faviconMimeTypes = [
+        // IANA assigned type
+        'image/vnd.microsoft.icon',
+        // Used by Microsoft applications
+        'image/x-icon',
+        // Incorrect but sometimes appearing
+        'image/ico',
+        'image/icon',
+        'text/ico',
+        'application/ico'
+    ];
+
     /**
      * fetch favicon
      *
@@ -93,7 +105,7 @@ class Image {
         $tmp = \F3::get('cache') . '/' . md5($url);
         file_put_contents($tmp, $data);
         $imgInfo = @getimagesize($tmp);
-        if (strtolower($imgInfo['mime']) == 'image/vnd.microsoft.icon') {
+        if (in_array(strtolower($imgInfo['mime']), self::$faviconMimeTypes, true)) {
             $type = 'ico';
         } elseif (strtolower($imgInfo['mime']) == 'image/png') {
             $type = 'png';
