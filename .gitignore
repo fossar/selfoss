@@ -1,4 +1,3 @@
-.DS_Store
 /data/favicons/*.png
 /data/favicons/*.jpg
 /data/thumbnails/*.png
@@ -9,13 +8,8 @@
 /public/all.*
 user.css
 user.js
-/_bin/*.*
-/_docs/website/forum
 config.ini
-.project
 node_modules
-_wiki
 .env
 vendor/
 .php_cs.cache
-.vscode
