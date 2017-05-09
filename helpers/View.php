@@ -186,11 +186,6 @@ class View {
     private function genMinified($type) {
         self::$staticmtime[$type] = self::maxmtime(\F3::get($type));
 
-        if ($type === self::STATIC_RESOURCE_JS) {
-            $filename = self::getGlobalJsFileName();
-        } elseif ($type === self::STATIC_RESOURCE_CSS) {
-            $filename = self::getGlobalCssFileName();
-        }
         $target = \F3::get('BASEDIR') . '/public/' . self::$staticPrefix . '.' . $type;
 
         // build if needed

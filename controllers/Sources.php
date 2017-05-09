@@ -31,7 +31,6 @@ class Sources extends BaseController {
              '<a class="source-export" href="opmlexport">' . \F3::get('lang_source_export') . '</a>' .
              '<a class="source-opml" href="opml">' . \F3::get('lang_source_opml');
         $sourcesHtml = '</a>';
-        $i = 0;
 
         foreach ($sourcesDao->getWithIcon() as $source) {
             $this->view->source = $source;
@@ -93,7 +92,6 @@ class Sources extends BaseController {
      */
     public function renderSources(array $sources) {
         $html = '';
-        $itemsDao = new \daos\Items();
         foreach ($sources as $source) {
             $this->view->source = $source['title'];
             $this->view->sourceid = $source['id'];
@@ -317,9 +315,9 @@ class Sources extends BaseController {
         $sources = $sourcesDao->getWithIcon();
 
         // get last icon
-        for ($i = 0; $i < count($sources); ++$i) {
-            $sources[$i]['params'] = json_decode(html_entity_decode($sources[$i]['params']), true);
-            $sources[$i]['error'] = $sources[$i]['error'] === null ? '' : $sources[$i]['error'];
+        foreach ($sources as &$source) {
+            $source['params'] = json_decode(html_entity_decode($source['params']), true);
+            $source['error'] = $source['error'] === null ? '' : $source['error'];
         }
 
         $this->view->jsonSuccess($sources);
@@ -347,8 +345,6 @@ class Sources extends BaseController {
      */
     public function stats() {
         $this->needsLoggedInOrPublicMode();
-
-        $itemDao = new \daos\Items();
 
         // load sources
         $sourcesDao = new \daos\Sources();
