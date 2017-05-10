@@ -59,9 +59,6 @@ var selfoss = {
             // set items per page
             selfoss.filter.itemsPerPage = $('#config').data('items_perpage');
 
-            // initialize type by homepage config param
-            selfoss.filter.type = $('#config').data('homepage');
-
             // read the html title configured
             selfoss.htmlTitle = $('#config').data('html_title')
 

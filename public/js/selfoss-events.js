@@ -35,8 +35,11 @@ selfoss.events = {
         $(window).bind("resize", selfoss.events.resize);
         selfoss.events.resize();
 
-        if( location.hash == '' )
-            selfoss.events.setHash($('#config').data('homepage'), 'all');
+        if( location.hash == '' ) {
+            var homePagePath = $('#config').data('homepage').split('/');
+            if (!homePagePath[1]) homePagePath.push('all');
+            selfoss.events.setHash(homePagePath[0], homePagePath[1]);
+        }
         
         // hash change event
         window.onhashchange = selfoss.events.hashChange;
