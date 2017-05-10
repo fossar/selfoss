@@ -65,29 +65,24 @@ class Index extends BaseController {
         $tagsController = new \controllers\Tags();
         $this->view->tags = $tagsController->renderTags($tags);
 
+        $result = [
+            'lastUpdate' => \helpers\ViewHelper::date_iso8601($itemsDao->lastUpdate()),
+            'hasMore' => $items['hasMore'],
+            'entries' => $this->view->content,
+            'all' => $this->view->statsAll,
+            'unread' => $this->view->statsUnread,
+            'starred' => $this->view->statsStarred,
+            'tags' => $this->view->tags,
+        ];
+
         if (isset($options['sourcesNav']) && $options['sourcesNav'] == 'true') {
             // prepare sources display list
             $sourcesDao = new \daos\Sources();
-            $sources = $sourcesDao->getWithUnread();
-            $sourcesController = new \controllers\Sources();
-            $this->view->sources = $sourcesController->renderSources($sources);
-        } else {
-            $this->view->sources = '';
+            $result['sources'] = $sourcesDao->getWithUnread();
         }
 
         // ajax call = only send entries and statistics not full template
-        if ($f3->ajax()) {
-            $this->view->jsonSuccess([
-                'lastUpdate' => \helpers\ViewHelper::date_iso8601($itemsDao->lastUpdate()),
-                'hasMore' => $items['hasMore'],
-                'entries' => $this->view->content,
-                'all' => $this->view->statsAll,
-                'unread' => $this->view->statsUnread,
-                'starred' => $this->view->statsStarred,
-                'tags' => $this->view->tags,
-                'sources' => $this->view->sources
-            ]);
-        }
+        $this->view->jsonSuccess($result);
     }
 
     /**

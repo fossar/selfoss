@@ -21,6 +21,12 @@ if (file_exists('user.js')) {
 }
 $f3->set('js', $js);
 
+// define ejs templates
+$ejs = [
+    'navSources' => 'templates/source-nav.ejs',
+];
+$f3->set('ejs', $ejs);
+
 // define css files
 $css = $clientPackage->extra->requiredFiles->css;
 if (file_exists('user.css')) {
@@ -63,7 +69,6 @@ $f3->route('GET /source/params', 'controllers\Sources->params'); // html
 $f3->route('GET /sources', 'controllers\Sources->show'); // html
 $f3->route('GET /source', 'controllers\Sources->add'); // html
 $f3->route('GET /sources/list', 'controllers\Sources->listSources'); // json
-$f3->route('GET /sources/sourcesStats', 'controllers\Sources->sourcesStats'); // json
 $f3->route('POST /source/@id', 'controllers\Sources->write'); // json
 $f3->route('POST /source', 'controllers\Sources->write'); // json
 $f3->route('DELETE /source/@id', 'controllers\Sources->remove'); // json

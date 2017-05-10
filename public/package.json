@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "ejs": "^2.5.6",
     "@fancyapps/fancybox": "^3.1.20",
     "dexie": "^2.0.1",
     "jquery": "^2.2.4",
@@ -18,6 +19,7 @@
         "public/css/style.css"
       ],
       "js": [
+        "public/node_modules/ejs/ejs.js",
         "public/node_modules/jquery/dist/jquery.js",
         "public/node_modules/jquery-mousewheel/jquery.mousewheel.js",
         "public/node_modules/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.js",

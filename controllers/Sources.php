@@ -83,40 +83,6 @@ class Sources extends BaseController {
     }
 
     /**
-     * return all Sources suitable for navigation panel
-     * html
-     *
-     * @param array $sources
-     *
-     * @return string htmltext
-     */
-    public function renderSources(array $sources) {
-        $html = '';
-        foreach ($sources as $source) {
-            $this->view->source = $source['title'];
-            $this->view->sourceid = $source['id'];
-            $this->view->unread = $source['unread'];
-            $html .= $this->view->render('templates/source-nav.phtml');
-        }
-
-        return $html;
-    }
-
-    /**
-     * load all available sources and return all Sources suitable
-     * for navigation panel
-     * html
-     *
-     * @return string htmltext
-     */
-    public function sourcesListAsString() {
-        $sourcesDao = new \daos\Sources();
-        $sources = $sourcesDao->getWithUnread();
-
-        return $this->renderSources($sources);
-    }
-
-    /**
      * render spouts params
      * json
      *
@@ -222,26 +188,11 @@ class Sources extends BaseController {
             $return['tags'] = $tagController->tagsListAsString();
 
             // get new sources list
-            $sourcesController = new \controllers\Sources();
-            $return['sources'] = $sourcesController->sourcesListAsString();
+            $sourcesDao = new \daos\Sources();
+            $return['sources'] = $sourcesDao->getWithUnread();
         }
 
         $this->view->jsonSuccess($return);
-    }
-
-    /**
-     * return source stats in HTML for nav update
-     * json
-     *
-     * @return void
-     */
-    public function sourcesStats() {
-        $this->needsLoggedInOrPublicMode();
-
-        $this->view->jsonSuccess([
-            'success' => true,
-            'sources' => $this->sourcesListAsString()
-        ]);
     }
 
     /**

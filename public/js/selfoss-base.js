@@ -391,8 +391,8 @@ var selfoss = {
      * @param sources the new sourceslist as html
      */
     refreshSources: function(sources) {
-        $('#nav-sources li').remove();
-        $('#nav-sources').append(sources);
+        var renderedSources = selfoss.templates.navSources({sources: sources});
+        $('#nav-sources').html(renderedSources);
         if (selfoss.filter.source) {
             if (!selfoss.db.isValidSource(selfoss.filter.source)) {
                 selfoss.ui.showError($('#lang').data('error_unknown_source') + ' '

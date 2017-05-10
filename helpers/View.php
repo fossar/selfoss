@@ -184,7 +184,12 @@ class View {
      * @return void
      */
     private function genMinified($type) {
-        self::$staticmtime[$type] = self::maxmtime(\F3::get($type));
+        $watchedFiles = \F3::get($type);
+        if ($type === self::STATIC_RESOURCE_JS) {
+            $watchedFiles = array_merge($watchedFiles, array_values(\F3::get('ejs')));
+        }
+
+        self::$staticmtime[$type] = self::maxmtime($watchedFiles);
 
         $target = \F3::get('BASEDIR') . '/public/' . self::$staticPrefix . '.' . $type;
 
@@ -199,6 +204,12 @@ class View {
                 }
                 $minified = $minified . "\n" . $minifiedFile;
             }
+
+            if ($type === self::STATIC_RESOURCE_JS) {
+                $combined = self::combineTemplates(\F3::get('ejs'));
+                $minified = $minified . "\n" . $combined;
+            }
+
             file_put_contents($target, $minified);
         }
     }
@@ -308,5 +319,24 @@ class View {
             $offlineWorker .= file_get_contents(\F3::get('BASEDIR') . '/public/js/selfoss-sw-offline.js');
             file_put_contents($target, $offlineWorker);
         }
+    }
+
+    /**
+     * creates a file combining templates for easy access from client
+     *
+     * @param array $files
+     *
+     * @return string combined templates
+     */
+    private static function combineTemplates(array $files) {
+        $result = 'selfoss.templates = {';
+        foreach ($files as $name => $file) {
+            $template = file_get_contents(\F3::get('BASEDIR') . '/' . $file);
+            $result .= json_encode($name) . ': ejs.compile(' . json_encode($template) . ', {"delimiter": "?"}),';
+        }
+
+        $result .= '};';
+
+        return $result;
     }
 }

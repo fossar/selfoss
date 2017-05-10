@@ -1,0 +1,8 @@
+<? sources.forEach(function(source) { ?>
+<li id="source<?= source.id ?>" class="<? if (source.unread > 0) { ?>unread<? } ?>" role="link" tabindex="0" data-source-id="<?= source.id ?>">
+    <span class="nav-source"><?= source.title ?></span>
+    <span class="unread"><? if (source.unread > 0) { ?>
+        <?= source.unread ?>
+    <? } ?></span>
+</li>
+<? }) ?>
