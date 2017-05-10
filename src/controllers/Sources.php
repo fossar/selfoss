@@ -104,54 +104,6 @@ class Sources {
     }
 
     /**
-     * return all Sources suitable for navigation panel
-     * html
-     *
-     * @param array $sources sources to render
-     *
-     * @return string htmltext
-     */
-    public function renderSources(array $sources) {
-        $html = '';
-        foreach ($sources as $source) {
-            $this->view->source = $source['title'];
-            $this->view->sourceid = $source['id'];
-            $this->view->unread = $source['unread'];
-            $html .= $this->view->render('src/templates/source-nav.phtml');
-        }
-
-        return $html;
-    }
-
-    /**
-     * load all available sources and return all Sources suitable
-     * for navigation panel
-     * html
-     *
-     * @return string htmltext
-     */
-    public function sourcesListAsString() {
-        $sources = $this->sourcesDao->getWithUnread();
-
-        return $this->renderSources($sources);
-    }
-
-    /**
-     * return source stats in HTML for nav update
-     * json
-     *
-     * @return void
-     */
-    public function sourcesStats() {
-        $this->authentication->needsLoggedInOrPublicMode();
-
-        $this->view->jsonSuccess([
-            'success' => true,
-            'sources' => $this->sourcesListAsString()
-        ]);
-    }
-
-    /**
      * delete source
      * json
      *

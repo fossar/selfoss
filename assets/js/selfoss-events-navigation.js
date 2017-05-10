@@ -138,10 +138,10 @@ selfoss.events.navigation = function() {
         selfoss.filter.sourcesNav = $('#nav-sources-title').hasClass('nav-sources-collapsed');
         if (selfoss.filter.sourcesNav && !selfoss.sourcesNavLoaded) {
             $.ajax({
-                url: 'sources/sourcesStats',
+                url: 'sources/stats',
                 type: 'GET',
                 success: function(data) {
-                    selfoss.refreshSources(data.sources);
+                    selfoss.refreshSources(data);
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     selfoss.ui.showError(selfoss.ui._('error_loading_stats') + ' ' +

@@ -100,27 +100,22 @@ class Index {
         // prepare tags display list
         $this->view->tags = $this->tagsController->renderTags($tags);
 
+        $result = [
+            'lastUpdate' => \helpers\ViewHelper::date_iso8601($this->itemsDao->lastUpdate()),
+            'hasMore' => $items['hasMore'],
+            'entries' => $this->view->content,
+            'all' => $this->view->statsAll,
+            'unread' => $this->view->statsUnread,
+            'starred' => $this->view->statsStarred,
+            'tags' => $this->view->tags
+        ];
+
         if (isset($options['sourcesNav']) && $options['sourcesNav'] == 'true') {
             // prepare sources display list
-            $sources = $this->sourcesDao->getWithUnread();
-            $this->view->sources = $this->sourcesController->renderSources($sources);
-        } else {
-            $this->view->sources = '';
+            $result['sources'] = $this->sourcesDao->getWithUnread();
         }
 
-        // ajax call = only send entries and statistics not full template
-        if ($f3->ajax()) {
-            $this->view->jsonSuccess([
-                'lastUpdate' => \helpers\ViewHelper::date_iso8601($this->itemsDao->lastUpdate()),
-                'hasMore' => $items['hasMore'],
-                'entries' => $this->view->content,
-                'all' => $this->view->statsAll,
-                'unread' => $this->view->statsUnread,
-                'starred' => $this->view->statsStarred,
-                'tags' => $this->view->tags,
-                'sources' => $this->view->sources
-            ]);
-        }
+        $this->view->jsonSuccess($result);
     }
 
     /**

@@ -91,8 +91,7 @@ selfoss.events.sources = function() {
                 $('#nav-tags').append(response.tags);
 
                 // update sources
-                $('#nav-sources li').remove();
-                $('#nav-sources').append(response.sources);
+                selfoss.refreshSources(response.sources, true);
 
                 selfoss.events.navigation();
             },

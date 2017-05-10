@@ -18,9 +18,6 @@ class Write {
     /** @var ContentLoader content loader */
     private $contentLoader;
 
-    /** @var \controllers\Sources sources controller */
-    private $sourcesController;
-
     /** @var \daos\Sources sources */
     private $sourcesDao;
 
@@ -36,10 +33,9 @@ class Write {
     /** @var View view helper */
     private $view;
 
-    public function __construct(Authentication $authentication, ContentLoader $contentLoader, \controllers\Sources $sourcesController, \daos\Sources $sourcesDao, SpoutLoader $spoutLoader, \controllers\Tags $tagsController, \daos\Tags $tagsDao, View $view) {
+    public function __construct(Authentication $authentication, ContentLoader $contentLoader, \daos\Sources $sourcesDao, SpoutLoader $spoutLoader, \controllers\Tags $tagsController, \daos\Tags $tagsDao, View $view) {
         $this->authentication = $authentication;
         $this->contentLoader = $contentLoader;
-        $this->sourcesController = $sourcesController;
         $this->sourcesDao = $sourcesDao;
         $this->spoutLoader = $spoutLoader;
         $this->tagsController = $tagsController;
@@ -147,7 +143,7 @@ class Write {
             $return['tags'] = $this->tagsController->tagsListAsString();
 
             // get new sources list
-            $return['sources'] = $this->sourcesController->sourcesListAsString();
+            $return['sources'] = $this->sourcesDao->getWithUnread();
         }
 
         $this->view->jsonSuccess($return);

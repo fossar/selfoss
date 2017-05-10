@@ -1,3 +1,5 @@
+import templates from './templates';
+
 /**
  * base javascript application
  *
@@ -451,9 +453,9 @@ var selfoss = {
      * @return void
      * @param sources the new sourceslist as html
      */
-    refreshSources: function(sources) {
-        $('#nav-sources li').remove();
-        $('#nav-sources').append(sources);
+    refreshSources: function(sources, delayNavigation = false) {
+        let renderedSources = templates.navSources({sources});
+        $('#nav-sources').html(renderedSources);
         if (selfoss.filter.source) {
             if (!selfoss.db.isValidSource(selfoss.filter.source)) {
                 selfoss.ui.showError(selfoss.ui._('error_unknown_source') + ' '
@@ -469,7 +471,9 @@ var selfoss = {
             $('#nav-sources-title').click(); // expand sources nav
         }
 
-        selfoss.events.navigation();
+        if (!delayNavigation) {
+            selfoss.events.navigation();
+        }
     },
 
 

@@ -187,8 +187,8 @@ selfoss.dbOnline = {
                     selfoss.refreshTags(data.tagshtml);
                 }
 
-                if ('sourceshtml' in data) {
-                    selfoss.refreshSources(data.sourceshtml);
+                if ('sources' in data) {
+                    selfoss.refreshSources(data.sources);
                 }
 
                 if ('stats' in data && data.stats.unread > 0 &&

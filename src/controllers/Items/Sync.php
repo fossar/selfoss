@@ -16,9 +16,6 @@ class Sync {
     /** @var \daos\Items items */
     private $itemsDao;
 
-    /** @var \controllers\Sources sources controller */
-    private $sourcesController;
-
     /** @var \daos\Sources sources */
     private $sourcesDao;
 
@@ -31,10 +28,9 @@ class Sync {
     /** @var View view helper */
     private $view;
 
-    public function __construct(Authentication $authentication, \daos\Items $itemsDao, \controllers\Sources $sourcesController, \daos\Sources $sourcesDao, \controllers\Tags $tagsController, \daos\Tags $tagsDao, View $view) {
+    public function __construct(Authentication $authentication, \daos\Items $itemsDao, \daos\Sources $sourcesDao, \controllers\Tags $tagsController, \daos\Tags $tagsDao, View $view) {
         $this->authentication = $authentication;
         $this->itemsDao = $itemsDao;
-        $this->sourcesController = $sourcesController;
         $this->sourcesDao = $sourcesDao;
         $this->tagsController = $tagsController;
         $this->tagsDao = $tagsDao;
@@ -117,7 +113,7 @@ class Sync {
                 $sync['tagshtml'] = $this->tagsController->renderTags($this->tagsDao->getWithUnread());
             }
             if (array_key_exists('sources', $params) && $_GET['sources'] == 'true') {
-                $sync['sourceshtml'] = $this->sourcesController->renderSources($this->sourcesDao->getWithUnread());
+                $sync['sources'] = $this->sourcesDao->getWithUnread();
             }
 
             $wantItemsStatuses = array_key_exists('itemsStatuses', $params) && $params['itemsStatuses'] == 'true';

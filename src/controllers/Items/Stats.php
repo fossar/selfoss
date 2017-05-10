@@ -15,9 +15,6 @@ class Stats {
     /** @var \daos\Items items */
     private $itemsDao;
 
-    /** @var \controllers\Sources sources controller */
-    private $sourcesController;
-
     /** @var \daos\Sources sources */
     private $sourcesDao;
 
@@ -30,10 +27,9 @@ class Stats {
     /** @var View view helper */
     private $view;
 
-    public function __construct(Authentication $authentication, \daos\Items $itemsDao, \controllers\Sources $sourcesController, \daos\Sources $sourcesDao, \controllers\Tags $tagsController, \daos\Tags $tagsDao, View $view) {
+    public function __construct(Authentication $authentication, \daos\Items $itemsDao, \daos\Sources $sourcesDao, \controllers\Tags $tagsController, \daos\Tags $tagsDao, View $view) {
         $this->authentication = $authentication;
         $this->itemsDao = $itemsDao;
-        $this->sourcesController = $sourcesController;
         $this->sourcesDao = $sourcesDao;
         $this->tagsController = $tagsController;
         $this->tagsDao = $tagsDao;
@@ -64,7 +60,7 @@ class Stats {
             $stats['tagshtml'] = $this->tagsController->renderTags($tags);
         }
         if (array_key_exists('sources', $_GET) && $_GET['sources'] == 'true') {
-            $stats['sourceshtml'] = $this->sourcesController->renderSources($this->sourcesDao->getWithUnread());
+            $stats['sources'] = $this->sourcesDao->getWithUnread();
         }
 
         $this->view->jsonSuccess($stats);
