@@ -88,7 +88,7 @@ Special thanks to the great programmers of this libraries which will be used in 
 * htmLawed: http://www.bioinformatics.org/phplabware/internal_utilities/htmLawed/
 * PHP Universal Feed Generator: https://github.com/ajaxray/FeedWriter
 * twitteroauth: https://github.com/abraham/twitteroauth
-* floIcon: https://www.phpclasses.org/package/3906-PHP-Read-and-write-images-from-ICO-files.html
+* Elphin IcoFileLoader: https://github.com/lordelph/icofileloader
 * jQuery hotkeys: https://github.com/tzuryby/jquery.hotkeys
 * jsmin: https://github.com/rgrove/jsmin-php
 * cssmin: https://code.google.com/archive/p/cssmin

@@ -5,6 +5,7 @@ function isNotUnimportant(dest) {
 
     const filenameDisallowed = [
         /^changelog/i,
+        /^contributing/i,
         /^copying/i,
         /^readme/i,
         /^licen[cs]e/i,
@@ -85,7 +86,6 @@ module.exports = function(grunt) {
                     { expand: true, cwd: 'controllers/', src: ['**'], dest: '/controllers'},
                     { expand: true, cwd: 'daos/', src: ['**'], dest: '/daos'},
                     { expand: true, cwd: 'helpers/', src: ['**'], dest: '/helpers'},
-                    { expand: true, cwd: 'libs/', src: ['**'], dest: '/libs'},
                     { expand: true, cwd: 'vendor/', src: ['**'], dest: '/vendor', filter: isNotUnimportant},
 
                     // public = don't zip all.js and all.css

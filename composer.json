@@ -10,6 +10,7 @@
         "htmlawed/htmlawed": "^1.1",
         "j0k3r/graby": "^1.6",
         "linkorb/jsmin-php": "^1.0",
+        "lordelph/icofileloader": "^1.0",
         "mibe/feedwriter": "^1.0",
         "monolog/monolog": "^1.0",
         "natxet/CssMin": "^3.0",
@@ -30,7 +31,6 @@
             "controllers/",
             "daos/",
             "helpers/",
-            "libs/",
             "spouts/"
         ]
     },

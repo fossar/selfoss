@@ -2,6 +2,7 @@
 
 namespace helpers;
 
+use Elphin\IcoFileLoader\IcoFileService;
 use WideImage\WideImage;
 
 /**
@@ -116,28 +117,42 @@ class Image {
         } elseif (strtolower($imgInfo['mime']) == 'image/x-ms-bmp') {
             $type = 'bmp';
         } else {
-            @unlink($tmp);
-
             return false;
         }
 
         // convert ico to png
         if ($type == 'ico') {
-            $ico = new \floIcon();
-            @$ico->readICO($tmp);
-            if (count($ico->images) == 0) {
-                @unlink($tmp);
+            $loader = new IcoFileService();
+            try {
+                $icon = $loader->fromString($data);
+            } catch (\InvalidArgumentException $e) {
+                \F3::get('logger')->error("Icon “{$url}” is not valid", ['exception' => $e]);
 
                 return false;
             }
+
+            $image = null;
+            if ($width !== false && $height !== false) {
+                $image = $icon->findBestForSize($width, $height);
+            }
+
+            if ($image === null) {
+                $image = $icon->findBest();
+            }
+
+            if ($image === null) {
+                return false;
+            }
+
+            $data = $loader->renderImage($image);
+
             ob_start();
-            @imagepng($ico->images[count($ico->images) - 1]->getImageResource());
+            imagepng($data);
             $data = ob_get_contents();
             ob_end_clean();
         }
 
         // parse image for saving it later
-        @unlink($tmp);
         try {
             $wideImage = WideImage::load($data);
         } catch (\Exception $e) {
