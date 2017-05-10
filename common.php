@@ -1,5 +1,6 @@
 <?php
 
+use Base;
 use Monolog\Logger;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
@@ -45,7 +46,7 @@ $f3->set('logger', $log);
 
 // init error handling
 $f3->set('ONERROR',
-    function($f3) {
+    function(Base $f3) {
         $exception = $f3->get('EXCEPTION');
 
         if ($exception) {
@@ -57,7 +58,7 @@ $f3->set('ONERROR',
         if (\F3::get('DEBUG') != 0) {
             echo $f3->get('lang_error') . ': ';
             echo $f3->get('ERROR.text') . "\n";
-            echo $trace;
+            echo $f3->get('ERROR.trace');
         } else {
             echo $f3->get('lang_error');
         }
