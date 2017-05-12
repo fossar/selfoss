@@ -134,7 +134,7 @@ selfoss.events.entries = function(e) {
     
     $('.mark-these-read').unbind('click').click(selfoss.markVisibleRead);
 
-    $('.stream-error').unbind('click').click(selfoss.reloadList);
+    $('.stream-error').unbind('click').click(selfoss.dbOnline.reloadList);
 
     // more
     $('.stream-more').unbind('click').click(function () {
@@ -206,7 +206,7 @@ selfoss.events.entries = function(e) {
                     $('#nav-mobile-settings').click();
                 }
                 // refresh list
-                selfoss.reloadList();
+                selfoss.dbOnline.reloadList();
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 content.html(articleList);

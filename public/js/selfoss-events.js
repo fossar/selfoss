@@ -173,7 +173,7 @@ selfoss.events = {
 
             $('#nav-filter > li').removeClass('active');
             $('#nav-filter-'+selfoss.events.section).addClass('active');
-            selfoss.reloadList();
+            selfoss.dbOnline.reloadList();
         } else if(hash=="sources") { // load sources
             if( selfoss.events.subsection ) {
                 selfoss.ui.showError('Invalid subsection: '

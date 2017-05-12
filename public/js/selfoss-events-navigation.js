@@ -21,7 +21,7 @@ selfoss.events.navigation = function() {
                     color: color.toHexString()
                 },
                 success: function() {
-                    selfoss.reloadList();
+                    selfoss.dbOnline.reloadList();
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     selfoss.ui.showError('Can not save new color: '+
@@ -172,7 +172,7 @@ selfoss.events.navigation = function() {
                     $('#nav-mobile-settings').click();
 
                 // probe stats and prompt reload to the user
-                selfoss.sync(true).done(function() {
+                selfoss.dbOnline.sync(true).done(function() {
                     var refreshed = 'Sources have been refreshed';
                     if( $('.unread-count').hasClass('unread') ) {
                         selfoss.ui.showMessage(refreshed, 'Reload list',
