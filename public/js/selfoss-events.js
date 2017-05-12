@@ -36,9 +36,7 @@ selfoss.events = {
         selfoss.events.resize();
 
         if( location.hash == '' ) {
-            var homePagePath = $('#config').data('homepage').split('/');
-            if (!homePagePath[1]) homePagePath.push('all');
-            selfoss.events.setHash(homePagePath[0], homePagePath[1]);
+            selfoss.events.initHash();
         }
         
         // hash change event
@@ -46,6 +44,13 @@ selfoss.events = {
 
         // process current hash
         selfoss.events.processHash();
+    },
+
+
+    initHash: function() {
+        var homePagePath = $('#config').data('homepage').split('/');
+        if (!homePagePath[1]) homePagePath.push('all');
+        selfoss.events.setHash(homePagePath[0], homePagePath[1]);
     },
     
     
@@ -205,6 +210,8 @@ selfoss.events = {
                     $('#content').removeClass('loading');
                 }
             });
+        } else if (hash == 'login') {
+            selfoss.ui.showLogin();
         } else {
             selfoss.ui.showError('Invalid section: ' + selfoss.events.section);
         }

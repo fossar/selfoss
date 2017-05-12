@@ -5,7 +5,7 @@
 
     <meta charset="utf-8">
 
-    <title><?= trim(\F3::get('html_title')); echo $this->statsUnread > 0 ? ' (' . $this->statsUnread . ')' : ''; ?></title>
+    <title><?= trim(\F3::get('html_title')); ?></title>
 
     <meta name="description" content="selfoss" />
     <meta name="author" content="Tobias Zeising" />
@@ -52,7 +52,7 @@
 </head>
 <body class="
     <?= $this->publicMode === true ? 'publicmode' : ''; ?>
-    <?= $this->loggedin === true ? 'loggedin' : 'notloggedin'; ?>
+    <?= $this->authEnabled === true ? 'authenabled' : 'loggedin'; ?>
     <?= \F3::get('auto_mark_as_read') == 1 ? 'auto_mark_as_read' : ''; ?>
 ">
 
@@ -88,88 +88,101 @@
         data-scroll_to_article_header="<?= \F3::get('scroll_to_article_header'); ?>"
         data-html_title="<?= trim(\F3::get('html_title')); ?>"></span>
 
-    <!-- menue open for smartphone -->
-    <div id="nav-mobile">
-        <div id="nav-mobile-logo"><span class="unread-count"></span></div>
-        <div id="nav-mobile-settings"></div>
+
+    <div id="loginform">
+        <form action="<?= $this->base; ?>" method="post">
+        <ul id="login">
+            <li><h1>selfoss login</h1></li>
+            <li><label for="username"><?= trim(\F3::get('lang_login_username')); ?>:</label> <input type="text" name="username" id="username"></li>
+            <li><label for="password"><?= trim(\F3::get('lang_login_password')); ?>:</label> <input type="password" name="password" id="password"></li>
+            <li class="error"></li>
+            <li class="button"><label>&nbsp;</label><input type="submit" value="<?= \F3::get('lang_login'); ?>" /></li>
+        </ul>
+        </form>
     </div>
 
-    <!-- navigation -->
-    <div id="nav" role="navigation">
-        <div id="nav-logo"></div>
-        <button id="nav-mark"><?= \F3::get('lang_markread')?></button>
-
-        <div id="nav-filter-wrapper">
-        <h2 id="nav-filter-title" class="nav-filter-expanded" tabindex="0" aria-haspopup="true" aria-expanded="true"><?= \F3::get('lang_filter') ?></h2>
-        <ul id="nav-filter">
-            <li id="nav-filter-newest" class="nav-filter-newest" role="link" tabindex="0"><?= \F3::get('lang_newest')?> <span></span></li>
-            <li id="nav-filter-unread" class="nav-filter-unread" role="link" tabindex="0"><?= \F3::get('lang_unread')?> <span class="unread-count"></span></li>
-            <li id="nav-filter-starred" class="nav-filter-starred" role="link" tabindex="0"><?= \F3::get('lang_starred') ?> <span></span></li>
-        </ul>
+    <div id="mainui">
+        <!-- menu open for smartphone -->
+        <div id="nav-mobile">
+            <div id="nav-mobile-logo"><span class="unread-count"></span></div>
+            <div id="nav-mobile-settings"></div>
         </div>
 
-        <hr>
+        <!-- navigation -->
+        <div id="nav" role="navigation">
+            <div id="nav-logo"></div>
+            <button id="nav-mark"><?= \F3::get('lang_markread')?></button>
 
-        <div id="nav-tags-wrapper">
-        <h2 id="nav-tags-title" class="nav-tags-expanded" tabindex="0" aria-haspopup="true" aria-expanded="true"><?= \F3::get('lang_tags') ?></h2>
-        <ul id="nav-tags">
-            <li class="active nav-tags-all" role="link" tabindex="0"><?= \F3::get('lang_alltags')?></li>
-        </ul>
-        <h2 id="nav-sources-title" class="nav-sources-collapsed" tabindex="0" aria-haspopup="true" aria-expanded="false"><?= \F3::get('lang_sources') ?></h2>
-        <ul id="nav-sources">
-        </ul>
-        </div>
+            <div id="nav-filter-wrapper">
+            <h2 id="nav-filter-title" class="nav-filter-expanded" tabindex="0" aria-haspopup="true" aria-expanded="true"><?= \F3::get('lang_filter') ?></h2>
+            <ul id="nav-filter">
+                <li id="nav-filter-newest" class="nav-filter-newest" role="link" tabindex="0"><?= \F3::get('lang_newest')?> <span></span></li>
+                <li id="nav-filter-unread" class="nav-filter-unread" role="link" tabindex="0"><?= \F3::get('lang_unread')?> <span class="unread-count"></span></li>
+                <li id="nav-filter-starred" class="nav-filter-starred" role="link" tabindex="0"><?= \F3::get('lang_starred') ?> <span></span></li>
+            </ul>
+            </div>
 
-        <hr>
-
-        <!-- navigation search input just for smartphone version -->
-        <div id="nav-search" role="search">
-            <input type="search" id="nav-search-term"> <input type="button" id="nav-search-button" value="<?= \F3::get('lang_searchbutton')?>">
             <hr>
+
+            <div id="nav-tags-wrapper">
+            <h2 id="nav-tags-title" class="nav-tags-expanded" tabindex="0" aria-haspopup="true" aria-expanded="true"><?= \F3::get('lang_tags') ?></h2>
+            <ul id="nav-tags">
+                <li class="active nav-tags-all" role="link" tabindex="0"><?= \F3::get('lang_alltags')?></li>
+            </ul>
+            <h2 id="nav-sources-title" class="nav-sources-collapsed" tabindex="0" aria-haspopup="true" aria-expanded="false"><?= \F3::get('lang_sources') ?></h2>
+            <ul id="nav-sources">
+            </ul>
+            </div>
+
+            <hr>
+
+            <!-- navigation search input just for smartphone version -->
+            <div id="nav-search" role="search">
+                <input type="search" id="nav-search-term"> <input type="button" id="nav-search-button" value="<?= \F3::get('lang_searchbutton')?>">
+                <hr>
+            </div>
+
+            <?php if ($this->loggedin === true && \F3::get('auth')->enabled() === false) : ?>
+            <button id="nav-refresh" title="<?= trim(\F3::get('lang_refreshbutton')); ?>" class="nologin"></button>
+            <button id="nav-settings" title="<?= trim(\F3::get('lang_settingsbutton')); ?>" class="nologin"></button>
+            <?php endif; ?>
+
+            <button id="nav-refresh" title="<?= trim(\F3::get('lang_refreshbutton')); ?>"></button>
+            <button id="nav-settings" title="<?= trim(\F3::get('lang_settingsbutton')); ?>"></button>
+            <button id="nav-logout" title="<?= trim(\F3::get('lang_logoutbutton')); ?>"></button>
+
+            <?php if ($this->publicMode === true) : ?>
+            <button id="nav-login" title="<?= trim(\F3::get('lang_loginbutton')); ?>"></button>
+            <?php endif; ?>
+
+            <a id="nav-copyright" href="https://selfoss.aditu.de" target="_blank" rel="noopener noreferrer">selfoss <?= \F3::get('version'); ?></a>
         </div>
 
-        <?php if ($this->loggedin === true && \F3::get('auth')->enabled() === false) : ?>
-        <button id="nav-refresh" title="<?= trim(\F3::get('lang_refreshbutton')); ?>" class="nologin"></button>
-        <button id="nav-settings" title="<?= trim(\F3::get('lang_settingsbutton')); ?>" class="nologin"></button>
-        <?php endif; ?>
+        <!-- search -->
+        <div id="search" role="search">
+            <input type="search" id="search-term">
+            <button id="search-remove" title="<?= \F3::get('lang_searchremove')?>"><img src="images/remove.png" alt=""></button>
+            <button id="search-button" title="<?= \F3::get('lang_searchbutton')?>"><img src="images/search.png" alt=""></button>
+        </div>
 
-        <?php if ($this->loggedin === true && \F3::get('auth')->enabled() === true) : ?>
-        <button id="nav-refresh" title="<?= trim(\F3::get('lang_refreshbutton')); ?>"></button>
-        <button id="nav-settings" title="<?= trim(\F3::get('lang_settingsbutton')); ?>"></button>
-        <button id="nav-logout" title="<?= trim(\F3::get('lang_logoutbutton')); ?>"></button>
-        <?php endif; ?>
+        <ul id="search-list">
+        </ul>
 
-        <?php if ($this->loggedin === false) : ?>
-        <button id="nav-login" title="<?= trim(\F3::get('lang_loginbutton')); ?>"></button>
-        <?php endif; ?>
+        <!-- content -->
+        <div id="content" role="main">
+            <?= $this->content; ?>
+        </div>
 
-        <a id="nav-copyright" href="https://selfoss.aditu.de" target="_blank" rel="noopener noreferrer">selfoss <?= \F3::get('version'); ?></a>
+        <div id="stream-buttons">
+            <div class="stream-empty"><?= trim(\F3::get('lang_no_entries')); ?></div>
+            <div class="stream-button stream-more"><span><?= trim(\F3::get('lang_more')); ?></span></div>
+            <div class="stream-button mark-these-read"><span><?= trim(\F3::get('lang_markread')); ?></span></div>
+            <div class="stream-button stream-error"><?= trim(\F3::get('lang_streamerror')); ?></div>
+        </div>
+
+        <!-- fullscreen popup -->
+        <div id="fullscreen-entry"></div>
     </div>
-
-    <!-- search -->
-    <div id="search" role="search">
-        <input type="search" id="search-term">
-        <button id="search-remove" title="<?= \F3::get('lang_searchremove')?>"><img src="images/remove.png" alt=""></button>
-        <button id="search-button" title="<?= \F3::get('lang_searchbutton')?>"><img src="images/search.png" alt=""></button>
-    </div>
-
-    <ul id="search-list">
-    </ul>
-
-    <!-- content -->
-    <div id="content" role="main">
-        <?= $this->content; ?>
-    </div>
-
-    <div id="stream-buttons">
-        <div class="stream-empty"><?= trim(\F3::get('lang_no_entries')); ?></div>
-        <div class="stream-button stream-more"><span><?= trim(\F3::get('lang_more')); ?></span></div>
-        <div class="stream-button mark-these-read"><span><?= trim(\F3::get('lang_markread')); ?></span></div>
-        <div class="stream-button stream-error"><?= trim(\F3::get('lang_streamerror')); ?></div>
-    </div>
-
-    <!-- fullscreen popup -->
-    <div id="fullscreen-entry"></div>
 
     <script src="<?= \helpers\View::getGlobalJsFileName(); ?>"></script>
 </body>

@@ -49,8 +49,7 @@ selfoss.events.navigation = function() {
         $('#nav-filter > li').removeClass('active');
         $(this).addClass('active');
         
-        if(selfoss.isSmartphone() && $('#nav').is(':visible'))
-            $('#nav-mobile-settings').click();
+        selfoss.ui.hideMobileNav();
     });
     
     // hide/show filters
@@ -77,8 +76,7 @@ selfoss.events.navigation = function() {
             selfoss.events.setHash(selfoss.filter.type, 'all');
         }
             
-        if(selfoss.isSmartphone() && $('#nav').is(':visible'))
-            $('#nav-mobile-settings').click();
+        selfoss.ui.hideMobileNav();
     });
     
     // hide/show tags
@@ -99,8 +97,7 @@ selfoss.events.navigation = function() {
         selfoss.events.setHash(selfoss.filter.type,
                                'source-' + $(this).attr('id').substr(6));
         
-        if(selfoss.isSmartphone() && $('#nav').is(':visible'))
-            $('#nav-mobile-settings').click();
+        selfoss.ui.hideMobileNav();
     });
     
     // hide/show sources
@@ -193,7 +190,7 @@ selfoss.events.navigation = function() {
     
     // login
     $('#nav-login').unbind('click').click(function () {
-        window.location.href = $('base').attr('href')+"?login=1";
+        selfoss.events.setHash('login', false);
     });
     
     // only loggedin users
@@ -210,8 +207,6 @@ selfoss.events.navigation = function() {
         
         
         // logout
-        $('#nav-logout').unbind('click').click(function () {
-            window.location.href = $('base').attr('href')+"?logout=1";
-        });
+        $('#nav-logout').unbind('click').click(selfoss.logout);
     }
 };

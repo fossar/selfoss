@@ -50,12 +50,29 @@ var selfoss = {
      */
     init: function() {
         jQuery(document).ready(function() {
-            // reduced init on login
-            if($('#login').length>0) {
-                $('#username').focus();
-                return;
+            if (selfoss.hasSession() || !$('body').hasClass('authenabled')) {
+                selfoss.ui.login();
+                selfoss.initUi();
+            } else if ($('body').hasClass('publicmode')) {
+                selfoss.ui.logout();
+                selfoss.initUi();
+            } else {
+                selfoss.ui.logout();
+                selfoss.events.setHash('login', false);
             }
+
+            $('#loginform').submit(selfoss.login);
+        });
+    },
+
+
+    initUiDone: false,
         
+
+    initUi: function() {
+        if (!selfoss.initUiDone) {
+            selfoss.initUiDone = true;
+
             // set items per page
             selfoss.filter.itemsPerPage = $('#config').data('items_perpage');
 
@@ -78,7 +95,9 @@ var selfoss = {
             window.setInterval(selfoss.dbOnline.sync, 60*1000);
 
             window.setInterval(selfoss.ui.refreshEntryDatetimes, 60*1000);
-        });
+
+            selfoss.ui.showMainUi();
+        }
     },
     
     
@@ -101,6 +120,75 @@ var selfoss = {
         });
         
         return values;
+    },
+
+
+    loggedin: false,
+
+
+    setSession: function() {
+        Cookies.set('onlineSession', 'true', {expires: 10,
+                                              path: window.location.pathname});
+        selfoss.loggedin = true;
+    },
+
+
+    clearSession: function() {
+        Cookies.remove('onlineSession', {path: window.location.pathname});
+        selfoss.loggedin = false;
+    },
+
+
+    hasSession: function() {
+        selfoss.loggedin = Cookies.get('onlineSession') == 'true';
+        return selfoss.loggedin;
+    },
+
+
+    login: function(e) {
+        $('#loginform').addClass('loading');
+        f = $('#loginform form');
+        $.ajax({
+            type: 'POST',
+            url: 'login',
+            dataType: 'json',
+            data: f.serialize(),
+            success: function(data) {
+                if (data.success) {
+                    $('#password').val('');
+                    selfoss.setSession();
+                    selfoss.ui.login();
+                    selfoss.ui.showMainUi();
+                    selfoss.initUi();
+                    selfoss.events.initHash();
+                } else {
+                    selfoss.events.setHash('login', false);
+                    selfoss.ui.showLogin(data.error);
+                }
+            },
+            complete: function(jqXHR, textStatus) {
+                $('#loginform').removeClass('loading');
+            }
+        });
+        e.preventDefault();
+    },
+
+
+    logout: function() {
+        selfoss.clearSession();
+        selfoss.ui.logout();
+        if (!$('body').hasClass('publicmode'))
+            selfoss.events.setHash('login', false);
+
+        $.ajax({
+            type: 'GET',
+            url: 'logout',
+            dataType: 'json',
+            error: function(jqXHR, textStatus, errorThrown) {
+                selfoss.ui.showError('Could not log out: '+
+                                     textStatus+' '+errorThrown);
+            }
+        });
     },
     
     
@@ -196,15 +284,13 @@ var selfoss = {
     refreshUnread: function(unread) {
         $('span.unread-count').html(unread);
 
-        // make unread itemcount red and show the unread count in the document
-        // title
         if(unread>0) {
             $('span.unread-count').addClass('unread');
-            $(document).attr('title', selfoss.htmlTitle+' ('+unread+')');
         } else {
             $('span.unread-count').removeClass('unread');
-            $(document).attr('title', selfoss.htmlTitle);
         }
+
+        selfoss.ui.refreshTitle(unread);
     },
 
 

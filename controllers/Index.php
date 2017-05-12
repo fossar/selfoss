@@ -17,9 +17,6 @@ class Index extends BaseController {
      * @return void
      */
     public function home() {
-        // check login
-        $this->authentication();
-
         // parse params
         $options = [];
         if (\F3::get('homepage') != '') {
@@ -33,12 +30,14 @@ class Index extends BaseController {
 
         if (!isset($options['ajax'])) {
             // show as full html page
-            $this->view->publicMode = \F3::get('auth')->isLoggedin() !== true && \F3::get('public') == 1;
-            $this->view->loggedin = \F3::get('auth')->isLoggedin() === true;
+            $this->view->publicMode = \F3::get('public') == 1;
+            $this->view->authEnabled = \F3::get('auth')->enabled() === true;
             echo $this->view->render('templates/home.phtml');
 
             return;
         }
+
+        $this->needsLoggedInOrPublicMode();
 
         // get search param
         if (isset($options['search']) && strlen($options['search']) > 0) {
@@ -108,44 +107,7 @@ class Index extends BaseController {
         if (isset($_POST['password'])) {
             $this->view->hash = hash('sha512', \F3::get('salt') . $_POST['password']);
         }
-        echo $this->view->render('templates/login.phtml');
-    }
-
-    /**
-     * check and show login/logout
-     * html
-     *
-     * @return void
-     */
-    private function authentication() {
-        // logout
-        if (isset($_GET['logout'])) {
-            \F3::get('auth')->logout();
-            \F3::reroute($this->view->base);
-        }
-
-        // login
-        $loginRequired = \F3::get('public') != 1 && \F3::get('auth')->isLoggedin() !== true;
-        $showLoginForm = isset($_GET['login']) || $loginRequired;
-        if ($showLoginForm) {
-            // authenticate?
-            if (count($_POST) > 0) {
-                if (!isset($_POST['username'])) {
-                    $this->view->error = 'no username given';
-                } elseif (!isset($_POST['password'])) {
-                    $this->view->error = 'no password given';
-                } elseif (!\F3::get('auth')->login($_POST['username'], $_POST['password'])) {
-                    $this->view->error = 'invalid username/password';
-                }
-            }
-
-            // show login
-            if (count($_POST) === 0 || isset($this->view->error)) {
-                die($this->view->render('templates/login.phtml'));
-            } else {
-                \F3::reroute($this->view->base);
-            }
-        }
+        echo $this->view->render('templates/hashpassword.phtml');
     }
 
     /**
@@ -156,8 +118,29 @@ class Index extends BaseController {
      */
     public function login() {
         $view = new \helpers\View();
-        $username = isset($_REQUEST['username']) ? $_REQUEST['username'] : '';
-        $password = isset($_REQUEST['password']) ? $_REQUEST['password'] : '';
+
+        $error = null;
+
+        if (isset($_REQUEST['username'])) {
+            $username = $_REQUEST['username'];
+        } else {
+            $username = '';
+            $error = 'no username given';
+        }
+
+        if (isset($_REQUEST['password'])) {
+            $password = $_REQUEST['password'];
+        } else {
+            $password = '';
+            $error = 'no password given';
+        }
+
+        if ($error !== null) {
+            $view->jsonError([
+                'success' => false,
+                'error' => $error
+            ]);
+        }
 
         if (\F3::get('auth')->login($username, $password)) {
             $view->jsonSuccess([
@@ -166,7 +149,8 @@ class Index extends BaseController {
         }
 
         $view->jsonSuccess([
-            'success' => false
+            'success' => false,
+            'error' => 'invalid username/password'
         ]);
     }
 

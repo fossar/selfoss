@@ -32,7 +32,7 @@ selfoss.dbOnline = {
             type: 'GET',
             dataType: 'json',
             data: {
-                since:         selfoss.db.lastUpdate.toISOString(),
+                since:         selfoss.lastUpdate.toISOString(),
                 tags:          true,
                 sources:       selfoss.filter.sourcesNav ? true : undefined,
                 itemsStatuses: getStatuses

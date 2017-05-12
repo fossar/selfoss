@@ -19,7 +19,7 @@ selfoss.events.entries = function(e) {
         if(parent.hasClass('fullscreen'))
             return;
         
-        var autoMarkAsRead = $('#config').data('auto_mark_as_read')=="1" && parent.hasClass('unread');
+        var autoMarkAsRead = $('body').hasClass('loggedin') && $('#config').data('auto_mark_as_read')=="1" && parent.hasClass('unread');
         var autoHideReadOnMobile = $('#config').data('auto_hide_read_on_mobile')=="1" && parent.hasClass('unread');
         
         // anonymize

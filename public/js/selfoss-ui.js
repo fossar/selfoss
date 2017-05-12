@@ -4,6 +4,55 @@
 selfoss.ui = {
 
 
+    showLogin: function(error) {
+        var error = (typeof error !== 'undefined') ? error : '';
+
+        $('#mainui').hide();
+        $('#loginform').show();
+        selfoss.ui.refreshTitle(0);
+        $('#loginform .error').html(error);
+        $('#username').focus();
+    },
+
+
+    showMainUi: function() {
+        $('#loginform').hide();
+        $('#mainui').show();
+
+        selfoss.ui.refreshTitle();
+        selfoss.events.resize();
+        selfoss.events.navigation();
+    },
+
+
+    hideMobileNav: function() {
+        if(selfoss.isSmartphone() && $('#nav').is(':visible'))
+            $('#nav-mobile-settings').click();
+    },
+
+
+    refreshTitle: function(unread) {
+        var unread = (typeof unread !== 'undefined') ? unread : parseInt($('span.unread-count').html());
+
+        if(unread>0) {
+            $(document).attr('title', selfoss.htmlTitle+' ('+unread+')');
+        } else {
+            $(document).attr('title', selfoss.htmlTitle);
+        }
+    },
+
+
+    login: function() {
+        $('body').addClass('loggedin').removeClass('notloggedin');
+    },
+
+
+    logout: function() {
+        selfoss.ui.hideMobileNav();
+        $('body').removeClass('loggedin').addClass('notloggedin');
+    },
+
+
     entryStarr: function(id, starred) {
         var button = $("#entry"+id+" .entry-starr, #entrr"+id+" .entry-starr");
 

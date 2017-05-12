@@ -24,6 +24,10 @@ body * {
 	outline:0;
 }
 
+#mainui {
+    height: 100%;
+}
+
 #message {
     display:none;
     position:absolute;
@@ -420,7 +424,7 @@ body * {
 
     #content.loading {
         background:url(images/ajax-loader-big.gif) center center no-repeat;
-        min-height:90%
+        min-height:90%;
     }
 
 .entry ,
@@ -852,6 +856,23 @@ body * {
 
 /* login */
 
+#mainui {
+    display: none;
+}
+
+#loginform {
+    display: none;
+}
+
+#loginform.loading {
+    background:url(images/ajax-loader-big.gif) center center no-repeat;
+    height: 90%;
+}
+
+#loginform.loading form {
+    display: none;
+}
+
 #login {
     position:absolute;
     left:50%;
@@ -944,12 +965,20 @@ body * {
     
 /* public mode */
 
-body.publicmode.notloggedin #nav-mark,
-body.publicmode.notloggedin .entry-starr,
-body.publicmode.notloggedin .entry-unread {
+#nav-login,
+body.publicmode.authenabled.loggedin #nav-login,
+#nav-logout,
+body.notloggedin #nav-mark,
+body.notloggedin #nav-settings,
+body.notloggedin .entry-starr,
+body.notloggedin .entry-unread {
     display:none;
 }
 
+body.publicmode.authenabled #nav-login,
+body.authenabled.loggedin #nav-logout {
+    display: block;
+}
 
 /* mobile version */
 
