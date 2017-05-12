@@ -302,7 +302,7 @@ class commits extends \spouts\spout {
     public static function cutTitle($title, $cutafter = 69) {
         $title = strtok($title, "\n");
         if (($cutafter > 0) && (strlen($title) > $cutafter)) {
-            return substr($title, 0, $cutafter) . '&hellip;';
+            return substr($title, 0, $cutafter) . '…';
         }
 
         return $title;
