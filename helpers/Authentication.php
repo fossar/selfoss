@@ -74,18 +74,6 @@ class Authentication {
      *
      * @return bool
      */
-    public function loginWithoutUser() {
-        $this->loggedin = true;
-    }
-
-    /**
-     * login user
-     *
-     * @param string $username
-     * @param string $password
-     *
-     * @return bool
-     */
     public function login($username, $password) {
         if ($this->enabled()) {
             if (
