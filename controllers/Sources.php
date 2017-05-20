@@ -161,13 +161,11 @@ class Sources extends BaseController {
         $tags = array_map('htmlspecialchars', $data['tags']);
         $spout = $data['spout'];
         $filter = $data['filter'];
-        $isAjax = isset($data['ajax']);
 
         unset($data['title']);
         unset($data['spout']);
         unset($data['filter']);
         unset($data['tags']);
-        unset($data['ajax']);
 
         // check if source already exists
         $id = $params['id'];
@@ -218,7 +216,7 @@ class Sources extends BaseController {
         ];
 
         // only for selfoss ui (update stats in navigation)
-        if ($isAjax) {
+        if ($f3->ajax()) {
             // get new tag list with updated count values
             $tagController = new \controllers\Tags();
             $return['tags'] = $tagController->tagsListAsString();

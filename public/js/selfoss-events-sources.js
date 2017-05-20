@@ -57,7 +57,6 @@ selfoss.events.sources = function() {
         // get values and params
         var values = selfoss.getValues(parent);
         values['tags'] = values['tags'].split(',');
-        values['ajax'] = true;
 
         $.ajax({
             url: url,
@@ -124,7 +123,7 @@ selfoss.events.sources = function() {
         // delete on server
         $.ajax({
             url: $('base').attr('href') + 'source/delete/' + id,
-            data: { ajax: true },
+            data: {},
             type: 'POST',
             success: function() {
                 parent.fadeOut('fast', function() {
