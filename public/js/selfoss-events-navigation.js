@@ -162,7 +162,7 @@ selfoss.events.navigation = function() {
         $('#nav-refresh').addClass('loading');
 
         $.ajax({
-            url: $('base').attr('href') + 'update',
+            url: $('base').attr('href') + 'Update',
             type: 'GET',
             dataType: 'text',
             data: {},
