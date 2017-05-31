@@ -249,7 +249,24 @@ class usertimeline extends \spouts\spout {
      * @return string content
      */
     public function getContent() {
-        return;
+        $result = '';
+
+        if ($this->items !== false) {
+            $item = current($this->items);
+            if (isset($item->retweeted_status)) {
+                $item = $item->retweeted_status;
+            }
+
+            if (isset($item->extended_entities) && isset($item->extended_entities->media) && count($item->extended_entities->media) > 1) {
+                foreach ($item->extended_entities->media as $media) {
+                    if ($media->type === 'photo') {
+                        $result .= '<p><a href="' . $media->media_url_https . ':large"><img src="' . $media->media_url_https . ':small" alt=""></a></p>' . PHP_EOL;
+                    }
+                }
+            }
+        }
+
+        return $result;
     }
 
     /**

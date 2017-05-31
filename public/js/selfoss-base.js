@@ -452,9 +452,10 @@ var selfoss = {
     setupFancyBox: function(content, id) {
         // Close existing fancyBoxes
         $.fancybox.close();
-        var images = $(content).find('a[href$=".jpg"],a[href$=".jpeg"],a[href$=".png"],a[href$=".gif"]');
+        var images = $(content).find('a[href$=".jpg"], a[href$=".jpeg"], a[href$=".png"], a[href$=".gif"], a[href$=".jpg:large"], a[href$=".jpeg:large"], a[href$=".png:large"], a[href$=".gif:large"]');
         $(images).attr('rel', 'gallery-'+id).unbind('click');
         $(images).fancybox({
+            type: 'image',
             helpers: {
                 overlay: {
                     locked: false
