@@ -76,7 +76,8 @@ class listtimeline extends \spouts\twitter\usertimeline {
                 'slug' => $params['slug'],
                 'owner_screen_name' => $params['owner_screen_name'],
                 'include_rts' => 1,
-                'count' => 50
+                'count' => 50,
+                'tweet_mode' => 'extended',
             ]);
 
         if (isset($timeline->errors)) {

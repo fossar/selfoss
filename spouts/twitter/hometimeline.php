@@ -79,7 +79,11 @@ class hometimeline extends \spouts\twitter\usertimeline {
      */
     public function load($params) {
         $twitter = new TwitterOAuth($params['consumer_key'], $params['consumer_secret'], $params['access_key'], $params['access_secret']);
-        $timeline = $twitter->get('statuses/home_timeline', ['include_rts' => 1, 'count' => 50]);
+        $timeline = $twitter->get('statuses/home_timeline', [
+            'include_rts' => 1,
+            'count' => 50,
+            'tweet_mode' => 'extended',
+        ]);
 
         if (isset($timeline->errors)) {
             $errors = '';
