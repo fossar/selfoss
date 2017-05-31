@@ -281,7 +281,7 @@ class usertimeline extends \spouts\spout {
                 $item = $item->retweeted_status;
             }
 
-            return $item->user->profile_image_url;
+            return $item->user->profile_image_url_https;
         }
 
         return false;
@@ -314,7 +314,7 @@ class usertimeline extends \spouts\spout {
                 $item = $item->retweeted_status;
             }
             if (isset($item->entities->media) && $item->entities->media[0]->type === 'photo') {
-                return $item->entities->media[0]->media_url;
+                return $item->entities->media[0]->media_url_https;
             }
         }
 
