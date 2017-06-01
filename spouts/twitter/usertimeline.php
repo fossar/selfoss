@@ -264,6 +264,15 @@ class usertimeline extends \spouts\spout {
                     }
                 }
             }
+
+            if (isset($item->quoted_status)) {
+                $quoted = $item->quoted_status;
+                $tweet_url = 'https://twitter.com/' . $quoted->user->screen_name . '/status/' . $quoted->status_id_str;
+                $entities = self::formatEntities($quoted->entities);
+
+                $result .= '<a href="https://twitter.com/' . $quoted->user->screen_name . '">@' . $quoted->user->screen_name . '</a>:';
+                $result .= '<blockquote>' . self::replaceEntities($quoted->full_text, $entities) . '</blockquote>';
+            }
         }
 
         return $result;
