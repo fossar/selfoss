@@ -9,7 +9,7 @@ namespace spouts\rss;
  * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
-class mmospy extends feed {
+class mmospy extends fulltextrss {
     /** @var string name of spout */
     public $name = 'News: MMOspy';
 
@@ -68,46 +68,5 @@ class mmospy extends feed {
      */
     public function getXmlUrl($params = null) {
         return $this->feedUrl;
-    }
-
-    /**
-     * returns the content of this item
-     *
-     * @return string content
-     */
-    public function getContent() {
-        if ($this->items !== false && $this->valid()) {
-            $originalContent = file_get_contents($this->getLink());
-            preg_match_all('|<div class="content">(.*?)</div>|ims', $originalContent, $matches, PREG_PATTERN_ORDER);
-            if (is_array($matches) && is_array($matches[0]) && isset($matches[0][0])) {
-                $content = utf8_encode($matches[0][0]);
-
-                $content = preg_replace_callback(',<a([^>]+)href="([^>"\s]+)",i', function($matches) {
-                    return "<a\1href=\"" . \spouts\rss\mmospy::absolute("\2", 'http://www.mmo-spy.de') . '"';
-                }, $content);
-                $content = preg_replace_callback(',<img([^>]+)src="([^>"\s]+)",i', function($matches) {
-                    return "<img\1src=\"" . \spouts\rss\mmospy::absolute("\2", 'http://www.mmo-spy.de') . '"';
-                }, $content);
-
-                return $content;
-            }
-        }
-
-        return parent::getContent();
-    }
-
-    /**
-     * convert relative url to absolute
-     *
-     * @return string absolute url
-     * @return string $relative url
-     * @return string $absolute url
-     */
-    public static function absolute($relative, $absolute) {
-        if (preg_match(',^(https?://|ftp://|mailto:|news:),i', $relative)) {
-            return $relative;
-        }
-
-        return $absolute . $relative;
     }
 }

@@ -11,7 +11,7 @@ namespace spouts\rss;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  * @author     Daniel Seither <post@tiwoc.de>
  */
-class teltarif extends feed {
+class teltarif extends fulltextrss {
     /** @var string name of spout */
     public $name = 'News: Teltarif';
 
@@ -51,16 +51,6 @@ class teltarif extends feed {
     private $feedUrl = 'http://www.teltarif.de/feed/news/20.rss2';
 
     /**
-     * htmLawed configuration
-     */
-    private $htmLawedConfig = [
-        'abs_url' => 1,
-        'base_url' => 'http://www.teltarif.de/',
-        'comment' => 1,
-        'safe' => 1,
-    ];
-
-    /**
      * loads content for given source
      *
      * @param string $url
@@ -80,39 +70,5 @@ class teltarif extends feed {
      */
     public function getXmlUrl($params = null) {
         return $this->feedUrl;
-    }
-
-    /**
-     * returns the content of this item
-     *
-     * @return string content
-     */
-    public function getContent() {
-        $start_marker = '<!-- Artikel -->';
-        $end_marker = '<!-- NOPRINT Start -->';
-
-        if ($this->items !== false && $this->valid()) {
-            $originalContent = @file_get_contents($this->getLink());
-            if ($originalContent) {
-                $originalContent = mb_convert_encoding($originalContent, 'UTF-8', 'ISO-8859-1');
-
-                // cut the article from the page
-                $text_start_pos = strpos($originalContent, $start_marker);
-                $text_end_pos = strrpos($originalContent, $end_marker);
-
-                if (($text_start_pos != false) && ($text_end_pos != false)) {
-                    $content = substr(
-                        $originalContent,
-                        $text_start_pos + strlen($start_marker),
-                        $text_end_pos - $text_start_pos - strlen($start_marker)
-                    );
-
-                    // remove most html coding and return result
-                    return htmLawed($content, $this->htmLawedConfig);
-                }
-            }
-        }
-
-        return parent::getContent();
     }
 }
