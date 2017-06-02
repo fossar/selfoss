@@ -2,6 +2,8 @@
 
 namespace spouts\github;
 
+use helpers\WebClient;
+
 /**
  * Spout for fetching from GitHub
  *
@@ -147,13 +149,18 @@ class commits extends \spouts\spout {
      *
      * @param mixed $params the params of this source
      *
+     * @throws \GuzzleHttp\Exception\RequestException When an error is encountered
+     *
      * @return void
      */
     public function load($params) {
         $this->htmlUrl = 'https://github.com/' . urlencode($params['owner']) . '/' . urlencode($params['repo']) . '/' . urlencode($params['branch']);
 
         $jsonUrl = 'https://api.github.com/repos/' . urlencode($params['owner']) . '/' . urlencode($params['repo']) . '/commits?sha=' . urlencode($params['branch']);
-        $this->items = $this->getJsonContent($jsonUrl);
+
+        $http = WebClient::getHttpClient();
+        $response = $http->get($jsonUrl);
+        $this->items = $response->json();
 
         $this->spoutTitle = "Recent Commits to {$params['repo']}:{$params['branch']}";
     }
@@ -174,7 +181,7 @@ class commits extends \spouts\spout {
      */
     public function getId() {
         if ($this->items !== false && $this->valid()) {
-            return @current($this->items)->sha;
+            return @current($this->items)['sha'];
         }
 
         return false;
@@ -187,7 +194,7 @@ class commits extends \spouts\spout {
      */
     public function getTitle() {
         if ($this->items !== false && $this->valid()) {
-            $message = @current($this->items)->commit->message;
+            $message = @current($this->items)['commit']['message'];
 
             return htmlspecialchars(self::cutTitle($message));
         }
@@ -202,7 +209,7 @@ class commits extends \spouts\spout {
      */
     public function getContent() {
         if ($this->items !== false && $this->valid()) {
-            $message = @current($this->items)->commit->message;
+            $message = @current($this->items)['commit']['message'];
 
             return nl2br(htmlspecialchars($message), false);
         }
@@ -226,7 +233,7 @@ class commits extends \spouts\spout {
      */
     public function getLink() {
         if ($this->items !== false && $this->valid()) {
-            return @current($this->items)->html_url;
+            return @current($this->items)['html_url'];
         }
 
         return false;
@@ -239,7 +246,7 @@ class commits extends \spouts\spout {
      */
     public function getDate() {
         if ($this->items !== false && $this->valid()) {
-            $date = date('Y-m-d H:i:s', strtotime(@current($this->items)->commit->author->date));
+            $date = date('Y-m-d H:i:s', strtotime(@current($this->items)['commit']['author']['date']));
         }
         if (strlen($date) == 0) {
             $date = date('Y-m-d H:i:s');
@@ -254,30 +261,6 @@ class commits extends \spouts\spout {
     public function destroy() {
         unset($this->items);
         $this->items = false;
-    }
-
-    /**
-     * get JSON object
-     *
-     * @param string $url URL
-     *
-     * @return object JSON object
-     */
-    public function getJsonContent($url) {
-        $content = null;
-        try {
-            $content = \helpers\WebClient::request($url);
-        } catch (\Exception $e) {
-            throw new \Exception('github spout error ' . $e->getMessage());
-        }
-
-        $json = @json_decode($content);
-
-        if (empty($json)) {
-            throw new \Exception('github spout error: empy json');
-        }
-
-        return $json;
     }
 
     /**
