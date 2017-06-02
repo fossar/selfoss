@@ -2,6 +2,11 @@
 
 namespace helpers;
 
+use Exception;
+use GuzzleHttp;
+use GuzzleHttp\Subscriber\Log\LogSubscriber;
+use Fossar\GuzzleTranscoder\GuzzleTranscoder;
+
 /**
  * Helper class for web request
  *
@@ -10,6 +15,36 @@ namespace helpers;
  * @author     Alexandre Rossi <alexandre.rossi@gmail.com>
  */
 class WebClient {
+    /** @var GuzzleHttp\Client */
+    private static $httpClient;
+
+    /**
+     * Provide a HTTP client for use by spouts
+     *
+     * @return GuzzleHttp\Client
+     */
+    public static function getHttpClient() {
+        if (!isset(self::$httpClient)) {
+            $version = \F3::get('version');
+            $httpClient = new GuzzleHttp\Client([
+                'defaults' => [
+                    'headers' => [
+                        'User-Agent' => self::getUserAgent(),
+                    ]
+                ]
+            ]);
+            $httpClient->getEmitter()->attach(new GuzzleTranscoder());
+
+            if ($f3->get('logger_level') === 'DEBUG') {
+                $httpClient->getEmitter()->attach(new LogSubscriber(\F3::get('logger')));
+            }
+
+            self::$httpClient = $httpClient;
+        }
+
+        return self::$httpClient;
+    }
+
     /**
      * get the user agent to use for web based spouts
      *
@@ -32,31 +67,20 @@ class WebClient {
      *
      * @param string $subagent Extra user agent info to use in the request
      *
+     * @throws GuzzleHttp\Exception\RequestException When an error is encountered
+     * @throws Exception Unless 200 0K response is received
+     *
      * @return string request data
      */
     public static function request($url, $agentInfo = null) {
-        $options = [
-            'user_agent' => self::getUserAgent($agentInfo),
-            'ignore_errors' => true,
-            'timeout' => 60
-        ];
-        $request = \Web::instance()->request($url, $options);
+        $http = self::getHttpClient();
+        $response = $http->get($url);
+        $data = (string) $response->getBody();
 
-        // parse last (in case of redirects) HTTP status
-        $http_status = null;
-        foreach ($request['headers'] as $header) {
-            if (substr($header, 0, 5) == 'HTTP/') {
-                $tokens = explode(' ', $header);
-                if (isset($tokens[1])) {
-                    $http_status = $tokens[1];
-                }
-            }
+        if ($response->getStatusCode() !== 200) {
+            throw new Exception(substr($data, 0, 512));
         }
 
-        if ($http_status != '200') {
-            throw new \Exception(substr($request['body'], 0, 512));
-        }
-
-        return $request['body'];
+        return $data;
     }
 }

@@ -6,6 +6,7 @@ function isNotUnimportant(dest) {
     const filenameDisallowed = [
         /^changelog/i,
         /^contributing/i,
+        /^upgrading/i,
         /^copying/i,
         /^readme/i,
         /^licen[cs]e/i,
