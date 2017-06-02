@@ -3,6 +3,7 @@
 namespace spouts\rss;
 
 use Graby\Graby;
+use helpers\WebClient;
 
 /**
  * Plugin for fetching the news with fivefilters Full-Text RSS
@@ -45,15 +46,12 @@ class fulltextrss extends feed {
 
         if (!isset($this->graby)) {
             $this->graby = new Graby([
-                'http_client' => [
-                    'ua_browser' => 'SimplePie/1.3.1 (Feed Parser; http://simplepie.org; Allow like Gecko) Build/20121030175911',
-                ],
                 'extractor' => [
                     'config_builder' => [
                         'site_config' => [\F3::get('FTRSS_CUSTOM_DATA_DIR')],
                     ],
                 ],
-            ]);
+            ], WebClient::getHttpClient());
             $logger = \F3::get('logger')->withName(self::$loggerTag);
             $this->graby->setLogger($logger);
         }
