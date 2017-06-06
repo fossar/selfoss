@@ -47,7 +47,6 @@ class Opml extends BaseController {
     public function show() {
         $this->needsLoggedIn();
 
-        $this->view = new \helpers\View();
         $this->view->msg = $this->msg;
         $this->view->msgclass = $this->msgclass;
         echo $this->view->render('templates/opml.phtml');

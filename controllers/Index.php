@@ -102,7 +102,6 @@ class Index extends BaseController {
      * @return void
      */
     public function password() {
-        $this->view = new \helpers\View();
         $this->view->password = true;
         if (isset($_POST['password'])) {
             $this->view->hash = hash('sha512', \F3::get('salt') . $_POST['password']);
@@ -117,8 +116,6 @@ class Index extends BaseController {
      * @return void
      */
     public function login() {
-        $view = new \helpers\View();
-
         $error = null;
 
         if (isset($_REQUEST['username'])) {
@@ -136,19 +133,19 @@ class Index extends BaseController {
         }
 
         if ($error !== null) {
-            $view->jsonError([
+            $this->view->jsonError([
                 'success' => false,
                 'error' => $error
             ]);
         }
 
         if (\F3::get('auth')->login($username, $password)) {
-            $view->jsonSuccess([
+            $this->view->jsonSuccess([
                 'success' => true
             ]);
         }
 
-        $view->jsonSuccess([
+        $this->view->jsonSuccess([
             'success' => false,
             'error' => 'invalid username/password'
         ]);
@@ -161,9 +158,8 @@ class Index extends BaseController {
      * @return void
      */
     public function logout() {
-        $view = new \helpers\View();
         \F3::get('auth')->logout();
-        $view->jsonSuccess([
+        $this->view->jsonSuccess([
             'success' => true
         ]);
     }
