@@ -103,9 +103,7 @@ class Image {
         }
 
         // get image type
-        $tmp = \F3::get('cache') . '/' . md5($url);
-        file_put_contents($tmp, $data);
-        $imgInfo = @getimagesize($tmp);
+        $imgInfo = @getimagesizefromstring($data);
         if (in_array(strtolower($imgInfo['mime']), self::$faviconMimeTypes, true)) {
             $type = 'ico';
         } elseif (strtolower($imgInfo['mime']) == 'image/png') {
