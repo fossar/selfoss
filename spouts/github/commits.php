@@ -69,7 +69,7 @@ class commits extends \spouts\spout {
     protected $htmlUrl = '';
 
     /** @var string URL of the favicon */
-    protected $faviconUrl = '';
+    protected $faviconUrl = 'https://assets-cdn.github.com/favicon.ico';
 
     //
     // Iterator Interface
@@ -216,17 +216,6 @@ class commits extends \spouts\spout {
      * @return string icon url
      */
     public function getIcon() {
-        if (isset($this->faviconUrl)) {
-            return $this->faviconUrl;
-        }
-
-        $this->faviconUrl = false;
-        $imageHelper = $this->getImageHelper();
-        $htmlUrl = $this->getHtmlUrl();
-        if ($htmlUrl && $imageHelper->fetchFavicon($htmlUrl)) {
-            $this->faviconUrl = $imageHelper->getFaviconUrl();
-        }
-
         return $this->faviconUrl;
     }
 
