@@ -73,6 +73,8 @@ DEVELOPMENT
 
 Selfoss uses [composer](https://getcomposer.org/) for installing external libraries. When you clone the repository you have to issue `composer install` to retrieve the external sources.
 
+For the client side, you will also need JavaScript dependencies installed by calling `npm install` in the `public` directory.
+
 CREDITS
 -------
 

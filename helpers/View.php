@@ -147,6 +147,11 @@ class View {
         $maxmtime = 0;
         foreach ($filePaths as $filePath) {
             $fullPath = \F3::get('BASEDIR') . '/' . $filePath;
+
+            if (!file_exists($fullPath)) {
+                throw new \Exception("Missing file “${filePath}”. Did you install the dependencies using npm?");
+            }
+
             $maxmtime = max($maxmtime, filemtime($fullPath));
         }
 

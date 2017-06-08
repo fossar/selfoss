@@ -35,9 +35,34 @@ function isNotUnimportant(dest) {
 }
 
 module.exports = function(grunt) {
+    const requiredAssets = (function() {
+        const assets = [];
+
+        const index = grunt.file.read('index.php');
+
+        index.match(/\$js = \[\n([^\]]*)\];\n/)[1].replace(/'([^']+)'/g, function(_, file) {
+            assets.push(file);
+        });
+
+        index.match(/\$css = \[\n([^\]]*)\];\n/)[1].replace(/'([^']+)'/g, function(_, file) {
+            assets.push(file);
+        });
+
+        return assets;
+    })();
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
+
+        /* Install client-side dependencies */
+        auto_install: {
+            subdir: {
+                options: {
+                    cwd: 'public',
+                    npm: '--production'
+                }
+            }
+        },
 
         /* version text replace */
         replace: {
@@ -88,9 +113,14 @@ module.exports = function(grunt) {
                     { expand: true, cwd: 'helpers/', src: ['**'], dest: '/helpers'},
                     { expand: true, cwd: 'vendor/', src: ['**'], dest: '/vendor', filter: isNotUnimportant},
 
-                    // public = don't zip all.js and all.css
+                    // do not pack bundled assets and assets not listed in index.php
                     { expand: true, cwd: 'public/', src: ['**'], dest: '/public', filter: function(file) {
-                        return file.indexOf('all.js') === -1 && file.indexOf('all.css') === -1;
+                        const bundle = file === 'public/all.js' || file === 'public/all.css';
+                        const packageDesc = file === 'public/package.json';
+                        const thirdPartyRubbish = file.startsWith('public/node_modules/') && requiredAssets.indexOf(file) === -1;
+                        const allowed = !bundle && !packageDesc && !thirdPartyRubbish;
+
+                        return allowed;
                     }},
 
                     // copy data: only directory structure and .htaccess for deny
@@ -115,6 +145,7 @@ module.exports = function(grunt) {
         }
     });
 
+    grunt.loadNpmTasks('grunt-auto-install');
     grunt.loadNpmTasks('grunt-text-replace');
     grunt.loadNpmTasks('grunt-contrib-compress');
     grunt.loadNpmTasks('grunt-composer');
@@ -130,7 +161,7 @@ module.exports = function(grunt) {
         }
     });
 
-    grunt.registerTask('default', ['composer:install:no-dev:optimize-autoloader:prefer-dist', 'versionupdater', 'compress']);
+    grunt.registerTask('default', ['auto_install', 'composer:install:no-dev:optimize-autoloader:prefer-dist', 'versionupdater', 'compress']);
     grunt.registerTask('version', ['versionupdater']);
     grunt.registerTask('zip', ['compress']);
 };
