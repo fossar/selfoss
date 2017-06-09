@@ -36,19 +36,9 @@ function isNotUnimportant(dest) {
 
 module.exports = function(grunt) {
     const requiredAssets = (function() {
-        const assets = [];
+        const files = grunt.file.readJSON('public/package.json').extra.requiredFiles;
 
-        const index = grunt.file.read('index.php');
-
-        index.match(/\$js = \[\n([^\]]*)\];\n/)[1].replace(/'([^']+)'/g, function(_, file) {
-            assets.push(file);
-        });
-
-        index.match(/\$css = \[\n([^\]]*)\];\n/)[1].replace(/'([^']+)'/g, function(_, file) {
-            assets.push(file);
-        });
-
-        return assets;
+        return files.css.concat(files.js);
     })();
 
     grunt.initConfig({

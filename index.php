@@ -11,40 +11,18 @@ if ($lang != '0' && $lang != '') {
 // init authentication
 $f3->set('auth', new \helpers\Authentication());
 
+/** @var stdClass JS client package manifest */
+$clientPackage = json_decode(file_get_contents(__DIR__ . '/public/package.json'));
+
 // define js files
-$js = [
-    'public/node_modules/jquery/dist/jquery.js',
-    'public/node_modules/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.js',
-    'public/node_modules/jquery-mousewheel/jquery.mousewheel.js',
-    'public/js/lazy-image-loader.js',
-    'public/node_modules/spectrum-colorpicker/spectrum.js',
-    'public/node_modules/jquery-hotkeys/jquery-hotkeys.js',
-    'public/js/selfoss-base.js',
-    'public/js/selfoss-shares.js',
-    'public/js/selfoss-db.js',
-    'public/js/selfoss-ui.js',
-    'public/js/selfoss-events.js',
-    'public/js/selfoss-events-navigation.js',
-    'public/js/selfoss-events-search.js',
-    'public/js/selfoss-events-entries.js',
-    'public/js/selfoss-events-entriestoolbar.js',
-    'public/js/selfoss-events-sources.js',
-    'public/js/selfoss-shortcuts.js',
-    'public/js/jquery.fancybox.pack.js'
-];
+$js = $clientPackage->extra->requiredFiles->js;
 if (file_exists('user.js')) {
     $js[] = 'user.js';
 }
 $f3->set('js', $js);
 
 // define css files
-$css = [
-    'public/node_modules/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css',
-    'public/css/jquery.fancybox.css',
-    'public/node_modules/spectrum-colorpicker/spectrum.css',
-    'public/css/reset.css',
-    'public/css/style.css'
-];
+$css = $clientPackage->extra->requiredFiles->css;
 if (file_exists('user.css')) {
     $css[] = 'user.css';
 }
