@@ -35,6 +35,7 @@ install:
     - composer self-update
 
 before_script:
+    - phpenv config-rm xdebug.ini
     - composer install --prefer-dist --no-interaction
 
 script:
