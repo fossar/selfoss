@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "jquery": "^2.2.4"
+    "jquery": "^2.2.4",
+    "spectrum-colorpicker": "^1.8.0"
   }
 }

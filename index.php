@@ -17,7 +17,7 @@ $js = [
     'public/js/jquery.mCustomScrollbar.min.js',
     'public/js/jquery.mousewheel.min.js',
     'public/js/lazy-image-loader.js',
-    'public/js/spectrum.js',
+    'public/node_modules/spectrum-colorpicker/spectrum.js',
     'public/js/jquery.hotkeys.js',
     'public/js/selfoss-base.js',
     'public/js/selfoss-shares.js',
@@ -41,7 +41,7 @@ $f3->set('js', $js);
 $css = [
     'public/css/jquery.mCustomScrollbar.css',
     'public/css/jquery.fancybox.css',
-    'public/css/spectrum.css',
+    'public/node_modules/spectrum-colorpicker/spectrum.css',
     'public/css/reset.css',
     'public/css/style.css'
 ];
