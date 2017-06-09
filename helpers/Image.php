@@ -3,6 +3,7 @@
 namespace helpers;
 
 use Elphin\IcoFileLoader\IcoFileService;
+use GuzzleHttp;
 use WideImage\WideImage;
 
 /**
@@ -58,7 +59,7 @@ class Image {
 
         $shortcutIcon = $this->parseShortcutIcon($html);
         if ($shortcutIcon !== null) {
-            $shortcutIcon = (string) \SimplePie_IRI::absolutize($url, $shortcutIcon);
+            $shortcutIcon = (string) GuzzleHttp\Url::fromString($url)->combine($shortcutIcon);
 
             $faviconAsPng = $this->loadImage($shortcutIcon, $width, $height);
             if ($faviconAsPng !== false) {
