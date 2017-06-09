@@ -81,6 +81,8 @@ For the client side, you will also need JavaScript dependencies installed by cal
 
 If you want to create a package with all the dependencies bundled, you will additionally require [grunt](https://gruntjs.com/). After installing it, execute `npm install` in the selfoss directory to obtain the required tasks. Then you can run `grunt` command to produce a zipball. As a bonus, you can also use `grunt install` as a shortcut for installing the selfoss dependencies described above.
 
+Every patch is expected to adhere to our coding style, which is checked automatically by Travis. You can install the checkers locally either with your package manager or by calling `utils/install-phars.sh`, and then run the checks using `grunt check` before submitting a pull request.
+
 CREDITS
 -------
 

@@ -29,8 +29,7 @@ before_install:
     - npm install -g grunt-cli
     - npm install
     - if [ -n "$GH_TOKEN" ]; then composer config github-oauth.github.com ${GH_TOKEN}; fi
-    - if [ "$CS_FIXER" = true ]; then composer create-project --no-dev --no-interaction friendsofphp/php-cs-fixer utils/php-cs-fixer; fi
-    - composer create-project --no-dev --no-interaction jakub-onderka/php-parallel-lint utils/php-parallel-lint
+    - utils/install-phars.sh
 
 install:
     - composer self-update
@@ -39,9 +38,9 @@ before_script:
     - composer install --prefer-dist --no-interaction
 
 script:
-    - utils/php-parallel-lint/parallel-lint controllers daos helpers spouts templates
-    - if [ "$CS_FIXER" = true ]; then utils/php-cs-fixer/php-cs-fixer fix --verbose --dry-run --diff; fi
     - if [ "$LINT_JS" = true ]; then grunt lint:client; fi
+    - grunt lint:server
+    - if [ "$CS_FIXER" = true ]; then grunt cs:server; fi
 
 before_deploy:
     - source utils/package.sh

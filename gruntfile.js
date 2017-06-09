@@ -163,4 +163,8 @@ module.exports = function(grunt) {
     grunt.registerTask('version', ['versionupdater']);
     grunt.registerTask('zip', ['compress']);
     grunt.registerTask('lint:client', 'Check JS syntax', ['eslint']);
+    grunt.registerTask('cs:server', 'Check PHP coding style', ['composer:run-script cs']);
+    grunt.registerTask('lint:server', 'Check PHP syntax', ['composer:run-script lint']);
+    grunt.registerTask('check:server', 'Check PHP source code for problems and style violation', ['lint:server', 'cs:server']);
+    grunt.registerTask('check', 'Check the whole source code for problems and style violation', ['lint:client', 'check:server']);
 };
