@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "fancybox": "github:fancyapps/fancybox#v3.1.20",
     "jquery": "^2.2.4",
     "jquery-hotkeys": "^0.2.2",
     "jquery-mousewheel": "^3.1.13",
@@ -10,7 +11,7 @@
     "requiredFiles": {
       "css": [
         "public/node_modules/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css",
-        "public/css/jquery.fancybox.css",
+        "public/node_modules/@fancyapps/fancybox/dist/jquery.fancybox.css",
         "public/node_modules/spectrum-colorpicker/spectrum.css",
         "public/css/reset.css",
         "public/css/style.css"
@@ -33,7 +34,7 @@
         "public/js/selfoss-events-entriestoolbar.js",
         "public/js/selfoss-events-sources.js",
         "public/js/selfoss-shortcuts.js",
-        "public/js/jquery.fancybox.pack.js"
+        "public/node_modules/@fancyapps/fancybox/dist/jquery.fancybox.js"
       ]
     }
   }

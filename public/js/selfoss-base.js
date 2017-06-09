@@ -67,7 +67,10 @@ var selfoss = {
 
             // init events
             selfoss.events.init();
-            
+
+            // init FancyBox
+            selfoss.initFancyBox();
+
             // init shortcut handler
             selfoss.shortcuts.init();
 
@@ -453,15 +456,16 @@ var selfoss = {
         // Close existing fancyBoxes
         $.fancybox.close();
         var images = $(content).find('a[href$=".jpg"], a[href$=".jpeg"], a[href$=".png"], a[href$=".gif"], a[href$=".jpg:large"], a[href$=".jpeg:large"], a[href$=".png:large"], a[href$=".gif:large"]');
-        $(images).attr('rel', 'gallery-'+id).unbind('click');
-        $(images).fancybox({
-            type: 'image',
-            helpers: {
-                overlay: {
-                    locked: false
-                }
-            }
-        });
+        $(images).attr('data-fancybox', 'gallery-'+id).unbind('click');
+        $(images).attr('data-type', 'image');
+    },
+
+
+    /**
+     * Initialize FancyBox globally
+     */
+    initFancyBox: function() {
+        $.fancybox.defaults.hash = false;
     },
 
 

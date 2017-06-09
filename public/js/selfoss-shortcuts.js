@@ -7,6 +7,10 @@ selfoss.shortcuts = {
     init: function() { 
         // 'space': next article
         $(document).bind('keydown', 'space', function(e) {
+            if (!selfoss.shortcuts.active()) {
+                return false;
+            }
+
             var selected = $('.entry.selected');
             if(selected.length>0 && selected.find('.entry-content').is(':visible')==false) {
                 selected.find('.entry-title').click();
@@ -19,6 +23,10 @@ selfoss.shortcuts = {
 
         // 'n': next article
         $(document).bind('keydown', 'n', function(e) {
+            if (!selfoss.shortcuts.active()) {
+                return false;
+            }
+
             selfoss.shortcuts.nextprev('next', false);
             e.preventDefault();
             return false;
@@ -26,6 +34,10 @@ selfoss.shortcuts = {
 
         // 'right cursor': next article
         $(document).bind('keydown', 'right', function(e) {
+            if (!selfoss.shortcuts.active()) {
+                return false;
+            }
+
             selfoss.shortcuts.entrynav('next');
             e.preventDefault();
             return false;
@@ -33,6 +45,10 @@ selfoss.shortcuts = {
 
         // 'j': next article
         $(document).bind('keydown', 'j', function(e) {
+            if (!selfoss.shortcuts.active()) {
+                return false;
+            }
+
             selfoss.shortcuts.nextprev('next', true);
             e.preventDefault();
             return false;
@@ -40,6 +56,10 @@ selfoss.shortcuts = {
         
         // 'shift+space': previous article
         $(document).bind('keydown', 'shift+space', function(e) {
+            if (!selfoss.shortcuts.active()) {
+                return false;
+            }
+
             selfoss.shortcuts.nextprev('prev', true);
             e.preventDefault();
             return false;
@@ -47,6 +67,10 @@ selfoss.shortcuts = {
 
         // 'p': previous article
         $(document).bind('keydown', 'p', function(e) {
+            if (!selfoss.shortcuts.active()) {
+                return false;
+            }
+
             selfoss.shortcuts.nextprev('prev', false);
             e.preventDefault();
             return false;
@@ -54,6 +78,10 @@ selfoss.shortcuts = {
 
         // 'left': previous article
         $(document).bind('keydown', 'left', function(e) {
+            if (!selfoss.shortcuts.active()) {
+                return false;
+            }
+
             selfoss.shortcuts.entrynav('prev');
             e.preventDefault();
             return false;
@@ -61,6 +89,10 @@ selfoss.shortcuts = {
 
         // 'k': previous article
         $(document).bind('keydown', 'k', function(e) {
+            if (!selfoss.shortcuts.active()) {
+                return false;
+            }
+
             selfoss.shortcuts.nextprev('prev', true);
             e.preventDefault();
             return false;
@@ -68,6 +100,10 @@ selfoss.shortcuts = {
         
         // 's': star/unstar
         $(document).bind('keydown', 's', function(e) {
+            if (!selfoss.shortcuts.active()) {
+                return false;
+            }
+
             selfoss.events.entriesToolbar($('.entry.selected'));
             $('.entry.selected .entry-starr').click();
             e.preventDefault();
@@ -76,6 +112,10 @@ selfoss.shortcuts = {
         
         // 'm': mark/unmark
         $(document).bind('keydown', 'm', function(e) {
+            if (!selfoss.shortcuts.active()) {
+                return false;
+            }
+
             selfoss.events.entriesToolbar($('.entry.selected'));
             $('.entry.selected .entry-unread').click();
             e.preventDefault();
@@ -84,6 +124,10 @@ selfoss.shortcuts = {
         
         // 'o': open/close entry
         $(document).bind('keydown', 'o', function(e) {
+            if (!selfoss.shortcuts.active()) {
+                return false;
+            }
+
             $('.entry.selected').find('h2').click();
             e.preventDefault();
             return false;
@@ -91,12 +135,20 @@ selfoss.shortcuts = {
         
         // 'Shift + o': close open entries
         $(document).bind('keydown', 'Shift+o', function(e) {
+            if (!selfoss.shortcuts.active()) {
+                return false;
+            }
+
             e.preventDefault();
             $('.entry-content, .entry-toolbar').hide();
         });
         
         // 'v': open target
         $(document).bind('keydown', 'v', function(e) {
+            if (!selfoss.shortcuts.active()) {
+                return false;
+            }
+
             window.open($('.entry.selected .entry-datetime').attr('href'));
             e.preventDefault();
             return false;
@@ -104,6 +156,10 @@ selfoss.shortcuts = {
         
         // 'Shift + v': open target and mark read
         $(document).bind('keydown', 'Shift+v', function(e) {
+            if (!selfoss.shortcuts.active()) {
+                return false;
+            }
+
             e.preventDefault();
             
             selfoss.events.entriesToolbar($('.entry.selected'));
@@ -119,18 +175,30 @@ selfoss.shortcuts = {
         
         // 'r': Reload the current view
         $(document).bind('keydown', 'r', function(e) {
+            if (!selfoss.shortcuts.active()) {
+                return false;
+            }
+
             e.preventDefault();
             $('#nav-filter-unread').click();
         });
 
         // 'Shift + r': Refresh sources
         $(document).bind('keydown', 'Shift+r', function(e) {
+            if (!selfoss.shortcuts.active()) {
+                return false;
+            }
+
             e.preventDefault();
             $('#nav-refresh').click();
         });
         
         // 'Ctrl+m': mark all as read
         $(document).bind('keydown', 'ctrl+m', function(e) {
+            if (!selfoss.shortcuts.active()) {
+                return false;
+            }
+
             $('#nav-mark').click();
             e.preventDefault();
             return false;
@@ -138,6 +206,10 @@ selfoss.shortcuts = {
 
         // 't': throw (mark as read & open next)
         $(document).bind('keydown', 't', function(e) {
+            if (!selfoss.shortcuts.active()) {
+                return false;
+            }
+
             $('.entry.selected.unread .entry-unread').click();
             selfoss.shortcuts.nextprev('next', true);
             return false;
@@ -145,6 +217,10 @@ selfoss.shortcuts = {
 
         // throw (mark as read & open previous)
         $(document).bind('keydown', 'Shift+t', function(e) {
+            if (!selfoss.shortcuts.active()) {
+                return false;
+            }
+
             $('.entry.selected.unread .entry-unread').click();
             selfoss.shortcuts.nextprev('prev', true);
             e.preventDefault();
@@ -153,18 +229,30 @@ selfoss.shortcuts = {
         
         // 'Shift+n': switch to newest items overview / menu item
         $(document).bind('keydown', 'Shift+n', function(e) {
+            if (!selfoss.shortcuts.active()) {
+                return false;
+            }
+
             e.preventDefault();
             $('#nav-filter-newest').click();
         });
         
         // 'Shift+u': switch to unread items overview / menu item
         $(document).bind('keydown', 'Shift+u', function(e) {
+            if (!selfoss.shortcuts.active()) {
+                return false;
+            }
+
             e.preventDefault();
             $('#nav-filter-unread').click();
         });
         
         // 'Shift+s': switch to starred items overview / menu item
         $(document).bind('keydown', 'Shift+s', function(e) {
+            if (!selfoss.shortcuts.active()) {
+                return false;
+            }
+
             e.preventDefault();
             $('#nav-filter-starred').click();
         });
@@ -267,5 +355,14 @@ selfoss.shortcuts = {
         
         var content = $('.entry-content').is(':visible');
             selfoss.shortcuts.nextprev(direction, content);
+    },
+
+    /**
+     * Check whether keyboard shortcuts should be active
+     */
+    active: function() {
+        var fancyboxInactive = !$.fancybox.getInstance();
+
+        return fancyboxInactive;
     }
 };
