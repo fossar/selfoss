@@ -151,7 +151,10 @@ module.exports = function(grunt) {
         }
     });
 
-    grunt.registerTask('default', ['auto_install', 'composer:install:no-dev:optimize-autoloader:prefer-dist', 'versionupdater', 'compress']);
+    grunt.registerTask('client:install', 'Install client-side dependencies.', ['auto_install']);
+    grunt.registerTask('server:install', 'Install server-side dependencies.', ['composer:install:no-dev:optimize-autoloader:prefer-dist']);
+    grunt.registerTask('install', 'Install both client-side and server-side dependencies.', ['client:install', 'server:install']);
+    grunt.registerTask('default', ['install', 'versionupdater', 'compress']);
     grunt.registerTask('version', ['versionupdater']);
     grunt.registerTask('zip', ['compress']);
 };
