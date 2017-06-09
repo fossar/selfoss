@@ -12,7 +12,7 @@ namespace spouts\rss;
  * @author     Daniel Seither <post@tiwoc.de>
  * @author     Sebastian Gibb <mail@sebastiangibb.de>
  */
-class prolinux extends feed {
+class prolinux extends fulltextrss {
     /** @var string name of spout */
     public $name = 'News: Pro-Linux';
 
@@ -75,19 +75,6 @@ class prolinux extends feed {
     ];
 
     /**
-     * delimiters of the article text
-     *
-     * elements: start tag, attribute of start tag, value of start tag attribute, end
-     */
-    private $textDivs = [
-        ['div', 'id', 'news', '<div class="endline"></div>'],        // news
-        ['div', 'id', 'polldetail', '<div class="endline"></div>'],  // polls
-        ['table', 'id', 'secdetail', '</table>'],                    // security
-        ['div', 'class', 'descr', '</div>'],                         // comments
-        ['div', 'id', 'comments', '<div class="tail">']              // comments
-    ];
-
-    /**
      * loads content for given source
      *
      * @param string $url
@@ -107,78 +94,5 @@ class prolinux extends feed {
      */
     public function getXmlUrl($params) {
         return $this->feedUrls[$params['section']];
-    }
-
-    /**
-     * returns the content of this item
-     *
-     * @return string content
-     */
-    public function getContent() {
-        if ($this->items !== false && $this->valid()) {
-            $originalContent = file_get_contents($this->getLink());
-            foreach ($this->textDivs as $div) {
-                $content = $this->getTag($div[1], $div[2], $originalContent, $div[0], $div[3]);
-                if (is_array($content) && count($content) >= 1) {
-                    $content = $content[0];
-                    $content = preg_replace_callback(',<a([^>]+)href="([^>"\s]+)",i', function($matches) {
-                        return "<a\1href=\"" . \spouts\rss\prolinux::absolute("\2", 'http://www.pro-linux.de') . '"';
-                    }, $content);
-                    $content = preg_replace_callback(',<img([^>]+)src="([^>"\s]+)",i', function($matches) {
-                        return "<img\1src=\"" . \spouts\rss\prolinux::absolute("\2", 'http://www.pro-linux.de') . '"';
-                    }, $content);
-
-                    return $content;
-                }
-            }
-        }
-
-        return parent::getContent();
-    }
-
-    /**
-     * get tag by attribute
-     * taken from http://www.catswhocode.com/blog/15-php-regular-expressions-for-web-developers
-     *
-     * @return string content
-     * @return string $attr attribute
-     * @return string $value necessary value
-     * @return string $xml data string
-     * @return string $tag optional tag
-     */
-    private function getTag($attr, $value, $xml, $tag = null, $end = null) {
-        if (is_null($tag)) {
-            $tag = '\w+';
-        } else {
-            $tag = preg_quote($tag);
-        }
-
-        if (is_null($end)) {
-            $end = '</\1>';
-        } else {
-            $end = preg_quote($end);
-        }
-
-        $attr = preg_quote($attr);
-        $value = preg_quote($value);
-        $tag_regex = '|<(' . $tag . ')[^>]*' . $attr . '\s*=\s*([\'"])' . $value . '\2[^>]*>(.*?)' . $end . '|ims';
-        preg_match_all($tag_regex, $xml, $matches, PREG_PATTERN_ORDER);
-
-        return $matches[3];
-    }
-
-    /**
-     * convert relative url to absolute
-     *
-     * @return string absolute url
-     * @return string $relative url
-     * @return string $absolute url
-     */
-    public static function absolute($relative, $absolute) {
-        if (preg_match(',^(https?://|ftp://|mailto:|news:),i', $relative)) {
-            return $relative;
-        }
-
-        return $absolute . $relative;
     }
 }
