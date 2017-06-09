@@ -1428,3 +1428,8 @@ img[src^='http://s.w.org/images/core/emoji'], img[src^='https://s.w.org/images/c
     height: 1em;
     margin: 0;
 }
+
+/* scrollbar */
+.mCSB_inside > .mCSB_container{
+    margin-right: 0px;
+}

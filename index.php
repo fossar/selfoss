@@ -14,11 +14,11 @@ $f3->set('auth', new \helpers\Authentication());
 // define js files
 $js = [
     'public/node_modules/jquery/dist/jquery.js',
-    'public/js/jquery.mCustomScrollbar.min.js',
-    'public/js/jquery.mousewheel.min.js',
+    'public/node_modules/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.js',
+    'public/node_modules/jquery-mousewheel/jquery.mousewheel.js',
     'public/js/lazy-image-loader.js',
     'public/node_modules/spectrum-colorpicker/spectrum.js',
-    'public/js/jquery.hotkeys.js',
+    'public/node_modules/jquery-hotkeys/jquery-hotkeys.js',
     'public/js/selfoss-base.js',
     'public/js/selfoss-shares.js',
     'public/js/selfoss-db.js',
@@ -39,7 +39,7 @@ $f3->set('js', $js);
 
 // define css files
 $css = [
-    'public/css/jquery.mCustomScrollbar.css',
+    'public/node_modules/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css',
     'public/css/jquery.fancybox.css',
     'public/node_modules/spectrum-colorpicker/spectrum.css',
     'public/css/reset.css',
