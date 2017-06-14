@@ -28,7 +28,7 @@ class Database {
                 touch($db_file);
             }
 
-            \F3::get('logger')->debug('Establish database connection');
+            \F3::get('logger')->debug('Establishing SQLite database connection');
             \F3::set('db', new \DB\SQL(
                 'sqlite:' . $db_file
             ));
