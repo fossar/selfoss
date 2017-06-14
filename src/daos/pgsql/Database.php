@@ -39,7 +39,7 @@ class Database implements \daos\DatabaseInterface {
         $this->connection = $connection;
         $this->logger = $logger;
 
-        $this->logger->debug('Established database connection');
+        $this->logger->debug('Establishing PostgreSQL database connection');
 
         // create tables if necessary
         $result = @$this->exec("SELECT table_name FROM information_schema.tables WHERE table_schema='public'");

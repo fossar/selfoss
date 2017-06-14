@@ -32,7 +32,7 @@ class Database implements \daos\DatabaseInterface {
         $this->connection = $connection;
         $this->logger = $logger;
 
-        $this->logger->debug('Established database connection');
+        $this->logger->debug('Establishing SQLite database connection');
 
         // create tables if necessary
         $result = @$this->exec('SELECT name FROM sqlite_master WHERE type = "table"');

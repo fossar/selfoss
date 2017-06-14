@@ -32,7 +32,7 @@ class Database implements \daos\DatabaseInterface {
         $this->connection = $connection;
         $this->logger = $logger;
 
-        $this->logger->debug('Established database connection');
+        $this->logger->debug('Establishing MySQL database connection');
 
         // create tables if necessary
         $result = @$this->exec('SHOW TABLES');
