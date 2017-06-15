@@ -12,10 +12,10 @@ selfoss.dbOnline = {
      * @return void
      */
     sync: function(force) {
-        var force = (typeof force !== 'undefined') ? force : false;
+        force = (typeof force !== 'undefined') ? force : false;
 
-        if( !force && (selfoss.lastUpdate == null ||
-                       Date.now() - selfoss.lastSync < 5*60*1000) ) {
+        if (!force && (selfoss.lastUpdate == null ||
+                       Date.now() - selfoss.lastSync < 5 * 60 * 1000)) {
             var d = $.Deferred();
             d.resolve();
             return d; // ensure any chained function runs
@@ -32,9 +32,9 @@ selfoss.dbOnline = {
             type: 'GET',
             dataType: 'json',
             data: {
-                since:         selfoss.lastUpdate.toISOString(),
-                tags:          true,
-                sources:       selfoss.filter.sourcesNav ? true : undefined,
+                since: selfoss.lastUpdate.toISOString(),
+                tags: true,
+                sources: selfoss.filter.sourcesNav ? true : undefined,
                 itemsStatuses: getStatuses
             },
             success: function(data) {
@@ -42,35 +42,38 @@ selfoss.dbOnline = {
 
                 var dataDate = new Date(data.lastUpdate);
 
-                if( dataDate <= selfoss.lastUpdate )
+                if (dataDate <= selfoss.lastUpdate) {
                     return;
+                }
 
-                if( data.stats.unread>0 &&
+                if (data.stats.unread > 0 &&
                     ($('.stream-empty').is(':visible') ||
-                     $('.stream-error').is(':visible')) ) {
+                     $('.stream-error').is(':visible'))) {
                     selfoss.dbOnline.reloadList();
                 } else {
                     selfoss.refreshStats(data.stats.all,
-                                         data.stats.unread,
-                                         data.stats.starred);
+                        data.stats.unread,
+                        data.stats.starred);
                     selfoss.refreshTags(data.tagshtml);
 
-                    if( 'sourceshtml' in data )
+                    if ('sourceshtml' in data) {
                         selfoss.refreshSources(data.sourceshtml);
+                    }
 
-                    if( 'itemUpdates' in data ) {
+                    if ('itemUpdates' in data) {
                         selfoss.ui.refreshEntryStatuses(data.itemUpdates);
                     }
 
-                    if( selfoss.filter.type == 'unread' &&
-                        data.stats.unread > $('.entry.unread').length )
+                    if (selfoss.filter.type == 'unread' &&
+                        data.stats.unread > $('.entry.unread').length) {
                         $('.stream-more').show();
+                    }
                 }
                 selfoss.lastUpdate = dataDate;
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                selfoss.ui.showError('Could not sync last changes from server: '+
-                                     textStatus+' '+errorThrown);
+                selfoss.ui.showError('Could not sync last changes from server: ' +
+                                     textStatus + ' ' + errorThrown);
             }
         });
     },
@@ -82,18 +85,20 @@ selfoss.dbOnline = {
      * @return void
      */
     reloadList: function() {
-        if (selfoss.activeAjaxReq !== null)
+        if (selfoss.activeAjaxReq !== null) {
             selfoss.activeAjaxReq.abort();
+        }
 
-        if (location.hash == "#sources") {
+        if (location.hash == '#sources') {
             return;
         }
 
-        if( selfoss.events.entryId && selfoss.filter.fromId == null )
+        if (selfoss.events.entryId && selfoss.filter.fromId == null) {
             selfoss.filter.extraIds.push(selfoss.events.entryId);
+        }
 
         selfoss.ui.refreshStreamButtons();
-        $('#content').addClass('loading').html("");
+        $('#content').addClass('loading').html('');
 
         selfoss.activeAjaxReq = $.ajax({
             url: $('base').attr('href'),
@@ -119,34 +124,36 @@ selfoss.dbOnline = {
 
                 // drop loaded sources
                 var currentSource = -1;
-                if(selfoss.sourcesNavLoaded) {
+                if (selfoss.sourcesNavLoaded) {
                     currentSource = $('#nav-sources li').index($('#nav-sources .active'));
                     $('#nav-sources li').remove();
                     selfoss.sourcesNavLoaded = false;
                 }
-                if(selfoss.filter.sourcesNav)
+                if (selfoss.filter.sourcesNav) {
                     selfoss.refreshSources(data.sources, currentSource);
+                }
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                if (textStatus == "abort")
+                if (textStatus == 'abort') {
                     return;
-                else if (selfoss.hasSession() && errorThrown === 'Forbidden') {
+                } else if (selfoss.hasSession() && errorThrown === 'Forbidden') {
                     selfoss.ui.showError('Your session has expired');
                     selfoss.logout();
-                } else if (errorThrown)
-                    selfoss.ui.showError('Load list error: '+
-                                         textStatus+' '+errorThrown);
+                } else if (errorThrown) {
+                    selfoss.ui.showError('Load list error: ' +
+                                         textStatus + ' ' + errorThrown);
+                }
                 selfoss.events.entries();
                 selfoss.ui.refreshStreamButtons();
                 $('.stream-error').show();
             },
-            complete: function(jqXHR, textStatus) {
+            complete: function() {
                 // clean up
                 $('#content').removeClass('loading');
                 selfoss.activeAjaxReq = null;
             }
         });
-    },
+    }
 
 
 };
@@ -157,7 +164,7 @@ selfoss.db = {
 
     isValidTag: function(tag) {
         var isValid = false;
-        $('#nav-tags > li:not(:first)').each(function(key, value) {
+        $('#nav-tags > li:not(:first)').each(function() {
             isValid = $('.tag', this).html() == tag;
             return !isValid; // break the loop if valid
         });
@@ -167,7 +174,7 @@ selfoss.db = {
 
     isValidSource: function(id) {
         var isValid = false;
-        $('#nav-sources > li').each(function(key, value) {
+        $('#nav-sources > li').each(function() {
             isValid = $(this).data('source-id') == id;
             return !isValid; // break the loop if valid
         });

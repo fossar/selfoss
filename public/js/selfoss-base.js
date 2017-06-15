@@ -29,7 +29,7 @@ var selfoss = {
      * instance of the currently running XHR that is used to reload the items list
      */
     activeAjaxReq: null,
-    
+
     /**
      * last stats update
      */
@@ -39,7 +39,7 @@ var selfoss = {
      * last db timestamp known client side
      */
     lastUpdate: null,
-    
+
     /**
      * the html title configured
      */
@@ -67,7 +67,7 @@ var selfoss = {
 
 
     initUiDone: false,
-        
+
 
     initUi: function() {
         if (!selfoss.initUiDone) {
@@ -77,7 +77,7 @@ var selfoss = {
             selfoss.filter.itemsPerPage = $('#config').data('items_perpage');
 
             // read the html title configured
-            selfoss.htmlTitle = $('#config').data('html_title')
+            selfoss.htmlTitle = $('#config').data('html_title');
 
             // init shares
             selfoss.shares.init($('#config').data('share'));
@@ -92,15 +92,15 @@ var selfoss = {
             selfoss.shortcuts.init();
 
             // setup periodic stats reloader
-            window.setInterval(selfoss.dbOnline.sync, 60*1000);
+            window.setInterval(selfoss.dbOnline.sync, 60 * 1000);
 
-            window.setInterval(selfoss.ui.refreshEntryDatetimes, 60*1000);
+            window.setInterval(selfoss.ui.refreshEntryDatetimes, 60 * 1000);
 
             selfoss.ui.showMainUi();
         }
     },
-    
-    
+
+
     /**
      * returns an array of name value pairs of all form elements in given element
      *
@@ -109,16 +109,17 @@ var selfoss = {
      */
     getValues: function(element) {
         var values = {};
-        
-        $(element).find(':input').each(function (i, el) {
+
+        $(element).find(':input').each(function(i, el) {
             // get only input elements with name
-            if($.trim($(el).attr('name')).length!=0) {
+            if ($.trim($(el).attr('name')).length != 0) {
                 values[$(el).attr('name')] = $(el).val();
-                if($(el).attr('type')=='checkbox')
+                if ($(el).attr('type') == 'checkbox') {
                     values[$(el).attr('name')] = $(el).attr('checked') ? 1 : 0;
+                }
             }
         });
-        
+
         return values;
     },
 
@@ -127,8 +128,10 @@ var selfoss = {
 
 
     setSession: function() {
-        Cookies.set('onlineSession', 'true', {expires: 10,
-                                              path: window.location.pathname});
+        Cookies.set('onlineSession', 'true', {
+            expires: 10,
+            path: window.location.pathname
+        });
         selfoss.loggedin = true;
     },
 
@@ -147,7 +150,7 @@ var selfoss = {
 
     login: function(e) {
         $('#loginform').addClass('loading');
-        f = $('#loginform form');
+        var f = $('#loginform form');
         $.ajax({
             type: 'POST',
             url: 'login',
@@ -166,7 +169,7 @@ var selfoss = {
                     selfoss.ui.showLogin(data.error);
                 }
             },
-            complete: function(jqXHR, textStatus) {
+            complete: function() {
                 $('#loginform').removeClass('loading');
             }
         });
@@ -177,21 +180,22 @@ var selfoss = {
     logout: function() {
         selfoss.clearSession();
         selfoss.ui.logout();
-        if (!$('body').hasClass('publicmode'))
+        if (!$('body').hasClass('publicmode')) {
             selfoss.events.setHash('login', false);
+        }
 
         $.ajax({
             type: 'GET',
             url: 'logout',
             dataType: 'json',
             error: function(jqXHR, textStatus, errorThrown) {
-                selfoss.ui.showError('Could not log out: '+
-                                     textStatus+' '+errorThrown);
+                selfoss.ui.showError('Could not log out: ' +
+                                     textStatus + ' ' + errorThrown);
             }
         });
     },
-    
-    
+
+
     /**
      * insert error messages in form
      *
@@ -202,11 +206,11 @@ var selfoss = {
     showErrors: function(form, errors) {
         $(form).find('span.error').remove();
         $.each(errors, function(key, val) {
-            form.find("[name='"+key+"']").addClass('error').parent('li').append('<span class="error">'+val+'</span>');
+            form.find("[name='" + key + "']").addClass('error').parent('li').append('<span class="error">' + val + '</span>');
         });
     },
-    
-    
+
+
     /**
      * indicates whether a mobile device is host
      *
@@ -214,34 +218,37 @@ var selfoss = {
      */
     isMobile: function() {
         // first check useragent
-        if((/iPhone|iPod|iPad|Android|BlackBerry/).test(navigator.userAgent))
+        if ((/iPhone|iPod|iPad|Android|BlackBerry/).test(navigator.userAgent)) {
             return true;
-        
+        }
+
         // otherwise check resolution
         return selfoss.isTablet() || selfoss.isSmartphone();
     },
-    
-    
+
+
     /**
      * indicates whether a tablet is the device or not
      *
      * @return true if device resolution smaller equals 1024
      */
     isTablet: function() {
-        if($(window).width()<=1024)
+        if ($(window).width() <= 1024) {
             return true;
+        }
         return false;
     },
 
-    
+
     /**
      * indicates whether a tablet is the device or not
      *
      * @return true if device resolution smaller equals 1024
      */
     isSmartphone: function() {
-        if($(window).width()<=640)
+        if ($(window).width() <= 640) {
             return true;
+        }
         return false;
     },
 
@@ -274,7 +281,7 @@ var selfoss = {
         selfoss.refreshUnread(unread);
     },
 
-    
+
     /**
      * refresh unread stats.
      *
@@ -284,7 +291,7 @@ var selfoss = {
     refreshUnread: function(unread) {
         $('span.unread-count').html(unread);
 
-        if(unread>0) {
+        if (unread > 0) {
             $('span.unread-count').addClass('unread');
         } else {
             $('span.unread-count').removeClass('unread');
@@ -302,25 +309,25 @@ var selfoss = {
     reloadTags: function() {
         $('#nav-tags').addClass('loading');
         $('#nav-tags li:not(:first)').remove();
-        
+
         $.ajax({
-            url: $('base').attr('href')+'tagslist',
+            url: $('base').attr('href') + 'tagslist',
             type: 'GET',
             success: function(data) {
                 $('#nav-tags').append(data);
                 selfoss.events.navigation();
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                selfoss.ui.showError('Load tags error: '+
-                                     textStatus+' '+errorThrown);
+                selfoss.ui.showError('Load tags error: ' +
+                                     textStatus + ' ' + errorThrown);
             },
-            complete: function(jqXHR, textStatus) {
+            complete: function() {
                 $('#nav-tags').removeClass('loading');
             }
         });
     },
-    
-    
+
+
     /**
      * refresh taglist.
      *
@@ -331,24 +338,27 @@ var selfoss = {
         $('.color').spectrum('destroy');
         $('#nav-tags li:not(:first)').remove();
         $('#nav-tags').append(tags);
-        if( selfoss.filter.tag ) {
-            if(!selfoss.db.isValidTag(selfoss.filter.tag))
+        if (selfoss.filter.tag) {
+            if (!selfoss.db.isValidTag(selfoss.filter.tag)) {
                 selfoss.ui.showError('Unknown tag: ' + selfoss.filter.tag);
+            }
 
             $('#nav-tags li:first').removeClass('active');
-            $('#nav-tags > li').filter(function( index ) {
-                if( $('.tag', this) )
+            $('#nav-tags > li').filter(function() {
+                if ($('.tag', this)) {
                     return $('.tag', this).html() == selfoss.filter.tag;
-                else
+                } else {
                     return false;
+                }
             }).addClass('active');
-        } else
+        } else {
             $('.nav-tags-all').addClass('active');
+        }
 
         selfoss.events.navigation();
     },
-    
-    
+
+
     sourcesNavLoaded: false,
 
     /**
@@ -356,28 +366,29 @@ var selfoss = {
      *
      * @return void
      * @param sources the new sourceslist as html
-     * @param currentSource the index of the active source
      */
-    refreshSources: function(sources, currentSource) {
+    refreshSources: function(sources) {
         $('#nav-sources li').remove();
         $('#nav-sources').append(sources);
-        if( selfoss.filter.source ) {
-            if(!selfoss.db.isValidSource(selfoss.filter.source))
+        if (selfoss.filter.source) {
+            if (!selfoss.db.isValidSource(selfoss.filter.source)) {
                 selfoss.ui.showError('Unknown source id: '
                                      + selfoss.filter.source);
+            }
 
             $('#source' + selfoss.filter.source).addClass('active');
             $('#nav-tags > li').removeClass('active');
         }
 
         selfoss.sourcesNavLoaded = true;
-        if( $('#nav-sources-title').hasClass("nav-sources-collapsed") )
+        if ($('#nav-sources-title').hasClass('nav-sources-collapsed')) {
             $('#nav-sources-title').click(); // expand sources nav
+        }
 
         selfoss.events.navigation();
     },
-    
-    
+
+
     /**
      * anonymize links
      *
@@ -386,10 +397,10 @@ var selfoss = {
      */
     anonymize: function(parent) {
         var anonymizer = $('#config').data('anonymizer');
-        if(anonymizer.length>0) {
-            parent.find('a').each(function(i,link) {
+        if (anonymizer.length > 0) {
+            parent.find('a').each(function(i, link) {
                 link = $(link);
-                if(typeof link.attr('href') != "undefined" && link.attr('href').indexOf(anonymizer)!=0) {
+                if (typeof link.attr('href') != 'undefined' && link.attr('href').indexOf(anonymizer) != 0) {
                     link.attr('href', anonymizer + link.attr('href'));
                 }
             });
@@ -406,7 +417,7 @@ var selfoss = {
         // Close existing fancyBoxes
         $.fancybox.close();
         var images = $(content).find('a[href$=".jpg"], a[href$=".jpeg"], a[href$=".png"], a[href$=".gif"], a[href$=".jpg:large"], a[href$=".jpeg:large"], a[href$=".png:large"], a[href$=".gif:large"]');
-        $(images).attr('data-fancybox', 'gallery-'+id).unbind('click');
+        $(images).attr('data-fancybox', 'gallery-' + id).unbind('click');
         $(images).attr('data-type', 'image');
     },
 
@@ -422,26 +433,27 @@ var selfoss = {
     /**
      * Mark all visible items as read
      */
-    markVisibleRead: function () {
-        var ids = new Array();
+    markVisibleRead: function() {
+        var ids = [];
         $('.entry.unread').each(function(index, item) {
-            ids.push( $(item).attr('id').substr(5) );
+            ids.push($(item).attr('id').substr(5));
         });
 
-        if( ids.length === 0 ) {
+        if (ids.length === 0) {
             $('.entry').remove();
-            if( selfoss.filter.type == 'unread' &&
-                parseInt($('span.unread-count').html()) > 0 )
-                selfoss.dbOnline.reloadList()
-            else
+            if (selfoss.filter.type == 'unread' &&
+                parseInt($('span.unread-count').html()) > 0) {
+                selfoss.dbOnline.reloadList();
+            } else {
                 selfoss.ui.refreshStreamButtons(true);
+            }
             return;
         }
 
         // show loading
         var content = $('#content');
         var articleList = content.html();
-        $('#content').addClass('loading').html("");
+        $('#content').addClass('loading').html('');
         var hadMore = $('.stream-more').is(':visible');
         selfoss.ui.refreshStreamButtons();
 
@@ -456,7 +468,7 @@ var selfoss = {
             data: {
                 ids: ids
             },
-            success: function(response) {
+            success: function() {
                 $('.entry').removeClass('unread');
 
                 // update unread stats
@@ -464,8 +476,9 @@ var selfoss = {
                 selfoss.refreshUnread(unreadstats);
 
                 // hide nav on smartphone if visible
-                if(selfoss.isSmartphone() && $('#nav').is(':visible')==true)
+                if (selfoss.isSmartphone() && $('#nav').is(':visible') == true) {
                     $('#nav-mobile-settings').click();
+                }
 
                 // refresh list
                 selfoss.dbOnline.reloadList();
@@ -475,8 +488,8 @@ var selfoss = {
                 $('#content').removeClass('loading');
                 selfoss.ui.refreshStreamButtons(true, true, hadMore);
                 selfoss.events.entries();
-                selfoss.ui.showError('Can not mark all visible item: '+
-                                     textStatus+' '+errorThrown);
+                selfoss.ui.showError('Can not mark all visible item: ' +
+                                     textStatus + ' ' + errorThrown);
             }
         });
     }

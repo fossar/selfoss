@@ -132,6 +132,10 @@ module.exports = function(grunt) {
                     { src: ['cliupdate.php'], dest: '' }
                 ]
             }
+        },
+
+        eslint: {
+            target: ['public/js/selfoss-*.js']
         }
     });
 
@@ -139,6 +143,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-text-replace');
     grunt.loadNpmTasks('grunt-contrib-compress');
     grunt.loadNpmTasks('grunt-composer');
+    grunt.loadNpmTasks('grunt-eslint');
 
     /* task checks whether newversion is given and start replacement in files if correct format is given */
     grunt.registerTask('versionupdater', 'version update task', function() {
@@ -157,4 +162,5 @@ module.exports = function(grunt) {
     grunt.registerTask('default', ['install', 'versionupdater', 'compress']);
     grunt.registerTask('version', ['versionupdater']);
     grunt.registerTask('zip', ['compress']);
+    grunt.registerTask('lint:client', 'Check JS syntax', ['eslint']);
 };
