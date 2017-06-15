@@ -4,7 +4,11 @@ use Monolog\Logger;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
 
-require __DIR__ . '/vendor/autoload.php';
+$autoloader = @include __DIR__ . '/vendor/autoload.php'; // we will show custom error
+if ($autoloader === false) {
+    echo 'The PHP dependencies are missing. Did you run `composer install` in the selfoss directory?';
+    exit;
+}
 
 $f3 = $f3 = Base::instance();
 
