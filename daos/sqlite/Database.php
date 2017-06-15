@@ -28,10 +28,18 @@ class Database {
                 touch($db_file);
             }
 
-            \F3::get('logger')->debug('Establish database connection');
-            \F3::set('db', new \DB\SQL(
-                'sqlite:' . $db_file
-            ));
+            \F3::get('logger')->debug('Establishing SQLite database connection');
+            try {
+                \F3::set('db', new \DB\SQL(
+                    'sqlite:' . $db_file
+                ));
+            } catch (\PDOException $e) {
+                if ($e->getMessage() === 'could not find driver') {
+                    throw new \Exception('Could not find SQLite driver', 0, $e);
+                }
+
+                throw $e;
+            }
 
             // create tables if necessary
             $result = @\F3::get('db')->exec('SELECT name FROM sqlite_master WHERE type = "table"');

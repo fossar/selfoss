@@ -34,13 +34,21 @@ class Database {
                 $dsn = "mysql:host=$host; dbname=$database";
             }
 
-            \F3::get('logger')->debug('Establish database connection');
-            \F3::set('db', new \DB\SQL(
-                $dsn,
-                \F3::get('db_username'),
-                \F3::get('db_password'),
-                [\PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8mb4;']
-            ));
+            \F3::get('logger')->debug('Establishing MySQL database connection');
+            try {
+                \F3::set('db', new \DB\SQL(
+                    $dsn,
+                    \F3::get('db_username'),
+                    \F3::get('db_password'),
+                    [\PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8mb4;']
+                ));
+            } catch (\PDOException $e) {
+                if ($e->getMessage() === 'could not find driver') {
+                    throw new \Exception('Could not find MySQL driver', 0, $e);
+                }
+
+                throw $e;
+            }
 
             // create tables if necessary
             $result = @\F3::get('db')->exec('SHOW TABLES');
