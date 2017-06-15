@@ -389,8 +389,6 @@ class usertimeline extends \spouts\spout {
                     $entity = $entities[$cpi];
                     $appended = '<a href="' . $entity['url'] . '" target="_blank" rel="noopener noreferrer">' . $entity['text'] . '</a>';
                     $skipUntilCp = $entity['end'];
-                } elseif (in_array($c, ['<', '>', '&', '"', '\''])) { // needs to be escaped
-                    $appended = htmlspecialchars($c);
                 } else {
                     $appended = $c;
                 }
