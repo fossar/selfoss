@@ -35,7 +35,7 @@ class WebClient {
             ]);
             $httpClient->getEmitter()->attach(new GuzzleTranscoder());
 
-            if ($f3->get('logger_level') === 'DEBUG') {
+            if (\F3::get('logger_level') === 'DEBUG') {
                 $httpClient->getEmitter()->attach(new LogSubscriber(\F3::get('logger')));
             }
 
