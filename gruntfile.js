@@ -106,9 +106,8 @@ module.exports = function(grunt) {
                     // do not pack bundled assets and assets not listed in index.php
                     { expand: true, cwd: 'public/', src: ['**'], dest: '/public', filter: function(file) {
                         const bundle = file === 'public/all.js' || file === 'public/all.css';
-                        const packageDesc = file === 'public/package.json';
                         const thirdPartyRubbish = file.startsWith('public/node_modules/') && requiredAssets.indexOf(file) === -1;
-                        const allowed = !bundle && !packageDesc && !thirdPartyRubbish;
+                        const allowed = !bundle && !thirdPartyRubbish;
 
                         return allowed;
                     }},
