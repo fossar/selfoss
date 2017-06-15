@@ -39,11 +39,19 @@ class Database {
             }
 
             \F3::get('logger')->debug('Establishing PostgreSQL database connection');
-            \F3::set('db', new \DB\SQL(
-                $dsn,
-                \F3::get('db_username'),
-                \F3::get('db_password')
-            ));
+            try {
+                \F3::set('db', new \DB\SQL(
+                    $dsn,
+                    \F3::get('db_username'),
+                    \F3::get('db_password')
+                ));
+            } catch (\PDOException $e) {
+                if ($e->getMessage() === 'could not find driver') {
+                    throw new \Exception('Could not find PostgreSQL driver', 0, $e);
+                }
+
+                throw $e;
+            }
 
             // create tables if necessary
             $result = @\F3::get('db')->exec("SELECT table_name FROM information_schema.tables WHERE table_schema='public'");
