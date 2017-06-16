@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "fancybox": "github:fancyapps/fancybox#v3.1.20",
+    "@fancyapps/fancybox": "^3.1.20",
     "jquery": "^2.2.4",
     "jquery-hotkeys": "^0.2.2",
     "jquery-mousewheel": "^3.1.13",
