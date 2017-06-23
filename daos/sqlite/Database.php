@@ -215,6 +215,7 @@ class Database {
                             shared      BOOL,
                             lastseen    DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
                         )',
+                        'UPDATE items SET updatetime = datetime WHERE updatetime IS NULL',
                         'INSERT INTO new_items SELECT *, CURRENT_TIMESTAMP FROM items',
                         'DROP TABLE items',
                         'ALTER TABLE new_items RENAME TO items',
