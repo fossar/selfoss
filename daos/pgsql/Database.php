@@ -220,6 +220,13 @@ class Database {
                         'INSERT INTO version (version) VALUES (11);'
                     ]);
                 }
+                if (strnatcmp($version, '12') < 0) {
+                    \F3::get('db')->exec([
+                        'UPDATE items SET updatetime = datetime WHERE updatetime IS NULL',
+                        'ALTER TABLE items ALTER COLUMN updatetime SET NOT NULL',
+                        'INSERT INTO version (version) VALUES (12)'
+                    ]);
+                }
             }
 
             // just initialize once

@@ -235,6 +235,14 @@ class Database {
                         'INSERT INTO ' . \F3::get('db_prefix') . 'version (version) VALUES (11)'
                     ]);
                 }
+                if (strnatcmp($version, '12') < 0) {
+                    \F3::get('db')->exec([
+                        'UPDATE ' . \F3::get('db_prefix') . 'items SET updatetime = datetime WHERE updatetime IS NULL',
+                        'ALTER TABLE ' . \F3::get('db_prefix') . 'items MODIFY updatetime DATETIME NOT NULL',
+                        'ALTER TABLE ' . \F3::get('db_prefix') . 'items MODIFY lastseen DATETIME NOT NULL',
+                        'INSERT INTO ' . \F3::get('db_prefix') . 'version (version) VALUES (12)'
+                    ]);
+                }
             }
 
             // just initialize once
