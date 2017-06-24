@@ -30,12 +30,12 @@
         }
     ],
     "autoload": {
-        "classmap": [
-            "controllers/",
-            "daos/",
-            "helpers/",
-            "spouts/"
-        ]
+        "psr-4": {
+            "controllers\\": "controllers/",
+            "daos\\": "daos/",
+            "helpers\\": "helpers/",
+            "spouts\\": "spouts/"
+        }
     },
     "config": {
         "platform": {
