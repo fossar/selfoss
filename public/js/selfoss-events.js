@@ -13,6 +13,12 @@ selfoss.events = {
 
     entryId: null,
 
+    SCROLLBAR_UNLOADED: 0,
+    SCROLLBAR_LOADING: 1,
+    SCROLLBAR_LOADED: 2,
+
+    scrollBarState: 0, /* SCROLLBAR_UNLOADED */
+
     /**
      * init events when page loads first time
      */
@@ -260,14 +266,22 @@ selfoss.events = {
             var windowHeight = $(window).height();
             $('#nav-tags-wrapper').height(windowHeight - start - 100);
             $('#nav').show();
-            $('#nav-tags-wrapper').mCustomScrollbar({
-                advanced: {
-                    updateOnContentResize: true
-                }
-            });
+            if (selfoss.events.scrollBarState === selfoss.events.SCROLLBAR_UNLOADED) {
+                selfoss.events.scrollBarState = selfoss.events.SCROLLBAR_LOADING;
+                $('#nav-tags-wrapper').mCustomScrollbar({
+                    advanced: {
+                        updateOnContentResize: true
+                    }
+                });
+                selfoss.events.scrollBarState = selfoss.events.SCROLLBAR_LOADED;
+            }
         } else {
             $('#nav-tags-wrapper').height('auto');
-            $('#nav-tags-wrapper').mCustomScrollbar('destroy');
+            if (selfoss.events.scrollBarState === selfoss.events.SCROLLBAR_LOADED) {
+                selfoss.events.scrollBarState = selfoss.events.SCROLLBAR_LOADING;
+                $('#nav-tags-wrapper').mCustomScrollbar('destroy');
+                selfoss.events.scrollBarState = selfoss.events.SCROLLBAR_UNLOADED;
+            }
         }
     }
 };
