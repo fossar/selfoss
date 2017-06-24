@@ -1,6 +1,11 @@
 $(document).ready(function() {
-    $("#screenshots a[rel=screenshots]").fancybox();
-    
+    $("#screenshots a[data-fancybox]").fancybox({
+        toolbar: false,
+        caption: function() {
+            return $(this).attr('title');
+        },
+    });
+
     $('#header-navigation li:not(.forum)').click(function() {
         var target = $('#'+$(this).attr('class'));
         if(target.length==0)
