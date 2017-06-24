@@ -28,11 +28,6 @@ selfoss.events = {
         }
 
         // window resize
-        $('#nav-tags-wrapper').mCustomScrollbar({
-            advanced: {
-                updateOnContentResize: true
-            }
-        });
         $(window).bind('resize', selfoss.events.resize);
         selfoss.events.resize();
 
@@ -265,9 +260,14 @@ selfoss.events = {
             var windowHeight = $(window).height();
             $('#nav-tags-wrapper').height(windowHeight - start - 100);
             $('#nav').show();
+            $('#nav-tags-wrapper').mCustomScrollbar({
+                advanced: {
+                    updateOnContentResize: true
+                }
+            });
         } else {
             $('#nav-tags-wrapper').height('auto');
-            $('#nav-tags-wrapper').mCustomScrollbar('disable', selfoss.isSmartphone());
+            $('#nav-tags-wrapper').mCustomScrollbar('destroy');
         }
     }
 };
