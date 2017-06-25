@@ -202,7 +202,10 @@ selfoss.events = {
                 error: function(jqXHR, textStatus, errorThrown) {
                     if (textStatus == "abort")
                         return;
-                    else if (errorThrown)
+                    else if (selfoss.hasSession() && errorThrown === 'Forbidden') {
+                        selfoss.ui.showError('Your session has expired');
+                        selfoss.logout();
+                    } else if (errorThrown)
                         selfoss.ui.showError('Load list error: '+
                                              textStatus+' '+errorThrown);
                 },
