@@ -351,41 +351,41 @@ class ContentLoader {
         return $newItem;
     }
 
-     /**
-      * Obtain title for given data
-      *
-      * @param $data
-      */
-     public function fetchTitle($data) {
-         \F3::get('logger')->debug('Start fetching spout title');
+    /**
+     * Obtain title for given data
+     *
+     * @param $data
+     */
+    public function fetchTitle($data) {
+        \F3::get('logger')->debug('Start fetching spout title');
 
-         // get spout
-         $spoutLoader = new \helpers\SpoutLoader();
-         $spout = $spoutLoader->get($data['spout']);
+        // get spout
+        $spoutLoader = new \helpers\SpoutLoader();
+        $spout = $spoutLoader->get($data['spout']);
 
-         if ($spout === false) {
-             \F3::get('logger')->error("Unknown spout '{$data['spout']}' when fetching title");
+        if ($spout === false) {
+            \F3::get('logger')->error("Unknown spout '{$data['spout']}' when fetching title");
 
-             return null;
-         }
+            return null;
+        }
 
-         // receive content
-         try {
-             @set_time_limit(5000);
-             @error_reporting(E_ERROR);
+        // receive content
+        try {
+            @set_time_limit(5000);
+            @error_reporting(E_ERROR);
 
-             $spout->load($data);
-         } catch (\Exception $e) {
-             \F3::get('logger')->error('Error fetching title', ['exception' => $e]);
+            $spout->load($data);
+        } catch (\Exception $e) {
+            \F3::get('logger')->error('Error fetching title', ['exception' => $e]);
 
-             return null;
-         }
+            return null;
+        }
 
-         $title = $spout->getSpoutTitle();
-         $spout->destroy();
+        $title = $spout->getSpoutTitle();
+        $spout->destroy();
 
-         return $title;
-     }
+        return $title;
+    }
 
     /**
      * clean up messages, thumbnails etc.

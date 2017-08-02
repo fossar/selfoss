@@ -88,9 +88,7 @@ class Opml extends BaseController {
                 $this->msg = 'The following feeds could not be imported:<br>';
                 $this->msg .= implode('<br>', $errors);
                 $this->show();
-
-            // On success bring them back to their subscription list
-            } else {
+            } else { // On success bring them back to their subscription list
                 $amount = count($this->imported);
                 $this->msg = 'Success! ' . $amount . ' feed' . ($amount != 1 ? 's have' : ' has') . ' been imported.<br>' .
                     'You might want to <a href="update">update now</a> or <a href="./">view your feeds</a>.';

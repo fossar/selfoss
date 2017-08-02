@@ -90,9 +90,7 @@ class youtube extends \spouts\rss\feed {
                 // link given
                 return @$item->get_enclosure(0)->get_link();
             }
-
-        // no enclosures: search image link in content
-        } else {
+        } else { // no enclosures: search image link in content
             $image = $this->getImage(@$item->get_content());
             if ($image !== false) {
                 return $image;

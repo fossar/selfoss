@@ -48,9 +48,7 @@ class View {
             if ($length > 0 && substr($base, $length - 1, 1) != '/') {
                 $base .= '/';
             }
-
-        // auto generate base url
-        } else {
+        } else { // auto generate base url
             $protocol = 'http';
             if ((isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ||
                 (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') ||
