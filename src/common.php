@@ -167,7 +167,7 @@ $dice->addRule(helpers\FeedHelper::class, [
 // init logger
 $log = $dice->create(Logger::class);
 if ($f3->get('logger_level') === 'NONE') {
-    $log->pushHandler(new NullHandler());
+    $handler = new NullHandler();
 } else {
     $logger_destination = in_array(PHP_SAPI, ['cli', 'cli-server'], true) ? 'error_log' : $f3->get('logger_destination');
 
@@ -183,26 +183,37 @@ if ($f3->get('logger_level') === 'NONE') {
     $formatter = new LineFormatter(null, null, true, true);
     $formatter->includeStacktraces(true);
     $handler->setFormatter($formatter);
-    $log->pushHandler($handler);
 }
+$log->pushHandler($handler);
 
 // init error handling
 $f3->set('ONERROR',
-    function(Base $f3) use ($log) {
+    function(Base $f3) use ($log, $handler) {
         $exception = $f3->get('EXCEPTION');
 
-        if ($exception) {
-            $log->error($exception->getMessage(), ['exception' => $exception]);
-        } else {
-            $log->error($f3->get('ERROR.text'));
-        }
+        try {
+            if ($exception) {
+                $log->error($exception->getMessage(), ['exception' => $exception]);
+            } else {
+                $log->error($f3->get('ERROR.text'));
+            }
 
-        if ($f3->get('DEBUG') != 0) {
-            echo $f3->get('lang_error') . ': ';
-            echo $f3->get('ERROR.text') . "\n";
-            echo $f3->get('ERROR.trace');
-        } else {
-            echo $f3->get('lang_error');
+            if ($f3->get('DEBUG') != 0) {
+                echo $f3->get('lang_error') . ': ';
+                echo $f3->get('ERROR.text') . "\n";
+                echo $f3->get('ERROR.trace');
+            } else {
+                if ($handler instanceof StreamHandler) {
+                    echo $f3->get('lang_error_check_log_file', $handler->getUrl()) . PHP_EOL;
+                } elseif ($handler instanceof ErrorLogHandler) {
+                    echo $f3->get('lang_error_check_system_logs') . PHP_EOL;
+                } else {
+                    echo $f3->get('lang_error') . PHP_EOL;
+                }
+            }
+        } catch (Exception $e) {
+            echo $f3->get('lang_error_unwritable_logs') . PHP_EOL;
+            echo $e->getMessage() . PHP_EOL;
         }
     }
 );
