@@ -147,7 +147,7 @@ class Index extends BaseController {
 
         $this->view->jsonSuccess([
             'success' => false,
-            'error' => 'invalid username/password'
+            'error' => \F3::get('lang_login_invalid_credentials'),
         ]);
     }
 
