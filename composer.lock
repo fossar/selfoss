@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "45bb2daf33fd94c07a03e5717a864a15",
+    "content-hash": "06b3779e2e7781a4c30d1919ca8d6b74",
     "packages": [
         {
             "name": "bcosca/fatfree-core",
-            "version": "v3.6.0",
+            "version": "3.6.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bcosca/fatfree-core.git",
-                "reference": "311047de4539c3cd173c378d2d1468cfd0fbfbbf"
+                "reference": "b35fe7ae88f6f3667c50c36563b50e5a1ec36bb1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bcosca/fatfree-core/zipball/311047de4539c3cd173c378d2d1468cfd0fbfbbf",
-                "reference": "311047de4539c3cd173c378d2d1468cfd0fbfbbf",
+                "url": "https://api.github.com/repos/bcosca/fatfree-core/zipball/b35fe7ae88f6f3667c50c36563b50e5a1ec36bb1",
+                "reference": "b35fe7ae88f6f3667c50c36563b50e5a1ec36bb1",
                 "shasum": ""
             },
             "require": {
@@ -35,7 +35,7 @@
             ],
             "description": "A powerful yet easy-to-use PHP micro-framework designed to help you build dynamic and robust Web applications - fast!",
             "homepage": "http://fatfreeframework.com/",
-            "time": "2016-11-19T13:22:46+00:00"
+            "time": "2017-12-31T14:47:39+00:00"
         },
         {
             "name": "ddeboer/transcoder",
@@ -100,6 +100,58 @@
             "time": "2015-01-23T14:32:33+00:00"
         },
         {
+            "name": "electrolinux/php-html5lib",
+            "version": "0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/electrolinux/php-html5lib.git",
+                "reference": "9f92154993c7ecb120d9f9c0e558660d32846721"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/electrolinux/php-html5lib/zipball/9f92154993c7ecb120d9f9c0e558660d32846721",
+                "reference": "9f92154993c7ecb120d9f9c0e558660d32846721",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "HTML5Lib": "src/",
+                    "HTML5Lib\\Tests": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Multiple users",
+                    "homepage": "https://code.google.com/p/html5lib/",
+                    "role": "Original developers"
+                },
+                {
+                    "name": "Sébastien Lavoie",
+                    "homepage": "http://blog.lavoie.sl",
+                    "role": "Packager"
+                },
+                {
+                    "name": "didier Belot",
+                    "role": "Packager"
+                }
+            ],
+            "description": "A PHP implementations of a HTML parser based on the WHATWG HTML5 specification.",
+            "homepage": "https://github.com/electrolinux/php-html5lib",
+            "keywords": [
+                "HTML5",
+                "php"
+            ],
+            "time": "2013-03-18T18:32:30+00:00"
+        },
+        {
             "name": "fossar/guzzle-transcoder",
             "version": "0.0.3",
             "source": {
@@ -139,6 +191,55 @@
             ],
             "description": "Guzzle plugin that converts responses to UTF-8",
             "time": "2017-02-13T10:17:15+00:00"
+        },
+        {
+            "name": "fossar/htmlawed",
+            "version": "1.2.4.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fossar/HTMLawed.git",
+                "reference": "ef6373a26595e29686bb8e3f46ddc2041b97b0fa"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fossar/HTMLawed/zipball/ef6373a26595e29686bb8e3f46ddc2041b97b0fa",
+                "reference": "ef6373a26595e29686bb8e3f46ddc2041b97b0fa",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">4.4.0"
+            },
+            "replace": {
+                "htmlawed/htmlawed": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "htmLawed.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+",
+                "LGPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Santosh Patnaik",
+                    "homepage": "http://www.bioinformatics.org/people/index.php?user_hash=558b661f92d0ff7b",
+                    "role": "Developer"
+                }
+            ],
+            "description": "htmLawed - Process text with HTML markup to make it more compliant with HTML standards and administrative policies",
+            "homepage": "http://www.bioinformatics.org/phplabware/internal_utilities/htmLawed/",
+            "keywords": [
+                "HTMLtidy",
+                "html",
+                "sanitize",
+                "strip",
+                "tags"
+            ],
+            "time": "2017-12-06T05:09:01+00:00"
         },
         {
             "name": "fossar/tcpdf-parser",
@@ -200,16 +301,16 @@
         },
         {
             "name": "fossar/twitteroauth-php54",
-            "version": "0.7.3-beta",
+            "version": "0.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fossar/twitteroauth-php54.git",
-                "reference": "59d49044949c3f615a3da92fdbe4b97db142f1f0"
+                "reference": "76bbf1cf1d5c90e287c963fdde98c227d6070eaa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fossar/twitteroauth-php54/zipball/59d49044949c3f615a3da92fdbe4b97db142f1f0",
-                "reference": "59d49044949c3f615a3da92fdbe4b97db142f1f0",
+                "url": "https://api.github.com/repos/fossar/twitteroauth-php54/zipball/76bbf1cf1d5c90e287c963fdde98c227d6070eaa",
+                "reference": "76bbf1cf1d5c90e287c963fdde98c227d6070eaa",
                 "shasum": ""
             },
             "require": {
@@ -250,7 +351,7 @@
                 "social",
                 "twitter"
             ],
-            "time": "2017-02-13T19:10:28+00:00"
+            "time": "2017-06-01T02:48:08+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -459,81 +560,36 @@
             "time": "2014-10-12T19:18:40+00:00"
         },
         {
-            "name": "htmlawed/htmlawed",
-            "version": "1.1.22",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/kesar/HTMLawed.git",
-                "reference": "b270453ba016ee4c6dae585f047d1e4f3cc456a1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/kesar/HTMLawed/zipball/b270453ba016ee4c6dae585f047d1e4f3cc456a1",
-                "reference": "b270453ba016ee4c6dae585f047d1e4f3cc456a1",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">4.4.0"
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "htmLawed.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-2.0+",
-                "LGPL-3.0"
-            ],
-            "authors": [
-                {
-                    "name": "Santosh Patnaik",
-                    "homepage": "http://www.bioinformatics.org/people/index.php?user_hash=558b661f92d0ff7b",
-                    "role": "Developer"
-                }
-            ],
-            "description": "htmLawed - Process text with HTML markup to make it more compliant with HTML standards and administrative policies",
-            "homepage": "http://www.bioinformatics.org/phplabware/internal_utilities/htmLawed/",
-            "keywords": [
-                "HTMLtidy",
-                "html",
-                "sanitize",
-                "strip",
-                "tags"
-            ],
-            "time": "2016-08-27T18:53:27+00:00"
-        },
-        {
             "name": "j0k3r/graby",
-            "version": "1.6.2",
+            "version": "1.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/j0k3r/graby.git",
-                "reference": "6e3e6081e1fb257a6b74415585c153677021a4e3"
+                "reference": "ed5b8cc39f24aef911cfe9f6ed94469327576774"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/j0k3r/graby/zipball/6e3e6081e1fb257a6b74415585c153677021a4e3",
-                "reference": "6e3e6081e1fb257a6b74415585c153677021a4e3",
+                "url": "https://api.github.com/repos/j0k3r/graby/zipball/ed5b8cc39f24aef911cfe9f6ed94469327576774",
+                "reference": "ed5b8cc39f24aef911cfe9f6ed94469327576774",
                 "shasum": ""
             },
             "require": {
                 "ext-curl": "*",
                 "guzzlehttp/guzzle": "^5.2.0",
-                "htmlawed/htmlawed": "^1.1.19",
+                "htmlawed/htmlawed": "dev-master",
                 "j0k3r/graby-site-config": "^1.0",
                 "j0k3r/php-readability": "^1.0",
                 "j0k3r/safecurl": "~2.0",
                 "monolog/monolog": "^1.13.1",
                 "php": ">=5.4",
                 "simplepie/simplepie": "^1.3.1",
-                "smalot/pdfparser": "~0.9.24",
+                "smalot/pdfparser": "~0.11",
                 "symfony/options-resolver": "~2.6|~3.0",
                 "true/punycode": "~2.0",
                 "wallabag/tcpdf": "^6.2"
             },
             "require-dev": {
+                "friendsofphp/php-cs-fixer": "~2.0",
                 "satooshi/php-coveralls": "~0.6",
                 "symfony/phpunit-bridge": "~2.6|~3.0"
             },
@@ -545,7 +601,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "AGPL-3.0"
+                "MIT"
             ],
             "authors": [
                 {
@@ -560,24 +616,27 @@
                 }
             ],
             "description": "Graby helps you extract article content from web pages",
-            "time": "2017-03-19T16:00:33+00:00"
+            "time": "2017-11-28T16:29:31+00:00"
         },
         {
             "name": "j0k3r/graby-site-config",
-            "version": "1.0.32",
+            "version": "1.0.44",
             "source": {
                 "type": "git",
                 "url": "https://github.com/j0k3r/graby-site-config.git",
-                "reference": "00ca6236c442dff3e471268fbb6975c372e6353c"
+                "reference": "eeee42c05648e060d94fad246475f235cf83099a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/j0k3r/graby-site-config/zipball/00ca6236c442dff3e471268fbb6975c372e6353c",
-                "reference": "00ca6236c442dff3e471268fbb6975c372e6353c",
+                "url": "https://api.github.com/repos/j0k3r/graby-site-config/zipball/eeee42c05648e060d94fad246475f235cf83099a",
+                "reference": "eeee42c05648e060d94fad246475f235cf83099a",
                 "shasum": ""
             },
             "require": {
                 "symfony/finder": "~2.6|~3.0"
+            },
+            "require-dev": {
+                "symfony/phpunit-bridge": "^3.2"
             },
             "type": "library",
             "autoload": {
@@ -587,7 +646,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "AGPL-3.0"
+                "CC0-1.0"
             ],
             "authors": [
                 {
@@ -596,23 +655,24 @@
                 }
             ],
             "description": "Graby site config files",
-            "time": "2017-02-22T08:54:03+00:00"
+            "time": "2017-11-26T08:58:24+00:00"
         },
         {
             "name": "j0k3r/php-readability",
-            "version": "1.1.7",
+            "version": "1.1.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/j0k3r/php-readability.git",
-                "reference": "6def74390204a954aeec29cf03910d79b6011ee7"
+                "reference": "6427dd7371d797ba49a5ed22db8b56198a430eb5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/j0k3r/php-readability/zipball/6def74390204a954aeec29cf03910d79b6011ee7",
-                "reference": "6def74390204a954aeec29cf03910d79b6011ee7",
+                "url": "https://api.github.com/repos/j0k3r/php-readability/zipball/6427dd7371d797ba49a5ed22db8b56198a430eb5",
+                "reference": "6427dd7371d797ba49a5ed22db8b56198a430eb5",
                 "shasum": ""
             },
             "require": {
+                "electrolinux/php-html5lib": "^0.1.0",
                 "ext-mbstring": "*",
                 "php": ">=5.3.3",
                 "psr/log": "^1.0"
@@ -669,7 +729,7 @@
                 "extraction",
                 "html"
             ],
-            "time": "2017-03-18T08:16:30+00:00"
+            "time": "2017-06-30T14:50:09+00:00"
         },
         {
             "name": "j0k3r/safecurl",
@@ -930,16 +990,16 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "1.22.1",
+            "version": "1.23.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "1e044bc4b34e91743943479f1be7a1d5eb93add0"
+                "reference": "fd8c787753b3a2ad11bc60c063cff1358a32a3b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/1e044bc4b34e91743943479f1be7a1d5eb93add0",
-                "reference": "1e044bc4b34e91743943479f1be7a1d5eb93add0",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/fd8c787753b3a2ad11bc60c063cff1358a32a3b4",
+                "reference": "fd8c787753b3a2ad11bc60c063cff1358a32a3b4",
                 "shasum": ""
             },
             "require": {
@@ -960,7 +1020,7 @@
                 "phpunit/phpunit-mock-objects": "2.3.0",
                 "ruflin/elastica": ">=0.90 <3.0",
                 "sentry/sentry": "^0.13",
-                "swiftmailer/swiftmailer": "~5.3"
+                "swiftmailer/swiftmailer": "^5.3|^6.0"
             },
             "suggest": {
                 "aws/aws-sdk-php": "Allow sending log messages to AWS services like DynamoDB",
@@ -1004,20 +1064,20 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2017-03-13T07:08:03+00:00"
+            "time": "2017-06-19T01:22:40+00:00"
         },
         {
             "name": "natxet/CssMin",
-            "version": "v3.0.4",
+            "version": "v3.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/natxet/CssMin.git",
-                "reference": "92de3fe3ccb4f8298d31952490ef7d5395855c39"
+                "reference": "9580f5448f05a82c96cfe6c7063a77807d8ec56d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/natxet/CssMin/zipball/92de3fe3ccb4f8298d31952490ef7d5395855c39",
-                "reference": "92de3fe3ccb4f8298d31952490ef7d5395855c39",
+                "url": "https://api.github.com/repos/natxet/CssMin/zipball/9580f5448f05a82c96cfe6c7063a77807d8ec56d",
+                "reference": "9580f5448f05a82c96cfe6c7063a77807d8ec56d",
                 "shasum": ""
             },
             "require": {
@@ -1051,7 +1111,7 @@
                 "css",
                 "minify"
             ],
-            "time": "2015-09-25T11:13:11+00:00"
+            "time": "2017-10-04T16:54:00+00:00"
         },
         {
             "name": "psr/log",
@@ -1102,20 +1162,23 @@
         },
         {
             "name": "react/promise",
-            "version": "v2.5.0",
+            "version": "v2.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/reactphp/promise.git",
-                "reference": "2760f3898b7e931aa71153852dcd48a75c9b95db"
+                "reference": "62785ae604c8d69725d693eb370e1d67e94c4053"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/reactphp/promise/zipball/2760f3898b7e931aa71153852dcd48a75c9b95db",
-                "reference": "2760f3898b7e931aa71153852dcd48a75c9b95db",
+                "url": "https://api.github.com/repos/reactphp/promise/zipball/62785ae604c8d69725d693eb370e1d67e94c4053",
+                "reference": "62785ae604c8d69725d693eb370e1d67e94c4053",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.8"
             },
             "type": "library",
             "autoload": {
@@ -1141,20 +1204,20 @@
                 "promise",
                 "promises"
             ],
-            "time": "2016-12-22T14:09:01+00:00"
+            "time": "2017-03-25T12:08:31+00:00"
         },
         {
             "name": "simplepie/simplepie",
-            "version": "1.4.3",
+            "version": "1.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/simplepie/simplepie.git",
-                "reference": "2a24b6e74aa9bf33243020f52895fe77efe94ccf"
+                "reference": "db9fff27b6d49eed3d4047cd3211ec8dba2f5d6e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/simplepie/simplepie/zipball/2a24b6e74aa9bf33243020f52895fe77efe94ccf",
-                "reference": "2a24b6e74aa9bf33243020f52895fe77efe94ccf",
+                "url": "https://api.github.com/repos/simplepie/simplepie/zipball/db9fff27b6d49eed3d4047cd3211ec8dba2f5d6e",
+                "reference": "db9fff27b6d49eed3d4047cd3211ec8dba2f5d6e",
                 "shasum": ""
             },
             "require": {
@@ -1201,28 +1264,29 @@
                 "feeds",
                 "rss"
             ],
-            "time": "2016-11-27T01:39:18+00:00"
+            "time": "2017-11-12T02:03:34+00:00"
         },
         {
             "name": "smalot/pdfparser",
-            "version": "v0.9.26",
+            "version": "v0.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/smalot/pdfparser.git",
-                "reference": "5c1eaff9fb407779b5e05ea4f851be6f7d2a14f6"
+                "reference": "40462c1a662d5fbc8f48d30626695a06f047e0cf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/smalot/pdfparser/zipball/5c1eaff9fb407779b5e05ea4f851be6f7d2a14f6",
-                "reference": "5c1eaff9fb407779b5e05ea4f851be6f7d2a14f6",
+                "url": "https://api.github.com/repos/smalot/pdfparser/zipball/40462c1a662d5fbc8f48d30626695a06f047e0cf",
+                "reference": "40462c1a662d5fbc8f48d30626695a06f047e0cf",
                 "shasum": ""
             },
             "require": {
+                "ext-iconv": "*",
                 "php": ">=5.3.0",
                 "tecnickcom/tcpdf": "~6.0"
             },
             "require-dev": {
-                "atoum/atoum": "dev-master"
+                "atoum/atoum": "^2.8 | ^3.0"
             },
             "type": "library",
             "autoload": {
@@ -1232,19 +1296,24 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "GPL-3.0"
+                "LGPLv3"
             ],
             "authors": [
                 {
-                    "name": "Sebastien MALOT",
-                    "email": "sebastien@malot.fr",
-                    "homepage": "http://www.malot.fr",
-                    "role": "Developer"
+                    "name": "Sébastien MALOT",
+                    "email": "sebastien@malot.fr"
                 }
             ],
             "description": "Pdf parser library. Can read and extract information from pdf file.",
             "homepage": "http://www.pdfparser.org",
-            "time": "2016-11-05T07:58:33+00:00"
+            "keywords": [
+                "extract",
+                "parse",
+                "parser",
+                "pdf",
+                "text"
+            ],
+            "time": "2017-09-14T12:26:16+00:00"
         },
         {
             "name": "smottt/wideimage",
@@ -1283,16 +1352,16 @@
         },
         {
             "name": "symfony/finder",
-            "version": "v2.8.18",
+            "version": "v2.8.32",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
-                "reference": "5fc4b5cab38b9d28be318fcffd8066988e7d9451"
+                "reference": "efeceae6a05a9b2fcb3391333f1d4a828ff44ab8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/finder/zipball/5fc4b5cab38b9d28be318fcffd8066988e7d9451",
-                "reference": "5fc4b5cab38b9d28be318fcffd8066988e7d9451",
+                "url": "https://api.github.com/repos/symfony/finder/zipball/efeceae6a05a9b2fcb3391333f1d4a828ff44ab8",
+                "reference": "efeceae6a05a9b2fcb3391333f1d4a828ff44ab8",
                 "shasum": ""
             },
             "require": {
@@ -1328,20 +1397,20 @@
             ],
             "description": "Symfony Finder Component",
             "homepage": "https://symfony.com",
-            "time": "2017-02-21T08:33:48+00:00"
+            "time": "2017-11-05T15:25:56+00:00"
         },
         {
             "name": "symfony/options-resolver",
-            "version": "v2.8.18",
+            "version": "v2.8.32",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/options-resolver.git",
-                "reference": "bbaa4927a6edf2ba22f0f5daa6d9454e24e3442e"
+                "reference": "e4e64cb8e01981425098bfb6000ac397206dfc25"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/options-resolver/zipball/bbaa4927a6edf2ba22f0f5daa6d9454e24e3442e",
-                "reference": "bbaa4927a6edf2ba22f0f5daa6d9454e24e3442e",
+                "url": "https://api.github.com/repos/symfony/options-resolver/zipball/e4e64cb8e01981425098bfb6000ac397206dfc25",
+                "reference": "e4e64cb8e01981425098bfb6000ac397206dfc25",
                 "shasum": ""
             },
             "require": {
@@ -1382,20 +1451,20 @@
                 "configuration",
                 "options"
             ],
-            "time": "2017-02-21T08:33:48+00:00"
+            "time": "2017-11-05T15:25:56+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.3.0",
+            "version": "v1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "e79d363049d1c2128f133a2667e4f4190904f7f4"
+                "reference": "2ec8b39c38cb16674bbf3fea2b6ce5bf117e1296"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/e79d363049d1c2128f133a2667e4f4190904f7f4",
-                "reference": "e79d363049d1c2128f133a2667e4f4190904f7f4",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/2ec8b39c38cb16674bbf3fea2b6ce5bf117e1296",
+                "reference": "2ec8b39c38cb16674bbf3fea2b6ce5bf117e1296",
                 "shasum": ""
             },
             "require": {
@@ -1407,7 +1476,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.3-dev"
+                    "dev-master": "1.6-dev"
                 }
             },
             "autoload": {
@@ -1441,69 +1510,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2016-11-14T01:06:16+00:00"
-        },
-        {
-            "name": "tracy/tracy",
-            "version": "v2.4.6",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/nette/tracy.git",
-                "reference": "c9fbca15b0a11d904c7783b7aad114182618d8d4"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/nette/tracy/zipball/c9fbca15b0a11d904c7783b7aad114182618d8d4",
-                "reference": "c9fbca15b0a11d904c7783b7aad114182618d8d4",
-                "shasum": ""
-            },
-            "require": {
-                "ext-json": "*",
-                "ext-session": "*",
-                "php": ">=5.4.4"
-            },
-            "require-dev": {
-                "nette/di": "~2.3",
-                "nette/tester": "~2.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.4-dev"
-                }
-            },
-            "autoload": {
-                "classmap": [
-                    "src"
-                ],
-                "files": [
-                    "src/shortcuts.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause",
-                "GPL-2.0",
-                "GPL-3.0"
-            ],
-            "authors": [
-                {
-                    "name": "David Grudl",
-                    "homepage": "https://davidgrudl.com"
-                },
-                {
-                    "name": "Nette Community",
-                    "homepage": "https://nette.org/contributors"
-                }
-            ],
-            "description": "Tracy: useful PHP debugger",
-            "homepage": "https://tracy.nette.org",
-            "keywords": [
-                "debug",
-                "debugger",
-                "nette"
-            ],
-            "time": "2017-01-29T19:39:20+00:00"
+            "time": "2017-10-11T12:05:26+00:00"
         },
         {
             "name": "true/punycode",
