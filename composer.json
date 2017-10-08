@@ -10,7 +10,7 @@
         "fossar/guzzle-transcoder": "^0.0.3",
         "guzzlehttp/guzzle": "^5.3",
         "guzzlehttp/log-subscriber": "^1.0",
-        "htmlawed/htmlawed": "^1.1",
+        "fossar/htmlawed": "^1.2.4.1",
         "j0k3r/graby": "^1.6",
         "linkorb/jsmin-php": "^1.0",
         "lordelph/icofileloader": "^1.0",
