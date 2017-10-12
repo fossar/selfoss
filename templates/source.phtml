@@ -3,7 +3,7 @@
         class="source <?= isset($this->source) === false ? 'source-new' : '' ?> <?= (isset($this->source) && isset($this->source['error']) && strlen($this->source['error'] > 0)) ? 'error' : '' ?>">
     <div class="source-icon">
         <?php if (isset($this->source) && isset($this->source['icon']) && $this->source['icon'] !== false && $this->source['icon'] != '0') : ?>
-        <img src="<?= 'favicons/' . $this->source['icon']; ?>" alt="<?= isset($this->source) ? $this->source['title'] : ''; ?>" />
+        <img src="<?= 'favicons/' . $this->source['icon']; ?>" alt="" />
         <?php endif; ?>
     </div>
 
@@ -42,19 +42,19 @@
     <!-- edit -->
     <ul class="source-edit-form">
         <!-- title -->
-        <li><label for="title-<?= $idAttr ?>"><?= \F3::get('lang_source_title')?>:</label> <input id="title-<?= $idAttr ?>" type="text" name="title" value="<?= isset($this->source) ? $this->source['title'] : ''; ?>" placeholder="<?= F3::get('lang_source_autotitle_hint'); ?>" /></li>
+        <li><label for="title-<?= $idAttr ?>"><?= \F3::get('lang_source_title')?></label> <input id="title-<?= $idAttr ?>" type="text" name="title" value="<?= isset($this->source) ? $this->source['title'] : ''; ?>" placeholder="<?= F3::get('lang_source_autotitle_hint'); ?>" /></li>
 
 
         <!-- tags -->
-        <li><label for="tags-<?= $idAttr ?>"><?= \F3::get('lang_source_tags'); ?>:</label>
+        <li><label for="tags-<?= $idAttr ?>"><?= \F3::get('lang_source_tags'); ?></label>
             <input id="tags-<?= $idAttr ?>" type="text" name="tags" value="<?= isset($this->source) ? $this->source['tags'] : ''; ?>" /> <span class="source-edit-form-help"> <?= \F3::get('lang_source_comma')?></span>
         </li>
 
         <!-- filter -->
-        <li><label for="filter-<?= $idAttr ?>"><?= \F3::get('lang_source_filter')?>:</label> <input id="filter-<?= $idAttr ?>" type="text" name="filter" value="<?= isset($this->source) ? $this->source['filter'] : ''; ?>" placeholder="<?= F3::get('lang_source_optional'); ?>" /></li>
+        <li><label for="filter-<?= $idAttr ?>"><?= \F3::get('lang_source_filter')?></label> <input id="filter-<?= $idAttr ?>" type="text" name="filter" value="<?= isset($this->source) ? $this->source['filter'] : ''; ?>" placeholder="<?= F3::get('lang_source_optional'); ?>" /></li>
 
         <!-- type -->
-        <li><label for="type-<?= $idAttr ?>"><?= \F3::get('lang_source_type')?>:</label>
+        <li><label for="type-<?= $idAttr ?>"><?= \F3::get('lang_source_type')?></label>
             <select id="type-<?= $idAttr ?>" class="source-spout" name="spout">
                 <option value=""><?= \F3::get('lang_source_select')?></option>
                 <?php foreach ($this->spouts as $spouttype => $spout) : ?>

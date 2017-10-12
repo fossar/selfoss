@@ -14,5 +14,11 @@
     "grunt-contrib-compress": "^0.10.0",
     "grunt-eslint": "^20.0.0",
     "grunt-text-replace": "~0.3"
+  },
+  "engines": {
+    "npm": ">=5"
+  },
+  "scripts": {
+    "postinstall": "npm install --prefix public/"
   }
 }
