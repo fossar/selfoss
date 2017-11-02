@@ -2,6 +2,8 @@
 
 namespace helpers;
 
+define('SOURCE_UPDATE_MAX_INTERVAL', 300);
+
 /**
  * Helper class for loading extern items
  *
