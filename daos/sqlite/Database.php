@@ -234,6 +234,11 @@ class Database {
                         'INSERT INTO version (version) VALUES (11)'
                     ]);
                 }
+                if (strnatcmp($version, '12') < 0) {
+                    \F3::get('db')->exec('
+                        CREATE UNIQUE INDEX uid ON new_items(uid, source);
+                    ');
+                }
             }
 
             // just initialize once
