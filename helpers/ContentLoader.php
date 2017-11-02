@@ -2,6 +2,8 @@
 
 namespace helpers;
 
+define('SOURCE_UPDATE_MAX_INTERVAL', 300);
+
 /**
  * Helper class for loading extern items
  *
@@ -77,15 +79,31 @@ class ContentLoader {
         @set_time_limit(5000);
         @error_reporting(E_ERROR);
 
+        // prevent another simultaneous update of the same source
+        $lock = new \helpers\Lock('update-source-'.$source['id']);
+        if( !$lock->acquire() ){
+            \F3::get('logger')->debug('abording source ' . $source['title'] . ' (id: '.$source['id'].') update: another update is running.');
+            return;
+        }
+
         // logging
         \F3::get('logger')->debug('---');
         \F3::get('logger')->debug('start fetching source "' . $source['title'] . ' (id: ' . $source['id'] . ') ');
+
+        // do not hammer source
+        $lastupdateAge = time() - $source['lastupdate'];
+        if( $lastupdateAge < SOURCE_UPDATE_MAX_INTERVAL ){
+            \F3::get('logger')->debug('skipping: source has been updated less than ' . SOURCE_UPDATE_MAX_INTERVAL . ' seconds ago.');
+            $lock->release();
+            return;
+        }
 
         // get spout
         $spoutLoader = new \helpers\SpoutLoader();
         $spout = $spoutLoader->get($source['spout']);
         if ($spout === false) {
             \F3::get('logger')->error('unknown spout: ' . $source['spout']);
+            $lock->release();
 
             return;
         }
@@ -100,6 +118,7 @@ class ContentLoader {
         } catch (\Exception $e) {
             \F3::get('logger')->error('error loading feed content for ' . $source['title'], ['exception' => $e]);
             $this->sourceDao->error($source['id'], date('Y-m-d H:i:s') . 'error loading feed content: ' . $e->getMessage());
+            $lock->release();
 
             return;
         }
@@ -176,6 +195,7 @@ class ContentLoader {
                 $icon = $item->getIcon();
             } catch (\Exception $e) {
                 \F3::get('logger')->debug('icon: error', ['exception' => $e]);
+                $lock->release();
 
                 return;
             }
