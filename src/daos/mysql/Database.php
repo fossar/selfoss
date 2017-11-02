@@ -231,6 +231,12 @@ class Database implements \daos\DatabaseInterface {
                     'INSERT INTO ' . \F3::get('db_prefix') . 'version (version) VALUES (12)'
                 ]);
             }
+            if (strnatcmp($version, '13') < 0) {
+                $this->exec([
+                    'ALTER TABLE ' . \F3::get('db_prefix') . 'items ADD UNIQUE INDEX (uid (191), source);',
+                    'INSERT INTO ' . \F3::get('db_prefix') . 'version (version) VALUES (13)'
+                ]);
+            }
         }
     }
 

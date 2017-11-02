@@ -231,6 +231,12 @@ class Database implements \daos\DatabaseInterface {
                     'INSERT INTO version (version) VALUES (11)'
                 ]);
             }
+            if (strnatcmp($version, '13') < 0) {
+                $this->exec([
+                    'CREATE UNIQUE INDEX uid ON items(uid, source);',
+                    'INSERT INTO version (version) VALUES (13)'
+                ]);
+            }
         }
     }
 
