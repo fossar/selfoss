@@ -235,9 +235,9 @@ class Database {
                     ]);
                 }
                 if (strnatcmp($version, '12') < 0) {
-                    \F3::get('db')->exec([
-                        'CREATE UNIQUE INDEX uid ON new_items(uid, source);'
-                    ]);
+                    \F3::get('db')->exec('
+                        CREATE UNIQUE INDEX uid ON new_items(uid, source);
+                    ');
                 }
             }
 
