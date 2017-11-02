@@ -582,16 +582,19 @@ body * {
             vertical-align: sub;
         }
 
-    .entry-icon,
-    .entry-icon img {
-        margin-top:3px;
-        display:block;
-        float:left;
-        width:16px;
-        height:16px;
-        text-decoration:none;
+    .entry-icon {
+        float: left;
+        text-decoration: none;
+        margin-right: 0;
     }
-    
+
+    .entry-icon img {
+        display: block;
+        padding: 6px;
+        width: 16px;
+        height: 16px;
+    }
+
     .entry-link {
         display:none;
     }
