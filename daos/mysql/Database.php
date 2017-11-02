@@ -243,6 +243,12 @@ class Database {
                         'INSERT INTO ' . \F3::get('db_prefix') . 'version (version) VALUES (12)'
                     ]);
                 }
+                if (strnatcmp($version, '13') < 0) {
+                    \F3::get('db')->exec([
+                        'ALTER IGNORE TABLE ' . \F3::get('db_prefix') . 'items ADD UNIQUE INDEX (uid (150), source);',
+                        'INSERT INTO ' . \F3::get('db_prefix') . 'version (version) VALUES (13)'
+                    ]);
+                }
             }
 
             // just initialize once

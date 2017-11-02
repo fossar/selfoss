@@ -234,6 +234,47 @@ class Database {
                         'INSERT INTO version (version) VALUES (11)'
                     ]);
                 }
+                if (strnatcmp($version, '12') < 0) {
+                    \F3::get('db')->exec([
+                        // Table needs to be re-created because ALTER TABLE is rather limited.
+                        // https://sqlite.org/lang_altertable.html#otheralter
+                        'CREATE TABLE new_items (
+                            id          INTEGER PRIMARY KEY AUTOINCREMENT,
+                            datetime    DATETIME NOT NULL,
+                            title       TEXT NOT NULL,
+                            content     TEXT NOT NULL,
+                            thumbnail   TEXT,
+                            icon        TEXT,
+                            unread      BOOL NOT NULL,
+                            starred     BOOL NOT NULL,
+                            source      INT NOT NULL,
+                            uid         VARCHAR(255) NOT NULL,
+                            link        TEXT NOT NULL,
+                            updatetime  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                            author      VARCHAR(255),
+                            shared      BOOL,
+                            lastseen    DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                            CONSTRAINT uid UNIQUE (uid, source)
+                        )',
+                        'UPDATE items SET updatetime = datetime WHERE updatetime IS NULL',
+                        'INSERT INTO new_items SELECT *, CURRENT_TIMESTAMP FROM items',
+                        'DROP TABLE items',
+                        'ALTER TABLE new_items RENAME TO items',
+                        'CREATE INDEX source ON items (source)',
+                        'CREATE TRIGGER update_updatetime_trigger
+                            AFTER UPDATE ON items FOR EACH ROW
+                                WHEN (
+                                    OLD.unread <> NEW.unread OR
+                                    OLD.starred <> NEW.starred
+                                )
+                                BEGIN
+                                    UPDATE items
+                                    SET updatetime = CURRENT_TIMESTAMP
+                                    WHERE id = NEW.id;
+                                END',
+                        'INSERT INTO version (version) VALUES (12)'
+                    ]);
+                }
             }
 
             // just initialize once
