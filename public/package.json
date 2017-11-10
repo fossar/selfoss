@@ -19,8 +19,8 @@
       ],
       "js": [
         "public/node_modules/jquery/dist/jquery.js",
-        "public/node_modules/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.js",
         "public/node_modules/jquery-mousewheel/jquery.mousewheel.js",
+        "public/node_modules/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.js",
         "public/js/lazy-image-loader.js",
         "public/node_modules/js-cookie/src/js.cookie.js",
         "public/node_modules/spectrum-colorpicker/spectrum.js",
