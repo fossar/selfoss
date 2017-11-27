@@ -258,12 +258,13 @@ class ContentLoader {
             $content,
             [
                 'safe' => 1,
-                'deny_attribute' => '* -alt -title -src -href -target -width -height, img +width +height',
+                'deny_attribute' => '* -alt -title -src -href -target',
                 'keep_bad' => 0,
                 'comment' => 1,
                 'cdata' => 1,
                 'elements' => 'div,p,ul,li,a,img,dl,dt,dd,h1,h2,h3,h4,h5,h6,ol,br,table,tr,td,blockquote,pre,ins,del,th,thead,tbody,b,i,strong,em,tt,sub,sup,s,strike,code'
-            ]
+            ],
+            'img=width, height'
         );
     }
 
