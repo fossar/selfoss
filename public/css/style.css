@@ -549,15 +549,15 @@ body * {
             column-count: 1;
             max-width: 750px;
         }
-        
-        .entry-content pre {
+
+        .entry-content pre, .entry-content table {
             overflow-x: auto;
         }
 
-        .entry-content blockquote {
-            overflow-x: unset;
+        .entry-content table {
+            display: block;
         }
-    
+
         .entry-content p,
         .entry-content ol,
         .entry-content ul,
