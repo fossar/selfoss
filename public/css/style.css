@@ -512,6 +512,7 @@ body * {
         line-height: 1.7em;
         overflow: hidden;
         padding: 0 1em;
+        overflow-wrap: break-word;
     }
     
         .entry-content a {
