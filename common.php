@@ -1,6 +1,7 @@
 <?php
 
 use Monolog\Formatter\LineFormatter;
+use Monolog\Handler\ErrorLogHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 
@@ -39,7 +40,17 @@ foreach ($f3->get('ENV') as $key => $value) {
 // init logger
 $log = new Logger('selfoss');
 if ($f3->get('logger_level') !== 'NONE') {
-    $handler = new StreamHandler(__DIR__ . '/data/logs/default.log', $f3->get('logger_level'));
+    $logger_destination = $f3->get('logger_destination');
+
+    if (strpos($logger_destination, 'file:') === 0) {
+        $handler = new StreamHandler(substr($logger_destination, 5), $f3->get('logger_level'));
+    } elseif ($logger_destination === 'error_log') {
+        $handler = new ErrorLogHandler(ErrorLogHandler::OPERATING_SYSTEM, $f3->get('logger_level'));
+    } else {
+        echo 'The `logger_destination` option needs to be either `error_log` or a file path prefixed by `file:`.';
+        exit;
+    }
+
     $formatter = new LineFormatter(null, null, true, true);
     $formatter->includeStacktraces(true);
     $handler->setFormatter($formatter);

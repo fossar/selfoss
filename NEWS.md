@@ -6,6 +6,7 @@
 - It is possible to set tag or source to be opened after user logs in ([#927](https://github.com/SSilence/selfoss/pull/927))
 - Displaying multiple images from tweets with galleries is supported ([#934](https://github.com/SSilence/selfoss/pull/934))
 - Quoted tweets are supported ([#934](https://github.com/SSilence/selfoss/pull/934))
+- Logging destination can be changed ([#1004](https://github.com/SSilence/selfoss/pull/1004))
 
 ### Bug fixes
 - Fixed Full-text RSS spout ([#897](https://github.com/SSilence/selfoss/pull/897))

@@ -211,8 +211,12 @@ db_port=3306</code>
                         <td>port for database connections (3306 for mysql, 5432 for PostgreSQL</td>
                     </tr>
                     <tr>
+                        <td class="documentation-first-column">logger_destination</td>
+                        <td>By default, the logs are saved to <code>data/logs/default.log</code> but you can choose a different file by specifying a file path prefixed by <code>file:</code>. Setting <code>file:php://stderr</code> is especially useful when running selfoss on a PaaS or inside Docker. Alternately, you can set the option to <code>error_log</code> to redirect the messages to <a href="https://secure.php.net/manual/en/function.error-log.php">SAPI error log</a> – handy for PHP-FPM, which <a href="https://secure.php.net/manual/en/install.fpm.configuration.php#catch-workers-output">discards stderr</a> by default.</td>
+                    </tr>
+                    <tr>
                         <td class="documentation-first-column">logger_level</td>
-                        <td>set logging level – following logging levels are available: <code>EMERGENCY</code>, <code>ALERT</code>, <code>CRITICAL</code>, <code>ERROR</code>, <code>WARNING</code>, <code>NOTICE</code>, <code>INFO</code>, <code>DEBUG</code>. Additionally, you can use <code>NONE</code> pseudo-level to turn the logging off completely.<br>Use this for troubleshooting on updating feeds (but be aware that the log file can become very large.) The logged messages will be saved to <code>/data/logs/default.log</code>.</td>
+                        <td>set logging level – following logging levels are available: <code>EMERGENCY</code>, <code>ALERT</code>, <code>CRITICAL</code>, <code>ERROR</code>, <code>WARNING</code>, <code>NOTICE</code>, <code>INFO</code>, <code>DEBUG</code>. Additionally, you can use <code>NONE</code> pseudo-level to turn the logging off completely.<br>Use this for troubleshooting on updating feeds (but be aware that the log file can become very large.)</td>
                     </tr>
                     <tr>
                         <td class="documentation-first-column">items_perpage</td>
