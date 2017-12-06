@@ -282,6 +282,7 @@ img {
     
     #documentation td {
         font-size:12px;
+        padding: 5px;
     }
     
     #documentation td.documentation-first-column {
