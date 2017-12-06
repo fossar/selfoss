@@ -13,7 +13,7 @@ if ($autoloader === false) {
 $f3 = $f3 = Base::instance();
 
 $f3->set('DEBUG', 0);
-$f3->set('version', '2.17-SNAPSHOT');
+$f3->set('version', '2.18-SNAPSHOT');
 $f3->set('AUTOLOAD', false);
 $f3->set('cache', __DIR__ . '/data/cache');
 $f3->set('BASEDIR', __DIR__);
