@@ -24,9 +24,6 @@ selfoss.shares = {
         this.register('pocket', 'p', true, function(url, title) {
             return 'https://getpocket.com/save?url=' + encodeURIComponent(url) + '&title=' + encodeURIComponent(title);
         });
-        this.register('readability', 'r', true, function(url) {
-            return 'http://www.readability.com/save?url=' + encodeURIComponent(url);
-        });
         this.register('wallabag', 'w', true, function(url) {
             if ($('#config').data('wallabag_version') == 2) {
                 return $('#config').data('wallabag') + '/bookmarklet?url=' + encodeURIComponent(url);
