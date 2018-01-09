@@ -86,6 +86,7 @@ class ContentLoader {
         $spout = $spoutLoader->get($source['spout']);
         if ($spout === false) {
             \F3::get('logger')->error('unknown spout: ' . $source['spout']);
+            $this->sourceDao->error($source['id'], 'unknown spout');
 
             return;
         }
