@@ -35,8 +35,7 @@ selfoss.events.search = function() {
         $('#search-list').html('');
         var itemId = 0;
         $.each(words, function(index, item) {
-            $('#search-list').append('<li id="search-item-' + itemId + '"></li>');
-            $('#search-item-' + itemId).text(item);
+            $('#search-list').append('<li id="search-item-' + itemId + '">' + item + ' <i class="fas fa-times"></i></li>');
             itemId++;
         });
 

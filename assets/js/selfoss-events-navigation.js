@@ -66,6 +66,7 @@ selfoss.events.navigation = function() {
             selfoss.events.resize();
         });
         $('#nav-filter-title').toggleClass('nav-filter-collapsed nav-filter-expanded');
+        $('#nav-filter-title').find('svg').toggleClass('fa-caret-down fa-caret-right');
         $('#nav-filter-title').attr('aria-expanded', function(i, attr) {
             return attr == 'true' ? 'false' : 'true';
         });
@@ -97,6 +98,7 @@ selfoss.events.navigation = function() {
     $('#nav-tags-title').unbind('click').click(function() {
         $('#nav-tags').slideToggle('slow');
         $('#nav-tags-title').toggleClass('nav-tags-collapsed nav-tags-expanded');
+        $('#nav-tags-title').find('svg').toggleClass('fa-caret-down fa-caret-right');
         $('#nav-tags-title').attr('aria-expanded', function(i, attr) {
             return attr == 'true' ? 'false' : 'true';
         });
@@ -129,6 +131,7 @@ selfoss.events.navigation = function() {
         var toggle = function() {
             $('#nav-sources').slideToggle('slow');
             $('#nav-sources-title').toggleClass('nav-sources-collapsed nav-sources-expanded');
+            $('#nav-sources-title').find('svg').toggleClass('fa-caret-down fa-caret-right');
             $('#nav-sources-title').attr('aria-expanded', function(i, attr) {
                 return attr == 'true' ? 'false' : 'true';
             });
@@ -184,7 +187,7 @@ selfoss.events.navigation = function() {
             return;
         }
 
-        $('#nav-refresh').addClass('loading');
+        $('#nav-refresh').find('svg').addClass('fa-spin');
 
         $.ajax({
             url: 'update',
@@ -211,7 +214,7 @@ selfoss.events.navigation = function() {
                 selfoss.ui.showError(selfoss.ui._('error_refreshing_source') + ' ' + errorThrown);
             },
             complete: function() {
-                $('#nav-refresh').removeClass('loading');
+                $('#nav-refresh').find('svg').removeClass('fa-spin');
             },
             timeout: 0
         });

@@ -1,5 +1,6 @@
 import locales from './locales';
 import selfoss from './selfoss-base';
+import { initIcons } from './icons';
 
 /**
  * ui change functions
@@ -23,6 +24,8 @@ selfoss.ui = {
             return;
         }
 
+        initIcons();
+
         $('body').append(<div id="loginform">
             <form action="" method="post">
                 <ul id="login">
@@ -45,7 +48,7 @@ selfoss.ui = {
                         <span class="count"></span>
                     </div>
                 </div>
-                <button id="nav-mobile-settings" accesskey="t" aria-label={selfoss.ui._('settingsbutton')}></button>
+                <button id="nav-mobile-settings" accesskey="t" aria-label={selfoss.ui._('settingsbutton')}><i class="fas fa-cog fa-2x"></i></button>
             </div>
 
             {/* navigation */}
@@ -54,7 +57,7 @@ selfoss.ui = {
                 <button accesskey="a" id="nav-mark">{selfoss.ui._('markread')}</button>
 
                 <div id="nav-filter-wrapper">
-                    <h2><button type="button" id="nav-filter-title" class="nav-filter-expanded" aria-expanded="true">{selfoss.ui._('filter')}</button></h2>
+                    <h2><button type="button" id="nav-filter-title" class="nav-section-toggle nav-filter-expanded" aria-expanded="true"><i class="fas fa-caret-down fa-lg fa-fw"></i> {selfoss.ui._('filter')}</button></h2>
                     <ul id="nav-filter" aria-labeledby="nav-filter-title">
                         <li>
                             <a id="nav-filter-newest" class="nav-filter-newest" href="#">
@@ -85,11 +88,11 @@ selfoss.ui = {
                 <hr />
 
                 <div id="nav-tags-wrapper">
-                    <h2><button type="button" id="nav-tags-title" class="nav-tags-expanded" aria-expanded="true">{selfoss.ui._('tags')}</button></h2>
+                    <h2><button type="button" id="nav-tags-title" class="nav-section-toggle nav-tags-expanded" aria-expanded="true"><i class="fas fa-caret-down fa-lg fa-fw"></i> {selfoss.ui._('tags')}</button></h2>
                     <ul id="nav-tags" aria-labeledby="nav-tags-title">
                         <li><a class="active nav-tags-all" href="#">{selfoss.ui._('alltags')}</a></li>
                     </ul>
-                    <h2><button type="button" id="nav-sources-title" class="nav-sources-collapsed" aria-expanded="false">{selfoss.ui._('sources')}</button></h2>
+                    <h2><button type="button" id="nav-sources-title" class="nav-section-toggle nav-sources-collapsed" aria-expanded="false"><i class="fas fa-caret-right fa-lg fa-fw"></i> {selfoss.ui._('sources')}</button></h2>
                     <ul id="nav-sources" aria-labeledby="nav-sources-title">
                     </ul>
                 </div>
@@ -103,18 +106,18 @@ selfoss.ui = {
                 </div>
 
                 <div class="nav-toolbar">
-                    <button id="nav-refresh" title={selfoss.ui._('refreshbutton')} aria-label={selfoss.ui._('refreshbutton')} accesskey="r"></button>
-                    <button id="nav-settings" title={selfoss.ui._('settingsbutton')} aria-label={selfoss.ui._('settingsbutton')} accesskey="t"></button>
-                    <button id="nav-logout" title={selfoss.ui._('logoutbutton')} aria-label={selfoss.ui._('logoutbutton')} accesskey="l"></button>
-                    <button id="nav-login" title={selfoss.ui._('loginbutton')} aria-label={selfoss.ui._('loginbutton')} accesskey="l"></button>
+                    <button id="nav-refresh" title={selfoss.ui._('refreshbutton')} aria-label={selfoss.ui._('refreshbutton')} accesskey="r"><i class="fas fa-sync-alt"></i></button>
+                    <button id="nav-settings" title={selfoss.ui._('settingsbutton')} aria-label={selfoss.ui._('settingsbutton')} accesskey="t"><i class="fas fa-cloud-upload-alt"></i></button>
+                    <button id="nav-logout" title={selfoss.ui._('logoutbutton')} aria-label={selfoss.ui._('logoutbutton')} accesskey="l"><i class="fas fa-sign-out-alt"></i></button>
+                    <button id="nav-login" title={selfoss.ui._('loginbutton')} aria-label={selfoss.ui._('loginbutton')} accesskey="l"><i class="fas fa-key"></i></button>
                 </div>
             </div>
 
             {/* search */}
             <div id="search" role="search" class="offlineable">
                 <input aria-label={selfoss.ui._('search_label')} type="search" id="search-term" accesskey="s" />
-                <button id="search-remove" title={selfoss.ui._('searchremove')} accesskey="h" aria-label={selfoss.ui._('searchremove')}><img src="images/remove.png" aria-hidden="true" alt="" /></button>
-                <button id="search-button" title={selfoss.ui._('searchbutton')} aria-label={selfoss.ui._('searchbutton')} accesskey="e"><img src="images/search.png" alt="" /></button>
+                <button id="search-remove" title={selfoss.ui._('searchremove')} accesskey="h" aria-label={selfoss.ui._('searchremove')}><i class="fas fa-times"></i></button>
+                <button id="search-button" title={selfoss.ui._('searchbutton')} aria-label={selfoss.ui._('searchbutton')} accesskey="e"><i class="fas fa-search"></i></button>
             </div>
 
             <ul id="search-list">
@@ -355,10 +358,10 @@ selfoss.ui = {
         // update button
         if (starred) {
             button.addClass('active');
-            button.html(selfoss.ui._('unstar'));
+            button.html('<i class="fas fa-star"></i> ' + selfoss.ui._('unstar'));
         } else {
             button.removeClass('active');
-            button.html(selfoss.ui._('star'));
+            button.html('<i class="far fa-star"></i> ' + selfoss.ui._('star'));
         }
     },
 
@@ -371,11 +374,11 @@ selfoss.ui = {
         // update button and entry style
         if (unread) {
             button.addClass('active');
-            button.html(selfoss.ui._('mark'));
+            button.html('<i class="fas fa-check-circle"></i> ' + selfoss.ui._('mark'));
             parent.addClass('unread');
         } else {
             button.removeClass('active');
-            button.html(selfoss.ui._('unmark'));
+            button.html('<i class="far fa-check-circle"></i> ' + selfoss.ui._('unmark'));
             parent.removeClass('unread');
         }
     },

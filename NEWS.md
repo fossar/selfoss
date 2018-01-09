@@ -100,6 +100,7 @@
 - **For developers**: Coding style and other code requirements can be easily checked using `grunt check`. ([#943](https://github.com/SSilence/selfoss/pull/943))
 - Warning will be logged when icon/thumbnail directories are not writeable ([#1009](https://github.com/SSilence/selfoss/pull/1009))
 - Removed readability spout and sharing ([#1012](https://github.com/SSilence/selfoss/pull/1012))
+- Switched icons to vector images, which will allow better theming ([#1013](https://github.com/SSilence/selfoss/pull/1013))
 
 
 ## 2.17 – 2017-03-17

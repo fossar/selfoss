@@ -4,27 +4,28 @@ selfoss.shares = {
     initialized: false,
     sharers: {},
     names: {},
+    icons: {},
     enabledShares: '',
 
     init: function(enabledShares) {
         this.enabledShares = enabledShares;
         this.initialized = true;
 
-        this.register('diaspora', 'd', function(url, title) {
+        this.register('diaspora', 'd', 'fab fa-diaspora', function(url, title) {
             window.open('https://share.diasporafoundation.org/?url=' + encodeURIComponent(url) + '&title=' + encodeURIComponent(title));
         });
-        this.register('twitter', 't', function(url, title) {
+        this.register('twitter', 't', 'fab fa-twitter', function(url, title) {
             window.open('https://twitter.com/intent/tweet?source=webclient&text=' + encodeURIComponent(title) + ' ' + encodeURIComponent(url));
         });
-        this.register('facebook', 'f', function(url, title) {
+        this.register('facebook', 'f', 'fab fa-facebook-square', function(url, title) {
             window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url) + '&t=' + encodeURIComponent(title));
         });
-        this.register('pocket', 'p', function(url, title) {
+        this.register('pocket', 'p', 'fab fa-get-pocket', function(url, title) {
             window.open('https://getpocket.com/save?url=' + encodeURIComponent(url) + '&title=' + encodeURIComponent(title));
         });
 
         if (selfoss.config.wallabag !== null) {
-            this.register('wallabag', 'w', function(url) {
+            this.register('wallabag', 'w', 'fac fa-wallabag', function(url) {
                 if (selfoss.config.wallabag.version === 2) {
                     window.open(selfoss.config.wallabag.url + '/bookmarklet?url=' + encodeURIComponent(url));
                 } else {
@@ -34,22 +35,23 @@ selfoss.shares = {
         }
 
         if (selfoss.config.wordpress !== null) {
-            this.register('wordpress', 's', function(url, title) {
+            this.register('wordpress', 's', 'fab fa-wordpress-simple', function(url, title) {
                 window.open(selfoss.config.wordpress + '/wp-admin/press-this.php?u=' + encodeURIComponent(url) + '&t=' + encodeURIComponent(title));
             });
         }
 
-        this.register('mail', 'e', function(url, title) {
+        this.register('mail', 'e', 'fas fa-envelope', function(url, title) {
             document.location.href = 'mailto:?body=' + encodeURIComponent(url) + '&subject=' + encodeURIComponent(title);
         });
     },
 
-    register: function(name, id, sharer) {
+    register: function(name, id, icon, sharer) {
         if (!this.initialized) {
             return false;
         }
         this.sharers[name] = sharer;
         this.names[id] = name;
+        this.icons[name] = this.fontawesomeIcon(icon);
         return true;
     },
 
@@ -79,5 +81,9 @@ selfoss.shares = {
             }
         }
         return links;
+    },
+
+    fontawesomeIcon: function(service) {
+        return '<i class="' + service + '"></i>';
     }
 };
