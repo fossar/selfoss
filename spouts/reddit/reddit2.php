@@ -67,9 +67,6 @@ class reddit2 extends \spouts\spout {
         ]
     ];
 
-    /** @var string the readability api key */
-    private $apiKey = '';
-
     /** @var string the reddit_session cookie */
     private $reddit_session = '';
 
@@ -93,8 +90,6 @@ class reddit2 extends \spouts\spout {
      * @return void
      */
     public function load($params) {
-        $this->apiKey = \F3::get('readability');
-
         if (!empty($params['password']) && !empty($params['username'])) {
             if (function_exists('apc_fetch')) {
                 $this->reddit_session = apc_fetch("{$params['username']}_selfoss_reddit_session");
@@ -265,9 +260,6 @@ class reddit2 extends \spouts\spout {
                 return '<a href="' . $this->getHtmlUrl() . '"><img src="' . preg_replace("/s\./", '.', $this->getImage($response->getBody())) . '"/></a>';
             }
             if ($this->scrape) {
-                if ($contentFromReadability = $this->fetchFromReadability($this->getHtmlUrl())) {
-                    return $contentFromReadability;
-                }
                 if ($contentFromInstapaper = $this->fetchFromInstapaper($this->getHtmlUrl())) {
                     return $contentFromInstapaper;
                 }
@@ -350,31 +342,6 @@ class reddit2 extends \spouts\spout {
      */
     public function getXmlUrl($params) {
         return  'reddit://' . urlencode($params['url']);
-    }
-
-    /**
-     * fetch content from readability.com
-     *
-     * @author oxman @github
-     *
-     * @throws \GuzzleHttp\Exception\RequestException When an error is encountered
-     * @throws \RuntimeException if the response body is not in JSON format
-     *
-     * @return string content
-     */
-    private function fetchFromReadability($url) {
-        if (empty($this->apiKey)) {
-            return false;
-        }
-
-        $response = $this->sendRequest('https://readability.com/api/content/v1/parser?token=' . $this->apiKey . '&url=' . urlencode($url));
-
-        $data = $response->json();
-        if (!isset($data['content'])) {
-            return false;
-        }
-
-        return $data['content'];
     }
 
     /**

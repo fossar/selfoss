@@ -40,6 +40,7 @@
 - Tables that do not fit into columns will now show a scrollbar ([#1001](https://github.com/SSilence/selfoss/pull/1001))
 - **For developers**: Coding style and other code requirements can be easily checked using `grunt check`. ([#943](https://github.com/SSilence/selfoss/pull/943))
 - Warning will be logged when icon/thumbnail directories are not writeable ([#1009](https://github.com/SSilence/selfoss/pull/1009))
+- Removed readability spout and sharing ([#1012](https://github.com/SSilence/selfoss/pull/1012))
 
 
 ## 2.17 – 2017-03-17
