@@ -62,6 +62,7 @@ module.exports = function(grunt) {
                     'package.json',
                     'README.md',
                     'common.php',
+                    'docs/api-description.json',
                     '_docs/website/index.html'
                 ],
                 overwrite: true,
@@ -82,6 +83,12 @@ module.exports = function(grunt) {
                 {
                     from: /Version \d+\.\d+(\-SNAPSHOT)?/,
                     to: ("Version " + grunt.option('newversion'))
+                },
+
+                // rule for docs/api-description.json
+                {
+                    from: /"version": "\d+\.\d+(\-SNAPSHOT)?"/,
+                    to: ('"version": "' + grunt.option('newversion') + '"')
                 },
 
                 // rule for website/index.html

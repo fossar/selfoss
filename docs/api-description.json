@@ -1,0 +1,1113 @@
+{
+  "openapi": "3.0.0",
+  "servers": [],
+  "info": {
+    "description": "You can access selfoss by using the same backend as selfoss user interface: The RESTful HTTP JSON API. There are a few urls where you can get information from selfoss and some for updating data. Assume you want all tags for rendering this in your own app. You have to make an HTTP GET call on the url /tags:\n\n```\nGET http://yourselfossurl.com/tags\n```\nThe result is following JSON formatted response (in this example two tags “blog” and “deviantart” are available:\n\n```\n[{\"tag\":\"blog\",\"color\":\"#251f10\",\"unread\":\"1\"},\n{\"tag\":\"deviantart\",\"color\":\"#e78e5c\",\"unread\":\"0\"}]\n```\n\nFollowing docs shows you which calls are possible and which response you can expect.",
+    "version": "2.18-SNAPSHOT",
+    "title": "selfoss"
+  },
+  "tags": [
+    {
+      "name": "Authentication",
+      "description": "When you are using a login protected page, you have to add the parameter `username` and `password` in every request (as GET or POST parameter). The logical consequence is that you have to use https.\n\nFo0r an initial login functionality in your app you can validate a username password combination using `GET /login`.\n\nAlternately, you can use session cookie on subsequent requests."
+    }
+  ],
+  "paths": {
+    "/login": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Authenticate the user",
+        "description": "",
+        "operationId": "login",
+        "responses": {
+          "200": {
+            "description": "false if credentials are incorrect",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "description": "the username which should be validated",
+                    "type": "string"
+                  },
+                  "password": {
+                    "description": "the password which should be validated",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "username"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/logout": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Deauthenticate the user",
+        "description": "Destroys the session on the server",
+        "operationId": "logout",
+        "responses": {
+          "200": {
+            "description": "always true",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          }
+        }
+    },
+    "/items": {
+      "get": {
+        "tags": [
+          "Items"
+        ],
+        "summary": "List items",
+        "operationId": "getItems",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "query",
+            "description": "set nothing for getting the newest entries, “unread” for getting only unread items and “starred” for getting only marked items.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "unread",
+                "starred"
+              ]
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "shows only items with given search in title, content or sources title",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tag",
+            "in": "query",
+            "description": "shows only items of sources with the given tag",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "source",
+            "in": "query",
+            "description": "shows only items of a given source (id of the source)",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "start listing with given n-th item (for pagination)",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "items",
+            "in": "query",
+            "description": "amount of items which should be returned (for pagination), maximum 200 items per request",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "updatedsince",
+            "in": "query",
+            "description": "only list items which are newer as given date in yyyy-mm-dd hh:mm:ss format",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Item"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters"
+          }
+        },
+        "security": [
+          {
+            "selfoss_auth": []
+          }
+        ]
+      }
+    },
+    "/mark/{itemId}": {
+      "post": {
+        "tags": [
+          "Items"
+        ],
+        "summary": "Mark item as read",
+        "description": "",
+        "parameters": [
+          {
+            "name": "itemId",
+            "in": "path",
+            "description": "the id of the item/article",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          }
+        },
+        "security": [
+          {
+            "selfoss_auth": [
+              "write:items"
+            ]
+          }
+        ]
+      }
+    },
+    "/unmark/{itemId}": {
+      "post": {
+        "tags": [
+          "Items"
+        ],
+        "summary": "Mark item as unread",
+        "description": "",
+        "parameters": [
+          {
+            "name": "itemId",
+            "in": "path",
+            "description": "the id of the item/article",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          }
+        },
+        "security": [
+          {
+            "selfoss_auth": [
+              "write:items"
+            ]
+          }
+        ]
+      }
+    },
+    "/mark/": {
+      "post": {
+        "tags": [
+          "Items"
+        ],
+        "summary": "Mark a list of items as read",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "ids": {
+                    "description": "a list of all ids for marking as read",
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    }
+                  }
+                },
+                "required": [
+                  "ids"
+                ]
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "selfoss_auth": [
+              "write:items"
+            ]
+          }
+        ]
+      }
+    },
+    "/starr/{itemId}": {
+      "post": {
+        "tags": [
+          "Items"
+        ],
+        "summary": "Mark item as starred",
+        "description": "",
+        "parameters": [
+          {
+            "name": "itemId",
+            "in": "path",
+            "description": "the id of the item/article",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          }
+        },
+        "security": [
+          {
+            "selfoss_auth": [
+              "write:items"
+            ]
+          }
+        ]
+      }
+    },
+    "/unstarr/{itemId}": {
+      "post": {
+        "tags": [
+          "Items"
+        ],
+        "summary": "Mark item as not starred",
+        "description": "",
+        "parameters": [
+          {
+            "name": "itemId",
+            "in": "path",
+            "description": "the id of the item/article",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          }
+        },
+        "security": [
+          {
+            "selfoss_auth": [
+              "write:items"
+            ]
+          }
+        ]
+      }
+    },
+    "/stats": {
+      "get": {
+        "tags": [
+          "Items"
+        ],
+        "summary": "Statistics",
+        "description": "Returns basic statistic: number of unread items, number of all items, number of starred items.",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "all": {
+                      "type": "integer"
+                    },
+                    "unread": {
+                      "type": "integer"
+                    },
+                    "starred": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "selfoss_auth": []
+          }
+        ]
+      }
+    },
+    "/sources/list": {
+      "get": {
+        "tags": [
+          "Sources"
+        ],
+        "summary": "List sources",
+        "description": "Returns a list/array of all sources which was found ordered by title.",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Source"
+                  },
+                  "example": [
+                    {
+                      "id": "2",
+                      "title": "devart",
+                      "tags": "da",
+                      "spout": "spouts\\deviantart\\dailydeviations",
+                      "params": [],
+                      "error": "",
+                      "icon": "8f05d7bb1e00caeb7a279037f129e1eb.png"
+                    },
+                    {
+                      "id": "1",
+                      "title": "Tobis Blog",
+                      "tags": "blog",
+                      "spout": "spouts\\rss\\feed",
+                      "params": {
+                        "url": "http://blog.aditu.de/feed"
+                      },
+                      "error": "",
+                      "icon": "7fe3d2c0fc27994dd267b3961d64226e.png"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "selfoss_auth": []
+          }
+        ]
+      }
+    },
+    "/source": {
+      "post": {
+        "tags": [
+          "Sources"
+        ],
+        "summary": "Add source",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "description": "the selfoss identifier for the (newly generated or existing) source",
+                      "type": "integer",
+                      "example": 8
+                    },
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/SourceRequest"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "selfoss_auth": [
+              "write:items"
+            ]
+          }
+        ]
+      }
+    },
+    "/source/{itemId}": {
+      "post": {
+        "tags": [
+          "Sources"
+        ],
+        "summary": "Update source",
+        "description": "",
+        "parameters": [
+          {
+            "name": "itemId",
+            "in": "path",
+            "description": "the id of a source",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/SourceRequest"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "selfoss_auth": [
+              "write:items"
+            ]
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Sources"
+        ],
+        "summary": "Delete source",
+        "description": "",
+        "parameters": [
+          {
+            "name": "itemId",
+            "in": "path",
+            "description": "the id of a source",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "selfoss_auth": [
+              "write:items"
+            ]
+          }
+        ]
+      }
+    },
+    "/sources/spouts": {
+      "get": {
+        "tags": [
+          "Sources"
+        ],
+        "summary": "Get available spouts",
+        "description": "Returns all available spouts (types of sources). Every spout has it own parameters.",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Spout"
+                  },
+                  "example": {
+                    "spouts\\deviantart\\dailydeviations": {
+                      "name": "deviantArt daily deviations",
+                      "description": "daily deviations of deviantart",
+                      "params": false
+                    },
+                    "spouts\\deviantart\\user": {
+                      "name": "deviantArt User",
+                      "description": "deviations of a deviantart user",
+                      "params": {
+                        "username": {
+                          "title": "Username",
+                          "type": "text",
+                          "default": "",
+                          "required": true,
+                          "validation": [
+                            "notempty"
+                          ]
+                        }
+                      }
+                    },
+                    "spouts\\rss\\feed": {
+                      "name": "RSS Feed",
+                      "description": "An default RSS Feed as source",
+                      "params": {
+                        "url": {
+                          "title": "URL",
+                          "type": "text",
+                          "default": "",
+                          "required": true,
+                          "validation": [
+                            "notempty"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "selfoss_auth": []
+          }
+        ]
+      }
+    },
+    "/sources/stats": {
+      "get": {
+        "tags": [
+          "Sources"
+        ],
+        "summary": "Source statistics",
+        "description": "Returns number of unread items for each source.",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "description": "id of the source"
+                      },
+                      "title": {
+                        "type": "string",
+                        "description": "title of the source"
+                      },
+                      "unread": {
+                        "type": "integer",
+                        "description": "number of unread items of the source"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "selfoss_auth": []
+          }
+        ]
+      }
+    },
+    "/tags": {
+      "get": {
+        "tags": [
+          "Tags"
+        ],
+        "summary": "List all tags",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "tag": {
+                        "type": "string",
+                        "description": "name of the tag"
+                      },
+                      "color": {
+                        "type": "string",
+                        "description": "color of the tag"
+                      },
+                      "unread": {
+                        "type": "integer",
+                        "description": "number of unread items of the tag"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "selfoss_auth": []
+          }
+        ]
+      }
+    },
+    "/tags/color": {
+      "post": {
+        "tags": [
+          "Tags"
+        ],
+        "summary": "Set color of a tag",
+        "description": "",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "tag": {
+                    "description": "name of the tag",
+                    "type": "string"
+                  },
+                  "color": {
+                    "description": "new color of the tag",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "tag",
+                  "color"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "selfoss_auth": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Tag": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "foreground": {
+            "type": "string",
+            "format": "color"
+          },
+          "background": {
+            "type": "string",
+            "format": "color"
+          }
+        },
+        "xml": {
+          "name": "Tag"
+        }
+      },
+      "Item": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "the selfoss identifier for this article. Use this for marking or star the entry later",
+            "type": "integer"
+          },
+          "datetime": {
+            "description": "the date and time of the article",
+            "type": "string",
+            "format": "date-time",
+            "example": "2013-04-07 13:43:00"
+          },
+          "title": {
+            "description": "the title of the article",
+            "type": "string",
+            "example": "FTTH: Google Fiber für eine neue Großstadt"
+          },
+          "content": {
+            "description": "the full content of the article",
+            "type": "string",
+            "example": "\n<p>Das 1-GBit/s-Angebot Google Fiber kommt nach Austin, die Hauptstadt des US-Bundesstaates Texas..."
+          },
+          "unread": {
+            "description": "true when the article is marked as unread, false when the article is marked as read",
+            "type": "boolean",
+            "example": true
+          },
+          "starred": {
+            "description": "true when the article is marked as starred, false when the article is not marked as starred",
+            "type": "boolean",
+            "example": false
+          },
+          "source": {
+            "description": "the id of the source",
+            "type": "integer",
+            "example": 5
+          },
+          "thumbnail": {
+            "description": "the filename of the thumbnail if one was fetched by selfoss",
+            "type": "string",
+            "example": ""
+          },
+          "icon": {
+            "description": "the filename of the favicon if one was fetched by selfoss",
+            "type": "string",
+            "example": "0bb93b95508c0b05cd01247dd4f64cdb.png"
+          },
+          "uid": {
+            "description": "the uid given by the feed",
+            "type": "string",
+            "example": "http://www.golem.de/1304/98564-rss.html"
+          },
+          "link": {
+            "description": "the link which was given by the rss feed",
+            "type": "string",
+            "example": "http://rss.feedsportal.com/c/33374/f/578068/p/1/s/5eab1e78/l/0L0Sgol..."
+          },
+          "sourcetitle": {
+            "description": "the title of the source (which was entered by the user)",
+            "type": "string",
+            "example": "golem"
+          },
+          "tags": {
+            "description": "all tags of the source of this article",
+            "type": "string"
+          }
+        }
+      },
+      "Source": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "the selfoss identifier for this source. Use this for deleting or updating the source",
+            "type": "integer"
+          },
+          "title": {
+            "description": "user given title",
+            "type": "string"
+          },
+          "tags": {
+            "description": "user given tags",
+            "type": "string"
+          },
+          "spout": {
+            "description": "the spout type. You can also get all available spout types by using the json api",
+            "type": "string"
+          },
+          "params": {
+            "description": "the params the user has set. This depends on the selected spout type. The example shows two different spout types. One without and one with an url parameter.",
+            "type": "object"
+          },
+          "error": {
+            "description": "the error message of the last fetch (empty if no error occured)",
+            "type": "string"
+          },
+          "icon": {
+            "description": "the filename of the favicon if one was found",
+            "type": "string"
+          }
+        }
+      },
+      "SourceRequest": {
+        "type": "object",
+        "required": [
+          "title",
+          "spout",
+          "tags"
+        ],
+        "properties": {
+          "title": {
+            "description": "a title for the source",
+            "type": "string"
+          },
+          "spout": {
+            "description": "the spout type for this source. You can get all available spout type by using the json API",
+            "type": "string"
+          },
+          "tags": {
+            "description": "tags for this source",
+            "type": "string"
+          },
+          "username": {
+            "description": "Username in “deviantART - user”, “deviantART - favs of a user”, Tumblr, Reddit anf “Twitter - User timeline” spouts",
+            "type": "string"
+          },
+          "user": {
+            "description": "Page name in “Facebook page feed” spout",
+            "type": "string"
+          },
+          "owner": {
+            "description": "Owner in GitHub spout",
+            "type": "string"
+          },
+          "repo": {
+            "description": "Repository in GitHub spout",
+            "type": "string"
+          },
+          "branch": {
+            "description": "Branch in GitHub spout",
+            "type": "string"
+          },
+          "url": {
+            "description": "“Subreddit or multireddit url” in Reddit spout, URL in RSS feed spouts",
+            "type": "string"
+          },
+          "password": {
+            "description": "Password in Reddit spouts",
+            "type": "string"
+          },
+          "section": {
+            "description": "Section in Golem, Heise and Prolinux spouts",
+            "type": "string"
+          },
+          "consumer_key": {
+            "description": "Consumer Key in Twitter spouts",
+            "type": "string"
+          },
+          "consumer_secret": {
+            "description": "Consumer Secret in Twitter spouts",
+            "type": "string"
+          },
+          "access_key": {
+            "description": "Access Key in Twitter spouts",
+            "type": "string"
+          },
+          "access_secret": {
+            "description": "Access Secret in Twitter spouts",
+            "type": "string"
+          },
+          "slug": {
+            "description": "List Slug in “Twitter - List timeline” spout",
+            "type": "string"
+          },
+          "owner_screen_name": {
+            "description": "Username in “Twitter - List timeline” spout",
+            "type": "string"
+          },
+          "channel": {
+            "description": "Channel in YouTube spout",
+            "type": "string"
+          }
+        }
+      },
+      "Spout": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "User facing name of the spout",
+            "type": "string"
+          },
+          "description": {
+            "description": "Additional description (e.g. for tooltip)",
+            "type": "string"
+          },
+          "params": {
+            "description": "Parameters recognized by the spout",
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/SpoutParam"
+            }
+          }
+        }
+      },
+      "SpoutParam": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "description": "Label of the parameter entry field",
+            "type": "string"
+          },
+          "type": {
+            "description": "Type of the parameter",
+            "type": "string",
+            "enum": [
+              "text",
+              "password",
+              "checkbox",
+              "select"
+            ]
+          },
+          "default": {
+            "description": "Default value of the field",
+            "type": "string"
+          },
+          "required": {
+            "description": "Whether the parameter is required",
+            "type": "boolean"
+          },
+          "validation": {
+            "description": "List of parameter value constraints",
+            "type": "array",
+            "items": {
+              "enum": [
+                "alpha",
+                "email",
+                "numeric",
+                "int",
+                "alnum",
+                "notempty"
+              ]
+            }
+          }
+        }
+      },
+      "Response": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "description": "True if the operation succeeded. *Note:* Ideally, we should just use response codes and drop this.",
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "selfoss_auth": {
+        "type": "apiKey",
+        "name": "PHPSESSID",
+        "in": "cookie"
+      }
+    }
+  }
+}
