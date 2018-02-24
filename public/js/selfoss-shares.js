@@ -1,7 +1,6 @@
 selfoss.shares = {
     initialized: false,
-    urlBuilders: {},
-    openInNewWindows: {},
+    sharers: {},
     names: {},
     enabledShares: '',
 
@@ -9,42 +8,41 @@ selfoss.shares = {
         this.enabledShares = enabledShares;
         this.initialized = true;
 
-        this.register('delicious', 'd', true, function(url, title) {
-            return 'https://delicious.com/save?url=' + encodeURIComponent(url) + '&title=' + encodeURIComponent(title);
+        this.register('delicious', 'd', function(url, title) {
+            window.open('https://delicious.com/save?url=' + encodeURIComponent(url) + '&title=' + encodeURIComponent(title));
         });
-        this.register('googleplus', 'g', true, function(url) {
-            return 'https://plus.google.com/share?url=' + encodeURIComponent(url);
+        this.register('googleplus', 'g', function(url) {
+            window.open('https://plus.google.com/share?url=' + encodeURIComponent(url));
         });
-        this.register('twitter', 't', true, function(url, title) {
-            return 'https://twitter.com/intent/tweet?source=webclient&text=' + encodeURIComponent(title) + ' ' + encodeURIComponent(url);
+        this.register('twitter', 't', function(url, title) {
+            window.open('https://twitter.com/intent/tweet?source=webclient&text=' + encodeURIComponent(title) + ' ' + encodeURIComponent(url));
         });
-        this.register('facebook', 'f', true, function(url, title) {
-            return 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url) + '&t=' + encodeURIComponent(title);
+        this.register('facebook', 'f', function(url, title) {
+            window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url) + '&t=' + encodeURIComponent(title));
         });
-        this.register('pocket', 'p', true, function(url, title) {
-            return 'https://getpocket.com/save?url=' + encodeURIComponent(url) + '&title=' + encodeURIComponent(title);
+        this.register('pocket', 'p', function(url, title) {
+            window.open('https://getpocket.com/save?url=' + encodeURIComponent(url) + '&title=' + encodeURIComponent(title));
         });
-        this.register('wallabag', 'w', true, function(url) {
+        this.register('wallabag', 'w', function(url) {
             if ($('#config').data('wallabag_version') == 2) {
-                return $('#config').data('wallabag') + '/bookmarklet?url=' + encodeURIComponent(url);
+                window.open($('#config').data('wallabag') + '/bookmarklet?url=' + encodeURIComponent(url));
             } else {
-                return $('#config').data('wallabag') + '/?action=add&url=' + btoa(url);
+                window.open($('#config').data('wallabag') + '/?action=add&url=' + btoa(url));
             }
         });
-        this.register('wordpress', 's', true, function(url, title) {
-            return $('#config').data('wordpress') + '/wp-admin/press-this.php?u=' + encodeURIComponent(url) + '&t=' + encodeURIComponent(title);
+        this.register('wordpress', 's', function(url, title) {
+            window.open($('#config').data('wordpress') + '/wp-admin/press-this.php?u=' + encodeURIComponent(url) + '&t=' + encodeURIComponent(title));
         });
-        this.register('mail', 'e', false, function(url, title) {
-            return 'mailto:?body=' + encodeURIComponent(url) + '&subject=' + encodeURIComponent(title);
+        this.register('mail', 'e', function(url, title) {
+            document.location.href = 'mailto:?body=' + encodeURIComponent(url) + '&subject=' + encodeURIComponent(title);
         });
     },
 
-    register: function(name, id, openInNewWindow, urlBuilder) {
+    register: function(name, id, sharer) {
         if (!this.initialized) {
             return false;
         }
-        this.urlBuilders[name] = urlBuilder;
-        this.openInNewWindows[name] = openInNewWindow;
+        this.sharers[name] = sharer;
         this.names[id] = name;
         return true;
     },
@@ -63,12 +61,7 @@ selfoss.shares = {
     },
 
     share: function(name, url, title) {
-        url = this.urlBuilders[name](url, title);
-        if (this.openInNewWindows[name]) {
-            window.open(url);
-        } else {
-            document.location.href = url;
-        }
+        this.sharers[name](url, title);
     },
 
     buildLinks: function(shares, linkBuilder) {

@@ -10,6 +10,22 @@
 ### API changes
 - `tags` attribute is now consistently array of strings, numbers are numbers and booleans are booleans.
 
+### Customization changes
+- `selfoss.shares.register` changed its signature: it no longer takes a boolean argument, and the callback is expected to open a window itself, instead of returning a URL. For example, if you previously had
+  ```javascript
+  selfoss.shares.register('moo', 'm', true, function(url, title) {
+      return 'http://moo.foobar/share?u=' + encodeURIComponent(url) + '&t=' + encodeURIComponent(title);
+  });
+  ```
+
+  in your `user.js` file, you will need to change it to
+
+  ```javascript
+  selfoss.shares.register('moo', 'm', function(url, title) {
+      window.open('http://moo.foobar/share?u=' + encodeURIComponent(url) + '&t=' + encodeURIComponent(title));
+  });
+  ```
+
 ### Other changes
 - Removed broken instapaper scraping from Reddit spout ([#1033](https://github.com/SSilence/selfoss/pull/1033))
 
