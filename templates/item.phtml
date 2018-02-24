@@ -57,7 +57,7 @@
     <a href="<?= $this->item['link']; ?>" class="entry-link"></a>
 
     <!-- thumbnail -->
-    <?php if (isset($this->item['thumbnail']) && strlen(trim($this->item['thumbnail'])) > 0) : ?>
+    <?php if (\F3::get('show_thumbnails') && isset($this->item['thumbnail']) && strlen(trim($this->item['thumbnail'])) > 0) : ?>
     <div class="entry-thumbnail">
         <a href="<?= \helpers\Anonymizer::anonymize($this->item['link']); ?>" target="_blank" rel="noopener noreferrer">
             <img src="<?= 'thumbnails/' . $this->item['thumbnail']; ?>" alt="<?= htmLawed(htmlspecialchars_decode($this->item['title']), ['deny_attribute' => '*', 'elements' => '-*']); ?>" />

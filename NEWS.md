@@ -1,4 +1,9 @@
 # selfoss news
+## 2.19 – unreleased
+### New features
+- Thumbnails can be disabled ([#897](https://github.com/SSilence/selfoss/pull/897))
+
+
 ## 2.18 – 2018-03-05
 ### New features
 - Full-text RSS spout is now able to extract content from PDFs ([#897](https://github.com/SSilence/selfoss/pull/897))

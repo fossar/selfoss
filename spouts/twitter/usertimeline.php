@@ -257,7 +257,7 @@ class usertimeline extends \spouts\spout {
                 $item = $item->retweeted_status;
             }
 
-            if (isset($item->extended_entities) && isset($item->extended_entities->media) && count($item->extended_entities->media) > 1) {
+            if (isset($item->extended_entities) && isset($item->extended_entities->media) && count($item->extended_entities->media) > 0) {
                 foreach ($item->extended_entities->media as $media) {
                     if ($media->type === 'photo') {
                         $result .= '<p><a href="' . $media->media_url_https . ':large"><img src="' . $media->media_url_https . ':small" alt=""></a></p>' . PHP_EOL;
