@@ -85,7 +85,7 @@ selfoss.ui = {
     },
 
 
-    refreshItemStatuses: function(entryStatuses) {
+    refreshEntryStatuses: function(entryStatuses) {
         $('.entry').each(function() {
             var id = $(this).data('entry-id');
             var newStatus = false;
