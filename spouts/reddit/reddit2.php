@@ -4,6 +4,7 @@ namespace spouts\reddit;
 
 use GuzzleHttp\Url;
 use helpers\WebClient;
+use Stringy\Stringy as S;
 
 /**
  * Spout for fetching from reddit
@@ -104,8 +105,10 @@ class reddit2 extends \spouts\spout {
 
         // ensure the URL is absolute
         $url = Url::fromString('https://www.reddit.com/')->combine($params['url']);
+        // and that the path ends with .json (Reddit does not seem to recogize Accept header)
+        $url->setPath(S::create($url->getPath())->ensureRight('.json'));
 
-        $response = $this->sendRequest($url . '.json');
+        $response = $this->sendRequest($url);
         $json = $response->json();
 
         if (isset($json['error'])) {

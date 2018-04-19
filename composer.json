@@ -5,6 +5,7 @@
     "require": {
         "php": ">= 5.4",
         "bcosca/fatfree-core": "^3.6",
+        "danielstjules/stringy": "^3.1",
         "fossar/tcpdf-parser": "^6.2",
         "fossar/twitteroauth-php54": "^0.7.3-beta",
         "fossar/guzzle-transcoder": "^0.0.3",
