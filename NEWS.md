@@ -3,6 +3,9 @@
 ### New features
 - Thumbnails can be disabled ([#897](https://github.com/SSilence/selfoss/pull/897))
 
+### Bug fixes
+- Reddit spout allows wider range of URLs, including absolute URLs and searches ([#1033](https://github.com/SSilence/selfoss/pull/1033))
+
 
 ## 2.18 – 2018-03-05
 ### New features
