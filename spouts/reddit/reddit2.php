@@ -2,6 +2,7 @@
 
 namespace spouts\reddit;
 
+use GuzzleHttp\Url;
 use helpers\WebClient;
 
 /**
@@ -101,7 +102,10 @@ class reddit2 extends \spouts\spout {
             }
         }
 
-        $response = $this->sendRequest('https://www.reddit.com/' . $params['url'] . '.json');
+        // ensure the URL is absolute
+        $url = Url::fromString('https://www.reddit.com/')->combine($params['url']);
+
+        $response = $this->sendRequest($url . '.json');
         $json = $response->json();
 
         if (isset($json['error'])) {
