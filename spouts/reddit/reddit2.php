@@ -250,7 +250,7 @@ class reddit2 extends \spouts\spout {
         if ($this->items !== null && $this->valid()) {
             $text = @current($this->items)['data']['selftext_html'];
             if (!empty($text)) {
-                return $text;
+                return htmlspecialchars_decode($text);
             }
 
             if (preg_match('/\.(?:gif|jpg|png|svg)/i', $this->getHtmlUrl())) {
