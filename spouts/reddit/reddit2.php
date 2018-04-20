@@ -222,17 +222,6 @@ class reddit2 extends \spouts\spout {
      */
     public function getHtmlUrl() {
         if ($this->items !== null && $this->valid()) {
-            if (preg_match('/imgur/', @current($this->items)['data']['url'])) {
-                if (!preg_match('/\.(?:gif|jpg|png|svg)$/i', @current($this->items)['data']['url'])) {
-                    $response = $this->sendRequest(@current($this->items)['data']['url'] . '.jpg', 'HEAD');
-                    if ($response->getStatusCode() === 404) {
-                        return @current($this->items)['data']['url'] . '/embed';
-                    }
-
-                    return @current($this->items)['data']['url'] . '.jpg';
-                }
-            }
-
             return @current($this->items)['data']['url'];
         }
 
@@ -248,23 +237,30 @@ class reddit2 extends \spouts\spout {
      */
     public function getContent() {
         if ($this->items !== null && $this->valid()) {
-            $text = @current($this->items)['data']['selftext_html'];
+            $data = @current($this->items)['data'];
+            $text = $data['selftext_html'];
             if (!empty($text)) {
                 return htmlspecialchars_decode($text);
             }
 
-            if (preg_match('/\.(?:gif|jpg|png|svg)/i', $this->getHtmlUrl())) {
+            if (isset($data['preview']) && isset($data['preview']['images'])) {
+                $text = '';
+                foreach ($data['preview']['images'] as $image) {
+                    if (isset($image['source']) && isset($image['source']['url'])) {
+                        $text .= '<img src="' . $image['source']['url'] . '">';
+                    }
+                }
+
+                if ($text !== '') {
+                    return $text;
+                }
+            }
+
+            if (preg_match('/\.(?:gif|jpg|png|svg)$/i', Url::fromString($this->getHtmlUrl())->getPath())) {
                 return '<img src="' . $this->getHtmlUrl() . '" />';
             }
 
-            //albums, embeds other strange thigs
-            if (preg_match('/embed$/i', $this->getHtmlUrl())) {
-                $response = $this->sendRequest($this->getHtmlUrl());
-
-                return '<a href="' . $this->getHtmlUrl() . '"><img src="' . preg_replace("/s\./", '.', $this->getImage($response->getBody())) . '"/></a>';
-            }
-
-            return @current($this->items)['data']['url'];
+            return $data['url'];
         }
 
         return false;
@@ -341,34 +337,6 @@ class reddit2 extends \spouts\spout {
      */
     public function getXmlUrl($params) {
         return  'reddit://' . urlencode($params['url']);
-    }
-
-    /**
-     * taken from: http://zytzagoo.net/blog/2008/01/23/extracting-images-from-html-using-regular-expressions/
-     * Searches for the first occurence of an html <img> element in a string
-     * and extracts the src if it finds it. Returns boolean false in case an
-     * <img> element is not found.
-     *
-     * @param    string  $str    An HTML string
-     *
-     * @return   mixed           The contents of the src attribute in the
-     *                           found <img> or boolean false if no <img>
-     *                           is found
-     */
-    private function getImage($html) {
-        if (stripos($html, '<img') !== false) {
-            $imgsrc_regex = '#<\s*img [^\>]*src\s*=\s*(["\'])(.*?)\1#im';
-            preg_match($imgsrc_regex, $html, $matches);
-            unset($imgsrc_regex);
-            unset($html);
-            if (is_array($matches) && !empty($matches)) {
-                return $matches[2];
-            } else {
-                return false;
-            }
-        } else {
-            return false;
-        }
     }
 
     /**
