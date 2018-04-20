@@ -72,9 +72,6 @@ class reddit2 extends \spouts\spout {
     /** @var string the reddit_session cookie */
     private $reddit_session = '';
 
-    /** @var string the scrape urls */
-    private $scrape = true;
-
     /** @var array|null current fetched items */
     protected $items = null;
 
@@ -266,11 +263,6 @@ class reddit2 extends \spouts\spout {
 
                 return '<a href="' . $this->getHtmlUrl() . '"><img src="' . preg_replace("/s\./", '.', $this->getImage($response->getBody())) . '"/></a>';
             }
-            if ($this->scrape) {
-                if ($contentFromInstapaper = $this->fetchFromInstapaper($this->getHtmlUrl())) {
-                    return $contentFromInstapaper;
-                }
-            }
 
             return @current($this->items)['data']['url'];
         }
@@ -349,30 +341,6 @@ class reddit2 extends \spouts\spout {
      */
     public function getXmlUrl($params) {
         return  'reddit://' . urlencode($params['url']);
-    }
-
-    /**
-     * fetch content from instapaper.com
-     *
-     * @author janeczku @github
-     *
-     * @throws \GuzzleHttp\Exception\RequestException When an error is encountered
-     *
-     * @return string content
-     */
-    private function fetchFromInstapaper($url) {
-        $content = $this->sendRequest('https://www.instapaper.com/text?u=' . urlencode($url))->getBody();
-
-        $dom = new \DOMDocument();
-        @$dom->loadHTML($content);
-        if (!$dom) {
-            return false;
-        }
-        $xpath = new \DOMXPath($dom);
-        $elements = $xpath->query("//div[@id='story']");
-        $content = $dom->saveXML($elements->item(0), LIBXML_NOEMPTYTAG);
-
-        return $content;
     }
 
     /**
