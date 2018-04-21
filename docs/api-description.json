@@ -80,6 +80,7 @@
             }
           }
         }
+      }
     },
     "/items": {
       "get": {
@@ -522,7 +523,13 @@
           }
         },
         "requestBody": {
+          "description": "JSON support added in <https://github.com/SSilence/selfoss/pull/849>",
           "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SourceRequest"
+              }
+            },
             "application/x-www-form-urlencoded": {
               "schema": {
                 "$ref": "#/components/schemas/SourceRequest"
@@ -570,7 +577,13 @@
           }
         },
         "requestBody": {
+          "description": "JSON support added in <https://github.com/SSilence/selfoss/pull/849>",
           "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SourceRequest"
+              }
+            },
             "application/x-www-form-urlencoded": {
               "schema": {
                 "$ref": "#/components/schemas/SourceRequest"
