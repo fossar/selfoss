@@ -64,10 +64,12 @@ selfoss.shares = {
 
     share: function(name, url, title) {
         url = this.urlBuilders[name](url, title);
-        if (this.openInNewWindows[name]) {
-            window.open(url);
-        } else {
-            document.location.href = url;
+        if (url) {
+            if (this.openInNewWindows[name]) {
+                window.open(url);
+            } else {
+                document.location.href = url;
+            }
         }
     },
 
