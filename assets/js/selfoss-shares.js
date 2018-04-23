@@ -12,6 +12,21 @@ selfoss.shares = {
         this.enabledShares = enabledShares;
         this.initialized = true;
 
+        if ('share' in navigator) {
+            selfoss.shares.register('share', 'a', 'fas fa-share-alt', (url, title) => {
+                navigator.share({
+                    title,
+                    url
+                }).catch((e) => {
+                    if (e.name === 'AbortError') {
+                        selfoss.ui.showError(selfoss.ui._('error_share_native_abort'));
+                    } else {
+                        selfoss.ui.showError(selfoss.ui._('error_share_native'));
+                    }
+                });
+            });
+        }
+
         this.register('diaspora', 'd', 'fab fa-diaspora', function(url, title) {
             window.open('https://share.diasporafoundation.org/?url=' + encodeURIComponent(url) + '&title=' + encodeURIComponent(title));
         });

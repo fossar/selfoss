@@ -9,6 +9,7 @@
 - Long articles will no longer be arranged into columns, allowing for smoother reading experience ([#1081](https://github.com/SSilence/selfoss/pull/1081))
 - Diaspora share button was added, you can enable it with `d`. ([#1121](https://github.com/SSilence/selfoss/pull/1121))
 - “Copy to clipboard” share button was added, you can enable it with `c`. ([#1142](https://github.com/SSilence/selfoss/pull/1142))
+- [Native sharer](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/share) is available in secure contexts in browsers that support it. You can enable it by adding `a` to `share` key in your config.
 
 ### Bug fixes
 - Reddit spout allows wider range of URLs, including absolute URLs and searches ([#1033](https://github.com/SSilence/selfoss/pull/1033))

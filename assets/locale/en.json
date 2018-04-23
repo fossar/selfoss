@@ -80,6 +80,8 @@
   "lang_error_offline_storage": "Offline storage error: {0}. Reloading may help. Disabling offline for now.",
   "lang_error_invalid_subsection": "Invalid subsection:",
   "lang_error_configuration": "Unable to load configuration.",
+  "lang_error_share_native_abort": "Unable to share item – either there are no share targets, or you cancelled it.",
+  "lang_error_share_native": "Unable to share item.",
   "lang_info_url_copied": "URL copied to clipboard.",
   "lang_article_actions": "Actions"
 }

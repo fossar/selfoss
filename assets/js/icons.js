@@ -21,6 +21,7 @@ import { faEnvelope } from '@fortawesome/free-solid-svg-icons/faEnvelope';
 import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons/faExternalLinkAlt';
 import { faKey } from '@fortawesome/free-solid-svg-icons/faKey';
 import { faSearch } from '@fortawesome/free-solid-svg-icons/faSearch';
+import { faShareAlt } from '@fortawesome/free-solid-svg-icons/faShareAlt';
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons/faSignOutAlt';
 import { faStar } from '@fortawesome/free-solid-svg-icons/faStar';
 import { faSyncAlt } from '@fortawesome/free-solid-svg-icons/faSyncAlt';
@@ -61,6 +62,7 @@ export function initIcons() {
         faExternalLinkAlt,
         faKey,
         faSearch,
+        faShareAlt,
         faSignOutAlt,
         faStar,
         faSyncAlt,
