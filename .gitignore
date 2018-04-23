@@ -11,5 +11,7 @@ user.js
 config.ini
 node_modules
 .env
+tests/_output
+tests/support/_generated
 vendor/
 .php_cs.cache

@@ -23,6 +23,12 @@
         "willwashburn/phpamo": "^1.0",
         "ext-gd": "*"
     },
+    "require-dev": {
+        "codeception/codeception": "^2",
+        "codeception/phpbuiltinserver": "^1",
+        "digitaladapt/codeception-json-schema": "^0.1.2",
+        "flow/jsonpath": "^0.4.0"
+    },
     "license": "GPL-3.0",
     "authors": [
         {
@@ -38,12 +44,18 @@
             "spouts\\": "spouts/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Fossar\\Selfoss\\Tests\\": "tests/"
+        }
+    },
     "config": {
         "platform": {
             "php": "5.4.45"
         }
     },
     "scripts": {
+        "test": "codecept run api --env mysql --env postgres --env sqlite",
         "cs": "php-cs-fixer fix --verbose --dry-run --diff",
         "lint": "php-parallel-lint controllers daos helpers spouts templates"
     }

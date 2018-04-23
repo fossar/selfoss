@@ -1,0 +1,41 @@
+class_name: ApiTester
+extensions:
+    enabled:
+    - \ApiDescriptionGenerator
+modules:
+    enabled:
+    - \Codeception\Module\JsonSchema
+    - \Helper\Api
+    - Db
+    # Add the lines below
+    - REST:
+        # Your base API URL
+        url: http://localhost:8000
+        # Can also be a framework module name
+        depends: PhpBrowser
+        # Limits PhpBrowser to JSON or XML
+        part: Json
+env:
+    mysql:
+        modules:
+            config:
+                Db:
+                    dsn: "mysql:host=127.0.0.1;dbname=selfoss_test"
+                    user: root
+                    password:
+                    dump: tests/data/dump.sql
+    postgres:
+        modules:
+            config:
+                Db:
+                    dsn: "pgsql:host=127.0.0.1;dbname=selfoss_test"
+                    user: postgres
+                    password:
+    sqlite:
+        modules:
+            config:
+                Db:
+                    dsn: "sqlite:data/sqlite/test.db"
+                    user:
+                    password:
+

@@ -15,6 +15,10 @@ matrix:
           env: DEPLOY=true
     fast_finish: true
 
+services:
+    - mysql
+    - postgresql
+
 addons:
     apt:
         packages:
@@ -31,6 +35,8 @@ before_install:
     - npm install
     - if [ -n "$GH_TOKEN" ]; then composer config github-oauth.github.com ${GH_TOKEN}; fi
     - utils/install-phars.sh
+    - mysql -e 'CREATE DATABASE selfoss_test;'
+    - psql -c 'create database selfoss_test;' -U postgres
 
 install:
     - composer self-update

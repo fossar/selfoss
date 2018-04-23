@@ -20,5 +20,9 @@
   },
   "scripts": {
     "postinstall": "npm install --prefix public/"
+  },
+  "dependencies": {
+    "json-schema-ref-parser": "^4.1.1",
+    "openapi-schema-to-json-schema": "^1.2.0"
   }
 }
