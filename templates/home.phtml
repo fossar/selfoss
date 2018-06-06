@@ -142,11 +142,6 @@
                 <hr>
             </div>
 
-            <?php if ($this->loggedin === true && \F3::get('auth')->enabled() === false) : ?>
-            <button id="nav-refresh" title="<?= trim(\F3::get('lang_refreshbutton')); ?>" class="nologin"></button>
-            <button id="nav-settings" title="<?= trim(\F3::get('lang_settingsbutton')); ?>" class="nologin"></button>
-            <?php endif; ?>
-
             <button id="nav-refresh" title="<?= trim(\F3::get('lang_refreshbutton')); ?>"></button>
             <button id="nav-settings" title="<?= trim(\F3::get('lang_settingsbutton')); ?>"></button>
             <button id="nav-logout" title="<?= trim(\F3::get('lang_logoutbutton')); ?>"></button>
@@ -170,7 +165,6 @@
 
         <!-- content -->
         <div id="content" role="main">
-            <?= $this->content; ?>
         </div>
 
         <div id="stream-buttons">
