@@ -10,6 +10,7 @@
 - Diaspora share button was added, you can enable it with `d`. ([#1121](https://github.com/SSilence/selfoss/pull/1121))
 - “Copy to clipboard” share button was added, you can enable it with `c`. ([#1142](https://github.com/SSilence/selfoss/pull/1142))
 - [Native sharer](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/share) is available in secure contexts in browsers that support it. You can enable it by adding `a` to `share` key in your config. ([#1035](https://github.com/SSilence/selfoss/pull/1035))
+- Data directory can be configured ([#1043](https://github.com/SSilence/selfoss/pull/1043))
 
 ### Bug fixes
 - Reddit spout allows wider range of URLs, including absolute URLs and searches ([#1033](https://github.com/SSilence/selfoss/pull/1033))

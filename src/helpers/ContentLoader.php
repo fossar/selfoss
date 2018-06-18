@@ -307,14 +307,14 @@ class ContentLoader {
             $thumbnailAsJpg = $imageHelper->loadImage($thumbnail, $extension, 500, 500);
             if ($thumbnailAsJpg !== null) {
                 $written = file_put_contents(
-                    'data/thumbnails/' . md5($thumbnail) . '.' . $extension,
+                    \F3::get('datadir') . '/thumbnails/' . md5($thumbnail) . '.' . $extension,
                     $thumbnailAsJpg
                 );
                 if ($written !== false) {
                     $newItem['thumbnail'] = md5($thumbnail) . '.' . $extension;
                     \F3::get('logger')->debug('Thumbnail generated: ' . $thumbnail);
                 } else {
-                    \F3::get('logger')->warning('Unable to store thumbnail: ' . $thumbnail . '. Please check permissions of data/thumbnails.');
+                    \F3::get('logger')->warning('Unable to store thumbnail: ' . $thumbnail . '. Please check permissions of ' . \F3::get('datadir') . '/thumbnails.');
                 }
             } else {
                 $newItem['thumbnail'] = '';
@@ -345,7 +345,7 @@ class ContentLoader {
                 $iconAsPng = $imageHelper->loadImage($icon, $extension, 30, null);
                 if ($iconAsPng !== null) {
                     $written = file_put_contents(
-                        'data/favicons/' . md5($icon) . '.' . $extension,
+                        \F3::get('datadir') . '/favicons/' . md5($icon) . '.' . $extension,
                         $iconAsPng
                     );
                     $lasticon = $icon;
@@ -353,7 +353,7 @@ class ContentLoader {
                         $newItem['icon'] = md5($icon) . '.' . $extension;
                         \F3::get('logger')->debug('Icon generated: ' . $icon);
                     } else {
-                        \F3::get('logger')->warning('Unable to store icon: ' . $icon . '. Please check permissions of data/favicons.');
+                        \F3::get('logger')->warning('Unable to store icon: ' . $icon . '. Please check permissions of ' . \F3::get('datadir') . '/favicons.');
                     }
                 } else {
                     $newItem['icon'] = '';
@@ -444,12 +444,12 @@ class ContentLoader {
             $checker = function($file) {
                 return \F3::get('im')->hasThumbnail($file);
             };
-            $itemPath = 'data/thumbnails/';
+            $itemPath = \F3::get('datadir') . '/thumbnails/';
         } elseif ($type === 'icons') {
             $checker = function($file) {
                 return \F3::get('im')->hasIcon($file);
             };
-            $itemPath = 'data/favicons/';
+            $itemPath = \F3::get('datadir') . '/favicons/';
         }
 
         foreach (scandir($itemPath) as $file) {

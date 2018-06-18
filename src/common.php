@@ -26,9 +26,12 @@ $f3->set('apiversion', '2.20.0');
 
 $f3->set('AUTOLOAD', false);
 $f3->set('BASEDIR', BASEDIR);
-$f3->set('cache', BASEDIR . '/data/cache');
 $f3->set('LOCALES', BASEDIR . '/assets/locale/');
-$f3->set('FTRSS_CUSTOM_DATA_DIR', BASEDIR . '/data/fulltextrss/custom');
+
+// internal but overridable values
+$f3->set('datadir', BASEDIR . '/data');
+$f3->set('cache', '%datadir%/cache');
+$f3->set('ftrss_custom_data_dir', '%datadir%/fulltextrss/custom');
 
 // read defaults
 $f3->config('defaults.ini');
@@ -44,6 +47,19 @@ foreach ($f3->get('ENV') as $key => $value) {
     if (strncasecmp($key, $env_prefix, strlen($env_prefix)) === 0) {
         $f3->set(strtolower(substr($key, strlen($env_prefix))), $value);
     }
+}
+
+// interpolate variables in the config values
+$interpolatedKeys = [
+    'db_file',
+    'logger_destination',
+    'cache',
+    'ftrss_custom_data_dir',
+];
+$datadir = $f3->get('datadir');
+foreach ($interpolatedKeys as $key) {
+    $value = $f3->get($key);
+    $f3->set($key, str_replace('%datadir%', $datadir, $value));
 }
 
 // init logger
