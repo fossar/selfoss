@@ -31,7 +31,7 @@ $f3->set('LOCALES', BASEDIR . '/assets/locale/');
 // internal but overridable values
 $f3->set('datadir', BASEDIR . '/data');
 $f3->set('cache', '%datadir%/cache');
-$f3->set('ftrss_custom_data_dir', '%datadir%/fulltextrss/custom');
+$f3->set('ftrss_custom_data_dir', '%datadir%/fulltextrss');
 
 // read defaults
 $f3->config('defaults.ini');

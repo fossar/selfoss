@@ -42,6 +42,7 @@
       window.open('http://moo.foobar/share?u=' + encodeURIComponent(data.url) + '&t=' + encodeURIComponent(data.title));
   });
   ```
+- Custom FullTextRss filter were moved to `fulltextrss` directory in data directory ([#1043](https://github.com/SSilence/selfoss/pull/1043))
 
   or if your browser supports it, simply
 
