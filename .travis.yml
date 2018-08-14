@@ -53,6 +53,7 @@ deploy:
       file: utils/bintray.json
       user: $BINTRAY_USER
       key: $BINTRAY_KEY
+      skip_cleanup: true
       on:
           condition: $DEPLOY = true
     - provider: releases
