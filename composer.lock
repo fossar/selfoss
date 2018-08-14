@@ -1,23 +1,23 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0a6220cfb86583a1cbe590f2ba8441a6",
+    "content-hash": "a1e2db37c6a9c7fec5ee5f9f6534ffb0",
     "packages": [
         {
             "name": "bcosca/fatfree-core",
-            "version": "3.6.3",
+            "version": "3.6.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bcosca/fatfree-core.git",
-                "reference": "b35fe7ae88f6f3667c50c36563b50e5a1ec36bb1"
+                "reference": "4d1a08829b14468c4821c03b9a5f3b6e4bc981e5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bcosca/fatfree-core/zipball/b35fe7ae88f6f3667c50c36563b50e5a1ec36bb1",
-                "reference": "b35fe7ae88f6f3667c50c36563b50e5a1ec36bb1",
+                "url": "https://api.github.com/repos/bcosca/fatfree-core/zipball/4d1a08829b14468c4821c03b9a5f3b6e4bc981e5",
+                "reference": "4d1a08829b14468c4821c03b9a5f3b6e4bc981e5",
                 "shasum": ""
             },
             "require": {
@@ -35,7 +35,7 @@
             ],
             "description": "A powerful yet easy-to-use PHP micro-framework designed to help you build dynamic and robust Web applications - fast!",
             "homepage": "http://fatfreeframework.com/",
-            "time": "2017-12-31T14:47:39+00:00"
+            "time": "2018-04-19T17:35:23+00:00"
         },
         {
             "name": "danielstjules/stringy",
@@ -411,16 +411,16 @@
         },
         {
             "name": "guzzlehttp/guzzle",
-            "version": "5.3.2",
+            "version": "5.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "f9acb4761844317e626a32259205bec1f1bc60d2"
+                "reference": "93bbdb30d59be6cd9839495306c65f2907370eb9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/f9acb4761844317e626a32259205bec1f1bc60d2",
-                "reference": "f9acb4761844317e626a32259205bec1f1bc60d2",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/93bbdb30d59be6cd9839495306c65f2907370eb9",
+                "reference": "93bbdb30d59be6cd9839495306c65f2907370eb9",
                 "shasum": ""
             },
             "require": {
@@ -460,7 +460,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2018-01-15T07:18:01+00:00"
+            "time": "2018-07-31T13:33:10+00:00"
         },
         {
             "name": "guzzlehttp/log-subscriber",
@@ -517,16 +517,16 @@
         },
         {
             "name": "guzzlehttp/ringphp",
-            "version": "1.1.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/RingPHP.git",
-                "reference": "dbbb91d7f6c191e5e405e900e3102ac7f261bc0b"
+                "reference": "5e2a174052995663dd68e6b5ad838afd47dd615b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/RingPHP/zipball/dbbb91d7f6c191e5e405e900e3102ac7f261bc0b",
-                "reference": "dbbb91d7f6c191e5e405e900e3102ac7f261bc0b",
+                "url": "https://api.github.com/repos/guzzle/RingPHP/zipball/5e2a174052995663dd68e6b5ad838afd47dd615b",
+                "reference": "5e2a174052995663dd68e6b5ad838afd47dd615b",
                 "shasum": ""
             },
             "require": {
@@ -564,7 +564,7 @@
                 }
             ],
             "description": "Provides a simple API and specification that abstracts away the details of HTTP into a single PHP function.",
-            "time": "2015-05-20T03:37:09+00:00"
+            "time": "2018-07-31T13:22:33+00:00"
         },
         {
             "name": "guzzlehttp/streams",
@@ -618,16 +618,16 @@
         },
         {
             "name": "j0k3r/graby",
-            "version": "1.12.1",
+            "version": "1.13.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/j0k3r/graby.git",
-                "reference": "6b4de3766ea5f8930cd1d62f06e95470a25740f9"
+                "reference": "610dce121faf627a2e7b95ca47c715b8c27bfb06"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/j0k3r/graby/zipball/6b4de3766ea5f8930cd1d62f06e95470a25740f9",
-                "reference": "6b4de3766ea5f8930cd1d62f06e95470a25740f9",
+                "url": "https://api.github.com/repos/j0k3r/graby/zipball/610dce121faf627a2e7b95ca47c715b8c27bfb06",
+                "reference": "610dce121faf627a2e7b95ca47c715b8c27bfb06",
                 "shasum": ""
             },
             "require": {
@@ -673,26 +673,27 @@
                 }
             ],
             "description": "Graby helps you extract article content from web pages",
-            "time": "2017-12-09T17:43:54+00:00"
+            "time": "2018-07-28T21:12:16+00:00"
         },
         {
             "name": "j0k3r/graby-site-config",
-            "version": "1.0.46",
+            "version": "1.0.57",
             "source": {
                 "type": "git",
                 "url": "https://github.com/j0k3r/graby-site-config.git",
-                "reference": "4f7ced028752a9fdaac8a5d72ba9991021ba4ff9"
+                "reference": "9f398a2110c866e6e14f793489df946ee359e956"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/j0k3r/graby-site-config/zipball/4f7ced028752a9fdaac8a5d72ba9991021ba4ff9",
-                "reference": "4f7ced028752a9fdaac8a5d72ba9991021ba4ff9",
+                "url": "https://api.github.com/repos/j0k3r/graby-site-config/zipball/9f398a2110c866e6e14f793489df946ee359e956",
+                "reference": "9f398a2110c866e6e14f793489df946ee359e956",
                 "shasum": ""
             },
             "require": {
                 "symfony/finder": "~2.6|~3.0"
             },
             "require-dev": {
+                "liip/rmt": "1.2.*",
                 "symfony/phpunit-bridge": "^3.2"
             },
             "type": "library",
@@ -712,20 +713,20 @@
                 }
             ],
             "description": "Graby site config files",
-            "time": "2018-01-29T08:32:28+00:00"
+            "time": "2018-07-31T06:07:47+00:00"
         },
         {
             "name": "j0k3r/php-readability",
-            "version": "1.1.9",
+            "version": "1.1.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/j0k3r/php-readability.git",
-                "reference": "6427dd7371d797ba49a5ed22db8b56198a430eb5"
+                "reference": "ed3393a79fe8fbbf1abe7daf17a47b21d862ddfb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/j0k3r/php-readability/zipball/6427dd7371d797ba49a5ed22db8b56198a430eb5",
-                "reference": "6427dd7371d797ba49a5ed22db8b56198a430eb5",
+                "url": "https://api.github.com/repos/j0k3r/php-readability/zipball/ed3393a79fe8fbbf1abe7daf17a47b21d862ddfb",
+                "reference": "ed3393a79fe8fbbf1abe7daf17a47b21d862ddfb",
                 "shasum": ""
             },
             "require": {
@@ -786,20 +787,20 @@
                 "extraction",
                 "html"
             ],
-            "time": "2017-06-30T14:50:09+00:00"
+            "time": "2018-06-05T11:54:53+00:00"
         },
         {
             "name": "j0k3r/safecurl",
-            "version": "2.0.2",
+            "version": "2.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/j0k3r/safecurl.git",
-                "reference": "d5b7a0dcda23f8fd6a3f0ca3dac080e38388ba4b"
+                "reference": "569ec1b1c237fe08f3a30ac64f2ff77e368fcafc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/j0k3r/safecurl/zipball/d5b7a0dcda23f8fd6a3f0ca3dac080e38388ba4b",
-                "reference": "d5b7a0dcda23f8fd6a3f0ca3dac080e38388ba4b",
+                "url": "https://api.github.com/repos/j0k3r/safecurl/zipball/569ec1b1c237fe08f3a30ac64f2ff77e368fcafc",
+                "reference": "569ec1b1c237fe08f3a30ac64f2ff77e368fcafc",
                 "shasum": ""
             },
             "require": {
@@ -838,7 +839,7 @@
                 "ssrf",
                 "websec"
             ],
-            "time": "2015-11-23T08:16:01+00:00"
+            "time": "2018-06-28T07:41:22+00:00"
         },
         {
             "name": "linkorb/jsmin-php",
@@ -1219,16 +1220,16 @@
         },
         {
             "name": "react/promise",
-            "version": "v2.5.1",
+            "version": "v2.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/reactphp/promise.git",
-                "reference": "62785ae604c8d69725d693eb370e1d67e94c4053"
+                "reference": "f4edc2581617431aea50430749db55cc3fc031b3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/reactphp/promise/zipball/62785ae604c8d69725d693eb370e1d67e94c4053",
-                "reference": "62785ae604c8d69725d693eb370e1d67e94c4053",
+                "url": "https://api.github.com/repos/reactphp/promise/zipball/f4edc2581617431aea50430749db55cc3fc031b3",
+                "reference": "f4edc2581617431aea50430749db55cc3fc031b3",
                 "shasum": ""
             },
             "require": {
@@ -1261,7 +1262,7 @@
                 "promise",
                 "promises"
             ],
-            "time": "2017-03-25T12:08:31+00:00"
+            "time": "2018-06-13T15:59:06+00:00"
         },
         {
             "name": "simplepie/simplepie",
@@ -1325,16 +1326,16 @@
         },
         {
             "name": "smalot/pdfparser",
-            "version": "v0.11",
+            "version": "v0.13.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/smalot/pdfparser.git",
-                "reference": "40462c1a662d5fbc8f48d30626695a06f047e0cf"
+                "reference": "f5e85c023491aecc88e8f6227536d60e1bb4a241"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/smalot/pdfparser/zipball/40462c1a662d5fbc8f48d30626695a06f047e0cf",
-                "reference": "40462c1a662d5fbc8f48d30626695a06f047e0cf",
+                "url": "https://api.github.com/repos/smalot/pdfparser/zipball/f5e85c023491aecc88e8f6227536d60e1bb4a241",
+                "reference": "f5e85c023491aecc88e8f6227536d60e1bb4a241",
                 "shasum": ""
             },
             "require": {
@@ -1353,11 +1354,11 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "LGPLv3"
+                "LGPL-3.0"
             ],
             "authors": [
                 {
-                    "name": "Sébastien MALOT",
+                    "name": "Sebastien MALOT",
                     "email": "sebastien@malot.fr"
                 }
             ],
@@ -1370,7 +1371,7 @@
                 "pdf",
                 "text"
             ],
-            "time": "2017-09-14T12:26:16+00:00"
+            "time": "2018-06-23T08:43:13+00:00"
         },
         {
             "name": "smottt/wideimage",
@@ -1409,16 +1410,16 @@
         },
         {
             "name": "symfony/finder",
-            "version": "v2.8.35",
+            "version": "v2.8.44",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
-                "reference": "7099de3ebc97d3af98c464076d12dfca3ade0252"
+                "reference": "f0de0b51913eb2caab7dfed6413b87e14fca780e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/finder/zipball/7099de3ebc97d3af98c464076d12dfca3ade0252",
-                "reference": "7099de3ebc97d3af98c464076d12dfca3ade0252",
+                "url": "https://api.github.com/repos/symfony/finder/zipball/f0de0b51913eb2caab7dfed6413b87e14fca780e",
+                "reference": "f0de0b51913eb2caab7dfed6413b87e14fca780e",
                 "shasum": ""
             },
             "require": {
@@ -1454,20 +1455,20 @@
             ],
             "description": "Symfony Finder Component",
             "homepage": "https://symfony.com",
-            "time": "2018-02-11T16:53:59+00:00"
+            "time": "2018-07-26T11:13:39+00:00"
         },
         {
             "name": "symfony/options-resolver",
-            "version": "v2.8.35",
+            "version": "v2.8.44",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/options-resolver.git",
-                "reference": "7b627d71e038f65c58702ad2540d0452cf53cf67"
+                "reference": "b2cd14799bfa9593115db7f70d5bb66434baf112"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/options-resolver/zipball/7b627d71e038f65c58702ad2540d0452cf53cf67",
-                "reference": "7b627d71e038f65c58702ad2540d0452cf53cf67",
+                "url": "https://api.github.com/repos/symfony/options-resolver/zipball/b2cd14799bfa9593115db7f70d5bb66434baf112",
+                "reference": "b2cd14799bfa9593115db7f70d5bb66434baf112",
                 "shasum": ""
             },
             "require": {
@@ -1508,20 +1509,20 @@
                 "configuration",
                 "options"
             ],
-            "time": "2018-01-03T07:36:31+00:00"
+            "time": "2018-07-26T09:03:18+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.7.0",
+            "version": "v1.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "78be803ce01e55d3491c1397cf1c64beb9c1b63b"
+                "reference": "d0cd638f4634c16d8df4508e847f14e9e43168b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/78be803ce01e55d3491c1397cf1c64beb9c1b63b",
-                "reference": "78be803ce01e55d3491c1397cf1c64beb9c1b63b",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/d0cd638f4634c16d8df4508e847f14e9e43168b8",
+                "reference": "d0cd638f4634c16d8df4508e847f14e9e43168b8",
                 "shasum": ""
             },
             "require": {
@@ -1533,7 +1534,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.7-dev"
+                    "dev-master": "1.9-dev"
                 }
             },
             "autoload": {
@@ -1567,7 +1568,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2018-01-30T19:27:44+00:00"
+            "time": "2018-08-06T14:22:27+00:00"
         },
         {
             "name": "true/punycode",
