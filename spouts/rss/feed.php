@@ -141,6 +141,7 @@ class feed extends \spouts\spout {
         $this->feed = @new \SimplePie();
         @$this->feed->set_cache_location(\F3::get('cache'));
         @$this->feed->set_cache_duration(1800);
+        @$this->feed->set_file_class('\helpers\SimplePieFileGuzzle');
         @$this->feed->set_feed_url(htmlspecialchars_decode($params['url']));
         @$this->feed->set_autodiscovery_level(SIMPLEPIE_LOCATOR_AUTODISCOVERY | SIMPLEPIE_LOCATOR_LOCAL_EXTENSION | SIMPLEPIE_LOCATOR_LOCAL_BODY);
         $this->feed->set_useragent(\helpers\WebClient::getUserAgent(['SimplePie/' . SIMPLEPIE_VERSION]));
