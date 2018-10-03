@@ -174,7 +174,7 @@ selfoss.events = {
                         selfoss.filter.sourcesNav = true;
                     }
                 } else if (selfoss.events.subsection != 'all') {
-                    selfoss.ui.showError('Invalid subsection: '
+                    selfoss.ui.showError($('#lang').data('error_invalid_subsection') + ' '
                                          + selfoss.events.subsection);
                     done();
                     return;
@@ -189,7 +189,7 @@ selfoss.events = {
             selfoss.dbOnline.reloadList();
         } else if (hash == 'sources') { // load sources
             if (selfoss.events.subsection) {
-                selfoss.ui.showError('Invalid subsection: '
+                selfoss.ui.showError($('#lang').data('error_invalid_subsection') + ' '
                                      + selfoss.events.subsection);
                 done();
                 return;
@@ -198,7 +198,6 @@ selfoss.events = {
             if (selfoss.activeAjaxReq !== null) {
                 selfoss.activeAjaxReq.abort();
             }
-
             selfoss.ui.refreshStreamButtons();
             $('#content').addClass('loading').html('');
             selfoss.activeAjaxReq = $.ajax({
@@ -212,10 +211,10 @@ selfoss.events = {
                     if (textStatus == 'abort') {
                         return;
                     } else if (selfoss.hasSession() && errorThrown === 'Forbidden') {
-                        selfoss.ui.showError('Your session has expired');
+                        selfoss.ui.showError($('#lang').data('error_session_expired'));
                         selfoss.logout();
                     } else if (errorThrown) {
-                        selfoss.ui.showError('Load list error: ' +
+                        selfoss.ui.showError($('#lang').data('error_loading') + ' ' +
                                              textStatus + ' ' + errorThrown);
                     }
                 },
@@ -226,7 +225,7 @@ selfoss.events = {
         } else if (hash == 'login') {
             selfoss.ui.showLogin();
         } else {
-            selfoss.ui.showError('Invalid section: ' + selfoss.events.section);
+            selfoss.ui.showError($('#lang').data('error_invalid_subsection') + ' ' + selfoss.events.section);
         }
         done();
     },

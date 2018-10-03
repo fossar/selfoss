@@ -24,7 +24,7 @@ selfoss.events.navigation = function() {
                     selfoss.dbOnline.reloadList();
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
-                    selfoss.ui.showError('Can not save new color: ' +
+                    selfoss.ui.showError($('#lang').data('error_saving_color') + ' ' +
                                          textStatus + ' ' + errorThrown);
                 }
             });
@@ -121,7 +121,7 @@ selfoss.events.navigation = function() {
                     selfoss.refreshSources(data.sources);
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
-                    selfoss.ui.showError('Can not load nav stats: ' +
+                    selfoss.ui.showError($('#lang').data('error_loading_stats') + ' ' +
                                          textStatus + ' ' + errorThrown);
                 }
             });
@@ -173,9 +173,8 @@ selfoss.events.navigation = function() {
 
                 // probe stats and prompt reload to the user
                 selfoss.dbOnline.sync(true).done(function() {
-                    var refreshed = 'Sources have been refreshed';
                     if ($('.unread-count').hasClass('unread')) {
-                        selfoss.ui.showMessage(refreshed, 'Reload list',
+                        selfoss.ui.showMessage($('#lang').data('sources_refreshed'), $('#lang').data('reload_list'),
                             function() {
                                 $('#nav-filter-unread').click();
                             });
@@ -183,7 +182,7 @@ selfoss.events.navigation = function() {
                 });
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                selfoss.ui.showError('Cannot refresh sources: ' + errorThrown);
+                selfoss.ui.showError($('#lang').data('error_refreshing_source') + ' ' + errorThrown);
             },
             complete: function() {
                 $('#nav-refresh').removeClass('loading');

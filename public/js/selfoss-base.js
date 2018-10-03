@@ -189,7 +189,7 @@ var selfoss = {
             url: 'logout',
             dataType: 'json',
             error: function(jqXHR, textStatus, errorThrown) {
-                selfoss.ui.showError('Could not log out: ' +
+                selfoss.ui.showError($('#lang').data('error_logout') + ' ' +
                                      textStatus + ' ' + errorThrown);
             }
         });
@@ -318,7 +318,7 @@ var selfoss = {
                 selfoss.events.navigation();
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                selfoss.ui.showError('Load tags error: ' +
+                selfoss.ui.showError($('#lang').data('error_load_tags') + ' ' +
                                      textStatus + ' ' + errorThrown);
             },
             complete: function() {
@@ -340,7 +340,7 @@ var selfoss = {
         $('#nav-tags').append(tags);
         if (selfoss.filter.tag) {
             if (!selfoss.db.isValidTag(selfoss.filter.tag)) {
-                selfoss.ui.showError('Unknown tag: ' + selfoss.filter.tag);
+                selfoss.ui.showError($('#lang').data('error_unknown_tag') + ' ' + selfoss.filter.tag);
             }
 
             $('#nav-tags li:first').removeClass('active');
@@ -372,7 +372,7 @@ var selfoss = {
         $('#nav-sources').append(sources);
         if (selfoss.filter.source) {
             if (!selfoss.db.isValidSource(selfoss.filter.source)) {
-                selfoss.ui.showError('Unknown source id: '
+                selfoss.ui.showError($('#lang').data('error_unknown_source') + ' '
                                      + selfoss.filter.source);
             }
 
@@ -488,7 +488,7 @@ var selfoss = {
                 $('#content').removeClass('loading');
                 selfoss.ui.refreshStreamButtons(true, true, hadMore);
                 selfoss.events.entries();
-                selfoss.ui.showError('Can not mark all visible item: ' +
+                selfoss.ui.showError($('#lang').data('error_mark_items') + ' ' +
                                      textStatus + ' ' + errorThrown);
             }
         });
