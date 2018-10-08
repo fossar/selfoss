@@ -131,6 +131,10 @@ class ContentLoader {
 
             // test date: continue with next if item too old
             $itemDate = new \DateTime($item->getDate());
+            // if date cannot be parsed it will default to epoch. Change to current time.
+            if ($itemDate->getTimestamp() == 0) {
+                $itemDate = new \DateTime();
+            }
             if ($itemDate < $minDate) {
                 \F3::get('logger')->debug('item "' . $item->getTitle() . '" (' . $item->getDate() . ') older than ' . \F3::get('items_lifetime') . ' days');
                 continue;
