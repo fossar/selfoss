@@ -104,7 +104,11 @@ class Statements extends \daos\mysql\Statements {
                     switch ($type) {
                         // pgsql returns correct PHP types for INT and BOOL
                         case \daos\PARAM_CSV:
-                            $value = explode(',', $row[$columnIndex]);
+                            if ($row[$columnIndex] === '') {
+                                $value = [];
+                            } else {
+                                $value = explode(',', $row[$columnIndex]);
+                            }
                             break;
                         default:
                             $value = null;
