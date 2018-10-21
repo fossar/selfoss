@@ -206,16 +206,16 @@ class Opml extends BaseController {
         $hash = md5($title . $spout . json_encode($data));
         if (array_key_exists($hash, $this->imported)) {
             $this->imported[$hash]['tags'] = array_unique(array_merge($this->imported[$hash]['tags'], $tags));
-            $tags = implode(',', $this->imported[$hash]['tags']);
+            $tags = $this->imported[$hash]['tags'];
             $this->sourcesDao->edit($this->imported[$hash]['id'], $title, $tags, '', $spout, $data);
             \F3::get('logger')->debug("OPML import: updated tags for '$title'");
         } elseif ($id = $this->sourcesDao->checkIfExists($title, $spout, $data)) {
             $tags = array_unique(array_merge($this->sourcesDao->getTags($id), $tags));
-            $this->sourcesDao->edit($id, $title, implode(',', $tags), '', $spout, $data);
+            $this->sourcesDao->edit($id, $title, $tags, '', $spout, $data);
             $this->imported[$hash] = ['id' => $id, 'tags' => $tags];
             \F3::get('logger')->debug("OPML import: updated tags for '$title'");
         } else {
-            $id = $this->sourcesDao->add($title, implode(',', $tags), '', $spout, $data);
+            $id = $this->sourcesDao->add($title, $tags, '', $spout, $data);
             $this->imported[$hash] = ['id' => $id, 'tags' => $tags];
             \F3::get('logger')->debug("OPML import: successfully imported '$title'");
         }
