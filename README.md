@@ -18,9 +18,6 @@ INSTALLATION
 
 1. Upload all files of this folder (IMPORTANT: also upload the invisible .htaccess files)
 2. Make the directories data/cache, data/favicons, data/logs, data/thumbnails, data/sqlite and public/ writeable
-
-   `chmod o+w selfoss/data/cache selfoss/data/favicons selfoss/data/logs selfoss/data/thumbnails selfoss/data/sqlite selfoss/public/`
-
 3. Insert database access data in config.ini (see below -- you don't have to change anything if you want to use sqlite)
 3. You don't have to install the database, it will be created automatically (ensure that your database has enought rights for creating triggers)
 4. Create cronjob for updating feeds and point it to https://yourselfossurl.com/update via wget or curl. You can also execute the cliupdate.php from commandline.
@@ -69,7 +66,7 @@ OPML Import
 Selfoss supports importing OPML files. Find the OPML export in the old application, it is usually located somewhere in settings. Then visit the page https://yourselfossurl.com/opml and upload it there.
 
 
-MOBILE APPS
+THIRD-PARTY APPS
 ----
 
 | App Url            | OS      | Project status | Compatibility* |
