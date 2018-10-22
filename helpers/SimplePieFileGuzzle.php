@@ -6,10 +6,13 @@ namespace helpers;
  * Bridge to make SimplePie fetch resources using Guzzle library
  */
 class SimplePieFileGuzzle extends \SimplePie_File {
-    public function __construct($url, $timeout = 10, $redirects = 5, $headers = [], $useragent = null, $force_fsockopen = false) {
+    public function __construct($url, $timeout = 10, $redirects = 5, $headers = null, $useragent = null, $force_fsockopen = false) {
         $this->url = $url;
         $this->permanent_url = $url;
         $this->useragent = $useragent;
+        if ($headers === null) {
+            $headers = [];
+        }
 
         if (preg_match('/^https?:\/\//i', $url)) {
             $this->method = SIMPLEPIE_FILE_SOURCE_REMOTE | SIMPLEPIE_FILE_SOURCE_CURL;
