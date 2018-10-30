@@ -58,7 +58,7 @@
             <select id="type-<?= $idAttr ?>" class="source-spout" name="spout">
                 <option value=""><?= \F3::get('lang_source_select')?></option>
                 <?php foreach ($this->spouts as $spouttype => $spout) : ?>
-                <option value="<?= str_replace('\\', '_', $spouttype); ?>" <?= isset($this->source) && $spouttype == $this->source['spout'] ? 'selected="selected"' : ''; ?>>
+                <option title="<?= $spout->description ?>" value="<?= str_replace('\\', '_', $spouttype); ?>" <?= isset($this->source) && $spouttype == $this->source['spout'] ? 'selected="selected"' : ''; ?>>
                     <?= $spout->name; ?>
                 </option>
                 <?php endforeach; ?>
