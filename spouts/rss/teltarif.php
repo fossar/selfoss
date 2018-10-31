@@ -16,7 +16,7 @@ class teltarif extends fulltextrss {
     public $name = '[German] teltarif.de';
 
     /** @var string description of this source type */
-    public $description = 'This feed fetches Telarif news with full content (not only the header as content).';
+    public $description = 'Fetch Telarif news with full content (not only the header as content).';
 
     /**
      * config params

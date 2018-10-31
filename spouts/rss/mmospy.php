@@ -14,7 +14,7 @@ class mmospy extends fulltextrss {
     public $name = '[German] mmo-spy.de';
 
     /** @var string description of this source type */
-    public $description = 'This feed fetches the mmospy news with full content (not only the header as content).';
+    public $description = 'Fetch the mmospy news with full content (not only the header as content).';
 
     /**
      * config params

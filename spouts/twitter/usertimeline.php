@@ -17,7 +17,7 @@ class usertimeline extends \spouts\spout {
     public $name = 'Twitter: user timeline';
 
     /** @var string description of this source type */
-    public $description = 'The timeline of a given user.';
+    public $description = 'Fetch the timeline of a given user.';
 
     /**
      * config params

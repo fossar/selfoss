@@ -14,7 +14,7 @@ class golem extends feed {
     public $name = '[German] golem.de';
 
     /** @var string description of this source type */
-    public $description = 'This feed fetches the golem news with full content (not only the header as content).';
+    public $description = 'Fetch the golem news with full content (not only the header as content).';
 
     /**
      * config params

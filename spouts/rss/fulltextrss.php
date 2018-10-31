@@ -14,10 +14,10 @@ use helpers\WebClient;
  */
 class fulltextrss extends feed {
     /** @var string name of spout */
-    public $name = 'RSS Feed (with FullTextRss)';
+    public $name = 'RSS Feed (with Full-Text RSS)';
 
     /** @var string description of this source type */
-    public $description = 'This feed extracts full text article from webpages with an embedded version of Full-Text RSS.';
+    public $description = 'Use embeded library Full-Text RSS to get full content feed instead of partial feed provided by some websites.';
 
     /** @var array config params */
     public $params = [

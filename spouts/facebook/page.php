@@ -20,7 +20,7 @@ class page extends \spouts\spout {
     public $name = 'Facebook: page feed';
 
     /** @var string description of this source type */
-    public $description = 'Fetch feeds from given Facebook page wall.';
+    public $description = 'Get feeds from given Facebook page wall.';
 
     /**
      * config params

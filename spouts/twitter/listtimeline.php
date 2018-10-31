@@ -14,7 +14,7 @@ use Abraham\TwitterOAuth\TwitterOAuth;
 class listtimeline extends \spouts\twitter\usertimeline {
     public function __construct() {
         $this->name = 'Twitter: list timeline';
-        $this->description = 'The timeline of a given list.';
+        $this->description = 'Fetch the timeline of a given list.';
         $this->params = [
             'consumer_key' => [
                 'title' => 'Consumer Key',

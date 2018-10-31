@@ -17,7 +17,7 @@ class prolinux extends fulltextrss {
     public $name = '[German] pro-linux.de';
 
     /** @var string description of this source type */
-    public $description = 'This feed fetches the pro-linux news with full content (not only the header as content).';
+    public $description = 'Fetch the pro-linux news with full content (not only the header as content).';
 
     /**
      * config params

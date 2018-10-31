@@ -14,7 +14,7 @@ class images extends feed {
     public $name = 'RSS Feed Images';
 
     /** @var string description of this source type */
-    public $description = 'Fetching images from given rss feed.';
+    public $description = 'Fetch images from given rss feed.';
 
     /**
      * returns the thumbnail of this item (for multimedia feeds)
