@@ -14,7 +14,7 @@ class feed extends \spouts\spout {
     public $name = 'RSS Feed';
 
     /** @var string description of this source type */
-    public $description = 'An default RSS Feed as source';
+    public $description = 'Get posts from plain RSS/Atom feed.';
 
     /**
      * config params

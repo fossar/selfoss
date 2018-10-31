@@ -14,7 +14,7 @@ class enclosures extends feed {
     public $name = 'RSS Feed (with enclosures)';
 
     /** @var string description of this source type */
-    public $description = 'This feed type adds image enclosures to the feed content';
+    public $description = 'Get posts from RSS feed, including media enclosures.';
 
     /**
      * returns the content of this item

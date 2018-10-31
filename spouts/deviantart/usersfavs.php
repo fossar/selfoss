@@ -11,10 +11,10 @@ namespace spouts\deviantart;
  */
 class usersfavs extends \spouts\rss\images {
     /** @var string name of source */
-    public $name = 'deviantART - favs of a user';
+    public $name = 'DeviantArt: user favs';
 
     /** @var string description of this source type */
-    public $description = 'favorites of a user on deviantART';
+    public $description = 'Get favorites of a DeviantArt user.';
 
     /**
      * config params

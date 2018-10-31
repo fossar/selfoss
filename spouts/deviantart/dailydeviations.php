@@ -11,10 +11,10 @@ namespace spouts\deviantart;
  */
 class dailydeviations extends \spouts\rss\images {
     /** @var string name of source */
-    public $name = 'deviantART - daily deviations';
+    public $name = 'DeviantArt: daily deviations';
 
     /** @var string description of this source type */
-    public $description = 'daily deviations of deviantART';
+    public $description = 'Get daily deviations on DeviantArt.';
 
     /**
      * config params

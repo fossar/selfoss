@@ -11,10 +11,10 @@ namespace spouts\deviantart;
  */
 class user extends \spouts\rss\images {
     /** @var string name of source */
-    public $name = 'deviantART - user';
+    public $name = 'DeviantArt: user deviations';
 
     /** @var string description of this source type */
-    public $description = 'deviations of a deviantART user';
+    public $description = 'Get deviations of a DeviantArt user.';
 
     /**
      * config params

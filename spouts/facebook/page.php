@@ -17,10 +17,10 @@ use helpers\WebClient;
  */
 class page extends \spouts\spout {
     /** @var string name of source */
-    public $name = 'Facebook page feed';
+    public $name = 'Facebook: page feed';
 
     /** @var string description of this source type */
-    public $description = 'Page wall';
+    public $description = 'Get posts from given Facebook page wall.';
 
     /**
      * config params

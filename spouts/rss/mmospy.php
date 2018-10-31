@@ -11,10 +11,10 @@ namespace spouts\rss;
  */
 class mmospy extends fulltextrss {
     /** @var string name of spout */
-    public $name = 'News: MMOspy';
+    public $name = '[German] mmo-spy.de';
 
     /** @var string description of this source type */
-    public $description = 'This feed fetches the mmospy news with full content (not only the header as content)';
+    public $description = 'Fetch the mmospy news with full content (not only the header as content).';
 
     /**
      * config params

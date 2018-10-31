@@ -13,10 +13,10 @@ use Abraham\TwitterOAuth\TwitterOAuth;
  */
 class hometimeline extends \spouts\twitter\usertimeline {
     /** @var string name of source */
-    public $name = 'Twitter - Your timeline';
+    public $name = 'Twitter: your timeline';
 
     /** @var string description of this source type */
-    public $description = 'Your timeline on twitter';
+    public $description = 'Fetch your twitter timeline.';
 
     /**
      * config params

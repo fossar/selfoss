@@ -18,7 +18,7 @@ class reddit2 extends \spouts\spout {
     public $name = 'Reddit';
 
     /** @var string description of this source type */
-    public $description = 'Get your fix from Reddit';
+    public $description = 'Get your fix from Reddit.';
 
     /**
      * config params

@@ -15,7 +15,7 @@ class instapaper extends feed {
     public $name = 'RSS Feed (with instapaper)';
 
     /** @var string description of this source type */
-    public $description = 'This feed cleaning the content with instapaper.com';
+    public $description = 'Get feed and clean the content with instapaper.com service.';
 
     /**
      * config params
