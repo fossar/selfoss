@@ -13,10 +13,10 @@ namespace spouts\rss;
  */
 class teltarif extends fulltextrss {
     /** @var string name of spout */
-    public $name = 'News: Teltarif';
+    public $name = '[German] teltarif.de';
 
     /** @var string description of this source type */
-    public $description = 'This feed fetches Telarif news with full content (not only the header as content)';
+    public $description = 'This feed fetches Telarif news with full content (not only the header as content).';
 
     /**
      * config params

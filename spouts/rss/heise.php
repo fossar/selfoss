@@ -12,10 +12,10 @@ namespace spouts\rss;
  */
 class heise extends feed {
     /** @var string name of spout */
-    public $name = 'News: Heise';
+    public $name = '[German] heise.de';
 
     /** @var string description of this source type */
-    public $description = 'This feed fetches the heise news with full content (not only the header as content)';
+    public $description = 'This feed fetches the heise news with full content (not only the header as content).';
 
     /**
      * config params

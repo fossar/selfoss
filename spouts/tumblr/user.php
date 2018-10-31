@@ -11,10 +11,10 @@ namespace spouts\tumblr;
  */
 class user extends \spouts\rss\images {
     /** @var string name of source */
-    public $name = 'tumblr User';
+    public $name = 'tumblr: user post';
 
     /** @var string description of this source type */
-    public $description = 'entries of a tumblr user';
+    public $description = 'Get posts of a tumblr user.';
 
     /**
      * config params

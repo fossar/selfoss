@@ -12,10 +12,10 @@ namespace spouts\youtube;
  */
 class youtube extends \spouts\rss\feed {
     /** @var string name of source */
-    public $name = 'YouTube Channel';
+    public $name = 'YouTube: channel';
 
     /** @var string description of this source type */
-    public $description = 'A YouTube channel as source';
+    public $description = 'A YouTube channel as source.';
 
     /** @var array config params */
     public $params = [

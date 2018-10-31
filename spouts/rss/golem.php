@@ -11,10 +11,10 @@ namespace spouts\rss;
  */
 class golem extends feed {
     /** @var string name of spout */
-    public $name = 'News: Golem';
+    public $name = '[German] golem.de';
 
     /** @var string description of this source type */
-    public $description = 'This feed fetches the golem news with full content (not only the header as content)';
+    public $description = 'This feed fetches the golem news with full content (not only the header as content).';
 
     /**
      * config params

@@ -14,10 +14,10 @@ namespace spouts\rss;
  */
 class prolinux extends fulltextrss {
     /** @var string name of spout */
-    public $name = 'News: Pro-Linux';
+    public $name = '[German] pro-linux.de';
 
     /** @var string description of this source type */
-    public $description = 'This feed fetches the pro-linux news with full content (not only the header as content)';
+    public $description = 'This feed fetches the pro-linux news with full content (not only the header as content).';
 
     /**
      * config params

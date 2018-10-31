@@ -14,10 +14,10 @@ use helpers\WebClient;
  */
 class commits extends \spouts\spout {
     /** @var string name of source */
-    public $name = 'GitHub';
+    public $name = 'GitHub: commits';
 
     /** @var string description of this source type */
-    public $description = 'List commits on a repository';
+    public $description = 'List commits on a repository.';
 
     /**
      * config params

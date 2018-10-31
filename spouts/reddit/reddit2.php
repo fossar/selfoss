@@ -15,10 +15,10 @@ use Stringy\Stringy as S;
  */
 class reddit2 extends \spouts\spout {
     /** @var string name of spout */
-    public $name = 'Reddit';
+    public $name = 'Reddit: messages';
 
     /** @var string description of this source type */
-    public $description = 'Get your fix from Reddit';
+    public $description = 'Get your fix from Reddit.';
 
     /**
      * config params

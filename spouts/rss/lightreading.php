@@ -13,10 +13,10 @@ namespace spouts\rss;
  */
 class lightreading extends feed {
     /** @var string name of spout */
-    public $name = 'News: Lightreading';
+    public $name = '[English] lightreading.com';
 
     /** @var string description of this source type */
-    public $description = 'This feed fetches Lightreading news with full content (not only the header as content)';
+    public $description = 'This feed fetches Lightreading news with full content (not only the header as content).';
 
     /**
      * config params
