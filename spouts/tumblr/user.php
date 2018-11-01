@@ -10,6 +10,9 @@ namespace spouts\tumblr;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class user extends \spouts\rss\images {
+    /** @var int index of source for display order */
+    public $index = 12;
+
     /** @var string name of source */
     public $name = 'tumblr: user post';
 

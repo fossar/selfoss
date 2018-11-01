@@ -12,6 +12,9 @@ use Abraham\TwitterOAuth\TwitterOAuth;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class hometimeline extends \spouts\twitter\usertimeline {
+    /** @var int index of source for display order */
+    public $index = 13;
+
     /** @var string name of source */
     public $name = 'Twitter: your timeline';
 

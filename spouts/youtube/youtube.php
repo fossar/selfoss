@@ -11,6 +11,9 @@ namespace spouts\youtube;
  * @copywork   Arndt Staudinger <info@clucose.com> April 2013
  */
 class youtube extends \spouts\rss\feed {
+    /** @var int index of source for display order */
+    public $index = 16;
+
     /** @var string name of source */
     public $name = 'YouTube: channel';
 

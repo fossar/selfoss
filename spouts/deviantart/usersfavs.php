@@ -10,6 +10,9 @@ namespace spouts\deviantart;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class usersfavs extends \spouts\rss\images {
+    /** @var int index of source for display order */
+    public $index = 8;
+
     /** @var string name of source */
     public $name = 'DeviantART: favs of a user';
 

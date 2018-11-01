@@ -12,6 +12,9 @@ namespace spouts\rss;
  * @author     Daniel Seither <post@tiwoc.de>
  */
 class lightreading extends feed {
+    /** @var int index of source for display order */
+    public $index = 17;
+
     /** @var string name of spout */
     public $name = '[English] lightreading.com';
 

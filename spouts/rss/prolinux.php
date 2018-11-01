@@ -13,6 +13,9 @@ namespace spouts\rss;
  * @author     Sebastian Gibb <mail@sebastiangibb.de>
  */
 class prolinux extends fulltextrss {
+    /** @var int index of source for display order */
+    public $index = 21;
+
     /** @var string name of spout */
     public $name = '[German] pro-linux.de';
 

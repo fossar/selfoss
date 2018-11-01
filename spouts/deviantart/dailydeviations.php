@@ -10,6 +10,9 @@ namespace spouts\deviantart;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class dailydeviations extends \spouts\rss\images {
+    /** @var int index of source for display order */
+    public $index = 6;
+
     /** @var string name of source */
     public $name = 'DeviantART: daily deviations';
 

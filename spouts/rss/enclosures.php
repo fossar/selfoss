@@ -10,6 +10,9 @@ namespace spouts\rss;
  * @author     Daniel Rudolf <https://daniel-rudolf.de/>
  */
 class enclosures extends feed {
+    /** @var int index of source for display order */
+    public $index = 2;
+
     /** @var string name of spout */
     public $name = 'RSS Feed (with enclosures)';
 

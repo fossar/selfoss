@@ -16,6 +16,9 @@ use helpers\WebClient;
  * @author Jan Tojnar <jtojnar@gmail.com>
  */
 class page extends \spouts\spout {
+    /** @var int index of source for display order */
+    public $index = 9;
+
     /** @var string name of source */
     public $name = 'Facebook: page feed';
 

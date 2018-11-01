@@ -13,6 +13,9 @@ use helpers\WebClient;
  * @author     Tim Gerundt <tim@gerundt.de>
  */
 class commits extends \spouts\spout {
+    /** @var int index of source for display order */
+    public $index = 10;
+
     /** @var string name of source */
     public $name = 'GitHub: commits';
 

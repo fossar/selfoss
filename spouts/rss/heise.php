@@ -11,6 +11,9 @@ namespace spouts\rss;
  * @author     Daniel Seither <post@tiwoc.de>
  */
 class heise extends feed {
+    /** @var int index of source for display order */
+    public $index = 19;
+
     /** @var string name of spout */
     public $name = '[German] heise.de';
 

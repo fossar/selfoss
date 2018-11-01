@@ -13,6 +13,9 @@ use stdClass;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class usertimeline extends \spouts\spout {
+    /** @var int index of source for display order */
+    public $index = 15;
+
     /** @var string name of source */
     public $name = 'Twitter: user timeline';
 

@@ -55,7 +55,7 @@ class SpoutLoader {
             $this->spouts = $this->loadClass('spouts', 'spouts\spout');
 
             // sort spouts by name
-            uasort($this->spouts, ['self', 'compareSpoutsByName']);
+            uasort($this->spouts, ['self', 'compareSpoutsByIndex']);
         }
     }
 
@@ -103,4 +103,19 @@ class SpoutLoader {
     private static function compareSpoutsByName($spout1, $spout2) {
         return strcasecmp($spout1->name, $spout2->name);
     }
+
+    /**
+     * compare spouts by index
+     *
+     * @param \spouts\spout $spout1 Spout 1
+     * @param \spouts\spout $spout2 Spout 2
+     *
+     * @return int
+     */
+    private static function compareSpoutsByIndex($spout1, $spout2) {
+        if ($spout1->index == $spout2->index) return 0;
+        return ($spout1->index < $spout2->index) ? -1 : 1;
+    }
+
+
 }

@@ -10,6 +10,9 @@ namespace spouts\rss;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class feed extends \spouts\spout {
+    /** @var int index of source for display order */
+    public $index = 1;
+
     /** @var string name of source */
     public $name = 'RSS Feed';
 

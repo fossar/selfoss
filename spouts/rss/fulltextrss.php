@@ -13,6 +13,9 @@ use helpers\WebClient;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class fulltextrss extends feed {
+    /** @var int index of source for display order */
+    public $index = 3;
+
     /** @var string name of spout */
     public $name = 'RSS Feed (with Full-Text RSS)';
 

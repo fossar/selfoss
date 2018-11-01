@@ -14,6 +14,9 @@ use Stringy\Stringy as S;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class reddit2 extends \spouts\spout {
+    /** @var int index of source for display order */
+    public $index = 11;
+
     /** @var string name of spout */
     public $name = 'Reddit: messages';
 

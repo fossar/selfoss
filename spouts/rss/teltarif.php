@@ -12,6 +12,9 @@ namespace spouts\rss;
  * @author     Daniel Seither <post@tiwoc.de>
  */
 class teltarif extends fulltextrss {
+    /** @var int index of source for display order */
+    public $index = 22;
+
     /** @var string name of spout */
     public $name = '[German] teltarif.de';
 
