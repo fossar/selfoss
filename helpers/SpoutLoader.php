@@ -113,7 +113,9 @@ class SpoutLoader {
      * @return int
      */
     private static function compareSpoutsByIndex($spout1, $spout2) {
-        if ($spout1->index == $spout2->index) return 0;
+        if ($spout1->index == $spout2->index) {
+            return 0;
+        }
         return ($spout1->index < $spout2->index) ? -1 : 1;
     }
 
