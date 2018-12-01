@@ -15,7 +15,7 @@ RewriteRule thumbnails/(.*)$ data/thumbnails/$1 [L]
 
 # rule for front controller
 RewriteCond %{QUERY_STRING} ^(.*)$
-RewriteRule !.(js|ico|gif|jpg|png|css|asc|txt|eot|woff|ttf|ttf|svg|xml)$ index.php?%1
+RewriteRule !.(js|ico|gif|jpg|png|css|asc|txt|svg|xml)$ index.php?%1
 
 # rule for files
 RewriteRule !favicons/ - [C]
@@ -129,6 +129,3 @@ RewriteRule (.*) public/$1 [L]
     </IfModule>
 
 </IfModule>
-
-# add font types for chromium/chrome
-AddType application/font-woff woff

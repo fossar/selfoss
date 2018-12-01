@@ -6,7 +6,7 @@ html {
 }
  
 body {
-    font: lighter 18px/27px 'OpenSans', Arial, sans-serif;
+    font: lighter 18px/27px 'Open Sans', Arial, sans-serif;
     color: black;
     background:url(images/bg.gif) repeat;
     height: 100%;
@@ -925,7 +925,8 @@ body * {
 
     #opml h1 {
         background:url(images/logo.png) left center no-repeat;
-        font-family:'OpenSansSemibold', Arial, sans-serif;
+        font-family:'Open Sans', Arial, sans-serif;
+        font-weight: 600; /* semi-bold */
         padding-top:10px;
         padding-left:40px;
         font-size:1.4em;

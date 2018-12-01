@@ -2,7 +2,7 @@
 
 // Only run this if running from php 5.4 embedded server
 if (php_sapi_name() == 'cli-server') {
-    if (preg_match('/\.(?:js|ico|gif|jpg|png|css|asc|txt|eot|woff|ttf|ttf|svg)(?:\?.*)?$/', $_SERVER['REQUEST_URI'])) {
+    if (preg_match('/\.(?:js|ico|gif|jpg|png|css|asc|txt|svg)(?:\?.*)?$/', $_SERVER['REQUEST_URI'])) {
         // serves fronted
         if (preg_match('/^\/public/', $_SERVER['REQUEST_URI'])) {
             return false;
