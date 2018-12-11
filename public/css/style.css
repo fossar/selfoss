@@ -818,13 +818,15 @@ body * {
 }
 
 .source-add {
-    background: transparent;
-    border: none;
-    color: black;
-    padding: 0;
+    border: none;  
     cursor:pointer;
     margin-left:20px;
     float:left;
+    background: url(images/add.png) no-repeat left center #65a06c;
+    padding-left: 27px; 
+    padding-right: 5px;
+    border-radius: 5px;
+    color: #e2dede;       
 }
 
 .refresh-source {
@@ -842,12 +844,33 @@ body * {
     
 }
 
-.source-export,
+.source-export{
+    font-size:0.60em;
+    text-decoration:none;
+    color:#777;
+    margin-left:10px;
+    background: url(images/export.png) no-repeat left center #65a06c;
+    padding-left: 27px;
+    /* left: 0px; */
+    padding-right: 5px;
+    border-radius: 5px;
+    color: #e2dede;
+    height: 30px !important;
+    /* line-height: 30px; */
+    display: inline-block;
+}
 .source-opml {
     font-size:0.60em;
     text-decoration:none;
     color:#777;
     margin-left:10px;
+    background: url(images/import.png) no-repeat left center #65a06c;
+    padding-left: 27px; 
+    padding-right: 5px;
+    border-radius: 5px;
+    color: #e2dede;
+    height: 30px !important; 
+    display: inline-block;
 }
 
 .source-new .source-edit-form {
