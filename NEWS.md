@@ -7,6 +7,7 @@
 ### Bug fixes
 - Reddit spout allows wider range of URLs, including absolute URLs and searches ([#1033](https://github.com/SSilence/selfoss/pull/1033))
 - Improved compatibility with PHP 7.2 ([#1049](https://github.com/SSilence/selfoss/issues/1049))
+- `logger_level=NONE` is now handled correctly ([#1077](https://github.com/SSilence/selfoss/issues/1077))
 
 ### API changes
 - `tags` attribute is now consistently array of strings, numbers are numbers and booleans are booleans. **This might break third-party clients that have not updated yet.** ([#948](https://github.com/SSilence/selfoss/pull/948))

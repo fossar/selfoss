@@ -2,6 +2,7 @@
 
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\ErrorLogHandler;
+use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 
@@ -39,7 +40,9 @@ foreach ($f3->get('ENV') as $key => $value) {
 
 // init logger
 $log = new Logger('selfoss');
-if ($f3->get('logger_level') !== 'NONE') {
+if ($f3->get('logger_level') === 'NONE') {
+    $log->pushHandler(new NullHandler);
+} else {
     $logger_destination = $f3->get('logger_destination');
 
     if (strpos($logger_destination, 'file:') === 0) {
