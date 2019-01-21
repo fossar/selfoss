@@ -41,7 +41,7 @@ foreach ($f3->get('ENV') as $key => $value) {
 // init logger
 $log = new Logger('selfoss');
 if ($f3->get('logger_level') === 'NONE') {
-    $log->pushHandler(new NullHandler);
+    $log->pushHandler(new NullHandler());
 } else {
     $logger_destination = $f3->get('logger_destination');
 
