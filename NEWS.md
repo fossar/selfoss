@@ -35,6 +35,7 @@
 - RSS feed will be fetched more reliably ([#1052](https://github.com/SSilence/selfoss/pull/1052))
 - More of user interface is now translatable ([#1054](https://github.com/SSilence/selfoss/pull/1054))
 - Open Sans font is no longer bundled, resulting in smaller installations. Additionally, `use_system_font` option was removed. The typeface is still set as the default font family, so if you want to use it, install it to your devices. If you want to use a different typeface, add `body { font-family: 'Foo Face'; }` to your `user.css`. ([#1072](https://github.com/SSilence/selfoss/pull/1072))
+- The file name of exported sources now includes a timestamp ([#1078](https://github.com/SSilence/selfoss/pull/1078))
 
 
 ## 2.18 – 2018-03-05
