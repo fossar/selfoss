@@ -5,7 +5,7 @@ namespace helpers;
 use Exception;
 use Fossar\GuzzleTranscoder\GuzzleTranscoder;
 use GuzzleHttp;
-use GuzzleHttp\Subscriber\Log\LogSubscriber;
+use GuzzleHttp\HandlerStack;
 
 /**
  * Helper class for web request
@@ -25,19 +25,24 @@ class WebClient {
      */
     public static function getHttpClient() {
         if (!isset(self::$httpClient)) {
-            $version = \F3::get('version');
-            $httpClient = new GuzzleHttp\Client([
-                'defaults' => [
-                    'headers' => [
-                        'User-Agent' => self::getUserAgent(),
-                    ]
-                ]
-            ]);
-            $httpClient->getEmitter()->attach(new GuzzleTranscoder());
+            $stack = HandlerStack::create();
+            $stack->push(new GuzzleTranscoder());
 
             if (\F3::get('logger_level') === 'DEBUG') {
-                $httpClient->getEmitter()->attach(new LogSubscriber(\F3::get('logger')));
+                $logger = GuzzleHttp\Middleware::log(
+                    \F3::get('logger'),
+                    new GuzzleHttp\MessageFormatter(GuzzleHttp\MessageFormatter::DEBUG),
+                    \Psr\Log\LogLevel::DEBUG
+                );
+                $stack->push($logger);
             }
+
+            $httpClient = new GuzzleHttp\Client([
+                'headers' => [
+                    'User-Agent' => self::getUserAgent(),
+                ],
+                'handler' => $stack,
+            ]);
 
             self::$httpClient = $httpClient;
         }

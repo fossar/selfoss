@@ -26,10 +26,15 @@ class SimplePieFileGuzzle extends \SimplePie_File {
                     ] + $headers,
                     'timeout' => $timeout,
                     'connect_timeout' => $timeout,
+                    'allow_redirects' => [
+                        'track_redirects' => true,
+                    ],
                 ]);
 
                 $this->headers = $response->getHeaders();
-                $this->url = $response->getEffectiveUrl();
+                // Sequence of fetched URLs
+                $urlStack = [$url] + $response->getHeader(\GuzzleHttp\RedirectMiddleware::HISTORY_HEADER);
+                $this->url = $urlStack[count($urlStack) - 1];
                 $this->body = (string) $response->getBody();
                 $this->status_code = $response->getStatusCode();
             } catch (\GuzzleHttp\Exception\RequestException $e) {

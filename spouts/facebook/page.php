@@ -2,7 +2,7 @@
 
 namespace spouts\facebook;
 
-use GuzzleHttp\Url;
+use GuzzleHttp\Psr7\Uri;
 use helpers\WebClient;
 
 /**
@@ -82,11 +82,12 @@ class page extends \spouts\spout {
      */
     public function load($params) {
         $http = WebClient::getHttpClient();
-        $url = Url::fromString('https://graph.facebook.com/' . urlencode($params['user']));
-        $qs = $url->getQuery();
-        $qs['access_token'] = $params['app_id'] . '|' . $params['app_secret'];
-        $qs['fields'] = 'name,picture{url},link,feed{id,message,created_time,attachments,permalink_url}';
-        $data = $http->get($url)->json();
+        $url = new Uri('https://graph.facebook.com/' . urlencode($params['user']));
+        $url = $url->withQueryValues($url, [
+            'access_token' => $params['app_id'] . '|' . $params['app_secret'],
+            'fields' => 'name,picture{url},link,feed{id,message,created_time,attachments,permalink_url}',
+        ]);
+        $data = json_decode((string) $http->get($url)->getBody(), true);
 
         $this->spoutTitle = $data['name'];
         $this->pagePicture = $data['picture']['data']['url'];

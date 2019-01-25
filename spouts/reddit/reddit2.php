@@ -2,7 +2,10 @@
 
 namespace spouts\reddit;
 
-use GuzzleHttp\Url;
+use GuzzleHttp;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Uri;
+use GuzzleHttp\Psr7\UriResolver;
 use helpers\WebClient;
 use Stringy\Stringy as S;
 
@@ -83,7 +86,7 @@ class reddit2 extends \spouts\spout {
      *
      * @param array  $params
      *
-     * @throws \GuzzleHttp\Exception\RequestException When an error is encountered
+     * @throws GuzzleHttp\Exception\RequestException When an error is encountered
      * @throws \RuntimeException if the response body is not in JSON format
      *
      * @return void
@@ -101,12 +104,12 @@ class reddit2 extends \spouts\spout {
         }
 
         // ensure the URL is absolute
-        $url = Url::fromString('https://www.reddit.com/')->combine($params['url']);
+        $url = UriResolver::resolve(new Uri('https://www.reddit.com/'), new Uri($params['url']));
         // and that the path ends with .json (Reddit does not seem to recogize Accept header)
-        $url->setPath(S::create($url->getPath())->ensureRight('.json'));
+        $url = $url->withPath((string) S::create($url->getPath())->ensureRight('.json'));
 
         $response = $this->sendRequest($url);
-        $json = $response->json();
+        $json = json_decode((string) $response->getBody(), true);
 
         if (isset($json['error'])) {
             throw new \Exception($json['message']);
@@ -216,7 +219,7 @@ class reddit2 extends \spouts\spout {
     /**
      * returns the current title as string
      *
-     * @throws \GuzzleHttp\Exception\RequestException When an error is encountered
+     * @throws GuzzleHttp\Exception\RequestException When an error is encountered
      *
      * @return string title
      */
@@ -231,7 +234,7 @@ class reddit2 extends \spouts\spout {
     /**
      * returns the content of this item
      *
-     * @throws \GuzzleHttp\Exception\RequestException When an error is encountered
+     * @throws GuzzleHttp\Exception\RequestException When an error is encountered
      *
      * @return string content
      */
@@ -256,7 +259,7 @@ class reddit2 extends \spouts\spout {
                 }
             }
 
-            if (preg_match('/\.(?:gif|jpg|png|svg)$/i', Url::fromString($this->getHtmlUrl())->getPath())) {
+            if (preg_match('/\.(?:gif|jpg|png|svg)$/i', (new Uri($this->getHtmlUrl()))->getPath())) {
                 return '<img src="' . $this->getHtmlUrl() . '" />';
             }
 
@@ -340,20 +343,20 @@ class reddit2 extends \spouts\spout {
     }
 
     /**
-     * @throws \GuzzleHttp\Exception\RequestException When an error is encountered
+     * @throws GuzzleHttp\Exception\RequestException When an error is encountered
      * @throws \RuntimeException if the response body is not in JSON format
      * @throws \Exception if the credentials are invalid
      */
     private function login($params) {
         $http = WebClient::getHttpClient();
         $response = $http->post("https://ssl.reddit.com/api/login/{$params['username']}", [
-            'body' => [
+            GuzzleHttp\RequestOptions::FORM_PARAMS => [
                 'api_type' => 'json',
                 'user' => $params['username'],
                 'passwd' => $params['password']
             ]
         ]);
-        $data = $response->json();
+        $data = json_decode((string) $response->getBody(), true);
         if (count($data['json']['errors']) > 0) {
             $errors = '';
             foreach ($data['json']['errors'] as $error) {
@@ -374,19 +377,19 @@ class reddit2 extends \spouts\spout {
      * @param string $url
      * @param string $method
      *
-     * @throws \GuzzleHttp\Exception\RequestException When an error is encountered
+     * @throws GuzzleHttp\Exception\RequestException When an error is encountered
      *
-     * @return \GuzzleHttp\Message\Response
+     * @return GuzzleHttp\Message\Response
      */
     private function sendRequest($url, $method = 'GET') {
         $http = WebClient::getHttpClient();
 
         if (isset($this->reddit_session)) {
-            $request = $http->createRequest($method, $url, [
+            $request = new Request($method, $url, [
                 'cookies' => ['reddit_session' => $this->reddit_session]
             ]);
         } else {
-            $request = $http->createRequest($method, $url);
+            $request = new Request($method, $url);
         }
 
         $response = $http->send($request);

@@ -4,6 +4,7 @@ namespace spouts\rss;
 
 use Graby\Graby;
 use helpers\WebClient;
+use Http\Adapter\Guzzle6\Client as GuzzleAdapter;
 
 /**
  * Plugin for fetching the news with fivefilters Full-Text RSS
@@ -51,7 +52,7 @@ class fulltextrss extends feed {
                         'site_config' => [\F3::get('FTRSS_CUSTOM_DATA_DIR')],
                     ],
                 ],
-            ], WebClient::getHttpClient());
+            ], new GuzzleAdapter(WebClient::getHttpClient()));
             $logger = \F3::get('logger')->withName(self::$loggerTag);
             $this->graby->setLogger($logger);
         }
