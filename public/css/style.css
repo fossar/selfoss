@@ -602,6 +602,7 @@ body * {
             -webkit-column-count: 1;
             column-count: 1;
             max-width: 750px;
+            margin: auto;
         }
 
         .entry-content pre, .entry-content table {
