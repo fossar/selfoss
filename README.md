@@ -1,7 +1,7 @@
 selfoss
 =======
 
-Copyright (c) 2015 Tobias Zeising, tobias.zeising@aditu.de  
+Copyright ⓒ 2015 Tobias Zeising, tobias.zeising@aditu.de  
 https://selfoss.aditu.de  
 Licensed under the GPLv3 license  
 Version 2.19-SNAPSHOT
@@ -90,21 +90,21 @@ Very special thanks to all contributors of pull requests here on github. Your im
 
 Special thanks to the great programmers of this libraries which will be used in selfoss:
 
-* FatFree PHP Framework: https://github.com/bcosca/fatfree
-* SimplePie: http://simplepie.org/
-* jQuery: https://jquery.com/
-* jQuery UI: https://jqueryui.com/
-* WideImage: http://wideimage.sourceforge.net/
-* htmLawed: http://www.bioinformatics.org/phplabware/internal_utilities/htmLawed/
-* PHP Universal Feed Generator: https://github.com/ajaxray/FeedWriter
-* twitteroauth: https://github.com/abraham/twitteroauth
-* Elphin IcoFileLoader: https://github.com/lordelph/icofileloader
-* jQuery hotkeys: https://github.com/tzuryby/jquery.hotkeys
-* jsmin: https://github.com/rgrove/jsmin-php
-* cssmin: https://code.google.com/archive/p/cssmin
-* Spectrum Colorpicker: https://github.com/bgrins/spectrum
-* jQuery custom content scroller: http://manos.malihu.gr/jquery-custom-content-scroller/
-* twitter oauth library: https://github.com/abraham/twitteroauth
-* FullTextRSS: http://help.fivefilters.org/customer/portal/articles/223153-site-patterns
+* [FatFree PHP Framework](https://fatfreeframework.com/)
+* [SimplePie](http://simplepie.org/)
+* [jQuery](https://jquery.com/)
+* [WideImage](http://wideimage.sourceforge.net/)
+* [htmLawed](http://www.bioinformatics.org/phplabware/internal_utilities/htmLawed/)
+* [PHP Universal Feed Generator](https://github.com/ajaxray/FeedWriter)
+* [twitteroauth](https://github.com/abraham/twitteroauth)
+* [Elphin IcoFileLoader](https://github.com/lordelph/icofileloader)
+* [jQuery hotkeys](https://github.com/tzuryby/jquery.hotkeys)
+* [JShrink](https://github.com/tedious/JShrink)
+* [cssmin](https://code.google.com/archive/p/cssmin)
+* [Spectrum Colorpicker](https://github.com/bgrins/spectrum)
+* [jQuery custom content scroller](http://manos.malihu.gr/jquery-custom-content-scroller/)
+* [twitter oauth library](https://github.com/abraham/twitteroauth)
+* [FullTextRSS](http://help.fivefilters.org/customer/portal/articles/223153-site-patterns)
+* [Graby](https://github.com/j0k3r/graby)
 
-Icon Source: http://www.artcoreillustrations.com/
+Icon comes from http://www.artcoreillustrations.com/
