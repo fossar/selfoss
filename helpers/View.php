@@ -218,7 +218,7 @@ class View {
             return $content;
         }
 
-        return \JSMin::minify($content);
+        return \JShrink\Minifier::minify($content);
     }
 
     /**
