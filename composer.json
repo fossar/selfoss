@@ -14,7 +14,7 @@
         "fossar/htmlawed": "^1.2.4.1",
         "j0k3r/graby": "2.0.x-dev",
         "linkorb/jsmin-php": "^1.0",
-        "lordelph/icofileloader": "^1.0",
+        "lordelph/icofileloader": "^2.0",
         "mibe/feedwriter": "^1.0",
         "monolog/monolog": "^1.0",
         "natxet/CssMin": "^3.0",

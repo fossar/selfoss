@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8ed98297b4d596dba1bd678f8859be15",
+    "content-hash": "41a84fe8f68bc52f019a866ff2ccc33f",
     "packages": [
         {
             "name": "abraham/twitteroauth",
@@ -960,25 +960,24 @@
         },
         {
             "name": "lordelph/icofileloader",
-            "version": "1.1.0",
+            "version": "2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lordelph/icofileloader.git",
-                "reference": "c5994a348068be137cf127d1345b8781dffac0fe"
+                "reference": "97fa83f23d3b155b08923629377a8a34327f6930"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lordelph/icofileloader/zipball/c5994a348068be137cf127d1345b8781dffac0fe",
-                "reference": "c5994a348068be137cf127d1345b8781dffac0fe",
+                "url": "https://api.github.com/repos/lordelph/icofileloader/zipball/97fa83f23d3b155b08923629377a8a34327f6930",
+                "reference": "97fa83f23d3b155b08923629377a8a34327f6930",
                 "shasum": ""
             },
             "require": {
                 "ext-gd": "*",
-                "php": ">=5.4.0"
+                "php": ">=5.6.0"
             },
             "require-dev": {
-                "jakub-onderka/php-parallel-lint": "dev-master",
-                "phpunit/phpunit": "~5 || ~4",
+                "phpunit/phpunit": "~5",
                 "squizlabs/php_codesniffer": "^2.3"
             },
             "type": "library",
@@ -1007,7 +1006,7 @@
                 "icon",
                 "load"
             ],
-            "time": "2017-05-14T20:00:45+00:00"
+            "time": "2017-06-01T10:50:53+00:00"
         },
         {
             "name": "mibe/feedwriter",

@@ -7,4 +7,4 @@ install_phar() {
 }
 
 install_phar "https://github.com/fossar/PHP-Parallel-Lint/releases/download/v0.9.2/parallel-lint.phar" php-parallel-lint
-install_phar "https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.8.3/php-cs-fixer.phar" php-cs-fixer
+install_phar "https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.14.0/php-cs-fixer.phar" php-cs-fixer
