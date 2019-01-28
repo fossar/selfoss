@@ -34,6 +34,11 @@
   ```
 
   ([#1017](https://github.com/SSilence/selfoss/pull/1017))
+- Some language files have been renamed to use correct [IETF language tag](https://en.wikipedia.org/wiki/IETF_language_tag) and you might need to change the `language` key in your `config.ini`:
+  * Simplified Chinese `zh-CN`
+  * Traditional Chinese `zh-TW`
+  * Norwegian Bokmål `nb`
+  * Swedish `sv`
 
 ### Other changes
 - Removed broken instapaper scraping from Reddit spout ([#1033](https://github.com/SSilence/selfoss/pull/1033))
