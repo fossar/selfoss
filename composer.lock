@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3a6a3f7112183b2d834dbc3dc411b56c",
+    "content-hash": "ebb911359e45496270a29523a642f5d9",
     "packages": [
         {
             "name": "abraham/twitteroauth",
@@ -648,7 +648,7 @@
         },
         {
             "name": "j0k3r/graby",
-            "version": "2.0.x-dev",
+            "version": "2.0.0-alpha.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/j0k3r/graby.git",
@@ -2183,7 +2183,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "j0k3r/graby": 20
+        "j0k3r/graby": 15
     },
     "prefer-stable": false,
     "prefer-lowest": false,
