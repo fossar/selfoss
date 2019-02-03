@@ -657,6 +657,10 @@ body * {
             background-image:url(images/read.png);
         }
         
+        .entry-toolbar .entry-readuptohere {
+            background-image:url(images/read-up-to-here.png);
+        }
+        
         .entry-toolbar .entry-unread.active {
             background-image:url(images/unread.png);
         }
@@ -1367,6 +1371,10 @@ body.authenabled.loggedin #nav-logout {
             #fullscreen-entry .entry-close {
                 display:block;
             }
+       
+            #fullscreen-entry .entry-readuptohere {
+		display:none;
+	    }
    
     .entry-toolbar .entry-newwindow {
         display:none;
