@@ -144,29 +144,29 @@ selfoss.events.entriesToolbar = function(parent) {
             // mark fails with empty ids[] list
 
             if (ids.length > 0) {
-                    $.ajax({
-                url: $('base').attr('href') + 'mark',
-                type: 'POST',
-                dataType: 'json',
-                        data: {
-                            ids: ids
-                        },
-                        success: function() {
-                            // refresh list
-                            selfoss.dbOnline.reloadList();
-                        },
-                        error: function(jqXHR, textStatus, errorThrown) {
-                            content.html(articleList);
-                            $('#content').removeClass('loading');
-                            selfoss.ui.refreshStreamButtons(true, true, hadMore);
-                            selfoss.events.entries();
-                            selfoss.ui.showError('Can not mark all previous items: ' +
-                                                 textStatus + ' ' + errorThrown);
-                        }
-                    });
+                $.ajax({
+                    url: $('base').attr('href') + 'mark',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        ids: ids
+                    },
+                    success: function() {
+                        // refresh list
+                        selfoss.dbOnline.reloadList();
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        content.html(articleList);
+                        $('#content').removeClass('loading');
+                        selfoss.ui.refreshStreamButtons(true, true, hadMore);
+                        selfoss.events.entries();
+                        selfoss.ui.showError('Can not mark all previous items: ' +
+                                             textStatus + ' ' + errorThrown);
+                    }
+                });
             } else {
-                    // ids[] was empty, refresh list anyway
-                    selfoss.dbOnline.reloadList();
+                // ids[] was empty, refresh list anyway
+                selfoss.dbOnline.reloadList();
             }
         });
 
