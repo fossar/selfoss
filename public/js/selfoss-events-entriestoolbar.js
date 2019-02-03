@@ -107,68 +107,68 @@ selfoss.events.entriesToolbar = function(parent) {
         });
 
         // os ext 2018-12-25 "read up-to-here" / code taken from read/unread below and selfoss.markVisibleRead
-        // this is not available in fullscreen mode -> display:none in css 
+        // this is not available in fullscreen mode -> display:none in css
         // 2019-02-03 changed to NOT include the entry this is called from
         // because (1) to find the cmd, the entry is open = read anyway and
         // (2) if the entry has been marked "unread" by the user, we can assume
         // he / she did not want it to be marked read by this.
-        parent.find('.entry-readuptohere').unbind('click').click( function(){
-                var ids = [];
-                var entry = $(this).parents('.entry');
-                // // add this one - regardless of whether it is already read or not
-                // 2019-02-03 > NO!, see above
-                // ids.push( entry.attr('data-entry-id') );
-                entry.prevAll('.entry.unread').each( function(index, item){
-                //entry.prevUntil("fff").each( function(index, item){
-                        ids.push($(item).attr('data-entry-id'));
-	        // ids.push($(item).attr('id').substr(5));
-                });
-	    // there will always be at least one element: the current one
-	    // 2019-02-03 NO: with the change above, ids[] could be empty
-        console.log('About to delete IDs ' + ids.join() );
+        parent.find('.entry-readuptohere').unbind('click').click(function() {
+            var ids = [];
+            var entry = $(this).parents('.entry');
+            // // add this one - regardless of whether it is already read or not
+            // 2019-02-03 > NO!, see above
+            // ids.push( entry.attr('data-entry-id') );
+            entry.prevAll('.entry.unread').each(function(index, item) {
+            //entry.prevUntil("fff").each( function(index, item){
+                ids.push($(item).attr('data-entry-id'));
+            // ids.push($(item).attr('id').substr(5));
+            });
+            // there will always be at least one element: the current one
+            // 2019-02-03 NO: with the change above, ids[] could be empty
 
-        // this is from markVisibleRead
 
-        // show loading
-        var content = $('#content');
-        var articleList = content.html();
-        $('#content').addClass('loading').html('');
-        var hadMore = $('.stream-more').is(':visible');
-        selfoss.ui.refreshStreamButtons();
+            // this is from markVisibleRead
 
-        // close opened entry and list
-        selfoss.events.setHash();
-        selfoss.filterReset();
+            // show loading
+            var content = $('#content');
+            var articleList = content.html();
+            $('#content').addClass('loading').html('');
+            var hadMore = $('.stream-more').is(':visible');
+            selfoss.ui.refreshStreamButtons();
 
-        // this is MODIFIED from markVisibleRead > mark + reload list from server
-        // mark fails with empty ids[] list
-		
-        if (ids.length > 0) {
-                $.ajax({
-		    url: $('base').attr('href') + 'mark',
-		    type: 'POST',
-		    dataType: 'json',
-                    data: {
-                        ids: ids
-                    },
-                    success: function() {
-                        // refresh list
-                        selfoss.dbOnline.reloadList();
-                    },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                        content.html(articleList);
-                        $('#content').removeClass('loading');
-                        selfoss.ui.refreshStreamButtons(true, true, hadMore);
-                        selfoss.events.entries();
-                        selfoss.ui.showError('Can not mark all previous items: ' +
-                                             textStatus + ' ' + errorThrown);
-                    }
-                });
-        } else {
-                // ids[] was empty, refresh list anyway
-                selfoss.dbOnline.reloadList();
-        };
-     });
+            // close opened entry and list
+            selfoss.events.setHash();
+            selfoss.filterReset();
+
+            // this is MODIFIED from markVisibleRead > mark + reload list from server
+            // mark fails with empty ids[] list
+
+            if (ids.length > 0) {
+                    $.ajax({
+                url: $('base').attr('href') + 'mark',
+                type: 'POST',
+                dataType: 'json',
+                        data: {
+                            ids: ids
+                        },
+                        success: function() {
+                            // refresh list
+                            selfoss.dbOnline.reloadList();
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            content.html(articleList);
+                            $('#content').removeClass('loading');
+                            selfoss.ui.refreshStreamButtons(true, true, hadMore);
+                            selfoss.events.entries();
+                            selfoss.ui.showError('Can not mark all previous items: ' +
+                                                 textStatus + ' ' + errorThrown);
+                        }
+                    });
+            } else {
+                    // ids[] was empty, refresh list anyway
+                    selfoss.dbOnline.reloadList();
+            }
+        });
 
         // read/unread
         parent.find('.entry-unread').unbind('click').click(function() {
