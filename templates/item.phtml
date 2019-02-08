@@ -77,9 +77,10 @@
 
     <!-- toolbar -->
     <div class="entry-toolbar">
+        <button class="entry-newwindow"><?= \F3::get('lang_open_window')?></button>
         <button class="entry-starr <?= $this->item['starred'] == 1 ? 'active' : ''; ?>"><?= $this->item['starred'] == 1 ? \F3::get('lang_unstar') : \F3::get('lang_star'); ?></button>
         <button class="entry-unread <?= $this->item['unread'] == 1 ? 'active' : ''; ?>"><?= $this->item['unread'] == 1 ? \F3::get('lang_mark') : \F3::get('lang_unmark'); ?></button>
-        <button class="entry-newwindow"><?= \F3::get('lang_open_window')?></button>
+        <button class="entry-readuptohere"><?= \F3::get('lang_readuptohere')?></button>
         <button class="entry-loadimages"><?= \F3::get('lang_load_img')?> </button>
         <button class="entry-next"><?= \F3::get('lang_next')?></button>
         <button class="entry-close"></button>
