@@ -5,7 +5,7 @@
     "require": {
         "php": ">= 5.6",
         "abraham/twitteroauth": "^1.0",
-        "bcosca/fatfree-core": "^3.6",
+        "bcosca/fatfree-core": "dev-selfoss#cc3aa6af9a038dd9d0e136f42d9d18a02e077f39",
         "danielstjules/stringy": "^3.1",
         "fossar/tcpdf-parser": "^6.2",
         "fossar/guzzle-transcoder": "^0.1.0",
@@ -39,6 +39,12 @@
             "spouts\\": "spouts/"
         }
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/fossar/fatfree-core"
+        }
+    ],
     "config": {
         "platform": {
             "php": "5.6.0"

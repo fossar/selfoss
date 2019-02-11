@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ebb911359e45496270a29523a642f5d9",
+    "content-hash": "1daad6ef3878827b449c7829ebd8b7ee",
     "packages": [
         {
             "name": "abraham/twitteroauth",
@@ -62,16 +62,16 @@
         },
         {
             "name": "bcosca/fatfree-core",
-            "version": "3.6.5",
+            "version": "dev-selfoss",
             "source": {
                 "type": "git",
-                "url": "https://github.com/bcosca/fatfree-core.git",
-                "reference": "c5aa056d2111e666e87f6129fe633c6a2aeeaae2"
+                "url": "https://github.com/fossar/fatfree-core.git",
+                "reference": "cc3aa6af9a038dd9d0e136f42d9d18a02e077f39"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bcosca/fatfree-core/zipball/c5aa056d2111e666e87f6129fe633c6a2aeeaae2",
-                "reference": "c5aa056d2111e666e87f6129fe633c6a2aeeaae2",
+                "url": "https://api.github.com/repos/fossar/fatfree-core/zipball/cc3aa6af9a038dd9d0e136f42d9d18a02e077f39",
+                "reference": "cc3aa6af9a038dd9d0e136f42d9d18a02e077f39",
                 "shasum": ""
             },
             "require": {
@@ -83,13 +83,15 @@
                     "."
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "GPL-3.0"
             ],
             "description": "A powerful yet easy-to-use PHP micro-framework designed to help you build dynamic and robust Web applications - fast!",
             "homepage": "http://fatfreeframework.com/",
-            "time": "2018-12-24T13:37:45+00:00"
+            "support": {
+                "source": "https://github.com/fossar/fatfree-core/tree/selfoss"
+            },
+            "time": "2019-02-11T22:44:20+00:00"
         },
         {
             "name": "clue/stream-filter",
@@ -721,16 +723,16 @@
         },
         {
             "name": "j0k3r/graby-site-config",
-            "version": "1.0.73",
+            "version": "1.0.74",
             "source": {
                 "type": "git",
                 "url": "https://github.com/j0k3r/graby-site-config.git",
-                "reference": "350d0c3f1333203af0985d9243d457cf9e4479cd"
+                "reference": "767d794e61b63e54579de7e9511f64e803b6f0a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/j0k3r/graby-site-config/zipball/350d0c3f1333203af0985d9243d457cf9e4479cd",
-                "reference": "350d0c3f1333203af0985d9243d457cf9e4479cd",
+                "url": "https://api.github.com/repos/j0k3r/graby-site-config/zipball/767d794e61b63e54579de7e9511f64e803b6f0a3",
+                "reference": "767d794e61b63e54579de7e9511f64e803b6f0a3",
                 "shasum": ""
             },
             "require": {
@@ -757,7 +759,7 @@
                 }
             ],
             "description": "Graby site config files",
-            "time": "2019-01-21T15:50:12+00:00"
+            "time": "2019-02-06T09:07:12+00:00"
         },
         {
             "name": "j0k3r/httplug-ssrf-plugin",
@@ -829,29 +831,29 @@
         },
         {
             "name": "j0k3r/php-readability",
-            "version": "1.1.11",
+            "version": "1.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/j0k3r/php-readability.git",
-                "reference": "eef6d6d456d941939fa714ca3725bf7e3cd04d1e"
+                "reference": "3c0289bf8943cbef6a2cc89b645c33617fd38066"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/j0k3r/php-readability/zipball/eef6d6d456d941939fa714ca3725bf7e3cd04d1e",
-                "reference": "eef6d6d456d941939fa714ca3725bf7e3cd04d1e",
+                "url": "https://api.github.com/repos/j0k3r/php-readability/zipball/3c0289bf8943cbef6a2cc89b645c33617fd38066",
+                "reference": "3c0289bf8943cbef6a2cc89b645c33617fd38066",
                 "shasum": ""
             },
             "require": {
                 "electrolinux/php-html5lib": "^0.1.0",
                 "ext-mbstring": "*",
-                "php": ">=5.3.3",
+                "php": ">=5.6.0",
                 "psr/log": "^1.0"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "<2",
-                "monolog/monolog": "^1.13",
-                "satooshi/php-coveralls": "~0.6",
-                "symfony/phpunit-bridge": "^3.2"
+                "friendsofphp/php-cs-fixer": "^2.14",
+                "monolog/monolog": "^1.24",
+                "php-coveralls/php-coveralls": "^2.1",
+                "symfony/phpunit-bridge": "^4.2.3"
             },
             "suggest": {
                 "ext-tidy": "Used to clean up given HTML and to avoid problems with bad HTML structure."
@@ -899,7 +901,7 @@
                 "extraction",
                 "html"
             ],
-            "time": "2018-11-26T15:54:20+00:00"
+            "time": "2019-02-07T15:08:33+00:00"
         },
         {
             "name": "lordelph/icofileloader",
@@ -1175,16 +1177,16 @@
         },
         {
             "name": "php-http/client-common",
-            "version": "1.9.0",
+            "version": "1.9.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-http/client-common.git",
-                "reference": "9c21b6058caafdf2fcc99a0cabdf31b3ecb33961"
+                "reference": "0e156a12cc3e46f590c73bf57592a2252fc3dc48"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-http/client-common/zipball/9c21b6058caafdf2fcc99a0cabdf31b3ecb33961",
-                "reference": "9c21b6058caafdf2fcc99a0cabdf31b3ecb33961",
+                "url": "https://api.github.com/repos/php-http/client-common/zipball/0e156a12cc3e46f590c73bf57592a2252fc3dc48",
+                "reference": "0e156a12cc3e46f590c73bf57592a2252fc3dc48",
                 "shasum": ""
             },
             "require": {
@@ -1232,7 +1234,7 @@
                 "http",
                 "httplug"
             ],
-            "time": "2019-01-03T10:59:55+00:00"
+            "time": "2019-02-02T07:03:15+00:00"
         },
         {
             "name": "php-http/discovery",
@@ -1877,16 +1879,16 @@
         },
         {
             "name": "symfony/finder",
-            "version": "v3.4.21",
+            "version": "v3.4.22",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
-                "reference": "3f2a2ab6315dd7682d4c16dcae1e7b95c8b8555e"
+                "reference": "7c0c627220308928e958a87c293108e5891cde1d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/finder/zipball/3f2a2ab6315dd7682d4c16dcae1e7b95c8b8555e",
-                "reference": "3f2a2ab6315dd7682d4c16dcae1e7b95c8b8555e",
+                "url": "https://api.github.com/repos/symfony/finder/zipball/7c0c627220308928e958a87c293108e5891cde1d",
+                "reference": "7c0c627220308928e958a87c293108e5891cde1d",
                 "shasum": ""
             },
             "require": {
@@ -1922,20 +1924,20 @@
             ],
             "description": "Symfony Finder Component",
             "homepage": "https://symfony.com",
-            "time": "2019-01-01T13:45:19+00:00"
+            "time": "2019-01-16T13:43:35+00:00"
         },
         {
             "name": "symfony/options-resolver",
-            "version": "v3.4.21",
+            "version": "v3.4.22",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/options-resolver.git",
-                "reference": "8a10e36ffd04c0c551051594952304d34ecece71"
+                "reference": "0f1cbaee6b356e72c0e025f9a4e9d76a25bf4793"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/options-resolver/zipball/8a10e36ffd04c0c551051594952304d34ecece71",
-                "reference": "8a10e36ffd04c0c551051594952304d34ecece71",
+                "url": "https://api.github.com/repos/symfony/options-resolver/zipball/0f1cbaee6b356e72c0e025f9a4e9d76a25bf4793",
+                "reference": "0f1cbaee6b356e72c0e025f9a4e9d76a25bf4793",
                 "shasum": ""
             },
             "require": {
@@ -1976,7 +1978,7 @@
                 "configuration",
                 "options"
             ],
-            "time": "2019-01-01T13:45:19+00:00"
+            "time": "2019-01-16T09:39:14+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -2183,6 +2185,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "bcosca/fatfree-core": 20,
         "j0k3r/graby": 15
     },
     "prefer-stable": false,
