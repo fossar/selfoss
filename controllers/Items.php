@@ -30,14 +30,17 @@ class Items extends BaseController {
             $lastid = $_POST['ids'];
         }
 
+        $skipped = array_key_exists('skipped', $_POST) && $_POST['skipped'] == 'true';
+
         $itemDao = new \daos\Items();
 
         // validate id or ids
         if (!$itemDao->isValid('id', $lastid)) {
+            \F3::get('logger')->debug('invalid id: ' . var_export($lastid, true));
             $this->view->error('invalid id');
         }
 
-        $itemDao->mark($lastid);
+        $itemDao->mark($lastid, $skipped);
 
         $return = [
             'success' => true
@@ -238,8 +241,10 @@ class Items extends BaseController {
                     $sync['newItems'][] = [
                         'id' => $newItem['id'],
                         'datetime' => \helpers\ViewHelper::date_iso8601($newItem['datetime']),
+                        'updatetime' => \helpers\ViewHelper::date_iso8601($newItem['updatetime']),
                         'unread' => $newItem['unread'],
                         'starred' => $newItem['starred'],
+                        'skipped' => $newItem['skipped'],
                         'html' => $this->view->render('templates/item.phtml'),
                         'source' => $newItem['source'],
                         'tags' => array_keys($newItem['tags'])

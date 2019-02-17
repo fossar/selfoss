@@ -133,6 +133,7 @@ selfoss.dbOnline = {
                         var maxId = 0;
                         data.newItems.forEach(function(item) {
                             item.datetime = new Date(item.datetime);
+                            item.updatetime = new Date(item.updatetime);
                             maxId = Math.max(item.id, maxId);
                         });
 
@@ -350,7 +351,7 @@ selfoss.dbOffline = {
 
         selfoss.db.storage = new Dexie('selfoss');
         selfoss.db.storage.version(1).stores({
-            entries: '&id,*datetime,[datetime+id]',
+            entries: '&id,*datetime,[datetime+id],*updatetime,[updatetime+id]',
             statusq: '++id,*entryId',
             stamps: '&name,datetime',
             stats: '&name',
@@ -544,7 +545,13 @@ selfoss.dbOffline = {
                 var hasMore = false;
 
                 var ascOrder = selfoss.db.ascOrder();
-                var entries = selfoss.db.storage.entries.orderBy('[datetime+id]');
+                var orderDatetime = 'datetime';
+                if (selfoss.filter.type == 'lastread') {
+                    orderDatetime = 'updatetime';
+                }
+                var entries = selfoss.db.storage.entries.orderBy(
+                    '[' + orderDatetime + '+id]'
+                );
                 if (!ascOrder) {
                     entries = entries.reverse();
                 }
@@ -569,6 +576,8 @@ selfoss.dbOffline = {
                         return entry.starred;
                     } else if (selfoss.filter.type == 'unread') {
                         return entry.unread;
+                    } else if (selfoss.filter.type == 'lastread') {
+                        return !entry.unread && !entry.skipped;
                     }
 
                     return true;
@@ -582,13 +591,18 @@ selfoss.dbOffline = {
                     // seek pagination
                     isMore = !seek;
                     if (seek) {
+                        var entryOrderDatetime = entry.datetime;
+                        if (selfoss.filter.type == 'lastread') {
+                            entryOrderDatetime = entry.updatetime;
+                        }
+
                         if (ascOrder) {
-                            isMore = entry.datetime > fromDatetime
-                            || (entry.datetime.getTime() == fromDatetime.getTime()
+                            isMore = entryOrderDatetime > fromDatetime
+                            || (entryOrderDatetime.getTime() == fromDatetime.getTime()
                                 && entry.id > fromId);
                         } else {
-                            isMore = entry.datetime < fromDatetime
-                            || (entry.datetime.getTime() == fromDatetime.getTime()
+                            isMore = entryOrderDatetime < fromDatetime
+                            || (entryOrderDatetime.getTime() == fromDatetime.getTime()
                                 && entry.id < fromId);
                         }
                     }
@@ -741,7 +755,9 @@ selfoss.dbOffline = {
 
                 // update entries statuses
                 itemStatuses.forEach(function(itemStatus) {
-                    var newStatus = {};
+                    var newStatus = {
+                        updatetime: new Date(itemStatus.updatetime)
+                    };
 
                     selfoss.db.entryStatusNames.forEach(function(statusName) {
                         if (statusName in itemStatus) {
@@ -777,7 +793,8 @@ selfoss.dbOffline = {
 
                 if (updateStats) {
                     for (var statusName in statsDiff) {
-                        if (statsDiff.hasOwnProperty(statusName)) {
+                        if (statsDiff.hasOwnProperty(statusName)
+                            && statusName != 'skipped') {
                             selfoss.db.storage.stats.get(statusName, function(stat) {
                                 selfoss.db.storage.stats.put({
                                     name: statusName,
@@ -791,23 +808,25 @@ selfoss.dbOffline = {
     },
 
 
-    entriesMark: function(itemIds, unread) {
+    entriesMark: function(itemIds, unread, skipped) {
         selfoss.dbOnline.statsDirty = true;
         var newStatuses = itemIds.map(function(itemId) {
-            return {id: itemId, unread: unread};
+            return {id: itemId, unread: unread, skipped: skipped,
+                    updatetime: new Date()};
         });
         return selfoss.dbOffline.storeEntryStatuses(newStatuses);
     },
 
 
     entryMark: function(itemId, unread) {
-        return selfoss.dbOffline.entriesMark([itemId], unread);
+        return selfoss.dbOffline.entriesMark([itemId], unread, false);
     },
 
 
     entryStar: function(itemId, starred) {
         return selfoss.dbOffline.storeEntryStatuses([{
             id: itemId,
+            updatetime: new Date(),
             starred: starred
         }]);
     }
@@ -822,7 +841,7 @@ selfoss.db = {
     storage: null,
     online: true,
     enableOffline: window.localStorage.getItem('enableOffline') === 'true',
-    entryStatusNames: ['unread', 'starred'],
+    entryStatusNames: ['unread', 'starred', 'skipped'],
     userWaiting: true,
 
 
@@ -935,7 +954,7 @@ selfoss.db = {
             selfoss.filter.extraIds.push(selfoss.events.entryId);
         }
 
-        if (!append || selfoss.filter.type != 'newest') {
+        if (!append || selfoss.filter.type == 'starred' || selfoss.filter.type == 'unread') {
             selfoss.dbOffline.olderEntriesOnline = false;
         }
 

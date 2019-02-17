@@ -227,6 +227,21 @@ class Database {
                         'INSERT INTO version (version) VALUES (12)'
                     ]);
                 }
+                if (strnatcmp($version, '13') < 0) {
+                    \F3::get('db')->exec([
+                        'ALTER TABLE items ADD skipped BOOLEAN NOT NULL DEFAULT FALSE;',
+                        'CREATE TABLE item_resources (
+                            id SERIAL PRIMARY KEY,
+                            item_id INTEGER REFERENCES items ON DELETE CASCADE,
+                            hash TEXT NOT NULL,
+                            url TEXT NOT NULL
+                        );',
+                        'CREATE UNIQUE INDEX uid_idx ON items USING btree (source, uid)',
+                        'CREATE INDEX datetime_idx ON items USING btree (datetime)',
+                        'CREATE INDEX updatetime_idx ON items USING btree (updatetime)',
+                        'INSERT INTO version (version) VALUES (13)'
+                    ]);
+                }
             }
 
             // just initialize once

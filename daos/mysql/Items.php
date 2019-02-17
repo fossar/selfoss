@@ -23,17 +23,31 @@ class Items extends Database {
      *
      * @return void
      */
-    public function mark($id) {
-        if ($this->isValid('id', $id) === false) {
+    public function mark($id, $skipped=false) {
+        if (is_array($id)) {
+            $in_ids = $this->stmt->intRowMatches('id', $id);
+            foreach($id as $i) {
+                \F3::get('logger')->debug('statusUpdate: ' . $i . ' marked as read');
+            }
+        } else {
+            $intId = (int) $id;
+            if ($intId > 0) {
+                $in_ids = 'id = ' . $intId;
+                \F3::get('logger')->debug('statusUpdate: ' . $intId . ' marked as read');
+            } else {
+                $in_ids = null;
+            }
+        }
+        if (is_null($in_ids)) {
             return;
         }
 
-        if (is_array($id)) {
-            $id = implode(',', $id);
+        $update = array($this->stmt->isFalse('unread'));
+        if ($skipped) {
+            $update[] = $this->stmt->isTrue('skipped');
         }
 
-        // i used string concatenation after validating $id
-        \F3::get('db')->exec('UPDATE ' . \F3::get('db_prefix') . "items SET unread=? WHERE id IN ($id)", false);
+        \F3::get('db')->exec('UPDATE ' . \F3::get('db_prefix') . 'items SET ' . implode(',', $update) . ' WHERE ' . $in_ids . ';');
     }
 
     /**
@@ -215,6 +229,7 @@ class Items extends Database {
         $params = [];
         $where = [$this->stmt->bool(true)];
         $order = 'DESC';
+        $orderDatetime = 'items.datetime';
 
         // only starred
         if (isset($options['type']) && $options['type'] === 'starred') {
@@ -227,6 +242,14 @@ class Items extends Database {
             if (\F3::get('unread_order') === 'asc') {
                 $order = 'ASC';
             }
+        }
+
+        // recently read
+        elseif (isset($options['type']) && $options['type'] == 'lastread') {
+            $orderDatetime = 'items.updatetime';
+            $where[] = $this->stmt->isFalse('unread');
+            $where[] = $this->stmt->isFalse('skipped');
+            $order = 'DESC';
         }
 
         // search
@@ -282,8 +305,8 @@ class Items extends Database {
 
             // Because of sqlite lack of tuple comparison support, we use a
             // more complicated condition.
-            $where[] = "(items.datetime $ltgt :offset_from_datetime OR
-                         (items.datetime = :offset_from_datetime2 AND
+            $where[] = "($orderDatetime $ltgt :offset_from_datetime OR
+                         ($orderDatetime = :offset_from_datetime2 AND
                           items.id $ltgt :offset_from_id)
                         )";
         }
@@ -325,7 +348,7 @@ class Items extends Database {
             items.id, datetime, items.title AS title, content, unread, starred, source, thumbnail, icon, uid, link, updatetime, author, sources.title as sourcetitle, sources.tags as tags
             FROM ' . \F3::get('db_prefix') . 'items AS items, ' . \F3::get('db_prefix') . 'sources AS sources
             WHERE items.source=sources.id AND';
-        $order_sql = 'ORDER BY items.datetime ' . $order . ', items.id ' . $order;
+        $order_sql = 'ORDER BY ' . $orderDatetime . ' ' . $order . ', items.id ' . $order;
 
         if ($where_ids !== '') {
             // This UNION is required for the extra explicitely requested items
@@ -377,7 +400,7 @@ class Items extends Database {
      */
     public function sync($sinceId, DateTime $notBefore, DateTime $since, $howMany) {
         $query = 'SELECT
-        items.id, datetime, items.title AS title, content, unread, starred, source, thumbnail, icon, uid, link, updatetime, author, sources.title as sourcetitle, sources.tags as tags
+        items.id, datetime, items.title AS title, content, unread, starred, skipped, source, thumbnail, icon, uid, link, updatetime, author, sources.title as sourcetitle, sources.tags as tags
         FROM ' . \F3::get('db_prefix') . 'items AS items, ' . \F3::get('db_prefix') . 'sources AS sources
         WHERE items.source=sources.id
             AND (' . $this->stmt->isTrue('unread') .
@@ -399,6 +422,7 @@ class Items extends Database {
             'id' => \daos\PARAM_INT,
             'unread' => \daos\PARAM_BOOL,
             'starred' => \daos\PARAM_BOOL,
+            'skipped' => \daos\PARAM_BOOL,
             'source' => \daos\PARAM_INT
         ]);
     }
@@ -617,15 +641,17 @@ class Items extends Database {
      *
      * @return array of unread, starred, etc. status of specified items
      */
-    public function statuses(DateTime $since) {
-        $res = \F3::get('db')->exec('SELECT id, unread, starred
+    public function statuses(Datetime $since) {
+        $res = \F3::get('db')->exec('SELECT id, unread, starred, skipped,
+                                            updatetime
             FROM ' . \F3::get('db_prefix') . 'items
             WHERE ' . \F3::get('db_prefix') . 'items.updatetime > :since;',
                 [':since' => [$since->format(DateTime::ATOM), \PDO::PARAM_STR]]);
         $res = $this->stmt->ensureRowTypes($res, [
             'id' => \daos\PARAM_INT,
             'unread' => \daos\PARAM_BOOL,
-            'starred' => \daos\PARAM_BOOL
+            'starred' => \daos\PARAM_BOOL,
+            'skipped' => \daos\PARAM_BOOL
         ]);
 
         return $res;
@@ -647,7 +673,7 @@ class Items extends Database {
                     $statusUpdate = null;
 
                     // sanitize statuses
-                    foreach (['unread', 'starred'] as $sk) {
+                    foreach (['unread', 'starred', 'skipped'] as $sk) {
                         if (array_key_exists($sk, $status)) {
                             if ($status[$sk] == 'true') {
                                 $statusUpdate = [
@@ -700,12 +726,14 @@ class Items extends Database {
             foreach ($sql as $id => $q) {
                 $params = [
                     ':id' => [$id, \PDO::PARAM_INT],
-                    ':statusUpdate' => [$q['datetime'], \PDO::PARAM_STR]
+                    ':statusUpdate' => [$q['datetime'], \PDO::PARAM_STR],
+                    ':statusUpdate2' => [$q['datetime'], \PDO::PARAM_STR]
                 ];
                 $updated = \F3::get('db')->exec(
                     'UPDATE ' . \F3::get('db_prefix') . 'items
-                    SET ' . implode(', ', array_values($q['updates'])) . '
-                    WHERE id = :id AND updatetime < :statusUpdate', $params);
+                    SET ' . implode(', ', array_values($q['updates'])) . ',
+                        updatetime=:statusUpdate
+                    WHERE id = :id AND updatetime < :statusUpdate2', $params);
                 if ($updated == 0) {
                     // entry status was updated in between so updatetime must
                     // be updated to ensure client side consistency of
