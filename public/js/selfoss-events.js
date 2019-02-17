@@ -159,7 +159,7 @@ selfoss.events = {
 
         // load items
         if ($.inArray(selfoss.events.section,
-            ['newest', 'unread', 'starred']) > -1) {
+            ['newest', 'unread', 'starred', 'lastread']) > -1) {
             selfoss.filter.type = selfoss.events.section;
             selfoss.filter.tag = '';
             selfoss.filter.source = '';

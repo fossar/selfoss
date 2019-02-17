@@ -234,6 +234,12 @@ class Database {
                         'INSERT INTO version (version) VALUES (11)'
                     ]);
                 }
+                if (strnatcmp($version, '13') < 0) {
+                    \F3::get('db')->exec([
+                        'ALTER TABLE items ADD skipped BOOL NOT NULL DEFAULT 0;',
+                        'INSERT INTO version (version) VALUES (13)'
+                    ]);
+                }
             }
 
             // just initialize once

@@ -42,6 +42,8 @@ selfoss.events.navigation = function() {
             selfoss.filter.type = 'unread';
         } else if ($(this).hasClass('nav-filter-starred')) {
             selfoss.filter.type = 'starred';
+        } else if ($(this).hasClass('nav-filter-lastread')) {
+            selfoss.filter.type = 'lastread';
         }
 
         selfoss.events.reloadSamePath = true;

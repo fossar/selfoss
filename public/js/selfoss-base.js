@@ -535,7 +535,7 @@ var selfoss = {
 
         if (selfoss.db.storage) {
             selfoss.refreshUnread(unreadstats);
-            selfoss.dbOffline.entriesMark(ids, false).then(displayNextUnread);
+            selfoss.dbOffline.entriesMark(ids, false, true).then(displayNextUnread);
         }
 
         $.ajax({
@@ -543,7 +543,8 @@ var selfoss = {
             type: 'POST',
             dataType: 'json',
             data: {
-                ids: ids
+                ids: ids,
+                skipped: true
             },
             success: function() {
                 selfoss.db.setOnline();
