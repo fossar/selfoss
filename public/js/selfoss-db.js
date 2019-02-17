@@ -594,7 +594,7 @@ selfoss.dbOffline = {
                     }
 
 
-                    if (seek && !ascOrder && !alwaysInDb
+                    if (!ascOrder && !alwaysInDb
                     && entry.datetime < selfoss.dbOffline.newestGCedEntry) {
                         // the offline db is missing older entries, the next
                         // seek will have to find them online.
