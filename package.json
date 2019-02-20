@@ -12,13 +12,13 @@
     "grunt-cli": "^1.2.0",
     "grunt-composer": "^0.4.5",
     "grunt-contrib-compress": "^0.10.0",
-    "grunt-eslint": "^20.0.0",
-    "grunt-text-replace": "~0.3"
+    "grunt-eslint": "^20.0.0"
   },
   "engines": {
     "npm": ">=5"
   },
   "scripts": {
+    "bump-version": "node utils/bump-version.js",
     "postinstall": "npm install --prefix public/"
   }
 }

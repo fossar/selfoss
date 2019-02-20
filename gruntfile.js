@@ -55,50 +55,6 @@ module.exports = function(grunt) {
             }
         },
 
-        /* version text replace */
-        replace: {
-            version: {
-                src: [
-                    'package.json',
-                    'README.md',
-                    'common.php',
-                    'docs/api-description.json',
-                    '_docs/website/index.html'
-                ],
-                overwrite: true,
-                replacements: [
-                // rule for package.json
-                {
-                    from: /"ver": "\d+\.\d+(\-SNAPSHOT)?"/,
-                    to: ('"ver": "' + grunt.option('newversion') + '"')
-                },
-
-                // rule for README.md
-                {
-                    from: /'version', '\d+\.\d+(\-SNAPSHOT)?'/,
-                    to: ("'version', '" + grunt.option('newversion') + "'")
-                },
-
-                // rule for common.php
-                {
-                    from: /Version \d+\.\d+(\-SNAPSHOT)?/,
-                    to: ("Version " + grunt.option('newversion'))
-                },
-
-                // rule for docs/api-description.json
-                {
-                    from: /"version": "\d+\.\d+(\-SNAPSHOT)?"/,
-                    to: ('"version": "' + grunt.option('newversion') + '"')
-                },
-
-                // rule for website/index.html
-                {
-                    from: /selfoss( |\-)\d+\.\d+(\-SNAPSHOT)?/g,
-                    to: ("selfoss$1" + grunt.option('newversion'))
-                }]
-            }
-        },
-
         /* create zip */
         compress: {
             main: {
@@ -147,27 +103,14 @@ module.exports = function(grunt) {
     });
 
     grunt.loadNpmTasks('grunt-auto-install');
-    grunt.loadNpmTasks('grunt-text-replace');
     grunt.loadNpmTasks('grunt-contrib-compress');
     grunt.loadNpmTasks('grunt-composer');
     grunt.loadNpmTasks('grunt-eslint');
 
-    /* task checks whether newversion is given and start replacement in files if correct format is given */
-    grunt.registerTask('versionupdater', 'version update task', function() {
-        var version = "" + grunt.option('newversion');
-        if (typeof grunt.option('newversion') != 'undefined') {
-            grunt.log.writeln('replace version ' + grunt.option('newversion'));
-            if (version.search(/^\d+\.\d+(\-SNAPSHOT)?$/) == -1)
-                grunt.fail.warn('newversion must have the format n.m or n.m-SNAPSHOT (n and m are integer numbers)');
-            grunt.task.run('replace');
-        }
-    });
-
     grunt.registerTask('client:install', 'Install client-side dependencies.', ['auto_install']);
     grunt.registerTask('server:install', 'Install server-side dependencies.', ['composer:install:no-dev:optimize-autoloader:prefer-dist']);
     grunt.registerTask('install', 'Install both client-side and server-side dependencies.', ['client:install', 'server:install']);
-    grunt.registerTask('default', ['install', 'versionupdater', 'compress']);
-    grunt.registerTask('version', ['versionupdater']);
+    grunt.registerTask('default', ['install', 'compress']);
     grunt.registerTask('zip', ['compress']);
     grunt.registerTask('lint:client', 'Check JS syntax', ['eslint']);
     grunt.registerTask('cs:server', 'Check PHP coding style', ['composer:run-script cs']);
