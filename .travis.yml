@@ -26,7 +26,6 @@ cache:
 
 before_install:
     - nvm install 6
-    - npm install -g grunt-cli
     - npm install
     - if [ -n "$GH_TOKEN" ]; then composer config github-oauth.github.com ${GH_TOKEN}; fi
     - utils/install-phars.sh

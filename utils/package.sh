@@ -5,4 +5,4 @@ if [ -z "$TRAVIS_TAG" ]; then
     npm run bump-version $NEW_VERSION
 fi
 
-grunt
+npm run dist

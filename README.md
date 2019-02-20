@@ -77,9 +77,9 @@ DEVELOPMENT
 
 Selfoss uses [composer](https://getcomposer.org/) for installing external libraries. When you clone the repository you have to issue `composer install` to retrieve the external sources.
 
-For the client side, you will also need JavaScript dependencies installed by calling `npm install` in the `public` directory.
+For the client side, you will also need JavaScript dependencies installed by calling `npm install` in the `public` directory. You can use `npm run install-dependencies` as a shortcut for installing both dependencies.
 
-If you want to create a package with all the dependencies bundled, you will additionally require [grunt](https://gruntjs.com/). After installing it, execute `npm install` in the selfoss directory to obtain the required tasks. Then you can run `grunt` command to produce a zipball. As a bonus, you can also use `grunt install` as a shortcut for installing the selfoss dependencies described above.
+If you want to create a package with all the dependencies bundled, you can run `npm run dist` command to produce a zipball.
 
 Every patch is expected to adhere to our coding style, which is checked automatically by Travis. You can install the checkers locally either with your package manager or by calling `utils/install-phars.sh`, and then run the checks using `npm run check` before submitting a pull request.
 
