@@ -39,9 +39,9 @@ before_script:
     - composer install --prefer-dist --no-interaction
 
 script:
-    - if [ "$LINT_JS" = true ]; then grunt lint:client; fi
-    - grunt lint:server
-    - if [ "$CS_FIXER" = true ]; then grunt cs:server; fi
+    - if [ "$LINT_JS" = true ]; then npm run lint:client; fi
+    - npm run lint:server
+    - if [ "$CS_FIXER" = true ]; then npm run cs:server; fi
 
 before_deploy:
     - source utils/package.sh

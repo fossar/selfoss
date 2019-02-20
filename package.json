@@ -7,18 +7,24 @@
     "url": "https://github.com/SSilence/selfoss.git"
   },
   "devDependencies": {
+    "eslint": "^5.14.1",
     "grunt": "^0.4.5",
     "grunt-auto-install": "^0.3.1",
     "grunt-cli": "^1.2.0",
     "grunt-composer": "^0.4.5",
-    "grunt-contrib-compress": "^0.10.0",
-    "grunt-eslint": "^20.0.0"
+    "grunt-contrib-compress": "^0.10.0"
   },
   "engines": {
     "npm": ">=5"
   },
   "scripts": {
     "bump-version": "node utils/bump-version.js",
+    "check": "npm run check:client && npm run check:server",
+    "check:client": "npm run lint:client",
+    "check:server": "npm run lint:server && npm run cs:server",
+    "cs:server": "composer run-script cs",
+    "lint:client": "eslint public/js/selfoss-*.js",
+    "lint:server": "composer run-script lint",
     "postinstall": "npm install --prefix public/"
   }
 }

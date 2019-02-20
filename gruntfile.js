@@ -96,25 +96,15 @@ module.exports = function(grunt) {
                 ]
             }
         },
-
-        eslint: {
-            target: ['public/js/selfoss-*.js']
-        }
     });
 
     grunt.loadNpmTasks('grunt-auto-install');
     grunt.loadNpmTasks('grunt-contrib-compress');
     grunt.loadNpmTasks('grunt-composer');
-    grunt.loadNpmTasks('grunt-eslint');
 
     grunt.registerTask('client:install', 'Install client-side dependencies.', ['auto_install']);
     grunt.registerTask('server:install', 'Install server-side dependencies.', ['composer:install:no-dev:optimize-autoloader:prefer-dist']);
     grunt.registerTask('install', 'Install both client-side and server-side dependencies.', ['client:install', 'server:install']);
     grunt.registerTask('default', ['install', 'compress']);
     grunt.registerTask('zip', ['compress']);
-    grunt.registerTask('lint:client', 'Check JS syntax', ['eslint']);
-    grunt.registerTask('cs:server', 'Check PHP coding style', ['composer:run-script cs']);
-    grunt.registerTask('lint:server', 'Check PHP syntax', ['composer:run-script lint']);
-    grunt.registerTask('check:server', 'Check PHP source code for problems and style violation', ['lint:server', 'cs:server']);
-    grunt.registerTask('check', 'Check the whole source code for problems and style violation', ['lint:client', 'check:server']);
 };
