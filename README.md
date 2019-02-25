@@ -75,9 +75,9 @@ Two third party apps are available for Android: [Selfoss](https://play.google.co
 DEVELOPMENT
 -----------
 
-Selfoss uses [composer](https://getcomposer.org/) for installing external libraries. When you clone the repository you have to issue `composer install` to retrieve the external sources.
+Selfoss uses [composer](https://getcomposer.org/) and [npm](https://www.npmjs.com/get-npm) for installing external libraries. When you clone the repository you have to issue `composer install` to retrieve the external sources.
 
-For the client side, you will also need JavaScript dependencies installed by calling `npm install` in the `public` directory. You can use `npm run install-dependencies` as a shortcut for installing both dependencies.
+For the client side, you will also need JavaScript dependencies installed by calling `npm install` in the `public` directory. You can use `npm run install-dependencies` as a shortcut for installing both sets of dependencies.
 
 If you want to create a package with all the dependencies bundled, you can run `npm run dist` command to produce a zipball.
 
