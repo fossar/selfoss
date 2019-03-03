@@ -99,8 +99,6 @@ Special thanks to the great programmers of this libraries which will be used in 
 * [twitteroauth](https://github.com/abraham/twitteroauth)
 * [Elphin IcoFileLoader](https://github.com/lordelph/icofileloader)
 * [jQuery hotkeys](https://github.com/tzuryby/jquery.hotkeys)
-* [JShrink](https://github.com/tedious/JShrink)
-* [cssmin](https://code.google.com/archive/p/cssmin)
 * [Spectrum Colorpicker](https://github.com/bgrins/spectrum)
 * [jQuery custom content scroller](http://manos.malihu.gr/jquery-custom-content-scroller/)
 * [twitter oauth library](https://github.com/abraham/twitteroauth)

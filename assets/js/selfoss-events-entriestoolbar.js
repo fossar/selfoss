@@ -1,3 +1,5 @@
+import selfoss from './selfoss-base';
+
 /**
  * toolbar of an single entry
  */

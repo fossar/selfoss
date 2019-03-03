@@ -1,3 +1,5 @@
+import selfoss from './selfoss-base';
+
 selfoss.shares = {
     initialized: false,
     sharers: {},

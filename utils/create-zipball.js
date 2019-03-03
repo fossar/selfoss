@@ -51,13 +51,6 @@ function isNotUnimportant(dest) {
     return allowed;
 }
 
-const requiredAssets = (function() {
-    const files = JSON.parse(fs.readFileSync('public/package.json', 'utf-8')).extra.requiredFiles;
-
-    return files.css.concat(files.js);
-})();
-
-
 const pkg = JSON.parse(fs.readFileSync('package.json', 'utf-8'));
 
 var output = fs.createWriteStream(`selfoss-${pkg.ver}.zip`);
@@ -73,13 +66,8 @@ archive.directory('helpers/', '/helpers');
 archive.directory('vendor/', '/vendor', filterEntry(isNotUnimportant));
 
 // do not pack bundled assets and assets not listed in index.php
-archive.directory('public/', '/public', filterEntry(file => {
-    const bundle = file === 'public/all.js' || file === 'public/all.css';
-    const thirdPartyRubbish = file.startsWith('public/node_modules/') && requiredAssets.indexOf(file) === -1;
-    const allowed = !bundle && !thirdPartyRubbish;
-
-    return allowed;
-}));
+archive.directory('public/', '/public');
+archive.file('public/selfoss.webmanifest');
 
 // copy data: only directory structure and .htaccess for deny
 archive.directory('data/', '/data', filterEntry(file => fs.lstatSync(file).isDirectory()));

@@ -1,3 +1,5 @@
+import selfoss from './selfoss-base';
+
 selfoss.events = {
 
     /* last hash before hash change */

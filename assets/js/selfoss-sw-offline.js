@@ -1,11 +1,15 @@
 /* ServiceWorker environment, and prepended script */
 /* global offlineManifest:false, Promise */
 
+const { assets } = serviceWorkerOption;
+
+// FIXME: global is not defined here
+let assetsToCache = assets.map(path => new URL(path, global.location).toString());
 
 self.addEventListener('install', function(event) {
     event.waitUntil(
         caches.open(offlineManifest.version).then(function(cache) {
-            return cache.addAll(offlineManifest.files);
+            return cache.addAll(assetsToCache);
         })
     );
 });

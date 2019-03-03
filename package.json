@@ -19,10 +19,12 @@
     "check:client": "npm run lint:client",
     "check:server": "npm run lint:server && npm run cs:server",
     "cs:server": "composer run-script cs",
+    "dev": "cd assets && npm run dev",
+    "build": "cd assets && npm run build",
     "dist": "npm install && npm run install-dependencies && node utils/create-zipball.js",
-    "install-dependencies": "composer install --no-dev --optimize-autoloader --prefer-dist && cd public && npm install --production",
-    "lint:client": "eslint public/js/selfoss-*.js",
+    "install-dependencies": "composer install --no-dev --optimize-autoloader --prefer-dist && cd assets && npm install --production",
+    "lint:client": "eslint assets/js/selfoss-*.js",
     "lint:server": "composer run-script lint",
-    "postinstall": "npm install --prefix public/"
+    "postinstall": "npm install --prefix assets/"
   }
 }
