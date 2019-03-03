@@ -24,8 +24,15 @@ class Index extends BaseController {
         $options = $_GET;
 
         if (!$f3->ajax()) {
+            $home = BASEDIR . '/public/index.html';
+            if (!file_exists($home)) {
+                http_response_code(500);
+                echo 'Please build the assets using `npm run build` or obtain a pre-built packages from https://selfoss.aditu.de.';
+                die;
+            }
+
             // show as full html page
-            echo $this->view->render('src/templates/home.phtml');
+            readfile($home);
 
             return;
         }
@@ -136,11 +143,7 @@ class Index extends BaseController {
      * @return void
      */
     public function password() {
-        $this->view->password = true;
-        if (isset($_POST['password'])) {
-            $this->view->hash = password_hash($_POST['password'], PASSWORD_DEFAULT);
-        }
-        echo $this->view->render('src/templates/hashpassword.phtml');
+        readfile(BASEDIR . '/public/hashpassword.html');
     }
 
     /**

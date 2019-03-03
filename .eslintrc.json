@@ -1,6 +1,9 @@
 {
     "root": true,
     "extends": "eslint:recommended",
+    "parserOptions": {
+        "sourceType": "module"
+    },
     "rules": {
         "no-eval": "error",
         "array-bracket-spacing": "error",
@@ -36,10 +39,10 @@
     },
     "env": {
         "browser": true,
+        "es6": true,
         "jquery": true
     },
     "globals": {
-        "selfoss": {},
-        "Dexie": {}
+        "selfoss": {}
     }
 }

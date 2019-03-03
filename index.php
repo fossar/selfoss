@@ -11,30 +11,12 @@ if ($lang != '0' && $lang != '') {
 // init authentication
 $f3->set('auth', new \helpers\Authentication());
 
-/** @var stdClass JS client package manifest */
-$clientPackage = json_decode(file_get_contents(__DIR__ . '/assets/package.json'));
-
-// define js files
-$js = $clientPackage->extra->requiredFiles->js;
-if (file_exists('user.js')) {
-    $js[] = 'user.js';
-}
-$f3->set('js', $js);
-
-// define css files
-$css = $clientPackage->extra->requiredFiles->css;
-if (file_exists('user.css')) {
-    $css[] = 'user.css';
-}
-$f3->set('css', $css);
-
 // define routes
 
 // all users
 $f3->route('GET /', 'controllers\Index->home'); // html
 $f3->route('GET /api/about', 'controllers\Index->about'); // json
 $f3->route('GET /password', 'controllers\Index->password'); // html
-$f3->route('POST /password', 'controllers\Index->password'); // html
 $f3->route('GET /login', 'controllers\Index->login'); // json
 $f3->route('POST /login', 'controllers\Index->login'); // json
 $f3->route('GET /logout', 'controllers\Index->logout'); // json

@@ -1,5 +1,6 @@
 {
     "name": "selfoss",
+    "start_url": "./",
     "background_color": "grey",
     "icons": [{
         "src": "images/logo_big.png",

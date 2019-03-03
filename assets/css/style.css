@@ -1,3 +1,8 @@
+@import 'malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css';
+@import '@fancyapps/fancybox/dist/jquery.fancybox.css';
+@import 'spectrum-colorpicker/spectrum.css';
+@import '../css/reset.css';
+
 /* base */
 
 html {
@@ -8,7 +13,7 @@ html {
 body {
     font: lighter 18px/27px 'Open Sans', Arial, sans-serif;
     color: black;
-    background:url(images/bg.gif) repeat;
+    background:url(../images/bg.gif) repeat;
     height: 100%;
     position:relative;
 }
@@ -83,7 +88,7 @@ input {
     #nav-logo {
         margin-left:20px;
         margin-top:14px;
-        background:url(images/logo.png);
+        background:url(../images/logo.png);
         width:31px;
         height:37px;
     }
@@ -113,13 +118,13 @@ input {
         .nav-filter-collapsed {
             cursor:pointer;
             padding-left: 20px;
-            background: url(images/nav-collapsed.png) center left no-repeat;
+            background: url(../images/nav-collapsed.png) center left no-repeat;
         }
         
         .nav-filter-expanded {
             cursor:pointer;
             padding-left: 20px;
-            background: url(images/nav-expanded.png) center left no-repeat;
+            background: url(../images/nav-expanded.png) center left no-repeat;
         }
 
     #nav-filter-title {
@@ -227,13 +232,13 @@ input {
         .nav-tags-collapsed {
             cursor:pointer;
             padding-left: 20px;
-            background: url(images/nav-collapsed.png) center left no-repeat;
+            background: url(../images/nav-collapsed.png) center left no-repeat;
         }
         
         .nav-tags-expanded {
             cursor:pointer;
             padding-left: 20px;
-            background: url(images/nav-expanded.png) center left no-repeat;
+            background: url(../images/nav-expanded.png) center left no-repeat;
         }
         
         #nav-tags li a {
@@ -274,13 +279,13 @@ input {
         .nav-sources-collapsed {
             cursor:pointer;
             padding-left: 20px;
-            background: url(images/nav-collapsed.png) center left no-repeat;
+            background: url(../images/nav-collapsed.png) center left no-repeat;
         }
         
         .nav-sources-expanded {
             cursor:pointer;
             padding-left: 20px;
-            background: url(images/nav-expanded.png) center left no-repeat;
+            background: url(../images/nav-expanded.png) center left no-repeat;
         }
         
         #nav-sources {
@@ -341,23 +346,23 @@ input {
     }
 
     #nav-refresh {
-        background:url(images/nav-refresh.png) no-repeat center center #272325;
+        background:url(../images/nav-refresh.png) no-repeat center center #272325;
     }
 
     #nav-refresh.loading {
-        background:url(images/ajax-loader.gif) center center no-repeat;
+        background:url(../images/ajax-loader.gif) center center no-repeat;
     }
     
     #nav-settings {
-        background:url(images/nav-sources.png) no-repeat center center #272325;
+        background:url(../images/nav-sources.png) no-repeat center center #272325;
     }
         
     #nav-logout {
-        background:url(images/nav-logout.png) no-repeat center center #272325;
+        background:url(../images/nav-logout.png) no-repeat center center #272325;
     }    
     
     #nav-login {
-        background:url(images/nav-login.png) no-repeat center center #272325;
+        background:url(../images/nav-login.png) no-repeat center center #272325;
     }
 
     .nav-toolbar {
@@ -445,7 +450,7 @@ input {
         padding-left:5px;
         padding-right:15px;
         font-size:0.85em;
-        background: url(images/remove-small.png) no-repeat right center #3d6d69;
+        background: url(../images/remove-small.png) no-repeat right center #3d6d69;
         border-right:6px solid #3d6d69;
         -webkit-border-top-right-radius: 4px;
         -webkit-border-bottom-right-radius: 4px;
@@ -473,7 +478,7 @@ input {
     }
 
     #content.loading {
-        background:url(images/ajax-loader-big.gif) center center no-repeat;
+        background:url(../images/ajax-loader-big.gif) center center no-repeat;
         min-height:90%;
     }
 
@@ -694,32 +699,32 @@ input {
         }
 
         .entry-toolbar .entry-starr {
-            background-image:url(images/unstarred.png);
+            background-image:url(../images/unstarred.png);
         }
         
         .entry-toolbar .entry-starr.active {
-            background-image:url(images/starred.png);
+            background-image:url(../images/starred.png);
         }
         
         .entry-toolbar .entry-unread {
-            background-image:url(images/read.png);
+            background-image:url(../images/read.png);
         }
         
         .entry-toolbar .entry-unread.active {
-            background-image:url(images/unread.png);
+            background-image:url(../images/unread.png);
         }
         
         .entry-toolbar .entry-loadimages {
             display:none;
-            background-image:url(images/arrow-down.png);
+            background-image:url(../images/arrow-down.png);
         }
         
         .entry-newwindow {
-            background-image:url(images/open.png);
+            background-image:url(../images/open.png);
         }
 
         .entry-next {
-            background-image:url(images/arrow-right.png);
+            background-image:url(../images/arrow-right.png);
             display:none;
         }
 
@@ -737,7 +742,7 @@ input {
             left:100%;
             top:0;
             margin-left:-60px;
-            background:url(images/close.png) center center no-repeat;
+            background:url(../images/close.png) center center no-repeat;
             background-size: 28px 28px;
         }
         
@@ -763,7 +768,7 @@ input {
         }
         
         .stream-more.loading {
-            background:url(images/ajax-loader-big.gif) center center no-repeat;
+            background:url(../images/ajax-loader-big.gif) center center no-repeat;
         }
         
         .stream-more.loading span {
@@ -842,7 +847,7 @@ input {
     
 .source-edit-delete.loadi1ng,
 .source-action.loading {
-    background:url(images/ajax-loader.gif) right center no-repeat;
+    background:url(../images/ajax-loader.gif) right center no-repeat;
     padding-right:25px;
 }
     
@@ -919,7 +924,7 @@ input {
 }
 
 #loginform.loading {
-    background:url(images/ajax-loader-big.gif) center center no-repeat;
+    background:url(../images/ajax-loader-big.gif) center center no-repeat;
     height: 90%;
 }
 
@@ -936,7 +941,7 @@ input {
 }
 
     #login h1 {
-        background:url(images/logo.png) left center no-repeat;
+        background:url(../images/logo.png) left center no-repeat;
         font-weight:600;
         padding-top:10px;
         padding-left:40px;
@@ -973,7 +978,7 @@ input {
 }
 
     #opml h1 {
-        background:url(images/logo.png) left center no-repeat;
+        background:url(../images/logo.png) left center no-repeat;
         font-family:'Open Sans', Arial, sans-serif;
         font-weight: 600; /* semi-bold */
         padding-top:10px;
@@ -1074,7 +1079,7 @@ body:not(.loggedin) .entry-unread {
         border-radius:0px;
         /*border-top:1px solid #ccc;*/
         border:0;
-        background:url(images/entry-bg.png) bottom repeat-x #fff;
+        background:url(../images/entry-bg.png) bottom repeat-x #fff;
     }
     
     .source-showparams,
@@ -1223,7 +1228,7 @@ body:not(.loggedin) .entry-unread {
             left:50%;
             top:5px;
             margin-left:-48px;
-            background:url(images/nav-mobile-logo.png) no-repeat;
+            background:url(../images/nav-mobile-logo.png) no-repeat;
             background-size:96px 40px;
         }
 
@@ -1241,7 +1246,7 @@ body:not(.loggedin) .entry-unread {
             height:29px;
             left:100%;
             margin-left:-66px;
-            background:url(images/nav-mobile-settings.png) no-repeat center;
+            background:url(../images/nav-mobile-settings.png) no-repeat center;
             background-size:29px 29px;
             padding:11px 21px 11px 15px;
             display: block;

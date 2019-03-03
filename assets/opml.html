@@ -17,15 +17,15 @@
         <meta name="mobile-web-app-capable" content="yes" />
 
         <!-- icons -->
-        <link rel="apple-touch-icon-precomposed" href="icon-128x128.png" />
-        <link rel="icon" type="image/png" href="icon-32x32.png" />
-        <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+        <link rel="apple-touch-icon-precomposed" href="images/icon-128x128.png" />
+        <link rel="icon" type="image/png" href="images/icon-32x32.png" />
+        <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico" />
 
         <!-- Toolbar color from Chrome for Android -->
         <meta name="theme-color" content="#191718" />
 
         <!-- all css definitions -->
-        <link rel="stylesheet" href="<?= \helpers\View::getGlobalCssFileName(); ?>">
+        <link rel="stylesheet" href="css/style.css" />
     </head>
     <body id="opmlbody">
 
@@ -39,22 +39,13 @@
                     located somewhere in settings, consult the reader’s manual.
                     </p>
                 </li>
-                <?php
-                    if (isset($this->msg)) {
-                        echo '<li class="msg ' . $this->msgclass . '"><p>' . $this->msg . '</p><li>';
-                    }
-                ?>
+                <li class="message-container" aria-live="assertive"></li>
                 <li class="center"><label for="opml">Opml.xml:</label> <input type="file" accesskey="f" name="opml" id="opml"></li>
                 <li class="button"><label>&nbsp;</label><input type="submit" value="Deliver my OPML!" accesskey="d"></li>
                 </ul>
             </form>
         </main>
 
-        <script src="<?= \helpers\View::getGlobalJsFileName(); ?>"></script>
-        <script type="text/javascript">
-            $('form').submit(function() {
-                $('input[type=submit]').prop('disabled', true).val('Importing...');
-            });
-        </script>
+        <script src="js/opml.js"></script>
     </body>
 </html>

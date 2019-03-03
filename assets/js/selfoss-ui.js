@@ -1,3 +1,6 @@
+import locales from './locales';
+import selfoss from './selfoss-base';
+
 /**
  * ui change functions
  */
@@ -127,7 +130,10 @@ selfoss.ui = {
                 <button class="stream-button mark-these-read" aria-label="${selfoss.ui._('markread')}</span>"><span>${selfoss.ui._('markread')}</span></button>
                 <button class="stream-button stream-error" aria-live="assertive" aria-label="${selfoss.ui._('streamerror')}">${selfoss.ui._('streamerror')}</button>
             </div>
-        </div>`);
+        </div>
+
+        <link rel="stylesheet" href="user.css" />
+        <script src="user.js"></script>`);
     },
 
     showLogin: function(error) {
@@ -532,10 +538,10 @@ selfoss.ui = {
     * @return string
     */
     _: function(identifier, params) {
-        var translated = $('#lang').data(identifier);
-        if (!translated) {
-            translated = '#untranslated:' + identifier;
-        }
+        const fallbackLanguage = 'en';
+        const langKey = `lang_${identifier}`;
+
+        let translated = locales[selfoss.config.language][langKey] || locales[fallbackLanguage][langKey] || `#untranslated:${identifier}`;
 
         if (params) {
             translated = selfoss.ui.i18nFormat(translated, params);

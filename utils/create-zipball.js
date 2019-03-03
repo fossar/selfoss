@@ -51,13 +51,6 @@ function isNotUnimportant(dest) {
     return allowed;
 }
 
-const requiredAssets = (function() {
-    const files = JSON.parse(fs.readFileSync('assets/package.json', 'utf-8')).extra.requiredFiles;
-
-    return files.css.concat(files.js);
-})();
-
-
 const pkg = JSON.parse(fs.readFileSync('package.json', 'utf-8'));
 
 const filename = `selfoss-${pkg.ver}.zip`;
@@ -68,22 +61,14 @@ archive.pipe(output);
 
 // fill archive with data
 
-archive.directory('assets/', '/assets', filterEntry(file => {
-    const thirdPartyRubbish = file.startsWith('assets/node_modules/') && requiredAssets.indexOf(file) === -1;
-    const lock = file.startsWith('assets/package-lock.json')
-    const allowed = !thirdPartyRubbish && !lock;
+// we only care for locale assets now, since those are still used by backend code
+archive.directory('assets/locale/', '/assets/locale');
 
-    return allowed;
-}));
 archive.directory('src/', '/src');
 archive.directory('vendor/', '/vendor', filterEntry(isNotUnimportant));
 
-// do not pack bundled assets and assets not listed in index.php
-archive.directory('public/', '/public', filterEntry(file => {
-    const bundle = file === 'public/all.js' || file === 'public/all.css' || file === 'public/selfoss-sw-offline.js';
-
-    return !bundle;
-}));
+// pack all bundles and bundled assets
+archive.directory('public/', '/public');
 
 // copy data: only directory structure and .htaccess for deny
 archive.directory('data/', '/data', filterEntry(file => fs.lstatSync(file).isDirectory()));

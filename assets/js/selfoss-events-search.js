@@ -1,3 +1,5 @@
+import selfoss from './selfoss-base';
+
 /**
  * initialize search events
  */

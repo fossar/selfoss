@@ -15,13 +15,15 @@ RewriteRule thumbnails/(.*)$ data/thumbnails/$1 [L]
 
 # rule for front controller
 RewriteCond %{QUERY_STRING} ^(.*)$
-RewriteRule !.(js|ico|gif|jpg|png|css|asc|txt|svg|xml|webmanifest)$ index.php?%1
+RewriteRule !.(js|ico|gif|jpg|png|css|map|asc|txt|svg|xml|webmanifest)$ index.php?%1
 
 # rule for files
 RewriteRule !favicons/ - [C]
 RewriteRule !thumbnails - [C]
 RewriteRule !public - [C]
 RewriteRule !index.php - [C]
+RewriteRule !user.css - [C]
+RewriteRule !user.js - [C]
 RewriteRule (.*) public/$1 [L]
 
 # deny requests for config files

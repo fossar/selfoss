@@ -13,12 +13,6 @@ use SimpleXMLElement;
  * @author     Sean Rand <asanernd@gmail.com>
  */
 class Opml extends BaseController {
-    /** @var string Passed to opml.phtml */
-    private $msgclass = 'error';
-
-    /** @var string Passed to opml.phtml */
-    private $msg;
-
     /** @var array Sources that have been imported from the OPML file */
     private $imported = [];
 
@@ -46,10 +40,7 @@ class Opml extends BaseController {
      */
     public function show() {
         $this->needsLoggedIn();
-
-        $this->view->msg = $this->msg;
-        $this->view->msgclass = $this->msgclass;
-        echo $this->view->render('src/templates/opml.phtml');
+        readfile(BASEDIR . '/public/opml.html');
     }
 
     /**
@@ -60,6 +51,11 @@ class Opml extends BaseController {
      */
     public function add() {
         $this->needsLoggedIn();
+
+        http_response_code(400);
+
+        /** @var array */
+        $messages = [];
 
         try {
             $opml = $_FILES['opml'];
@@ -85,21 +81,21 @@ class Opml extends BaseController {
 
             // show errors
             if (count($errors) > 0) {
-                $this->msg = 'The following feeds could not be imported:<br>';
-                $this->msg .= implode('<br>', $errors);
-                $this->show();
+                http_response_code(202);
+                $messages = 'The following feeds could not be imported:';
+                $messages += $errors;
             } else { // On success bring them back to their subscription list
+                http_response_code(200);
                 $amount = count($this->imported);
-                $this->msg = 'Success! ' . $amount . ' feed' . ($amount !== 1 ? 's have' : ' has') . ' been imported.<br>' .
-                    'You might want to <a href="update">update now</a> or <a href="./">view your feeds</a>.';
-                $this->msgclass = 'success';
-                $this->show();
+                $messages[] = 'Success! ' . $amount . ' feed' . ($amount !== 1 ? 's have' : ' has') . ' been imported.';
             }
         } catch (\Exception $e) {
-            $this->msg = '</p>There was a problem importing your OPML file: <p>';
-            $this->msg .= $e->getMessage();
-            $this->show();
+            $messages[] = $e->getMessage();
         }
+
+        $this->view->jsonSuccess([
+            'messages' => $messages,
+        ]);
     }
 
     /**

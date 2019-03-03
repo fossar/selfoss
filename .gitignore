@@ -5,8 +5,7 @@
 /data/cache/*.spc
 /data/logs/*.log
 /data/sqlite/*.db
-/public/all.*
-/public/selfoss-sw-offline.js
+/public
 user.css
 user.js
 config.ini

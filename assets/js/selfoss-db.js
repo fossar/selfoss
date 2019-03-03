@@ -9,6 +9,8 @@
  * dbOffline is the entry point for the offline database held in the client.
  */
 
+import selfoss from './selfoss-base';
+import Dexie from 'dexie';
 
 selfoss.dbOnline = {
 

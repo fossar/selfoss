@@ -17,7 +17,7 @@ INSTALLATION
 ------------
 
 1. Upload all files of this folder (IMPORTANT: also upload the invisible .htaccess files)
-2. Make the directories data/cache, data/favicons, data/logs, data/thumbnails, data/sqlite and public/ writeable
+2. Make the directories data/cache, data/favicons, data/logs, data/thumbnails and data/sqlite writeable
 3. Insert database access data in config.ini (see below -- you don't have to change anything if you want to use sqlite)
 3. You don't have to install the database, it will be created automatically (ensure that your database has enought rights for creating triggers)
 4. Create cronjob for updating feeds and point it to https://yourselfossurl.com/update via wget or curl. You can also execute the cliupdate.php from commandline.
@@ -41,7 +41,7 @@ UPDATE
 1. Backup your database and your "data" folder
 2. (IMPORTANT: don't delete the "data" folder) delete all old files and folders excluding the folder "data" and the file config.ini
 3. Upload all new files and folders excluding the data folder (IMPORTANT: also upload the invisible .htaccess files)
-4. Make the folder "public" writeable
+4. Consult the [NEWS file](NEWS.md) to learn about backwards incompatible changes.
 5. Rename your folder /data/icons into /data/favicons
 6. Clean your browser cache
 7. Insert your current database connection and your individual configuration in config.ini. Important: we change the config.ini and add new options in newer versions. You have to update the config.ini too.
@@ -99,8 +99,6 @@ Special thanks to the great programmers of this libraries which will be used in 
 * [twitteroauth](https://github.com/abraham/twitteroauth)
 * [Elphin IcoFileLoader](https://github.com/lordelph/icofileloader)
 * [jQuery hotkeys](https://github.com/tzuryby/jquery.hotkeys)
-* [JShrink](https://github.com/tedious/JShrink)
-* [cssmin](https://code.google.com/archive/p/cssmin)
 * [Spectrum Colorpicker](https://github.com/bgrins/spectrum)
 * [jQuery custom content scroller](http://manos.malihu.gr/jquery-custom-content-scroller/)
 * [twitter oauth library](https://github.com/abraham/twitteroauth)

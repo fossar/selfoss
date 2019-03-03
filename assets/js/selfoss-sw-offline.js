@@ -1,21 +1,31 @@
-/* ServiceWorker environment, and prepended script */
-/* global offlineManifest:false, Promise */
+/* eslint-env worker, serviceworker, es6:false */
+/* Due to a parcel-plugin-sw-cache limitations, this file is not preprocessed so we need to limit ourselves to older syntax.
+ * https://github.com/mischnic/parcel-plugin-sw-cache/issues/22
+ */
+
+function precacheAndRoute(cachedEntries) {
+    return cachedEntries;
+}
+
+// [] will be substituted by list of {url: String, revision: String}
+const cachedEntries = precacheAndRoute([]);
 
 
 self.addEventListener('install', function(event) {
-    event.waitUntil(
-        caches.open(offlineManifest.version).then(function(cache) {
-            return cache.addAll(offlineManifest.files);
-        })
-    );
+    event.waitUntil(Promise.all(cachedEntries.map(entry =>
+        // We will cache each file in a separate cache denoted by its revision.
+        caches.open(entry.revision).then(cache => cache.add(entry.url))
+    )));
 });
 
 
 self.addEventListener('activate', function(event) {
+    const validCacheNames = cachedEntries.map(entry => entry.revision);
+
     event.waitUntil(
         caches.keys().then(function(cacheNames) {
             return Promise.all(cacheNames.filter(function(cacheName) {
-                return cacheName != offlineManifest.version;
+                return !validCacheNames.includes(cacheName);
             }).map(function(cacheName) {
                 return caches.delete(cacheName);
             }));

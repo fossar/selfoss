@@ -1,3 +1,5 @@
+import jQuery from 'jquery';
+
 /**
  * load images on showing an message entry
  */
