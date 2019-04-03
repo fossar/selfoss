@@ -2,8 +2,6 @@
 
 namespace spouts\twitter;
 
-use Abraham\TwitterOAuth\TwitterOAuth;
-
 /**
  * Spout for fetching the twitter timeline of your twitter account
  *
@@ -58,27 +56,9 @@ class hometimeline extends \spouts\twitter\usertimeline {
      * @return void
      */
     public function load(array $params) {
-        $twitter = new TwitterOAuth($params['consumer_key'], $params['consumer_secret'], $params['access_key'], $params['access_secret']);
-        $timeline = $twitter->get('statuses/home_timeline', [
-            'include_rts' => 1,
-            'count' => 50,
-            'tweet_mode' => 'extended',
-        ]);
+        $this->client = self::getHttpClient($params['consumer_key'], $params['consumer_secret'], $params['access_key'], $params['access_secret']);
 
-        if (isset($timeline->errors)) {
-            $errors = '';
-
-            foreach ($timeline->errors as $error) {
-                $errors .= $error->message . "\n";
-            }
-
-            throw new \Exception($errors);
-        }
-
-        if (!is_array($timeline)) {
-            throw new \Exception('invalid twitter response');
-        }
-        $this->items = $timeline;
+        $this->items = $this->fetchTwitterTimeline('statuses/home_timeline');
 
         $this->htmlUrl = 'https://twitter.com/';
 

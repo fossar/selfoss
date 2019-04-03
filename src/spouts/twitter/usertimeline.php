@@ -2,7 +2,10 @@
 
 namespace spouts\twitter;
 
-use Abraham\TwitterOAuth\TwitterOAuth;
+use GuzzleHttp;
+use GuzzleHttp\Exception\BadResponseException;
+use GuzzleHttp\Subscriber\Oauth\Oauth1;
+use helpers\WebClient;
 use stdClass;
 
 /**
@@ -63,6 +66,90 @@ class usertimeline extends \spouts\spout {
 
     /** @var string URL of the source */
     protected $htmlUrl = '';
+
+    /** @var ?GuzzleHttp\Client HTTP client configured with Twitter OAuth support */
+    protected $client = null;
+
+    /**
+     * Provide a HTTP client for use by spouts
+     *
+     * @param string $consumerKey
+     * @param string $consumerSecret
+     * @param string $accessToken
+     * @param string $accessTokenSecret
+     *
+     * @return GuzzleHttp\Client
+     */
+    public static function getHttpClient($consumerKey, $consumerSecret, $accessToken, $accessTokenSecret) {
+        $access_token_used = !empty($accessToken) && !empty($accessTokenSecret);
+
+        $oldClient = WebClient::getHttpClient();
+        $config = $oldClient->getConfig();
+
+        $config['base_uri'] = 'https://api.twitter.com/1.1/';
+        $config['auth'] = 'oauth';
+        $middleware = new Oauth1([
+            'consumer_key' => $consumerKey,
+            'consumer_secret' => $consumerSecret,
+            'token' => $access_token_used ? $accessToken : '',
+            'token_secret' => $access_token_used ? $accessTokenSecret : '',
+        ]);
+        $config['handler'] = clone $config['handler']; // we do not want to contaminate other spouts
+        $config['handler']->push($middleware);
+
+        return new GuzzleHttp\Client($config);
+    }
+
+    /**
+     * Fetch timeline from Twitter API.
+     *
+     * Assumes client property is initialized to Guzzle client configured to access Twitter.
+     *
+     * @param string $endpoint API endpoint to use
+     * @param array $params extra query arguments to pass to the API call
+     *
+     * @throws Exception when API request fails
+     * @throws GuzzleHttp\Exception\RequestException when HTTP request fails for API-unrelated reasons
+     *
+     * @return stdClass[]
+     */
+    protected function fetchTwitterTimeline($endpoint, array $params = []) {
+        if (!isset($this->client)) {
+            throw new \Exception('Twitter client was not initialized.');
+        }
+
+        try {
+            $response = $this->client->get("$endpoint.json", [
+                'query' => array_merge([
+                    'include_rts' => 1,
+                    'count' => 50,
+                    'tweet_mode' => 'extended',
+                ], $params),
+            ]);
+
+            $timeline = json_decode((string) $response->getBody());
+
+            if (!is_array($timeline)) {
+                throw new \Exception('Invalid twitter response');
+            }
+
+            return $timeline;
+        } catch (BadResponseException $e) {
+            if ($e->hasResponse()) {
+                $body = json_decode((string) $e->getResponse()->getBody());
+
+                if (isset($body->errors)) {
+                    $errors = implode("\n", array_map(function($error) {
+                        return $error->message;
+                    }, $body->errors));
+
+                    throw new \Exception($errors, $e->getCode(), $e);
+                }
+            }
+
+            throw $e;
+        }
+    }
 
     //
     // Iterator Interface
@@ -145,29 +232,11 @@ class usertimeline extends \spouts\spout {
      * @return void
      */
     public function load(array $params) {
-        $access_token_used = !empty($params['access_token']) && !empty($params['access_token_secret']);
-        $twitter = new TwitterOAuth($params['consumer_key'], $params['consumer_secret'], $access_token_used ? $params['access_token'] : null, $access_token_used ? $params['access_token_secret'] : null);
-        $timeline = $twitter->get('statuses/user_timeline', [
+        $this->client = self::getHttpClient($params['consumer_key'], $params['consumer_secret'], $params['access_token'], $params['access_token_secret']);
+
+        $this->items = $this->fetchTwitterTimeline('statuses/user_timeline', [
             'screen_name' => $params['username'],
-            'include_rts' => 1,
-            'count' => 50,
-            'tweet_mode' => 'extended',
         ]);
-
-        if (isset($timeline->errors)) {
-            $errors = '';
-
-            foreach ($timeline->errors as $error) {
-                $errors .= $error->message . "\n";
-            }
-
-            throw new \Exception($errors);
-        }
-
-        if (!is_array($timeline)) {
-            throw new \Exception('invalid twitter response');
-        }
-        $this->items = $timeline;
 
         $this->htmlUrl = 'https://twitter.com/' . urlencode($params['username']);
 

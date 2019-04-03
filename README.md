@@ -98,12 +98,10 @@ Special thanks to the great programmers of this libraries which will be used in 
 * [WideImage](http://wideimage.sourceforge.net/)
 * [htmLawed](http://www.bioinformatics.org/phplabware/internal_utilities/htmLawed/)
 * [PHP Universal Feed Generator](https://github.com/ajaxray/FeedWriter)
-* [twitteroauth](https://github.com/abraham/twitteroauth)
 * [Elphin IcoFileLoader](https://github.com/lordelph/icofileloader)
 * [jQuery hotkeys](https://github.com/tzuryby/jquery.hotkeys)
 * [Spectrum Colorpicker](https://github.com/bgrins/spectrum)
 * [jQuery custom content scroller](http://manos.malihu.gr/jquery-custom-content-scroller/)
-* [twitter oauth library](https://github.com/abraham/twitteroauth)
 * [FullTextRSS](http://help.fivefilters.org/customer/portal/articles/223153-site-patterns)
 * [Graby](https://github.com/j0k3r/graby)
 

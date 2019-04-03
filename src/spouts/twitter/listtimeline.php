@@ -2,8 +2,6 @@
 
 namespace spouts\twitter;
 
-use Abraham\TwitterOAuth\TwitterOAuth;
-
 /**
  * Spout for fetching a twitter list
  *
@@ -69,31 +67,12 @@ class listtimeline extends \spouts\twitter\usertimeline {
      * @return void
      */
     public function load(array $params) {
-        $access_token_used = !empty($params['access_token']) && !empty($params['access_token_secret']);
-        $twitter = new TwitterOAuth($params['consumer_key'], $params['consumer_secret'], $access_token_used ? $params['access_token'] : null, $access_token_used ? $params['access_token_secret'] : null);
-        $timeline = $twitter->get('lists/statuses',
-            [
-                'slug' => $params['slug'],
-                'owner_screen_name' => $params['owner_screen_name'],
-                'include_rts' => 1,
-                'count' => 50,
-                'tweet_mode' => 'extended',
-            ]);
+        $this->client = self::getHttpClient($params['consumer_key'], $params['consumer_secret'], $params['access_token'], $params['access_token_secret']);
 
-        if (isset($timeline->errors)) {
-            $errors = '';
-
-            foreach ($timeline->errors as $error) {
-                $errors .= $error->message . "\n";
-            }
-
-            throw new \Exception($errors);
-        }
-
-        if (!is_array($timeline)) {
-            throw new \Exception('invalid twitter response');
-        }
-        $this->items = $timeline;
+        $this->items = $this->fetchTwitterTimeline('lists/statuses', [
+            'slug' => $params['slug'],
+            'owner_screen_name' => $params['owner_screen_name'],
+        ]);
 
         $this->htmlUrl = 'https://twitter.com/' . urlencode($params['owner_screen_name']);
 
