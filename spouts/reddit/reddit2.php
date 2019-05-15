@@ -282,7 +282,7 @@ class reddit2 extends \spouts\spout {
         if ($this->items !== null && $this->valid()) {
             $thumbnail = @current($this->items)['data']['thumbnail'];
 
-            if (!in_array($thumbnail, ['default', 'self'])) {
+            if (!in_array($thumbnail, ['default', 'self'], true)) {
                 return $thumbnail;
             }
         }
