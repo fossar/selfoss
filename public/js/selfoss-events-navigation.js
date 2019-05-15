@@ -204,7 +204,8 @@ selfoss.events.navigation = function() {
             },
             complete: function() {
                 $('#nav-refresh').removeClass('loading');
-            }
+            },
+            timeout: 0
         });
     });
 

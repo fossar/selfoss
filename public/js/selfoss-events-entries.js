@@ -207,7 +207,8 @@ selfoss.events.entries = function() {
                 content.html(articleList);
                 $('#content').removeClass('loading');
                 alert($('#lang').data('error_refreshing_source') + ' ' + errorThrown);
-            }
+            },
+            timeout: 0
         });
     });
 
