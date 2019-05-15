@@ -31,7 +31,7 @@ class WebClient {
             if (\F3::get('logger_level') === 'DEBUG') {
                 $logger = GuzzleHttp\Middleware::log(
                     \F3::get('logger'),
-                    new GuzzleHttp\MessageFormatter(GuzzleHttp\MessageFormatter::DEBUG),
+                    new GuzzleHttp\MessageFormatter(\F3::get('DEBUG') != 0 ? GuzzleHttp\MessageFormatter::DEBUG : GuzzleHttp\MessageFormatter::SHORT),
                     \Psr\Log\LogLevel::DEBUG
                 );
                 $stack->push($logger);
