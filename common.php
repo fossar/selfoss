@@ -12,7 +12,7 @@ if ($autoloader === false) {
     exit;
 }
 
-$f3 = $f3 = Base::instance();
+$f3 = Base::instance();
 
 $f3->set('DEBUG', 0);
 $f3->set('version', '2.19-SNAPSHOT');
