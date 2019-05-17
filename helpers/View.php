@@ -267,10 +267,13 @@ class View {
     public static function offlineMtime(array $offlineFiles) {
         $indirectResources = [
             'defaults.ini',
-            'config.ini',
             'templates/home.phtml',
             'public/js/selfoss-sw-offline.js'
         ];
+
+        if (file_exists(\F3::get('BASEDIR') . '/config.ini')) {
+            $indirectResources[] = 'config.ini';
+        }
 
         return self::maxmtime(array_merge($offlineFiles, $indirectResources));
     }
