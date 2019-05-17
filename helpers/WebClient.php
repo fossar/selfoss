@@ -42,6 +42,7 @@ class WebClient {
                     'User-Agent' => self::getUserAgent(),
                 ],
                 'handler' => $stack,
+                'timeout' => 60, // seconds
             ]);
 
             self::$httpClient = $httpClient;

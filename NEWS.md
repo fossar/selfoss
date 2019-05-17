@@ -13,6 +13,7 @@
 - Improved compatibility with PHP 7.2 ([#1049](https://github.com/SSilence/selfoss/issues/1049))
 - `logger_level=NONE` is now handled correctly ([#1077](https://github.com/SSilence/selfoss/issues/1077))
 - URLs containing special characters like commas in query string are now handled correctly ([#1082](https://github.com/SSilence/selfoss/pull/1082))
+- Set 60 second timeout to spout HTTP requests to prevent a single feed blocking other updates ([#1104](https://github.com/SSilence/selfoss/issues/1104))
 
 ### API changes
 - `tags` attribute is now consistently array of strings, numbers are numbers and booleans are booleans. **This might break third-party clients that have not updated yet.** ([#948](https://github.com/SSilence/selfoss/pull/948))
