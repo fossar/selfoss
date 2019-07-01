@@ -39,5 +39,8 @@
   "lang_login": "登录",
   "lang_login_username": "用户名",
   "lang_login_password": "密码",
-  "lang_no_title": "无标题"
+  "lang_no_title": "无标题",
+  "lang_logoutbutton": "登出",
+  "lang_loginbutton": "登录",
+  "lang_error_logout": "不会登出："
 }
