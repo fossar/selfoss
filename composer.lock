@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1daad6ef3878827b449c7829ebd8b7ee",
+    "content-hash": "8d4a7028c1afe5519ae6de9a8cc0370e",
     "packages": [
         {
             "name": "abraham/twitteroauth",
@@ -709,13 +709,13 @@
             "authors": [
                 {
                     "name": "Jeremy Benoist",
-                    "email": "jeremy.benoist@gmail.com",
-                    "role": "Developer"
+                    "role": "Developer",
+                    "email": "jeremy.benoist@gmail.com"
                 },
                 {
                     "name": "FiveFilters.org",
-                    "email": "fivefilters@fivefilters.org",
-                    "role": "Developer (original version)"
+                    "role": "Developer (original version)",
+                    "email": "fivefilters@fivefilters.org"
                 }
             ],
             "description": "Graby helps you extract article content from web pages",
@@ -871,25 +871,25 @@
             "authors": [
                 {
                     "name": "Keyvan Minoukadeh",
+                    "role": "Developer (ported original JS code to PHP)",
                     "email": "keyvan@keyvan.net",
-                    "homepage": "http://keyvan.net",
-                    "role": "Developer (ported original JS code to PHP)"
+                    "homepage": "http://keyvan.net"
                 },
                 {
                     "name": "Arc90",
-                    "homepage": "http://arc90.com",
-                    "role": "Developer (original JS version)"
+                    "role": "Developer (original JS version)",
+                    "homepage": "http://arc90.com"
                 },
                 {
                     "name": "Jeremy Benoist",
+                    "role": "Developer",
                     "email": "jeremy.benoist@gmail.com",
-                    "homepage": "http://www.j0k3r.net",
-                    "role": "Developer"
+                    "homepage": "http://www.j0k3r.net"
                 },
                 {
                     "name": "DitherSky",
-                    "homepage": "https://github.com/Dither",
-                    "role": "Developer (https://github.com/Dither/full-text-rss)"
+                    "role": "Developer (https://github.com/Dither/full-text-rss)",
+                    "homepage": "https://github.com/Dither"
                 }
             ],
             "description": "Automatic article extraction from HTML",
@@ -1768,19 +1768,19 @@
             "authors": [
                 {
                     "name": "Ryan Parman",
-                    "homepage": "http://ryanparman.com/",
-                    "role": "Creator, alumnus developer"
+                    "role": "Creator, alumnus developer",
+                    "homepage": "http://ryanparman.com/"
                 },
                 {
                     "name": "Geoffrey Sneddon",
-                    "homepage": "http://gsnedders.com/",
-                    "role": "Alumnus developer"
+                    "role": "Alumnus developer",
+                    "homepage": "http://gsnedders.com/"
                 },
                 {
                     "name": "Ryan McCue",
+                    "role": "Developer",
                     "email": "me@ryanmccue.info",
-                    "homepage": "http://ryanmccue.info/",
-                    "role": "Developer"
+                    "homepage": "http://ryanmccue.info/"
                 }
             ],
             "description": "A simple Atom/RSS parsing library for PHP",
