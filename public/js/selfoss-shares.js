@@ -8,6 +8,9 @@ selfoss.shares = {
         this.enabledShares = enabledShares;
         this.initialized = true;
 
+        this.register('diaspora', 'd', function(url, title) {
+            window.open('https://share.diasporafoundation.org/?url=' + encodeURIComponent(url) + '&title=' + encodeURIComponent(title));
+        });
         this.register('twitter', 't', function(url, title) {
             window.open('https://twitter.com/intent/tweet?source=webclient&text=' + encodeURIComponent(title) + ' ' + encodeURIComponent(url));
         });
