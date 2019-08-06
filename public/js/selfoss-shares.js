@@ -8,12 +8,6 @@ selfoss.shares = {
         this.enabledShares = enabledShares;
         this.initialized = true;
 
-        this.register('delicious', 'd', function(url, title) {
-            window.open('https://delicious.com/save?url=' + encodeURIComponent(url) + '&title=' + encodeURIComponent(title));
-        });
-        this.register('googleplus', 'g', function(url) {
-            window.open('https://plus.google.com/share?url=' + encodeURIComponent(url));
-        });
         this.register('twitter', 't', function(url, title) {
             window.open('https://twitter.com/intent/tweet?source=webclient&text=' + encodeURIComponent(title) + ' ' + encodeURIComponent(url));
         });
