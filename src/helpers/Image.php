@@ -31,6 +31,13 @@ class Image {
         'application/ico'
     ];
 
+    private static $iconRelWeights = [
+        'apple-touch-icon-precomposed' => 3,
+        'apple-touch-icon' => 2,
+        'shortcut icon' => 1,
+        'icon' => 1,
+    ];
+
     /** @var Logger */
     private $logger;
 
@@ -73,13 +80,13 @@ class Image {
             $this->logger->debug('icon: failed to get html page: ', ['exception' => $e]);
         }
 
-        $shortcutIcon = self::parseShortcutIcon($html);
-        if ($shortcutIcon !== null) {
-            $shortcutIcon = (string) UriResolver::resolve(new Uri($url), new Uri($shortcutIcon));
+        $shortcutIcons = self::parseShortcutIcons($html);
+        foreach ($shortcutIcons as $shortcutIcon) {
+            $shortcutIconUrl = (string) UriResolver::resolve(new Uri($url), new Uri($shortcutIcon));
 
-            $faviconAsPng = $this->loadImage($shortcutIcon, $width, $height);
+            $faviconAsPng = $this->loadImage($shortcutIconUrl, $width, $height);
             if ($faviconAsPng !== null) {
-                $this->faviconUrl = $shortcutIcon;
+                $this->faviconUrl = $shortcutIconUrl;
 
                 return $faviconAsPng;
             }
@@ -202,35 +209,87 @@ class Image {
     }
 
     /**
-     * parse shortcut icon from given html
+     * removes $startString, $endString and everything in between from $subject
      *
-     * @param string $html
+     * @param string $startString
+     * @param string $endString
+     * @param string $subject
      *
-     * @return ?string favicon url
+     * @return string
      */
-    public static function parseShortcutIcon($html) {
-        $dom = new \DomDocument();
-        if (@$dom->loadHTML($html) !== true) {
-            return null;
-        }
-
-        $xpath = new \DOMXPath($dom);
-        $elems = $xpath->query("//link[@rel='apple-touch-icon']");
-        if ($elems->length === 0) {
-            $elems = $xpath->query("//link[@rel='shortcut icon']");
-        }
-        if ($elems->length === 0) {
-            $elems = $xpath->query("//link[@rel='icon']");
-        }
-
-        if ($elems->length > 0) {
-            $icon = $elems->item(0);
-            if ($icon->hasAttribute('href')) {
-                return $icon->getAttribute('href');
+    public static function cleanString($startString, $endString, $subject) {
+        while (false !== $p1 = stripos($subject, $startString)) {
+            $block = substr($subject, $p1);
+            $subject = substr($subject, 0, $p1);
+            if (false !== $p2 = stripos($block, $endString)) {
+                $subject .= substr($block, $p2 + strlen($endString));
             }
         }
 
-        return null;
+        return $subject;
+    }
+
+    /**
+     * parse shortcut icons from given html
+     * If icons are found, their URLs are returned in an array ordered by size
+     * if given or by likely size of not, with the biggest one first.
+     *
+     * @param string $html
+     *
+     * @return array
+     */
+    public static function parseShortcutIcons($html) {
+        $end = strripos($html, '</head>');
+        if ($end > 1) {
+            $html = substr($html, 0, $end);
+        }
+
+        // $html= preg_replace('/<!--.*-->/sU', '', preg_replace('#<(script|style)\b[^>]*>.*</\1>#sU', '', $html));
+        // should to the same, but doesn't always.
+        $html = self::cleanString('<script', '</script>', $html);
+        $html = self::cleanString('<style', '</style>', $html);
+        $html = self::cleanString('<!--', '-->', $html);
+
+        if (preg_match_all('#<link\b[^>]*\brel=("|\')(?P<rel>apple-touch-icon|apple-touch-icon-precomposed|shortcut icon|icon)\1[^>]*>#iU', $html, $links, PREG_SET_ORDER) < 1) {
+            return [];
+        }
+
+        $icons = [];
+        $i = 0;
+        foreach ($links as $link) {
+            if (preg_match('#\shref=("|\')(?P<url>.+)\1#iU', $link[0], $href)) {
+                $icons[] = [
+                    'url' => $href['url'],
+                    'sizes' => preg_match('#\ssizes=("|\')(?P<sizes>[0-9\.]+).*\1#i', $link[0], $sizes)
+                        ? $sizes['sizes']
+                        : 0,
+                    'rel' => $link['rel'],
+                    'order' => $i++,
+                ];
+            }
+        }
+        if (count($icons) === 0) {
+            return $icons;
+        }
+
+        usort($icons, Misc::compareBy(
+            // largest icons first
+            [function($val) {
+                return (int) $val['sizes'];
+            }, Misc::ORDER_DESC],
+
+            // then by rel priority
+            [function($val) {
+                return self::$iconRelWeights[$val['rel']];
+            }, Misc::ORDER_DESC],
+
+            // and finally by order to make the sorting stable
+            'order'
+        ));
+
+        return array_map(function($i) {
+            return $i['url'];
+        }, $icons);
     }
 
     /**

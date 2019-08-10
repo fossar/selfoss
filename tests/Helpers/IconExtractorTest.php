@@ -21,8 +21,54 @@ final class IconExtractorTest extends TestCase {
 EOD;
 
         $this->assertEquals(
-            Image::parseShortcutIcon($page),
-            'https://www.example.com/images/apple-touch-114x114.png'
+            Image::parseShortcutIcons($page),
+            [
+                'https://www.example.com/images/apple-touch-114x114.png',
+            ]
+        );
+    }
+
+    /**
+     * Apple touch precomposed icons are supported.
+     */
+    public function testAppleTouchPrecomposedIcon() {
+        $page = <<<EOD
+<html>
+<head>
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="https://www.example.com/images/apple-touch-precomposed-114x114.png">
+</head>
+<body>
+</body>
+</html>
+EOD;
+
+        $this->assertEquals(
+            Image::parseShortcutIcons($page),
+            [
+                'https://www.example.com/images/apple-touch-precomposed-114x114.png',
+            ]
+        );
+    }
+
+    /**
+     * Apple touch icons without sizes are supported.
+     */
+    public function testAppleTouchWithoutSizesIcon() {
+        $page = <<<EOD
+<html>
+<head>
+<link rel="apple-touch-icon" href="https://www.example.com/images/apple-touch-114x114.png">
+</head>
+<body>
+</body>
+</html>
+EOD;
+
+        $this->assertEquals(
+            Image::parseShortcutIcons($page),
+            [
+                'https://www.example.com/images/apple-touch-114x114.png',
+            ]
         );
     }
 
@@ -41,8 +87,10 @@ EOD;
 EOD;
 
         $this->assertEquals(
-            Image::parseShortcutIcon($page),
-            'https://www.example.com/favicon.ico'
+            Image::parseShortcutIcons($page),
+            [
+                'https://www.example.com/favicon.ico',
+            ]
         );
     }
 
@@ -61,8 +109,36 @@ EOD;
 EOD;
 
         $this->assertEquals(
-            Image::parseShortcutIcon($page),
-            'https://www.example.com/favicon.ico'
+            Image::parseShortcutIcons($page),
+            [
+                'https://www.example.com/favicon.ico',
+            ]
+        );
+    }
+
+    /**
+     * Multiple icons are recognized.
+     */
+    public function testMultipleIcons() {
+        $page = <<<EOD
+<html>
+<head>
+<link rel="icon" href="/favicon.png" type="image/png">
+<link rel="icon" href="/favicon.ico" type="image/vnd.microsoft.icon">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+</body>
+</html>
+EOD;
+
+        $this->assertEquals(
+            Image::parseShortcutIcons($page),
+            [
+                '/favicon.png',
+                '/favicon.ico',
+                '/favicon.svg',
+            ]
         );
     }
 
@@ -82,8 +158,59 @@ EOD;
 EOD;
 
         $this->assertEquals(
-            Image::parseShortcutIcon($page),
-            'https://www.example.com/images/apple-touch-114x114.png'
+            Image::parseShortcutIcons($page),
+            [
+                'https://www.example.com/images/apple-touch-114x114.png',
+                '/favicon.ico',
+            ]
+        );
+    }
+
+    /**
+     * Larger icons are prioritized over smaller ones.
+     */
+    public function testAppleAndPrecomposed() {
+        $page = <<<EOD
+<html>
+<head>
+<link rel="apple-touch-icon" sizes="144x144" href="https://www.example.com/images/apple-touch-114x114.png">
+<link rel="apple-touch-icon-precomposed" sizes="87x87" href="https://www.example.com/images/apple-touch-precomposed-87x87.png">
+</head>
+<body>
+</body>
+</html>
+EOD;
+
+        $this->assertEquals(
+            Image::parseShortcutIcons($page),
+            [
+                'https://www.example.com/images/apple-touch-114x114.png',
+                'https://www.example.com/images/apple-touch-precomposed-87x87.png',
+            ]
+        );
+    }
+
+    /**
+     * Apple precomposed icons are prioritized over normal touch icons.
+     */
+    public function testAppleAndPrecomposedWithoutSizes() {
+        $page = <<<EOD
+<html>
+<head>
+<link rel="apple-touch-icon" href="https://www.example.com/images/apple-touch-114x114.png">
+<link rel="apple-touch-icon-precomposed" href="https://www.example.com/images/apple-touch-precomposed-114x114.png">
+</head>
+<body>
+</body>
+</html>
+EOD;
+
+        $this->assertEquals(
+            Image::parseShortcutIcons($page),
+            [
+                'https://www.example.com/images/apple-touch-precomposed-114x114.png',
+                'https://www.example.com/images/apple-touch-114x114.png',
+            ]
         );
     }
 
@@ -100,8 +227,9 @@ EOD;
 </html>
 EOD;
 
-        $this->assertNull(
-            Image::parseShortcutIcon($page)
+        $this->assertEquals(
+            Image::parseShortcutIcons($page),
+            []
         );
     }
 
@@ -119,8 +247,9 @@ EOD;
 </html>
 EOD;
 
-        $this->assertNull(
-            Image::parseShortcutIcon($page)
+        $this->assertEquals(
+            Image::parseShortcutIcons($page),
+            []
         );
     }
 
@@ -140,8 +269,9 @@ console.log('<link rel="icon" href="https://www.example.com/favicon.ico">');
 </html>
 EOD;
 
-        $this->assertNull(
-            Image::parseShortcutIcon($page)
+        $this->assertEquals(
+            Image::parseShortcutIcons($page),
+            []
         );
     }
 }
