@@ -19,16 +19,23 @@ class Image {
     /** @var ?string url of last fetched favicon */
     private $faviconUrl = null;
 
-    private static $faviconMimeTypes = [
+    private static $imageTypes = [
         // IANA assigned type
-        'image/vnd.microsoft.icon',
+        'image/bmp' => 'bmp',
+        'image/gif' => 'gif',
+        'image/jpeg' => 'jpg',
+        'image/png' => 'png',
+        'image/svg+xml' => 'svg',
+        'image/tiff' => 'tif',
+        'image/vnd.microsoft.icon' => 'ico',
         // Used by Microsoft applications
-        'image/x-icon',
+        'image/x-icon' => 'ico',
+        'image/x-ms-bmp' => 'bmp',
         // Incorrect but sometimes appearing
-        'image/ico',
-        'image/icon',
-        'text/ico',
-        'application/ico'
+        'image/ico' => 'ico',
+        'image/icon' => 'ico',
+        'text/ico' => 'ico',
+        'application/ico' => 'ico',
     ];
 
     private static $iconRelWeights = [
@@ -135,20 +142,51 @@ class Image {
             return null;
         }
 
+        $imgInfo = null;
+
         // get image type
-        $imgInfo = @getimagesizefromstring($data);
-        if (in_array(strtolower($imgInfo['mime']), self::$faviconMimeTypes, true)) {
-            $type = 'ico';
-        } elseif (strtolower($imgInfo['mime']) === 'image/png') {
-            $type = 'png';
-        } elseif (strtolower($imgInfo['mime']) === 'image/jpeg') {
-            $type = 'jpg';
-        } elseif (strtolower($imgInfo['mime']) === 'image/gif') {
-            $type = 'gif';
-        } elseif (strtolower($imgInfo['mime']) === 'image/x-ms-bmp') {
-            $type = 'bmp';
+        if (extension_loaded('imagick')) {
+            // check for svgz or svg
+            if (substr($data, 0, 2) === "\x1f\x8b" && ($d = gzdecode($data) !== false)) {
+                $data = $d;
+            }
+
+            if (preg_match('#<svg[\s>]#si', $data)) {
+                $imgInfo = ['mime' => 'image/svg+xml'];
+            }
+        }
+
+        if ($imgInfo === null) {
+            $imgInfo = @getimagesizefromstring($data);
+        }
+
+        $mimeType = isset($imgInfo['mime']) ? strtolower($imgInfo['mime']) : null;
+        if ($mimeType !== null && isset(self::$imageTypes[$mimeType])) {
+            $type = self::$imageTypes[$mimeType];
         } else {
             return null;
+        }
+
+        // convert svg to png/jpeg
+        if ($type === 'svg') {
+            $image = new \Imagick();
+            $image->readImageBlob($data);
+            if ($width === null || $height === null) {
+                $width = $height = 256;
+            }
+
+            $image->resizeImage($width, $height, \Imagick::FILTER_LANCZOS, 1);
+            if ($extension === 'jpg') {
+                $image->setImageFormat('jpeg');
+                $image->setImageCompression(\Imagick::COMPRESSION_JPEG);
+                $image->setImageCompressionQuality(75);
+            } else {
+                $image->setImageFormat('png24');
+                $image->setImageCompression(\Imagick::COMPRESSION_UNDEFINED);
+                $image->setOption('png:compression-level', 9);
+            }
+
+            return $image;
         }
 
         // convert ico to png
