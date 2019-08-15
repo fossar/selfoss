@@ -43,5 +43,6 @@
   "lang_logoutbutton": "登出",
   "lang_loginbutton": "登录",
   "lang_error_logout": "不能登出：",
-  "lang_settingsbutton": "设置"
+  "lang_settingsbutton": "设置",
+  "lang_app_reload": "再启动"
 }
