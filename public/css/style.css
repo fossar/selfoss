@@ -748,13 +748,18 @@ body * {
         
     
     .stream-more, .mark-these-read, .stream-error {
-        margin-top:20px;
+        margin:0 auto;
+        width:150px;
+        margin-top:10px;
         margin-bottom:10px;
+        padding-top:5px;
         height:35px;
-        font-size:16px;
-        font-weight:bold;
+        color:#d7d7d7;
+        background:#3d6d69;
+        font-size:0.9em;
         cursor:pointer;
         text-align:center;
+        border-radius:2px;
         display: none;
     }
     
