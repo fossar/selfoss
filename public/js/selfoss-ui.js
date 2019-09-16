@@ -318,14 +318,14 @@ selfoss.ui = {
         }
 
         if (actionText && action) {
-            message = message + '. <a>' + actionText + '</a>';
+            message = message + '. <button type="button">' + actionText + '</button>';
         }
 
         var messageContainer = $('#message');
         messageContainer.html(message);
 
         if (action) {
-            messageContainer.find('a').unbind('click').click(action);
+            messageContainer.find('button').unbind('click').click(action);
         }
 
         if (error) {

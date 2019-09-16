@@ -41,12 +41,16 @@ input {
     padding:10px;
 }
 
-#message a {
+#message button {
     font-size:0.9em;
     text-align:center;
     border-radius:2px;
     cursor:pointer;
     background:#cccccc;
+    border: 0;
+    color: currentColor;
+    padding: 0;
+    font: lighter 18px/27px 'Open Sans', Arial, sans-serif;
 }
 
 #message.error {
