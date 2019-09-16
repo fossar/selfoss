@@ -22,7 +22,7 @@
      data-entry-id="<?= $this->item['id']; ?>"
      data-entry-source="<?= $this->item['source']; ?>"
      data-entry-datetime="<?= $this->viewHelper->date_iso8601($this->item['datetime']); ?>"
-     class="entry <?= $this->item['unread'] == 1 ? 'unread' : ''; ?>" role="article">
+     class="entry <?= $this->item['unread'] == 1 ? 'unread' : ''; ?>" role="article" aria-expanded="false">
 
     <!-- icon -->
     <a href="<?= \helpers\Anonymizer::anonymize($this->item['link']); ?>" class="entry-icon" tabindex="-1" rel="noopener noreferrer">

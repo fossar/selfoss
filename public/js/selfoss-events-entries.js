@@ -85,18 +85,17 @@ selfoss.events.entries = function() {
             var entryContent = parent.find('.entry-content');
 
             // show/hide (with toolbar)
-            if (entryContent.is(':visible')) {
-                parent.find('.entry-toolbar').hide();
-                entryContent.hide();
+            if (parent.attr('aria-expanded') === 'true') {
+                parent.attr('aria-expanded', 'false');
                 selfoss.events.setHash();
             } else {
+                parent.attr('aria-expanded', 'true');
                 if ($('#config').data('auto_collapse') == '1') {
-                    $('.entry-content, .entry-toolbar').hide();
+                    $('.entry[aria-expanded="true"]').attr('aria-expanded', 'false');
                 }
-                entryContent.show();
+                parent.attr('aria-expanded', 'true');
                 selfoss.events.setHash('same', 'same', entryId);
                 selfoss.events.entriesToolbar(parent);
-                parent.find('.entry-toolbar').show();
 
                 // automark as read
                 if (autoMarkAsRead) {
