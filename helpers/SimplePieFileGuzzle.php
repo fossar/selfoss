@@ -35,6 +35,21 @@ class SimplePieFileGuzzle extends \SimplePie_File {
                 ]);
 
                 $this->headers = $response->getHeaders();
+
+                // SimplePie expects the headers to be lower-case and strings but Guzzle returns original case and string arrays as mandated by PSR-7.
+                $this->headers = array_change_key_case($this->headers, CASE_LOWER);
+                array_walk($this->headers, function(&$value, $header) {
+                    // There can be multiple header values if and only if the header is described as a list, in which case, they can be coalesced into a single string, separated by commas:
+                    // https://tools.ietf.org/html/rfc2616#section-4.2
+                    // Non-compliant servers might send multiple instances of single non-list header; we will use the last value then.
+                    // For Simplicity, we consider every header other than Content-Type a list, since it is what SimplePie does.
+                    if ($header === 'content-type') {
+                        $value = array_pop($value);
+                    } else {
+                        $value = implode(', ', $value);
+                    }
+                });
+
                 // Sequence of fetched URLs
                 $urlStack = [$url] + $response->getHeader(\GuzzleHttp\RedirectMiddleware::HISTORY_HEADER);
                 $this->url = $urlStack[count($urlStack) - 1];
