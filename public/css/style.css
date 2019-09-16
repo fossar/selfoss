@@ -1261,6 +1261,10 @@ body.authenabled.loggedin #nav-logout {
             background:url(images/nav-mobile-settings.png) no-repeat center;
             background-size:29px 29px;
             padding:11px 21px 11px 15px;
+            display: block;
+            box-sizing: content-box;
+            border: 0;
+            background-position: 15px 11px;
         }
         
     #nav {
