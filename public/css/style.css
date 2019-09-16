@@ -750,7 +750,12 @@ input {
         font-weight:bold;
         cursor:pointer;
         text-align:center;
-        display: none;
+        display: block;
+        border: none;
+        padding: 0;
+        background: transparent;
+        color: black;
+        width: 100%;
     }
     
         .touch .stream-more {
