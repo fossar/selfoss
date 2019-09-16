@@ -170,7 +170,7 @@
 
             <!-- navigation search input just for smartphone version -->
             <div id="nav-search" class="offlineable" role="search">
-                <input type="search" id="nav-search-term"> <input type="button" id="nav-search-button" value="<?= \F3::get('lang_searchbutton')?>">
+                <input aria-label="<?= \F3::get('lang_search_label') ?>" type="search" id="nav-search-term"> <input type="button" id="nav-search-button" value="<?= \F3::get('lang_searchbutton')?>">
                 <hr>
             </div>
 
@@ -187,7 +187,7 @@
 
         <!-- search -->
         <div id="search" role="search" class="offlineable">
-            <input type="search" id="search-term">
+            <input aria-label="<?= \F3::get('lang_search_label') ?>" type="search" id="search-term">
             <button id="search-remove" title="<?= \F3::get('lang_searchremove')?>"><img src="images/remove.png" alt=""></button>
             <button id="search-button" title="<?= \F3::get('lang_searchbutton')?>"><img src="images/search.png" alt=""></button>
         </div>
