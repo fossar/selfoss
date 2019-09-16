@@ -20,10 +20,6 @@ input {
     padding:6px;
 }
 
-body * {
-	outline:0;
-}
-
 #mainui {
     height: 100%;
 }
@@ -691,11 +687,6 @@ body * {
             background-repeat:no-repeat;
             background-position: left center;
             vertical-align: middle;
-        }
-
-        .entry-smartphone-share button:focus,
-        .entry-toolbar button:focus {
-            outline: 1px dotted #aaa;
         }
 
         .entry-toolbar .entry-starr {
