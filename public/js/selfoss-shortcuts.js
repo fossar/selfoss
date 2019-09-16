@@ -12,7 +12,7 @@ selfoss.shortcuts = {
             }
 
             var selected = $('.entry.selected');
-            if (selected.length > 0 && selected.find('.entry-content').is(':visible') == false) {
+            if (selected.length > 0 && selected.is('[aria-expanded="true"]') == false) {
                 selected.find('.entry-title').click();
             } else {
                 selfoss.shortcuts.nextprev('next', true);
@@ -140,7 +140,7 @@ selfoss.shortcuts = {
             }
 
             e.preventDefault();
-            $('.entry-content, .entry-toolbar').hide();
+            $('.entry[aria-expanded="true"]').attr('aria-expanded', 'false');
         });
 
         // 'v': open target
@@ -290,8 +290,7 @@ selfoss.shortcuts = {
 
         // remove active
         old.removeClass('selected');
-        old.find('.entry-content').hide();
-        old.find('.entry-toolbar').hide();
+        old.attr('aria-expanded', 'false');
 
         if (current.length == 0) {
             return;
@@ -353,7 +352,7 @@ selfoss.shortcuts = {
             direction = 'next';
         }
 
-        var content = $('.entry-content').is(':visible');
+        var content = $('.entry').is('[aria-expanded="true"]');
         selfoss.shortcuts.nextprev(direction, content);
     },
 
