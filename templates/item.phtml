@@ -15,14 +15,16 @@
         $content = $this->viewHelper->camoflauge($content);
     }
 
-    $title = $this->viewHelper->lazyimg($title);
-    $content = $this->viewHelper->lazyimg($content);
+    // our lazy image loader only triggers when an item is manually expanded
+    if (\F3::get('expand_by_default') != '1') {
+        $content = $this->viewHelper->lazyimg($content);
+    }
 ?>
 <div id="entry<?= $this->item['id']; ?>"
      data-entry-id="<?= $this->item['id']; ?>"
      data-entry-source="<?= $this->item['source']; ?>"
      data-entry-datetime="<?= $this->viewHelper->date_iso8601($this->item['datetime']); ?>"
-     class="entry <?= $this->item['unread'] == 1 ? 'unread' : ''; ?>" role="article" aria-expanded="false">
+     class="entry <?= $this->item['unread'] == 1 ? 'unread' : ''; ?>" role="article" aria-expanded="<?= \F3::get('expand_by_default') == 1 ? 'true' : 'false' ?>">
 
     <!-- icon -->
     <a href="<?= \helpers\Anonymizer::anonymize($this->item['link']); ?>" class="entry-icon" tabindex="-1" rel="noopener noreferrer">
