@@ -1430,11 +1430,12 @@ body:not(.loggedin) .entry-unread {
         height:50px;
     }
     
+        .entry-smartphone-share li {
+            list-style: none;
+            display: inline-block;
+        }
         .entry-smartphone-share button {
-            margin-right:10px;
-            margin-bottom:5px;
-            list-style:none;
-            display:block;
+            display: block;
         }
         
     .source-opml,
