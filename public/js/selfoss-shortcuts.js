@@ -128,7 +128,7 @@ selfoss.shortcuts = {
                 return false;
             }
 
-            $('.entry.selected').find('h2').click();
+            $('.entry.selected').find('h3').click();
             e.preventDefault();
             return false;
         });
