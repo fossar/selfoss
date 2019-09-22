@@ -389,7 +389,7 @@ selfoss.ui = {
         diff = (typeof diff !== 'undefined') ? diff : true;
 
         tagCounts.forEach(function(tagCount) {
-            var tagsCountEl = $('#nav-tags > li > span.tag')
+            var tagsCountEl = $('#nav-tags > li > a > span.tag')
                 .filter(function() {
                     return $(this).html() == tagCount.tag;
                 }

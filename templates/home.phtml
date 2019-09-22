@@ -142,27 +142,42 @@
             <button id="nav-mark"><?= \F3::get('lang_markread')?></button>
 
             <div id="nav-filter-wrapper">
-            <h2 id="nav-filter-title" class="nav-filter-expanded" tabindex="0" aria-haspopup="true" aria-expanded="true"><?= \F3::get('lang_filter') ?></h2>
+            <h2><button type="button" id="nav-filter-title" class="nav-filter-expanded" aria-expanded="true"><?= \F3::get('lang_filter') ?></button></h2>
             <ul id="nav-filter">
-                <li id="nav-filter-newest" class="nav-filter-newest" role="link" tabindex="0"><?= \F3::get('lang_newest')?> <span class="offline-count offlineable" title="<?= \F3::get('lang_offline_count')?>"></span><span class="count" title="<?= \F3::get('lang_online_count')?>"></span></li>
-                <li id="nav-filter-unread" class="nav-filter-unread" role="link" tabindex="0"><?= \F3::get('lang_unread')?>
-                    <span class="unread-count offlineable">
+                <li>
+                    <a id="nav-filter-newest" class="nav-filter-newest" href="#">
+                        <?= \F3::get('lang_newest')?>
                         <span class="offline-count offlineable" title="<?= \F3::get('lang_offline_count')?>"></span>
                         <span class="count" title="<?= \F3::get('lang_online_count')?>"></span>
-                    </span>
+                    </a>
                 </li>
-                <li id="nav-filter-starred" class="nav-filter-starred" role="link" tabindex="0"><?= \F3::get('lang_starred') ?> <span class="offline-count offlineable" title="<?= \F3::get('lang_offline_count')?>"></span><span class="count" title="<?= \F3::get('lang_online_count')?>"></span></li>
+                <li>
+                    <a id="nav-filter-unread" class="nav-filter-unread" href="#">
+                        <?= \F3::get('lang_unread')?>
+                        <span class="unread-count offlineable">
+                            <span class="offline-count offlineable" title="<?= \F3::get('lang_offline_count')?>"></span>
+                            <span class="count" title="<?= \F3::get('lang_online_count')?>"></span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a id="nav-filter-starred" class="nav-filter-starred" href="#">
+                        <?= \F3::get('lang_starred') ?>
+                        <span class="offline-count offlineable" title="<?= \F3::get('lang_offline_count')?>"></span>
+                        <span class="count" title="<?= \F3::get('lang_online_count')?>"></span>
+                    </a>
+                </li>
             </ul>
             </div>
 
             <hr>
 
             <div id="nav-tags-wrapper">
-            <h2 id="nav-tags-title" class="nav-tags-expanded" tabindex="0" aria-haspopup="true" aria-expanded="true"><?= \F3::get('lang_tags') ?></h2>
+            <h2><button type="button" id="nav-tags-title" class="nav-tags-expanded" aria-expanded="true"><?= \F3::get('lang_tags') ?></button></h2>
             <ul id="nav-tags">
-                <li class="active nav-tags-all" role="link" tabindex="0"><?= \F3::get('lang_alltags')?></li>
+                <li><a class="active nav-tags-all" href="#"><?= \F3::get('lang_alltags')?></a></li>
             </ul>
-            <h2 id="nav-sources-title" class="nav-sources-collapsed" tabindex="0" aria-haspopup="true" aria-expanded="false"><?= \F3::get('lang_sources') ?></h2>
+            <h2><button type="button" id="nav-sources-title" class="nav-sources-collapsed" aria-expanded="false"><?= \F3::get('lang_sources') ?></button></h2>
             <ul id="nav-sources">
             </ul>
             </div>
