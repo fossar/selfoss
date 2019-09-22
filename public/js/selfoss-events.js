@@ -184,7 +184,7 @@ selfoss.events = {
             selfoss.events.reloadSamePath = false;
             selfoss.filterReset();
 
-            $('#nav-filter > li').removeClass('active');
+            $('#nav-filter > li > a').removeClass('active');
             $('#nav-filter-' + selfoss.events.section).addClass('active');
 
             selfoss.db.reloadList();

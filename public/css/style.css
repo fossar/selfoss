@@ -69,6 +69,12 @@ input {
     overflow-x:hidden;
 }
 
+
+    #nav-filter a, #nav-tags a, #nav-sources a {
+        display: block;
+        text-decoration: none;
+    }
+
     #nav hr {
         border:0;
         border-bottom:1px solid #272325;
@@ -124,7 +130,7 @@ input {
         margin-bottom:30px;
     }
     
-        #nav-filter li {
+        #nav-filter li a {
             color:#6a6a6a;
             padding:5px;
             padding-left:24px;
@@ -134,7 +140,7 @@ input {
             cursor:pointer;
         }
         
-        #nav-filter li.active {
+        #nav-filter li a.active {
             background:#272325;
             color:#d7d7d7;
             font-size:1em;
@@ -200,10 +206,16 @@ input {
             display: inline !important;
         }
 
-    #nav h2 {
+    #nav h2 button {
+        display: block;
+        width: 100%;
+        text-align: inherit;
+        line-height: 2.0;
+        font-family: inherit;
+        border: 0;
         color:#494949;
         text-transform:uppercase;
-        font-size:0.8em;
+        font-size: 0.8rem;
         margin-left:18px;
         font-weight:bold;
     }
@@ -224,7 +236,7 @@ input {
             background: url(images/nav-expanded.png) center left no-repeat;
         }
         
-        #nav-tags li {
+        #nav-tags li a {
             position:relative;
             color:#b9b9b9;
             cursor:pointer;
@@ -240,7 +252,7 @@ input {
             -o-text-overflow: ellipsis;
         }
         
-        #nav-tags li.active {
+        #nav-tags li a.active {
             background:#272325;
             color:#d7d7d7;
         }
@@ -275,7 +287,7 @@ input {
             display:none;
         }
     
-        #nav-sources li {
+        #nav-sources li a {
             position:relative;
             color:#b9b9b9;
             cursor:pointer;
@@ -290,12 +302,12 @@ input {
             -o-text-overflow: ellipsis;
         }
         
-        #nav-sources li.active {
+        #nav-sources li a.active {
             background:#272325;
             color:#d7d7d7;
         }
         
-        #nav-sources li.unread{
+        #nav-sources li a.unread{
             font-weight: bold;
             font-size: 0.7em;
         }
