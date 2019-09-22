@@ -141,8 +141,8 @@
             <button id="nav-mark"><?= \F3::get('lang_markread')?></button>
 
             <div id="nav-filter-wrapper">
-            <h2 id="nav-filter-title" class="nav-filter-expanded" tabindex="0"><span role="link"  aria-expanded="true"><?= \F3::get('lang_filter') ?></span></h2>
-            <ul id="nav-filter">
+            <span role="heading" aria-level="2"><h2 id="nav-filter-title" class="nav-filter-expanded" tabindex="0" role="link" aria-expanded="true"><?= \F3::get('lang_filter') ?></h2></span>
+            <ul id="nav-filter" aria-label="<?= \F3::get('lang_filters_list_label') ?>">
                 <li id="nav-filter-newest" class="nav-filter-newest" role="link" tabindex="0"><span role="listitem"><?= \F3::get('lang_newest')?> <span class="offline-count offlineable" title="<?= \F3::get('lang_offline_count')?>"></span><span class="count" title="<?= \F3::get('lang_online_count')?>"></span></span></li>
                 <li id="nav-filter-unread" class="nav-filter-unread" role="link" tabindex="0"><span role="listitem"><?= \F3::get('lang_unread')?>
                     <span class="unread-count offlineable">
@@ -157,12 +157,12 @@
             <hr>
 
             <div id="nav-tags-wrapper">
-            <h2 id="nav-tags-title" class="nav-tags-expanded" tabindex="0"><span role="link"  aria-expanded="true"><?= \F3::get('lang_tags') ?></span></h2>
-            <ul id="nav-tags">
+            <span role="heading" aria-level="2"><h2 id="nav-tags-title" class="nav-tags-expanded" tabindex="0" role="link" aria-expanded="true"><?= \F3::get('lang_tags') ?></h2></span>
+            <ul id="nav-tags" aria-label="<?= \F3::get('lang_tags_list_label') ?>">
                 <li class="active nav-tags-all" role="link" tabindex="0"><span role="listitem"><?= \F3::get('lang_alltags')?></span></li>
             </ul>
-            <h2 id="nav-sources-title" class="nav-sources-collapsed" tabindex="0"><span role="link"  aria-expanded="false"><?= \F3::get('lang_sources') ?></span></h2>
-            <ul id="nav-sources">
+            <span role="heading" aria-level="2"><h2 id="nav-sources-title" class="nav-sources-collapsed" tabindex="0" role="link" aria-expanded="false"><?= \F3::get('lang_sources') ?></h2></span?
+            <ul id="nav-sources" aria-label="<?= \F3::get('lang_sources_list_label') ?>">
             </ul>
             </div>
 

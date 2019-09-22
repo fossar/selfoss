@@ -78,5 +78,8 @@
   "lang_error_refreshing_source": "Cannot refresh sources:",
   "lang_error_sync": "Could not sync last changes from server:",
   "lang_error_offline_storage": "Offline storage error: {0}. Reloading may help. Disabling offline for now.",
-  "lang_error_invalid_subsection": "Invalid subsection:"
+  "lang_error_invalid_subsection": "Invalid subsection:",
+    "lang_filters_list_label": "Filters",
+  "lang_tags_list_label": "Tags",
+  "lang_sources_list_label": "Sources"
 }
