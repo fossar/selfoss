@@ -111,11 +111,11 @@
 
 
     <div id="loginform">
-        <form action="<?= $this->base; ?>" method="post">
+        <form action="<?= $this->base; ?>" method="post" autocomplete="on">
         <ul id="login">
-            <li><h1>selfoss login</h1></li>
-            <li><label for="username"><?= trim(\F3::get('lang_login_username')); ?></label> <input type="text" name="username" id="username"></li>
-            <li><label for="password"><?= trim(\F3::get('lang_login_password')); ?></label> <input type="password" name="password" id="password"></li>
+            <li><h1><?= trim(\F3::get('html_title')); ?> login</h1></li>
+            <li><label for="username"><?= trim(\F3::get('lang_login_username')); ?></label> <input type="text" name="username" id="username" required autocomplete="on"></li>
+            <li><label for="password"><?= trim(\F3::get('lang_login_password')); ?></label> <input type="password" name="password" id="password"></li>	
             <li><label for="enableoffline"><?= trim(\F3::get('lang_login_offline')); ?></label> <input type="checkbox" name="enableoffline" id="enableoffline"></li>
             <li class="error"></li>
             <li class="button"><label>&nbsp;</label><input type="submit" value="<?= \F3::get('lang_login'); ?>" /></li>
