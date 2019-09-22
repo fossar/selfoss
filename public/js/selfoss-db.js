@@ -879,7 +879,7 @@ selfoss.db = {
 
     isValidTag: function(tag) {
         var isValid = false;
-        $('#nav-tags > li:not(:first)').each(function() {
+        $('#nav-tags > li:not(:first) > a').each(function() {
             isValid = $('.tag', this).html() == tag;
             return !isValid; // break the loop if valid
         });
@@ -889,7 +889,7 @@ selfoss.db = {
 
     isValidSource: function(id) {
         var isValid = false;
-        $('#nav-sources > li').each(function() {
+        $('#nav-sources > li > a').each(function() {
             isValid = $(this).data('source-id') == id;
             return !isValid; // break the loop if valid
         });

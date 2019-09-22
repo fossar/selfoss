@@ -366,8 +366,8 @@ var selfoss = {
                 selfoss.ui.showError($('#lang').data('error_unknown_tag') + ' ' + selfoss.filter.tag);
             }
 
-            $('#nav-tags li:first').removeClass('active');
-            $('#nav-tags > li').filter(function() {
+            $('#nav-tags li:first a').removeClass('active');
+            $('#nav-tags > li > a').filter(function() {
                 if ($('.tag', this)) {
                     return $('.tag', this).html() == selfoss.filter.tag;
                 } else {
@@ -400,7 +400,7 @@ var selfoss = {
             }
 
             $('#source' + selfoss.filter.source).addClass('active');
-            $('#nav-tags > li').removeClass('active');
+            $('#nav-tags > li > a').removeClass('active');
         }
 
         selfoss.sourcesNavLoaded = true;
