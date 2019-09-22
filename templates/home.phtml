@@ -174,12 +174,12 @@
                 <hr>
             </div>
 
-            <button id="nav-refresh" title="<?= trim(\F3::get('lang_refreshbutton')); ?>"></button>
-            <button id="nav-settings" title="<?= trim(\F3::get('lang_settingsbutton')); ?>"></button>
-            <button id="nav-logout" title="<?= trim(\F3::get('lang_logoutbutton')); ?>"></button>
+            <button id="nav-refresh" title="<?= trim(\F3::get('lang_refreshbutton')); ?>" aria-label="<?= trim(\F3::get('lang_refreshbutton')); ?>"></button>
+            <button id="nav-settings" title="<?= trim(\F3::get('lang_settingsbutton')); ?>" aria-label="<?= trim(\F3::get('lang_settingsbutton')); ?>"></button>
+            <button id="nav-logout" title="<?= trim(\F3::get('lang_logoutbutton')); ?>" aria-label="<?= trim(\F3::get('lang_logoutbutton')); ?>"></button>
 
             <?php if ($this->publicMode === true) : ?>
-            <button id="nav-login" title="<?= trim(\F3::get('lang_loginbutton')); ?>"></button>
+            <button id="nav-login" title="<?= trim(\F3::get('lang_loginbutton')); ?>" aria-label="<?= trim(\F3::get('lang_loginbutton')); ?>"></button>
             <?php endif; ?>
 
             <a id="nav-copyright" href="https://selfoss.aditu.de" target="_blank" rel="noopener noreferrer">selfoss <?= \F3::get('version'); ?></a>
@@ -188,8 +188,8 @@
         <!-- search -->
         <div id="search" role="search" class="offlineable">
             <input aria-label="<?= \F3::get('lang_search_label') ?>" type="search" id="search-term">
-            <button id="search-remove" title="<?= \F3::get('lang_searchremove')?>"><img src="images/remove.png" alt=""></button>
-            <button id="search-button" title="<?= \F3::get('lang_searchbutton')?>"><img src="images/search.png" alt=""></button>
+            <button id="search-remove" title="<?= \F3::get('lang_searchremove')?>" aria-label="<?= \F3::get('lang_searchremove')?>"><img src="images/remove.png" alt=""></button>
+            <button id="search-button" title="<?= \F3::get('lang_searchbutton')?>" aria-label="<?= \F3::get('lang_searchbutton')?>"><img src="images/search.png" alt=""></button>
         </div>
 
         <ul id="search-list">
