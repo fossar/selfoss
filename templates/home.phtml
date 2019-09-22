@@ -141,7 +141,7 @@
             <button id="nav-mark"><?= \F3::get('lang_markread')?></button>
 
             <div id="nav-filter-wrapper">
-            <h2 id="nav-filter-title" class="nav-filter-expanded" tabindex="0" aria-expanded="true"><span role="link"><?= \F3::get('lang_filter') ?></span></h2>
+            <h2 id="nav-filter-title" class="nav-filter-expanded" tabindex="0"><span role="link"  aria-expanded="true"><?= \F3::get('lang_filter') ?></span></h2>
             <ul id="nav-filter">
                 <li id="nav-filter-newest" class="nav-filter-newest" role="link" tabindex="0"><span role="listitem"><?= \F3::get('lang_newest')?> <span class="offline-count offlineable" title="<?= \F3::get('lang_offline_count')?>"></span><span class="count" title="<?= \F3::get('lang_online_count')?>"></span></span></li>
                 <li id="nav-filter-unread" class="nav-filter-unread" role="link" tabindex="0"><span role="listitem"><?= \F3::get('lang_unread')?>
@@ -157,11 +157,11 @@
             <hr>
 
             <div id="nav-tags-wrapper">
-            <h2 id="nav-tags-title" class="nav-tags-expanded" tabindex="0" aria-expanded="true"><span role="link"><?= \F3::get('lang_tags') ?></span></h2>
+            <h2 id="nav-tags-title" class="nav-tags-expanded" tabindex="0"><span role="link"  aria-expanded="true"><?= \F3::get('lang_tags') ?></span></h2>
             <ul id="nav-tags">
                 <li class="active nav-tags-all" role="link" tabindex="0"><span role="listitem"><?= \F3::get('lang_alltags')?></span></li>
             </ul>
-            <h2 id="nav-sources-title" class="nav-sources-collapsed" tabindex="0" aria-expanded="false"><span role="link"><?= \F3::get('lang_sources') ?></span></h2>
+            <h2 id="nav-sources-title" class="nav-sources-collapsed" tabindex="0"><span role="link"  aria-expanded="false"><?= \F3::get('lang_sources') ?></span></h2>
             <ul id="nav-sources">
             </ul>
             </div>
@@ -201,9 +201,9 @@
 
         <div id="stream-buttons">
             <p class="stream-empty"><?= trim(\F3::get('lang_no_entries')); ?></p>
-            <button class="stream-button stream-more"><span><?= trim(\F3::get('lang_more')); ?></span></button>
-            <button class="stream-button mark-these-read"><span><?= trim(\F3::get('lang_markread')); ?></span></button>
-            <button class="stream-button stream-error"><?= trim(\F3::get('lang_streamerror')); ?></button>
+            <button class="stream-button stream-more" aria-label="<?= trim(\F3::get('lang_more')); ?>"><span><?= trim(\F3::get('lang_more')); ?></span></button>
+            <button class="stream-button mark-these-read" aria-label="<?= trim(\F3::get('lang_markread')); ?></span>"><span><?= trim(\F3::get('lang_markread')); ?></span></button>
+            <button class="stream-button stream-error" aria-label="<?= trim(\F3::get('lang_streamerror')); ?>"><?= trim(\F3::get('lang_streamerror')); ?></button>
         </div>
 
         <!-- fullscreen popup -->
