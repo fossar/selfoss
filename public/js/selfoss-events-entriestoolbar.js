@@ -49,10 +49,10 @@ selfoss.events.entriesToolbar = function(parent) {
         if (parent.find('.entry-toolbar').has('button.entry-share' + shares[0]).length == 0) {
             // add the share toolbar entries
             parent.find('.entry-smartphone-share button.entry-newwindow').after(selfoss.shares.buildLinks(shares, function(name) {
-                return '<button class="entry-share entry-share' + name + '" title="' + name + '"><img class="entry-share" title="' + name + '" src="images/' + name + '.png" height="16" width="16">' + name + '</button>';
+                return '<li><button class="entry-share entry-share' + name + '" title="' + name + '" aria-label="' + name + '" aria-haspopup="true"><img class="entry-share" title="' + name + '" alt="' + name + '" src="images/' + name + '.png" height="16" width="16">' + name + '</button></li>';
             }));
             parent.find('.entry-toolbar button.entry-next').after(selfoss.shares.buildLinks(shares, function(name) {
-                return '<button class="entry-share entry-share' + name + '"><img title="' + name + '" src="images/' + name + '.png" height="16" width="16"></button>';
+                return '<li><button class="entry-share entry-share' + name + '" aria-label="' + name + '" aria-haspopup="true"><img title="' + name + '" alt="' + name + '" src="images/' + name + '.png" height="16" width="16"></button></li>';
             }));
             // hookup the share icon click events
             for (var i = 0; i < shares.length; i++) {
