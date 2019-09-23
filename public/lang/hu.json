@@ -1,10 +1,10 @@
 {
-  "lang_markread": "elolvastam",
-  "lang_newest": "legfrissebb",
-  "lang_unread": "olvasatlan",
-  "lang_starred": "csillagos",
-  "lang_tags": "címkék",
-  "lang_alltags": "összes címke",
+  "lang_markread": "Elolvastam",
+  "lang_newest": "Legfrissebb",
+  "lang_unread": "Olvasatlan",
+  "lang_starred": "Csillagos",
+  "lang_tags": "Címkék",
+  "lang_alltags": "Összes címke",
   "lang_timestamp": "{0,date} {0,time}",
   "lang_hours": "{0,plural,one {1 hour},other {# hours}} ago",
   "lang_minutes": "{0,plural,one {1 minute},other {# minutes}} ago",
@@ -37,5 +37,8 @@
   "lang_login": "Belépés",
   "lang_login_username": "Felhasználó",
   "lang_login_password": "Jelszó",
-  "lang_no_title": "nincs cím"
+  "lang_no_title": "nincs cím",
+  "lang_filter": "Szűrő",
+  "lang_online_count": "Tételek elérhetők a szerveren",
+  "lang_offline_count": "Tételek elérhetők helyben"
 }
