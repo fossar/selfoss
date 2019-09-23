@@ -27,7 +27,7 @@
     <!-- icon -->
     <a href="<?= \helpers\Anonymizer::anonymize($this->item['link']); ?>" class="entry-icon" tabindex="-1" rel="noopener noreferrer" aria-hidden="true">
         <?php if (strlen(trim($this->item['icon'])) > 0 && $this->item['icon'] != '0') : ?>
-        <img src="<?= 'favicons/' . $this->item['icon']; ?>" alt="" >
+        <img src="<?= 'favicons/' . $this->item['icon']; ?>" aria-hidden="true" alt="" >
         <?php endif; ?>
     </a>
 
