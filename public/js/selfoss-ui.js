@@ -143,15 +143,15 @@ selfoss.ui = {
                 var count = parseInt($('.nav-filter-' + selfoss.filter.type +
                                        ' span.count').html());
                 for (var pageNumber = 1;
-                     pageNumber < count / selfoss.filter.itemsPerPage + 1;
-                     pageNumber++) {
-                    var currentAttr = "";
-                    var current = "";
+                    pageNumber < count / selfoss.filter.itemsPerPage + 1;
+                    pageNumber++) {
+                    var currentAttr = '';
+                    var current = '';
                     if (selfoss.filter.offset == selfoss.filter.itemsPerPage * (pageNumber - 1)) {
-                        currentAttr = " aria-current=\"true\"";
-                        current = " (current)";
+                        currentAttr = ' aria-current="true"';
+                        current = ' (current)';
                     }
-                    streamPagination.append("<li><button aria-label=\"Goto Page " + pageNumber + "\"" + current + ">" + pageNumber + current + "</button></li>");
+                    streamPagination.append('<li><button aria-label="Goto Page ' + pageNumber + '"' + currentAttr + '>' + pageNumber + current + '</button></li>');
                 }
             } else {
                 $('.stream-empty').show();
