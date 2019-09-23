@@ -19,6 +19,8 @@ selfoss.dbOnline = {
     statsDirty: false,
     firstSync: true,
 
+    itemsDownloadBatchSize: 15,
+    statusUploadBatchSize: 200,
 
     _syncBegin: function() {
         if (!selfoss.dbOnline.syncing) {
@@ -110,7 +112,7 @@ selfoss.dbOnline = {
         if (selfoss.db.storage) {
             syncParams.itemsSinceId = selfoss.dbOffline.lastItemId;
             syncParams.itemsNotBefore = selfoss.dbOffline.newestGCedEntry.toISOString();
-            syncParams.itemsHowMany = selfoss.filter.itemsPerPage;
+            syncParams.itemsHowMany = selfoss.dbOnline.itemsDownloadBatchSize;
         }
 
         selfoss.dbOnline.statsDirty = false;
@@ -146,19 +148,22 @@ selfoss.dbOnline = {
                         selfoss.dbOffline
                             .shouldLoadEntriesOnline = 'lastId' in data
                             && data.lastId - selfoss.dbOffline.lastItemId >
-                            2 * selfoss.filter.itemsPerPage;
+                            2 * selfoss.dbOnline.itemsDownloadBatchSize;
 
                         selfoss.dbOffline.storeEntries(data.newItems)
                             .then(function() {
                                 selfoss.dbOffline.storeLastUpdate(dataDate);
-
                                 selfoss.dbOnline._syncDone();
-
-                                // fetch more if server has more
-                                if (selfoss.dbOffline.newerEntriesMissing) {
-                                    selfoss.dbOnline.sync();
-                                }
                             });
+                    }
+
+                    if (selfoss.dbOffline.newerEntriesMissing
+                        || selfoss.dbOffline.needsSync) {
+                        // There are still new items to fetch
+                        // or statuses to send
+                        syncing.then(function() {
+                            selfoss.dbOffline.sendNewStatuses();
+                        });
                     }
 
                     if ('itemUpdates' in data) {
@@ -703,8 +708,9 @@ selfoss.dbOffline = {
 
 
     sendNewStatuses: function() {
-        selfoss.db.storage.statusq.toArray().then(statuses => {
-            return statuses.map(s => {
+        selfoss.dbOffline._tr('r', selfoss.db.storage.statusq, async() => {
+            const offlineStatusesCount = await selfoss.db.storage.statusq.count();
+            const statuses = (await selfoss.db.storage.statusq.limit(selfoss.dbOnline.statusUploadBatchSize).toArray()).map(s => {
                 let statusUpdate = {
                     id: s.entryId,
                     datetime: s.datetime
@@ -713,10 +719,12 @@ selfoss.dbOffline = {
 
                 return statusUpdate;
             });
-        }).then(statuses => {
+
             const s = statuses.length > 0 ? statuses : undefined;
-            selfoss.dbOnline.sync(s, true).then(function() {
-                selfoss.dbOffline.needsSync = false;
+            selfoss.dbOnline.sync(s, true).then(() => {
+                if (offlineStatusesCount <= selfoss.dbOnline.statusUploadBatchSize) {
+                    selfoss.dbOffline.needsSync = false;
+                }
             });
         });
 
