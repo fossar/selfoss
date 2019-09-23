@@ -142,7 +142,7 @@
 
             <div id="nav-filter-wrapper">
             <span role="heading" aria-level="2"><h2 id="nav-filter-title" class="nav-filter-expanded" tabindex="0" role="link" aria-expanded="true"><?= \F3::get('lang_filter') ?></h2></span>
-            <ul id="nav-filter" aria-label="<?= \F3::get('lang_filters_list_label') ?>">
+            <ul id="nav-filter" aria-labeledby="nav-filter-title">
                 <li id="nav-filter-newest" class="nav-filter-newest" role="link" tabindex="0"><span role="listitem"><?= \F3::get('lang_newest')?> <span class="offline-count offlineable" title="<?= \F3::get('lang_offline_count')?>"></span><span class="count" title="<?= \F3::get('lang_online_count')?>"></span></span></li>
                 <li id="nav-filter-unread" class="nav-filter-unread" role="link" tabindex="0"><span role="listitem"><?= \F3::get('lang_unread')?>
                     <span class="unread-count offlineable">
@@ -158,11 +158,11 @@
 
             <div id="nav-tags-wrapper">
             <span role="heading" aria-level="2"><h2 id="nav-tags-title" class="nav-tags-expanded" tabindex="0" role="link" aria-expanded="true"><?= \F3::get('lang_tags') ?></h2></span>
-            <ul id="nav-tags" aria-label="<?= \F3::get('lang_tags_list_label') ?>">
+            <ul id="nav-tags" aria-labeledby="nav-tags-title">
                 <li class="active nav-tags-all" role="link" tabindex="0"><span role="listitem"><?= \F3::get('lang_alltags')?></span></li>
             </ul>
             <span role="heading" aria-level="2"><h2 id="nav-sources-title" class="nav-sources-collapsed" tabindex="0" role="link" aria-expanded="false"><?= \F3::get('lang_sources') ?></h2></span>
-            <ul id="nav-sources" aria-label="<?= \F3::get('lang_sources_list_label') ?>">
+            <ul id="nav-sources" aria-labeledby="nav-sources-title">
             </ul>
             </div>
 
