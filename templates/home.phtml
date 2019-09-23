@@ -204,6 +204,9 @@
             <button class="stream-button stream-more"><span><?= trim(\F3::get('lang_more')); ?></span></button>
             <button class="stream-button mark-these-read"><span><?= trim(\F3::get('lang_markread')); ?></span></button>
             <button class="stream-button stream-error"><?= trim(\F3::get('lang_streamerror')); ?></button>
+            <nav role="navigation" aria-label="Pagination Navigation">
+                <ul id="stream-pagination" />
+            </nav>
         </div>
 
         <!-- fullscreen popup -->
