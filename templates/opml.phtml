@@ -6,14 +6,14 @@
 
         <title><?= trim(\F3::get('html_title')); ?></title>
 
-        <meta name="description" content="selfoss">
+        <meta name="description" content="<?= trim(\F3::get('html_title')); ?>">
         <meta name="author" content="Tobias Zeising">
 
         <!--  Mobile viewport optimized: j.mp/bplateviewport -->
-        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
+        <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1">
 
         <!--  Add support for fullscreen Webapp on iPhone 5 -->
-        <meta name="viewport" content="initial-scale=1, user-scalable=no, maximum-scale=1" media="(device-height: 568px)" />
+        <meta name="viewport" content="initial-scale=1, user-scalable=yes" media="(device-height: 568px)" />
 
         <!-- icons -->
         <link rel="apple-touch-icon-precomposed" href="icon-128x128.png" />
@@ -27,12 +27,15 @@
         <link rel="stylesheet" href="<?= \helpers\View::getGlobalCssFileName(); ?>">
     </head>
     <body id="opmlbody">
+
+<main>
+
         <form method="post" enctype="multipart/form-data">
             <ul id="opml">
             <li><h1>Upload an OPML File</h1></li>
             <li>
                 <p>
-                Coming from a different RSS Reader? Export your subscriptions to a OPML file and upload it here. OPML export is usually
+                Coming from a different RSS Reader? Export your subscriptions to an OPML file and upload it here. OPML export is usually
                 located somewhere in settings, consult the reader’s manual.
                 </p>
             </li>
@@ -41,10 +44,13 @@
                     echo '<li class="msg ' . $this->msgclass . '"><p>' . $this->msg . '</p><li>';
                 }
             ?>
-            <li class="center"><label for="opml">Opml.xml:</label> <input type="file" name="opml" id="opml"></li>
-            <li class="button"><label>&nbsp;</label><input type="submit" value="Deliver my OPML!"></li>
+            <li class="center"><label for="opml">Opml.xml:</label> <input type="file" accesskey="f" name="opml" id="opml"></li>
+            <li class="button"><label>&nbsp;</label><input type="submit" value="Deliver my OPML!" accesskey="d"></li>
             </ul>
         </form>
+
+</main>
+
         <script src="<?= \helpers\View::getGlobalJsFileName(); ?>"></script>
         <script type="text/javascript">
             $('form').submit(function() {

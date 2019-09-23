@@ -7,19 +7,19 @@
 
     <title><?= trim(\F3::get('html_title')); ?></title>
 
-    <meta name="description" content="selfoss" />
+    <meta name="description" content="<?= trim(\F3::get('html_title')); ?>" />
     <meta name="author" content="Tobias Zeising" />
     <meta name="version" content="<?= \F3::get('version'); ?>" />
     <meta name="referrer" content="no-referrer" />
 
     <!--  Mobile viewport optimized: j.mp/bplateviewport -->
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1" />
+    <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1" />
 
     <!--  Add support for fullscreen Webapp on iPhone 5 -->
-    <meta name="viewport" content="initial-scale=1, user-scalable=no, maximum-scale=1" media="(device-height: 568px)" />
+    <meta name="viewport" content="initial-scale=1, user-scalable=yes" media="(device-height: 568px)" />
 
     <!-- Web application behavior -->
-    <meta name="application-name" content="selfoss" />
+    <meta name="application-name" content="<?= trim(\F3::get('html_title')); ?>" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="mobile-web-app-capable" content="yes" />
 
@@ -125,7 +125,7 @@
 
     <div id="mainui">
         <!-- menu open for smartphone -->
-        <div id="nav-mobile">
+        <div id="nav-mobile" role="navigation">
             <div id="nav-mobile-logo">
                 <div id="nav-mobile-count" class="unread-count offlineable">
                     <span class="offline-count offlineable"></span>
@@ -170,16 +170,16 @@
 
             <!-- navigation search input just for smartphone version -->
             <div id="nav-search" class="offlineable" role="search">
-                <input aria-label="<?= \F3::get('lang_search_label') ?>" type="search" id="nav-search-term"> <input type="button" id="nav-search-button" value="<?= \F3::get('lang_searchbutton')?>">
+                <input aria-label="<?= \F3::get('lang_search_label') ?>" type="search" id="nav-search-term" accesskey="s"> <input type="button" id="nav-search-button" value="<?= \F3::get('lang_searchbutton')?>" accesskey="e">
                 <hr>
             </div>
 
-            <button id="nav-refresh" title="<?= trim(\F3::get('lang_refreshbutton')); ?>" aria-label="<?= trim(\F3::get('lang_refreshbutton')); ?>"></button>
-            <button id="nav-settings" title="<?= trim(\F3::get('lang_settingsbutton')); ?>" aria-label="<?= trim(\F3::get('lang_settingsbutton')); ?>"></button>
-            <button id="nav-logout" title="<?= trim(\F3::get('lang_logoutbutton')); ?>" aria-label="<?= trim(\F3::get('lang_logoutbutton')); ?>"></button>
+            <button id="nav-refresh" title="<?= trim(\F3::get('lang_refreshbutton')); ?>" aria-label="<?= trim(\F3::get('lang_refreshbutton')); ?>" accesskey="r"></button>
+            <button id="nav-settings" title="<?= trim(\F3::get('lang_settingsbutton')); ?>" aria-label="<?= trim(\F3::get('lang_settingsbutton')); ?>" accesskey="t"></button>
+            <button id="nav-logout" title="<?= trim(\F3::get('lang_logoutbutton')); ?>" aria-label="<?= trim(\F3::get('lang_logoutbutton')); ?>" accesskey="l"></button>
 
             <?php if ($this->publicMode === true) : ?>
-            <button id="nav-login" title="<?= trim(\F3::get('lang_loginbutton')); ?>" aria-label="<?= trim(\F3::get('lang_loginbutton')); ?>"></button>
+            <button id="nav-login" title="<?= trim(\F3::get('lang_loginbutton')); ?>" aria-label="<?= trim(\F3::get('lang_loginbutton')); ?>" accesskey="l"></button>
             <?php endif; ?>
 
             <a id="nav-copyright" href="https://selfoss.aditu.de" target="_blank" rel="noopener noreferrer"><?= trim(\F3::get('html_title')); ?> <?= \F3::get('version'); ?></a>
@@ -187,9 +187,9 @@
 
         <!-- search -->
         <div id="search" role="search" class="offlineable">
-            <input aria-label="<?= \F3::get('lang_search_label') ?>" type="search" id="search-term">
-            <button id="search-remove" title="<?= \F3::get('lang_searchremove')?>" aria-label="<?= \F3::get('lang_searchremove')?>"><img src="images/remove.png" alt=""></button>
-            <button id="search-button" title="<?= \F3::get('lang_searchbutton')?>" aria-label="<?= \F3::get('lang_searchbutton')?>"><img src="images/search.png" alt=""></button>
+            <input aria-label="<?= \F3::get('lang_search_label') ?>" type="text" id="search-term" accesskey="s">
+            <button id="search-remove" title="<?= \F3::get('lang_searchremove')?>" accesskey="h" aria-label="<?= \F3::get('lang_searchremove')?>"><img src="images/remove.png" aria-hidden="true" alt=""></button>
+            <button id="search-button" title="<?= \F3::get('lang_searchbutton')?>" aria-label="<?= \F3::get('lang_searchbutton')?>" accesskey="e"><img src="images/search.png" alt=""></button>
         </div>
 
         <ul id="search-list">
@@ -200,7 +200,7 @@
         </div>
 
         <div id="stream-buttons">
-            <p class="stream-empty"><?= trim(\F3::get('lang_no_entries')); ?></p>
+            <p aria-live="assertive" class="stream-empty"><?= trim(\F3::get('lang_no_entries')); ?></p>
             <button class="stream-button stream-more" aria-label="<?= trim(\F3::get('lang_more')); ?>"><span><?= trim(\F3::get('lang_more')); ?></span></button>
             <button class="stream-button mark-these-read" aria-label="<?= trim(\F3::get('lang_markread')); ?></span>"><span><?= trim(\F3::get('lang_markread')); ?></span></button>
             <button class="stream-button stream-error" aria-label="<?= trim(\F3::get('lang_streamerror')); ?>"><?= trim(\F3::get('lang_streamerror')); ?></button>

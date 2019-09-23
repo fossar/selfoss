@@ -27,12 +27,12 @@
     <!-- icon -->
     <a href="<?= \helpers\Anonymizer::anonymize($this->item['link']); ?>" class="entry-icon" tabindex="-1" rel="noopener noreferrer" aria-hidden="true">
         <?php if (strlen(trim($this->item['icon'])) > 0 && $this->item['icon'] != '0') : ?>
-        <img src="<?= 'favicons/' . $this->item['icon']; ?>" alt="" >
+        <img src="<?= 'favicons/' . $this->item['icon']; ?>" aria-hidden="true" alt="" >
         <?php endif; ?>
     </a>
 
     <!-- title -->
-    <h3 class="entry-title"><span role="link" aria-expanded="false"><?= $title; ?></span></h3>
+    <span role="heading" aria-level="3"><h3 class="entry-title" role="link" aria-expanded="false"><?= $title; ?></h3></span>
 
     <span class="entry-tags">
         <?php foreach ($this->item['tags'] as $tag => $color) : ?>
@@ -71,8 +71,8 @@
 
         <div class="entry-smartphone-share">
 <ul>
-            <li><button class="entry-newwindow"><?= \F3::get('lang_open_window')?></button></li>
-            <li><button class="entry-next"><?= \F3::get('lang_next')?></button></li>
+            <li><button accesskey="o" aria-haspopup="true" class="entry-newwindow"><?= \F3::get('lang_open_window')?></button></li>
+            <li><button accesskey="n" class="entry-next"><?= \F3::get('lang_next')?></button></li>
 </ul>
         </div>
     </div>
@@ -80,12 +80,12 @@
     <!-- toolbar -->
     <div class="entry-toolbar">
 <ul>
-        <li><button class="entry-starr <?= $this->item['starred'] == 1 ? 'active' : ''; ?>"><?= $this->item['starred'] == 1 ? \F3::get('lang_unstar') : \F3::get('lang_star'); ?></button></li>
-        <li><button class="entry-unread <?= $this->item['unread'] == 1 ? 'active' : ''; ?>"><?= $this->item['unread'] == 1 ? \F3::get('lang_mark') : \F3::get('lang_unmark'); ?></button></li>
-        <li><button class="entry-newwindow" aria-haspopup="true"><?= \F3::get('lang_open_window')?></button></li>
+        <li><button accesskey="a" class="entry-starr <?= $this->item['starred'] == 1 ? 'active' : ''; ?>"><?= $this->item['starred'] == 1 ? \F3::get('lang_unstar') : \F3::get('lang_star'); ?></button></li>
+        <li><button accesskey="u" class="entry-unread <?= $this->item['unread'] == 1 ? 'active' : ''; ?>"><?= $this->item['unread'] == 1 ? \F3::get('lang_mark') : \F3::get('lang_unmark'); ?></button></li>
+        <li><button accesskey="o" class="entry-newwindow" aria-haspopup="true"><?= \F3::get('lang_open_window')?></button></li>
         <li><button class="entry-loadimages"><?= \F3::get('lang_load_img')?> </button></li>
-        <li><button class="entry-next"><?= \F3::get('lang_next')?></button></li>
-        <li><button class="entry-close"></button></li>
+        <li><button accesskey="n" class="entry-next"><?= \F3::get('lang_next')?></button></li>
+        <li><button accesskey="c" class="entry-close"></button></li>
 </ul>
     </div>
 </div>
