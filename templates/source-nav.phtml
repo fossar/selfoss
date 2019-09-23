@@ -1,4 +1,4 @@
-<li id="source<?= $this->sourceid; ?>" class="<?php if ($this->unread > 0) {
+<li id="source<?= $this->sourceid; ?>" role="listitem" class="<?php if ($this->unread > 0) {
     echo 'unread';
 } ?>" role="link" tabindex="0" data-source-id="<?= $this->sourceid; ?>">
     <span class="nav-source"><?= $this->source; ?></span>
