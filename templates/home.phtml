@@ -143,7 +143,7 @@
 
             <div id="nav-filter-wrapper">
             <h2><button type="button" id="nav-filter-title" class="nav-filter-expanded" aria-expanded="true"><?= \F3::get('lang_filter') ?></button></h2>
-            <ul id="nav-filter">
+            <ul id="nav-filter" aria-labeledby="nav-filter-title">
                 <li>
                     <a id="nav-filter-newest" class="nav-filter-newest" href="#">
                         <?= \F3::get('lang_newest')?>
@@ -174,11 +174,11 @@
 
             <div id="nav-tags-wrapper">
             <h2><button type="button" id="nav-tags-title" class="nav-tags-expanded" aria-expanded="true"><?= \F3::get('lang_tags') ?></button></h2>
-            <ul id="nav-tags">
+            <ul id="nav-tags" aria-labeledby="nav-tags-title">
                 <li><a class="active nav-tags-all" href="#"><?= \F3::get('lang_alltags')?></a></li>
             </ul>
             <h2><button type="button" id="nav-sources-title" class="nav-sources-collapsed" aria-expanded="false"><?= \F3::get('lang_sources') ?></button></h2>
-            <ul id="nav-sources">
+            <ul id="nav-sources" aria-labeledby="nav-sources-title">
             </ul>
             </div>
 
