@@ -186,26 +186,26 @@
 
             <!-- navigation search input just for smartphone version -->
             <div id="nav-search" class="offlineable" role="search">
-                <input aria-label="<?= \F3::get('lang_search_label') ?>" type="search" id="nav-search-term"> <input type="button" id="nav-search-button" value="<?= \F3::get('lang_searchbutton')?>">
+                <input aria-label="<?= \F3::get('lang_search_label') ?>" type="search" id="nav-search-term" accesskey="s"> <input type="button" id="nav-search-button" value="<?= \F3::get('lang_searchbutton')?>" accesskey="e">
                 <hr>
             </div>
 
             <div class="nav-toolbar">
-                <button id="nav-refresh" title="<?= trim(\F3::get('lang_refreshbutton')); ?>" aria-label="<?= trim(\F3::get('lang_refreshbutton')); ?>"></button>
-                <button id="nav-settings" title="<?= trim(\F3::get('lang_settingsbutton')); ?>" aria-label="<?= trim(\F3::get('lang_settingsbutton')); ?>"></button>
-                <button id="nav-logout" title="<?= trim(\F3::get('lang_logoutbutton')); ?>" aria-label="<?= trim(\F3::get('lang_logoutbutton')); ?>"></button>
+                <button id="nav-refresh" title="<?= trim(\F3::get('lang_refreshbutton')); ?>" aria-label="<?= trim(\F3::get('lang_refreshbutton')); ?>" accesskey="r"></button>
+                <button id="nav-settings" title="<?= trim(\F3::get('lang_settingsbutton')); ?>" aria-label="<?= trim(\F3::get('lang_settingsbutton')); ?>" accesskey="t"></button>
+                <button id="nav-logout" title="<?= trim(\F3::get('lang_logoutbutton')); ?>" aria-label="<?= trim(\F3::get('lang_logoutbutton')); ?>" accesskey="l"></button>
 
                 <?php if ($this->publicMode === true) : ?>
-                <button id="nav-login" title="<?= trim(\F3::get('lang_loginbutton')); ?>" aria-label="<?= trim(\F3::get('lang_loginbutton')); ?>"></button>
+                <button id="nav-login" title="<?= trim(\F3::get('lang_loginbutton')); ?>" aria-label="<?= trim(\F3::get('lang_loginbutton')); ?>" accesskey="l"></button>
                 <?php endif; ?>
             </div>
         </div>
 
         <!-- search -->
         <div id="search" role="search" class="offlineable">
-            <input aria-label="<?= \F3::get('lang_search_label') ?>" type="search" id="search-term">
-            <button id="search-remove" title="<?= \F3::get('lang_searchremove')?>" aria-label="<?= \F3::get('lang_searchremove')?>"><img src="images/remove.png" alt=""></button>
-            <button id="search-button" title="<?= \F3::get('lang_searchbutton')?>" aria-label="<?= \F3::get('lang_searchbutton')?>"><img src="images/search.png" alt=""></button>
+            <input aria-label="<?= \F3::get('lang_search_label') ?>" type="search" id="search-term" accesskey="s">
+            <button id="search-remove" title="<?= \F3::get('lang_searchremove')?>" accesskey="h" aria-label="<?= \F3::get('lang_searchremove')?>"><img src="images/remove.png" aria-hidden="true" alt=""></button>
+            <button id="search-button" title="<?= \F3::get('lang_searchbutton')?>" aria-label="<?= \F3::get('lang_searchbutton')?>" accesskey="e"><img src="images/search.png" alt=""></button>
         </div>
 
         <ul id="search-list">
@@ -216,7 +216,7 @@
         </div>
 
         <div id="stream-buttons">
-            <p class="stream-empty"><?= trim(\F3::get('lang_no_entries')); ?></p>
+            <p aria-live="assertive" class="stream-empty"><?= trim(\F3::get('lang_no_entries')); ?></p>
             <button class="stream-button stream-more" aria-label="<?= trim(\F3::get('lang_more')); ?>"><span><?= trim(\F3::get('lang_more')); ?></span></button>
             <button class="stream-button mark-these-read" aria-label="<?= trim(\F3::get('lang_markread')); ?></span>"><span><?= trim(\F3::get('lang_markread')); ?></span></button>
             <button class="stream-button stream-error" aria-label="<?= trim(\F3::get('lang_streamerror')); ?>"><?= trim(\F3::get('lang_streamerror')); ?></button>
