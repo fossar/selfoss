@@ -72,5 +72,11 @@
   "lang_error_saving_color": "Nelze změnit barvu:",
   "lang_error_refreshing_source": "Nelze obnovit zdroje:",
   "lang_error_sync": "Synchronizace změn ze serveru selhala:",
-  "lang_error_invalid_subsection": "Podsekce neexistuje:"
+  "lang_error_invalid_subsection": "Podsekce neexistuje:",
+  "lang_online_count": "Položky jsou dostupné na serveru",
+  "lang_offline_count": "Položky jsou dostupné v prohlížeči",
+  "lang_login_offline": "Ukládat data v prohlížeči",
+  "lang_app_update": "selfoss byl aktualizován, prosím znovu načtěte stránku",
+  "lang_app_reload": "Znovu načíst",
+  "lang_error_offline_storage": "Chyba lokálního úložiště: {0}. Možná pomůže znovunačtení stránky. Prozatím bude ukládání vypnuto."
 }

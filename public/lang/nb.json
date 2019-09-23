@@ -71,5 +71,11 @@
   "lang_error_saving_color": "Kan ikke lagre ny farge:",
   "lang_error_refreshing_source": "Kan ikke gjenoppfriske kilder:",
   "lang_error_sync": "Kunne ikke synkronisere siste endringer fra tjener:",
-  "lang_error_invalid_subsection": "Ugyldig underdel:"
+  "lang_error_invalid_subsection": "Ugyldig underdel:",
+  "lang_online_count": "Elementer tilgjengelige på tjeneren",
+  "lang_offline_count": "Elementer tilgjengelige lokalt",
+  "lang_login_offline": "Frakoblet lagring",
+  "lang_app_update": "selfoss har blitt oppdatert, last inn på ny",
+  "lang_app_reload": "Gjeninnlast",
+  "lang_error_offline_storage": "Lagringsfeil for frakoblet lagring: {0}. Gjeninnlasting kan hjelpe. Skrur av frakoblet imens."
 }
