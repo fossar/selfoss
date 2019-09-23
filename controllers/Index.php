@@ -25,6 +25,7 @@ class Index extends BaseController {
 
         if (!$f3->ajax()) {
             // show as full html page
+            $this->view->allowPublicUpdate = \F3::get('allow_public_update_access') == 1;
             $this->view->publicMode = \F3::get('public') == 1;
             $this->view->authEnabled = \F3::get('auth')->enabled() === true;
             echo $this->view->render('templates/home.phtml');
