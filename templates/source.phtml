@@ -3,7 +3,7 @@
         class="source <?= isset($this->source) === false ? 'source-new' : '' ?> <?= (isset($this->source) && isset($this->source['error']) && strlen($this->source['error']) > 0) ? 'error' : '' ?>">
     <div class="source-icon">
         <?php if (isset($this->source) && isset($this->source['icon']) && $this->source['icon'] != '0') : ?>
-        <img src="<?= 'favicons/' . $this->source['icon']; ?>" alt="" />
+        <img src="<?= 'favicons/' . $this->source['icon']; ?>" aria-hidden="true" alt="" />
         <?php endif; ?>
     </div>
 
@@ -81,14 +81,14 @@
 
         <!-- error messages -->
         <?php if (isset($this->source) && isset($this->source['error'])) : ?>
-        <li class="source-error">
+        <li class="source-error" aria-live="assertive">
             <?= $this->source['error']; ?>
         </li>
         <?php endif; ?>
 
         <!-- save/delete -->
         <li class="source-action">
-            <button class="source-save"><?= \F3::get('lang_source_save')?></button> &bull; <button class="source-cancel"><?= \F3::get('lang_source_cancel')?></button>
+            <button class="source-save" accesskey="s"><?= \F3::get('lang_source_save')?></button> &bull; <button class="source-cancel" accesskey="c"><?= \F3::get('lang_source_cancel')?></button>
         </li>
     </ul>
 
