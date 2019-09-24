@@ -112,6 +112,7 @@ selfoss.events = {
                               + '/' + selfoss.events.subsection;
 
         var entryId = null;
+        var entry;
         if (hashPath.length > 2 && (entryId = parseInt(hashPath[2]))) {
             selfoss.events.entryId = entryId;
         } else {
@@ -131,7 +132,7 @@ selfoss.events = {
                 // open it.
                 if (selfoss.events.entryId
                     && selfoss.events.processHashChange) {
-                    var entry = $('#entry' + selfoss.events.entryId);
+                    entry = $('#entry' + selfoss.events.entryId);
                     selfoss.ui.entrySelect(entry);
                     selfoss.ui.entryExpand(entry);
                 }
@@ -148,7 +149,7 @@ selfoss.events = {
                 // scroll to entry.
                 if (selfoss.events.entryId
                     && selfoss.events.processHashChange) {
-                    var entry = $('#entry' + selfoss.events.entryId);
+                    entry = $('#entry' + selfoss.events.entryId);
                     if (entry) {
                         entry.get(0).scrollIntoView();
                     }

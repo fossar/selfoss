@@ -88,7 +88,7 @@ selfoss.events.entries = function() {
                 parentNative.closeFullScreen = null;
 
                 $(window).scrollTop(scrollTop);
-            }
+            };
             closeTargets.click(parentNative.closeFullScreen);
 
             // automark as read
@@ -196,7 +196,7 @@ selfoss.events.entries = function() {
     }
 
     // updates a source
-    $('#refresh-source').unbind('click').click(function(e) {
+    $('#refresh-source').unbind('click').click(function() {
         // show loading
         var content = $('#content');
         var articleList = content.html();
