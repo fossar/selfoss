@@ -34,7 +34,7 @@ selfoss.ui = {
 
 
     refreshTitle: function(unread) {
-        unread = (typeof unread !== 'undefined') ? unread : parseInt($('.unread-count .count').html());
+        unread = (typeof unread !== 'undefined') ? unread : parseInt($('.unread-count .count').html(), 10);
 
         if (unread > 0) {
             $(document).attr('title', selfoss.htmlTitle + ' (' + unread + ')');
@@ -142,7 +142,7 @@ selfoss.ui = {
 
                 var streamPagination = $('#stream-pagination').empty();
                 var count = parseInt($('.nav-filter-' + selfoss.filter.type +
-                                       ' span.count').html());
+                                       ' span.count').html(), 10);
                 for (var pageNumber = 1;
                     pageNumber < count / selfoss.filter.itemsPerPage + 1;
                     pageNumber++) {
@@ -247,7 +247,7 @@ selfoss.ui = {
             case ',':
                 if (placeholder) {
                     if (state == 'index') {
-                        placeholder.index = parseInt(buffer.trim());
+                        placeholder.index = parseInt(buffer.trim(), 10);
                         placeholder.value = params[placeholder.index];
                         buffer = '';
                     } else if (state == 'type') {
@@ -419,7 +419,7 @@ selfoss.ui = {
             var unreadCount = 0;
             if (diff) {
                 if (tagsCountEl.html() != '') {
-                    unreadCount = parseInt(tagsCountEl.html());
+                    unreadCount = parseInt(tagsCountEl.html(), 10);
                 }
                 unreadCount = unreadCount + tagCount.count;
             } else {
@@ -441,7 +441,7 @@ selfoss.ui = {
                 var unreadCount = 0;
                 if (diff) {
                     if (sourcesCountEl.html() != '') {
-                        unreadCount = parseInt(sourcesCountEl.html());
+                        unreadCount = parseInt(sourcesCountEl.html(), 10);
                     }
                     unreadCount = unreadCount + sourceCount.count;
                 } else {
@@ -471,12 +471,12 @@ selfoss.ui = {
                 var offlineWidget = $('span.offline-count', widget);
 
                 if (offlineCounts[ck] == 'keep') {
-                    offlineCounts[ck] = parseInt(offlineWidget.html());
+                    offlineCounts[ck] = parseInt(offlineWidget.html(), 10);
                 } else {
                     offlineWidget.html(offlineCounts[ck]);
                 }
 
-                if (parseInt($('span.count', widget).html()) !=
+                if (parseInt($('span.count', widget).html(), 10) !=
                     offlineCounts[ck]) {
                     offlineWidget.addClass('diff');
                 } else {

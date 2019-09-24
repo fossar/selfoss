@@ -112,7 +112,7 @@ selfoss.events = {
                               + '/' + selfoss.events.subsection;
 
         var entryId = null;
-        if (hashPath.length > 2 && (entryId = parseInt(hashPath[2]))) {
+        if (hashPath.length > 2 && (entryId = parseInt(hashPath[2], 10))) {
             selfoss.events.entryId = entryId;
         } else {
             selfoss.events.entryId = null;
@@ -168,7 +168,7 @@ selfoss.events = {
                 if (selfoss.events.subsection.substr(0, 4) == 'tag-') {
                     selfoss.filter.tag = selfoss.events.subsection.substr(4);
                 } else if (selfoss.events.subsection.substr(0, 7) == 'source-') {
-                    var sourceId = parseInt(selfoss.events.subsection.substr(7));
+                    var sourceId = parseInt(selfoss.events.subsection.substr(7), 10);
                     if (sourceId) {
                         selfoss.filter.source = sourceId;
                         selfoss.filter.sourcesNav = true;
