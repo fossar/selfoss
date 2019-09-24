@@ -366,7 +366,7 @@ var selfoss = {
                 selfoss.ui.showError($('#lang').data('error_unknown_tag') + ' ' + selfoss.filter.tag);
             }
 
-            $('#nav-tags li:first').removeClass('active');
+            $('#nav-tags li:first a').removeClass('active');
             $('#nav-tags > li > a').filter(function() {
                 if ($('.tag', this)) {
                     return $('.tag', this).html() == selfoss.filter.tag;
