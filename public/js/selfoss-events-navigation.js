@@ -35,7 +35,9 @@ selfoss.events.navigation = function() {
     });
 
     // filter
-    $('#nav-filter > li').unbind('click').click(function() {
+    $('#nav-filter > li > a').unbind('click').click(function(e) {
+        e.preventDefault();
+
         if ($(this).hasClass('nav-filter-newest')) {
             selfoss.filter.type = 'newest';
         } else if ($(this).hasClass('nav-filter-unread')) {
@@ -50,7 +52,7 @@ selfoss.events.navigation = function() {
         }
         selfoss.events.setHash(selfoss.filter.type, 'same');
 
-        $('#nav-filter > li').removeClass('active');
+        $('#nav-filter > li > a').removeClass('active');
         $(this).addClass('active');
 
         selfoss.ui.hideMobileNav();
@@ -68,13 +70,15 @@ selfoss.events.navigation = function() {
     });
 
     // tag
-    $('#nav-tags > li').unbind('click').click(function() {
+    $('#nav-tags > li > a').unbind('click').click(function(e) {
+        e.preventDefault();
+
         if (!selfoss.db.online) {
             return;
         }
 
-        $('#nav-tags > li').removeClass('active');
-        $('#nav-sources > li').removeClass('active');
+        $('#nav-tags > li > a').removeClass('active');
+        $('#nav-sources > li > a').removeClass('active');
         $(this).addClass('active');
 
         if ($(this).hasClass('nav-tags-all') == false) {
@@ -97,13 +101,15 @@ selfoss.events.navigation = function() {
     });
 
     // source
-    $('#nav-sources > li').unbind('click').click(function() {
+    $('#nav-sources > li > a').unbind('click').click(function(e) {
+        e.preventDefault();
+
         if (!selfoss.db.online) {
             return;
         }
 
-        $('#nav-tags > li').removeClass('active');
-        $('#nav-sources > li').removeClass('active');
+        $('#nav-tags > li > a').removeClass('active');
+        $('#nav-sources > li > a').removeClass('active');
         $(this).addClass('active');
 
         selfoss.events.setHash(selfoss.filter.type,
@@ -141,13 +147,6 @@ selfoss.events.navigation = function() {
             });
         } else {
             toggle();
-        }
-    });
-
-    // emulate clicking when using keyboard
-    $('#nav-filter > li, #nav-tags > li, #nav-tags-title, #nav-sources > li, #nav-sources-title').unbind('keypress').keypress(function(e) {
-        if (e.keyCode === 13) {
-            $(this).click();
         }
     });
 

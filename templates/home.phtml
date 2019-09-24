@@ -50,6 +50,7 @@
     <link rel="manifest" href="selfoss.webmanifest">
 </head>
 <body class="
+    <?= $this->allowPublicUpdate === true ? 'publicupdate' : ''; ?>
     <?= $this->publicMode === true ? 'publicmode' : ''; ?>
     <?= $this->authEnabled === true ? 'authenabled' : 'loggedin'; ?>
     <?= \F3::get('auto_mark_as_read') == 1 ? 'auto_mark_as_read' : ''; ?>
@@ -114,8 +115,8 @@
         <form action="<?= $this->base; ?>" method="post" autocomplete="on">
         <ul id="login">
             <li><h1><?= trim(\F3::get('html_title')); ?> login</h1></li>
-            <li><label for="username"><?= trim(\F3::get('lang_login_username')); ?></label> <input type="text" name="username" id="username" required autocomplete="on"></li>
-            <li><label for="password"><?= trim(\F3::get('lang_login_password')); ?></label> <input type="password" name="password" id="password"></li>	
+            <li><label for="username"><?= trim(\F3::get('lang_login_username')); ?></label> <input type="text" name="username" id="username" autocomplete="username" required></li>
+            <li><label for="password"><?= trim(\F3::get('lang_login_password')); ?></label> <input type="password" name="password" id="password" autocomplete="current-password"></li>
             <li><label for="enableoffline"><?= trim(\F3::get('lang_login_offline')); ?></label> <input type="checkbox" name="enableoffline" id="enableoffline"></li>
             <li class="error"></li>
             <li class="button"><label>&nbsp;</label><input type="submit" value="<?= \F3::get('lang_login'); ?>" /></li>
@@ -141,27 +142,42 @@
             <button id="nav-mark"><?= \F3::get('lang_markread')?></button>
 
             <div id="nav-filter-wrapper">
-            <span role="heading" aria-level="2"><h2 id="nav-filter-title" class="nav-filter-expanded" tabindex="0" role="link" aria-expanded="true"><?= \F3::get('lang_filter') ?></h2></span>
+            <h2><button type="button" id="nav-filter-title" class="nav-filter-expanded" aria-expanded="true"><?= \F3::get('lang_filter') ?></button></h2>
             <ul id="nav-filter" aria-labeledby="nav-filter-title">
-                <li id="nav-filter-newest" class="nav-filter-newest" role="link" tabindex="0"><span role="listitem"><?= \F3::get('lang_newest')?> <span class="offline-count offlineable" title="<?= \F3::get('lang_offline_count')?>"></span><span class="count" title="<?= \F3::get('lang_online_count')?>"></span></span></li>
-                <li id="nav-filter-unread" class="nav-filter-unread" role="link" tabindex="0"><span role="listitem"><?= \F3::get('lang_unread')?>
-                    <span class="unread-count offlineable">
+                <li>
+                    <a id="nav-filter-newest" class="nav-filter-newest" href="#">
+                        <?= \F3::get('lang_newest')?>
                         <span class="offline-count offlineable" title="<?= \F3::get('lang_offline_count')?>"></span>
                         <span class="count" title="<?= \F3::get('lang_online_count')?>"></span>
-                    </span></span>
+                    </a>
                 </li>
-                <li id="nav-filter-starred" class="nav-filter-starred" role="link" tabindex="0"><span role="listitem"><?= \F3::get('lang_starred') ?> <span class="offline-count offlineable" title="<?= \F3::get('lang_offline_count')?>"></span><span class="count" title="<?= \F3::get('lang_online_count')?>"></span></span></li>
+                <li>
+                    <a id="nav-filter-unread" class="nav-filter-unread" href="#">
+                        <?= \F3::get('lang_unread')?>
+                        <span class="unread-count offlineable">
+                            <span class="offline-count offlineable" title="<?= \F3::get('lang_offline_count')?>"></span>
+                            <span class="count" title="<?= \F3::get('lang_online_count')?>"></span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a id="nav-filter-starred" class="nav-filter-starred" href="#">
+                        <?= \F3::get('lang_starred') ?>
+                        <span class="offline-count offlineable" title="<?= \F3::get('lang_offline_count')?>"></span>
+                        <span class="count" title="<?= \F3::get('lang_online_count')?>"></span>
+                    </a>
+                </li>
             </ul>
             </div>
 
             <hr>
 
             <div id="nav-tags-wrapper">
-            <span role="heading" aria-level="2"><h2 id="nav-tags-title" class="nav-tags-expanded" tabindex="0" role="link" aria-expanded="true"><?= \F3::get('lang_tags') ?></h2></span>
+            <h2><button type="button" id="nav-tags-title" class="nav-tags-expanded" aria-expanded="true"><?= \F3::get('lang_tags') ?></button></h2>
             <ul id="nav-tags" aria-labeledby="nav-tags-title">
-                <li class="active nav-tags-all" role="link" tabindex="0"><span role="listitem"><?= \F3::get('lang_alltags')?></span></li>
+                <li><a class="active nav-tags-all" href="#"><?= \F3::get('lang_alltags')?></a></li>
             </ul>
-            <span role="heading" aria-level="2"><h2 id="nav-sources-title" class="nav-sources-collapsed" tabindex="0" role="link" aria-expanded="false"><?= \F3::get('lang_sources') ?></h2></span>
+            <h2><button type="button" id="nav-sources-title" class="nav-sources-collapsed" aria-expanded="false"><?= \F3::get('lang_sources') ?></button></h2>
             <ul id="nav-sources" aria-labeledby="nav-sources-title">
             </ul>
             </div>
@@ -174,20 +190,20 @@
                 <hr>
             </div>
 
-            <button id="nav-refresh" title="<?= trim(\F3::get('lang_refreshbutton')); ?>" aria-label="<?= trim(\F3::get('lang_refreshbutton')); ?>" accesskey="r"></button>
-            <button id="nav-settings" title="<?= trim(\F3::get('lang_settingsbutton')); ?>" aria-label="<?= trim(\F3::get('lang_settingsbutton')); ?>" accesskey="t"></button>
-            <button id="nav-logout" title="<?= trim(\F3::get('lang_logoutbutton')); ?>" aria-label="<?= trim(\F3::get('lang_logoutbutton')); ?>" accesskey="l"></button>
+            <div class="nav-toolbar">
+                <button id="nav-refresh" title="<?= trim(\F3::get('lang_refreshbutton')); ?>" aria-label="<?= trim(\F3::get('lang_refreshbutton')); ?>" accesskey="r"></button>
+                <button id="nav-settings" title="<?= trim(\F3::get('lang_settingsbutton')); ?>" aria-label="<?= trim(\F3::get('lang_settingsbutton')); ?>" accesskey="t"></button>
+                <button id="nav-logout" title="<?= trim(\F3::get('lang_logoutbutton')); ?>" aria-label="<?= trim(\F3::get('lang_logoutbutton')); ?>" accesskey="l"></button>
 
-            <?php if ($this->publicMode === true) : ?>
-            <button id="nav-login" title="<?= trim(\F3::get('lang_loginbutton')); ?>" aria-label="<?= trim(\F3::get('lang_loginbutton')); ?>" accesskey="l"></button>
-            <?php endif; ?>
-
-            <a id="nav-copyright" href="https://selfoss.aditu.de" target="_blank" rel="noopener noreferrer"><?= trim(\F3::get('html_title')); ?> <?= \F3::get('version'); ?></a>
+                <?php if ($this->publicMode === true) : ?>
+                <button id="nav-login" title="<?= trim(\F3::get('lang_loginbutton')); ?>" aria-label="<?= trim(\F3::get('lang_loginbutton')); ?>" accesskey="l"></button>
+                <?php endif; ?>
+            </div>
         </div>
 
         <!-- search -->
         <div id="search" role="search" class="offlineable">
-            <input aria-label="<?= \F3::get('lang_search_label') ?>" type="text" id="search-term" accesskey="s">
+            <input aria-label="<?= \F3::get('lang_search_label') ?>" type="search" id="search-term" accesskey="s">
             <button id="search-remove" title="<?= \F3::get('lang_searchremove')?>" accesskey="h" aria-label="<?= \F3::get('lang_searchremove')?>"><img src="images/remove.png" aria-hidden="true" alt=""></button>
             <button id="search-button" title="<?= \F3::get('lang_searchbutton')?>" aria-label="<?= \F3::get('lang_searchbutton')?>" accesskey="e"><img src="images/search.png" alt=""></button>
         </div>

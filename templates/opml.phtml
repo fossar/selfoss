@@ -28,28 +28,26 @@
     </head>
     <body id="opmlbody">
 
-<main>
-
-        <form method="post" enctype="multipart/form-data">
-            <ul id="opml">
-            <li><h1>Upload an OPML File</h1></li>
-            <li>
-                <p>
-                Coming from a different RSS Reader? Export your subscriptions to an OPML file and upload it here. OPML export is usually
-                located somewhere in settings, consult the reader’s manual.
-                </p>
-            </li>
-            <?php
-                if (isset($this->msg)) {
-                    echo '<li class="msg ' . $this->msgclass . '"><p>' . $this->msg . '</p><li>';
-                }
-            ?>
-            <li class="center"><label for="opml">Opml.xml:</label> <input type="file" accesskey="f" name="opml" id="opml"></li>
-            <li class="button"><label>&nbsp;</label><input type="submit" value="Deliver my OPML!" accesskey="d"></li>
-            </ul>
-        </form>
-
-</main>
+        <main>
+            <form method="post" enctype="multipart/form-data">
+                <ul id="opml">
+                <li><h1>Upload an OPML File</h1></li>
+                <li>
+                    <p>
+                    Coming from a different RSS Reader? Export your subscriptions to an OPML file and upload it here. OPML export is usually
+                    located somewhere in settings, consult the reader’s manual.
+                    </p>
+                </li>
+                <?php
+                    if (isset($this->msg)) {
+                        echo '<li class="msg ' . $this->msgclass . '"><p>' . $this->msg . '</p><li>';
+                    }
+                ?>
+                <li class="center"><label for="opml">Opml.xml:</label> <input type="file" accesskey="f" name="opml" id="opml"></li>
+                <li class="button"><label>&nbsp;</label><input type="submit" value="Deliver my OPML!" accesskey="d"></li>
+                </ul>
+            </form>
+        </main>
 
         <script src="<?= \helpers\View::getGlobalJsFileName(); ?>"></script>
         <script type="text/javascript">

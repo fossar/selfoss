@@ -69,6 +69,12 @@ input {
     overflow-x:hidden;
 }
 
+
+    #nav-filter a, #nav-tags a, #nav-sources a {
+        display: block;
+        text-decoration: none;
+    }
+
     #nav hr {
         border:0;
         border-bottom:1px solid #272325;
@@ -124,7 +130,7 @@ input {
         margin-bottom:30px;
     }
     
-        #nav-filter li {
+        #nav-filter li a {
             color:#6a6a6a;
             padding:5px;
             padding-left:24px;
@@ -134,7 +140,7 @@ input {
             cursor:pointer;
         }
         
-        #nav-filter li.active {
+        #nav-filter li a.active {
             background:#272325;
             color:#d7d7d7;
             font-size:1em;
@@ -200,10 +206,16 @@ input {
             display: inline !important;
         }
 
-    #nav h2 {
+    #nav h2 button {
+        display: block;
+        width: 100%;
+        text-align: inherit;
+        line-height: 2.0;
+        font-family: inherit;
+        border: 0;
         color:#494949;
         text-transform:uppercase;
-        font-size:0.8em;
+        font-size: 0.8rem;
         margin-left:18px;
         font-weight:bold;
     }
@@ -224,7 +236,7 @@ input {
             background: url(images/nav-expanded.png) center left no-repeat;
         }
         
-        #nav-tags li {
+        #nav-tags li a {
             position:relative;
             color:#b9b9b9;
             cursor:pointer;
@@ -240,7 +252,7 @@ input {
             -o-text-overflow: ellipsis;
         }
         
-        #nav-tags li.active {
+        #nav-tags li a.active {
             background:#272325;
             color:#d7d7d7;
         }
@@ -275,7 +287,7 @@ input {
             display:none;
         }
     
-        #nav-sources li {
+        #nav-sources li a {
             position:relative;
             color:#b9b9b9;
             cursor:pointer;
@@ -290,12 +302,12 @@ input {
             -o-text-overflow: ellipsis;
         }
         
-        #nav-sources li.active {
+        #nav-sources li a.active {
             background:#272325;
             color:#d7d7d7;
         }
         
-        #nav-sources li.unread{
+        #nav-sources li a.unread{
             font-weight: bold;
             font-size: 0.7em;
         }
@@ -316,10 +328,6 @@ input {
     #nav-login {
         padding: 0;
         border: none;
-        position:absolute;
-        top:100%;
-        margin-top:-80px;
-        left:20px;
         width:45px;
         height:45px;
         border-radius:2px;
@@ -342,16 +350,21 @@ input {
     
     #nav-settings {
         background:url(images/nav-sources.png) no-repeat center center #272325;
-        left:70px;
     }
         
     #nav-logout {
         background:url(images/nav-logout.png) no-repeat center center #272325;
-        left:120px;
     }    
     
     #nav-login {
         background:url(images/nav-login.png) no-repeat center center #272325;
+    }
+
+    .nav-toolbar {
+        text-align: center;
+    }
+
+    body:not(.publicupdate) #nav-login {
         width:140px;
     }
 
@@ -359,25 +372,10 @@ input {
         width:70px;
     }
 
-    #nav-settings.nologin {
-        left:95px;
-    }
-    
     #nav-mobile {
         display:none;
     }
     
-    #nav-copyright {
-        position:absolute;
-        top:100%;
-        margin-top:-25px;
-        margin-left:20px;
-        font-size:0.6em;
-        color:#555;
-        text-decoration:none;
-    }
-    
-
 /* search */
 
 #search {
@@ -1029,16 +1027,12 @@ input {
 #nav-login,
 body.publicmode.authenabled.loggedin #nav-login,
 #nav-logout,
-body.notloggedin #nav-mark,
-body.notloggedin #nav-settings,
-body.notloggedin .entry-starr,
-body.notloggedin .entry-unread {
+body:not(.loggedin) #nav-mark,
+body:not(.loggedin) #nav-settings,
+body:not(.loggedin) .entry-starr,
+body:not(.loggedin):not(.publicupdate) #nav-refresh,
+body:not(.loggedin) .entry-unread {
     display:none;
-}
-
-body.publicmode.authenabled #nav-login,
-body.authenabled.loggedin #nav-logout {
-    display: block;
 }
 
 /* mobile version */
@@ -1046,7 +1040,7 @@ body.authenabled.loggedin #nav-logout {
 /* only desktop */
 @media screen and (min-width: 1024px) {
 
-    body.publicmode.notloggedin  .entry-toolbar {
+    body.publicmode:not(.loggedin) .entry-toolbar {
         display:none;
     }
 
@@ -1054,7 +1048,6 @@ body.authenabled.loggedin #nav-logout {
 
 /* desktop and tablet */
 @media screen and (min-width: 641px) {
-
     #nav {
         position:fixed;
         width:180px;
@@ -1067,6 +1060,11 @@ body.authenabled.loggedin #nav-logout {
     
     .mark-these-read {
         display: none;
+    }
+
+    body.publicmode.authenabled #nav-login,
+    body.authenabled.loggedin #nav-logout {
+        display: inline-block;
     }
 }
 
@@ -1110,23 +1108,11 @@ body.authenabled.loggedin #nav-logout {
     #nav-login {
         width:40px;
     }
-    
-    #nav-settings {
-        left:65px;
-    }
-    
-    #nav-logout {
-        left:110px;
-    }
-    
+
     #nav-settings.nologin, #nav-refresh.nologin {
         width:55px;
     }
 
-    #nav-settings.nologin {
-        left:80px;
-    }
-    
     #nav-tags .color {
         width:25px;
         height:25px;
@@ -1287,7 +1273,6 @@ body.authenabled.loggedin #nav-logout {
 		
         #nav-search {
             display:block;
-            margin-bottom:80px;
         }
         
         #nav-search.offline {
@@ -1307,34 +1292,19 @@ body.authenabled.loggedin #nav-logout {
                 border-radius:4px;
                 cursor:pointer;
             }
-        
-        #nav-refresh,
-        #nav-settings,
-        #nav-logout,
-        #nav-login {
-            position:relative;
-            top:10px;
-            left:0;
-            margin-left:20px;
-            margin-bottom:20px;
-            float:left;
+
+        body.publicmode.authenabled #nav-login,
+        body.authenabled.loggedin #nav-logout {
+            display: block;
         }
 
-        #nav-settings {
-            left:50px;
+        .nav-toolbar button {
+            margin: 1em auto;
+            min-width: 85%;
+            width: 200px;
+            display: block;
         }
-        
-        #nav-login,
-        #nav-logout {
-            left:100px;
-        }
-        
-        #nav-copyright {
-            margin-top:-20px;
-            margin-left:-60px;
-            left:100%;
-        }
-        
+
         #search {
             display:none;
         }
@@ -1460,11 +1430,12 @@ body.authenabled.loggedin #nav-logout {
         height:50px;
     }
     
+        .entry-smartphone-share li {
+            list-style: none;
+            display: inline-block;
+        }
         .entry-smartphone-share button {
-            margin-right:10px;
-            margin-bottom:5px;
-            list-style:none;
-            display:block;
+            display: block;
         }
         
     .source-opml,
