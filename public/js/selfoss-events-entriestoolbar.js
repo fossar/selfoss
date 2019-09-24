@@ -80,7 +80,7 @@ selfoss.events.entriesToolbar = function(parent) {
 
             // update statistics in main menue
             var updateStats = function(starr) {
-                var starred = parseInt($('.nav-filter-starred span.count').html());
+                var starred = parseInt($('.nav-filter-starred span.count').html(), 10);
                 if (starr) {
                     starred++;
                 } else {
@@ -128,7 +128,7 @@ selfoss.events.entriesToolbar = function(parent) {
             // update statistics in main menue and the currently active tag
             var updateStats = function(unread) {
                 // update all unread counters
-                var unreadstats = parseInt($('.nav-filter-unread span.count').html());
+                var unreadstats = parseInt($('.nav-filter-unread span.count').html(), 10);
                 var diff = unread ? -1 : 1;
 
                 selfoss.refreshUnread(unreadstats + diff);

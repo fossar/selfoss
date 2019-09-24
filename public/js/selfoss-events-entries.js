@@ -169,6 +169,13 @@ selfoss.events.entries = function() {
         });
     }
 
+    // stream pagination buttons
+    $('#stream-pagination button').unbind('click').click(function() {
+        var pageNumber = parseInt($(this).html(), 10);
+        selfoss.filter.offset = (pageNumber - 1) * selfoss.filter.itemsPerPage;
+        selfoss.db.reloadList();
+    });
+
     // click a tag
     if (selfoss.isSmartphone() == false) {
         $('.entry-tags-tag').unbind('click').click(function() {

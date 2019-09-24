@@ -204,7 +204,7 @@ selfoss.dbOnline = {
                             unreadCount = data.stats.unread;
                         } else {
                             unreadCount = parseInt($('.unread-count .count')
-                                .html());
+                                .html(), 10);
                         }
                         if (unreadCount > $('.entry.unread').length) {
                             $('.stream-more').show();
@@ -392,7 +392,7 @@ selfoss.dbOffline = {
             .then(function() {
                 var offlineDays = window.localStorage.getItem('offlineDays');
                 if (offlineDays !== null) {
-                    selfoss.dbOffline.offlineDays = parseInt(offlineDays);
+                    selfoss.dbOffline.offlineDays = parseInt(offlineDays, 10);
                 }
                 // The newest garbage collected entry is either what's already
                 // in the offline db or if more recent the entry older than
@@ -559,19 +559,27 @@ selfoss.dbOffline = {
                 var isMore = false;
                 var alwaysInDb = selfoss.filter.type === 'starred'
                              || selfoss.filter.type === 'unread';
+                var offset = selfoss.filter.offset;
 
                 entries.filter(function(entry) {
+                    var keepEntry = false;
+
                     if (selfoss.filter.extraIds.indexOf(entry.id) > -1) {
                         return true;
                     }
 
                     if (selfoss.filter.type == 'starred') {
-                        return entry.starred;
+                        keepEntry = entry.starred;
                     } else if (selfoss.filter.type == 'unread') {
-                        return entry.unread;
+                        keepEntry = entry.unread;
                     }
 
-                    return true;
+                    if (keepEntry && offset > 0) {
+                        offset = offset - 1;
+                        return false;
+                    }
+
+                    return keepEntry;
                 }).until(function(entry) {
                     // stop iteration if enough entries have been shown
                     // go one further to assess if has more
@@ -679,7 +687,7 @@ selfoss.dbOffline = {
         var d = new Date().toISOString();
         statuses.forEach(function(newStatus) {
             newQueuedStatuses.push({
-                entryId: parseInt(newStatus.entryId),
+                entryId: parseInt(newStatus.entryId, 10),
                 name: newStatus.name,
                 value: newStatus.value,
                 datetime: d
@@ -758,7 +766,7 @@ selfoss.dbOffline = {
                         }
                     });
 
-                    var id = parseInt(itemStatus.id);
+                    var id = parseInt(itemStatus.id, 10);
                     selfoss.db.storage.entries.get(id).then(function() {
                         selfoss.db.storage.entries.update(id, newStatus);
                     }, function() {

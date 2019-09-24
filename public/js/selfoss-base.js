@@ -500,7 +500,7 @@ var selfoss = {
         if (ids.length === 0 && selfoss.filter.type == 'unread') {
             $('.entry').remove();
             if (selfoss.filter.type == 'unread' &&
-                parseInt($('.unread-count .count').html()) > 0) {
+                parseInt($('.unread-count .count').html(), 10) > 0) {
                 selfoss.db.reloadList();
             } else {
                 selfoss.ui.refreshStreamButtons(true);
@@ -517,7 +517,7 @@ var selfoss = {
 
         selfoss.ui.beforeReloadList(true);
 
-        var unreadstats = parseInt($('.nav-filter-unread span.count').html()) -
+        var unreadstats = parseInt($('.nav-filter-unread span.count').html(), 10) -
             ids.length;
         var displayed = false;
         var displayNextUnread = function() {

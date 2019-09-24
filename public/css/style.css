@@ -776,6 +776,14 @@ input {
             display:none;
         }
 
+#stream-pagination {
+    text-align: center;
+}
+
+#stream-pagination li {
+    display: inline;
+}
+
 #fullscreen-entry {
     display:none;
 }
