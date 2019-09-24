@@ -49,6 +49,8 @@
   "lang_source_refresh": "Rafraîchir cette source",
   "lang_no_entries": "Aucun article à consulter",
   "lang_more": "Plus",
+  "lang_page_current": "celle-ci",
+  "lang_page_goto": "Aller à la page {0}",
   "lang_login": "Connexion",
   "lang_login_username": "Identifiant",
   "lang_login_password": "Mot de passe",

@@ -89,7 +89,9 @@
         data-error_invalid_subsection="<?= \F3::get('lang_error_invalid_subsection'); ?>"
         data-seconds="<?= \F3::get('lang_seconds'); ?>"
         data-minutes="<?= \F3::get('lang_minutes'); ?>"
-        data-hours="<?= \F3::get('lang_hours'); ?>"></span>
+        data-hours="<?= \F3::get('lang_hours'); ?>"
+        data-page_current="<?= \F3::get('lang_page_current'); ?>"
+        data-page_goto="<?= \F3::get('lang_page_goto'); ?>"></span>
 
     <!-- other settings -->
     <span id="config"
@@ -205,7 +207,7 @@
             <button class="stream-button mark-these-read"><span><?= trim(\F3::get('lang_markread')); ?></span></button>
             <button class="stream-button stream-error"><?= trim(\F3::get('lang_streamerror')); ?></button>
             <nav role="navigation" aria-label="Pagination Navigation">
-                <ul id="stream-pagination" />
+                <ul id="stream-pagination"></ul>
             </nav>
         </div>
 

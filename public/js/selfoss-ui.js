@@ -129,6 +129,7 @@ selfoss.ui = {
         hasMore = (typeof hasMore !== 'undefined') ? hasMore : false;
 
         $('.stream-button, .stream-empty').css('display', 'block').hide();
+        $('#stream-pagination').hide();
         if (entries) {
             if ($('.entry').not('.fullscreen').length > 0) {
                 $('.stream-empty').hide();
@@ -149,10 +150,15 @@ selfoss.ui = {
                     var current = '';
                     if (selfoss.filter.offset == selfoss.filter.itemsPerPage * (pageNumber - 1)) {
                         currentAttr = ' aria-current="true"';
-                        current = ' (current)';
+                        current = ' (' + selfoss.ui._('page_current') + ')';
                     }
-                    streamPagination.append('<li><button aria-label="Goto Page ' + pageNumber + '"' + currentAttr + '>' + pageNumber + current + '</button></li>');
+                    streamPagination.append('<li><button aria-label="' + selfoss.ui._('page_goto', [pageNumber]) + current + '"' + currentAttr + '>' + pageNumber + current + '</button></li>');
+                    if (pageNumber > 5) {
+                        streamPagination.append('<li>...</li>');
+                        break;
+                    }
                 }
+                $('#stream-pagination').show();
             } else {
                 $('.stream-empty').show();
                 if (selfoss.isSmartphone()) {

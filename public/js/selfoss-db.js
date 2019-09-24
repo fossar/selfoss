@@ -572,8 +572,6 @@ selfoss.dbOffline = {
                         keepEntry = entry.starred;
                     } else if (selfoss.filter.type == 'unread') {
                         keepEntry = entry.unread;
-                    } else if (selfoss.filter.type == 'lastread') {
-                        keepEntry = !entry.unread && !entry.skipped;
                     }
 
                     if (keepEntry && offset > 0) {

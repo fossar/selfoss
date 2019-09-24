@@ -50,6 +50,8 @@
   "lang_source_refresh": "Refresh this source",
   "lang_no_entries": "No entries found",
   "lang_more": "More",
+  "lang_page_current": "current",
+  "lang_page_goto": "Goto page {0}",
   "lang_login": "Log in",
   "lang_login_username": "Username",
   "lang_login_password": "Password",
