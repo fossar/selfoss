@@ -37,9 +37,14 @@ selfoss.events.entriesToolbar = function(parent) {
     parent.find('.entry-smartphone-share .entry-next').unbind('click').click(function() {
         var $selected = $('.entry.selected, .entry.fullscreen:visible');
         var id = $selected.attr('id').replace('entrr', 'entry');
+
+        // dismiss the currently open modal
         $selected.find('.entry-unread.active').click();
         $selected.find('.entry-title').click();
-        $('#' + id).next('.entry').find('.entry-title').click();
+
+        // activate a new entry
+        selfoss.ui.entryActivate($('#' + id).next('.entry'));
+
         return false;
     });
 

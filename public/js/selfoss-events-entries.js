@@ -85,15 +85,14 @@ selfoss.events.entries = function() {
             var entryContent = parent.find('.entry-content');
 
             // show/hide (with toolbar)
-            if (parent.attr('aria-expanded') === 'true') {
-                parent.attr('aria-expanded', 'false');
+            if (selfoss.ui.entryIsExpanded(parent)) {
+                selfoss.ui.entryCollapse(parent);
                 selfoss.events.setHash();
             } else {
-                parent.attr('aria-expanded', 'true');
                 if ($('#config').data('auto_collapse') == '1') {
-                    $('.entry[aria-expanded="true"]').attr('aria-expanded', 'false');
+                    selfoss.ui.entryCollapseAll();
                 }
-                parent.attr('aria-expanded', 'true');
+                selfoss.ui.entryExpand(parent);
                 selfoss.events.setHash('same', 'same', entryId);
                 selfoss.events.entriesToolbar(parent);
 
@@ -215,7 +214,7 @@ selfoss.events.entries = function() {
     // more)
     if (selfoss.events.entryId && selfoss.filter.fromId === undefined) {
         var entry = $('#entry' + selfoss.events.entryId);
-        entry.children('.entry-title').click();
+        selfoss.ui.entryActivate(entry);
         // ensure scrolling to requested entry even if scrolling to article
         // header is disabled
         if ($('#config').data('scroll_to_article_header') == '0') {
