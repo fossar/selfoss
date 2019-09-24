@@ -11,8 +11,8 @@ selfoss.shortcuts = {
                 return false;
             }
 
-            var selected = $('.entry.selected');
-            if (selected.length > 0 && !selfoss.ui.entryIsExpanded(selected)) {
+            var selected = selfoss.ui.entryGetSelected();
+            if (selected !== null && !selfoss.ui.entryIsExpanded(selected)) {
                 selfoss.ui.entryActivate(selected);
             } else {
                 selfoss.shortcuts.nextprev('next', true);
@@ -104,7 +104,7 @@ selfoss.shortcuts = {
                 return false;
             }
 
-            selfoss.events.entriesToolbar($('.entry.selected'));
+            selfoss.events.entriesToolbar(selfoss.ui.entryGetSelected());
             $('.entry.selected .entry-starr').click();
             e.preventDefault();
             return false;
@@ -116,7 +116,7 @@ selfoss.shortcuts = {
                 return false;
             }
 
-            selfoss.events.entriesToolbar($('.entry.selected'));
+            selfoss.events.entriesToolbar(selfoss.ui.entryGetSelected());
             $('.entry.selected .entry-unread').click();
             e.preventDefault();
             return false;
@@ -128,7 +128,7 @@ selfoss.shortcuts = {
                 return false;
             }
 
-            $('.entry.selected').find('h3').click();
+            selfoss.ui.entryToggleExpanded(selfoss.ui.entryGetSelected());
             e.preventDefault();
             return false;
         });
@@ -162,7 +162,7 @@ selfoss.shortcuts = {
 
             e.preventDefault();
 
-            selfoss.events.entriesToolbar($('.entry.selected'));
+            selfoss.events.entriesToolbar(selfoss.ui.entryGetSelected());
 
             // mark item as read
             if ($('.entry.selected .entry-unread').hasClass('active')) {
@@ -269,52 +269,55 @@ selfoss.shortcuts = {
         }
 
         // select current
-        var old = $('.entry.selected');
+        var old = selfoss.ui.entryGetSelected();
         var current = null;
 
-        // select next/prev and save it to "current"
+        // select next/prev entry and save it to "current"
+        // if we would overflow, we stay on the old one
         if (direction == 'next') {
-            if (old.length == 0) {
+            if (old === null) {
                 current = $('.entry:eq(0)');
             } else {
-                current = old.next().length == 0 ? old : old.next();
-            }
+                // need to use nextAll because jquery.keyboardtrap adds a div after the current element
+                if (old.nextAll('.entry:eq(0)').length === 0) {
+                    current = old;
 
+                    // attempt to load more
+                    $('.stream-more').click();
+                } else {
+                    current = old.nextAll('.entry:eq(0)');
+                }
+            }
         } else {
-            if (old.length == 0) {
+            if (old === null) {
                 return;
             } else {
-                current = old.prev().length == 0 ? old : old.prev();
+                // need to use prevAll because jquery.keyboardtrap adds a div before the current element
+                current = old.prevAll('.entry:eq(0)').length == 0 ? old : old.prevAll('.entry:eq(0)');
             }
         }
 
-        // remove active
-        old.removeClass('selected');
-        selfoss.ui.entryCollapse(old);
-
+        // when there are no entries
         if (current.length == 0) {
             return;
         }
 
-        current.addClass('selected');
+        if (old !== current) {
+            // remove active
+            selfoss.ui.entryDeactivate(old);
 
-        // load more
-        if (current.hasClass('stream-more')) {
-            current.click().removeClass('selected').prev().addClass('selected');
+            if (open) {
+                selfoss.ui.entryActivate(current);
+            } else {
+                selfoss.ui.entrySelect(current);
+            }
+
+            // scroll to element
+            selfoss.shortcuts.autoscroll(current);
+
+            // focus the title link for better keyboard navigation
+            current.find('.entry-title-link').focus();
         }
-
-        // open?
-        if (!current.hasClass('stream-more') && open) {
-            selfoss.ui.entryActivate(current);
-        } else {
-            selfoss.events.setHash();
-        }
-
-        // scroll to element
-        selfoss.shortcuts.autoscroll(current);
-
-        // focus the title link for better keyboard navigation
-        current.find('.entry-title-link').focus();
     },
 
 
