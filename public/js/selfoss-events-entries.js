@@ -13,11 +13,6 @@ selfoss.events.entries = function() {
     $(target).click(function() {
         var parent = ((target == '.entry') ? $(this) : $(this).parent());
 
-        if (selfoss.isSmartphone() == false) {
-            $('.entry.selected').removeClass('selected');
-            parent.addClass('selected');
-        }
-
         // prevent event on fullscreen touch
         if (document.body.classList.contains('fullscreen-mode')) {
             return;
