@@ -22,7 +22,7 @@
      data-entry-id="<?= $this->item['id']; ?>"
      data-entry-source="<?= $this->item['source']; ?>"
      data-entry-datetime="<?= $this->viewHelper->date_iso8601($this->item['datetime']); ?>"
-     class="entry <?= $this->item['unread'] == 1 ? 'unread' : ''; ?>" role="article" aria-expanded="false">
+     class="entry <?= $this->item['unread'] == 1 ? 'unread' : ''; ?>" role="article">
 
     <!-- icon -->
     <a href="<?= \helpers\Anonymizer::anonymize($this->item['link']); ?>" class="entry-icon" tabindex="-1" rel="noopener noreferrer" aria-hidden="true">
@@ -32,7 +32,7 @@
     </a>
 
     <!-- title -->
-    <h3 class="entry-title"><?= $title; ?></h3>
+    <h3 class="entry-title"><span class="entry-title-link" aria-expanded="false" role="link" tabindex="0"><?= $title; ?></span></h3>
 
     <span class="entry-tags">
         <?php foreach ($this->item['tags'] as $tag => $color) : ?>
@@ -70,7 +70,7 @@
         <?= $content; ?>
 
         <div class="entry-smartphone-share">
-            <ul>
+            <ul aria-label="<?= \F3::get('lang_article_actions')?>">
                 <li><button accesskey="o" aria-haspopup="true" class="entry-newwindow"><?= \F3::get('lang_open_window')?></button></li>
                 <li><button accesskey="n" class="entry-next"><?= \F3::get('lang_next')?></button></li>
             </ul>
@@ -79,7 +79,7 @@
 
     <!-- toolbar -->
     <div class="entry-toolbar">
-        <ul>
+        <ul aria-label="<?= \F3::get('lang_article_actions')?>">
             <li><button accesskey="a" class="entry-starr <?= $this->item['starred'] == 1 ? 'active' : ''; ?>"><?= $this->item['starred'] == 1 ? \F3::get('lang_unstar') : \F3::get('lang_star'); ?></button></li>
             <li><button accesskey="u" class="entry-unread <?= $this->item['unread'] == 1 ? 'active' : ''; ?>"><?= $this->item['unread'] == 1 ? \F3::get('lang_mark') : \F3::get('lang_unmark'); ?></button></li>
             <li><button accesskey="o" class="entry-newwindow" aria-haspopup="true"><?= \F3::get('lang_open_window')?></button></li>

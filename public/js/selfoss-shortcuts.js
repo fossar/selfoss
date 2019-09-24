@@ -12,8 +12,8 @@ selfoss.shortcuts = {
             }
 
             var selected = $('.entry.selected');
-            if (selected.length > 0 && selected.is('[aria-expanded="true"]') == false) {
-                selected.find('.entry-title').click();
+            if (selected.length > 0 && !selfoss.ui.entryIsExpanded(selected)) {
+                selfoss.ui.entryActivate(selected);
             } else {
                 selfoss.shortcuts.nextprev('next', true);
             }
@@ -140,7 +140,7 @@ selfoss.shortcuts = {
             }
 
             e.preventDefault();
-            $('.entry[aria-expanded="true"]').attr('aria-expanded', 'false');
+            selfoss.ui.entryCollapseAll();
         });
 
         // 'v': open target
@@ -290,7 +290,7 @@ selfoss.shortcuts = {
 
         // remove active
         old.removeClass('selected');
-        old.attr('aria-expanded', 'false');
+        selfoss.ui.entryCollapse(old);
 
         if (current.length == 0) {
             return;
@@ -305,7 +305,7 @@ selfoss.shortcuts = {
 
         // open?
         if (!current.hasClass('stream-more') && open) {
-            current.find('.entry-title').click();
+            selfoss.ui.entryActivate(current);
         } else {
             selfoss.events.setHash();
         }
@@ -313,8 +313,8 @@ selfoss.shortcuts = {
         // scroll to element
         selfoss.shortcuts.autoscroll(current);
 
-        // focus the icon for better keyboard navigation
-        current.find('.entry-icon').focus();
+        // focus the title link for better keyboard navigation
+        current.find('.entry-title-link').focus();
     },
 
 
@@ -352,7 +352,7 @@ selfoss.shortcuts = {
             direction = 'next';
         }
 
-        var content = $('.entry').is('[aria-expanded="true"]');
+        var content = selfoss.ui.entryIsExpanded($('.entry'));
         selfoss.shortcuts.nextprev(direction, content);
     },
 
