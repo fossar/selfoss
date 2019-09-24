@@ -131,15 +131,17 @@ selfoss.events = {
                 // open it.
                 if (selfoss.events.entryId
                     && selfoss.events.processHashChange) {
-                    $('#entry' + selfoss.events.entryId).click();
+                    var entry = $('#entry' + selfoss.events.entryId);
+                    selfoss.ui.entrySelect(entry);
+                    selfoss.ui.entryExpand(entry);
                 }
 
                 // if navigating using browser buttons and entry opened,
                 // close opened entry.
                 if (!selfoss.events.entryId
                     && selfoss.events.processHashChange
-                    && $('#fullscreen-entry').is(':visible')) {
-                    $('.entry.fullscreen').click();
+                    && selfoss.ui.entryGetSelected() !== null) {
+                    selfoss.ui.entrySelect(null);
                 }
             } else {
                 // if navigating using browser buttons and entry selected,
