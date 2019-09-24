@@ -73,6 +73,54 @@ selfoss.ui = {
     },
 
 
+    /**
+     * Expand given entries.
+     * @param {jQuery wrapped Element(s)} entry element(s)
+     */
+    entryExpand: function(entry) {
+        entry.addClass('expanded');
+        $('.entry-title > .entry-title-link', entry).attr('aria-expanded', 'true');
+    },
+
+
+    /**
+     * Collapse given entries.
+     * @param {jQuery wrapped Element(s)} entry element(s)
+     */
+    entryCollapse: function(entry) {
+        entry.removeClass('expanded');
+        $('.entry-title > .entry-title-link', entry).attr('aria-expanded', 'false');
+    },
+
+
+    /**
+     * Collapse all expanded entries.
+     */
+    entryCollapseAll: function() {
+        selfoss.ui.entryCollapse($('.entry.expanded'));
+    },
+
+
+    /**
+     * Is given entry expanded?
+     * @param {jQuery wrapped Element} entry element
+     * @return {bool} whether it is expanded
+     */
+    entryIsExpanded: function(entry) {
+        return entry.hasClass('expanded');
+    },
+
+
+    /**
+     * Activate entry as if it were clicked.
+     * This will open it, focus it and based on the settings, mark it as read.
+     * @param {jQuery wrapped Element} entry element
+     */
+    entryActivate: function(entry) {
+        entry.find('.entry-title > .entry-title-link').click();
+    },
+
+
     entryStar: function(id, starred, domNode) {
         var button = $('#entry' + id + ' .entry-starr, #entrr' + id + ' .entry-starr',
             domNode);

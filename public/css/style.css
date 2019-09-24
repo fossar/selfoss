@@ -546,7 +546,7 @@ input {
             margin: 0 10px 5px 0;
         }
 
-    .entry[aria-expanded="false"] .entry-content, .entry[aria-expanded="false"] .entry-toolbar {
+    .entry:not(.expanded) .entry-content, .entry:not(.expanded) .entry-toolbar {
         display: none;
     }
     
