@@ -21,7 +21,7 @@
     "cs:server": "composer run-script cs",
     "dist": "npm install && npm run install-dependencies && node utils/create-zipball.js",
     "install-dependencies": "composer install --no-dev --optimize-autoloader --prefer-dist && cd assets && npm install --production",
-    "lint:client": "eslint assets/js/selfoss-*.js",
+    "lint:client": "eslint assets/js/*.js",
     "lint:server": "composer run-script lint",
     "postinstall": "npm install --prefix assets/"
   }
