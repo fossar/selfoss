@@ -1,0 +1,47 @@
+{
+  "dependencies": {
+    "@fancyapps/fancybox": "^3.1.20",
+    "dexie": "^2.0.1",
+    "jquery": "^2.2.4",
+    "jquery-focusable": "^1.0.1",
+    "jquery-hotkeys": "^0.2.2",
+    "jquery-keyboard-trap": "^1.0.1",
+    "jquery-mousewheel": "^3.1.13",
+    "malihu-custom-scrollbar-plugin": "^3.1.5",
+    "spectrum-colorpicker": "^1.8.0"
+  },
+  "extra": {
+    "requiredFiles": {
+      "css": [
+        "assets/node_modules/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css",
+        "assets/node_modules/@fancyapps/fancybox/dist/jquery.fancybox.css",
+        "assets/node_modules/spectrum-colorpicker/spectrum.css",
+        "assets/css/reset.css",
+        "assets/css/style.css"
+      ],
+      "js": [
+        "assets/node_modules/jquery/dist/jquery.js",
+        "assets/node_modules/jquery-mousewheel/jquery.mousewheel.js",
+        "assets/node_modules/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.js",
+        "assets/js/lazy-image-loader.js",
+        "assets/node_modules/spectrum-colorpicker/spectrum.js",
+        "assets/node_modules/jquery-hotkeys/jquery-hotkeys.js",
+        "assets/node_modules/dexie/dist/dexie.js",
+        "assets/node_modules/jquery-focusable/jquery.focusable.js",
+        "assets/node_modules/jquery-keyboard-trap/jquery.keyboardtrap.js",
+        "assets/js/selfoss-base.js",
+        "assets/js/selfoss-shares.js",
+        "assets/js/selfoss-db.js",
+        "assets/js/selfoss-ui.js",
+        "assets/js/selfoss-events.js",
+        "assets/js/selfoss-events-navigation.js",
+        "assets/js/selfoss-events-search.js",
+        "assets/js/selfoss-events-entries.js",
+        "assets/js/selfoss-events-entriestoolbar.js",
+        "assets/js/selfoss-events-sources.js",
+        "assets/js/selfoss-shortcuts.js",
+        "assets/node_modules/@fancyapps/fancybox/dist/jquery.fancybox.js"
+      ]
+    }
+  }
+}

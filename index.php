@@ -12,7 +12,7 @@ if ($lang != '0' && $lang != '') {
 $f3->set('auth', new \helpers\Authentication());
 
 /** @var stdClass JS client package manifest */
-$clientPackage = json_decode(file_get_contents(__DIR__ . '/public/package.json'));
+$clientPackage = json_decode(file_get_contents(__DIR__ . '/assets/package.json'));
 
 // define js files
 $js = $clientPackage->extra->requiredFiles->js;

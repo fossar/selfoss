@@ -52,7 +52,7 @@ function isNotUnimportant(dest) {
 }
 
 const requiredAssets = (function() {
-    const files = JSON.parse(fs.readFileSync('public/package.json', 'utf-8')).extra.requiredFiles;
+    const files = JSON.parse(fs.readFileSync('assets/package.json', 'utf-8')).extra.requiredFiles;
 
     return files.css.concat(files.js);
 })();
@@ -67,6 +67,13 @@ archive.pipe(output);
 
 // fill archive with data
 
+archive.directory('assets/', '/assets', filterEntry(file => {
+    const thirdPartyRubbish = file.startsWith('assets/node_modules/') && requiredAssets.indexOf(file) === -1;
+    const lock = file.startsWith('assets/package-lock.json')
+    const allowed = !thirdPartyRubbish && !lock;
+
+    return allowed;
+}));
 archive.directory('controllers/', '/controllers');
 archive.directory('daos/', '/daos');
 archive.directory('helpers/', '/helpers');
@@ -74,11 +81,9 @@ archive.directory('vendor/', '/vendor', filterEntry(isNotUnimportant));
 
 // do not pack bundled assets and assets not listed in index.php
 archive.directory('public/', '/public', filterEntry(file => {
-    const bundle = file === 'public/all.js' || file === 'public/all.css';
-    const thirdPartyRubbish = file.startsWith('public/node_modules/') && requiredAssets.indexOf(file) === -1;
-    const allowed = !bundle && !thirdPartyRubbish;
+    const bundle = file === 'public/all.js' || file === 'public/all.css' || file === 'public/selfoss-sw-offline.js';
 
-    return allowed;
+    return !bundle;
 }));
 
 // copy data: only directory structure and .htaccess for deny

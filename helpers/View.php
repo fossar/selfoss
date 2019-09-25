@@ -268,7 +268,7 @@ class View {
         $indirectResources = [
             'defaults.ini',
             'templates/home.phtml',
-            'public/js/selfoss-sw-offline.js'
+            'assets/js/selfoss-sw-offline.js'
         ];
 
         if (file_exists(\F3::get('BASEDIR') . '/config.ini')) {
@@ -308,7 +308,7 @@ class View {
             $offlineWorker = 'var offlineManifest = ';
             $offlineWorker .= json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
             $offlineWorker .= ";\n\n\n";
-            $offlineWorker .= file_get_contents(\F3::get('BASEDIR') . '/public/js/selfoss-sw-offline.js');
+            $offlineWorker .= file_get_contents(\F3::get('BASEDIR') . '/assets/js/selfoss-sw-offline.js');
             file_put_contents($target, $offlineWorker);
         }
     }
