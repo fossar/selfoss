@@ -60,7 +60,8 @@ const requiredAssets = (function() {
 
 const pkg = JSON.parse(fs.readFileSync('package.json', 'utf-8'));
 
-var output = fs.createWriteStream(`selfoss-${pkg.ver}.zip`);
+const filename = `selfoss-${pkg.ver}.zip`;
+var output = fs.createWriteStream(filename);
 var archive = archiver('zip');
 archive.pipe(output);
 
@@ -99,3 +100,5 @@ archive.file('run.php');
 archive.file('cliupdate.php');
 
 archive.finalize();
+
+console.log(`Zipball ‘${filename}’ was successfully generated.`);

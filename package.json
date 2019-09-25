@@ -14,15 +14,15 @@
     "npm": ">=5"
   },
   "scripts": {
-    "bump-version": "node utils/bump-version.js",
+    "bump-version": "$NODE utils/bump-version.js",
     "check": "npm run check:client && npm run check:server",
     "check:client": "npm run lint:client",
     "check:server": "npm run lint:server && npm run cs:server",
     "cs:server": "composer run-script cs",
-    "dist": "npm install && npm run install-dependencies && node utils/create-zipball.js",
-    "install-dependencies": "composer install --no-dev --optimize-autoloader --prefer-dist && cd assets && npm install --production",
+    "dist": "npm install && $NODE utils/create-zipball.js",
+    "install-dependencies": "composer install --no-dev --optimize-autoloader --prefer-dist && npm install --production --prefix assets/",
     "lint:client": "eslint assets/js/*.js",
     "lint:server": "composer run-script lint",
-    "postinstall": "npm install --prefix assets/"
+    "postinstall": "npm run install-dependencies"
   }
 }
