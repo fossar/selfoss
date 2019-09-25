@@ -33,10 +33,10 @@
     ],
     "autoload": {
         "psr-4": {
-            "controllers\\": "controllers/",
-            "daos\\": "daos/",
-            "helpers\\": "helpers/",
-            "spouts\\": "spouts/"
+            "controllers\\": "src/controllers/",
+            "daos\\": "src/daos/",
+            "helpers\\": "src/helpers/",
+            "spouts\\": "src/spouts/"
         }
     },
     "repositories": [
@@ -52,6 +52,6 @@
     },
     "scripts": {
         "cs": "php-cs-fixer fix --verbose --dry-run --diff",
-        "lint": "php-parallel-lint controllers daos helpers spouts templates"
+        "lint": "php-parallel-lint src"
     }
 }

@@ -267,7 +267,7 @@ class View {
     public static function offlineMtime(array $offlineFiles) {
         $indirectResources = [
             'defaults.ini',
-            'templates/home.phtml',
+            'src/templates/home.phtml',
             'assets/js/selfoss-sw-offline.js'
         ];
 

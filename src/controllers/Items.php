@@ -240,7 +240,7 @@ class Items extends BaseController {
                         'datetime' => \helpers\ViewHelper::date_iso8601($newItem['datetime']),
                         'unread' => $newItem['unread'],
                         'starred' => $newItem['starred'],
-                        'html' => $this->view->render('templates/item.phtml'),
+                        'html' => $this->view->render('src/templates/item.phtml'),
                         'source' => $newItem['source'],
                         'tags' => array_keys($newItem['tags'])
                     ];

@@ -15,7 +15,7 @@ if (newVersion.search(/^\d+\.\d+(\-SNAPSHOT|\-[0-9a-f]+)?$/) === -1) {
 const sources = [
     'package.json',
     'README.md',
-    'common.php',
+    'src/common.php',
     'docs/api-description.json',
     '_docs/website/index.html'
 ];
@@ -33,7 +33,7 @@ const replacements = [
         to: "'version', '" + newVersion + "'"
     },
 
-    // rule for common.php
+    // rule for src/common.php
     {
         from: /Version \d+\.\d+(\-SNAPSHOT|\-[0-9a-f]+)?/,
         to: "Version " + newVersion

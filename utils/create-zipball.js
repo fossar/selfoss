@@ -74,9 +74,7 @@ archive.directory('assets/', '/assets', filterEntry(file => {
 
     return allowed;
 }));
-archive.directory('controllers/', '/controllers');
-archive.directory('daos/', '/daos');
-archive.directory('helpers/', '/helpers');
+archive.directory('src/', '/src');
 archive.directory('vendor/', '/vendor', filterEntry(isNotUnimportant));
 
 // do not pack bundled assets and assets not listed in index.php
@@ -93,14 +91,10 @@ archive.file('data/logs/.htaccess');
 archive.file('data/sqlite/.htaccess');
 archive.directory('data/fulltextrss', '/data/fulltextrss');
 
-archive.directory('spouts/', '/spouts');
-archive.directory('templates/', '/templates');
-
 archive.file('.htaccess');
 archive.file('README.md');
 archive.file('defaults.ini');
 archive.file('index.php');
-archive.file('common.php');
 archive.file('run.php');
 archive.file('cliupdate.php');
 

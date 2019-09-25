@@ -6,7 +6,9 @@ use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 
-$autoloader = @include __DIR__ . '/vendor/autoload.php'; // we will show custom error
+define('BASEDIR', __DIR__ . '/..');
+
+$autoloader = @include BASEDIR . '/vendor/autoload.php'; // we will show custom error
 if ($autoloader === false) {
     echo 'The PHP dependencies are missing. Did you run `composer install` in the selfoss directory?';
     exit;
@@ -17,10 +19,10 @@ $f3 = Base::instance();
 $f3->set('DEBUG', 0);
 $f3->set('version', '2.19-SNAPSHOT');
 $f3->set('AUTOLOAD', false);
-$f3->set('cache', __DIR__ . '/data/cache');
-$f3->set('BASEDIR', __DIR__);
-$f3->set('LOCALES', __DIR__ . '/assets/locale/');
-$f3->set('FTRSS_CUSTOM_DATA_DIR', __DIR__ . '/data/fulltextrss/custom');
+$f3->set('BASEDIR', BASEDIR);
+$f3->set('cache', BASEDIR . '/data/cache');
+$f3->set('LOCALES', BASEDIR . '/assets/locale/');
+$f3->set('FTRSS_CUSTOM_DATA_DIR', BASEDIR . '/data/fulltextrss/custom');
 
 // read defaults
 $f3->config('defaults.ini');

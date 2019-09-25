@@ -185,7 +185,7 @@ class Database {
                     ]);
                 }
                 // Jump straight from v6 to v8 due to bug in previous version of the code
-                // in /daos/sqlite/Database.php which
+                // in \daos\sqlite\Database which
                 // set the database version to "7" for initial installs.
                 if (strnatcmp($version, '8') < 0) {
                     \F3::get('db')->exec([

@@ -49,7 +49,7 @@ class Opml extends BaseController {
 
         $this->view->msg = $this->msg;
         $this->view->msgclass = $this->msgclass;
-        echo $this->view->render('templates/opml.phtml');
+        echo $this->view->render('src/templates/opml.phtml');
     }
 
     /**

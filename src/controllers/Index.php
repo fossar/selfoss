@@ -28,7 +28,7 @@ class Index extends BaseController {
             $this->view->allowPublicUpdate = \F3::get('allow_public_update_access') == 1;
             $this->view->publicMode = \F3::get('public') == 1;
             $this->view->authEnabled = \F3::get('auth')->enabled() === true;
-            echo $this->view->render('templates/home.phtml');
+            echo $this->view->render('src/templates/home.phtml');
 
             return;
         }
@@ -102,7 +102,7 @@ class Index extends BaseController {
         if (isset($_POST['password'])) {
             $this->view->hash = hash('sha512', \F3::get('salt') . $_POST['password']);
         }
-        echo $this->view->render('templates/hashpassword.phtml');
+        echo $this->view->render('src/templates/hashpassword.phtml');
     }
 
     /**
@@ -187,11 +187,11 @@ class Index extends BaseController {
         // load stats
         $itemsDao = new \daos\Items();
         $this->view->statsUnread = $itemsDao->numberOfUnread();
-        echo $this->view->render('templates/badge.phtml');
+        echo $this->view->render('src/templates/badge.phtml');
     }
 
     public function win8Notifications() {
-        echo $this->view->render('templates/win8-notifications.phtml');
+        echo $this->view->render('src/templates/win8-notifications.phtml');
     }
 
     /**
@@ -219,7 +219,7 @@ class Index extends BaseController {
             $item['tags'] = $tagsController->tagsAddColors($item['tags'], $tags);
 
             $this->view->item = $item;
-            $itemsHtml .= $this->view->render('templates/item.phtml');
+            $itemsHtml .= $this->view->render('src/templates/item.phtml');
         }
 
         return [

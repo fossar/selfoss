@@ -73,7 +73,7 @@
                     $this->spout = $this->spouts[$this->source['spout']];
                     $this->params = json_decode(html_entity_decode($this->source['params']), true);
                     $this->idAttr = $idAttr;
-                    echo $this->render('templates/source_params.phtml');
+                    echo $this->render('src/templates/source_params.phtml');
                 }
             }
         ?>

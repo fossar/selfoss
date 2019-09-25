@@ -34,7 +34,7 @@ class Sources extends BaseController {
 
         foreach ($sourcesDao->getWithIcon() as $source) {
             $this->view->source = $source;
-            $sourcesHtml .= $this->view->render('templates/source.phtml');
+            $sourcesHtml .= $this->view->render('src/templates/source.phtml');
         }
 
         echo $sourcesHtml;
@@ -51,7 +51,7 @@ class Sources extends BaseController {
 
         $spoutLoader = new \helpers\SpoutLoader();
         $this->view->spouts = $spoutLoader->all();
-        echo $this->view->render('templates/source.phtml');
+        echo $this->view->render('src/templates/source.phtml');
     }
 
     /**
@@ -78,7 +78,7 @@ class Sources extends BaseController {
 
         if (count($this->view->spout->params) > 0) {
             $this->view->idAttr = 'new-' . rand();
-            echo $this->view->render('templates/source_params.phtml');
+            echo $this->view->render('src/templates/source_params.phtml');
         }
     }
 
@@ -96,7 +96,7 @@ class Sources extends BaseController {
             $this->view->source = $source['title'];
             $this->view->sourceid = $source['id'];
             $this->view->unread = $source['unread'];
-            $html .= $this->view->render('templates/source-nav.phtml');
+            $html .= $this->view->render('src/templates/source-nav.phtml');
         }
 
         return $html;

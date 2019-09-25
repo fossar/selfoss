@@ -1,6 +1,6 @@
 <?php
 
-require __DIR__ . '/common.php';
+require __DIR__ . '/src/common.php';
 
 // Load custom language
 $lang = $f3->get('language');

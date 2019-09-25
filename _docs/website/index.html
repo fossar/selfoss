@@ -450,7 +450,7 @@ db_port=3306</code>
                     If you want to get the newest entries from your own source (e.g. an IMAP Email Account, Log Files or any data from your own application), you can include a new spout in your selfoss stream by writing just one php class (saved in one php file).
                 </p>
                 <p>
-                    Create a new php file under <code>/spouts/your_spouts/your_spout.php</code> (choose a name for <code>your_spouts</code> and <code>your_spout</code>). The easiest way is to copy the <code><a href="https://github.com/SSilence/selfoss/blob/master/spouts/rss/feed.php">/spouts/rss/feed.php</a></code> and to modify this file.
+                    Create a new php file under <code>src/spouts/your_spouts/your_spout.php</code> (choose a name for <code>your_spouts</code> and <code>your_spout</code>). The easiest way is to copy the <code><a href="https://github.com/SSilence/selfoss/blob/mastersrc/spouts/rss/feed.php">src/spouts/rss/feed.php</a></code> and to modify this file.
                 </p>
 
                 <h3>Member Variables</h3>
@@ -520,7 +520,7 @@ db_port=3306</code>
                 <h3>Thumbnails</h3>
 
                 <p>
-                    If you would like to show thumbnails instead of text, you have to implement the optional method <code>getThumbnail()</code>. This method have to return the url of the image. selfoss will load and generate the thumbnail automatically. See <code><a href="https://github.com/SSilence/selfoss/blob/master/spouts/rss/images.php">\spouts\rss\images.php</a></code> for an example. This spout searches for an image in an rss feed and returns it.
+                    If you would like to show thumbnails instead of text, you have to implement the optional method <code>getThumbnail()</code>. This method have to return the url of the image. selfoss will load and generate the thumbnail automatically. See <code><a href="https://github.com/SSilence/selfoss/blob/master/src/spouts/rss/images.php">src/spouts/rss/images.php</a></code> for an example. This spout searches for an image in an rss feed and returns it.
                 </p>
 
                 <h3>Your Spouts</h3>

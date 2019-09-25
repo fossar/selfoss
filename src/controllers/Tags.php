@@ -48,7 +48,7 @@ class Tags extends BaseController {
             $this->view->tag = $tag['tag'];
             $this->view->color = $tag['color'];
             $this->view->unread = $tag['unread'];
-            $html .= $this->view->render('templates/tag.phtml');
+            $html .= $this->view->render('src/templates/tag.phtml');
         }
 
         return $html;

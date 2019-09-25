@@ -26,7 +26,7 @@ abstract class spout implements \Iterator {
      *
      * When type is "select", a new entry "values" must be supplied, holding
      * key/value pairs of internal names (key) and displayed labels (value).
-     * See /spouts/rss/heise for an example.
+     * See \spouts\rss\heise class for an example.
      *
      * e.g.
      * [

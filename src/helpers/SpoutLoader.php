@@ -54,7 +54,7 @@ class SpoutLoader {
      */
     protected function readSpouts() {
         if ($this->spouts === null) {
-            $this->spouts = $this->loadClasses('spouts', 'spouts\spout');
+            $this->spouts = $this->loadClasses(__DIR__ . '/../spouts', 'spouts\spout');
 
             // sort spouts by name
             uasort($this->spouts, ['self', 'compareSpoutsByName']);
@@ -79,7 +79,7 @@ class SpoutLoader {
                     // only scan visible .php files
                     if (is_file($location . '/' . $dir . '/' . $file) && substr($file, 0, 1) !== '.' && strpos($file, '.php') !== false) {
                         // create reflection class
-                        $classname = $location . '\\' . $dir . '\\' . str_replace('.php', '', $file);
+                        $classname = 'spouts\\' . $dir . '\\' . str_replace('.php', '', $file);
                         $class = new \ReflectionClass($classname);
 
                         // register widget
