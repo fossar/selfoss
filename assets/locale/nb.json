@@ -78,5 +78,6 @@
   "lang_app_update": "selfoss har blitt oppdatert, last inn på ny",
   "lang_app_reload": "Gjeninnlast",
   "lang_error_offline_storage": "Lagringsfeil for frakoblet lagring: {0}. Gjeninnlasting kan hjelpe. Skrur av frakoblet imens.",
-  "lang_search_label": "Søketekst"
+  "lang_search_label": "Søketekst",
+  "lang_article_actions": "Handlinger"
 }
