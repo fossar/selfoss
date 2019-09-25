@@ -2,7 +2,14 @@
  * ui change functions
  */
 selfoss.ui = {
-
+    /**
+     * Currently selected entry.
+     * The id in the location.hash should imply the selected entry.
+     * It will also be used for keyboard navigation (for finding previous/next).
+     * @private
+     * @type {?jQuery Element}
+     */
+    selectedEntry: null,
 
     showLogin: function(error) {
         error = (typeof error !== 'undefined') ? error : '';
@@ -73,6 +80,123 @@ selfoss.ui = {
     },
 
 
+    /**
+     * Expand given entries.
+     * @param {jQuery wrapped Element(s)} entry element(s)
+     */
+    entryExpand: function(entry) {
+        if (!entry) {
+            return;
+        }
+
+        entry.addClass('expanded');
+        $('.entry-title > .entry-title-link', entry).attr('aria-expanded', 'true');
+    },
+
+
+    /**
+     * Collapse given entries.
+     * @param {jQuery wrapped Element(s)} entry element(s)
+     */
+    entryCollapse: function(entry) {
+        if (!entry) {
+            return;
+        }
+
+        entry.removeClass('expanded');
+        $('.entry-title > .entry-title-link', entry).attr('aria-expanded', 'false');
+    },
+
+
+    /**
+     * Collapse all expanded entries.
+     */
+    entryCollapseAll: function() {
+        selfoss.ui.entryCollapse($('.entry.expanded'));
+    },
+
+
+    /**
+     * Is given entry expanded?
+     * @param {jQuery wrapped Element} entry element
+     * @return {bool} whether it is expanded
+     */
+    entryIsExpanded: function(entry) {
+        return entry.hasClass('expanded');
+    },
+
+
+    /**
+     * Toggle expanded state of given entry.
+     * @param {?jQuery wrapped Element} entry element
+     */
+    entryToggleExpanded: function(entry) {
+        if (!entry) {
+            return;
+        }
+
+        if (selfoss.ui.entryIsExpanded(entry)) {
+            selfoss.ui.entryCollapse(entry);
+        } else {
+            selfoss.ui.entryExpand(entry);
+        }
+    },
+
+
+    /**
+     * Activate entry as if it were clicked.
+     * This will open it, focus it and based on the settings, mark it as read.
+     * @param {jQuery wrapped Element} entry element
+     */
+    entryActivate: function(entry) {
+        entry.find('.entry-title > .entry-title-link').click();
+    },
+
+
+    /**
+     * Deactivate entry, as if it were clicked.
+     * This will close it and maybe something more.
+     * @param {jQuery wrapped Element} entry element
+     */
+    entryDeactivate: function(entry) {
+        if (selfoss.isSmartphone()) {
+            entry = entry.get(0);
+
+            entry.closeFullScreen();
+        } else {
+            entry.find('.entry-title > .entry-title-link').click();
+        }
+    },
+
+
+    /**
+     * Make the given entry currently selected one.
+     * @param {jQuery wrapped Element} entry element
+     */
+    entrySelect: function(entry) {
+        if (selfoss.ui.selectedEntry !== null) {
+            selfoss.ui.selectedEntry.removeClass('selected');
+            selfoss.ui.selectedEntry.attr('aria-current', 'false');
+        }
+
+        selfoss.ui.selectedEntry = entry;
+
+        if (entry) {
+            selfoss.ui.selectedEntry.attr('aria-current', 'true');
+            entry.addClass('selected');
+        }
+    },
+
+
+    /**
+     * Get the currently selected entry.
+     * @return {?jQuery wrapped Element}
+     */
+    entryGetSelected: function() {
+        return selfoss.ui.selectedEntry;
+    },
+
+
     entryStar: function(id, starred, domNode) {
         var button = $('#entry' + id + ' .entry-starr, #entrr' + id + ' .entry-starr',
             domNode);
@@ -130,7 +254,7 @@ selfoss.ui = {
 
         $('.stream-button, .stream-empty').css('display', 'block').hide();
         if (entries) {
-            if ($('.entry').not('.fullscreen').length > 0) {
+            if ($('.entry').length > 0) {
                 $('.stream-empty').hide();
                 if (selfoss.isSmartphone()) {
                     $('.mark-these-read').show();

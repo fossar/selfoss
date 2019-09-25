@@ -27,19 +27,24 @@ selfoss.events.entriesToolbar = function(parent) {
         return false;
     });
 
-    // next item on smartphone
+    // next item on tablet
     parent.find('.entry-toolbar .entry-next').unbind('click').click(function() {
         selfoss.shortcuts.nextprev('next', true);
         return false;
     });
 
-    // next item on tablet
+    // next item on smartphone
     parent.find('.entry-smartphone-share .entry-next').unbind('click').click(function() {
-        var $selected = $('.entry.selected, .entry.fullscreen:visible');
-        var id = $selected.attr('id').replace('entrr', 'entry');
-        $selected.find('.entry-unread.active').click();
-        $selected.find('.entry-title').click();
-        $('#' + id).next('.entry').find('.entry-title').click();
+        /**
+         * Next button can be only accessed from selected element.
+         * @type {!jQuery wrapped Element}
+         */
+        var selected = selfoss.ui.entryGetSelected();
+        selfoss.ui.entryDeactivate(selected);
+
+        var next = selected.next('.entry');
+        selfoss.ui.entryActivate(next);
+
         return false;
     });
 
