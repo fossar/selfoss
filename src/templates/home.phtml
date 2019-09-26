@@ -86,20 +86,12 @@
         data-error_configuration="<?= \F3::get('lang_error_configuration'); ?>"
         data-seconds="<?= \F3::get('lang_seconds'); ?>"
         data-minutes="<?= \F3::get('lang_minutes'); ?>"
-        data-hours="<?= \F3::get('lang_hours'); ?>"></span>
-
-    <div id="loginform">
-        <form action="<?= $this->base; ?>" method="post">
-        <ul id="login">
-            <li><h1><?= trim(\F3::get('html_title')); ?> login</h1></li>
-            <li><label for="username"><?= trim(\F3::get('lang_login_username')); ?></label> <input type="text" name="username" id="username" accesskey="u" autocomplete="username" required></li>
-            <li><label for="password"><?= trim(\F3::get('lang_login_password')); ?></label> <input type="password" name="password" id="password" accesskey="p" autocomplete="current-password"></li>
-            <li><label for="enableoffline"><?= trim(\F3::get('lang_login_offline')); ?></label> <input type="checkbox" name="enableoffline" id="enableoffline" accesskey="o"></li>
-            <li class="error" aria-live="assertive"></li>
-            <li class="button"><label>&nbsp;</label><input type="submit" accesskey="l" value="<?= \F3::get('lang_login'); ?>" /></li>
-        </ul>
-        </form>
-    </div>
+        data-hours="<?= \F3::get('lang_hours'); ?>"
+        data-login_username="<?= \F3::get('lang_login_username'); ?>"
+        data-login_password="<?= \F3::get('lang_login_password'); ?>"
+        data-login_offline="<?= \F3::get('lang_login_offline'); ?>"
+        data-login="<?= \F3::get('lang_login'); ?>">
+    </span>
 
     <div id="mainui">
         <!-- menu open for smartphone -->

@@ -11,6 +11,29 @@ selfoss.ui = {
      */
     selectedEntry: null,
 
+    /**
+     * Create basic DOM structure of the page.
+     */
+    init: function() {
+        if ($('body').is('#hashpashwordbody, #opmlbody')) {
+            // we do not want to create UI for non-app pages
+            return;
+        }
+
+        $('body').append(`<div id="loginform">
+            <form action="" method="post">
+            <ul id="login">
+                <li><h1>${selfoss.config.htmlTitle} login</h1></li>
+                <li><label for="username">${$('#lang').data('login_username')}</label> <input type="text" name="username" id="username" accesskey="u" autocomplete="username" required></li>
+                <li><label for="password">${$('#lang').data('login_password')}</label> <input type="password" name="password" id="password" accesskey="p" autocomplete="current-password"></li>
+                <li><label for="enableoffline">${$('#lang').data('login_offline')}</label> <input type="checkbox" name="enableoffline" id="enableoffline" accesskey="o"></li>
+                <li class="error" aria-live="assertive"></li>
+                <li class="button"><label>&nbsp;</label><input type="submit" accesskey="l" value="${$('#lang').data('login')}" /></li>
+            </ul>
+            </form>
+        </div>`);
+    },
+
     showLogin: function(error) {
         error = (typeof error !== 'undefined') ? error : '';
 

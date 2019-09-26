@@ -98,6 +98,8 @@ var selfoss = {
             document.body.classList.toggle('loggedin', !configuration.authEnabled);
             document.body.classList.toggle('auto_mark_as_read', configuration.autoMarkAsRead);
 
+            selfoss.ui.init();
+
             if (selfoss.hasSession() || !$('body').hasClass('authenabled')) {
                 selfoss.ui.login();
                 selfoss.initUi();
