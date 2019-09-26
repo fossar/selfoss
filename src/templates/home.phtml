@@ -49,12 +49,7 @@
     <!-- web application manifest -->
     <link rel="manifest" href="selfoss.webmanifest">
 </head>
-<body class="
-    <?= $this->allowPublicUpdate === true ? 'publicupdate' : ''; ?>
-    <?= $this->publicMode === true ? 'publicmode' : ''; ?>
-    <?= $this->authEnabled === true ? 'authenabled' : 'loggedin'; ?>
-    <?= \F3::get('auto_mark_as_read') == 1 ? 'auto_mark_as_read' : ''; ?>
-">
+<body>
 
     <div id="message"></div>
 
@@ -176,10 +171,7 @@
                 <button id="nav-refresh" title="<?= trim(\F3::get('lang_refreshbutton')); ?>" aria-label="<?= trim(\F3::get('lang_refreshbutton')); ?>" accesskey="r"></button>
                 <button id="nav-settings" title="<?= trim(\F3::get('lang_settingsbutton')); ?>" aria-label="<?= trim(\F3::get('lang_settingsbutton')); ?>" accesskey="t"></button>
                 <button id="nav-logout" title="<?= trim(\F3::get('lang_logoutbutton')); ?>" aria-label="<?= trim(\F3::get('lang_logoutbutton')); ?>" accesskey="l"></button>
-
-                <?php if ($this->publicMode === true) : ?>
                 <button id="nav-login" title="<?= trim(\F3::get('lang_loginbutton')); ?>" aria-label="<?= trim(\F3::get('lang_loginbutton')); ?>" accesskey="l"></button>
-                <?php endif; ?>
             </div>
         </div>
 

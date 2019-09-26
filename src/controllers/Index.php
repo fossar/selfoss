@@ -25,9 +25,6 @@ class Index extends BaseController {
 
         if (!$f3->ajax()) {
             // show as full html page
-            $this->view->allowPublicUpdate = \F3::get('allow_public_update_access') == 1;
-            $this->view->publicMode = \F3::get('public') == 1;
-            $this->view->authEnabled = \F3::get('auth')->enabled() === true;
             echo $this->view->render('src/templates/home.phtml');
 
             return;
@@ -122,6 +119,9 @@ class Index extends BaseController {
                 'autoHideReadOnMobile' => \F3::get('auto_hide_read_on_mobile') == 1, // bool
                 'scrollToArticleHeader' => \F3::get('scroll_to_article_header') == 1, // bool
                 'htmlTitle' => trim(\F3::get('html_title')), // string
+                'allowPublicUpdate' => \F3::get('allow_public_update_access') == 1, // bool
+                'publicMode' => \F3::get('public') == 1, // bool
+                'authEnabled' => \F3::get('auth')->enabled() === true, // bool
             ],
         ];
 

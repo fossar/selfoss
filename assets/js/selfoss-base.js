@@ -92,6 +92,12 @@ var selfoss = {
         jQuery.ajaxSetup({timeout: 60000 });
 
         $(function() {
+            document.body.classList.toggle('publicupdate', configuration.allowPublicUpdate);
+            document.body.classList.toggle('publicmode', configuration.publicMode);
+            document.body.classList.toggle('authenabled', configuration.authEnabled);
+            document.body.classList.toggle('loggedin', !configuration.authEnabled);
+            document.body.classList.toggle('auto_mark_as_read', configuration.autoMarkAsRead);
+
             if (selfoss.hasSession() || !$('body').hasClass('authenabled')) {
                 selfoss.ui.login();
                 selfoss.initUi();
