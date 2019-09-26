@@ -18,8 +18,8 @@ selfoss.events.entries = function() {
             return;
         }
 
-        var autoMarkAsRead = $('body').hasClass('loggedin') && $('#config').data('auto_mark_as_read') == '1' && parent.hasClass('unread');
-        var autoHideReadOnMobile = $('#config').data('auto_hide_read_on_mobile') == '1' && parent.hasClass('unread');
+        var autoMarkAsRead = $('body').hasClass('loggedin') && selfoss.config.autoMarkAsRead && parent.hasClass('unread');
+        var autoHideReadOnMobile = selfoss.config.autoHideReadOnMobile && parent.hasClass('unread');
 
         // anonymize
         selfoss.anonymize(parent.find('.entry-content'));
@@ -50,7 +50,7 @@ selfoss.events.entries = function() {
 
             parent.attr('aria-modal', 'true');
 
-            if ($('#config').data('load_images_on_mobile') == '1') {
+            if (selfoss.config.loadImagesOnMobile) {
                 parent.find('.entry-loadimages').hide();
                 entryContent.lazyLoadImages();
             }
@@ -102,7 +102,7 @@ selfoss.events.entries = function() {
                 selfoss.ui.entryCollapse(parent);
                 selfoss.events.setHash();
             } else {
-                if ($('#config').data('auto_collapse') == '1') {
+                if (selfoss.config.autoCollapse) {
                     selfoss.ui.entryCollapseAll();
                 }
                 selfoss.ui.entrySelect(parent);
@@ -119,7 +119,7 @@ selfoss.events.entries = function() {
                 selfoss.setupFancyBox(entryContent, parent.attr('id').substr(5));
 
                 // scroll to article header
-                if ($('#config').data('scroll_to_article_header') == '1') {
+                if (selfoss.config.scrollToArticleHeader) {
                     parent.get(0).scrollIntoView();
                 }
 
@@ -130,7 +130,7 @@ selfoss.events.entries = function() {
             }
 
             // load images not on mobile devices
-            if (selfoss.isMobile() == false || $('#config').data('load_images_on_mobile') == '1') {
+            if (selfoss.isMobile() == false || selfoss.config.loadImagesOnMobile) {
                 entryContent.lazyLoadImages();
             }
         }
@@ -146,7 +146,7 @@ selfoss.events.entries = function() {
 
     // scroll load more
     $(window).unbind('scroll').scroll(function() {
-        if ($('#config').data('auto_stream_more') == 0 ||
+        if (!selfoss.config.autoStreamMore ||
            $('#content').is(':visible') == false) {
             return;
         }
@@ -231,7 +231,7 @@ selfoss.events.entries = function() {
         selfoss.ui.entryActivate(entry);
         // ensure scrolling to requested entry even if scrolling to article
         // header is disabled
-        if ($('#config').data('scroll_to_article_header') == '0') {
+        if (!selfoss.config.scrollToArticleHeader) {
             // needs to be delayed for some reason
             requestAnimationFrame(function() {
                 entry.get(0).scrollIntoView();

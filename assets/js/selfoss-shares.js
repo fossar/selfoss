@@ -20,16 +20,23 @@ selfoss.shares = {
         this.register('pocket', 'p', function(url, title) {
             window.open('https://getpocket.com/save?url=' + encodeURIComponent(url) + '&title=' + encodeURIComponent(title));
         });
-        this.register('wallabag', 'w', function(url) {
-            if ($('#config').data('wallabag_version') == 2) {
-                window.open($('#config').data('wallabag') + '/bookmarklet?url=' + encodeURIComponent(url));
-            } else {
-                window.open($('#config').data('wallabag') + '/?action=add&url=' + btoa(url));
-            }
-        });
-        this.register('wordpress', 's', function(url, title) {
-            window.open($('#config').data('wordpress') + '/wp-admin/press-this.php?u=' + encodeURIComponent(url) + '&t=' + encodeURIComponent(title));
-        });
+
+        if (selfoss.config.wallabag !== null) {
+            this.register('wallabag', 'w', function(url) {
+                if (selfoss.config.wallabag.version === 2) {
+                    window.open(selfoss.config.wallabag.url + '/bookmarklet?url=' + encodeURIComponent(url));
+                } else {
+                    window.open(selfoss.config.wallabag.url + '/?action=add&url=' + btoa(url));
+                }
+            });
+        }
+
+        if (selfoss.config.wordpress !== null) {
+            this.register('wordpress', 's', function(url, title) {
+                window.open(selfoss.config.wordpress + '/wp-admin/press-this.php?u=' + encodeURIComponent(url) + '&t=' + encodeURIComponent(title));
+            });
+        }
+
         this.register('mail', 'e', function(url, title) {
             document.location.href = 'mailto:?body=' + encodeURIComponent(url) + '&subject=' + encodeURIComponent(title);
         });

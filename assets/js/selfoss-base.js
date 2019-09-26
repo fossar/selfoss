@@ -38,6 +38,34 @@ var selfoss = {
      * initialize application
      */
     init: function() {
+        $.get({
+            url: 'api/about',
+            dataType: 'json',
+            // we want fresh configuration each time
+            cache: false,
+            success: function(data) {
+                localStorage.setItem('configuration', JSON.stringify(data.configuration));
+
+                selfoss.initMain(data.configuration);
+            },
+            // on failure, we will try to use the last cached config
+            error: function() {
+                var storedConfig = localStorage.getItem('configuration');
+                try {
+                    var configuration = JSON.parse(storedConfig);
+                    selfoss.initMain(configuration);
+                } catch (e) {
+                    // TODO: Add a more proper error page
+                    $('body').html($('#lang').data('error_configuration'));
+                }
+            }
+        });
+    },
+
+
+    initMain: function(configuration) {
+        selfoss.config = configuration;
+
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {
                 navigator.serviceWorker.register('selfoss-sw-offline.js')
@@ -88,13 +116,13 @@ var selfoss = {
             selfoss.initUiDone = true;
 
             // set items per page
-            selfoss.filter.itemsPerPage = $('#config').data('items_perpage');
+            selfoss.filter.itemsPerPage = selfoss.config.itemsPerPage;
 
             // read the html title configured
-            selfoss.htmlTitle = $('#config').data('html_title');
+            selfoss.htmlTitle = selfoss.config.htmlTitle;
 
             // init shares
-            selfoss.shares.init($('#config').data('share'));
+            selfoss.shares.init(selfoss.config.share);
 
             // init FancyBox
             selfoss.initFancyBox();
@@ -419,8 +447,8 @@ var selfoss = {
      * @param parent element
      */
     anonymize: function(parent) {
-        var anonymizer = $('#config').data('anonymizer');
-        if (anonymizer.length > 0) {
+        var anonymizer = selfoss.config.anonymizer;
+        if (anonymizer !== null) {
             parent.find('a').each(function(i, link) {
                 link = $(link);
                 if (typeof link.attr('href') != 'undefined' && link.attr('href').indexOf(anonymizer) != 0) {

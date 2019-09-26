@@ -898,8 +898,7 @@ selfoss.db = {
 
 
     ascOrder: function() {
-        return $('#config').data('unread_order') == 'asc'
-               && selfoss.filter.type == 'unread';
+        return selfoss.config.unreadOrder === 'asc' && selfoss.filter.type == 'unread';
     },
 
 

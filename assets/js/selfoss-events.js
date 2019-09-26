@@ -50,7 +50,7 @@ selfoss.events = {
 
 
     initHash: function() {
-        var homePagePath = $('#config').data('homepage').split('/');
+        var homePagePath = selfoss.config.homepage.split('/');
         if (!homePagePath[1]) {
             homePagePath.push('all');
         }
