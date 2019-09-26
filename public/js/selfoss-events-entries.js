@@ -5,18 +5,16 @@ selfoss.events.entries = function() {
 
     $('.entry, .entry-title').unbind('click');
 
+    // clear the selected entry
+    selfoss.ui.entrySelect(null);
+
     // show/hide entry
     var target = selfoss.isMobile() ? '.entry' : '.entry-title';
     $(target).click(function() {
         var parent = ((target == '.entry') ? $(this) : $(this).parent());
 
-        if (selfoss.isSmartphone() == false) {
-            $('.entry.selected').removeClass('selected');
-            parent.addClass('selected');
-        }
-
         // prevent event on fullscreen touch
-        if (parent.hasClass('fullscreen')) {
+        if (document.body.classList.contains('fullscreen-mode')) {
             return;
         }
 
@@ -28,72 +26,87 @@ selfoss.events.entries = function() {
 
         var entryId = parent.attr('data-entry-id');
 
+        var entryContent = parent.find('.entry-content');
+
         // show entry in popup
         if (selfoss.isSmartphone()) {
-            var scrollTop = null;
+            // save scroll position
+            var scrollTop = $(window).scrollTop();
 
             // hide nav
             if ($('#nav').is(':visible')) {
-                scrollTop = $(window).scrollTop();
                 scrollTop = scrollTop - $('#nav').height();
                 scrollTop = scrollTop < 0 ? 0 : scrollTop;
                 $(window).scrollTop(scrollTop);
                 $('#nav').hide();
             }
 
-            // save scroll position and hide content
-            scrollTop = $(window).scrollTop();
-            var content = $('#content');
-            $(window).scrollTop(0);
-            content.hide();
-
             // show fullscreen
-            var fullscreen = $('#fullscreen-entry');
-            fullscreen.html('<div id="entrr' + parent.attr('data-entry-id') + '" class="entry fullscreen" data-entry-id="' + parent.attr('data-entry-id') + '">' + parent.html() + '</div>');
-            fullscreen.show();
+            document.body.classList.add('fullscreen-mode');
+            selfoss.ui.entrySelect(parent);
+            selfoss.ui.entryExpand(parent);
             selfoss.events.setHash('same', 'same', entryId);
+            selfoss.events.entriesToolbar(parent);
 
-            // lazy load images in fullscreen
+            parent.attr('aria-modal', 'true');
+
             if ($('#config').data('load_images_on_mobile') == '1') {
-                fullscreen.lazyLoadImages();
-                fullscreen.find('.entry-loadimages').hide();
+                parent.find('.entry-loadimages').hide();
+                entryContent.lazyLoadImages();
             }
 
-            // set events for fullscreen
-            selfoss.events.entriesToolbar(fullscreen);
+            $.trapKeyboard(parent);
 
             // set events for closing fullscreen
-            fullscreen.find('.entry, .entry-close').click(function(e) {
-                if (e.target.tagName.toLowerCase() == 'a') {
-                    return;
+            var closeTargets = $().add(parent).add(parent.find('.entry-close'));
+            var parentNative = parent.get(0);
+            parentNative.closeFullScreen = function(e) {
+                // can be called by other things
+                if (e) {
+                    e.stopPropagation();
+
+                    // do not exit fullscreen when clicking link
+                    if (e.target.tagName.toLowerCase() == 'a') {
+                        return;
+                    }
                 }
-                if (autoHideReadOnMobile && ($('#entrr' + parent.attr('id').substr(5)).hasClass('unread') == false)) {
-                    $('#' + parent.attr('id')).hide();
-                }
-                content.show();
+
+                document.body.classList.remove('fullscreen-mode');
+
+                selfoss.ui.entryCollapse(parent);
                 selfoss.events.setHash();
+
+                if (autoHideReadOnMobile && (parent.hasClass('unread') == false)) {
+                    parent.hide();
+                }
+
+                parent.attr('aria-modal', 'false');
+
+                $.untrapKeyboard();
+
+                closeTargets.off('click', parentNative.closeFullScreen);
+                parentNative.closeFullScreen = null;
+
                 $(window).scrollTop(scrollTop);
-                fullscreen.hide();
-            });
+            };
+            closeTargets.click(parentNative.closeFullScreen);
 
             // automark as read
             if (autoMarkAsRead) {
-                fullscreen.find('.entry-unread').click();
+                parent.find('.entry-unread').click();
             }
         // open entry content
         } else {
-            var entryContent = parent.find('.entry-content');
-
             // show/hide (with toolbar)
-            if (parent.attr('aria-expanded') === 'true') {
-                parent.attr('aria-expanded', 'false');
+            if (selfoss.ui.entryIsExpanded(parent)) {
+                selfoss.ui.entryCollapse(parent);
                 selfoss.events.setHash();
             } else {
-                parent.attr('aria-expanded', 'true');
                 if ($('#config').data('auto_collapse') == '1') {
-                    $('.entry[aria-expanded="true"]').attr('aria-expanded', 'false');
+                    selfoss.ui.entryCollapseAll();
                 }
-                parent.attr('aria-expanded', 'true');
+                selfoss.ui.entrySelect(parent);
+                selfoss.ui.entryExpand(parent);
                 selfoss.events.setHash('same', 'same', entryId);
                 selfoss.events.entriesToolbar(parent);
 
@@ -151,7 +164,7 @@ selfoss.events.entries = function() {
 
     // more
     $('.stream-more').unbind('click').click(function() {
-        var lastEntry = $('.entry').not('.fullscreen').filter(':last');
+        var lastEntry = $('.entry').filter(':last');
         selfoss.events.setHash();
         selfoss.filter.extraIds.length = 0;
         selfoss.filter.fromDatetime = lastEntry.data('entry-datetime');
@@ -215,11 +228,14 @@ selfoss.events.entries = function() {
     // more)
     if (selfoss.events.entryId && selfoss.filter.fromId === undefined) {
         var entry = $('#entry' + selfoss.events.entryId);
-        entry.children('.entry-title').click();
+        selfoss.ui.entryActivate(entry);
         // ensure scrolling to requested entry even if scrolling to article
         // header is disabled
         if ($('#config').data('scroll_to_article_header') == '0') {
-            entry.get(0).scrollIntoView();
+            // needs to be delayed for some reason
+            requestAnimationFrame(function() {
+                entry.get(0).scrollIntoView();
+            });
         }
     }
 };

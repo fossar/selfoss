@@ -63,7 +63,7 @@ var selfoss = {
         // so we enforce a default timeout on ajax calls
         jQuery.ajaxSetup({timeout: 60000 });
 
-        jQuery(document).ready(function() {
+        $(function() {
             if (selfoss.hasSession() || !$('body').hasClass('authenabled')) {
                 selfoss.ui.login();
                 selfoss.initUi();
@@ -366,7 +366,7 @@ var selfoss = {
                 selfoss.ui.showError($('#lang').data('error_unknown_tag') + ' ' + selfoss.filter.tag);
             }
 
-            $('#nav-tags li:first').removeClass('active');
+            $('#nav-tags li:first a').removeClass('active');
             $('#nav-tags > li > a').filter(function() {
                 if ($('.tag', this)) {
                     return $('.tag', this).html() == selfoss.filter.tag;

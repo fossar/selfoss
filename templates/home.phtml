@@ -115,11 +115,11 @@
         <form action="<?= $this->base; ?>" method="post" autocomplete="on">
         <ul id="login">
             <li><h1><?= trim(\F3::get('html_title')); ?> login</h1></li>
-            <li><label for="username"><?= trim(\F3::get('lang_login_username')); ?></label> <input type="text" name="username" id="username" autocomplete="username" required></li>
-            <li><label for="password"><?= trim(\F3::get('lang_login_password')); ?></label> <input type="password" name="password" id="password" autocomplete="current-password"></li>
-            <li><label for="enableoffline"><?= trim(\F3::get('lang_login_offline')); ?></label> <input type="checkbox" name="enableoffline" id="enableoffline"></li>
-            <li class="error"></li>
-            <li class="button"><label>&nbsp;</label><input type="submit" value="<?= \F3::get('lang_login'); ?>" /></li>
+            <li><label for="username"><?= trim(\F3::get('lang_login_username')); ?></label> <input type="text" name="username" id="username" accesskey="u" autocomplete="username" required></li>
+            <li><label for="password"><?= trim(\F3::get('lang_login_password')); ?></label> <input type="password" name="password" id="password" accesskey="p" autocomplete="current-password"></li>
+            <li><label for="enableoffline"><?= trim(\F3::get('lang_login_offline')); ?></label> <input type="checkbox" name="enableoffline" id="enableoffline" accesskey="o"></li>
+            <li class="error" aria-live="assertive"></li>
+            <li class="button"><label>&nbsp;</label><input type="submit" accesskey="l" value="<?= \F3::get('lang_login'); ?>" /></li>
         </ul>
         </form>
     </div>
@@ -133,13 +133,13 @@
                     <span class="count"></span>
                 </div>
             </div>
-            <button id="nav-mobile-settings" aria-label="<?= trim(\F3::get('lang_settingsbutton')); ?>"></button>
+            <button id="nav-mobile-settings" accesskey="t" aria-label="<?= trim(\F3::get('lang_settingsbutton')); ?>"></button>
         </div>
 
         <!-- navigation -->
         <div id="nav" role="navigation">
             <div id="nav-logo"></div>
-            <button id="nav-mark"><?= \F3::get('lang_markread')?></button>
+            <button accesskey="a" id="nav-mark"><?= \F3::get('lang_markread')?></button>
 
             <div id="nav-filter-wrapper">
             <h2><button type="button" id="nav-filter-title" class="nav-filter-expanded" aria-expanded="true"><?= \F3::get('lang_filter') ?></button></h2>
@@ -217,13 +217,10 @@
 
         <div id="stream-buttons">
             <p aria-live="assertive" class="stream-empty"><?= trim(\F3::get('lang_no_entries')); ?></p>
-            <button class="stream-button stream-more" aria-label="<?= trim(\F3::get('lang_more')); ?>"><span><?= trim(\F3::get('lang_more')); ?></span></button>
+            <button class="stream-button stream-more" accesskey="m" aria-label="<?= trim(\F3::get('lang_more')); ?>"><span><?= trim(\F3::get('lang_more')); ?></span></button>
             <button class="stream-button mark-these-read" aria-label="<?= trim(\F3::get('lang_markread')); ?></span>"><span><?= trim(\F3::get('lang_markread')); ?></span></button>
-            <button class="stream-button stream-error" aria-label="<?= trim(\F3::get('lang_streamerror')); ?>"><?= trim(\F3::get('lang_streamerror')); ?></button>
+            <button class="stream-button stream-error" aria-live="assertive" aria-label="<?= trim(\F3::get('lang_streamerror')); ?>"><?= trim(\F3::get('lang_streamerror')); ?></button>
         </div>
-
-        <!-- fullscreen popup -->
-        <div id="fullscreen-entry"></div>
     </div>
 
     <script src="<?= \helpers\View::getGlobalJsFileName(); ?>"></script>
