@@ -98,6 +98,9 @@ var selfoss = {
             document.body.classList.toggle('loggedin', !configuration.authEnabled);
             document.body.classList.toggle('auto_mark_as_read', configuration.autoMarkAsRead);
 
+            $('html').attr('lang', configuration.language);
+            $('meta[name="application-name"]').attr('content', configuration.htmlTitle);
+
             selfoss.ui.init();
 
             if (selfoss.hasSession() || !$('body').hasClass('authenabled')) {

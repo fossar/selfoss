@@ -122,6 +122,7 @@ class Index extends BaseController {
                 'allowPublicUpdate' => \F3::get('allow_public_update_access') == 1, // bool
                 'publicMode' => \F3::get('public') == 1, // bool
                 'authEnabled' => \F3::get('auth')->enabled() === true, // bool
+                'language' => \F3::get('language'), // string
             ],
         ];
 
