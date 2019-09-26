@@ -216,21 +216,6 @@ class Index extends BaseController {
         echo 'finished';
     }
 
-    /*
-    * get the unread number of items for a windows 8 badge
-    * notification.
-    */
-    public function badge() {
-        // load stats
-        $itemsDao = new \daos\Items();
-        $this->view->statsUnread = $itemsDao->numberOfUnread();
-        echo $this->view->render('src/templates/badge.phtml');
-    }
-
-    public function win8Notifications() {
-        echo $this->view->render('src/templates/win8-notifications.phtml');
-    }
-
     /**
      * load items
      *
