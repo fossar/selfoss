@@ -18,6 +18,12 @@ $f3 = Base::instance();
 
 $f3->set('DEBUG', 0);
 $f3->set('version', '2.19-SNAPSHOT');
+
+// independent of selfoss version
+// needs to be bumped each time public API is changed (follows semver)
+// keep in sync with docs/api-description.json
+$f3->set('apiversion', '2.19.0');
+
 $f3->set('AUTOLOAD', false);
 $f3->set('BASEDIR', BASEDIR);
 $f3->set('cache', BASEDIR . '/data/cache');

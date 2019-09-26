@@ -19,6 +19,7 @@
 
 ### API changes
 - `tags` attribute is now consistently array of strings, numbers are numbers and booleans are booleans. **This might break third-party clients that have not updated yet.** ([#948](https://github.com/SSilence/selfoss/pull/948))
+- API is now versioned separately from selfoss and follows [semantic versioning](https://semver.org/) ([#1137](https://github.com/SSilence/selfoss/pull/1137))
 
 ### Customization changes
 - `selfoss.shares.register` changed its signature: it no longer takes a boolean argument, and the callback is expected to open a window itself, instead of returning a URL. For example, if you previously had

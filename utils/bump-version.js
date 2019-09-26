@@ -16,7 +16,6 @@ const sources = [
     'package.json',
     'README.md',
     'src/common.php',
-    'docs/api-description.json',
     '_docs/website/index.html'
 ];
 
@@ -37,12 +36,6 @@ const replacements = [
     {
         from: /Version \d+\.\d+(\-SNAPSHOT|\-[0-9a-f]+)?/,
         to: "Version " + newVersion
-    },
-
-    // rule for docs/api-description.json
-    {
-        from: /"version": "\d+\.\d+(\-SNAPSHOT|\-[0-9a-f]+)?"/,
-        to: '"version": "' + newVersion + '"'
     },
 
     // rule for website/index.html
