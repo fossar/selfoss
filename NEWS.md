@@ -53,6 +53,7 @@
 - Developers, we no longer use Grunt. Build the package using `npm run dist` and check the code using `npm run check`; see the `scripts` section in top-level `package.json`. ([#1093](https://github.com/SSilence/selfoss/pull/1093))
 - Google+ and del.icio.us share button were removed ([#1121](https://github.com/SSilence/selfoss/pull/1121))
 - Windows 8 tiles are no longer supported. ([#1137](https://github.com/SSilence/selfoss/pull/1137))
+- [Strong password hashes](https://www.php.net/manual/en/function.password-hash.php) are now supported. ([#844](https://github.com/SSilence/selfoss/pull/844), [#1137](https://github.com/SSilence/selfoss/pull/1137))
 
 
 ## 2.18 – 2018-03-05

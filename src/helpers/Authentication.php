@@ -76,9 +76,16 @@ class Authentication {
      */
     public function login($username, $password) {
         if ($this->enabled()) {
-            if (
-                $username === \F3::get('username') && hash('sha512', \F3::get('salt') . $password) === \F3::get('password')
-            ) {
+            $usernameCorrect = $username === \F3::get('username');
+            $hashedPassword = \F3::get('password');
+            // Passwords hashed with password_hash start with $, otherwise use the legacy path.
+            $passwordCorrect =
+                $hashedPassword !== '' && $hashedPassword[0] === '$'
+                ? password_verify($password, $hashedPassword)
+                : hash('sha512', \F3::get('salt') . $password) === $hashedPassword;
+            $credentialsCorrect = $usernameCorrect && $passwordCorrect;
+
+            if ($credentialsCorrect) {
                 $this->loggedin = true;
                 $_SESSION['loggedin'] = true;
                 \F3::get('logger')->debug('logged in with supplied username and password');

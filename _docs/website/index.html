@@ -132,8 +132,7 @@
                     <code>
 [globals]
 username=secretagent
-password=5d95c032abce4865d49ee225d28a8a939ea39a924a158f0056ebb1880d9
-salt=1291929@9394$95%939201098*61234324(@#$(!*@#981923123</code>
+password=$2y$10$xLurmBB0HJ60.sar1Z38r.ajtkruUIay7rwFRCvcaDl.1EU4epUH6</code>
                 </pre>
                 <p>Sample config.ini file with a MySQL database connection:</p>
                 <pre>
@@ -240,8 +239,8 @@ db_port=3306</code>
                         <td>password hash for optional login. You can generate a password hash by using following page of your selfoss installation. https://your_selfoss_url.com/password</td>
                     </tr>
                     <tr>
-                        <td class="documentation-first-column">salt</td>
-                        <td>salt for hashing the password (see <a href="https://en.wikipedia.org/wiki/Salt_(cryptography)">Wikipedia</a>)</td>
+                        <td class="documentation-first-column"><del>salt</del> (deprecated)</td>
+                        <td>salt for hashing the password (see <a href="https://en.wikipedia.org/wiki/Salt_(cryptography)">Wikipedia</a>). Not used for passwords generated using selfoss 2.19 or newer.</td>
                     </tr>
                     <tr>
                         <td class="documentation-first-column">public</td>
