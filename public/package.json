@@ -2,7 +2,7 @@
   "dependencies": {
     "@fancyapps/fancybox": "^3.1.20",
     "dexie": "^2.0.1",
-    "jquery": "^3.4.1",
+    "jquery": "^2.2.4",
     "jquery-focusable": "^1.0.1",
     "jquery-hotkeys": "^0.2.2",
     "jquery-keyboard-trap": "^1.0.1",
