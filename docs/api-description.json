@@ -3,7 +3,7 @@
   "servers": [],
   "info": {
     "description": "You can access selfoss by using the same backend as selfoss user interface: The RESTful HTTP JSON API. There are a few urls where you can get information from selfoss and some for updating data. Assume you want all tags for rendering this in your own app. You have to make an HTTP GET call on the url /tags:\n\n```\nGET http://yourselfossurl.com/tags\n```\nThe result is following JSON formatted response (in this example two tags “blog” and “deviantart” are available:\n\n```\n[{\"tag\":\"blog\",\"color\":\"#251f10\",\"unread\":\"1\"},\n{\"tag\":\"deviantart\",\"color\":\"#e78e5c\",\"unread\":\"0\"}]\n```\n\nFollowing docs shows you which calls are possible and which response you can expect.",
-    "version": "2.19.0",
+    "version": "2.20.0",
     "title": "selfoss"
   },
   "tags": [
@@ -13,6 +13,44 @@
     }
   ],
   "paths": {
+    "/api/about": {
+      "get": {
+        "summary": "Provide information about the selfoss instance",
+        "description": "",
+        "operationId": "about",
+        "responses": {
+          "200": {
+            "description": "publicly available info about selfoss instance",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "description": "Selfoss version",
+                      "type": "string"
+                    },
+                    "apiversion": {
+                      "description": "Version of this API, separate from selfoss version, follows [semantic versioning](https://semver.org/) for documented endpoints and payloads.",
+                      "type": "string"
+                    },
+                    "configuration": {
+                      "description": "Subset of configuration options set by the administrator in `config.ini`. No keys can be assumed to be present.",
+                      "type": "object"
+                    }
+                  },
+                  "example": {
+                    "version": "2.19",
+                    "apiversion": "2.20.0",
+                    "configuration": {}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/login": {
       "post": {
         "tags": [

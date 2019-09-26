@@ -92,6 +92,43 @@ class Index extends BaseController {
     }
 
     /**
+     * Provide information about the selfoss instance.
+     * json
+     *
+     * @return void
+     */
+    public function about() {
+        $anonymizer = \helpers\Anonymizer::getAnonymizer();
+        $wallabag = !empty(\F3::get('wallabag')) ? [
+            'url' => \F3::get('wallabag'), // string
+            'version' => \F3::get('wallabag_version'), // int
+        ] : null;
+
+        $configuration = [
+            'version' => \F3::get('version'),
+            'apiversion' => \F3::get('apiversion'),
+            'configuration' => [
+                'homepage' => \F3::get('homepage') ? \F3::get('homepage') : 'newest', // string
+                'anonymizer' => $anonymizer === '' ? null : $anonymizer, // ?string
+                'share' => (string) \F3::get('share'), // string
+                'wallabag' => $wallabag, // ?array
+                'wordpress' => \F3::get('wordpress'), // ?string
+                'autoMarkAsRead' => \F3::get('auto_mark_as_read') == 1, // bool
+                'autoCollapse' => \F3::get('auto_collapse') == 1, // bool
+                'autoStreamMore' => \F3::get('auto_stream_more') == 1, // bool
+                'loadImagesOnMobile' => \F3::get('load_images_on_mobile') == 1, // bool
+                'itemsPerPage' => \F3::get('items_perpage'), // int
+                'unreadOrder' => \F3::get('unread_order'), // string
+                'autoHideReadOnMobile' => \F3::get('auto_hide_read_on_mobile') == 1, // bool
+                'scrollToArticleHeader' => \F3::get('scroll_to_article_header') == 1, // bool
+                'htmlTitle' => trim(\F3::get('html_title')), // string
+            ],
+        ];
+
+        echo $this->view->jsonSuccess($configuration);
+    }
+
+    /**
      * password hash generator
      * html
      *
