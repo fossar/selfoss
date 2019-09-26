@@ -91,6 +91,7 @@ selfoss.ui = {
 
         entry.addClass('expanded');
         $('.entry-title > .entry-title-link', entry).attr('aria-expanded', 'true');
+        $('.entry-title > .entry-title-link', entry).attr('aria-current', 'true');
     },
 
 
@@ -105,6 +106,7 @@ selfoss.ui = {
 
         entry.removeClass('expanded');
         $('.entry-title > .entry-title-link', entry).attr('aria-expanded', 'false');
+        $('.entry-title > .entry-title-link', entry).attr('aria-current', 'false');
     },
 
 
