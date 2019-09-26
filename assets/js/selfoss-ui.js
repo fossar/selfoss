@@ -31,6 +31,102 @@ selfoss.ui = {
                 <li class="button"><label>&nbsp;</label><input type="submit" accesskey="l" value="${$('#lang').data('login')}" /></li>
             </ul>
             </form>
+        </div>
+
+        <div id="mainui">
+            <!-- menu open for smartphone -->
+            <div id="nav-mobile" role="navigation">
+                <div id="nav-mobile-logo">
+                    <div id="nav-mobile-count" class="unread-count offlineable">
+                        <span class="offline-count offlineable"></span>
+                        <span class="count"></span>
+                    </div>
+                </div>
+                <button id="nav-mobile-settings" accesskey="t" aria-label="${$('#lang').data('settingsbutton')}"></button>
+            </div>
+
+            <!-- navigation -->
+            <div id="nav" role="navigation">
+                <div id="nav-logo"></div>
+                <button accesskey="a" id="nav-mark">${$('#lang').data('markread')}</button>
+
+                <div id="nav-filter-wrapper">
+                <h2><button type="button" id="nav-filter-title" class="nav-filter-expanded" aria-expanded="true">${$('#lang').data('filter')}</button></h2>
+                <ul id="nav-filter" aria-labeledby="nav-filter-title">
+                    <li>
+                        <a id="nav-filter-newest" class="nav-filter-newest" href="#">
+                            ${$('#lang').data('newest')}
+                            <span class="offline-count offlineable" title="${$('#lang').data('offline_count')}"></span>
+                            <span class="count" title="${$('#lang').data('online_count')}"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a id="nav-filter-unread" class="nav-filter-unread" href="#">
+                            ${$('#lang').data('unread')}
+                            <span class="unread-count offlineable">
+                                <span class="offline-count offlineable" title="${$('#lang').data('offline_count')}"></span>
+                                <span class="count" title="${$('#lang').data('online_count')}"></span>
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a id="nav-filter-starred" class="nav-filter-starred" href="#">
+                            ${$('#lang').data('starred')}
+                            <span class="offline-count offlineable" title="${$('#lang').data('offline_count')}"></span>
+                            <span class="count" title="${$('#lang').data('online_count')}"></span>
+                        </a>
+                    </li>
+                </ul>
+                </div>
+
+                <hr>
+
+                <div id="nav-tags-wrapper">
+                <h2><button type="button" id="nav-tags-title" class="nav-tags-expanded" aria-expanded="true">${$('#lang').data('tags')}</button></h2>
+                <ul id="nav-tags" aria-labeledby="nav-tags-title">
+                    <li><a class="active nav-tags-all" href="#">${$('#lang').data('alltags')}</a></li>
+                </ul>
+                <h2><button type="button" id="nav-sources-title" class="nav-sources-collapsed" aria-expanded="false">${$('#lang').data('sources')}</button></h2>
+                <ul id="nav-sources" aria-labeledby="nav-sources-title">
+                </ul>
+                </div>
+
+                <hr>
+
+                <!-- navigation search input just for smartphone version -->
+                <div id="nav-search" class="offlineable" role="search">
+                    <input aria-label="${$('#lang').data('search_label')}" type="search" id="nav-search-term" accesskey="s"> <input type="button" id="nav-search-button" value="${$('#lang').data('searchbutton')}" accesskey="e">
+                    <hr>
+                </div>
+
+                <div class="nav-toolbar">
+                    <button id="nav-refresh" title="${$('#lang').data('refreshbutton')}" aria-label="${$('#lang').data('refreshbutton')}" accesskey="r"></button>
+                    <button id="nav-settings" title="${$('#lang').data('settingsbutton')}" aria-label="${$('#lang').data('settingsbutton')}" accesskey="t"></button>
+                    <button id="nav-logout" title="${$('#lang').data('logoutbutton')}" aria-label="${$('#lang').data('logoutbutton')}" accesskey="l"></button>
+                    <button id="nav-login" title="${$('#lang').data('loginbutton')}" aria-label="${$('#lang').data('loginbutton')}" accesskey="l"></button>
+                </div>
+            </div>
+
+            <!-- search -->
+            <div id="search" role="search" class="offlineable">
+                <input aria-label="${$('#lang').data('search_label')}" type="search" id="search-term" accesskey="s">
+                <button id="search-remove" title="${$('#lang').data('searchremove')}" accesskey="h" aria-label="${$('#lang').data('searchremove')}"><img src="images/remove.png" aria-hidden="true" alt=""></button>
+                <button id="search-button" title="${$('#lang').data('searchbutton')}" aria-label="${$('#lang').data('searchbutton')}" accesskey="e"><img src="images/search.png" alt=""></button>
+            </div>
+
+            <ul id="search-list">
+            </ul>
+
+            <!-- content -->
+            <div id="content" role="main">
+            </div>
+
+            <div id="stream-buttons">
+                <p aria-live="assertive" class="stream-empty">${$('#lang').data('no_entries')}</p>
+                <button class="stream-button stream-more" accesskey="m" aria-label="${$('#lang').data('more')}"><span>${$('#lang').data('more')}</span></button>
+                <button class="stream-button mark-these-read" aria-label="${$('#lang').data('markread')}</span>"><span>${$('#lang').data('markread')}</span></button>
+                <button class="stream-button stream-error" aria-live="assertive" aria-label="${$('#lang').data('streamerror')}">${$('#lang').data('streamerror')}</button>
+            </div>
         </div>`);
     },
 

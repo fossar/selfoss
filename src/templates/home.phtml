@@ -90,104 +90,28 @@
         data-login_username="<?= \F3::get('lang_login_username'); ?>"
         data-login_password="<?= \F3::get('lang_login_password'); ?>"
         data-login_offline="<?= \F3::get('lang_login_offline'); ?>"
-        data-login="<?= \F3::get('lang_login'); ?>">
+        data-login="<?= \F3::get('lang_login'); ?>"
+        data-settingsbutton="<?= \F3::get('lang_settingsbutton'); ?>"
+        data-markread="<?= \F3::get('lang_markread'); ?>"
+        data-filter="<?= \F3::get('lang_filter'); ?>"
+        data-newest="<?= \F3::get('lang_newest'); ?>"
+        data-offline_count="<?= \F3::get('lang_offline_count'); ?>"
+        data-online_count="<?= \F3::get('lang_online_count'); ?>"
+        data-unread="<?= \F3::get('lang_unread'); ?>"
+        data-starred="<?= \F3::get('lang_starred'); ?>"
+        data-tags="<?= \F3::get('lang_tags'); ?>"
+        data-alltags="<?= \F3::get('lang_alltags'); ?>"
+        data-sources="<?= \F3::get('lang_sources'); ?>"
+        data-search_label="<?= \F3::get('lang_search_label'); ?>"
+        data-searchbutton="<?= \F3::get('lang_searchbutton'); ?>"
+        data-refreshbutton="<?= \F3::get('lang_refreshbutton'); ?>"
+        data-logoutbutton="<?= \F3::get('lang_logoutbutton'); ?>"
+        data-loginbutton="<?= \F3::get('lang_loginbutton'); ?>"
+        data-searchremove="<?= \F3::get('lang_searchremove'); ?>"
+        data-no_entries="<?= \F3::get('lang_no_entries'); ?>"
+        data-more="<?= \F3::get('lang_more'); ?>"
+        data-streamerror="<?= \F3::get('lang_streamerror'); ?>">
     </span>
-
-    <div id="mainui">
-        <!-- menu open for smartphone -->
-        <div id="nav-mobile" role="navigation">
-            <div id="nav-mobile-logo">
-                <div id="nav-mobile-count" class="unread-count offlineable">
-                    <span class="offline-count offlineable"></span>
-                    <span class="count"></span>
-                </div>
-            </div>
-            <button id="nav-mobile-settings" accesskey="t" aria-label="<?= trim(\F3::get('lang_settingsbutton')); ?>"></button>
-        </div>
-
-        <!-- navigation -->
-        <div id="nav" role="navigation">
-            <div id="nav-logo"></div>
-            <button accesskey="a" id="nav-mark"><?= \F3::get('lang_markread')?></button>
-
-            <div id="nav-filter-wrapper">
-            <h2><button type="button" id="nav-filter-title" class="nav-filter-expanded" aria-expanded="true"><?= \F3::get('lang_filter') ?></button></h2>
-            <ul id="nav-filter" aria-labeledby="nav-filter-title">
-                <li>
-                    <a id="nav-filter-newest" class="nav-filter-newest" href="#">
-                        <?= \F3::get('lang_newest')?>
-                        <span class="offline-count offlineable" title="<?= \F3::get('lang_offline_count')?>"></span>
-                        <span class="count" title="<?= \F3::get('lang_online_count')?>"></span>
-                    </a>
-                </li>
-                <li>
-                    <a id="nav-filter-unread" class="nav-filter-unread" href="#">
-                        <?= \F3::get('lang_unread')?>
-                        <span class="unread-count offlineable">
-                            <span class="offline-count offlineable" title="<?= \F3::get('lang_offline_count')?>"></span>
-                            <span class="count" title="<?= \F3::get('lang_online_count')?>"></span>
-                        </span>
-                    </a>
-                </li>
-                <li>
-                    <a id="nav-filter-starred" class="nav-filter-starred" href="#">
-                        <?= \F3::get('lang_starred') ?>
-                        <span class="offline-count offlineable" title="<?= \F3::get('lang_offline_count')?>"></span>
-                        <span class="count" title="<?= \F3::get('lang_online_count')?>"></span>
-                    </a>
-                </li>
-            </ul>
-            </div>
-
-            <hr>
-
-            <div id="nav-tags-wrapper">
-            <h2><button type="button" id="nav-tags-title" class="nav-tags-expanded" aria-expanded="true"><?= \F3::get('lang_tags') ?></button></h2>
-            <ul id="nav-tags" aria-labeledby="nav-tags-title">
-                <li><a class="active nav-tags-all" href="#"><?= \F3::get('lang_alltags')?></a></li>
-            </ul>
-            <h2><button type="button" id="nav-sources-title" class="nav-sources-collapsed" aria-expanded="false"><?= \F3::get('lang_sources') ?></button></h2>
-            <ul id="nav-sources" aria-labeledby="nav-sources-title">
-            </ul>
-            </div>
-
-            <hr>
-
-            <!-- navigation search input just for smartphone version -->
-            <div id="nav-search" class="offlineable" role="search">
-                <input aria-label="<?= \F3::get('lang_search_label') ?>" type="search" id="nav-search-term" accesskey="s"> <input type="button" id="nav-search-button" value="<?= \F3::get('lang_searchbutton')?>" accesskey="e">
-                <hr>
-            </div>
-
-            <div class="nav-toolbar">
-                <button id="nav-refresh" title="<?= trim(\F3::get('lang_refreshbutton')); ?>" aria-label="<?= trim(\F3::get('lang_refreshbutton')); ?>" accesskey="r"></button>
-                <button id="nav-settings" title="<?= trim(\F3::get('lang_settingsbutton')); ?>" aria-label="<?= trim(\F3::get('lang_settingsbutton')); ?>" accesskey="t"></button>
-                <button id="nav-logout" title="<?= trim(\F3::get('lang_logoutbutton')); ?>" aria-label="<?= trim(\F3::get('lang_logoutbutton')); ?>" accesskey="l"></button>
-                <button id="nav-login" title="<?= trim(\F3::get('lang_loginbutton')); ?>" aria-label="<?= trim(\F3::get('lang_loginbutton')); ?>" accesskey="l"></button>
-            </div>
-        </div>
-
-        <!-- search -->
-        <div id="search" role="search" class="offlineable">
-            <input aria-label="<?= \F3::get('lang_search_label') ?>" type="search" id="search-term" accesskey="s">
-            <button id="search-remove" title="<?= \F3::get('lang_searchremove')?>" accesskey="h" aria-label="<?= \F3::get('lang_searchremove')?>"><img src="images/remove.png" aria-hidden="true" alt=""></button>
-            <button id="search-button" title="<?= \F3::get('lang_searchbutton')?>" aria-label="<?= \F3::get('lang_searchbutton')?>" accesskey="e"><img src="images/search.png" alt=""></button>
-        </div>
-
-        <ul id="search-list">
-        </ul>
-
-        <!-- content -->
-        <div id="content" role="main">
-        </div>
-
-        <div id="stream-buttons">
-            <p aria-live="assertive" class="stream-empty"><?= trim(\F3::get('lang_no_entries')); ?></p>
-            <button class="stream-button stream-more" accesskey="m" aria-label="<?= trim(\F3::get('lang_more')); ?>"><span><?= trim(\F3::get('lang_more')); ?></span></button>
-            <button class="stream-button mark-these-read" aria-label="<?= trim(\F3::get('lang_markread')); ?></span>"><span><?= trim(\F3::get('lang_markread')); ?></span></button>
-            <button class="stream-button stream-error" aria-live="assertive" aria-label="<?= trim(\F3::get('lang_streamerror')); ?>"><?= trim(\F3::get('lang_streamerror')); ?></button>
-        </div>
-    </div>
 
     <script src="<?= \helpers\View::getGlobalJsFileName(); ?>"></script>
 </body>
