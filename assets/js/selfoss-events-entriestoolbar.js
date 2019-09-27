@@ -100,7 +100,7 @@ selfoss.events.entriesToolbar = function(parent) {
             }
 
             $.ajax({
-                url: $('base').attr('href') + (starr ? 'starr/' : 'unstarr/') + id,
+                url: (starr ? 'starr/' : 'unstarr/') + id,
                 data: {},
                 type: 'POST',
                 success: function() {
@@ -155,7 +155,7 @@ selfoss.events.entriesToolbar = function(parent) {
             }
 
             $.ajax({
-                url: $('base').attr('href') + (unread ? 'mark/' : 'unmark/') + id,
+                url: (unread ? 'mark/' : 'unmark/') + id,
                 data: {},
                 type: 'POST',
                 success: function() {

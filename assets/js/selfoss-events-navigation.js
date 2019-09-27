@@ -14,7 +14,7 @@ selfoss.events.navigation = function() {
             $(this).css('backgroundColor', color.toHexString());
 
             $.ajax({
-                url: $('base').attr('href') + 'tags/color',
+                url: 'tags/color',
                 type: 'POST',
                 data: {
                     tag: $(this).parent().find('.tag').html(),
@@ -135,7 +135,7 @@ selfoss.events.navigation = function() {
         selfoss.filter.sourcesNav = $('#nav-sources-title').hasClass('nav-sources-collapsed');
         if (selfoss.filter.sourcesNav && !selfoss.sourcesNavLoaded) {
             $.ajax({
-                url: $('base').attr('href') + 'sources/sourcesStats',
+                url: 'sources/sourcesStats',
                 type: 'GET',
                 success: function(data) {
                     selfoss.refreshSources(data.sources);
@@ -185,7 +185,7 @@ selfoss.events.navigation = function() {
         $('#nav-refresh').addClass('loading');
 
         $.ajax({
-            url: $('base').attr('href') + 'update',
+            url: 'update',
             type: 'GET',
             dataType: 'text',
             data: {},

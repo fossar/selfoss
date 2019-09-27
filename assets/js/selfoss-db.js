@@ -245,7 +245,7 @@ selfoss.dbOnline = {
         }
 
         selfoss.activeAjaxReq = $.ajax({
-            url: $('base').attr('href'),
+            url: '',
             type: 'GET',
             dataType: 'json',
             data: selfoss.filter,

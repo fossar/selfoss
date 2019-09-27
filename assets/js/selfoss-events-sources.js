@@ -17,7 +17,7 @@ selfoss.events.sources = function() {
     // add new source
     $('.source-add').unbind('click').click(function() {
         $.ajax({
-            url: $('base').attr('href') + 'source',
+            url: 'source',
             type: 'GET',
             success: function(response) {
                 $('.source-opml').after(response);
@@ -49,7 +49,7 @@ selfoss.events.sources = function() {
         }
 
         // set url
-        var url = $('base').attr('href') + 'source';
+        var url = 'source';
         if (id != false) {
             url = url + '/' + id;
         }
@@ -122,7 +122,7 @@ selfoss.events.sources = function() {
 
         // delete on server
         $.ajax({
-            url: $('base').attr('href') + 'source/delete/' + id,
+            url: 'source/delete/' + id,
             data: {},
             type: 'POST',
             success: function() {
@@ -167,7 +167,7 @@ selfoss.events.sources = function() {
         }
         params.addClass('loading');
         $.ajax({
-            url: $('base').attr('href') + 'source/params',
+            url: 'source/params',
             data: { spout: val },
             type: 'GET',
             success: function(data) {

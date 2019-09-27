@@ -372,7 +372,7 @@ var selfoss = {
         $('#nav-tags').addClass('loading');
 
         $.ajax({
-            url: $('base').attr('href') + 'tagslist',
+            url: 'tagslist',
             type: 'GET',
             success: function(data) {
                 $('#nav-tags li:not(:first)').remove();
@@ -578,7 +578,7 @@ var selfoss = {
         }
 
         $.ajax({
-            url: $('base').attr('href') + 'mark',
+            url: 'mark',
             type: 'POST',
             dataType: 'json',
             data: {

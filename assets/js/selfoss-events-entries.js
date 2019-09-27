@@ -203,7 +203,7 @@ selfoss.events.entries = function() {
         $('#content').addClass('loading').html('');
 
         $.ajax({
-            url: $('base').attr('href') + 'source/' + selfoss.filter.source + '/update',
+            url: 'source/' + selfoss.filter.source + '/update',
             type: 'POST',
             dataType: 'text',
             data: {},

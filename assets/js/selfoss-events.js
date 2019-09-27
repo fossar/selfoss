@@ -205,7 +205,7 @@ selfoss.events = {
             selfoss.ui.refreshStreamButtons();
             $('#content').addClass('loading').html('');
             selfoss.activeAjaxReq = $.ajax({
-                url: $('base').attr('href') + 'sources',
+                url: 'sources',
                 type: 'GET',
                 success: function(data) {
                     $('#content').html(data);
