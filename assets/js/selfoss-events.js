@@ -177,7 +177,7 @@ selfoss.events = {
                         selfoss.filter.sourcesNav = true;
                     }
                 } else if (selfoss.events.subsection != 'all') {
-                    selfoss.ui.showError($('#lang').data('error_invalid_subsection') + ' '
+                    selfoss.ui.showError(selfoss.ui._('error_invalid_subsection') + ' '
                                          + selfoss.events.subsection);
                     done();
                     return;
@@ -193,7 +193,7 @@ selfoss.events = {
             selfoss.db.reloadList();
         } else if (hash == 'sources') { // load sources
             if (selfoss.events.subsection) {
-                selfoss.ui.showError($('#lang').data('error_invalid_subsection') + ' '
+                selfoss.ui.showError(selfoss.ui._('error_invalid_subsection') + ' '
                                      + selfoss.events.subsection);
                 done();
                 return;
@@ -217,7 +217,7 @@ selfoss.events = {
                     }
 
                     selfoss.handleAjaxError(jqXHR.status, false).fail(function() {
-                        selfoss.ui.showError($('#lang').data('error_loading') + ' ' +
+                        selfoss.ui.showError(selfoss.ui._('error_loading') + ' ' +
                                              textStatus + ' ' + errorThrown);
                     });
                 },
@@ -228,7 +228,7 @@ selfoss.events = {
         } else if (hash == 'login') {
             selfoss.ui.showLogin();
         } else {
-            selfoss.ui.showError($('#lang').data('error_invalid_subsection') + ' ' + selfoss.events.section);
+            selfoss.ui.showError(selfoss.ui._('error_invalid_subsection') + ' ' + selfoss.events.section);
         }
         done();
     },

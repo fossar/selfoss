@@ -221,7 +221,7 @@ selfoss.dbOnline = {
             error: function(jqXHR, textStatus, errorThrown) {
                 selfoss.dbOnline._syncDone(false);
                 selfoss.handleAjaxError(jqXHR.status).fail(function() {
-                    selfoss.ui.showError($('#lang').data('error_sync') + ' ' +
+                    selfoss.ui.showError(selfoss.ui._('error_sync') + ' ' +
                                          textStatus + ' ' + errorThrown);
                 });
             },
@@ -285,7 +285,7 @@ selfoss.dbOnline = {
                     selfoss.dbOffline.reloadList();
                     selfoss.ui.afterReloadList();
                 }, function() {
-                    selfoss.ui.showError($('#lang').data('error_loading') +
+                    selfoss.ui.showError(selfoss.ui._('error_loading') +
                                          ' ' + textStatus + ' ' + errorThrown);
                     selfoss.events.entries();
                     selfoss.ui.refreshStreamButtons();

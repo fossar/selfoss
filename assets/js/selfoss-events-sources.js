@@ -25,7 +25,7 @@ selfoss.events.sources = function() {
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 parent.find('.source-edit-delete').removeClass('loading');
-                selfoss.ui.showError($('#lang').data('error_add_source') + ' ' +
+                selfoss.ui.showError(selfoss.ui._('error_add_source') + ' ' +
                                      textStatus + ' ' + errorThrown);
             }
         });
@@ -68,9 +68,9 @@ selfoss.events.sources = function() {
                 parent.attr('id', 'source' + id);
 
                 // show saved text
-                parent.find('.source-showparams').addClass('saved').html($('#lang').data('source_saved'));
+                parent.find('.source-showparams').addClass('saved').html(selfoss.ui._('source_saved'));
                 window.setTimeout(function() {
-                    parent.find('.source-showparams').removeClass('saved').html($('#lang').data('source_edit'));
+                    parent.find('.source-showparams').removeClass('saved').html(selfoss.ui._('source_edit'));
                 }, 10000);
 
                 // hide input form
@@ -105,7 +105,7 @@ selfoss.events.sources = function() {
 
     // delete source
     $('.source-delete').unbind('click').click(function() {
-        var answer = confirm($('#lang').data('source_warn'));
+        var answer = confirm(selfoss.ui._('source_warn'));
         if (answer == false) {
             return;
         }
@@ -136,7 +136,7 @@ selfoss.events.sources = function() {
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 parent.find('.source-edit-delete').removeClass('loading');
-                selfoss.ui.showError($('#lang').data('error_delete_source') + ' ' + errorThrown);
+                selfoss.ui.showError(selfoss.ui._('error_delete_source') + ' ' + errorThrown);
             }
         });
     });

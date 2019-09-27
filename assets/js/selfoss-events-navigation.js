@@ -26,7 +26,7 @@ selfoss.events.navigation = function() {
                     selfoss.ui.afterReloadList();
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
-                    selfoss.ui.showError($('#lang').data('error_saving_color') + ' ' +
+                    selfoss.ui.showError(selfoss.ui._('error_saving_color') + ' ' +
                                          textStatus + ' ' + errorThrown);
                 }
             });
@@ -141,7 +141,7 @@ selfoss.events.navigation = function() {
                     selfoss.refreshSources(data.sources);
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
-                    selfoss.ui.showError($('#lang').data('error_loading_stats') + ' ' +
+                    selfoss.ui.showError(selfoss.ui._('error_loading_stats') + ' ' +
                                          textStatus + ' ' + errorThrown);
                 }
             });
@@ -198,7 +198,7 @@ selfoss.events.navigation = function() {
                 // probe stats and prompt reload to the user
                 selfoss.dbOnline.sync().done(function() {
                     if ($('.unread-count').hasClass('unread')) {
-                        selfoss.ui.showMessage($('#lang').data('sources_refreshed'), $('#lang').data('reload_list'),
+                        selfoss.ui.showMessage(selfoss.ui._('sources_refreshed'), selfoss.ui._('reload_list'),
                             function() {
                                 $('#nav-filter-unread').click();
                             });
@@ -206,7 +206,7 @@ selfoss.events.navigation = function() {
                 });
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                selfoss.ui.showError($('#lang').data('error_refreshing_source') + ' ' + errorThrown);
+                selfoss.ui.showError(selfoss.ui._('error_refreshing_source') + ' ' + errorThrown);
             },
             complete: function() {
                 $('#nav-refresh').removeClass('loading');
