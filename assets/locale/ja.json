@@ -77,5 +77,7 @@
   "lang_login_offline": "オフライン ストレージ",
   "lang_app_update": "selfoss が更新されました。再読み込みしてください",
   "lang_app_reload": "再読み込み",
-  "lang_error_offline_storage": "オフライン ストレージ エラー: {0}。 再読み込みが役立つことがあります。今のところ、オフラインを無効にします。"
+  "lang_error_offline_storage": "オフライン ストレージ エラー: {0}。 再読み込みが役立つことがあります。今のところ、オフラインを無効にします。",
+  "lang_search_label": "検索条件",
+  "lang_article_actions": "アクション"
 }
