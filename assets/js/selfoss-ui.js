@@ -311,13 +311,13 @@ selfoss.ui = {
     entrySelect: function(entry) {
         if (selfoss.ui.selectedEntry !== null) {
             selfoss.ui.selectedEntry.removeClass('selected');
-            selfoss.ui.selectedEntry.attr('aria-current', 'false');
+            $('.entry-title > .entry-title-link', selfoss.ui.selectedEntry).attr('aria-current', 'false');
         }
 
         selfoss.ui.selectedEntry = entry;
 
         if (entry) {
-            selfoss.ui.selectedEntry.attr('aria-current', 'true');
+            $('.entry-title > .entry-title-link', selfoss.ui.selectedEntry).attr('aria-current', 'true');
             entry.addClass('selected');
         }
     },
