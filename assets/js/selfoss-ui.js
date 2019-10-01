@@ -291,9 +291,13 @@ selfoss.ui = {
     /**
      * Deactivate entry, as if it were clicked.
      * This will close it and maybe something more.
-     * @param {jQuery wrapped Element} entry element
+     * @param {?jQuery wrapped Element} entry element
      */
     entryDeactivate: function(entry) {
+        if (entry === null) {
+            return;
+        }
+
         if (selfoss.isSmartphone()) {
             entry = entry.get(0);
 
