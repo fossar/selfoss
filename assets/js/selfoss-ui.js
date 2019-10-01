@@ -303,7 +303,9 @@ selfoss.ui = {
 
             entry.closeFullScreen();
         } else {
-            entry.find('.entry-title > .entry-title-link').click();
+            if (selfoss.ui.entryIsExpanded(entry)) {
+                entry.find('.entry-title > .entry-title-link').click();
+            }
         }
     },
 
