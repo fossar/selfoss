@@ -338,6 +338,16 @@ selfoss.ui = {
     },
 
 
+    /**
+     * Is given entry marked as read?
+     * @param {jQuery wrapped Element}
+     * @return {bool}
+     */
+    entryIsRead: function(entry) {
+        return !entry.is('.unread');
+    },
+
+
     entryStar: function(id, starred, domNode) {
         var button = $('#entry' + id + ' .entry-starr, #entrr' + id + ' .entry-starr',
             domNode);

@@ -106,8 +106,13 @@ selfoss.shortcuts = {
                 return false;
             }
 
-            selfoss.events.entriesToolbar(selfoss.ui.entryGetSelected());
-            $('.entry.selected .entry-starr').click();
+            var selected = selfoss.ui.entryGetSelected();
+
+            if (selected !== null) {
+                selfoss.events.entriesToolbar(selected);
+                $('.entry-starr', selected).click();
+            }
+
             e.preventDefault();
             return false;
         });
@@ -118,8 +123,13 @@ selfoss.shortcuts = {
                 return false;
             }
 
-            selfoss.events.entriesToolbar(selfoss.ui.entryGetSelected());
-            $('.entry.selected .entry-unread').click();
+            var selected = selfoss.ui.entryGetSelected();
+
+            if (selected !== null) {
+                selfoss.events.entriesToolbar(selected);
+                $('.entry-unread', selected).click();
+            }
+
             e.preventDefault();
             return false;
         });
@@ -151,7 +161,12 @@ selfoss.shortcuts = {
                 return false;
             }
 
-            window.open($('.entry.selected .entry-datetime').attr('href'));
+            var selected = selfoss.ui.entryGetSelected();
+
+            if (selected !== null) {
+                window.open($('.entry-datetime', selected).attr('href'));
+            }
+
             e.preventDefault();
             return false;
         });
@@ -164,15 +179,19 @@ selfoss.shortcuts = {
 
             e.preventDefault();
 
-            selfoss.events.entriesToolbar(selfoss.ui.entryGetSelected());
+            var selected = selfoss.ui.entryGetSelected();
 
-            // mark item as read
-            if ($('.entry.selected .entry-unread').hasClass('active')) {
-                $('.entry.selected .entry-unread').click();
+            if (selected !== null) {
+                selfoss.events.entriesToolbar(selected);
+
+                // mark item as read
+                if ($('.entry-unread', selected).hasClass('active')) {
+                    $('.entry-unread', selected).click();
+                }
+
+                // open item in new window
+                $('.entry-datetime', selected).click();
             }
-
-            // open item in new window
-            $('.entry.selected .entry-datetime').click();
         });
 
         // 'r': Reload the current view
@@ -212,7 +231,12 @@ selfoss.shortcuts = {
                 return false;
             }
 
-            $('.entry.selected.unread .entry-unread').click();
+            var selected = selfoss.ui.entryGetSelected();
+
+            if (selected !== null && !selfoss.ui.entryIsRead(selected)) {
+                selfoss.ui.entryMark(selected.data('entry-id'), false);
+            }
+
             selfoss.shortcuts.nextprev('next', true);
             return false;
         });
@@ -223,7 +247,12 @@ selfoss.shortcuts = {
                 return false;
             }
 
-            $('.entry.selected.unread .entry-unread').click();
+            var selected = selfoss.ui.entryGetSelected();
+
+            if (selected !== null && !selfoss.ui.entryIsRead(selected)) {
+                selfoss.ui.entryMark(selected.data('entry-id'), false);
+            }
+
             selfoss.shortcuts.nextprev('prev', true);
             e.preventDefault();
             return false;
