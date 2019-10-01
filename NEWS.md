@@ -15,7 +15,7 @@
 - `logger_level=NONE` is now handled correctly ([#1077](https://github.com/SSilence/selfoss/issues/1077))
 - URLs containing special characters like commas in query string are now handled correctly ([#1082](https://github.com/SSilence/selfoss/pull/1082))
 - Set 60 second timeout to spout HTTP requests to prevent a single feed blocking other updates ([#1104](https://github.com/SSilence/selfoss/issues/1104))
-- Significantly improved accessibility ([#1133](https://github.com/SSilence/selfoss/pull/1133) and [#1134](https://github.com/SSilence/selfoss/pull/1134))
+- Significantly improved accessibility ([#1133](https://github.com/SSilence/selfoss/pull/1133), [#1134](https://github.com/SSilence/selfoss/pull/1134) and [#1141](https://github.com/SSilence/selfoss/pull/1141))
 
 ### API changes
 - `tags` attribute is now consistently array of strings, numbers are numbers and booleans are booleans. **This might break third-party clients that have not updated yet.** ([#948](https://github.com/SSilence/selfoss/pull/948))
