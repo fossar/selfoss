@@ -1,4 +1,5 @@
 import selfoss from './selfoss-base';
+import * as clipboard from 'clipboard-polyfill';
 
 selfoss.shares = {
     initialized: false,
@@ -42,6 +43,12 @@ selfoss.shares = {
 
         this.register('mail', 'e', 'fas fa-envelope', function(url, title) {
             document.location.href = 'mailto:?body=' + encodeURIComponent(url) + '&subject=' + encodeURIComponent(title);
+        });
+
+        this.register('copy', 'c', 'fas fa-copy', (url) => {
+            clipboard.writeText(url).then(() => {
+                selfoss.ui.showMessage(selfoss.ui._('info_url_copied'));
+            });
         });
     },
 

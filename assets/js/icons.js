@@ -16,6 +16,7 @@ import { faCaretDown } from '@fortawesome/free-solid-svg-icons/faCaretDown';
 import { faCaretRight } from '@fortawesome/free-solid-svg-icons/faCaretRight';
 import { faCloudUploadAlt } from '@fortawesome/free-solid-svg-icons/faCloudUploadAlt';
 import { faCog } from '@fortawesome/free-solid-svg-icons/faCog';
+import { faCopy } from '@fortawesome/free-solid-svg-icons/faCopy';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons/faEnvelope';
 import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons/faExternalLinkAlt';
 import { faKey } from '@fortawesome/free-solid-svg-icons/faKey';
@@ -55,6 +56,7 @@ export function initIcons() {
         faCheckCircle,
         faCloudUploadAlt,
         faCog,
+        faCopy,
         faEnvelope,
         faExternalLinkAlt,
         faKey,
