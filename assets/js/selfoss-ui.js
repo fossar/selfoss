@@ -567,7 +567,20 @@ selfoss.ui = {
         const fallbackLanguage = 'en';
         const langKey = `lang_${identifier}`;
 
-        let translated = locales[selfoss.config.language][langKey] || locales[fallbackLanguage][langKey] || `#untranslated:${identifier}`;
+        let preferredLanguage = selfoss.config.language;
+
+        // locale auto-detection
+        if (preferredLanguage === null) {
+            if ('languages' in navigator) {
+                preferredLanguage = navigator.languages.find(lang => Object.keys(locales).includes(lang));
+            }
+        }
+
+        if (!Object.keys(locales).includes(preferredLanguage)) {
+            preferredLanguage = fallbackLanguage;
+        }
+
+        let translated = locales[preferredLanguage][langKey] || locales[fallbackLanguage][langKey] || `#untranslated:${identifier}`;
 
         if (params) {
             translated = selfoss.ui.i18nFormat(translated, params);
