@@ -1,6 +1,19 @@
+'use strict';
+
+const { spawnSync } = require('child_process');
 const fs = require('fs');
+const os = require('os');
 const path = require('path');
 const archiver = require('archiver');
+
+function runChecked(command, ...params) {
+    const spawned = spawnSync(command, params);
+
+    if (spawned.status != 0) {
+        process.stderr.write(spawned.stderr);
+        process.exit(spawned.status);
+    }
+}
 
 function filterEntry(fn) {
     return (entry) => {
@@ -51,10 +64,29 @@ function isNotUnimportant(dest) {
     return allowed;
 }
 
+const sourceDir = process.cwd();
+const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'selfoss-dist-'));
+
+const dirty = spawnSync('git', ['-C', sourceDir, 'diff-index', '--quiet', 'HEAD']).status === 1;
+if (dirty) {
+    console.warn('Repository contains uncommitted changes that will not be included in the dist archive.');
+}
+
+console.info('Cloning the repository into a temporary directory…');
+runChecked('git', 'clone', '--shared', sourceDir, tempDir);
+
+process.chdir(tempDir);
+
+console.info('Installing dependencies…');
+runChecked('npm', 'run', 'install-dependencies');
+
+console.info('Building asset bundles…');
+runChecked('npm', 'run', 'build');
+
 const pkg = JSON.parse(fs.readFileSync('package.json', 'utf-8'));
 
 const filename = `selfoss-${pkg.ver}.zip`;
-var output = fs.createWriteStream(filename);
+var output = fs.createWriteStream(path.join(sourceDir, filename));
 var archive = archiver('zip');
 archive.pipe(output);
 
@@ -84,6 +116,9 @@ archive.file('index.php');
 archive.file('run.php');
 archive.file('cliupdate.php');
 
-archive.finalize();
+archive.finalize().then(() => {
+    // clean up
+    runChecked('rm', '-rf', tempDir);
 
-console.log(`Zipball ‘${filename}’ was successfully generated.`);
+    console.info(`Zipball ‘${filename}’ was successfully generated.`);
+});

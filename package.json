@@ -21,7 +21,7 @@
     "cs:server": "composer run-script cs",
     "dev": "npm run --prefix assets/ dev",
     "build": "npm run --prefix assets/ build",
-    "dist": "npm install && $NODE utils/create-zipball.js",
+    "dist": "npm install --ignore-scripts && $NODE utils/create-zipball.js",
     "install-dependencies": "composer install --no-dev --optimize-autoloader --prefer-dist && npm install --prefix assets/",
     "lint:client": "eslint assets/js/*.js",
     "lint:server": "composer run-script lint",
