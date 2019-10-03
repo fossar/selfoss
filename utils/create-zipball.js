@@ -7,10 +7,9 @@ const path = require('path');
 const archiver = require('archiver');
 
 function runChecked(command, ...params) {
-    const spawned = spawnSync(command, params);
+    const spawned = spawnSync(command, params, {stdio: 'inherit'});
 
     if (spawned.status != 0) {
-        process.stderr.write(spawned.stderr);
         process.exit(spawned.status);
     }
 }
