@@ -52,9 +52,7 @@ class SimplePieFileGuzzle extends \SimplePie_File {
                     }
                 });
 
-                // Sequence of fetched URLs
-                $urlStack = array_merge([$url], $response->getHeader(\GuzzleHttp\RedirectMiddleware::HISTORY_HEADER));
-                $this->url = $urlStack[count($urlStack) - 1];
+                $this->url = WebClient::getEffectiveUrl($url, $response);
                 $this->body = (string) $response->getBody();
                 $this->status_code = $response->getStatusCode();
             } catch (\GuzzleHttp\Exception\RequestException $e) {

@@ -46,6 +46,9 @@ class WebClient {
             }
 
             $httpClient = new GuzzleHttp\Client([
+                'allow_redirects' => [
+                    'track_redirects' => true,
+                ],
                 'headers' => [
                     'User-Agent' => self::getUserAgent(),
                 ],
@@ -99,5 +102,21 @@ class WebClient {
         }
 
         return $data;
+    }
+
+    /**
+     * Get effective URL of the response.
+     * RedirectMiddleware will need to be enabled for this to work.
+     *
+     * @param string $url requested URL, to use as a fallback
+     * @param GuzzleHttp\Psr7\Response $response response to inspect
+     *
+     * @return string last URL we were redirected to
+     */
+    public static function getEffectiveUrl($url, GuzzleHttp\Psr7\Response $response) {
+        // Sequence of fetched URLs
+        $urlStack = array_merge([$url], $response->getHeader(\GuzzleHttp\RedirectMiddleware::HISTORY_HEADER));
+
+        return $urlStack[count($urlStack) - 1];
     }
 }
