@@ -1130,53 +1130,6 @@
             "time": "2019-09-06T13:49:17+00:00"
         },
         {
-            "name": "natxet/CssMin",
-            "version": "v3.0.6",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/natxet/CssMin.git",
-                "reference": "d5d9f4c3e5cedb1ae96a95a21731f8790e38f1dd"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/natxet/CssMin/zipball/d5d9f4c3e5cedb1ae96a95a21731f8790e38f1dd",
-                "reference": "d5d9f4c3e5cedb1ae96a95a21731f8790e38f1dd",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.0-dev"
-                }
-            },
-            "autoload": {
-                "classmap": [
-                    "src/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Joe Scylla",
-                    "email": "joe.scylla@gmail.com",
-                    "homepage": "https://profiles.google.com/joe.scylla"
-                }
-            ],
-            "description": "Minifying CSS",
-            "homepage": "http://code.google.com/p/cssmin/",
-            "keywords": [
-                "css",
-                "minify"
-            ],
-            "time": "2018-01-09T11:15:01+00:00"
-        },
-        {
             "name": "php-http/client-common",
             "version": "1.9.1",
             "source": {
@@ -1728,16 +1681,16 @@
         },
         {
             "name": "simplepie/simplepie",
-            "version": "1.5.2",
+            "version": "1.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/simplepie/simplepie.git",
-                "reference": "0e8fe72132dad765d25db4cabc69a91139af1263"
+                "reference": "173663382a9346acd53df60c7ffb20689c9cf1f6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/simplepie/simplepie/zipball/0e8fe72132dad765d25db4cabc69a91139af1263",
-                "reference": "0e8fe72132dad765d25db4cabc69a91139af1263",
+                "url": "https://api.github.com/repos/simplepie/simplepie/zipball/173663382a9346acd53df60c7ffb20689c9cf1f6",
+                "reference": "173663382a9346acd53df60c7ffb20689c9cf1f6",
                 "shasum": ""
             },
             "require": {
@@ -1769,19 +1722,19 @@
             "authors": [
                 {
                     "name": "Ryan Parman",
-                    "role": "Creator, alumnus developer",
-                    "homepage": "http://ryanparman.com/"
+                    "homepage": "http://ryanparman.com/",
+                    "role": "Creator, alumnus developer"
                 },
                 {
                     "name": "Geoffrey Sneddon",
-                    "role": "Alumnus developer",
-                    "homepage": "http://gsnedders.com/"
+                    "homepage": "http://gsnedders.com/",
+                    "role": "Alumnus developer"
                 },
                 {
                     "name": "Ryan McCue",
-                    "role": "Developer",
                     "email": "me@ryanmccue.info",
-                    "homepage": "http://ryanmccue.info/"
+                    "homepage": "http://ryanmccue.info/",
+                    "role": "Developer"
                 }
             ],
             "description": "A simple Atom/RSS parsing library for PHP",
@@ -1791,7 +1744,7 @@
                 "feeds",
                 "rss"
             ],
-            "time": "2018-08-02T05:43:58+00:00"
+            "time": "2019-09-22T23:21:30+00:00"
         },
         {
             "name": "smalot/pdfparser",
@@ -2039,52 +1992,6 @@
                 "shim"
             ],
             "time": "2019-08-06T08:03:45+00:00"
-        },
-        {
-            "name": "tedivm/jshrink",
-            "version": "v1.3.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/tedious/JShrink.git",
-                "reference": "566e0c731ba4e372be2de429ef7d54f4faf4477a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/tedious/JShrink/zipball/566e0c731ba4e372be2de429ef7d54f4faf4477a",
-                "reference": "566e0c731ba4e372be2de429ef7d54f4faf4477a",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^5.6|^7.0"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^2.8",
-                "php-coveralls/php-coveralls": "^1.1.0",
-                "phpunit/phpunit": "^6"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "JShrink": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Robert Hafner",
-                    "email": "tedivm@tedivm.com"
-                }
-            ],
-            "description": "Javascript Minifier built in PHP",
-            "homepage": "http://github.com/tedious/JShrink",
-            "keywords": [
-                "javascript",
-                "minifier"
-            ],
-            "time": "2019-06-28T18:11:46+00:00"
         },
         {
             "name": "true/punycode",
