@@ -676,6 +676,9 @@ var selfoss = {
     nukeLocalData: function() {
         selfoss.db.clear(); // will not work after a failure, since storage is nulled
         window.localStorage.clear();
+        if ('caches' in window) {
+            caches.keys().then(keys => keys.forEach(key => caches.delete(key)));
+        }
         navigator.serviceWorker.getRegistrations().then(function(registrations) {
             registrations.forEach(function(reg) {
                 reg.unregister();
