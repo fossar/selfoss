@@ -79,6 +79,8 @@ Selfoss uses [composer](https://getcomposer.org/) and [npm](https://www.npmjs.co
 
 For the client side, you will also need JavaScript dependencies installed by calling `npm install` in the `assets` directory. You can use `npm run install-dependencies` as a shortcut for installing both sets of dependencies.
 
+We use [Parcel](https://parceljs.org/) (installed by the command above) to build the client side of selfoss. Every time anything in `assets` directory changes, you will need to run `npm run build` for the client to be built and installed into the `public` directory. When developing, you can also use `npm run dev`; it will watch for asset changes, rebuild the bundles as needed, and reload selfoss automatically.
+
 If you want to create a package with all the dependencies bundled, you can run `npm run dist` command to produce a zipball.
 
 Every patch is expected to adhere to our coding style, which is checked automatically by Travis. You can install the checkers locally either with your package manager or by calling `utils/install-phars.sh`, and then run the checks using `npm run check` before submitting a pull request.
