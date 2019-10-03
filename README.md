@@ -57,7 +57,7 @@ SUPPORT
 
 * [Issue tracker](https://github.com/SSilence/selfoss/issues) for reporting problems and requesting new features
 * [Forum](https://selfoss.aditu.de/forum/) for general questions about usage
-* [Chat](https://gitter.im/fossar/selfoss) for discussing selfoss development
+* [Chat on Gitter](https://gitter.im/fossar/selfoss) (or [`#selfoss:matrix.org` mirror](https://matrix.to/#/#selfoss:matrix.org)) for discussing selfoss development or just about anything
 
 
 OPML Import
