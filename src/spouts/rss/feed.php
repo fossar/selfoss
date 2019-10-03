@@ -125,6 +125,15 @@ class feed extends \spouts\spout {
             return $this->faviconUrl;
         }
 
+        // else fallback to the favicon of the feed effective domain
+        $feedUrl = $this->feed->getFeedUrl();
+        if ($feedUrl && $this->imageHelper->fetchFavicon($feedUrl, true)) {
+            $this->faviconUrl = $this->imageHelper->getFaviconUrl();
+            $this->logger->debug('icon: using feed homepage favicon: ' . $this->faviconUrl);
+
+            return $this->faviconUrl;
+        }
+
         return null;
     }
 

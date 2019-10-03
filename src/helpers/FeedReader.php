@@ -76,6 +76,15 @@ class FeedReader {
     }
 
     /**
+     * Get the URL of the feed
+     *
+     * @return ?string
+     */
+    public function getFeedUrl() {
+        return $this->simplepie->subscribe_url();
+    }
+
+    /**
      * @return void
      */
     public function __destruct() {
