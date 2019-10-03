@@ -38,23 +38,42 @@ var selfoss = {
      * initialize application
      */
     init: function() {
+        var storedConfig = localStorage.getItem('configuration');
+        var oldConfiguration = null;
+        try {
+            oldConfiguration = JSON.parse(storedConfig);
+        } catch (e) {
+            // We will try to obtain a new configuration anyway
+        }
+
         $.get({
             url: 'api/about',
             dataType: 'json',
             // we want fresh configuration each time
             cache: false,
-            success: function(data) {
-                localStorage.setItem('configuration', JSON.stringify(data.configuration));
+            success: function({configuration}) {
+                localStorage.setItem('configuration', JSON.stringify(configuration));
 
-                selfoss.initMain(data.configuration);
+                if (oldConfiguration && 'caches' in window) {
+                    if (oldConfiguration.userCss !== configuration.userCss) {
+                        caches.delete('userCss').then(() =>
+                            caches.open('userCss').then(cache => cache.add(`user.css?v=${configuration.userCss}`))
+                        );
+                    }
+                    if (oldConfiguration.userJs !== configuration.userJs) {
+                        caches.delete('userJs').then(() =>
+                            caches.open('userJs').then(cache => cache.add(`user.js?v=${configuration.userJs}`))
+                        );
+                    }
+                }
+
+                selfoss.initMain(configuration);
             },
             // on failure, we will try to use the last cached config
             error: function() {
-                var storedConfig = localStorage.getItem('configuration');
-                try {
-                    var configuration = JSON.parse(storedConfig);
-                    selfoss.initMain(configuration);
-                } catch (e) {
+                if (oldConfiguration) {
+                    selfoss.initMain(oldConfiguration);
+                } else {
                     // TODO: Add a more proper error page
                     $('body').html(selfoss.ui._('error_configuration'));
                 }

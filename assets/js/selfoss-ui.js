@@ -130,10 +130,20 @@ selfoss.ui = {
                 <button class="stream-button mark-these-read" aria-label="${selfoss.ui._('markread')}</span>"><span>${selfoss.ui._('markread')}</span></button>
                 <button class="stream-button stream-error" aria-live="assertive" aria-label="${selfoss.ui._('streamerror')}">${selfoss.ui._('streamerror')}</button>
             </div>
-        </div>
+        </div>`);
 
-        <link rel="stylesheet" href="user.css" />
-        <script src="user.js"></script>`);
+        // Cannot add these to the append above, since jQuery automatically cache-busts links, which would prevent them from loading off-line.
+        if (selfoss.config.userCss !== null) {
+            let link = document.createElement('link');
+            link.setAttribute('rel', 'stylesheet');
+            link.setAttribute('href', `user.css?v=${selfoss.config.userCss}`);
+            document.head.appendChild(link);
+        }
+        if (selfoss.config.userJs !== null) {
+            let script = document.createElement('script');
+            script.setAttribute('src', `user.js?v=${selfoss.config.userJs}`);
+            document.body.appendChild(script);
+        }
     },
 
     showLogin: function(error) {

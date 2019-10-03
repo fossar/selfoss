@@ -228,7 +228,9 @@ selfoss.dbOnline = {
                 });
             },
             complete: function() {
-                selfoss.dbOnline.syncing.request = null;
+                if (selfoss.dbOnline.syncing) {
+                    selfoss.dbOnline.syncing.request = null;
+                }
             }
         });
 

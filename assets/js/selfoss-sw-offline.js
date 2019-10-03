@@ -20,7 +20,7 @@ self.addEventListener('install', function(event) {
 
 
 self.addEventListener('activate', function(event) {
-    const validCacheNames = cachedEntries.map(entry => entry.revision);
+    const validCacheNames = cachedEntries.map(entry => entry.revision) + ['userCss', 'userJs'];
 
     event.waitUntil(
         caches.keys().then(function(cacheNames) {

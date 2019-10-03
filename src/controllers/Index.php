@@ -130,6 +130,8 @@ class Index extends BaseController {
                 'publicMode' => \F3::get('public') == 1, // bool
                 'authEnabled' => \F3::get('auth')->enabled() === true, // bool
                 'language' => \F3::get('language'), // string
+                'userCss' => file_exists(BASEDIR . '/user.css') ? filemtime(BASEDIR . '/user.css') : null, // ?int
+                'userJs' => file_exists(BASEDIR . '/user.js') ? filemtime(BASEDIR . '/user.js') : null, // ?int
             ],
         ];
 
