@@ -78,5 +78,7 @@
   "lang_login_offline": "Ukládat data v prohlížeči",
   "lang_app_update": "selfoss byl aktualizován, prosím znovu načtěte stránku",
   "lang_app_reload": "Znovu načíst",
-  "lang_error_offline_storage": "Chyba lokálního úložiště: {0}. Možná pomůže znovunačtení stránky. Prozatím bude ukládání vypnuto."
+  "lang_error_offline_storage": "Chyba lokálního úložiště: {0}. Možná pomůže znovunačtení stránky. Prozatím bude ukládání vypnuto.",
+  "lang_article_actions": "Akce",
+  "lang_error_configuration": "Nelze načíst konfiguraci."
 }
