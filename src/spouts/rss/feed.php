@@ -107,20 +107,25 @@ class feed extends \spouts\spout {
             return $this->faviconUrl;
         }
 
-        $this->faviconUrl = null;
+        // Try to use feed logo first
+        $feedLogoUrl = $this->feed->getImageUrl();
+        if ($feedLogoUrl && $this->imageHelper->fetchFavicon($feedLogoUrl)) {
+            $this->faviconUrl = $this->imageHelper->getFaviconUrl();
+            $this->logger->debug('icon: using feed logo: ' . $this->faviconUrl);
+
+            return $this->faviconUrl;
+        }
+
+        // else fallback to the favicon of the associated web page
         $htmlUrl = $this->getHtmlUrl();
         if ($htmlUrl && $this->imageHelper->fetchFavicon($htmlUrl, true)) {
             $this->faviconUrl = $this->imageHelper->getFaviconUrl();
             $this->logger->debug('icon: using feed homepage favicon: ' . $this->faviconUrl);
-        } else {
-            $feedLogoUrl = $this->feed->getImageUrl();
-            if ($feedLogoUrl && $this->imageHelper->fetchFavicon($feedLogoUrl)) {
-                $this->faviconUrl = $this->imageHelper->getFaviconUrl();
-                $this->logger->debug('icon: using feed logo: ' . $this->faviconUrl);
-            }
+
+            return $this->faviconUrl;
         }
 
-        return $this->faviconUrl;
+        return null;
     }
 
     public function getLink() {

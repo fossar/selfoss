@@ -74,6 +74,7 @@
 - Google+ and del.icio.us share button were removed ([#1121](https://github.com/SSilence/selfoss/pull/1121))
 - Windows 8 tiles are no longer supported. ([#1137](https://github.com/SSilence/selfoss/pull/1137))
 - [Strong password hashes](https://www.php.net/manual/en/function.password-hash.php) are now supported. ([#844](https://github.com/SSilence/selfoss/pull/844), [#1137](https://github.com/SSilence/selfoss/pull/1137))
+- RSS spout now prefers the feed logo to website favicon. ([#1152](https://github.com/SSilence/selfoss/pull/1152))
 
 
 ## 2.18 – 2018-03-05
