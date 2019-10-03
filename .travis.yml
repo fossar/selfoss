@@ -43,6 +43,8 @@ script:
     - if [ "$CS_FIXER" = true ]; then npm run cs:server; fi
 
 before_deploy:
+    - git config --global user.email 'Travis CI'
+    - git config --global user.name 'builds@travis-ci.org'
     - source utils/package.sh
     - source utils/bintray.sh
 
