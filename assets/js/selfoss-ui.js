@@ -733,27 +733,24 @@ selfoss.ui = {
 
 
     refreshOfflineCounts: function(offlineCounts) {
-        for (var ck in offlineCounts) {
-            if (offlineCounts.hasOwnProperty(ck)) {
-                var selector = '#nav-filter-' + ck;
-                if (ck == 'unread') {
-                    selector = selector + ', #nav-mobile-count';
-                }
-                var widget = $(selector);
-                var offlineWidget = $('span.offline-count', widget);
+        for (let [kind, count] of Object.entries(offlineCounts)) {
+            var selector = '#nav-filter-' + kind;
+            if (kind == 'unread') {
+                selector = selector + ', #nav-mobile-count';
+            }
+            var widget = $(selector);
+            var offlineWidget = $('span.offline-count', widget);
 
-                if (offlineCounts[ck] == 'keep') {
-                    offlineCounts[ck] = parseInt(offlineWidget.html());
-                } else {
-                    offlineWidget.html(offlineCounts[ck]);
-                }
+            if (count == 'keep') {
+                count = parseInt(offlineWidget.html());
+            } else {
+                offlineWidget.html(count);
+            }
 
-                if (parseInt($('span.count', widget).html()) !=
-                    offlineCounts[ck]) {
-                    offlineWidget.addClass('diff');
-                } else {
-                    offlineWidget.removeClass('diff');
-                }
+            if (parseInt($('span.count', widget).html()) != count) {
+                offlineWidget.addClass('diff');
+            } else {
+                offlineWidget.removeClass('diff');
             }
         }
     }

@@ -513,13 +513,11 @@ selfoss.dbOffline = {
     storeStats: function(stats) {
         return selfoss.dbOffline._tr('rw', selfoss.db.storage.stats,
             function() {
-                for (var stat in stats) {
-                    if (stats.hasOwnProperty(stat)) {
-                        selfoss.db.storage.stats.put({
-                            name: stat,
-                            value: stats[stat]
-                        });
-                    }
+                for (let [name, value] of Object.entries(stats)) {
+                    selfoss.db.storage.stats.put({
+                        name,
+                        value
+                    });
                 }
             });
     },
@@ -780,15 +778,13 @@ selfoss.dbOffline = {
                 });
 
                 if (updateStats) {
-                    for (var statusName in statsDiff) {
-                        if (statsDiff.hasOwnProperty(statusName)) {
-                            selfoss.db.storage.stats.get(statusName, function(stat) {
-                                selfoss.db.storage.stats.put({
-                                    name: statusName,
-                                    value: stat.value + statsDiff[statusName]
-                                });
+                    for (let [name, value] of Object.entries(statsDiff)) {
+                        selfoss.db.storage.stats.get(name, function(stat) {
+                            selfoss.db.storage.stats.put({
+                                name,
+                                value: stat.value + value
                             });
-                        }
+                        });
                     }
                 }
             }).then(selfoss.dbOffline.refreshStats);

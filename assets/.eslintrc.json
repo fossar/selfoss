@@ -43,6 +43,6 @@
         "jquery": true
     },
     "globals": {
-        "selfoss": {}
+        "selfoss": "writable"
     }
 }
