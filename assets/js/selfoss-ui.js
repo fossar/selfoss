@@ -18,7 +18,7 @@ selfoss.ui = {
      * Create basic DOM structure of the page.
      */
     init: function() {
-        if ($('body').is('#hashpashwordbody, #opmlbody')) {
+        if ($('body').is('#hashpasswordbody, #opmlbody')) {
             // we do not want to create UI for non-app pages
             return;
         }
