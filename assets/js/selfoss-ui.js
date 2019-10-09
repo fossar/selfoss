@@ -31,7 +31,7 @@ selfoss.ui = {
                     <li><label for="password">{selfoss.ui._('login_password')}</label> <input type="password" name="password" id="password" accesskey="p" autocomplete="current-password" /></li>
                     <li><label for="enableoffline">{selfoss.ui._('login_offline')}</label> <input type="checkbox" name="enableoffline" id="enableoffline" accesskey="o" /></li>
                     <li class="error" aria-live="assertive"></li>
-                    <li class="button"><label>&nbsp;</label><input type="submit" accesskey="l" value="{selfoss.ui._('login')}" /></li>
+                    <li class="button"><label>&nbsp;</label><input type="submit" accesskey="l" value={selfoss.ui._('login')} /></li>
                 </ul>
             </form>
         </div>);
@@ -45,7 +45,7 @@ selfoss.ui = {
                         <span class="count"></span>
                     </div>
                 </div>
-                <button id="nav-mobile-settings" accesskey="t" aria-label="{selfoss.ui._('settingsbutton')}"></button>
+                <button id="nav-mobile-settings" accesskey="t" aria-label={selfoss.ui._('settingsbutton')}></button>
             </div>
 
             {/* navigation */}
@@ -59,24 +59,24 @@ selfoss.ui = {
                         <li>
                             <a id="nav-filter-newest" class="nav-filter-newest" href="#">
                                 {selfoss.ui._('newest')}
-                                <span class="offline-count offlineable" title="{selfoss.ui._('offline_count')}"></span>
-                                <span class="count" title="{selfoss.ui._('online_count')}"></span>
+                                <span class="offline-count offlineable" title={selfoss.ui._('offline_count')}></span>
+                                <span class="count" title={selfoss.ui._('online_count')}></span>
                             </a>
                         </li>
                         <li>
                             <a id="nav-filter-unread" class="nav-filter-unread" href="#">
                                 {selfoss.ui._('unread')}
                                 <span class="unread-count offlineable">
-                                    <span class="offline-count offlineable" title="{selfoss.ui._('offline_count')}"></span>
-                                    <span class="count" title="{selfoss.ui._('online_count')}"></span>
+                                    <span class="offline-count offlineable" title={selfoss.ui._('offline_count')}></span>
+                                    <span class="count" title={selfoss.ui._('online_count')}></span>
                                 </span>
                             </a>
                         </li>
                         <li>
                             <a id="nav-filter-starred" class="nav-filter-starred" href="#">
                                 {selfoss.ui._('starred')}
-                                <span class="offline-count offlineable" title="{selfoss.ui._('offline_count')}"></span>
-                                <span class="count" title="{selfoss.ui._('online_count')}"></span>
+                                <span class="offline-count offlineable" title={selfoss.ui._('offline_count')}></span>
+                                <span class="count" title={selfoss.ui._('online_count')}></span>
                             </a>
                         </li>
                     </ul>
@@ -98,23 +98,23 @@ selfoss.ui = {
 
                 {/* navigation search input just for smartphone version */}
                 <div id="nav-search" class="offlineable" role="search">
-                    <input aria-label="{selfoss.ui._('search_label')}" type="search" id="nav-search-term" accesskey="s" /> <input type="button" id="nav-search-button" value="{selfoss.ui._('searchbutton')}" accesskey="e" />
+                    <input aria-label={selfoss.ui._('search_label')} type="search" id="nav-search-term" accesskey="s" /> <input type="button" id="nav-search-button" value={selfoss.ui._('searchbutton')} accesskey="e" />
                     <hr />
                 </div>
 
                 <div class="nav-toolbar">
-                    <button id="nav-refresh" title="{selfoss.ui._('refreshbutton')}" aria-label="{selfoss.ui._('refreshbutton')}" accesskey="r"></button>
-                    <button id="nav-settings" title="{selfoss.ui._('settingsbutton')}" aria-label="{selfoss.ui._('settingsbutton')}" accesskey="t"></button>
-                    <button id="nav-logout" title="{selfoss.ui._('logoutbutton')}" aria-label="{selfoss.ui._('logoutbutton')}" accesskey="l"></button>
-                    <button id="nav-login" title="{selfoss.ui._('loginbutton')}" aria-label="{selfoss.ui._('loginbutton')}" accesskey="l"></button>
+                    <button id="nav-refresh" title={selfoss.ui._('refreshbutton')} aria-label={selfoss.ui._('refreshbutton')} accesskey="r"></button>
+                    <button id="nav-settings" title={selfoss.ui._('settingsbutton')} aria-label={selfoss.ui._('settingsbutton')} accesskey="t"></button>
+                    <button id="nav-logout" title={selfoss.ui._('logoutbutton')} aria-label={selfoss.ui._('logoutbutton')} accesskey="l"></button>
+                    <button id="nav-login" title={selfoss.ui._('loginbutton')} aria-label={selfoss.ui._('loginbutton')} accesskey="l"></button>
                 </div>
             </div>
 
             {/* search */}
             <div id="search" role="search" class="offlineable">
-                <input aria-label="{selfoss.ui._('search_label')}" type="search" id="search-term" accesskey="s" />
-                <button id="search-remove" title="{selfoss.ui._('searchremove')}" accesskey="h" aria-label="{selfoss.ui._('searchremove')}"><img src="images/remove.png" aria-hidden="true" alt="" /></button>
-                <button id="search-button" title="{selfoss.ui._('searchbutton')}" aria-label="{selfoss.ui._('searchbutton')}" accesskey="e"><img src="images/search.png" alt="" /></button>
+                <input aria-label={selfoss.ui._('search_label')} type="search" id="search-term" accesskey="s" />
+                <button id="search-remove" title={selfoss.ui._('searchremove')} accesskey="h" aria-label={selfoss.ui._('searchremove')}><img src="images/remove.png" aria-hidden="true" alt="" /></button>
+                <button id="search-button" title={selfoss.ui._('searchbutton')} aria-label={selfoss.ui._('searchbutton')} accesskey="e"><img src="images/search.png" alt="" /></button>
             </div>
 
             <ul id="search-list">
@@ -126,9 +126,9 @@ selfoss.ui = {
 
             <div id="stream-buttons">
                 <p aria-live="assertive" class="stream-empty">{selfoss.ui._('no_entries')}</p>
-                <button class="stream-button stream-more" accesskey="m" aria-label="{selfoss.ui._('more')}"><span>{selfoss.ui._('more')}</span></button>
-                <button class="stream-button mark-these-read" aria-label="{selfoss.ui._('markread')}</span>"><span>{selfoss.ui._('markread')}</span></button>
-                <button class="stream-button stream-error" aria-live="assertive" aria-label="{selfoss.ui._('streamerror')}">{selfoss.ui._('streamerror')}</button>
+                <button class="stream-button stream-more" accesskey="m" aria-label={selfoss.ui._('more')}><span>{selfoss.ui._('more')}</span></button>
+                <button class="stream-button mark-these-read" aria-label={selfoss.ui._('markread')}><span>{selfoss.ui._('markread')}</span></button>
+                <button class="stream-button stream-error" aria-live="assertive" aria-label={selfoss.ui._('streamerror')}>{selfoss.ui._('streamerror')}</button>
             </div>
         </div>);
 
