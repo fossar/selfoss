@@ -58,7 +58,7 @@ selfoss.ui = {
 
                 <div id="nav-filter-wrapper">
                     <h2><button type="button" id="nav-filter-title" class="nav-section-toggle nav-filter-expanded" aria-expanded="true"><i class="fas fa-caret-down fa-lg fa-fw"></i> {selfoss.ui._('filter')}</button></h2>
-                    <ul id="nav-filter" aria-labeledby="nav-filter-title">
+                    <ul id="nav-filter" aria-labelledby="nav-filter-title">
                         <li>
                             <a id="nav-filter-newest" class="nav-filter-newest" href="#">
                                 {selfoss.ui._('newest')}
@@ -89,11 +89,11 @@ selfoss.ui = {
 
                 <div id="nav-tags-wrapper">
                     <h2><button type="button" id="nav-tags-title" class="nav-section-toggle nav-tags-expanded" aria-expanded="true"><i class="fas fa-caret-down fa-lg fa-fw"></i> {selfoss.ui._('tags')}</button></h2>
-                    <ul id="nav-tags" aria-labeledby="nav-tags-title">
+                    <ul id="nav-tags" aria-labelledby="nav-tags-title">
                         <li><a class="active nav-tags-all" href="#">{selfoss.ui._('alltags')}</a></li>
                     </ul>
                     <h2><button type="button" id="nav-sources-title" class="nav-section-toggle nav-sources-collapsed" aria-expanded="false"><i class="fas fa-caret-right fa-lg fa-fw"></i> {selfoss.ui._('sources')}</button></h2>
-                    <ul id="nav-sources" aria-labeledby="nav-sources-title">
+                    <ul id="nav-sources" aria-labelledby="nav-sources-title">
                     </ul>
                 </div>
 
