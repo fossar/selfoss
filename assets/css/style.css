@@ -316,6 +316,10 @@ span.offline-count.diff {
     text-align: center;
 }
 
+.nav-toolbar li {
+    display: inline-block;
+}
+
 body:not(.publicupdate) #nav-login {
     width: 140px;
     margin-left: 0;
