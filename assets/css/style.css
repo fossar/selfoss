@@ -31,7 +31,7 @@ input {
 
 #message {
     display:none;
-    position:absolute;
+    position: fixed;
     width:100%;
     background:#e6e6fa;
     border:1px solid #00008b;
