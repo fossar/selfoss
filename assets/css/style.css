@@ -1,7 +1,7 @@
 @import 'malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css';
 @import '@fancyapps/fancybox/dist/jquery.fancybox.css';
 @import 'spectrum-colorpicker/spectrum.css';
-@import '../css/reset.css';
+@import 'reset-css';
 
 /* base */
 
