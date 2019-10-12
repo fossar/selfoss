@@ -77,5 +77,9 @@
   "lang_error_refreshing_source": "Impossible de rafraîchir les sources :",
   "lang_error_sync": "Impossible de synchroniser les dernières modifications du serveur :",
   "lang_error_offline_storage": "Erreur stockage hors-ligne : {0}. Recharger la page pourrait aider. Le mode hors-ligne est désactivé pour le moment.",
-  "lang_error_invalid_subsection": "Sous-section erronée :"
+  "lang_error_invalid_subsection": "Sous-section erronée :",
+  "lang_search_label": "Terme de recherche",
+  "lang_article_actions": "Actions",
+  "lang_error_configuration": "Impossible de charger la configuration.",
+  "lang_info_url_copied": "URL copiée dans le presse-papiers."
 }
