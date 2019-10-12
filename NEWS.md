@@ -54,6 +54,7 @@
 - The file name of exported sources now includes a timestamp ([#1078](https://github.com/SSilence/selfoss/pull/1078))
 - Developers, we no longer use Grunt. Build the package using `npm run dist` and check the code using `npm run check`; see the `scripts` section in top-level `package.json`. ([#1093](https://github.com/SSilence/selfoss/pull/1093))
 - Developers, we are now building the styles and client-side code statically, using [Parcel](https://parceljs.org/). If you update any such assets, you will need to run `npm run build` for the changes to be reflected. You can also use `npm run dev` to watch for asset changes. ([#1137](https://github.com/SSilence/selfoss/pull/1137))
+- Developers, CSS files are now checked using [stylelint](https://stylelint.io/) and formatted using [Prettier](https://prettier.io/). You can use `npm run lint:styles` and `npm run fix:styles` respectively in the `assets` directory to run those tools. ([#1153](https://github.com/SSilence/selfoss/pull/1153))
 - Google+ and del.icio.us share button were removed ([#1121](https://github.com/SSilence/selfoss/pull/1121))
 - Windows 8 tiles are no longer supported. ([#1137](https://github.com/SSilence/selfoss/pull/1137))
 - [Strong password hashes](https://www.php.net/manual/en/function.password-hash.php) are now supported. ([#844](https://github.com/SSilence/selfoss/pull/844), [#1137](https://github.com/SSilence/selfoss/pull/1137))
