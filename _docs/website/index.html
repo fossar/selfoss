@@ -288,7 +288,19 @@ db_port=3306</code>
                     </tr>
                     <tr>
                         <td class="documentation-first-column">share</td>
-                        <td>share defines which share buttons beneath the entry are visible. Default is share=tfpde (f = facebook, t = twitter, p = pocket, d = diaspora, w = wallabag, e = email). When you would like to show only facebook and twitter share button use share=ft.</td>
+                        <td>
+                            <p><code>share</code> defines which sharing buttons beneath the entry are visible. The following methods are supported:</p>
+                            <dl>
+                                <dt>f</dt><dd>Facebook</dd>
+                                <dt>t</dt><dd>Twitter</dd>
+                                <dt>p</dt><dd>Pocket</dd>
+                                <dt>d</dt><dd>Diaspora</dd>
+                                <dt>w</dt><dd>Wallabag</dd>
+                                <dt>e</dt><dd>E-Mail</dd>
+                            </dl>
+                            <p>Include the letters for methods you want to use. For example, if you would like to only show Facebook and Twitter share buttons, use <code>share=ft</code>.</p>
+                            <p>Defaults to <code>share=tfpde</code>.</p>
+                        </td>
                     </tr>
                     <tr>
                         <td class="documentation-first-column">wallabag</td>

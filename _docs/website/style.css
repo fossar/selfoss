@@ -37,6 +37,22 @@ img {
     border: 0;
 }
 
+dl {
+    display: grid;
+    grid-template-columns: max-content auto;
+    grid-gap: 0.5em;
+}
+
+dt {
+    font-weight: bolder;
+}
+
+@supports (display: grid) {
+    dd {
+        margin-left: 0;
+    }
+}
+
 .wrapper-bright, .wrapper-dark {
     padding-top: 10px;
     font-size: 14px;
