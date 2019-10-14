@@ -80,5 +80,6 @@
   "lang_error_offline_storage": "Lagringsfeil for frakoblet lagring: {0}. Gjeninnlasting kan hjelpe. Skrur av frakoblet imens.",
   "lang_search_label": "Søketekst",
   "lang_article_actions": "Handlinger",
-  "lang_error_configuration": "Kunne ikke laste inn oppsett."
+  "lang_error_configuration": "Kunne ikke laste inn oppsett.",
+  "lang_info_url_copied": "Nettadresse kopiert til utklippstavle."
 }
