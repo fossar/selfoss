@@ -80,5 +80,6 @@
   "lang_error_offline_storage": "オフライン ストレージ エラー: {0}。 再読み込みが役立つことがあります。今のところ、オフラインを無効にします。",
   "lang_search_label": "検索条件",
   "lang_article_actions": "アクション",
-  "lang_error_configuration": "設定を読み込めません。"
+  "lang_error_configuration": "設定を読み込めません。",
+  "lang_info_url_copied": "URLをクリップボードにコピーしました。"
 }
