@@ -5,6 +5,7 @@
     ],
     "rules": {
         "color-hex-length": "long",
-        "no-descending-specificity": null
+        "no-descending-specificity": null,
+        "property-no-vendor-prefix": true
     }
 }
