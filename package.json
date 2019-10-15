@@ -7,6 +7,7 @@
     "url": "https://github.com/fossar/selfoss.git"
   },
   "engines": {
+    "nodejs": ">=10",
     "npm": ">=5"
   },
   "scripts": {
@@ -29,5 +30,8 @@
     "test:server": "composer run-script test",
     "test:integration": "python3 tests/integration/run.py",
     "postinstall": "npm run install-dependencies"
-  }
+  },
+  "cacheDirectories": [
+    "assets/node_modules"
+  ]
 }
