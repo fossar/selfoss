@@ -53,23 +53,23 @@ selfoss.events.entriesToolbar = function(parent) {
     // configure shares
     let shares = selfoss.shares.getAll();
     if (shares.length > 0) {
-        if (parent.find('.entry-toolbar').has('button.entry-share' + shares[0]).length == 0) {
+        if (parent.find('.entry-toolbar').has('button.entry-share' + shares[0].name).length == 0) {
             // add the share toolbar entries
-            parent.find('.entry-smartphone-share button.entry-newwindow').parent().after(selfoss.shares.buildLinks(shares, (name) => {
+            parent.find('.entry-smartphone-share button.entry-newwindow').parent().after(selfoss.shares.buildLinks(shares, ({name, label, icon}) => {
                 return `<li>
-                    <button type="button" class="entry-share entry-share${name}" title="${name}" aria-label="${name}">${selfoss.shares.icons[name]} ${name}</button>
+                    <button type="button" class="entry-share entry-share${name}" title="${label}" aria-label="${label}">${icon} ${label}</button>
                 </li>`;
             }));
-            parent.find('.entry-toolbar button.entry-next').parent().after(selfoss.shares.buildLinks(shares, (name) => {
+            parent.find('.entry-toolbar button.entry-next').parent().after(selfoss.shares.buildLinks(shares, ({name, label, icon}) => {
                 return `<li>
-                    <button type="button" class="entry-share entry-share${name}" title="${name}" aria-label="${name}">${selfoss.shares.icons[name]}</button>
+                    <button type="button" class="entry-share entry-share${name}" title="${label}" aria-label="${label}">${icon}</button>
                 </li>`;
             }));
             // hookup the share icon click events
-            for (let share of shares) {
-                parent.find(`.entry-share${share}`).unbind('click').click(function(e) {
+            for (let {name} of shares) {
+                parent.find(`.entry-share${name}`).unbind('click').click(function(e) {
                     let entry = $(this).parents('.entry');
-                    selfoss.shares.share(share, {
+                    selfoss.shares.share(name, {
                         url: entry.children('.entry-link').eq(0).attr('href'),
                         title: entry.find('.entry-title-link').text()
                     });
