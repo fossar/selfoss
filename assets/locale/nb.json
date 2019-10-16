@@ -81,5 +81,16 @@
   "lang_search_label": "Søketekst",
   "lang_article_actions": "Handlinger",
   "lang_error_configuration": "Kunne ikke laste inn oppsett.",
-  "lang_info_url_copied": "Nettadresse kopiert til utklippstavle."
+  "lang_info_url_copied": "Nettadresse kopiert til utklippstavle.",
+  "lang_share_native_label": "Del",
+  "lang_share_diaspora_label": "Del på Diaspora",
+  "lang_share_twitter_label": "Del på Twitter",
+  "lang_share_facebook_label": "Del på Facebook",
+  "lang_share_pocket_label": "Del til Pocket",
+  "lang_share_wallabag_label": "Lagre på Wallabag",
+  "lang_share_wordpress_label": "Lagre på WordPress",
+  "lang_share_mail_label": "Del ved bruk av e-post",
+  "lang_share_copy_label": "Kopier lenke til utklippstavle",
+  "lang_error_share_native_abort": "Kunne ikke dele element, enten finnes det ingen delingsmål, eller du har avbrutt deling.",
+  "lang_error_share_native": "Kunne ikke dele element."
 }
