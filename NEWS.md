@@ -9,7 +9,7 @@
 - Long articles will no longer be arranged into columns, allowing for smoother reading experience ([#1081](https://github.com/SSilence/selfoss/pull/1081))
 - Diaspora share button was added, you can enable it with `d`. ([#1121](https://github.com/SSilence/selfoss/pull/1121))
 - “Copy to clipboard” share button was added, you can enable it with `c`. ([#1142](https://github.com/SSilence/selfoss/pull/1142))
-- [Native sharer](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/share) is available in secure contexts in browsers that support it. You can enable it by adding `a` to `share` key in your config.
+- [Native sharer](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/share) is available in secure contexts in browsers that support it. You can enable it by adding `a` to `share` key in your config. ([#1035](https://github.com/SSilence/selfoss/pull/1035))
 
 ### Bug fixes
 - Reddit spout allows wider range of URLs, including absolute URLs and searches ([#1033](https://github.com/SSilence/selfoss/pull/1033))
@@ -24,7 +24,10 @@
 - API is now versioned separately from selfoss and follows [semantic versioning](https://semver.org/) ([#1137](https://github.com/SSilence/selfoss/pull/1137))
 
 ### Customization changes
-- `selfoss.shares.register` changed its signature: it no longer takes a boolean argument, and the callback is expected to open a window itself, instead of returning a URL. For example, if you previously had
+- `selfoss.shares.register` changed its signature: it no longer takes a boolean argument, and the callback is expected to open a window itself, instead of returning a URL. The `register` method now also expects a label and a HTML code of an icon (you can use a `<img>` tag, inline `<svg>`, emoji, etc.).
+
+  To demonstrate, if you previously had
+
   ```javascript
   selfoss.shares.register('moo', 'm', true, function(url, title) {
       return 'http://moo.foobar/share?u=' + encodeURIComponent(url) + '&t=' + encodeURIComponent(title);
@@ -34,12 +37,20 @@
   in your `user.js` file, you will need to change it to
 
   ```javascript
-  selfoss.shares.register('moo', 'm', function(url, title) {
-      window.open('http://moo.foobar/share?u=' + encodeURIComponent(url) + '&t=' + encodeURIComponent(title));
+  selfoss.shares.register('moo', 'Share using Moo', 'm', '🚛', function(data) {
+      window.open('http://moo.foobar/share?u=' + encodeURIComponent(data.url) + '&t=' + encodeURIComponent(data.title));
   });
   ```
 
-  ([#1017](https://github.com/SSilence/selfoss/pull/1017))
+  or if your browser supports it, simply
+
+  ```javascript
+  selfoss.shares.register('moo', 'Share using Moo', 'm', '🚛', ({url, title}) => {
+      window.open(`http://moo.foobar/share?u=${encodeURIComponent(url)}&t=${encodeURIComponent(title)}`);
+  });
+  ```
+
+  ([#1017](https://github.com/SSilence/selfoss/pull/1017), [#1035](https://github.com/SSilence/selfoss/pull/1035))
 - Some language files have been renamed to use correct [IETF language tag](https://en.wikipedia.org/wiki/IETF_language_tag) and you might need to change the `language` key in your `config.ini`:
   * Simplified Chinese `zh-CN`
   * Traditional Chinese `zh-TW`
