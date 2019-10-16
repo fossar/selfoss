@@ -81,5 +81,16 @@
   "lang_search_label": "Sökterm",
   "lang_article_actions": "Åtgärder",
   "lang_error_configuration": "Det går inte att ladda konfiguration.",
-  "lang_info_url_copied": "URL kopierad till urklipp."
+  "lang_info_url_copied": "URL kopierad till urklipp.",
+  "lang_share_native_label": "Dela",
+  "lang_share_diaspora_label": "Dela på Diaspora",
+  "lang_share_twitter_label": "Dela på Twitter",
+  "lang_share_facebook_label": "Dela på Facebook",
+  "lang_share_pocket_label": "Spara i Pocket",
+  "lang_share_wallabag_label": "Spara i Wallabag",
+  "lang_share_wordpress_label": "Dela på WordPress",
+  "lang_share_mail_label": "Dela med e-post",
+  "lang_share_copy_label": "Kopiera länk till urklipp",
+  "lang_error_share_native_abort": "Det går inte att dela objektet - antingen finns det inga delningsmål eller så avbröt du det.",
+  "lang_error_share_native": "Det går inte att dela objektet."
 }
