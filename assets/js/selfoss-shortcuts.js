@@ -309,22 +309,20 @@ selfoss.shortcuts = {
             if (old === null) {
                 current = $('.entry:eq(0)');
             } else {
-                // need to use nextAll because jquery.keyboardtrap adds a div after the current element
-                if (old.nextAll('.entry:eq(0)').length === 0) {
+                if (old.next('.entry:eq(0)').length === 0) {
                     current = old;
 
                     // attempt to load more
                     $('.stream-more').click();
                 } else {
-                    current = old.nextAll('.entry:eq(0)');
+                    current = old.next('.entry:eq(0)');
                 }
             }
         } else {
             if (old === null) {
                 return;
             } else {
-                // need to use prevAll because jquery.keyboardtrap adds a div before the current element
-                current = old.prevAll('.entry:eq(0)').length == 0 ? old : old.prevAll('.entry:eq(0)');
+                current = old.prev('.entry:eq(0)').length == 0 ? old : old.prev('.entry:eq(0)');
             }
         }
 

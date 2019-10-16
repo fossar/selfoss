@@ -1,3 +1,4 @@
+import createFocusTrap from 'focus-trap';
 import selfoss from './selfoss-base';
 
 /**
@@ -57,7 +58,8 @@ selfoss.events.entries = function() {
                 entryContent.lazyLoadImages();
             }
 
-            $.trapKeyboard(parent);
+            let trap = createFocusTrap(parent.get(0));
+            trap.activate();
 
             // set events for closing fullscreen
             var closeTargets = $().add(parent).add(parent.find('.entry-close'));
@@ -84,7 +86,7 @@ selfoss.events.entries = function() {
 
                 parent.attr('aria-modal', 'false');
 
-                $.untrapKeyboard();
+                trap.deactivate();
 
                 closeTargets.off('click', parentNative.closeFullScreen);
                 parentNative.closeFullScreen = null;
