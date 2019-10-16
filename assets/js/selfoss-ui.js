@@ -105,12 +105,12 @@ selfoss.ui = {
                     <hr />
                 </div>
 
-                <ul class="nav-toolbar" aria-label={selfoss.ui._('nav_toolbar_label')}>
-                    <li><button id="nav-refresh" title={selfoss.ui._('refreshbutton')} aria-label={selfoss.ui._('refreshbutton')} accesskey="r"><i class="fas fa-sync-alt"></i></button></li>
-                    <li><button id="nav-settings" title={selfoss.ui._('settingsbutton')} aria-label={selfoss.ui._('settingsbutton')} accesskey="t"><i class="fas fa-cloud-upload-alt"></i></button></li>
-                    <li><button id="nav-logout" title={selfoss.ui._('logoutbutton')} aria-label={selfoss.ui._('logoutbutton')} accesskey="l"><i class="fas fa-sign-out-alt"></i></button></li>
-                    <li><button id="nav-login" title={selfoss.ui._('loginbutton')} aria-label={selfoss.ui._('loginbutton')} accesskey="l"><i class="fas fa-key"></i></button></li>
-                </ul>
+                <div class="nav-toolbar">
+                    <button id="nav-refresh" title={selfoss.ui._('refreshbutton')} aria-label={selfoss.ui._('refreshbutton')} accesskey="r"><i class="fas fa-sync-alt"></i></button>
+                    <button id="nav-settings" title={selfoss.ui._('settingsbutton')} aria-label={selfoss.ui._('settingsbutton')} accesskey="t"><i class="fas fa-cloud-upload-alt"></i></button>
+                    <button id="nav-logout" title={selfoss.ui._('logoutbutton')} aria-label={selfoss.ui._('logoutbutton')} accesskey="l"><i class="fas fa-sign-out-alt"></i></button>
+                    <button id="nav-login" title={selfoss.ui._('loginbutton')} aria-label={selfoss.ui._('loginbutton')} accesskey="l"><i class="fas fa-key"></i></button>
+                </div>
             </div>
 
             {/* search */}
