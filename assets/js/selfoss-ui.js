@@ -301,12 +301,12 @@ selfoss.ui = {
             return;
         }
 
-        if (selfoss.isSmartphone()) {
-            entry = entry.get(0);
+        if (selfoss.ui.entryIsExpanded(entry)) {
+            if (selfoss.isSmartphone()) {
+                entry = entry.get(0);
 
-            entry.closeFullScreen();
-        } else {
-            if (selfoss.ui.entryIsExpanded(entry)) {
+                entry.closeFullScreen();
+            } else {
                 entry.find('.entry-title > .entry-title-link').click();
             }
         }
