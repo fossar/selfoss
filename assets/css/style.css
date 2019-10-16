@@ -291,41 +291,28 @@ span.offline-count.diff {
     display: none;
 }
 
-#nav-refresh,
-#nav-settings,
-#nav-logout,
-#nav-login {
-    padding: 0;
-    border: none;
-    width: 45px;
-    height: 45px;
-    border-radius: 2px;
-    cursor: pointer;
-    background: #272325;
-    color: #484447;
-    font-size: 1.3em;
-}
-
-#nav-refresh.offline,
-#nav-settings.offline,
-#nav-logout.offline {
-    border: solid #187fff 1px;
-}
-
 .nav-toolbar {
     display: flex;
-    padding: 0.5em;
+    padding: 0.25em;
     text-align: center;
 }
 
-body:not(.publicupdate) #nav-login {
-    width: 140px;
-    margin-left: 0;
+.nav-toolbar button {
+    font-size: 1.2rem;
+    background: #272325;
+    border-radius: 2px;
+    border: none;
+    color: #484447;
+    cursor: pointer;
+    display: inline-block;
+    flex-grow: 1;
+    height: 3em;
+    margin: 0.25em;
+    padding: 0;
 }
 
-#nav-settings.nologin,
-#nav-refresh.nologin {
-    width: 70px;
+.nav-toolbar button.offline {
+    border: solid #187fff 1px;
 }
 
 #nav-mobile {
@@ -980,22 +967,6 @@ body:not(.loggedin) .entry-unread {
         padding-top: 20px;
     }
 
-    #nav-login {
-        width: 120px;
-    }
-
-    #nav-refresh,
-    #nav-settings,
-    #nav-logout,
-    #nav-login {
-        width: 40px;
-    }
-
-    #nav-settings.nologin,
-    #nav-refresh.nologin {
-        width: 55px;
-    }
-
     #nav-tags .color {
         width: 25px;
         height: 25px;
@@ -1109,6 +1080,7 @@ body:not(.loggedin) .entry-unread {
 
     #nav-mobile-settings {
         background: transparent;
+        color: white;
         border: 0;
         padding: 0;
         height: 50px;
@@ -1157,15 +1129,17 @@ body:not(.loggedin) .entry-unread {
         cursor: pointer;
     }
 
-    body.publicmode.authenabled #nav-login,
-    body.authenabled.loggedin #nav-logout {
-        display: block;
+    .nav-toolbar {
+        padding: 0.5em;
     }
 
     .nav-toolbar button {
-        margin: 0.5em;
-        flex-grow: 1;
-        display: block;
+        margin: 0.25em 0.5em;
+    }
+
+    body.publicmode.authenabled #nav-login,
+    body.authenabled.loggedin #nav-logout {
+        display: inline-block;
     }
 
     #search {
