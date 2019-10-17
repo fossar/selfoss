@@ -164,7 +164,6 @@ selfoss.events.sources = function() {
         params.show();
         if ($.trim(val).length == 0) {
             params.html('');
-            selfoss.events.resize();
             return;
         }
         params.addClass('loading');
@@ -181,12 +180,9 @@ selfoss.events.sources = function() {
                         param.value = savedParamValues[param.name];
                     }
                 });
-
-                selfoss.events.resize();
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 params.removeClass('loading').append('<li class="error">' + errorThrown + '</li>');
-                selfoss.events.resize();
             }
         });
     });

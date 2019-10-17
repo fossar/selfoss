@@ -13,8 +13,6 @@
     "jquery": "^2.2.4",
     "jquery-focusable": "^1.0.1",
     "jquery-hotkeys": "^0.2.2",
-    "jquery-mousewheel": "^3.1.13",
-    "malihu-custom-scrollbar-plugin": "^3.1.5",
     "reset-css": "^4.0.1",
     "spectrum-colorpicker": "^1.8.0"
   },

@@ -62,9 +62,7 @@ selfoss.events.navigation = function() {
 
     // hide/show filters
     $('#nav-filter-title').unbind('click').click(function() {
-        $('#nav-filter').slideToggle('slow', function() {
-            selfoss.events.resize();
-        });
+        $('#nav-filter').slideToggle('slow');
         $('#nav-filter-title').toggleClass('nav-filter-collapsed nav-filter-expanded');
         $('#nav-filter-title').find('svg').toggleClass('fa-caret-down fa-caret-right');
         $('#nav-filter-title').attr('aria-expanded', function(i, attr) {

@@ -85,7 +85,7 @@ selfoss.ui = {
                     </ul>
                 </div>
 
-                <hr />
+                <div class="separator"><hr /></div>
 
                 <div id="nav-tags-wrapper">
                     <h2><button type="button" id="nav-tags-title" class="nav-section-toggle nav-tags-expanded" aria-expanded="true"><i class="fas fa-caret-down fa-lg fa-fw"></i> {selfoss.ui._('tags')}</button></h2>
@@ -97,7 +97,7 @@ selfoss.ui = {
                     </ul>
                 </div>
 
-                <hr />
+                <div class="separator"><hr /></div>
 
                 {/* navigation search input just for smartphone version */}
                 <div id="nav-search" class="offlineable" role="search">
@@ -166,7 +166,6 @@ selfoss.ui = {
         $('#mainui').show();
 
         selfoss.ui.refreshTitle();
-        selfoss.events.resize();
         selfoss.events.navigation();
     },
 
