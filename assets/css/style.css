@@ -29,6 +29,10 @@ button:focus {
     outline: 1px dotted currentColor;
 }
 
+button::-moz-focus-inner {
+    border: 0;
+}
+
 #mainui {
     height: 100%;
 
@@ -324,8 +328,6 @@ span.offline-count.diff {
 #search {
     z-index: 9;
     position: absolute;
-    left: -118px;
-    top: 25px;
     padding: 5px;
     background: rgba(61, 109, 105, 0.4);
     border-top-right-radius: 4px;
@@ -337,12 +339,8 @@ span.offline-count.diff {
     display: none;
 }
 
-#search.active {
-    left: 185px;
-}
-
 #search-term {
-    width: 20em;
+    width: 20rem;
     margin-left: 0.5em;
 }
 
@@ -548,7 +546,7 @@ span.offline-count.diff {
 }
 
 .entry-content sup {
-    vertical-align: sup;
+    vertical-align: super;
 }
 
 .entry-content sub {
@@ -913,6 +911,15 @@ body:not(.loggedin) .entry-unread {
     body.publicmode:not(.loggedin) .entry-toolbar {
         display: none;
     }
+
+    #search {
+        left: calc(108px - 20rem + 0.5em + 30px);
+        top: 25px;
+    }
+
+    #search.active {
+        left: 185px;
+    }
 }
 
 /* desktop and tablet */
@@ -975,10 +982,9 @@ body:not(.loggedin) .entry-unread {
     }
 
     #search {
-        width: 305px;
+        width: calc(20rem + 0.5em + 30px);
         top: -46px;
-        left: 100%;
-        margin-left: -370px;
+        right: 65px;
         transition: top 0.5s ease-in-out;
         border-bottom-right-radius: 0;
         border-bottom-left-radius: 4px;
@@ -986,7 +992,6 @@ body:not(.loggedin) .entry-unread {
 
     #search.active {
         top: 0;
-        left: 100%;
     }
 
     #search-button {
