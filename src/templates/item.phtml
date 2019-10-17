@@ -22,6 +22,7 @@
      data-entry-id="<?= $this->item['id']; ?>"
      data-entry-source="<?= $this->item['source']; ?>"
      data-entry-datetime="<?= $this->viewHelper->date_iso8601($this->item['datetime']); ?>"
+     data-entry-url="<?= $this->item['link']; ?>"
      class="entry <?= $this->item['unread'] == 1 ? 'unread' : ''; ?>" role="article">
 
     <!-- icon -->
@@ -53,8 +54,6 @@
 
     <!-- datetime -->
     <a href="<?= \helpers\Anonymizer::anonymize($this->item['link']); ?>" class="entry-datetime" target="_blank" rel="noopener noreferrer"></a>
-
-    <a href="<?= $this->item['link']; ?>" class="entry-link"></a>
 
     <!-- thumbnail -->
     <?php if (\F3::get('show_thumbnails') && isset($this->item['thumbnail']) && strlen(trim($this->item['thumbnail'])) > 0) : ?>

@@ -70,7 +70,7 @@ selfoss.events.entriesToolbar = function(parent) {
                 parent.find(`.entry-share${name}`).unbind('click').click(function(e) {
                     let entry = $(this).parents('.entry');
                     selfoss.shares.share(name, {
-                        url: entry.children('.entry-link').eq(0).attr('href'),
+                        url: entry.data('entry-url'),
                         title: entry.find('.entry-title-link').text()
                     });
                     e.preventDefault();

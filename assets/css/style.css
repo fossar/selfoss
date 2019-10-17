@@ -565,10 +565,6 @@ span.offline-count.diff {
     height: 16px;
 }
 
-.entry-link {
-    display: none;
-}
-
 .entry-author,
 .entry-source,
 .entry-separator,
