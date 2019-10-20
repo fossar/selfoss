@@ -92,5 +92,6 @@
   "lang_share_mail_label": "Del ved bruk av e-post",
   "lang_share_copy_label": "Kopier lenke til utklippstavle",
   "lang_error_share_native_abort": "Kunne ikke dele element, enten finnes det ingen delingsmål, eller du har avbrutt deling.",
-  "lang_error_share_native": "Kunne ikke dele element."
+  "lang_error_share_native": "Kunne ikke dele element.",
+  "lang_close_entry": "Lukk"
 }
