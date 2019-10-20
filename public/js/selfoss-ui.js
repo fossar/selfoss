@@ -140,25 +140,9 @@ selfoss.ui = {
                     $('.stream-more').show();
                 }
 
-                var streamPagination = $('#stream-pagination').empty();
-                var count = parseInt($('.nav-filter-' + selfoss.filter.type +
-                                       ' span.count').html(), 10);
-                for (var pageNumber = 1;
-                    pageNumber < count / selfoss.filter.itemsPerPage + 1;
-                    pageNumber++) {
-                    var currentAttr = '';
-                    var current = '';
-                    if (selfoss.filter.offset == selfoss.filter.itemsPerPage * (pageNumber - 1)) {
-                        currentAttr = ' aria-current="true"';
-                        current = ' (' + selfoss.ui._('page_current') + ')';
-                    }
-                    streamPagination.append('<li><button aria-label="' + selfoss.ui._('page_goto', [pageNumber]) + current + '"' + currentAttr + '>' + pageNumber + current + '</button></li>');
-                    if (pageNumber > 5) {
-                        streamPagination.append('<li>...</li>');
-                        break;
-                    }
+                if($('#config').data('auto_stream_more') == 0) {
+                    selfoss.ui.refreshStreamPagination();
                 }
-                $('#stream-pagination').show();
             } else {
                 $('.stream-empty').show();
                 if (selfoss.isSmartphone()) {
@@ -166,6 +150,37 @@ selfoss.ui = {
                 }
             }
         }
+    },
+
+
+    refreshStreamPagination: function() {
+        var streamPagination = $('#stream-pagination').empty();
+        var pageButtonsAmount = 5;
+        var count = parseInt($('.nav-filter-' + selfoss.filter.type +
+                               ' span.count').html(), 10);
+        var currentPage = selfoss.filter.offset / selfoss.filter.itemsPerPage + 1;
+        var lastPage = count / selfoss.filter.itemsPerPage;
+        var maxPageDistance = pageButtonsAmount / 2;
+
+        for (var pageNumber = 1; pageNumber <= lastPage; pageNumber++) {
+            var currentPageDistance = Math.abs(pageNumber - currentPage);
+            if (pageNumber == 1 || pageNumber == lastPage ||
+                currentPageDistance < maxPageDistance) {
+
+                var currentAttr = '';
+                var current = '';
+                if (pageNumber == currentPage) {
+                    currentAttr = ' aria-current="true"';
+                    current = ' (' + selfoss.ui._('page_current') + ')';
+                }
+                streamPagination.append('<li><button aria-label="' + selfoss.ui._('page_goto', [pageNumber]) + current + '"' + currentAttr + '>' + pageNumber + current + '</button></li>');
+            } else if (pageNumber == 2) {
+                streamPagination.append('<li>...</li>');
+            } else if (pageNumber == lastPage - 1){
+                streamPagination.append('<li>...</li>');
+            }
+        }
+        $('#stream-pagination').show();
     },
 
 
