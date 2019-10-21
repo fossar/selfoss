@@ -1,20 +1,18 @@
-selfoss
-=======
+# selfoss
 
 Copyright ⓒ 2015 Tobias Zeising, tobias.zeising@aditu.de  
 https://selfoss.aditu.de  
 Licensed under the GPLv3 license  
 Version 2.19-SNAPSHOT
 
-DOWNLOAD
---------
+## Download
 
 * [Stable releases](https://github.com/SSilence/selfoss/releases) – if you just want to use selfoss.
 * [Development builds](https://bintray.com/fossar/selfoss/selfoss-git) ([latest](https://bintray.com/fossar/selfoss/selfoss-git/_latestVersion#files)) – if you want to try unreleased features or bug fixes, or help testing them.
 * [Git-tracked source code](https://github.com/SSilence/selfoss) – if you want to join selfoss development. Some [assembly](#development) required.
 
-INSTALLATION
-------------
+
+## Installation
 
 1. Upload all files of this folder (IMPORTANT: also upload the invisible .htaccess files)
 2. Make the directories data/cache, data/favicons, data/logs, data/thumbnails and data/sqlite writeable
@@ -26,8 +24,8 @@ If you obtained selfoss using Git, some more steps will be required. See the [de
 
 For further questions or on any problem use our support forum: https://selfoss.aditu.de/forum/
 
-CONFIGURATION
--------------
+
+## Configuration
 
 1. Copy defaults.ini to config.ini
 2. Edit config.ini and delete any lines you do not wish to override
@@ -35,8 +33,7 @@ CONFIGURATION
 4. See https://selfoss.aditu.de/ for examples
 
 
-UPDATE
-------
+## Update
 
 1. Backup your database and your "data" folder
 2. (IMPORTANT: don't delete the "data" folder) delete all old files and folders excluding the folder "data" and the file config.ini
@@ -52,28 +49,24 @@ If you obtained selfoss using Git, some more steps might be required. See the [d
 For further questions or on any problem use our support forum: https://selfoss.aditu.de/forum
 
 
-SUPPORT
--------
+## Support
 
 * [Issue tracker](https://github.com/SSilence/selfoss/issues) for reporting problems and requesting new features
 * [Forum](https://selfoss.aditu.de/forum/) for general questions about usage
 * [Chat on Gitter](https://gitter.im/fossar/selfoss) (or [`#selfoss:matrix.org` mirror](https://matrix.to/#/#selfoss:matrix.org)) for discussing selfoss development or just about anything
 
 
-OPML Import
------------
+## OPML import
 
 Selfoss supports importing OPML files. Find the OPML export in the old application, it is usually located somewhere in settings. Then visit the page https://yourselfossurl.com/opml and upload it there.
 
 
-APPS
-----
+## Third-party Apps
 
 Two third party apps are available for Android: [Selfoss](https://play.google.com/store/apps/details?id=fr.ydelouis.selfoss) and [Reader For Selfoss](https://play.google.com/store/apps/details?id=apps.amine.bou.readerforselfoss).
 
 
-DEVELOPMENT
------------
+## Development
 
 Selfoss uses [composer](https://getcomposer.org/) and [npm](https://www.npmjs.com/get-npm) for installing external libraries. When you clone the repository you have to issue `composer install` to retrieve the external sources.
 
@@ -85,8 +78,7 @@ If you want to create a package with all the dependencies bundled, you can run `
 
 Every patch is expected to adhere to our coding style, which is checked automatically by Travis. You can install the checkers locally either with your package manager or by calling `utils/install-phars.sh`, and then run the checks using `npm run check` before submitting a pull request.
 
-CREDITS
--------
+## Credits
 
 Very special thanks to all contributors of pull requests here on github. Your improvements are awesome!!!
 
