@@ -50,6 +50,7 @@
     },
     "scripts": {
         "cs": "php-cs-fixer fix --verbose --dry-run --diff",
+        "fix": "php-cs-fixer fix --verbose --diff",
         "lint": "php-parallel-lint src"
     }
 }
