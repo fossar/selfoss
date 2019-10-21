@@ -80,5 +80,14 @@
   "lang_app_reload": "Znovu načíst",
   "lang_error_offline_storage": "Chyba lokálního úložiště: {0}. Možná pomůže znovunačtení stránky. Prozatím bude ukládání vypnuto.",
   "lang_article_actions": "Akce",
-  "lang_error_configuration": "Nelze načíst konfiguraci."
+  "lang_error_configuration": "Nelze načíst konfiguraci.",
+  "lang_share_native_label": "Sdílet",
+  "lang_share_diaspora_label": "Sdílet na Diaspoře",
+  "lang_share_twitter_label": "Sdílet na Twitteru",
+  "lang_share_facebook_label": "Sdílet na Facebooku",
+  "lang_share_pocket_label": "Uložit do Pocketu",
+  "lang_share_wallabag_label": "Uložit do Wallabagu",
+  "lang_share_wordpress_label": "Sdílet na WordPressu",
+  "lang_share_mail_label": "Sdílet e-mailem",
+  "lang_share_copy_label": "Zkopírovat odkaz do schránky"
 }
