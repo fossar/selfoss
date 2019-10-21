@@ -82,6 +82,9 @@ runChecked('npm', 'run', 'install-dependencies');
 console.info('Building asset bundles…');
 runChecked('npm', 'run', 'build');
 
+console.info('Optimizing PHP dependencies…');
+runChecked('composer', 'install', '--no-dev', '--optimize-autoloader');
+
 const pkg = JSON.parse(fs.readFileSync('package.json', 'utf-8'));
 
 const filename = `selfoss-${pkg.ver}.zip`;
