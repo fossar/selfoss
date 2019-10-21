@@ -1,9 +1,6 @@
-# selfoss
+# selfoss 2.19-SNAPSHOT
 
-Copyright ⓒ 2015 Tobias Zeising, tobias.zeising@aditu.de  
-https://selfoss.aditu.de  
-Licensed under the GPLv3 license  
-Version 2.19-SNAPSHOT
+Homepage: https://selfoss.aditu.de
 
 ## Download
 
@@ -80,9 +77,11 @@ Every patch is expected to adhere to our coding style, which is checked automati
 
 ## Credits
 
-Very special thanks to all contributors of pull requests here on github. Your improvements are awesome!!!
+selfoss was created by [Tobias Zeising](tobias.zeising@aditu.de) and it is licensed under the GPLv3 license.
 
-Special thanks to the great programmers of this libraries which will be used in selfoss:
+Very special thanks to all contributors of pull requests here on [GitHub](https://github.com/SSilence/selfoss), as well as translators on [Weblate](https://hosted.weblate.org/projects/selfoss/translations/). Your improvements are awesome!!!
+
+Special thanks to the great programmers of these libraries used by selfoss:
 
 * [FatFree PHP Framework](https://fatfreeframework.com/)
 * [SimplePie](http://simplepie.org/)
@@ -93,8 +92,7 @@ Special thanks to the great programmers of this libraries which will be used in 
 * [Elphin IcoFileLoader](https://github.com/lordelph/icofileloader)
 * [jQuery hotkeys](https://github.com/tzuryby/jquery.hotkeys)
 * [Spectrum Colorpicker](https://github.com/bgrins/spectrum)
-* [jQuery custom content scroller](http://manos.malihu.gr/jquery-custom-content-scroller/)
-* [FullTextRSS](http://help.fivefilters.org/customer/portal/articles/223153-site-patterns)
 * [Graby](https://github.com/j0k3r/graby)
+* [FullTextRSS filters](http://help.fivefilters.org/customer/portal/articles/223153-site-patterns)
 
 Icon comes from http://www.artcoreillustrations.com/

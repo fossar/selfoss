@@ -28,14 +28,14 @@ const replacements = [
 
     // rule for README.md
     {
-        from: /'version', '\d+\.\d+(\-SNAPSHOT|\-[0-9a-f]+)?'/,
-        to: "'version', '" + newVersion + "'"
+        from: /# selfoss \d+\.\d+(\-SNAPSHOT|\-[0-9a-f]+)?/,
+        to: "# selfoss " + newVersion
     },
 
     // rule for src/common.php
     {
-        from: /Version \d+\.\d+(\-SNAPSHOT|\-[0-9a-f]+)?/,
-        to: "Version " + newVersion
+        from: /'version', '\d+\.\d+(\-SNAPSHOT|\-[0-9a-f]+)?'/,
+        to: "'version', '" + newVersion + "'"
     },
 
     // rule for website/index.html
