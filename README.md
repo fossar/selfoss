@@ -1,6 +1,8 @@
 # selfoss 2.19-SNAPSHOT
 
-Homepage: https://selfoss.aditu.de
+selfoss is a multipurpose RSS reader and feed aggregation web application. It allows you to easily follow updates from different web sites, social networks and other platforms, all in single place. It is written in PHP, allowing you to run it basically anywhere.
+
+For more information visit our [web site](https://selfoss.aditu.de).
 
 ## Download
 
