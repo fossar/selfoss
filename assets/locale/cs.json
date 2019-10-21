@@ -89,5 +89,9 @@
   "lang_share_wallabag_label": "Uložit do Wallabagu",
   "lang_share_wordpress_label": "Sdílet na WordPressu",
   "lang_share_mail_label": "Sdílet e-mailem",
-  "lang_share_copy_label": "Zkopírovat odkaz do schránky"
+  "lang_share_copy_label": "Zkopírovat odkaz do schránky",
+  "lang_info_url_copied": "URL zkopírována do schránky.",
+  "lang_error_share_native_abort": "Nelze sdílet položku: buď váš prohlížeč nepodporuje sdílení odkazů, nebo jste sdílení zrušili.",
+  "lang_error_share_native": "Nelze sdílet položku.",
+  "lang_close_entry": "Zavřít"
 }
