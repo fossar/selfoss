@@ -140,7 +140,7 @@ selfoss.ui = {
                     $('.stream-more').show();
                 }
 
-                if($('#config').data('auto_stream_more') == 0) {
+                if ($('#config').data('auto_stream_more') == 0) {
                     selfoss.ui.refreshStreamPagination();
                 }
             } else {
@@ -155,6 +155,7 @@ selfoss.ui = {
 
     refreshStreamPagination: function() {
         var streamPagination = $('#stream-pagination').empty();
+
         var pageButtonsAmount = 5;
         var count = parseInt($('.nav-filter-' + selfoss.filter.type +
                                ' span.count').html(), 10);
@@ -176,10 +177,11 @@ selfoss.ui = {
                 streamPagination.append('<li><button aria-label="' + selfoss.ui._('page_goto', [pageNumber]) + current + '"' + currentAttr + '>' + pageNumber + current + '</button></li>');
             } else if (pageNumber == 2) {
                 streamPagination.append('<li>...</li>');
-            } else if (pageNumber == lastPage - 1){
+            } else if (pageNumber == lastPage - 1) {
                 streamPagination.append('<li>...</li>');
             }
         }
+
         $('#stream-pagination').show();
     },
 
