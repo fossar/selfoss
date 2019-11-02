@@ -10,7 +10,7 @@
     "core-js": "^3.2.1",
     "dexie": "^2.0.1",
     "focus-trap": "^5.0.2",
-    "jquery": "^2.2.4",
+    "jquery": "^3.4.0",
     "jquery-focusable": "^1.0.1",
     "jquery-hotkeys": "^0.2.2",
     "reset-css": "^4.0.1",
