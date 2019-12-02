@@ -52,6 +52,8 @@ abstract class spout implements \Iterator {
      *
      * @param array $params params of this source
      *
+     * @throws \GuzzleHttp\Exception\RequestException When an error is encountered
+     *
      * @return void
      */
     abstract public function load(array $params);
@@ -111,7 +113,7 @@ abstract class spout implements \Iterator {
     }
 
     /**
-     * returns the thumbnail of this item
+     * returns the thumbnail of this item (for multimedia feeds)
      *
      * @return string thumbnail url
      */

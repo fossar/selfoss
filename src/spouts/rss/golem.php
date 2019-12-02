@@ -77,33 +77,14 @@ class golem extends feed {
         'forum' => 'https://forum.golem.de/rss.php?feed=RSS2.0'
     ];
 
-    /**
-     * loads content for given source
-     *
-     * @param array $params
-     *
-     * @return void
-     */
     public function load(array $params) {
         parent::load(['url' => $this->getXmlUrl($params)]);
     }
 
-    /**
-     * returns the xml feed url for the source
-     *
-     * @param array $params params for the source
-     *
-     * @return string url as xml
-     */
     public function getXmlUrl(array $params) {
         return $this->feedUrls[$params['section']];
     }
 
-    /**
-     * returns the content of this item
-     *
-     * @return string content
-     */
     public function getContent() {
         if ($this->items !== null && $this->valid()) {
             $originalContent = $this->cleanContent(file_get_contents($this->getLink()));

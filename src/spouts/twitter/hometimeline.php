@@ -48,13 +48,6 @@ class hometimeline extends \spouts\twitter\usertimeline {
         ]
     ];
 
-    /**
-     * loads content for given twitter user
-     *
-     * @param array $params the params of this source
-     *
-     * @return void
-     */
     public function load(array $params) {
         $this->client = self::getHttpClient($params['consumer_key'], $params['consumer_secret'], $params['access_key'], $params['access_secret']);
 

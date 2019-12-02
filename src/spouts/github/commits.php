@@ -56,15 +56,6 @@ class commits extends \spouts\spout {
     // Source Methods
     //
 
-    /**
-     * loads content for given source
-     *
-     * @param array $params the params of this source
-     *
-     * @throws \GuzzleHttp\Exception\RequestException When an error is encountered
-     *
-     * @return void
-     */
     public function load(array $params) {
         $this->htmlUrl = 'https://github.com/' . urlencode($params['owner']) . '/' . urlencode($params['repo']) . '/' . urlencode($params['branch']);
 
@@ -77,20 +68,10 @@ class commits extends \spouts\spout {
         $this->spoutTitle = "Recent Commits to {$params['repo']}:{$params['branch']}";
     }
 
-    /**
-     * returns the global html url for the source
-     *
-     * @return string url as html
-     */
     public function getHtmlUrl() {
         return $this->htmlUrl;
     }
 
-    /**
-     * returns an unique id for this item
-     *
-     * @return string id as hash
-     */
     public function getId() {
         if ($this->items !== null && $this->valid()) {
             return @current($this->items)['sha'];
@@ -99,11 +80,6 @@ class commits extends \spouts\spout {
         return null;
     }
 
-    /**
-     * returns the current title as string
-     *
-     * @return string title
-     */
     public function getTitle() {
         if ($this->items !== null && $this->valid()) {
             $message = @current($this->items)['commit']['message'];
@@ -114,11 +90,6 @@ class commits extends \spouts\spout {
         return null;
     }
 
-    /**
-     * returns the content of this item
-     *
-     * @return string content
-     */
     public function getContent() {
         if ($this->items !== null && $this->valid()) {
             $message = @current($this->items)['commit']['message'];
@@ -129,20 +100,10 @@ class commits extends \spouts\spout {
         return null;
     }
 
-    /**
-     * returns the icon of this item
-     *
-     * @return string icon url
-     */
     public function getIcon() {
         return $this->faviconUrl;
     }
 
-    /**
-     * returns the link of this item
-     *
-     * @return string link
-     */
     public function getLink() {
         if ($this->items !== null && $this->valid()) {
             return @current($this->items)['html_url'];
@@ -151,11 +112,6 @@ class commits extends \spouts\spout {
         return null;
     }
 
-    /**
-     * returns the date of this item
-     *
-     * @return string date
-     */
     public function getDate() {
         if ($this->items !== null && $this->valid()) {
             $date = date('Y-m-d H:i:s', strtotime(@current($this->items)['commit']['author']['date']));
@@ -167,9 +123,6 @@ class commits extends \spouts\spout {
         return $date;
     }
 
-    /**
-     * destroy the plugin (prevent memory issues)
-     */
     public function destroy() {
         unset($this->items);
         $this->items = null;

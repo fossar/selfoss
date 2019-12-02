@@ -38,7 +38,7 @@ class Tags extends BaseController {
      * returns all tags
      * html
      *
-     * @param array $tags
+     * @param array $tags list of all tags to render
      *
      * @return string
      */
@@ -131,9 +131,9 @@ class Tags extends BaseController {
     }
 
     /**
-     * return tag => color array
+     * return tag => [backColor, foreColor] array
      *
-     * @param array $tags
+     * @param array $tags tags to colorize
      *
      * @return array tag color array
      */

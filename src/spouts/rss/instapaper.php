@@ -28,22 +28,10 @@ class instapaper extends feed {
         ]
     ];
 
-    /**
-     * loads content for given source
-     *
-     * @param array $params
-     *
-     * @return void
-     */
     public function load(array $params) {
         parent::load(['url' => $params['url']]);
     }
 
-    /**
-     * returns the content of this item
-     *
-     * @return string content
-     */
     public function getContent() {
         $contentFromInstapaper = $this->fetchFromInstapaper(parent::getLink());
         if ($contentFromInstapaper === null) {

@@ -86,7 +86,7 @@ class Sources extends BaseController {
      * return all Sources suitable for navigation panel
      * html
      *
-     * @param array $sources
+     * @param array $sources sources to render
      *
      * @return string htmltext
      */

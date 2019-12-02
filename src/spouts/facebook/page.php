@@ -55,13 +55,6 @@ class page extends \spouts\spout {
     /** @var ?string page picture */
     private $pagePicture;
 
-    /**
-     * loads content for given source
-     *
-     * @param array $params the params of this source
-     *
-     * @return void
-     */
     public function load(array $params) {
         $http = WebClient::getHttpClient();
         $url = new Uri('https://graph.facebook.com/' . urlencode($params['user']));

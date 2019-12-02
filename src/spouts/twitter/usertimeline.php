@@ -154,15 +154,6 @@ class usertimeline extends \spouts\spout {
     // Source Methods
     //
 
-    /**
-     * loads content for given source
-     * I supress all Warnings of SimplePie for ensuring
-     * working plugin in PHP Strict mode
-     *
-     * @param array $params the params of this source
-     *
-     * @return void
-     */
     public function load(array $params) {
         $this->client = self::getHttpClient($params['consumer_key'], $params['consumer_secret'], $params['access_token'], $params['access_token_secret']);
 
@@ -175,11 +166,6 @@ class usertimeline extends \spouts\spout {
         $this->spoutTitle = "@{$params['username']}";
     }
 
-    /**
-     * returns the global html url for the source
-     *
-     * @return string url as html
-     */
     public function getHtmlUrl() {
         if (isset($this->htmlUrl)) {
             return $this->htmlUrl;
@@ -188,11 +174,6 @@ class usertimeline extends \spouts\spout {
         return null;
     }
 
-    /**
-     * returns an unique id for this item
-     *
-     * @return string id as hash
-     */
     public function getId() {
         if ($this->items !== null) {
             return @current($this->items)->id_str;
@@ -201,11 +182,6 @@ class usertimeline extends \spouts\spout {
         return null;
     }
 
-    /**
-     * returns the current title as string
-     *
-     * @return string title
-     */
     public function getTitle() {
         if ($this->items !== null) {
             $item = @current($this->items);
@@ -224,11 +200,6 @@ class usertimeline extends \spouts\spout {
         return null;
     }
 
-    /**
-     * returns the content of this item
-     *
-     * @return string content
-     */
     public function getContent() {
         $result = '';
 
@@ -259,11 +230,6 @@ class usertimeline extends \spouts\spout {
         return $result;
     }
 
-    /**
-     * returns the icon of this item
-     *
-     * @return string icon url
-     */
     public function getIcon() {
         if ($this->items !== null) {
             $item = @current($this->items);
@@ -277,11 +243,6 @@ class usertimeline extends \spouts\spout {
         return null;
     }
 
-    /**
-     * returns the link of this item
-     *
-     * @return string link
-     */
     public function getLink() {
         if ($this->items !== null) {
             $item = @current($this->items);
@@ -292,11 +253,6 @@ class usertimeline extends \spouts\spout {
         return null;
     }
 
-    /**
-     * returns the thumbnail of this item (for multimedia feeds)
-     *
-     * @return mixed thumbnail data
-     */
     public function getThumbnail() {
         if ($this->items !== null) {
             $item = current($this->items);
@@ -311,11 +267,6 @@ class usertimeline extends \spouts\spout {
         return '';
     }
 
-    /**
-     * returns the date of this item
-     *
-     * @return string date
-     */
     public function getDate() {
         if ($this->items !== null) {
             $date = date('Y-m-d H:i:s', strtotime(@current($this->items)->created_at));
@@ -327,9 +278,6 @@ class usertimeline extends \spouts\spout {
         return $date;
     }
 
-    /**
-     * destroy the plugin (prevent memory issues)
-     */
     public function destroy() {
         unset($this->items);
         $this->items = null;

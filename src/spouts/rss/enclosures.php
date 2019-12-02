@@ -16,11 +16,6 @@ class enclosures extends feed {
     /** @var string description of this source type */
     public $description = 'Get posts from RSS feed, including media enclosures.';
 
-    /**
-     * returns the content of this item
-     *
-     * @return string content
-     */
     public function getContent() {
         if ($this->items !== null && $this->valid()) {
             $content = parent::getContent();

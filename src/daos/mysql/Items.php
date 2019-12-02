@@ -176,7 +176,7 @@ class Items extends Database {
     /**
      * Update the time items were last seen in the feed to prevent unwanted cleanup.
      *
-     * @param array $itemIds
+     * @param int[] $itemIds ids of items to update
      *
      * @return void
      */
@@ -366,11 +366,11 @@ class Items extends Database {
     }
 
     /**
-     * sync new db items starting from id
+     * Obtain new or changed items in the database for synchronization with clients.
      *
-     * @param int $sinceId
-     * @param DateTime $notBefore
-     * @param DateTime $since
+     * @param int $sinceId id of last seen item
+     * @param DateTime $notBefore cut off time stamp
+     * @param DateTime $since timestamp of last seen item
      * @param int $howMany
      *
      * @return array of items

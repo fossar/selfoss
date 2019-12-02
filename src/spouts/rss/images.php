@@ -16,11 +16,6 @@ class images extends feed {
     /** @var string description of this source type */
     public $description = 'Fetch images from given rss feed.';
 
-    /**
-     * returns the thumbnail of this item (for multimedia feeds)
-     *
-     * @return mixed thumbnail data
-     */
     public function getThumbnail() {
         if ($this->items === null || $this->valid() === false) {
             return '';

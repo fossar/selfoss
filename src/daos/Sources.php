@@ -65,9 +65,9 @@ class Sources extends Database {
     /**
      * validate new data for a given source
      *
-     * @param string $title
-     * @param string $spout
-     * @param array $params
+     * @param string $title title of the source
+     * @param string $spout class path for the spout
+     * @param array $params parameters supplied to the spout
      *
      * @return bool|array true on success or array of errors on failure
      *

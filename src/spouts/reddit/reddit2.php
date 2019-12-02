@@ -56,16 +56,6 @@ class reddit2 extends \spouts\spout {
     /** @var string favicon url */
     private $faviconUrl = '';
 
-    /**
-     * loads content for given source
-     *
-     * @param array  $params
-     *
-     * @throws GuzzleHttp\Exception\RequestException When an error is encountered
-     * @throws \RuntimeException if the response body is not in JSON format
-     *
-     * @return void
-     */
     public function load(array $params) {
         if (!empty($params['password']) && !empty($params['username'])) {
             if (function_exists('apc_fetch')) {
@@ -93,11 +83,6 @@ class reddit2 extends \spouts\spout {
         $this->items = $json['data']['children'];
     }
 
-    /**
-     * returns an unique id for this item
-     *
-     * @return string id as hash
-     */
     public function getId() {
         if ($this->items !== null && $this->valid()) {
             $id = @current($this->items)['data']['id'];
@@ -111,11 +96,6 @@ class reddit2 extends \spouts\spout {
         return null;
     }
 
-    /**
-     * returns the current title as string
-     *
-     * @return string title
-     */
     public function getTitle() {
         if ($this->items !== null && $this->valid()) {
             return @current($this->items)['data']['title'];
@@ -124,13 +104,6 @@ class reddit2 extends \spouts\spout {
         return null;
     }
 
-    /**
-     * returns the current title as string
-     *
-     * @throws GuzzleHttp\Exception\RequestException When an error is encountered
-     *
-     * @return string title
-     */
     public function getHtmlUrl() {
         if ($this->items !== null && $this->valid()) {
             return @current($this->items)['data']['url'];
@@ -139,13 +112,6 @@ class reddit2 extends \spouts\spout {
         return null;
     }
 
-    /**
-     * returns the content of this item
-     *
-     * @throws GuzzleHttp\Exception\RequestException When an error is encountered
-     *
-     * @return string content
-     */
     public function getContent() {
         if ($this->items !== null && $this->valid()) {
             $data = @current($this->items)['data'];
@@ -177,11 +143,6 @@ class reddit2 extends \spouts\spout {
         return null;
     }
 
-    /**
-     * returns the icon of this item
-     *
-     * @return string icon url
-     */
     public function getIcon() {
         $imageHelper = $this->getImageHelper();
         $htmlUrl = $this->getHtmlUrl();
@@ -192,11 +153,6 @@ class reddit2 extends \spouts\spout {
         return $this->faviconUrl;
     }
 
-    /**
-     * returns the link of this item
-     *
-     * @return string link
-     */
     public function getLink() {
         if ($this->items !== null && $this->valid()) {
             return 'https://www.reddit.com' . @current($this->items)['data']['permalink'];
@@ -205,11 +161,6 @@ class reddit2 extends \spouts\spout {
         return null;
     }
 
-    /**
-     * returns the thumbnail of this item
-     *
-     * @return string thumbnail url
-     */
     public function getThumbnail() {
         if ($this->items !== null && $this->valid()) {
             $thumbnail = @current($this->items)['data']['thumbnail'];
@@ -222,11 +173,6 @@ class reddit2 extends \spouts\spout {
         return null;
     }
 
-    /**
-     * returns the date of this item
-     *
-     * @return string date
-     */
     public function getdate() {
         if ($this->items !== null && $this->valid()) {
             $date = date('Y-m-d H:i:s', @current($this->items)['data']['created_utc']);
@@ -235,27 +181,20 @@ class reddit2 extends \spouts\spout {
         return $date;
     }
 
-    /**
-     * destroy the plugin (prevent memory issues)
-     */
     public function destroy() {
         unset($this->items);
         $this->items = null;
     }
 
-    /**
-     * returns the xml feed url for the source
-     *
-     * @param array $params params for the source
-     *
-     * @return string url as xml
-     */
     public function getXmlUrl(array $params) {
         return  'reddit://' . urlencode($params['url']);
     }
 
     /**
-     * @param array $params
+     * Sign in to reddit using the credentials in params and save a session cookie
+     * for further requests.
+     *
+     * @param array $params source parameters
      *
      * @throws GuzzleHttp\Exception\RequestException When an error is encountered
      * @throws \RuntimeException if the response body is not in JSON format

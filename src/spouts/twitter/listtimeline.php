@@ -59,13 +59,6 @@ class listtimeline extends \spouts\twitter\usertimeline {
         ];
     }
 
-    /**
-     * loads content for given list
-     *
-     * @param array $params the params of this source
-     *
-     * @return void
-     */
     public function load(array $params) {
         $this->client = self::getHttpClient($params['consumer_key'], $params['consumer_secret'], $params['access_token'], $params['access_token_secret']);
 

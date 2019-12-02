@@ -26,24 +26,10 @@ class teltarif extends fulltextrss {
      */
     private $feedUrl = 'http://www.teltarif.de/feed/news/20.rss2';
 
-    /**
-     * loads content for given source
-     *
-     * @param array $params
-     *
-     * @return void
-     */
     public function load(array $params) {
         parent::load(['url' => $this->getXmlUrl($params)]);
     }
 
-    /**
-     * returns the xml feed url for the source
-     *
-     * @param array $params params for the source
-     *
-     * @return string url as xml
-     */
     public function getXmlUrl(array $params) {
         return $this->feedUrl;
     }

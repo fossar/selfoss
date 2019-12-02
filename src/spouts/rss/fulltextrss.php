@@ -37,11 +37,6 @@ class fulltextrss extends feed {
     /** @var Graby */
     private $graby;
 
-    /**
-     * returns the content of this item
-     *
-     * @return string content
-     */
     public function getContent() {
         $url = $this->getLink();
 
@@ -72,11 +67,6 @@ class fulltextrss extends feed {
         return $content;
     }
 
-    /**
-     * returns the link of this item
-     *
-     * @return string link
-     */
     public function getLink() {
         $url = parent::getLink();
 

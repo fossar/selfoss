@@ -28,25 +28,11 @@ class youtube extends \spouts\rss\feed {
         ]
     ];
 
-    /**
-     * loads content for given source
-     *
-     * @param array $params the params of this source
-     *
-     * @return void
-     */
     public function load(array $params) {
         $url = $this->getXmlUrl($params);
         parent::load(['url' => $url]);
     }
 
-    /**
-     * returns the xml feed url for the source
-     *
-     * @param array $params params for the source
-     *
-     * @return string url as xml
-     */
     public function getXmlUrl(array $params) {
         $channel = $params['channel'];
         if (preg_match('(^https?://www.youtube.com/channel/([a-zA-Z0-9_-]+)$)', $params['channel'], $matched)) {
@@ -69,11 +55,6 @@ class youtube extends \spouts\rss\feed {
         }
     }
 
-    /**
-     * returns the thumbnail of this item (for multimedia feeds)
-     *
-     * @return string|null thumbnail data
-     */
     public function getThumbnail() {
         if ($this->items === false || $this->valid() === false) {
             return null;

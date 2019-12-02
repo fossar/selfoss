@@ -225,24 +225,24 @@ class Index extends BaseController {
     /**
      * load items
      *
-     * @param array $options
-     * @param array $tags
+     * @param array $params request parameters
+     * @param array $tags information about tags
      *
      * @return string html with items
      */
-    private function loadItems(array $options, array $tags) {
+    private function loadItems(array $params, array $tags) {
         $itemDao = new \daos\Items();
         $itemsHtml = '';
 
-        $firstPage = $options['offset'] == 0
-            && $options['fromId'] == ''
-            && $options['fromDatetime'] == '';
-        if ($options['source'] && $this->allowedToUpdate() && $firstPage) {
+        $firstPage = $params['offset'] == 0
+            && $params['fromId'] == ''
+            && $params['fromDatetime'] == '';
+        if ($params['source'] && $this->allowedToUpdate() && $firstPage) {
             $itemsHtml = '<button type="button" id="refresh-source" class="refresh-source">' . \F3::get('lang_source_refresh') . '</button>';
         }
 
         $tagsController = new \controllers\Tags();
-        foreach ($itemDao->get($options) as $item) {
+        foreach ($itemDao->get($params) as $item) {
             // parse tags and assign tag colors
             $item['tags'] = $tagsController->tagsAddColors($item['tags'], $tags);
 

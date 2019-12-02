@@ -39,15 +39,6 @@ class feed extends \spouts\spout {
     // Source Methods
     //
 
-    /**
-     * loads content for given source
-     * I supress all Warnings of SimplePie for ensuring
-     * working plugin in PHP Strict mode
-     *
-     * @param array $params the params of this source
-     *
-     * @return void
-     */
     public function load(array $params) {
         // initialize simplepie feed loader
         $this->feed = @new \SimplePie();
@@ -82,31 +73,14 @@ class feed extends \spouts\spout {
         $this->spoutTitle = $this->feed->get_title();
     }
 
-    /**
-     * returns the xml feed url for the source
-     *
-     * @param array $params params for the source
-     *
-     * @return ?string url as xml
-     */
     public function getXmlUrl(array $params) {
         return isset($params['url']) ? html_entity_decode($params['url']) : null;
     }
 
-    /**
-     * returns the global html url for the source
-     *
-     * @return ?string url as html
-     */
     public function getHtmlUrl() {
         return $this->htmlUrl;
     }
 
-    /**
-     * returns an unique id for this item
-     *
-     * @return string id as hash
-     */
     public function getId() {
         if ($this->items !== null && $this->valid()) {
             $id = @current($this->items)->get_id();
@@ -120,11 +94,6 @@ class feed extends \spouts\spout {
         return null;
     }
 
-    /**
-     * returns the current title as string
-     *
-     * @return string title
-     */
     public function getTitle() {
         if ($this->items !== null && $this->valid()) {
             return htmlspecialchars_decode(@current($this->items)->get_title());
@@ -133,11 +102,6 @@ class feed extends \spouts\spout {
         return null;
     }
 
-    /**
-     * returns the content of this item
-     *
-     * @return string content
-     */
     public function getContent() {
         if ($this->items !== null && $this->valid()) {
             return @current($this->items)->get_content();
@@ -146,11 +110,6 @@ class feed extends \spouts\spout {
         return null;
     }
 
-    /**
-     * returns the icon of this item
-     *
-     * @return string icon url
-     */
     public function getIcon() {
         if ($this->faviconUrl !== null) {
             return $this->faviconUrl;
@@ -173,11 +132,6 @@ class feed extends \spouts\spout {
         return $this->faviconUrl;
     }
 
-    /**
-     * returns the link of this item
-     *
-     * @return string link
-     */
     public function getLink() {
         if ($this->items !== null && $this->valid()) {
             $link = @current($this->items)->get_link();
@@ -188,11 +142,6 @@ class feed extends \spouts\spout {
         return null;
     }
 
-    /**
-     * returns the date of this item
-     *
-     * @return string date
-     */
     public function getDate() {
         if ($this->items !== null && $this->valid()) {
             $date = @current($this->items)->get_date('Y-m-d H:i:s');
@@ -204,11 +153,6 @@ class feed extends \spouts\spout {
         return $date;
     }
 
-    /**
-     * returns the author of this item
-     *
-     * @return string author
-     */
     public function getAuthor() {
         if ($this->items !== null && $this->valid()) {
             $author = @current($this->items)->get_author();
@@ -225,9 +169,6 @@ class feed extends \spouts\spout {
         return null;
     }
 
-    /**
-     * destroy the plugin (prevent memory issues)
-     */
     public function destroy() {
         $this->feed->__destruct();
         unset($this->items);
