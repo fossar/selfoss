@@ -16,6 +16,8 @@ use helpers\WebClient;
  * @author Jan Tojnar <jtojnar@gmail.com>
  */
 class page extends \spouts\spout {
+    use \helpers\ItemsIterator;
+
     /** @var string name of source */
     public $name = 'Facebook: page feed';
 
@@ -149,73 +151,6 @@ class page extends \spouts\spout {
             $item = current($this->items);
 
             return $item['created_time'];
-        }
-
-        return false;
-    }
-
-    //
-    // Iterator Interface
-    //
-
-    /**
-     * reset iterator
-     *
-     * @return void
-     */
-    public function rewind() {
-        if ($this->items !== false) {
-            reset($this->items);
-        }
-    }
-
-    /**
-     * receive current item
-     *
-     * @return page current item
-     */
-    public function current() {
-        if ($this->items !== false) {
-            return $this;
-        }
-
-        return false;
-    }
-
-    /**
-     * receive key of current item
-     *
-     * @return mixed key of current item
-     */
-    public function key() {
-        if ($this->items !== false) {
-            return key($this->items);
-        }
-
-        return false;
-    }
-
-    /**
-     * select next item
-     *
-     * @return page next item
-     */
-    public function next() {
-        if ($this->items !== false) {
-            next($this->items);
-        }
-
-        return $this;
-    }
-
-    /**
-     * end reached
-     *
-     * @return bool false if end reached
-     */
-    public function valid() {
-        if ($this->items !== false) {
-            return current($this->items) !== false;
         }
 
         return false;

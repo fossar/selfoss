@@ -10,6 +10,8 @@ namespace spouts\rss;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class feed extends \spouts\spout {
+    use \helpers\ItemsIterator;
+
     /** @var string name of source */
     public $name = 'RSS Feed';
 
@@ -27,81 +29,11 @@ class feed extends \spouts\spout {
         ]
     ];
 
-    /** @var ?array current fetched items */
-    protected $items = null;
-
     /** @var ?string URL of the source */
     protected $htmlUrl = null;
 
     /** @var ?string URL of the favicon */
     protected $faviconUrl = null;
-
-    //
-    // Iterator Interface
-    //
-
-    /**
-     * reset iterator
-     *
-     * @return void
-     */
-    public function rewind() {
-        if ($this->items !== null) {
-            reset($this->items);
-        }
-    }
-
-    /**
-     * receive current item
-     *
-     * @return \SimplePie_Item current item
-     */
-    public function current() {
-        if ($this->items !== null) {
-            return $this;
-        }
-
-        return false;
-    }
-
-    /**
-     * receive key of current item
-     *
-     * @return mixed key of current item
-     */
-    public function key() {
-        if ($this->items !== null) {
-            return key($this->items);
-        }
-
-        return false;
-    }
-
-    /**
-     * select next item
-     *
-     * @return \SimplePie_Item next item
-     */
-    public function next() {
-        if ($this->items !== null) {
-            next($this->items);
-        }
-
-        return $this;
-    }
-
-    /**
-     * end reached
-     *
-     * @return bool false if end reached
-     */
-    public function valid() {
-        if ($this->items !== null) {
-            return current($this->items) !== false;
-        }
-
-        return false;
-    }
 
     //
     // Source Methods
