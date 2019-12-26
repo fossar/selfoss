@@ -18,7 +18,7 @@ FROM node:13-buster as npm
 
 COPY --from=composer /selfoss /selfoss
 
-RUN cd /selfoss && npm i && npm install --prefix assets/ && npm run build
+RUN cd /selfoss && npm install && npm install --prefix assets/ && npm run build
 
 
 
