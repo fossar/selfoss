@@ -18,5 +18,5 @@ fi
 su www-data -s /bin/bash -c 'php /var/www/html/cliupdate.php' >/dev/null 2>&1
 (while true; do su www-data -s /bin/bash -c 'php /var/www/html/cliupdate.php'; sleep 900; done;) &
 
-# Start the server
-apache2-foreground
+# Start the server and initiate the cron job
+cron && apache2-foreground
