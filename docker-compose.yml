@@ -1,12 +1,15 @@
 version: "3"
+
 services:
   app:
     build:
       context: .
       dockerfile: ./Dockerfile
+    container_name: 'selfoss'
     volumes:
       - data:/var/www/html/data
       - config:/var/www/html/config/
+    restart: 'always'
     ports:
       - "8390:80"
 
