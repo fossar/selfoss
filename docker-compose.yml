@@ -1,7 +1,9 @@
 version: "3"
 services:
   web:
-    build: .
+    build:
+      context: .
+      dockerfile: ./Dockerfile
     volumes:
       - data:/var/www/html/data
       - config:/var/www/html/config/

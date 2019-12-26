@@ -1,11 +1,9 @@
 FROM ubuntu:bionic as source
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
-    git ca-certificates \
-    && git clone https://github.com/SSilence/selfoss.git && cd selfoss \
-    && git checkout 2.18
+    git ca-certificates
 
-
+COPY . selfoss/
 
 FROM composer:1.9 as composer
 
@@ -19,7 +17,7 @@ FROM node:13-buster as npm
 
 COPY --from=composer /selfoss /selfoss
 
-RUN cd /selfoss && npm i && ./node_modules/.bin/grunt client:install
+RUN cd /selfoss && npm i && npm install --prefix assets/ && npm run build
 
 
 
@@ -35,7 +33,7 @@ WORKDIR /var/www/html/
 
 RUN mkdir config && ln -s config/config.ini config.ini \
     && a2enmod rewrite \
-    && /bin/echo -e "#!/bin/bash\nchown -R www-data:www-data /var/www/html/data/cache /var/www/html/data/favicons /var/www/html/data/logs /var/www/html/data/thumbnails /var/www/html/data/sqlite /var/www/html/public" > /entrypoint.sh \
+    && /bin/echo -e "#!/bin/bash\nchown -R www-data:www-data /var/www/html/data/cache /var/www/html/data/favicons /var/www/html/data/logs /var/www/html/data/thumbnails /var/www/html/data/sqlite" > /entrypoint.sh \
     && /bin/echo -e "if [ ! -f config/config.ini ]; then cp defaults.ini config/config.ini && sed -i 's/logger_destination=.*$/logger_destination=file:php:\/\/stderr/' config/config.ini; fi" >> /entrypoint.sh \
     && /bin/echo -e "su www-data -s /bin/bash -c 'php /var/www/html/cliupdate.php' >/dev/null 2>&1" >> /entrypoint.sh \
     && /bin/echo -e "(while true; do su www-data -s /bin/bash -c 'php /var/www/html/cliupdate.php'; sleep 900; done;) &" >> /entrypoint.sh \

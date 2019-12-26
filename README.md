@@ -83,23 +83,15 @@ Dockerfile for Selfoss RSS aggregator is bundled in the repository.
 
 Selfoss config is mounted in a separate volume, so your custom settings should survive reboot.
 
-To run the latest stable tag (2.18) use:
+To run the latest source use:
 ```
 docker-compose up
 ```
 Then find the web interface at http://localhost:8390
 
-
-To run the latest master version use:
+To rebuild the container with the latest code from source use:
 ```
-docker-compose -f docker-compose-master.yml up
-```
-Then find the web interface at http://localhost:8391
-
-
-To rebuild the master version with the latest code from git use:
-```
-docker-compose -f docker-compose.master.yml build --no-cache
+docker-compose -f docker-compose.yml build --no-cache
 ```
 
 Thanks to @squatica for docker configuration.
