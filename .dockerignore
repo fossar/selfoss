@@ -1,0 +1,16 @@
+/assets/.cache
+/data/favicons/*.png
+/data/favicons/*.jpg
+/data/thumbnails/*.png
+/data/thumbnails/*.jpg
+/data/cache/*.spc
+/data/logs/*.log
+/data/sqlite/*.db
+/public
+user.css
+user.js
+config.ini
+node_modules
+.env
+vendor/
+.php_cs.cache
