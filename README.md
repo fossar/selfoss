@@ -16,8 +16,8 @@ For more information visit our [web site](https://selfoss.aditu.de).
 1. Upload all files of this folder (IMPORTANT: also upload the invisible .htaccess files)
 2. Make the directories data/cache, data/favicons, data/logs, data/thumbnails and data/sqlite writeable
 3. Insert database access data in config.ini (see below -- you don't have to change anything if you want to use sqlite)
-3. You don't have to install the database, it will be created automatically (ensure that your database has enought rights for creating triggers)
-4. Create cronjob for updating feeds and point it to https://yourselfossurl.com/update via wget or curl. You can also execute the cliupdate.php from commandline.
+4. You don't have to install the database, it will be created automatically (ensure that your database has enought rights for creating triggers)
+5. Create cronjob for updating feeds and point it to https://yourselfossurl.com/update via wget or curl. You can also execute the cliupdate.php from commandline.
 
 If you obtained selfoss using Git, some more steps will be required. See the [development](#development) section.
 
@@ -76,6 +76,33 @@ We use [Parcel](https://parceljs.org/) (installed by the command above) to build
 If you want to create a package with all the dependencies bundled, you can run `npm run dist` command to produce a zipball.
 
 Every patch is expected to adhere to our coding style, which is checked automatically by Travis. You can install the checkers locally using `npm run install-dependencies`, and then run the checks using `npm run check` before submitting a pull request. There is also `npm run fix`, that will attempt to fix the formatting.
+
+## Dockerizing selfoss
+
+Dockerfile for Selfoss RSS aggregator is bundled in the repository.
+
+Selfoss config is mounted in a separate volume, so your custom settings should survive reboot.
+
+To run the latest stable tag (2.18) use:
+```
+docker-compose up
+```
+Then find the web interface at http://localhost:8390
+
+
+To run the latest master version use:
+```
+docker-compose -f docker-compose-master.yml up
+```
+Then find the web interface at http://localhost:8391
+
+
+To rebuild the master version with the latest code from git use:
+```
+docker-compose -f docker-compose.master.yml build --no-cache
+```
+
+Thanks to @squatica for docker configuration.
 
 ## Credits
 
