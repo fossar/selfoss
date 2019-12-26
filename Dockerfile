@@ -1,7 +1,8 @@
 FROM ubuntu:bionic as source
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
-    git ca-certificates
+    git ca-certificates && \
+    rm -rf /var/lib/apt/lists/*
 
 COPY . selfoss/
 
