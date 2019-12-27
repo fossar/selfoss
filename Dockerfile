@@ -36,6 +36,7 @@ RUN mkdir config && ln -s config/config.ini config.ini \
 
 VOLUME /var/www/html/data
 VOLUME /var/www/html/config/
-RUN ls utils
+RUN ls utils/docker
 
+ENTRYPOINT [ "bash" ]
 CMD [ "utils/docker/entrypoint.sh" ]
