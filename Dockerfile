@@ -1,11 +1,5 @@
 FROM ubuntu:bionic as source
-
-# Set frontend mode as noninteractive (default answers to all questions)
-ENV DEBIAN_FRONTEND noninteractive
-
-RUN apt-get update &&\
-    apt-get upgrade -y && \
-    apt-get autoremove && \
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y && \
     rm -rf /var/lib/apt/lists/*
 
 COPY . selfoss/
@@ -30,7 +24,7 @@ FROM php:7.4-apache-buster
 
 COPY --from=npm /selfoss /var/www/html/
 
-RUN apt-get update && apt-get install --no-install-recommends -y libpng-dev \
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y libpng-dev \
     cron \
     && docker-php-ext-install -j$(nproc) gd \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -42,5 +36,6 @@ RUN mkdir config && ln -s config/config.ini config.ini \
 
 VOLUME /var/www/html/data
 VOLUME /var/www/html/config/
+RUN ls utils
 
-CMD [ "/var/www/html/selfoss/utils/docker/entrypoint.sh" ]
+CMD [ "utils/docker/entrypoint.sh" ]
