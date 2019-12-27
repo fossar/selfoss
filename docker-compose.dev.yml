@@ -1,0 +1,16 @@
+version: "3"
+
+services:
+  # clean build with `docker-compose -f docker-compose.dev.yml build --no-cache --pull app`
+  app:
+    build:
+      args:
+        uid: ${UID}
+        gid: ${GID}
+      context: .
+      dockerfile: ./utils/docker/Dockerfile.dev
+    volumes:
+      - .:/var/www/html/
+    restart: unless-stopped
+    ports:
+      - "8391:80"

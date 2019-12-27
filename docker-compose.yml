@@ -1,18 +1,17 @@
 version: "3"
 
 services:
+  # clean build with `docker-compose build --no-cache --pull app`
   app:
+    image: selfoss/selfoss
     build:
       context: .
-      dockerfile: ./Dockerfile
-    container_name: 'selfoss'
+      dockerfile: ./utils/docker/Dockerfile
     volumes:
-      - ./data:/var/www/html/data
-      - ./config:/var/www/html/config/
-    restart: 'always'
+      - config:/var/www/html/config/
+    restart: unless-stopped
     ports:
       - "8390:80"
 
 volumes:
-  data:
   config:
