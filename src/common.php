@@ -46,7 +46,23 @@ error_reporting(E_ALL & ~E_DEPRECATED);
 $f3->set('AUTOLOAD', false);
 $f3->set('BASEDIR', BASEDIR);
 
-$configuration = new Configuration(__DIR__ . '/../config.ini', $_ENV);
+$environment = array_change_key_case($_ENV, CASE_LOWER);
+
+$configPathEnvVar = 'selfoss_config_path';
+
+if (isset($environment[$configPathEnvVar])) {
+    // Use the config path selected with environment variable.
+    $configPath = $environment[$configPathEnvVar];
+
+    if (!file_exists($configPath)) {
+        boot_error("Configuration file “${configPath}” requested by “${configPathEnvVar}” environment variable does not exist.");
+    }
+} else {
+    // Use the standard config file path.
+    $configPath = __DIR__ . '/../config.ini';
+}
+
+$configuration = new Configuration($configPath, $_ENV);
 
 $f3->set('DEBUG', $configuration->debug);
 $f3->set('cache', $configuration->cache);
