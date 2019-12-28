@@ -39,6 +39,7 @@ script:
     - if [ "$LINT_JS" = true ]; then npm run lint:client; fi
     - npm run lint:server
     - if [ "$CS_FIXER" = true ]; then npm run cs:server; fi
+    - npm run test:server
 
 before_deploy:
     - git config --global user.email 'Travis CI'
