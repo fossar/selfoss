@@ -61,7 +61,7 @@ class Image {
             \F3::get('logger')->debug('icon: failed to get html page: ', ['exception' => $e]);
         }
 
-        $shortcutIcon = $this->parseShortcutIcon($html);
+        $shortcutIcon = self::parseShortcutIcon($html);
         if ($shortcutIcon !== null) {
             $shortcutIcon = (string) UriResolver::resolve(new Uri($url), new Uri($shortcutIcon));
 
@@ -196,7 +196,7 @@ class Image {
      *
      * @return ?string favicon url
      */
-    private function parseShortcutIcon($html) {
+    public static function parseShortcutIcon($html) {
         $dom = new \DomDocument();
         if (@$dom->loadHTML($html) !== true) {
             return null;

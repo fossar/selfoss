@@ -25,7 +25,8 @@
     "require-dev": {
         "jakub-onderka/php-console-highlighter": "^0.4.0",
         "jakub-onderka/php-parallel-lint": "^1.0",
-        "friendsofphp/php-cs-fixer": "^2.15"
+        "friendsofphp/php-cs-fixer": "^2.15",
+        "phpunit/phpunit": "^5.7"
     },
     "license": "GPL-3.0",
     "authors": [
@@ -39,7 +40,8 @@
             "controllers\\": "src/controllers/",
             "daos\\": "src/daos/",
             "helpers\\": "src/helpers/",
-            "spouts\\": "src/spouts/"
+            "spouts\\": "src/spouts/",
+            "Tests\\": "tests/"
         }
     },
     "config": {
@@ -50,6 +52,7 @@
     "scripts": {
         "cs": "php-cs-fixer fix --verbose --dry-run --diff",
         "fix": "php-cs-fixer fix --verbose --diff",
-        "lint": "parallel-lint src"
+        "lint": "parallel-lint src tests",
+        "test": "phpunit --bootstrap vendor/autoload.php tests"
     }
 }

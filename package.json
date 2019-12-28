@@ -16,7 +16,7 @@
     "bump-version": "$NODE utils/bump-version.js",
     "check": "npm run check:client && npm run check:server",
     "check:client": "npm run lint:client",
-    "check:server": "npm run lint:server && npm run cs:server",
+    "check:server": "npm run lint:server && npm run cs:server && npm run test:server",
     "cs:server": "composer run-script cs",
     "dev": "npm run --prefix assets/ dev",
     "build": "npm run --prefix assets/ build",
@@ -29,6 +29,7 @@
     "install-dependencies:server": "composer install --dev",
     "lint:client": "npm run --prefix assets/ lint",
     "lint:server": "composer run-script lint",
+    "test:server": "composer run-script test",
     "postinstall": "npm run install-dependencies"
   }
 }
