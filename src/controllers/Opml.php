@@ -2,6 +2,7 @@
 
 namespace controllers;
 
+use helpers\SpoutLoader;
 use helpers\View;
 use SimpleXMLElement;
 
@@ -17,7 +18,7 @@ class Opml {
     /** @var array Sources that have been imported from the OPML file */
     private $imported = [];
 
-    /** @var \helpers\SpoutLoader */
+    /** @var SpoutLoader */
     private $spoutLoader;
 
     /** @var \XMLWriter */
@@ -32,8 +33,8 @@ class Opml {
     /** @var View view helper */
     private $view;
 
-    public function __construct(View $view) {
-        $this->spoutLoader = new \helpers\SpoutLoader();
+    public function __construct(View $view, SpoutLoader $spoutLoader) {
+        $this->spoutLoader = $spoutLoader;
         $this->view = $view;
     }
 
