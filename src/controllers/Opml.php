@@ -2,6 +2,7 @@
 
 namespace controllers;
 
+use helpers\Authentication;
 use helpers\SpoutLoader;
 use helpers\View;
 use SimpleXMLElement;
@@ -15,6 +16,9 @@ use SimpleXMLElement;
  * @author     Sean Rand <asanernd@gmail.com>
  */
 class Opml {
+    /** @var Authentication authentication helper */
+    private $authentication;
+
     /** @var array Sources that have been imported from the OPML file */
     private $imported = [];
 
@@ -33,7 +37,8 @@ class Opml {
     /** @var View view helper */
     private $view;
 
-    public function __construct(View $view, SpoutLoader $spoutLoader) {
+    public function __construct(Authentication $authentication, View $view, SpoutLoader $spoutLoader) {
+        $this->authentication = $authentication;
         $this->spoutLoader = $spoutLoader;
         $this->view = $view;
     }
@@ -43,7 +48,7 @@ class Opml {
      * html
      */
     public function show() {
-        \F3::get('auth')->needsLoggedIn();
+        $this->authentication->needsLoggedIn();
         readfile(BASEDIR . '/public/opml.html');
     }
 
@@ -54,7 +59,7 @@ class Opml {
      * @note Borrows from controllers/Sources.php:write
      */
     public function add() {
-        \F3::get('auth')->needsLoggedIn();
+        $this->authentication->needsLoggedIn();
 
         http_response_code(400);
 
@@ -272,7 +277,7 @@ class Opml {
      * @return void
      */
     public function export() {
-        \F3::get('auth')->needsLoggedIn();
+        $this->authentication->needsLoggedIn();
 
         $this->sourcesDao = new \daos\Sources();
         $this->tagsDao = new \daos\Tags();

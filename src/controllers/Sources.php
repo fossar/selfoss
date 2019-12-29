@@ -3,6 +3,7 @@
 namespace controllers;
 
 use Base;
+use helpers\Authentication;
 use helpers\View;
 
 /**
@@ -13,10 +14,14 @@ use helpers\View;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class Sources {
+    /** @var Authentication authentication helper */
+    private $authentication;
+
     /** @var View view helper */
     private $view;
 
-    public function __construct(View $view) {
+    public function __construct(Authentication $authentication, View $view) {
+        $this->authentication = $authentication;
         $this->view = $view;
     }
 
@@ -27,7 +32,7 @@ class Sources {
      * @return void
      */
     public function show() {
-        \F3::get('auth')->needsLoggedIn();
+        $this->authentication->needsLoggedIn();
 
         // get available spouts
         $spoutLoader = new \helpers\SpoutLoader();
@@ -55,7 +60,7 @@ class Sources {
      * @return void
      */
     public function add() {
-        \F3::get('auth')->needsLoggedIn();
+        $this->authentication->needsLoggedIn();
 
         $spoutLoader = new \helpers\SpoutLoader();
         $this->view->spouts = $spoutLoader->all();
@@ -69,7 +74,7 @@ class Sources {
      * @return void
      */
     public function params() {
-        \F3::get('auth')->needsLoggedIn();
+        $this->authentication->needsLoggedIn();
 
         if (!isset($_GET['spout'])) {
             $this->view->error('no spout type given');
@@ -226,11 +231,11 @@ class Sources {
         // only for selfoss ui (update stats in navigation)
         if ($f3->ajax()) {
             // get new tag list with updated count values
-            $tagController = new \controllers\Tags($this->view);
+            $tagController = new \controllers\Tags($this->authentication, $this->view);
             $return['tags'] = $tagController->tagsListAsString();
 
             // get new sources list
-            $sourcesController = new \controllers\Sources($this->view);
+            $sourcesController = new \controllers\Sources($this->authentication, $this->view);
             $return['sources'] = $sourcesController->sourcesListAsString();
         }
 
@@ -244,7 +249,7 @@ class Sources {
      * @return void
      */
     public function sourcesStats() {
-        \F3::get('auth')->needsLoggedInOrPublicMode();
+        $this->authentication->needsLoggedInOrPublicMode();
 
         $this->view->jsonSuccess([
             'success' => true,
@@ -314,7 +319,7 @@ class Sources {
      * @return void
      */
     public function listSources() {
-        \F3::get('auth')->needsLoggedIn();
+        $this->authentication->needsLoggedIn();
 
         // load sources
         $sourcesDao = new \daos\Sources();
@@ -336,7 +341,7 @@ class Sources {
      * @return void
      */
     public function spouts() {
-        \F3::get('auth')->needsLoggedIn();
+        $this->authentication->needsLoggedIn();
 
         $spoutLoader = new \helpers\SpoutLoader();
         $spouts = $spoutLoader->all();
@@ -350,7 +355,7 @@ class Sources {
      * @return void
      */
     public function stats() {
-        \F3::get('auth')->needsLoggedInOrPublicMode();
+        $this->authentication->needsLoggedInOrPublicMode();
 
         // load sources
         $sourcesDao = new \daos\Sources();

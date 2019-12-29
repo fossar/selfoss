@@ -65,6 +65,10 @@ foreach ($interpolatedKeys as $key) {
 
 $dice = new Dice();
 
+$dice->addRule(helpers\Authentication::class, [
+    'shared' => true,
+]);
+
 $f3->set('CONTAINER', function($class) use ($dice) {
     return $dice->create($class);
 });

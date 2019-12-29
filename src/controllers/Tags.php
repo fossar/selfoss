@@ -2,6 +2,7 @@
 
 namespace controllers;
 
+use helpers\Authentication;
 use helpers\View;
 
 /**
@@ -12,10 +13,14 @@ use helpers\View;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class Tags {
+    /** @var Authentication authentication helper */
+    private $authentication;
+
     /** @var View view helper */
     private $view;
 
-    public function __construct(View $view) {
+    public function __construct(Authentication $authentication, View $view) {
+        $this->authentication = $authentication;
         $this->view = $view;
     }
 
@@ -26,7 +31,7 @@ class Tags {
      * @return void
      */
     public function tagslist() {
-        \F3::get('auth')->needsLoggedInOrPublicMode();
+        $this->authentication->needsLoggedInOrPublicMode();
 
         echo $this->tagsListAsString();
     }
@@ -102,7 +107,7 @@ class Tags {
      * @return void
      */
     public function color() {
-        \F3::get('auth')->needsLoggedIn();
+        $this->authentication->needsLoggedIn();
 
         // read data
         parse_str(\F3::get('BODY'), $data);
@@ -131,7 +136,7 @@ class Tags {
      * @return void
      */
     public function listTags() {
-        \F3::get('auth')->needsLoggedInOrPublicMode();
+        $this->authentication->needsLoggedInOrPublicMode();
 
         $tagsDao = new \daos\Tags();
         $tags = $tagsDao->getWithUnread();

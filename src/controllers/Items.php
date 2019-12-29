@@ -3,6 +3,7 @@
 namespace controllers;
 
 use Base;
+use helpers\Authentication;
 use helpers\View;
 
 /**
@@ -13,10 +14,14 @@ use helpers\View;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class Items {
+    /** @var Authentication authentication helper */
+    private $authentication;
+
     /** @var View view helper */
     private $view;
 
-    public function __construct(View $view) {
+    public function __construct(Authentication $authentication, View $view) {
+        $this->authentication = $authentication;
         $this->view = $view;
     }
 
@@ -140,7 +145,7 @@ class Items {
      * @return void
      */
     public function listItems() {
-        \F3::get('auth')->needsLoggedInOrPublicMode();
+        $this->authentication->needsLoggedInOrPublicMode();
 
         // parse params
         $options = [];
@@ -162,7 +167,7 @@ class Items {
      * @return void
      */
     public function stats() {
-        \F3::get('auth')->needsLoggedInOrPublicMode();
+        $this->authentication->needsLoggedInOrPublicMode();
 
         $itemsDao = new \daos\Items();
         $stats = $itemsDao->stats();
@@ -178,12 +183,12 @@ class Items {
         }
 
         if (array_key_exists('tags', $_GET) && $_GET['tags'] == 'true') {
-            $tagsController = new \controllers\Tags($this->view);
+            $tagsController = new \controllers\Tags($this->authentication, $this->view);
             $stats['tagshtml'] = $tagsController->renderTags($tags);
         }
         if (array_key_exists('sources', $_GET) && $_GET['sources'] == 'true') {
             $sourcesDao = new \daos\Sources();
-            $sourcesController = new \controllers\Sources($this->view);
+            $sourcesController = new \controllers\Sources($this->authentication, $this->view);
             $stats['sourceshtml'] = $sourcesController->renderSources($sourcesDao->getWithUnread());
         }
 
@@ -197,7 +202,7 @@ class Items {
      * @return void
      */
     public function sync() {
-        \F3::get('auth')->needsLoggedInOrPublicMode();
+        $this->authentication->needsLoggedInOrPublicMode();
 
         $params = null;
         if (isset($_GET['since'])) {
@@ -236,7 +241,7 @@ class Items {
                                         2 * $itemsHowMany);
                 }
 
-                $tagsController = new \controllers\Tags($this->view);
+                $tagsController = new \controllers\Tags($this->authentication, $this->view);
                 $sync['newItems'] = [];
                 foreach ($itemsDao->sync($sinceId, $notBefore, $since, $itemsHowMany)
                          as $newItem) {
@@ -266,12 +271,12 @@ class Items {
 
             if (array_key_exists('tags', $params) && $_GET['tags'] == 'true') {
                 $tagsDao = new \daos\Tags();
-                $tagsController = new \controllers\Tags($this->view);
+                $tagsController = new \controllers\Tags($this->authentication, $this->view);
                 $sync['tagshtml'] = $tagsController->renderTags($tagsDao->getWithUnread());
             }
             if (array_key_exists('sources', $params) && $_GET['sources'] == 'true') {
                 $sourcesDao = new \daos\Sources();
-                $sourcesController = new \controllers\Sources($this->view);
+                $sourcesController = new \controllers\Sources($this->authentication, $this->view);
                 $sync['sourceshtml'] = $sourcesController->renderSources($sourcesDao->getWithUnread());
             }
 
@@ -290,7 +295,7 @@ class Items {
      * @return void
      */
     public function updateStatuses() {
-        \F3::get('auth')->needsLoggedIn();
+        $this->authentication->needsLoggedIn();
 
         if (isset($_POST['updatedStatuses'])
             && is_array($_POST['updatedStatuses'])) {

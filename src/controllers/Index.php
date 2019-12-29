@@ -3,6 +3,7 @@
 namespace controllers;
 
 use Base;
+use helpers\Authentication;
 use helpers\View;
 
 /**
@@ -13,10 +14,14 @@ use helpers\View;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class Index {
+    /** @var Authentication authentication helper */
+    private $authentication;
+
     /** @var View view helper */
     private $view;
 
-    public function __construct(View $view) {
+    public function __construct(Authentication $authentication, View $view) {
+        $this->authentication = $authentication;
         $this->view = $view;
     }
 
@@ -75,14 +80,14 @@ class Index {
         }
 
         // prepare tags display list
-        $tagsController = new \controllers\Tags($this->view);
+        $tagsController = new \controllers\Tags($this->authentication, $this->view);
         $this->view->tags = $tagsController->renderTags($tags);
 
         if (isset($options['sourcesNav']) && $options['sourcesNav'] == 'true') {
             // prepare sources display list
             $sourcesDao = new \daos\Sources();
             $sources = $sourcesDao->getWithUnread();
-            $sourcesController = new \controllers\Sources($this->view);
+            $sourcesController = new \controllers\Sources($this->authentication, $this->view);
             $this->view->sources = $sourcesController->renderSources($sources);
         } else {
             $this->view->sources = '';
@@ -136,7 +141,7 @@ class Index {
                 'htmlTitle' => trim(\F3::get('html_title')), // string
                 'allowPublicUpdate' => \F3::get('allow_public_update_access') == 1, // bool
                 'publicMode' => \F3::get('public') == 1, // bool
-                'authEnabled' => \F3::get('auth')->enabled() === true, // bool
+                'authEnabled' => $this->authentication->enabled() === true, // bool
                 'language' => \F3::get('language') === 0 ? null : \F3::get('language'), // ?string
                 'userCss' => file_exists(BASEDIR . '/user.css') ? filemtime(BASEDIR . '/user.css') : null, // ?int
                 'userJs' => file_exists(BASEDIR . '/user.js') ? filemtime(BASEDIR . '/user.js') : null, // ?int
@@ -186,7 +191,7 @@ class Index {
             ]);
         }
 
-        if (\F3::get('auth')->login($username, $password)) {
+        if ($this->authentication->login($username, $password)) {
             $this->view->jsonSuccess([
                 'success' => true
             ]);
@@ -205,7 +210,7 @@ class Index {
      * @return void
      */
     public function logout() {
-        \F3::get('auth')->logout();
+        $this->authentication->logout();
         $this->view->jsonSuccess([
             'success' => true
         ]);
@@ -219,7 +224,7 @@ class Index {
      */
     public function update() {
         // only allow access for localhost and loggedin users
-        if (!\F3::get('auth')->allowedToUpdate()) {
+        if (!$this->authentication->allowedToUpdate()) {
             die('unallowed access');
         }
 
@@ -245,11 +250,11 @@ class Index {
         $firstPage = $params['offset'] == 0
             && $params['fromId'] == ''
             && $params['fromDatetime'] == '';
-        if ($params['source'] && \F3::get('auth')->allowedToUpdate() && $firstPage) {
+        if ($params['source'] && $this->authentication->allowedToUpdate() && $firstPage) {
             $itemsHtml = '<button type="button" id="refresh-source" class="refresh-source">' . \F3::get('lang_source_refresh') . '</button>';
         }
 
-        $tagsController = new \controllers\Tags($this->view);
+        $tagsController = new \controllers\Tags($this->authentication, $this->view);
         foreach ($itemDao->get($params) as $item) {
             // parse tags and assign tag colors
             $item['tags'] = $tagsController->tagsAddColors($item['tags'], $tags);

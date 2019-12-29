@@ -9,7 +9,8 @@ if ($lang != '0' && $lang != '') {
 }
 
 // init authentication
-$f3->set('auth', new \helpers\Authentication());
+// TODO: remove once we let DI container create database
+$f3->set('auth', $f3->get('CONTAINER')(helpers\Authentication::class));
 
 // define routes
 

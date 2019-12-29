@@ -4,6 +4,7 @@ namespace controllers;
 
 use Base;
 use FeedWriter\RSS2;
+use helpers\Authentication;
 use helpers\View;
 
 /**
@@ -14,10 +15,14 @@ use helpers\View;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class Rss {
+    /** @var Authentication authentication helper */
+    private $authentication;
+
     /** @var View view helper */
     private $view;
 
-    public function __construct(View $view) {
+    public function __construct(Authentication $authentication, View $view) {
+        $this->authentication = $authentication;
         $this->view = $view;
     }
 
@@ -30,7 +35,7 @@ class Rss {
      * @return void
      */
     public function rss(Base $f3, array $params) {
-        \F3::get('auth')->needsLoggedInOrPublicMode();
+        $this->authentication->needsLoggedInOrPublicMode();
 
         $feedWriter = new RSS2();
         $feedWriter->setTitle(\F3::get('rss_title'));
