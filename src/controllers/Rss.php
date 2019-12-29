@@ -13,6 +13,13 @@ use FeedWriter\RSS2;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class Rss extends BaseController {
+    /** @var \helpers\View view helper */
+    private $view;
+
+    public function __construct() {
+        $this->view = new \helpers\View();
+    }
+
     /**
      * rss feed
      *

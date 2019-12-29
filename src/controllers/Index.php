@@ -12,6 +12,13 @@ use Base;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class Index extends BaseController {
+    /** @var \helpers\View view helper */
+    private $view;
+
+    public function __construct() {
+        $this->view = new \helpers\View();
+    }
+
     /**
      * home site
      * html

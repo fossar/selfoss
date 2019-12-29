@@ -10,18 +10,6 @@ namespace controllers;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class BaseController {
-    /** @var \helpers\View view helper */
-    protected $view;
-
-    /**
-     * initialize controller
-     *
-     * @return void
-     */
-    public function __construct() {
-        $this->view = new \helpers\View();
-    }
-
     /**
      * send 403 if not logged in and not public mode
      *

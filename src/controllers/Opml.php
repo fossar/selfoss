@@ -28,10 +28,12 @@ class Opml extends BaseController {
     /** @var \daos\Tags */
     private $tagsDao;
 
-    public function __construct() {
-        parent::__construct();
+    /** @var \helpers\View view helper */
+    private $view;
 
+    public function __construct() {
         $this->spoutLoader = new \helpers\SpoutLoader();
+        $this->view = new \helpers\View();
     }
 
     /**

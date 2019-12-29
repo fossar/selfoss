@@ -10,6 +10,13 @@ namespace controllers;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class Tags extends BaseController {
+    /** @var \helpers\View view helper */
+    private $view;
+
+    public function __construct() {
+        $this->view = new \helpers\View();
+    }
+
     /**
      * returns all tags
      * html
