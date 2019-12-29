@@ -3,6 +3,7 @@
 namespace controllers;
 
 use Base;
+use helpers\View;
 
 /**
  * Controller for root
@@ -12,11 +13,11 @@ use Base;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class Index {
-    /** @var \helpers\View view helper */
+    /** @var View view helper */
     private $view;
 
-    public function __construct() {
-        $this->view = new \helpers\View();
+    public function __construct(View $view) {
+        $this->view = $view;
     }
 
     /**
@@ -74,14 +75,14 @@ class Index {
         }
 
         // prepare tags display list
-        $tagsController = new \controllers\Tags();
+        $tagsController = new \controllers\Tags($this->view);
         $this->view->tags = $tagsController->renderTags($tags);
 
         if (isset($options['sourcesNav']) && $options['sourcesNav'] == 'true') {
             // prepare sources display list
             $sourcesDao = new \daos\Sources();
             $sources = $sourcesDao->getWithUnread();
-            $sourcesController = new \controllers\Sources();
+            $sourcesController = new \controllers\Sources($this->view);
             $this->view->sources = $sourcesController->renderSources($sources);
         } else {
             $this->view->sources = '';
@@ -248,7 +249,7 @@ class Index {
             $itemsHtml = '<button type="button" id="refresh-source" class="refresh-source">' . \F3::get('lang_source_refresh') . '</button>';
         }
 
-        $tagsController = new \controllers\Tags();
+        $tagsController = new \controllers\Tags($this->view);
         foreach ($itemDao->get($params) as $item) {
             // parse tags and assign tag colors
             $item['tags'] = $tagsController->tagsAddColors($item['tags'], $tags);

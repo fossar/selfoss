@@ -1,5 +1,6 @@
 <?php
 
+use Dice\Dice;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\ErrorLogHandler;
 use Monolog\Handler\NullHandler;
@@ -61,6 +62,12 @@ foreach ($interpolatedKeys as $key) {
     $value = $f3->get($key);
     $f3->set($key, str_replace('%datadir%', $datadir, $value));
 }
+
+$dice = new Dice();
+
+$f3->set('CONTAINER', function($class) use ($dice) {
+    return $dice->create($class);
+});
 
 // init logger
 $log = new Logger('selfoss');

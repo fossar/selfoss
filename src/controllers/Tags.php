@@ -2,6 +2,8 @@
 
 namespace controllers;
 
+use helpers\View;
+
 /**
  * Controller for tag access
  *
@@ -10,11 +12,11 @@ namespace controllers;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class Tags {
-    /** @var \helpers\View view helper */
+    /** @var View view helper */
     private $view;
 
-    public function __construct() {
-        $this->view = new \helpers\View();
+    public function __construct(View $view) {
+        $this->view = $view;
     }
 
     /**

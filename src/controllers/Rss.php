@@ -4,6 +4,7 @@ namespace controllers;
 
 use Base;
 use FeedWriter\RSS2;
+use helpers\View;
 
 /**
  * Controller for rss access
@@ -13,11 +14,11 @@ use FeedWriter\RSS2;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class Rss {
-    /** @var \helpers\View view helper */
+    /** @var View view helper */
     private $view;
 
-    public function __construct() {
-        $this->view = new \helpers\View();
+    public function __construct(View $view) {
+        $this->view = $view;
     }
 
     /**

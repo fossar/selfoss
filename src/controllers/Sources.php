@@ -3,6 +3,7 @@
 namespace controllers;
 
 use Base;
+use helpers\View;
 
 /**
  * Controller for sources handling
@@ -12,11 +13,11 @@ use Base;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class Sources {
-    /** @var \helpers\View view helper */
+    /** @var View view helper */
     private $view;
 
-    public function __construct() {
-        $this->view = new \helpers\View();
+    public function __construct(View $view) {
+        $this->view = $view;
     }
 
     /**
@@ -225,11 +226,11 @@ class Sources {
         // only for selfoss ui (update stats in navigation)
         if ($f3->ajax()) {
             // get new tag list with updated count values
-            $tagController = new \controllers\Tags();
+            $tagController = new \controllers\Tags($this->view);
             $return['tags'] = $tagController->tagsListAsString();
 
             // get new sources list
-            $sourcesController = new \controllers\Sources();
+            $sourcesController = new \controllers\Sources($this->view);
             $return['sources'] = $sourcesController->sourcesListAsString();
         }
 

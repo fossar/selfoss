@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6e7ba21541834df193a4564583cb9724",
+    "content-hash": "ccead0c943f380d793fc32b21a6083cb",
     "packages": [
         {
             "name": "bcosca/fatfree-core",
@@ -903,6 +903,52 @@
                 "html"
             ],
             "time": "2019-06-25T15:15:37+00:00"
+        },
+        {
+            "name": "level-2/dice",
+            "version": "2.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Level-2/Dice.git",
+                "reference": "1b50d6a27274fb424e7c8d136a6e2a02b398afe5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Level-2/Dice/zipball/1b50d6a27274fb424e7c8d136a6e2a02b398afe5",
+                "reference": "1b50d6a27274fb424e7c8d136a6e2a02b398afe5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Dice\\": "./"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Tom Butler",
+                    "email": "tom@r.je"
+                }
+            ],
+            "description": "A minimalist Dependency injection container (DIC) for PHP. Please note: This branch is only compatible with PHP5.6. 5.5, 5.4 and 5.3 compatible version is available as a separate branch on github. ",
+            "homepage": "http://r.je/dice.html",
+            "keywords": [
+                "dependency injection",
+                "dependency injection container",
+                "di",
+                "ioc"
+            ],
+            "time": "2018-01-12T14:48:01+00:00"
         },
         {
             "name": "lordelph/icofileloader",

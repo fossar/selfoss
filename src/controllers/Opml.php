@@ -2,6 +2,7 @@
 
 namespace controllers;
 
+use helpers\View;
 use SimpleXMLElement;
 
 /**
@@ -28,12 +29,12 @@ class Opml {
     /** @var \daos\Tags */
     private $tagsDao;
 
-    /** @var \helpers\View view helper */
+    /** @var View view helper */
     private $view;
 
-    public function __construct() {
+    public function __construct(View $view) {
         $this->spoutLoader = new \helpers\SpoutLoader();
-        $this->view = new \helpers\View();
+        $this->view = $view;
     }
 
     /**

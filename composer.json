@@ -13,6 +13,7 @@
         "guzzlehttp/psr7": "^1.5",
         "fossar/htmlawed": "^1.2.4.1",
         "j0k3r/graby": "2.0.0-alpha.0",
+        "level-2/dice": "^2.0",
         "lordelph/icofileloader": "^2.0",
         "mibe/feedwriter": "^1.0",
         "monolog/monolog": "^1.0",

@@ -3,6 +3,7 @@
 namespace controllers;
 
 use Base;
+use helpers\View;
 
 /**
  * Controller for item handling
@@ -12,11 +13,11 @@ use Base;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class Items {
-    /** @var \helpers\View view helper */
+    /** @var View view helper */
     private $view;
 
-    public function __construct() {
-        $this->view = new \helpers\View();
+    public function __construct(View $view) {
+        $this->view = $view;
     }
 
     /**
@@ -177,12 +178,12 @@ class Items {
         }
 
         if (array_key_exists('tags', $_GET) && $_GET['tags'] == 'true') {
-            $tagsController = new \controllers\Tags();
+            $tagsController = new \controllers\Tags($this->view);
             $stats['tagshtml'] = $tagsController->renderTags($tags);
         }
         if (array_key_exists('sources', $_GET) && $_GET['sources'] == 'true') {
             $sourcesDao = new \daos\Sources();
-            $sourcesController = new \controllers\Sources();
+            $sourcesController = new \controllers\Sources($this->view);
             $stats['sourceshtml'] = $sourcesController->renderSources($sourcesDao->getWithUnread());
         }
 
@@ -235,7 +236,7 @@ class Items {
                                         2 * $itemsHowMany);
                 }
 
-                $tagsController = new \controllers\Tags();
+                $tagsController = new \controllers\Tags($this->view);
                 $sync['newItems'] = [];
                 foreach ($itemsDao->sync($sinceId, $notBefore, $since, $itemsHowMany)
                          as $newItem) {
@@ -265,12 +266,12 @@ class Items {
 
             if (array_key_exists('tags', $params) && $_GET['tags'] == 'true') {
                 $tagsDao = new \daos\Tags();
-                $tagsController = new \controllers\Tags();
+                $tagsController = new \controllers\Tags($this->view);
                 $sync['tagshtml'] = $tagsController->renderTags($tagsDao->getWithUnread());
             }
             if (array_key_exists('sources', $params) && $_GET['sources'] == 'true') {
                 $sourcesDao = new \daos\Sources();
-                $sourcesController = new \controllers\Sources();
+                $sourcesController = new \controllers\Sources($this->view);
                 $sync['sourceshtml'] = $sourcesController->renderSources($sourcesDao->getWithUnread());
             }
 
