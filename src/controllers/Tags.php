@@ -9,7 +9,7 @@ namespace controllers;
  * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
-class Tags extends BaseController {
+class Tags {
     /** @var \helpers\View view helper */
     private $view;
 
@@ -24,7 +24,7 @@ class Tags extends BaseController {
      * @return void
      */
     public function tagslist() {
-        $this->needsLoggedInOrPublicMode();
+        \F3::get('auth')->needsLoggedInOrPublicMode();
 
         echo $this->tagsListAsString();
     }
@@ -100,7 +100,7 @@ class Tags extends BaseController {
      * @return void
      */
     public function color() {
-        $this->needsLoggedIn();
+        \F3::get('auth')->needsLoggedIn();
 
         // read data
         parse_str(\F3::get('BODY'), $data);
@@ -129,7 +129,7 @@ class Tags extends BaseController {
      * @return void
      */
     public function listTags() {
-        $this->needsLoggedInOrPublicMode();
+        \F3::get('auth')->needsLoggedInOrPublicMode();
 
         $tagsDao = new \daos\Tags();
         $tags = $tagsDao->getWithUnread();

@@ -11,7 +11,7 @@ use Base;
  * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
-class Items extends BaseController {
+class Items {
     /** @var \helpers\View view helper */
     private $view;
 
@@ -29,7 +29,7 @@ class Items extends BaseController {
      * @return void
      */
     public function mark(Base $f3, array $params) {
-        $this->needsLoggedIn();
+        $f3->get('auth')->needsLoggedIn();
 
         if (isset($params['item'])) {
             $lastid = $params['item'];
@@ -63,7 +63,7 @@ class Items extends BaseController {
      * @return void
      */
     public function unmark(Base $f3, array $params) {
-        $this->needsLoggedIn();
+        $f3->get('auth')->needsLoggedIn();
 
         $lastid = $params['item'];
 
@@ -90,7 +90,7 @@ class Items extends BaseController {
      * @return void
      */
     public function starr(Base $f3, array $params) {
-        $this->needsLoggedIn();
+        $f3->get('auth')->needsLoggedIn();
 
         $id = $params['item'];
 
@@ -116,7 +116,7 @@ class Items extends BaseController {
      * @return void
      */
     public function unstarr(Base $f3, array $params) {
-        $this->needsLoggedIn();
+        $f3->get('auth')->needsLoggedIn();
 
         $id = $params['item'];
 
@@ -139,7 +139,7 @@ class Items extends BaseController {
      * @return void
      */
     public function listItems() {
-        $this->needsLoggedInOrPublicMode();
+        \F3::get('auth')->needsLoggedInOrPublicMode();
 
         // parse params
         $options = [];
@@ -161,7 +161,7 @@ class Items extends BaseController {
      * @return void
      */
     public function stats() {
-        $this->needsLoggedInOrPublicMode();
+        \F3::get('auth')->needsLoggedInOrPublicMode();
 
         $itemsDao = new \daos\Items();
         $stats = $itemsDao->stats();
@@ -196,7 +196,7 @@ class Items extends BaseController {
      * @return void
      */
     public function sync() {
-        $this->needsLoggedInOrPublicMode();
+        \F3::get('auth')->needsLoggedInOrPublicMode();
 
         $params = null;
         if (isset($_GET['since'])) {
@@ -289,7 +289,7 @@ class Items extends BaseController {
      * @return void
      */
     public function updateStatuses() {
-        $this->needsLoggedIn();
+        \F3::get('auth')->needsLoggedIn();
 
         if (isset($_POST['updatedStatuses'])
             && is_array($_POST['updatedStatuses'])) {

@@ -11,7 +11,7 @@ use Base;
  * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
-class Index extends BaseController {
+class Index {
     /** @var \helpers\View view helper */
     private $view;
 
@@ -44,7 +44,7 @@ class Index extends BaseController {
             return;
         }
 
-        $this->needsLoggedInOrPublicMode();
+        $f3->get('auth')->needsLoggedInOrPublicMode();
 
         // get search param
         if (isset($options['search']) && strlen($options['search']) > 0) {
@@ -218,7 +218,7 @@ class Index extends BaseController {
      */
     public function update() {
         // only allow access for localhost and loggedin users
-        if (!$this->allowedToUpdate()) {
+        if (!\F3::get('auth')->allowedToUpdate()) {
             die('unallowed access');
         }
 
@@ -244,7 +244,7 @@ class Index extends BaseController {
         $firstPage = $params['offset'] == 0
             && $params['fromId'] == ''
             && $params['fromDatetime'] == '';
-        if ($params['source'] && $this->allowedToUpdate() && $firstPage) {
+        if ($params['source'] && \F3::get('auth')->allowedToUpdate() && $firstPage) {
             $itemsHtml = '<button type="button" id="refresh-source" class="refresh-source">' . \F3::get('lang_source_refresh') . '</button>';
         }
 

@@ -12,7 +12,7 @@ use FeedWriter\RSS2;
  * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
-class Rss extends BaseController {
+class Rss {
     /** @var \helpers\View view helper */
     private $view;
 
@@ -29,7 +29,7 @@ class Rss extends BaseController {
      * @return void
      */
     public function rss(Base $f3, array $params) {
-        $this->needsLoggedInOrPublicMode();
+        \F3::get('auth')->needsLoggedInOrPublicMode();
 
         $feedWriter = new RSS2();
         $feedWriter->setTitle(\F3::get('rss_title'));

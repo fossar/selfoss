@@ -12,7 +12,7 @@ use SimpleXMLElement;
  * @author     Michael Moore <stuporglue@gmail.com>
  * @author     Sean Rand <asanernd@gmail.com>
  */
-class Opml extends BaseController {
+class Opml {
     /** @var array Sources that have been imported from the OPML file */
     private $imported = [];
 
@@ -41,7 +41,7 @@ class Opml extends BaseController {
      * html
      */
     public function show() {
-        $this->needsLoggedIn();
+        \F3::get('auth')->needsLoggedIn();
         readfile(BASEDIR . '/public/opml.html');
     }
 
@@ -52,7 +52,7 @@ class Opml extends BaseController {
      * @note Borrows from controllers/Sources.php:write
      */
     public function add() {
-        $this->needsLoggedIn();
+        \F3::get('auth')->needsLoggedIn();
 
         http_response_code(400);
 
@@ -270,7 +270,7 @@ class Opml extends BaseController {
      * @return void
      */
     public function export() {
-        $this->needsLoggedIn();
+        \F3::get('auth')->needsLoggedIn();
 
         $this->sourcesDao = new \daos\Sources();
         $this->tagsDao = new \daos\Tags();

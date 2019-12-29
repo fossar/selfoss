@@ -11,7 +11,7 @@ use Base;
  * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
-class Sources extends BaseController {
+class Sources {
     /** @var \helpers\View view helper */
     private $view;
 
@@ -26,7 +26,7 @@ class Sources extends BaseController {
      * @return void
      */
     public function show() {
-        $this->needsLoggedIn();
+        \F3::get('auth')->needsLoggedIn();
 
         // get available spouts
         $spoutLoader = new \helpers\SpoutLoader();
@@ -54,7 +54,7 @@ class Sources extends BaseController {
      * @return void
      */
     public function add() {
-        $this->needsLoggedIn();
+        \F3::get('auth')->needsLoggedIn();
 
         $spoutLoader = new \helpers\SpoutLoader();
         $this->view->spouts = $spoutLoader->all();
@@ -68,7 +68,7 @@ class Sources extends BaseController {
      * @return void
      */
     public function params() {
-        $this->needsLoggedIn();
+        \F3::get('auth')->needsLoggedIn();
 
         if (!isset($_GET['spout'])) {
             $this->view->error('no spout type given');
@@ -133,7 +133,7 @@ class Sources extends BaseController {
      * @return void
      */
     public function write(Base $f3, array $params) {
-        $this->needsLoggedIn();
+        $f3->get('auth')->needsLoggedIn();
 
         $sourcesDao = new \daos\Sources();
 
@@ -243,7 +243,7 @@ class Sources extends BaseController {
      * @return void
      */
     public function sourcesStats() {
-        $this->needsLoggedInOrPublicMode();
+        \F3::get('auth')->needsLoggedInOrPublicMode();
 
         $this->view->jsonSuccess([
             'success' => true,
@@ -261,7 +261,7 @@ class Sources extends BaseController {
      * @return void
      */
     public function remove(Base $f3, array $params) {
-        $this->needsLoggedIn();
+        $f3->get('auth')->needsLoggedIn();
 
         $id = $params['id'];
 
@@ -296,7 +296,7 @@ class Sources extends BaseController {
         $id = $params['id'];
 
         // only allow access for localhost and authenticated users
-        if (!$this->allowedToUpdate()) {
+        if (!$f3->get('auth')->allowedToUpdate()) {
             die('unallowed access');
         }
 
@@ -313,7 +313,7 @@ class Sources extends BaseController {
      * @return void
      */
     public function listSources() {
-        $this->needsLoggedIn();
+        \F3::get('auth')->needsLoggedIn();
 
         // load sources
         $sourcesDao = new \daos\Sources();
@@ -335,7 +335,7 @@ class Sources extends BaseController {
      * @return void
      */
     public function spouts() {
-        $this->needsLoggedIn();
+        \F3::get('auth')->needsLoggedIn();
 
         $spoutLoader = new \helpers\SpoutLoader();
         $spouts = $spoutLoader->all();
@@ -349,7 +349,7 @@ class Sources extends BaseController {
      * @return void
      */
     public function stats() {
-        $this->needsLoggedInOrPublicMode();
+        \F3::get('auth')->needsLoggedInOrPublicMode();
 
         // load sources
         $sourcesDao = new \daos\Sources();
