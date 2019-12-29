@@ -55,9 +55,9 @@ $f3->route('GET /sources/spouts', 'controllers\Sources->spouts'); // json
 
 $f3->route('POST /tags/color', 'controllers\Tags->color'); // json
 
-$f3->route('GET /opml', 'controllers\Opml->show'); // html
-$f3->route('POST /opml', 'controllers\Opml->add'); // json
-$f3->route('GET /opmlexport', 'controllers\Opml->export'); // xml
+$f3->route('GET /opml', controllers\Opml\ImportPage::class . '->show'); // html
+$f3->route('POST /opml', controllers\Opml\Import::class . '->add'); // json
+$f3->route('GET /opmlexport', controllers\Opml\Export::class . '->export'); // xml
 
 // dispatch
 $f3->run();
