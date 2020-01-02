@@ -11,4 +11,6 @@ namespace daos\pgsql;
  * @author      Tobias Zeising <tobias.zeising@aditu.de>
  */
 class Items extends \daos\mysql\Items {
+    /** @var class-string SQL helper */
+    protected static $stmt = Statements::class;
 }

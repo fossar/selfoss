@@ -9,7 +9,10 @@ namespace daos\mysql;
  * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
-class Sources extends Database {
+class Sources {
+    /** @var class-string SQL helper */
+    protected static $stmt = Statements::class;
+
     /**
      * add new source
      *
@@ -22,9 +25,9 @@ class Sources extends Database {
      * @return int new id
      */
     public function add($title, array $tags, $filter, $spout, array $params) {
-        return $this->stmt->insert('INSERT INTO ' . \F3::get('db_prefix') . 'sources (title, tags, filter, spout, params) VALUES (:title, :tags, :filter, :spout, :params)', [
+        return static::$stmt::insert('INSERT INTO ' . \F3::get('db_prefix') . 'sources (title, tags, filter, spout, params) VALUES (:title, :tags, :filter, :spout, :params)', [
             ':title' => trim($title),
-            ':tags' => $this->stmt->csvRow($tags),
+            ':tags' => static::$stmt::csvRow($tags),
             ':filter' => $filter,
             ':spout' => $spout,
             ':params' => htmlentities(json_encode($params))
@@ -46,7 +49,7 @@ class Sources extends Database {
     public function edit($id, $title, array $tags, $filter, $spout, array $params) {
         \F3::get('db')->exec('UPDATE ' . \F3::get('db_prefix') . 'sources SET title=:title, tags=:tags, filter=:filter, spout=:spout, params=:params WHERE id=:id', [
             ':title' => trim($title),
-            ':tags' => $this->stmt->csvRow($tags),
+            ':tags' => static::$stmt::csvRow($tags),
             ':filter' => $filter,
             ':spout' => $spout,
             ':params' => htmlentities(json_encode($params)),
@@ -140,7 +143,7 @@ class Sources extends Database {
         // select source by id if specified or return all sources
         if (isset($id)) {
             $ret = \F3::get('db')->exec('SELECT id, title, tags, spout, params, filter, error FROM ' . \F3::get('db_prefix') . 'sources WHERE id=:id', [':id' => $id]);
-            $ret = $this->stmt->ensureRowTypes($ret, ['id' => \daos\PARAM_INT]);
+            $ret = static::$stmt::ensureRowTypes($ret, ['id' => \daos\PARAM_INT]);
             if (isset($ret[0])) {
                 $ret = $ret[0];
             } else {
@@ -148,7 +151,7 @@ class Sources extends Database {
             }
         } else {
             $ret = \F3::get('db')->exec('SELECT id, title, tags, spout, params, filter, error FROM ' . \F3::get('db_prefix') . 'sources ORDER BY error DESC, lower(title) ASC');
-            $ret = $this->stmt->ensureRowTypes($ret, [
+            $ret = static::$stmt::ensureRowTypes($ret, [
                 'id' => \daos\PARAM_INT,
                 'tags' => \daos\PARAM_CSV
             ]);
@@ -167,11 +170,11 @@ class Sources extends Database {
             sources.id, sources.title, COUNT(items.id) AS unread
             FROM ' . \F3::get('db_prefix') . 'sources AS sources
             LEFT OUTER JOIN ' . \F3::get('db_prefix') . 'items AS items
-                 ON (items.source=sources.id AND ' . $this->stmt->isTrue('items.unread') . ')
+                 ON (items.source=sources.id AND ' . static::$stmt::isTrue('items.unread') . ')
             GROUP BY sources.id, sources.title
             ORDER BY lower(sources.title) ASC');
 
-        return $this->stmt->ensureRowTypes($ret, [
+        return static::$stmt::ensureRowTypes($ret, [
             'id' => \daos\PARAM_INT,
             'unread' => \daos\PARAM_INT
         ]);
@@ -198,9 +201,9 @@ class Sources extends Database {
                  WHERE items.id=icons.maxid AND items.source=icons.source
                  ) AS sourceicons
                 ON sources.id=sourceicons.source
-            ORDER BY ' . $this->stmt->nullFirst('sources.error', 'DESC') . ', lower(sources.title)');
+            ORDER BY ' . static::$stmt::nullFirst('sources.error', 'DESC') . ', lower(sources.title)');
 
-        return $this->stmt->ensureRowTypes($ret, [
+        return static::$stmt::ensureRowTypes($ret, [
             'id' => \daos\PARAM_INT,
             'tags' => \daos\PARAM_CSV
         ]);

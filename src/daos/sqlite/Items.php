@@ -10,6 +10,7 @@ namespace daos\sqlite;
  * @author     Harald Lapp <harald.lapp@gmail.com>
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
-// class Items extends Database {
 class Items extends \daos\mysql\Items {
+    /** @var class-string SQL helper */
+    protected static $stmt = Statements::class;
 }

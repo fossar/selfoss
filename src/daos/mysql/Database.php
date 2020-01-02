@@ -13,9 +13,6 @@ class Database {
     /** @var bool indicates whether database connection was initialized */
     private static $initialized = false;
 
-    /** @var mixed helpers for creating SQL queries */
-    protected $stmt;
-
     /**
      * establish connection and
      * create undefined tables
@@ -248,9 +245,6 @@ class Database {
             // just initialize once
             self::$initialized = true;
         }
-
-        $class = 'daos\\' . \F3::get('db_type') . '\\Statements';
-        $this->stmt = new $class();
     }
 
     /**

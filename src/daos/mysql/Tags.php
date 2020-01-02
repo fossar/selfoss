@@ -9,7 +9,10 @@ namespace daos\mysql;
  * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
-class Tags extends Database {
+class Tags {
+    /** @var class-string SQL helper */
+    protected static $stmt = Statements::class;
+
     /**
      * save given tag color
      *
@@ -82,12 +85,12 @@ class Tags extends Database {
                    FROM ' . \F3::get('db_prefix') . 'tags AS tags,
                         ' . \F3::get('db_prefix') . 'sources AS sources
                    LEFT OUTER JOIN ' . \F3::get('db_prefix') . 'items AS items
-                       ON (items.source=sources.id AND ' . $this->stmt->isTrue('items.unread') . ')
-                   WHERE ' . $this->stmt->csvRowMatches('sources.tags', 'tags.tag') . '
+                       ON (items.source=sources.id AND ' . static::$stmt::isTrue('items.unread') . ')
+                   WHERE ' . static::$stmt::csvRowMatches('sources.tags', 'tags.tag') . '
                    GROUP BY tags.tag, tags.color
                    ORDER BY LOWER(tags.tag);';
 
-        return $this->stmt->ensureRowTypes(\F3::get('db')->exec($select), ['unread' => \daos\PARAM_INT]);
+        return static::$stmt::ensureRowTypes(\F3::get('db')->exec($select), ['unread' => \daos\PARAM_INT]);
     }
 
     /**

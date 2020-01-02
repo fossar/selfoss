@@ -10,4 +10,6 @@ namespace daos\sqlite;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class Tags extends \daos\mysql\Tags {
+    /** @var class-string SQL helper */
+    protected static $stmt = Statements::class;
 }

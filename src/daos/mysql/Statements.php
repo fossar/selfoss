@@ -161,7 +161,7 @@ class Statements {
      * @return array of associative array representing row results having
      *         expected types
      */
-    public function ensureRowTypes(array $rows, array $expectedRowTypes) {
+    public static function ensureRowTypes(array $rows, array $expectedRowTypes) {
         foreach ($rows as $rowIndex => $row) {
             foreach ($expectedRowTypes as $columnIndex => $type) {
                 if (array_key_exists($columnIndex, $row)) {
@@ -203,7 +203,7 @@ class Statements {
      *
      * @return string
      */
-    public function csvRow(array $a) {
+    public static function csvRow(array $a) {
         $filtered = [];
         foreach ($a as $s) {
             $t = trim($s);

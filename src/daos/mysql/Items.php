@@ -12,9 +12,12 @@ use DateTime;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  * @author     Harald Lapp <harald.lapp@gmail.com>
  */
-class Items extends Database {
+class Items {
     /** @var bool indicates whether last run has more results or not */
     protected $hasMore = false;
+
+    /** @var class-string SQL helper */
+    protected static $stmt = Statements::class;
 
     /**
      * mark item as read
@@ -182,7 +185,7 @@ class Items extends Database {
      */
     public function updateLastSeen(array $itemIds) {
         \F3::get('db')->exec('UPDATE ' . \F3::get('db_prefix') . 'items SET lastseen = CURRENT_TIMESTAMP
-            WHERE ' . $this->stmt->intRowMatches('id', $itemIds));
+            WHERE ' . static::$stmt::intRowMatches('id', $itemIds));
     }
 
     /**
@@ -198,7 +201,7 @@ class Items extends Database {
                 SELECT id FROM ' . \F3::get('db_prefix') . 'sources)');
         if ($date !== null) {
             \F3::get('db')->exec('DELETE FROM ' . \F3::get('db_prefix') . 'items
-                WHERE ' . $this->stmt->isFalse('starred') . ' AND lastseen<:date',
+                WHERE ' . static::$stmt::isFalse('starred') . ' AND lastseen<:date',
                     [':date' => $date->format('Y-m-d') . ' 00:00:00']
             );
         }
@@ -213,17 +216,17 @@ class Items extends Database {
      */
     public function get($options = []) {
         $params = [];
-        $where = [$this->stmt->bool(true)];
+        $where = [static::$stmt::bool(true)];
         $order = 'DESC';
 
         // only starred
         if (isset($options['type']) && $options['type'] === 'starred') {
-            $where[] = $this->stmt->isTrue('starred');
+            $where[] = static::$stmt::isTrue('starred');
         }
 
         // only unread
         elseif (isset($options['type']) && $options['type'] === 'unread') {
-            $where[] = $this->stmt->isTrue('unread');
+            $where[] = static::$stmt::isTrue('unread');
             if (\F3::get('unread_order') === 'asc') {
                 $order = 'ASC';
             }
@@ -240,7 +243,7 @@ class Items extends Database {
         if (isset($options['tag']) && strlen($options['tag']) > 0) {
             $params[':tag'] = $options['tag'];
             $where[] = 'items.source=sources.id';
-            $where[] = $this->stmt->csvRowMatches('sources.tags', ':tag');
+            $where[] = static::$stmt::csvRowMatches('sources.tags', ':tag');
         }
         // source filter
         elseif (isset($options['source']) && strlen($options['source']) > 0) {
@@ -263,7 +266,7 @@ class Items extends Database {
             // with seek pagination.
             $options['offset'] = 0;
 
-            $offset_from_datetime_sql = $this->stmt->datetime($options['fromDatetime']);
+            $offset_from_datetime_sql = static::$stmt::datetime($options['fromDatetime']);
             $params[':offset_from_datetime'] = [
                 $offset_from_datetime_sql, \PDO::PARAM_STR
             ];
@@ -294,7 +297,7 @@ class Items extends Database {
             && count($options['extraIds']) > 0
             // limit the query to a sensible max
             && count($options['extraIds']) <= \F3::get('items_perpage')) {
-            $extra_ids_stmt = $this->stmt->intRowMatches('items.id', $options['extraIds']);
+            $extra_ids_stmt = static::$stmt::intRowMatches('items.id', $options['extraIds']);
             if ($extra_ids_stmt !== null) {
                 $where_ids = $extra_ids_stmt;
             }
@@ -346,7 +349,7 @@ class Items extends Database {
             $query = "$select $where_sql $order_sql LIMIT " . $options['items'] . ' OFFSET ' . $options['offset'];
         }
 
-        return $this->stmt->ensureRowTypes(\F3::get('db')->exec($query, $params), [
+        return static::$stmt::ensureRowTypes(\F3::get('db')->exec($query, $params), [
             'id' => \daos\PARAM_INT,
             'unread' => \daos\PARAM_BOOL,
             'starred' => \daos\PARAM_BOOL,
@@ -380,8 +383,8 @@ class Items extends Database {
         items.id, datetime, items.title AS title, content, unread, starred, source, thumbnail, icon, uid, link, updatetime, author, sources.title as sourcetitle, sources.tags as tags
         FROM ' . \F3::get('db_prefix') . 'items AS items, ' . \F3::get('db_prefix') . 'sources AS sources
         WHERE items.source=sources.id
-            AND (' . $this->stmt->isTrue('unread') .
-                 ' OR ' . $this->stmt->isTrue('starred') .
+            AND (' . static::$stmt::isTrue('unread') .
+                 ' OR ' . static::$stmt::isTrue('starred') .
                  ' OR datetime >= :notBefore
                 )
             AND (items.id > :sinceId OR
@@ -395,7 +398,7 @@ class Items extends Database {
             'since' => [$since->format(\DateTime::ATOM), \PDO::PARAM_STR]
         ];
 
-        return $this->stmt->ensureRowTypes(\F3::get('db')->exec($query, $params), [
+        return static::$stmt::ensureRowTypes(\F3::get('db')->exec($query, $params), [
             'id' => \daos\PARAM_INT,
             'unread' => \daos\PARAM_BOOL,
             'starred' => \daos\PARAM_BOOL,
@@ -409,11 +412,11 @@ class Items extends Database {
      * @return int lowest id of interest
      */
     public function lowestIdOfInterest() {
-        $lowest = $this->stmt->ensureRowTypes(
+        $lowest = static::$stmt::ensureRowTypes(
             \F3::get('db')->exec(
                 'SELECT id FROM ' . \F3::get('db_prefix') . 'items AS items
-                 WHERE ' . $this->stmt->isTrue('unread') .
-                    ' OR ' . $this->stmt->isTrue('starred') .
+                 WHERE ' . static::$stmt::isTrue('unread') .
+                    ' OR ' . static::$stmt::isTrue('starred') .
                 ' ORDER BY id LIMIT 1'),
             ['id' => \daos\PARAM_INT]
         );
@@ -430,7 +433,7 @@ class Items extends Database {
      * @return int last id in db
      */
     public function lastId() {
-        $lastId = $this->stmt->ensureRowTypes(
+        $lastId = static::$stmt::ensureRowTypes(
             \F3::get('db')->exec(
                 'SELECT id FROM ' . \F3::get('db_prefix') . 'items AS items
                  ORDER BY id DESC LIMIT 1'),
@@ -572,7 +575,7 @@ class Items extends Database {
     public function numberOfUnread() {
         $res = \F3::get('db')->exec('SELECT count(*) AS amount
                    FROM ' . \F3::get('db_prefix') . 'items
-                   WHERE ' . $this->stmt->isTrue('unread'));
+                   WHERE ' . static::$stmt::isTrue('unread'));
 
         return $res[0]['amount'];
     }
@@ -585,10 +588,10 @@ class Items extends Database {
     public function stats() {
         $res = \F3::get('db')->exec('SELECT
             COUNT(*) AS total,
-            ' . $this->stmt->sumBool('unread') . ' AS unread,
-            ' . $this->stmt->sumBool('starred') . ' AS starred
+            ' . static::$stmt::sumBool('unread') . ' AS unread,
+            ' . static::$stmt::sumBool('starred') . ' AS starred
             FROM ' . \F3::get('db_prefix') . 'items;');
-        $res = $this->stmt->ensureRowTypes($res, [
+        $res = static::$stmt::ensureRowTypes($res, [
             'total' => \daos\PARAM_INT,
             'unread' => \daos\PARAM_INT,
             'starred' => \daos\PARAM_INT
@@ -622,7 +625,7 @@ class Items extends Database {
             FROM ' . \F3::get('db_prefix') . 'items
             WHERE ' . \F3::get('db_prefix') . 'items.updatetime > :since;',
                 [':since' => [$since->format(DateTime::ATOM), \PDO::PARAM_STR]]);
-        $res = $this->stmt->ensureRowTypes($res, [
+        $res = static::$stmt::ensureRowTypes($res, [
             'id' => \daos\PARAM_INT,
             'unread' => \daos\PARAM_BOOL,
             'starred' => \daos\PARAM_BOOL
@@ -652,12 +655,12 @@ class Items extends Database {
                             if ($status[$sk] == 'true') {
                                 $statusUpdate = [
                                     'sk' => $sk,
-                                    'sql' => $this->stmt->isTrue($sk)
+                                    'sql' => static::$stmt::isTrue($sk)
                                 ];
                             } elseif ($status[$sk] == 'false') {
                                 $statusUpdate = [
                                     'sk' => $sk,
-                                    'sql' => $this->stmt->isFalse($sk)
+                                    'sql' => static::$stmt::isFalse($sk)
                                 ];
                             }
                         }
@@ -712,7 +715,7 @@ class Items extends Database {
                     // statuses.
                     \F3::get('db')->exec(
                         'UPDATE ' . \F3::get('db_prefix') . 'items
-                         SET ' . $this->stmt->rowTouch('updatetime') . '
+                         SET ' . static::$stmt::rowTouch('updatetime') . '
                          WHERE id = :id', [':id' => [$id, \PDO::PARAM_INT]]);
                 }
             }
