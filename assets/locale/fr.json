@@ -81,5 +81,17 @@
   "lang_search_label": "Terme de recherche",
   "lang_article_actions": "Actions",
   "lang_error_configuration": "Impossible de charger la configuration.",
-  "lang_info_url_copied": "URL copiée dans le presse-papiers."
+  "lang_info_url_copied": "URL copiée dans le presse-papiers.",
+  "lang_share_native_label": "Partager",
+  "lang_share_diaspora_label": "Partager sur Diaspora",
+  "lang_share_twitter_label": "Partager sur Twitter",
+  "lang_share_facebook_label": "Partager sur Facebook",
+  "lang_share_pocket_label": "Enregistrer dans Pocket",
+  "lang_share_wallabag_label": "Enregistrer dans Wallabag",
+  "lang_share_wordpress_label": "Partager sur WordPress",
+  "lang_share_mail_label": "Partager par e-mail",
+  "lang_share_copy_label": "Copier le lien dans le presse-papiers",
+  "lang_error_share_native_abort": "Impossible de partager l'élément, soit il n'y a pas de cible, soit vous avez annulé le partage.",
+  "lang_error_share_native": "Impossible de partager l'élément.",
+  "lang_close_entry": "Fermer"
 }
