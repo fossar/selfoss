@@ -40,7 +40,6 @@ class golem extends feed {
                 'networld' => 'Networld',
                 'entertainment' => 'Entertainment',
                 'tk' => 'TK',
-                'wirtschaft' => 'Wirtschaft',
                 'ecommerce' => 'E-Commerce',
                 'forum' => 'Forumsbeiträge'
             ],
@@ -72,7 +71,6 @@ class golem extends feed {
         'networld' => 'https://rss.golem.de/rss.php?r=nw&feed=RSS2.0',
         'entertainment' => 'https://rss.golem.de/rss.php?r=et&feed=RSS2.0',
         'tk' => 'https://rss.golem.de/rss.php?r=tk&feed=RSS2.0',
-        'wirtschaft' => 'https://rss.golem.de/rss.php?r=wi&feed=RSS2.0',
         'ecommerce' => 'https://rss.golem.de/rss.php?r=ec&feed=RSS2.0',
         'forum' => 'https://forum.golem.de/rss.php?feed=RSS2.0'
     ];

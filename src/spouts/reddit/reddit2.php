@@ -232,7 +232,7 @@ class reddit2 extends \spouts\spout {
      *
      * @throws GuzzleHttp\Exception\RequestException When an error is encountered
      *
-     * @return GuzzleHttp\Message\Response
+     * @return GuzzleHttp\Psr7\Response
      */
     private function sendRequest($url, $method = 'GET') {
         $http = WebClient::getHttpClient();

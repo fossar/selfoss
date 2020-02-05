@@ -107,7 +107,7 @@ class usertimeline extends \spouts\spout {
      * @param string $endpoint API endpoint to use
      * @param array $params extra query arguments to pass to the API call
      *
-     * @throws Exception when API request fails
+     * @throws \Exception when API request fails
      * @throws GuzzleHttp\Exception\RequestException when HTTP request fails for API-unrelated reasons
      *
      * @return stdClass[]

@@ -22,6 +22,7 @@ class SimplePieFileGuzzle extends \SimplePie_File {
                 $response = $client->get($url, [
                     'allow_redirects' => [
                         'max' => $redirects,
+                        'track_redirects' => true,
                     ],
                     'headers' => [
                         'User-Agent' => $useragent,
@@ -29,9 +30,6 @@ class SimplePieFileGuzzle extends \SimplePie_File {
                     ] + $headers,
                     'timeout' => $timeout,
                     'connect_timeout' => $timeout,
-                    'allow_redirects' => [
-                        'track_redirects' => true,
-                    ],
                 ]);
 
                 $this->headers = $response->getHeaders();

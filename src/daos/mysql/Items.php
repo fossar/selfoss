@@ -406,7 +406,7 @@ class Items extends Database {
     /**
      * Lowest id of interest
      *
-     * @return lowest id of interest
+     * @return int lowest id of interest
      */
     public function lowestIdOfInterest() {
         $lowest = $this->stmt->ensureRowTypes(
