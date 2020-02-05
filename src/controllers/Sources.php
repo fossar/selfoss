@@ -4,6 +4,7 @@ namespace controllers;
 
 use Base;
 use helpers\Authentication;
+use helpers\SpoutLoader;
 use helpers\View;
 
 /**
@@ -17,11 +18,23 @@ class Sources {
     /** @var Authentication authentication helper */
     private $authentication;
 
+    /** @var \daos\Sources sources */
+    private $sourcesDao;
+
+    /** @var SpoutLoader spout loader */
+    private $spoutLoader;
+
+    /** @var \daos\Tags tags */
+    private $tagsDao;
+
     /** @var View view helper */
     private $view;
 
-    public function __construct(Authentication $authentication, View $view) {
+    public function __construct(Authentication $authentication, \daos\Sources $sourcesDao, SpoutLoader $spoutLoader, \daos\Tags $tagsDao, View $view) {
         $this->authentication = $authentication;
+        $this->sourcesDao = $sourcesDao;
+        $this->spoutLoader = $spoutLoader;
+        $this->tagsDao = $tagsDao;
         $this->view = $view;
     }
 
@@ -35,17 +48,15 @@ class Sources {
         $this->authentication->needsLoggedIn();
 
         // get available spouts
-        $spoutLoader = new \helpers\SpoutLoader();
-        $this->view->spouts = $spoutLoader->all();
+        $this->view->spouts = $this->spoutLoader->all();
 
         // load sources
-        $sourcesDao = new \daos\Sources();
         echo '<button class="source-add">' . \F3::get('lang_source_add') . '</button>' .
              '<a class="source-export" href="opmlexport">' . \F3::get('lang_source_export') . '</a>' .
              '<a class="source-opml" href="opml">' . \F3::get('lang_source_opml');
         $sourcesHtml = '</a>';
 
-        foreach ($sourcesDao->getWithIcon() as $source) {
+        foreach ($this->sourcesDao->getWithIcon() as $source) {
             $this->view->source = $source;
             $sourcesHtml .= $this->view->render('src/templates/source.phtml');
         }
@@ -62,8 +73,7 @@ class Sources {
     public function add() {
         $this->authentication->needsLoggedIn();
 
-        $spoutLoader = new \helpers\SpoutLoader();
-        $this->view->spouts = $spoutLoader->all();
+        $this->view->spouts = $this->spoutLoader->all();
         echo $this->view->render('src/templates/source.phtml');
     }
 
@@ -80,10 +90,8 @@ class Sources {
             $this->view->error('no spout type given');
         }
 
-        $spoutLoader = new \helpers\SpoutLoader();
-
         $spout = str_replace('_', '\\', $_GET['spout']);
-        $this->view->spout = $spoutLoader->get($spout);
+        $this->view->spout = $this->spoutLoader->get($spout);
 
         if ($this->view->spout === null) {
             $this->view->error('invalid spout type given');
@@ -123,8 +131,7 @@ class Sources {
      * @return string htmltext
      */
     public function sourcesListAsString() {
-        $sourcesDao = new \daos\Sources();
-        $sources = $sourcesDao->getWithUnread();
+        $sources = $this->sourcesDao->getWithUnread();
 
         return $this->renderSources($sources);
     }
@@ -154,22 +161,19 @@ class Sources {
      * @return void
      */
     public function remove(Base $f3, array $params) {
-        $f3->get('auth')->needsLoggedIn();
+        $this->authentication->needsLoggedIn();
 
         $id = $params['id'];
 
-        $sourceDao = new \daos\Sources();
-
-        if (!$sourceDao->isValid('id', $id)) {
+        if (!$this->sourcesDao->isValid('id', $id)) {
             $this->view->error('invalid id given');
         }
 
-        $sourceDao->delete($id);
+        $this->sourcesDao->delete($id);
 
         // cleanup tags
-        $tagsDao = new \daos\Tags();
-        $allTags = $sourceDao->getAllTags();
-        $tagsDao->cleanup($allTags);
+        $allTags = $this->sourcesDao->getAllTags();
+        $this->tagsDao->cleanup($allTags);
 
         $this->view->jsonSuccess([
             'success' => true
@@ -186,8 +190,7 @@ class Sources {
         $this->authentication->needsLoggedIn();
 
         // load sources
-        $sourcesDao = new \daos\Sources();
-        $sources = $sourcesDao->getWithIcon();
+        $sources = $this->sourcesDao->getWithIcon();
 
         // get last icon
         foreach ($sources as &$source) {
@@ -207,8 +210,7 @@ class Sources {
     public function spouts() {
         $this->authentication->needsLoggedIn();
 
-        $spoutLoader = new \helpers\SpoutLoader();
-        $spouts = $spoutLoader->all();
+        $spouts = $this->spoutLoader->all();
         $this->view->jsonSuccess($spouts);
     }
 
@@ -222,8 +224,7 @@ class Sources {
         $this->authentication->needsLoggedInOrPublicMode();
 
         // load sources
-        $sourcesDao = new \daos\Sources();
-        $sources = $sourcesDao->getWithUnread();
+        $sources = $this->sourcesDao->getWithUnread();
 
         $this->view->jsonSuccess($sources);
     }
