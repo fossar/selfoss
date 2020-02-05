@@ -10,18 +10,30 @@ namespace helpers;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class ContentLoader {
+    /** @var \daos\Database database for optimization */
+    private $database;
+
+    /** @var Image image helper */
+    private $imageHelper;
+
     /** @var \daos\Items database access for saving new item */
     private $itemsDao;
 
     /** @var \daos\Sources database access for saving source’s last update */
-    private $sourceDao;
+    private $sourcesDao;
+
+    /** @var SpoutLoader spout loader */
+    private $spoutLoader;
 
     /**
      * ctor
      */
-    public function __construct() {
-        $this->itemsDao = new \daos\Items();
-        $this->sourceDao = new \daos\Sources();
+    public function __construct(\daos\Database $database, Image $imageHelper, \daos\Items $itemsDao, \daos\Sources $sourcesDao, SpoutLoader $spoutLoader) {
+        $this->database = $database;
+        $this->imageHelper = $imageHelper;
+        $this->itemsDao = $itemsDao;
+        $this->sourcesDao = $sourcesDao;
+        $this->spoutLoader = $spoutLoader;
     }
 
     /**
@@ -30,8 +42,7 @@ class ContentLoader {
      * @return void
      */
     public function update() {
-        $sourcesDao = new \daos\Sources();
-        foreach ($sourcesDao->getByLastUpdate() as $source) {
+        foreach ($this->sourcesDao->getByLastUpdate() as $source) {
             $this->fetch($source);
         }
         $this->cleanup();
@@ -47,8 +58,7 @@ class ContentLoader {
      * @return void
      */
     public function updateSingle($id) {
-        $sourcesDao = new \daos\Sources();
-        $source = $sourcesDao->get($id);
+        $source = $this->sourcesDao->get($id);
         if ($source) {
             $this->fetch($source);
             $this->cleanup();
@@ -82,11 +92,10 @@ class ContentLoader {
         \F3::get('logger')->debug('start fetching source "' . $source['title'] . ' (id: ' . $source['id'] . ') ');
 
         // get spout
-        $spoutLoader = new \helpers\SpoutLoader();
-        $spout = $spoutLoader->get($source['spout']);
+        $spout = $this->spoutLoader->get($source['spout']);
         if ($spout === null) {
             \F3::get('logger')->error('unknown spout: ' . $source['spout']);
-            $this->sourceDao->error($source['id'], 'unknown spout');
+            $this->sourcesDao->error($source['id'], 'unknown spout');
 
             return;
         }
@@ -100,7 +109,7 @@ class ContentLoader {
             );
         } catch (\Exception $e) {
             \F3::get('logger')->error('error loading feed content for ' . $source['title'], ['exception' => $e]);
-            $this->sourceDao->error($source['id'], date('Y-m-d H:i:s') . 'error loading feed content: ' . $e->getMessage());
+            $this->sourcesDao->error($source['id'], date('Y-m-d H:i:s') . 'error loading feed content: ' . $e->getMessage());
 
             return;
         }
@@ -303,8 +312,7 @@ class ContentLoader {
     protected function fetchThumbnail($thumbnail, array $newItem) {
         if (strlen(trim($thumbnail)) > 0) {
             $extension = 'jpg';
-            $imageHelper = new \helpers\Image();
-            $thumbnailAsJpg = $imageHelper->loadImage($thumbnail, $extension, 500, 500);
+            $thumbnailAsJpg = $this->imageHelper->loadImage($thumbnail, $extension, 500, 500);
             if ($thumbnailAsJpg !== null) {
                 $written = file_put_contents(
                     \F3::get('datadir') . '/thumbnails/' . md5($thumbnail) . '.' . $extension,
@@ -341,8 +349,7 @@ class ContentLoader {
                 \F3::get('logger')->debug('use last icon: ' . $lasticon);
                 $newItem['icon'] = md5($lasticon) . '.' . $extension;
             } else {
-                $imageHelper = new \helpers\Image();
-                $iconAsPng = $imageHelper->loadImage($icon, $extension, 30, null);
+                $iconAsPng = $this->imageHelper->loadImage($icon, $extension, 30, null);
                 if ($iconAsPng !== null) {
                     $written = file_put_contents(
                         \F3::get('datadir') . '/favicons/' . md5($icon) . '.' . $extension,
@@ -376,8 +383,7 @@ class ContentLoader {
         \F3::get('logger')->debug('Start fetching spout title');
 
         // get spout
-        $spoutLoader = new \helpers\SpoutLoader();
-        $spout = $spoutLoader->get($data['spout']);
+        $spout = $this->spoutLoader->get($data['spout']);
 
         if ($spout === null) {
             \F3::get('logger')->error("Unknown spout '{$data['spout']}' when fetching title");
@@ -426,8 +432,7 @@ class ContentLoader {
 
         // optimize database
         \F3::get('logger')->debug('optimize database');
-        $database = new \daos\Database();
-        $database->optimize();
+        $this->database->optimize();
         \F3::get('logger')->debug('optimize database finished');
     }
 
@@ -471,9 +476,9 @@ class ContentLoader {
     protected function updateSource($source, $lastEntry) {
         // remove previous error
         if ($source['error'] !== null) {
-            $this->sourceDao->error($source['id'], '');
+            $this->sourcesDao->error($source['id'], '');
         }
         // save last update
-        $this->sourceDao->saveLastUpdate($source['id'], $lastEntry);
+        $this->sourcesDao->saveLastUpdate($source['id'], $lastEntry);
     }
 }
