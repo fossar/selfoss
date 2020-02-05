@@ -9,22 +9,7 @@ namespace daos\mysql;
  * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Alexandre Rossi <alexandre.rossi@gmail.com>
  */
-class Statements {
-    /**
-     * wrap insert statement to return id
-     *
-     * @param string $query sql statement
-     * @param array $params sql params
-     *
-     * @return int id after insert
-     */
-    public static function insert($query, array $params) {
-        \F3::get('db')->exec($query, $params);
-        $res = \F3::get('db')->exec('SELECT LAST_INSERT_ID() as lastid');
-
-        return (int) $res[0]['lastid'];
-    }
-
+class Statements implements \daos\StatementsInterface {
     /**
      * null first for order by clause
      *

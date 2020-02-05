@@ -2,6 +2,8 @@
 
 namespace daos;
 
+use helpers\Authentication;
+
 /**
  * Class for accessing persistent saved items
  *
@@ -10,19 +12,21 @@ namespace daos;
  * @author     Harald Lapp <harald.lapp@gmail.com>
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
-class Items extends Database {
-    /** @var object Instance of backend specific items class */
-    private $backend = null;
+class Items {
+    /** @var ItemsInterface Instance of backend specific items class */
+    private $backend;
+
+    /** @var Authentication authentication helper */
+    private $authentication;
 
     /**
      * Constructor.
      *
      * @return void
      */
-    public function __construct() {
-        $class = 'daos\\' . \F3::get('db_type') . '\\Items';
-        $this->backend = new $class();
-        parent::__construct();
+    public function __construct(Authentication $authentication, ItemsInterface $backend) {
+        $this->authentication = $authentication;
+        $this->backend = $backend;
     }
 
     /**
@@ -78,7 +82,7 @@ class Items extends Database {
         $items = $this->backend->get($options);
 
         // remove private posts with private tags
-        if (!\F3::get('auth')->showPrivateTags()) {
+        if (!$this->authentication->showPrivateTags()) {
             foreach ($items as $idx => $item) {
                 foreach ($item['tags'] as $tag) {
                     if (strpos(trim($tag), '@') === 0) {

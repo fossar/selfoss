@@ -15,26 +15,30 @@ const PARAM_CSV = 3;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class Database {
-    /** @var object Instance of backend specific database access class */
+    /** @var DatabaseInterface Instance of backend specific database access class */
     private $backend = null;
 
     /**
      * establish connection and
      * create undefined tables
-     *
-     * @return void
      */
-    public function __construct() {
-        $class = 'daos\\' . \F3::get('db_type') . '\\Database';
-        $this->backend = new $class();
+    public function __construct(DatabaseInterface $backend) {
+        $this->backend = $backend;
     }
 
     /**
-     * optimize database by database own optimize statement
+     * pass any method call to the backend.
      *
-     * @return  void
+     * @param string $name name of the function
+     * @param array $args arguments
+     *
+     * @return mixed methods return value
      */
-    public function optimize() {
-        $this->backend->optimize();
+    public function __call($name, $args) {
+        if (method_exists($this->backend, $name)) {
+            return call_user_func_array([$this->backend, $name], $args);
+        } else {
+            \F3::get('logger')->error('Unimplemented method for ' . \F3::get('db_type') . ': ' . $name);
+        }
     }
 }

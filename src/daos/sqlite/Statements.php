@@ -11,21 +11,6 @@ namespace daos\sqlite;
  */
 class Statements extends \daos\mysql\Statements {
     /**
-     * wrap insert statement to return id
-     *
-     * @param string $query sql statement
-     * @param array $params sql params
-     *
-     * @return int id after insert
-     */
-    public static function insert($query, array $params) {
-        \F3::get('db')->exec($query, $params);
-        $res = \F3::get('db')->exec('SELECT last_insert_rowid() as lastid');
-
-        return (int) $res[0]['lastid'];
-    }
-
-    /**
      * Return the statement required to update a datetime column to the current
      * datetime.
      *

@@ -11,20 +11,6 @@ namespace daos\pgsql;
  */
 class Statements extends \daos\mysql\Statements {
     /**
-     * wrap insert statement to return id
-     *
-     * @param string $query sql statement
-     * @param array $params sql params
-     *
-     * @return int id after insert
-     */
-    public static function insert($query, array $params) {
-        $res = \F3::get('db')->exec("$query RETURNING id", $params);
-
-        return $res[0]['id'];
-    }
-
-    /**
      * null first for order by clause
      *
      * @param string $column column to concat

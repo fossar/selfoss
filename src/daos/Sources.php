@@ -2,6 +2,9 @@
 
 namespace daos;
 
+use helpers\Authentication;
+use helpers\SpoutLoader;
+
 /**
  * Class for accessing persistent saved sources
  *
@@ -11,19 +14,25 @@ namespace daos;
  * @author     Daniel Seither <post@tiwoc.de>
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
-class Sources extends Database {
-    /** @var object Instance of backend specific sources class */
-    private $backend = null;
+class Sources {
+    /** @var SourcesInterface Instance of backend specific sources class */
+    private $backend;
+
+    /** @var Authentication authentication helper */
+    private $authentication;
+
+    /** @var SpoutLoader spout loader */
+    private $spoutLoader;
 
     /**
      * Constructor.
      *
      * @return void
      */
-    public function __construct() {
-        $class = 'daos\\' . \F3::get('db_type') . '\\Sources';
-        $this->backend = new $class();
-        parent::__construct();
+    public function __construct(Authentication $authentication, SourcesInterface $backend, SpoutLoader $spoutLoader) {
+        $this->authentication = $authentication;
+        $this->backend = $backend;
+        $this->spoutLoader = $spoutLoader;
     }
 
     /**
@@ -46,7 +55,7 @@ class Sources extends Database {
         $sources = $this->backend->get($id);
         if ($id === null) {
             // remove items with private tags
-            if (!\F3::get('auth')->showPrivateTags()) {
+            if (!$this->authentication->showPrivateTags()) {
                 foreach ($sources as $idx => $source) {
                     foreach ($source['tags'] as $tag) {
                         if (strpos(trim($tag), '@') === 0) {
@@ -82,8 +91,7 @@ class Sources extends Database {
         }
 
         // spout type
-        $spoutLoader = new \helpers\SpoutLoader();
-        $spout = $spoutLoader->get($spout);
+        $spout = $this->spoutLoader->get($spout);
         if ($spout === null) {
             $result['spout'] = 'invalid spout type';
         } else { // check params

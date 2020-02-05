@@ -2,6 +2,8 @@
 
 namespace daos;
 
+use helpers\Authentication;
+
 /**
  * Class for accessing tag colors
  *
@@ -9,25 +11,27 @@ namespace daos;
  * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
-class Tags extends Database {
-    /** @var object Instance of backend specific sources class */
-    private $backend = null;
+class Tags {
+    /** @var TagsInterface Instance of backend specific sources class */
+    private $backend;
+
+    /** @var Authentication authentication helper */
+    private $authentication;
 
     /**
      * Constructor.
      *
      * @return void
      */
-    public function __construct() {
-        $class = 'daos\\' . \F3::get('db_type') . '\\Tags';
-        $this->backend = new $class();
-        parent::__construct();
+    public function __construct(Authentication $authentication, TagsInterface $backend) {
+        $this->authentication = $authentication;
+        $this->backend = $backend;
     }
 
     public function get() {
         $tags = $this->backend->get();
         // remove items with private tags
-        if (!\F3::get('auth')->showPrivateTags()) {
+        if (!$this->authentication->showPrivateTags()) {
             foreach ($tags as $idx => $tag) {
                 if (strpos($tag['tag'], '@') === 0) {
                     unset($tags[$idx]);

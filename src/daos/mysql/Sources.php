@@ -9,9 +9,16 @@ namespace daos\mysql;
  * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
-class Sources {
+class Sources implements \daos\SourcesInterface {
     /** @var class-string SQL helper */
     protected static $stmt = Statements::class;
+
+    /** @var \daos\Database database connection */
+    protected $database;
+
+    public function __construct(\daos\Database $database) {
+        $this->database = $database;
+    }
 
     /**
      * add new source
@@ -27,7 +34,7 @@ class Sources {
     public function add($title, array $tags, $filter, $spout, array $params) {
         $stmt = static::$stmt;
 
-        return $stmt::insert('INSERT INTO ' . \F3::get('db_prefix') . 'sources (title, tags, filter, spout, params) VALUES (:title, :tags, :filter, :spout, :params)', [
+        return $this->database->insert('INSERT INTO ' . \F3::get('db_prefix') . 'sources (title, tags, filter, spout, params) VALUES (:title, :tags, :filter, :spout, :params)', [
             ':title' => trim($title),
             ':tags' => $stmt::csvRow($tags),
             ':filter' => $filter,
@@ -50,7 +57,7 @@ class Sources {
      */
     public function edit($id, $title, array $tags, $filter, $spout, array $params) {
         $stmt = static::$stmt;
-        \F3::get('db')->exec('UPDATE ' . \F3::get('db_prefix') . 'sources SET title=:title, tags=:tags, filter=:filter, spout=:spout, params=:params WHERE id=:id', [
+        $this->database->exec('UPDATE ' . \F3::get('db_prefix') . 'sources SET title=:title, tags=:tags, filter=:filter, spout=:spout, params=:params WHERE id=:id', [
             ':title' => trim($title),
             ':tags' => $stmt::csvRow($tags),
             ':filter' => $filter,
@@ -68,10 +75,10 @@ class Sources {
      * @return void
      */
     public function delete($id) {
-        \F3::get('db')->exec('DELETE FROM ' . \F3::get('db_prefix') . 'sources WHERE id=:id', [':id' => $id]);
+        $this->database->exec('DELETE FROM ' . \F3::get('db_prefix') . 'sources WHERE id=:id', [':id' => $id]);
 
         // delete items of this source
-        \F3::get('db')->exec('DELETE FROM ' . \F3::get('db_prefix') . 'items WHERE source=:id', [':id' => $id]);
+        $this->database->exec('DELETE FROM ' . \F3::get('db_prefix') . 'items WHERE source=:id', [':id' => $id]);
     }
 
     /**
@@ -96,7 +103,7 @@ class Sources {
             $setarg = ':error';
         }
 
-        \F3::get('db')->exec('UPDATE ' . \F3::get('db_prefix') . 'sources SET error=' . $setarg . ' WHERE id=:id', $arr);
+        $this->database->exec('UPDATE ' . \F3::get('db_prefix') . 'sources SET error=' . $setarg . ' WHERE id=:id', $arr);
     }
 
     /**
@@ -108,14 +115,14 @@ class Sources {
      * @return void
      */
     public function saveLastUpdate($id, $lastEntry) {
-        \F3::get('db')->exec('UPDATE ' . \F3::get('db_prefix') . 'sources SET lastupdate=:lastupdate WHERE id=:id',
+        $this->database->exec('UPDATE ' . \F3::get('db_prefix') . 'sources SET lastupdate=:lastupdate WHERE id=:id',
             [
                 ':id' => $id,
                 ':lastupdate' => time()
             ]);
 
         if ($lastEntry !== null) {
-            \F3::get('db')->exec('UPDATE ' . \F3::get('db_prefix') . 'sources SET lastentry=:lastentry WHERE id=:id',
+            $this->database->exec('UPDATE ' . \F3::get('db_prefix') . 'sources SET lastentry=:lastentry WHERE id=:id',
                 [
                     ':id' => $id,
                     ':lastentry' => $lastEntry
@@ -129,7 +136,7 @@ class Sources {
      * @return mixed all sources
      */
     public function getByLastUpdate() {
-        $ret = \F3::get('db')->exec('SELECT id, title, tags, spout, params, filter, error, lastupdate, lastentry FROM ' . \F3::get('db_prefix') . 'sources ORDER BY lastupdate ASC');
+        $ret = $this->database->exec('SELECT id, title, tags, spout, params, filter, error, lastupdate, lastentry FROM ' . \F3::get('db_prefix') . 'sources ORDER BY lastupdate ASC');
 
         return $ret;
     }
@@ -146,7 +153,7 @@ class Sources {
         $stmt = static::$stmt;
         // select source by id if specified or return all sources
         if (isset($id)) {
-            $ret = \F3::get('db')->exec('SELECT id, title, tags, spout, params, filter, error FROM ' . \F3::get('db_prefix') . 'sources WHERE id=:id', [':id' => $id]);
+            $ret = $this->database->exec('SELECT id, title, tags, spout, params, filter, error FROM ' . \F3::get('db_prefix') . 'sources WHERE id=:id', [':id' => $id]);
             $ret = $stmt::ensureRowTypes($ret, ['id' => \daos\PARAM_INT]);
             if (isset($ret[0])) {
                 $ret = $ret[0];
@@ -154,7 +161,7 @@ class Sources {
                 $ret = null;
             }
         } else {
-            $ret = \F3::get('db')->exec('SELECT id, title, tags, spout, params, filter, error FROM ' . \F3::get('db_prefix') . 'sources ORDER BY error DESC, lower(title) ASC');
+            $ret = $this->database->exec('SELECT id, title, tags, spout, params, filter, error FROM ' . \F3::get('db_prefix') . 'sources ORDER BY error DESC, lower(title) ASC');
             $ret = $stmt::ensureRowTypes($ret, [
                 'id' => \daos\PARAM_INT,
                 'tags' => \daos\PARAM_CSV
@@ -171,7 +178,7 @@ class Sources {
      */
     public function getWithUnread() {
         $stmt = static::$stmt;
-        $ret = \F3::get('db')->exec('SELECT
+        $ret = $this->database->exec('SELECT
             sources.id, sources.title, COUNT(items.id) AS unread
             FROM ' . \F3::get('db_prefix') . 'sources AS sources
             LEFT OUTER JOIN ' . \F3::get('db_prefix') . 'items AS items
@@ -192,7 +199,7 @@ class Sources {
      */
     public function getWithIcon() {
         $stmt = static::$stmt;
-        $ret = \F3::get('db')->exec('SELECT
+        $ret = $this->database->exec('SELECT
                 sources.id, sources.title, sources.tags, sources.spout,
                 sources.params, sources.filter, sources.error, sources.lastentry,
                 sourceicons.icon AS icon
@@ -241,7 +248,7 @@ class Sources {
      * @return mixed all sources
      */
     public function getAllTags() {
-        $result = \F3::get('db')->exec('SELECT tags FROM ' . \F3::get('db_prefix') . 'sources');
+        $result = $this->database->exec('SELECT tags FROM ' . \F3::get('db_prefix') . 'sources');
         $tags = [];
         foreach ($result as $res) {
             $tags = array_merge($tags, explode(',', $res['tags']));
@@ -259,7 +266,7 @@ class Sources {
      * @return mixed tags of a source
      */
     public function getTags($id) {
-        $result = \F3::get('db')->exec('SELECT tags FROM ' . \F3::get('db_prefix') . 'sources WHERE id=:id', [':id' => $id]);
+        $result = $this->database->exec('SELECT tags FROM ' . \F3::get('db_prefix') . 'sources WHERE id=:id', [':id' => $id]);
         $tags = [];
         $tags = array_merge($tags, explode(',', $result[0]['tags']));
         $tags = array_unique($tags);
@@ -279,7 +286,7 @@ class Sources {
      */
     public function checkIfExists($title, $spout, array $params) {
         // Check if a entry exists with same title, spout and params
-        $result = \F3::get('db')->exec('SELECT id FROM ' . \F3::get('db_prefix') . 'sources WHERE title=:title AND spout=:spout AND params=:params', [
+        $result = $this->database->exec('SELECT id FROM ' . \F3::get('db_prefix') . 'sources WHERE title=:title AND spout=:spout AND params=:params', [
             ':title' => trim($title),
             ':spout' => $spout,
             ':params' => htmlentities(json_encode($params))

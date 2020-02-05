@@ -9,9 +9,16 @@ namespace daos\mysql;
  * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
-class Tags {
+class Tags implements \daos\TagsInterface {
     /** @var class-string SQL helper */
     protected static $stmt = Statements::class;
+
+    /** @var \daos\Database database connection */
+    protected $database;
+
+    public function __construct(\daos\Database $database) {
+        $this->database = $database;
+    }
 
     /**
      * save given tag color
@@ -23,12 +30,12 @@ class Tags {
      */
     public function saveTagColor($tag, $color) {
         if ($this->hasTag($tag) === true) {
-            \F3::get('db')->exec('UPDATE ' . \F3::get('db_prefix') . 'tags SET color=:color WHERE tag=:tag', [
+            $this->database->exec('UPDATE ' . \F3::get('db_prefix') . 'tags SET color=:color WHERE tag=:tag', [
                 ':tag' => $tag,
                 ':color' => $color
             ]);
         } else {
-            \F3::get('db')->exec('INSERT INTO ' . \F3::get('db_prefix') . 'tags (tag, color) VALUES (:tag, :color)', [
+            $this->database->exec('INSERT INTO ' . \F3::get('db_prefix') . 'tags (tag, color) VALUES (:tag, :color)', [
                 ':tag' => $tag,
                 ':color' => $color,
             ]);
@@ -69,7 +76,7 @@ class Tags {
      * @return array of all tags
      */
     public function get() {
-        return \F3::get('db')->exec('SELECT
+        return $this->database->exec('SELECT
                     tag, color
                    FROM ' . \F3::get('db_prefix') . 'tags
                    ORDER BY LOWER(tag);');
@@ -91,7 +98,7 @@ class Tags {
                    GROUP BY tags.tag, tags.color
                    ORDER BY LOWER(tags.tag);';
 
-        return $stmt::ensureRowTypes(\F3::get('db')->exec($select), ['unread' => \daos\PARAM_INT]);
+        return $stmt::ensureRowTypes($this->database->exec($select), ['unread' => \daos\PARAM_INT]);
     }
 
     /**
@@ -118,7 +125,7 @@ class Tags {
      * @return bool true if color is used by an tag
      */
     private function isColorUsed($color) {
-        $res = \F3::get('db')->exec('SELECT COUNT(*) AS amount FROM ' . \F3::get('db_prefix') . 'tags WHERE color=:color', [':color' => $color]);
+        $res = $this->database->exec('SELECT COUNT(*) AS amount FROM ' . \F3::get('db_prefix') . 'tags WHERE color=:color', [':color' => $color]);
 
         return $res[0]['amount'] > 0;
     }
@@ -136,7 +143,7 @@ class Tags {
         } else {
             $where = 'WHERE tag=:tag';
         }
-        $res = \F3::get('db')->exec('SELECT COUNT(*) AS amount FROM ' . \F3::get('db_prefix') . 'tags ' . $where, [':tag' => $tag]);
+        $res = $this->database->exec('SELECT COUNT(*) AS amount FROM ' . \F3::get('db_prefix') . 'tags ' . $where, [':tag' => $tag]);
 
         return $res[0]['amount'] > 0;
     }
@@ -149,6 +156,6 @@ class Tags {
      * @return void
      */
     public function delete($tag) {
-        \F3::get('db')->exec('DELETE FROM ' . \F3::get('db_prefix') . 'tags WHERE tag=:tag', [':tag' => $tag]);
+        $this->database->exec('DELETE FROM ' . \F3::get('db_prefix') . 'tags WHERE tag=:tag', [':tag' => $tag]);
     }
 }

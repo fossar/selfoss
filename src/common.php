@@ -65,9 +65,89 @@ foreach ($interpolatedKeys as $key) {
 
 $dice = new Dice();
 
-$dice->addRule(helpers\Authentication::class, [
+// DI rules
+// Choose database implementation based on config
+$substitutions = [
+    'substitutions' => [
+        daos\DatabaseInterface::class => ['instance' => 'daos\\' . $f3->get('db_type') . '\\Database'],
+        daos\ItemsInterface::class => ['instance' => 'daos\\' . $f3->get('db_type') . '\\Items'],
+        daos\SourcesInterface::class => ['instance' => 'daos\\' . $f3->get('db_type') . '\\Sources'],
+        daos\TagsInterface::class => ['instance' => 'daos\\' . $f3->get('db_type') . '\\Tags'],
+    ]
+];
+
+$shared = array_merge($substitutions, [
     'shared' => true,
 ]);
+
+$dice->addRule(helpers\Authentication::class, $shared);
+
+// Database bridges
+$dice->addRule(daos\Database::class, $shared);
+$dice->addRule(daos\Items::class, $shared);
+$dice->addRule(daos\Sources::class, $shared);
+$dice->addRule(daos\Tags::class, $shared);
+
+// Database implementation
+$dice->addRule(daos\DatabaseInterface::class, $shared);
+$dice->addRule(daos\ItemsInterface::class, $shared);
+$dice->addRule(daos\SourcesInterface::class, $shared);
+$dice->addRule(daos\TagsInterface::class, $shared);
+
+// Database connection
+if ($f3->get('db_type') === 'sqlite') {
+    $db_file = $f3->get('db_file');
+
+    // create empty database file if it does not exist
+    if (!is_file($db_file)) {
+        touch($db_file);
+    }
+
+    $dsn = 'sqlite:' . $db_file;
+    $dbParams = [
+        $dsn
+    ];
+} elseif ($f3->get('db_type') === 'mysql') {
+    $host = $f3->get('db_host');
+    $port = $f3->get('db_port');
+    $database = $f3->get('db_database');
+
+    if ($port) {
+        $dsn = "mysql:host=$host; port=$port; dbname=$database";
+    } else {
+        $dsn = "mysql:host=$host; dbname=$database";
+    }
+
+    $dbParams = [
+        $dsn,
+        $f3->get('db_username'),
+        $f3->get('db_password'),
+        [PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8mb4;']
+    ];
+} elseif ($f3->get('db_type') === 'pgsql') {
+    $host = $f3->get('db_host');
+    $port = $f3->get('db_port');
+    $database = $f3->get('db_database');
+
+    if ($port) {
+        $dsn = "pgsql:host=$host; port=$port; dbname=$database";
+    } else {
+        $dsn = "pgsql:host=$host; dbname=$database";
+    }
+
+    $dbParams = [
+        $dsn,
+        $f3->get('db_username'),
+        $f3->get('db_password')
+    ];
+}
+
+$dice->addRule(DB\SQL::class, array_merge($shared, [
+    'constructParams' => $dbParams
+]));
+
+// Fallback rule
+$dice->addRule('*', $substitutions);
 
 $f3->set('CONTAINER', function($class) use ($dice) {
     return $dice->create($class);
