@@ -290,29 +290,6 @@ class Sources {
     }
 
     /**
-     * update source
-     * text
-     *
-     * @param Base $f3 fatfree base instance
-     * @param array $params query string parameters
-     *
-     * @return void
-     */
-    public function update(Base $f3, array $params) {
-        $id = $params['id'];
-
-        // only allow access for localhost and authenticated users
-        if (!$f3->get('auth')->allowedToUpdate()) {
-            die('unallowed access');
-        }
-
-        // update the feed
-        $loader = new \helpers\ContentLoader();
-        $loader->updateSingle($id);
-        echo 'finished';
-    }
-
-    /**
      * returns all available sources
      * json
      *

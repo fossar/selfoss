@@ -50,7 +50,7 @@ $f3->route('POST /source/@id', 'controllers\Sources->write'); // json
 $f3->route('POST /source', 'controllers\Sources->write'); // json
 $f3->route('DELETE /source/@id', 'controllers\Sources->remove'); // json
 $f3->route('POST /source/delete/@id', 'controllers\Sources->remove'); // json
-$f3->route('POST /source/@id/update', 'controllers\Sources->update'); // json
+$f3->route('POST /source/@id/update', 'controllers\Sources\Update->update'); // json
 $f3->route('GET /sources/spouts', 'controllers\Sources->spouts'); // json
 
 $f3->route('POST /tags/color', 'controllers\Tags->color'); // json

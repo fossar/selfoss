@@ -2,6 +2,7 @@
 
 namespace controllers\Sources;
 
+use Base;
 use helpers\Authentication;
 use helpers\ContentLoader;
 
@@ -35,6 +36,28 @@ class Update {
         // update all feeds
         $this->contentLoader->update();
 
+        echo 'finished';
+    }
+
+    /**
+     * update a single source
+     * text
+     *
+     * @param Base $f3 fatfree base instance
+     * @param array $params query string parameters
+     *
+     * @return void
+     */
+    public function update(Base $f3, array $params) {
+        $id = $params['id'];
+
+        // only allow access for localhost and authenticated users
+        if (!$this->authentication->allowedToUpdate()) {
+            die('unallowed access');
+        }
+
+        // update the feed
+        $this->contentLoader->updateSingle($id);
         echo 'finished';
     }
 }
