@@ -25,9 +25,11 @@ class Sources {
      * @return int new id
      */
     public function add($title, array $tags, $filter, $spout, array $params) {
-        return static::$stmt::insert('INSERT INTO ' . \F3::get('db_prefix') . 'sources (title, tags, filter, spout, params) VALUES (:title, :tags, :filter, :spout, :params)', [
+        $stmt = static::$stmt;
+
+        return $stmt::insert('INSERT INTO ' . \F3::get('db_prefix') . 'sources (title, tags, filter, spout, params) VALUES (:title, :tags, :filter, :spout, :params)', [
             ':title' => trim($title),
-            ':tags' => static::$stmt::csvRow($tags),
+            ':tags' => $stmt::csvRow($tags),
             ':filter' => $filter,
             ':spout' => $spout,
             ':params' => htmlentities(json_encode($params))
@@ -47,9 +49,10 @@ class Sources {
      * @return void
      */
     public function edit($id, $title, array $tags, $filter, $spout, array $params) {
+        $stmt = static::$stmt;
         \F3::get('db')->exec('UPDATE ' . \F3::get('db_prefix') . 'sources SET title=:title, tags=:tags, filter=:filter, spout=:spout, params=:params WHERE id=:id', [
             ':title' => trim($title),
-            ':tags' => static::$stmt::csvRow($tags),
+            ':tags' => $stmt::csvRow($tags),
             ':filter' => $filter,
             ':spout' => $spout,
             ':params' => htmlentities(json_encode($params)),
@@ -140,10 +143,11 @@ class Sources {
      * @return ?mixed specified source or all sources
      */
     public function get($id = null) {
+        $stmt = static::$stmt;
         // select source by id if specified or return all sources
         if (isset($id)) {
             $ret = \F3::get('db')->exec('SELECT id, title, tags, spout, params, filter, error FROM ' . \F3::get('db_prefix') . 'sources WHERE id=:id', [':id' => $id]);
-            $ret = static::$stmt::ensureRowTypes($ret, ['id' => \daos\PARAM_INT]);
+            $ret = $stmt::ensureRowTypes($ret, ['id' => \daos\PARAM_INT]);
             if (isset($ret[0])) {
                 $ret = $ret[0];
             } else {
@@ -151,7 +155,7 @@ class Sources {
             }
         } else {
             $ret = \F3::get('db')->exec('SELECT id, title, tags, spout, params, filter, error FROM ' . \F3::get('db_prefix') . 'sources ORDER BY error DESC, lower(title) ASC');
-            $ret = static::$stmt::ensureRowTypes($ret, [
+            $ret = $stmt::ensureRowTypes($ret, [
                 'id' => \daos\PARAM_INT,
                 'tags' => \daos\PARAM_CSV
             ]);
@@ -166,15 +170,16 @@ class Sources {
      * @return mixed all sources
      */
     public function getWithUnread() {
+        $stmt = static::$stmt;
         $ret = \F3::get('db')->exec('SELECT
             sources.id, sources.title, COUNT(items.id) AS unread
             FROM ' . \F3::get('db_prefix') . 'sources AS sources
             LEFT OUTER JOIN ' . \F3::get('db_prefix') . 'items AS items
-                 ON (items.source=sources.id AND ' . static::$stmt::isTrue('items.unread') . ')
+                 ON (items.source=sources.id AND ' . $stmt::isTrue('items.unread') . ')
             GROUP BY sources.id, sources.title
             ORDER BY lower(sources.title) ASC');
 
-        return static::$stmt::ensureRowTypes($ret, [
+        return $stmt::ensureRowTypes($ret, [
             'id' => \daos\PARAM_INT,
             'unread' => \daos\PARAM_INT
         ]);
@@ -186,6 +191,7 @@ class Sources {
      * @return mixed all sources
      */
     public function getWithIcon() {
+        $stmt = static::$stmt;
         $ret = \F3::get('db')->exec('SELECT
                 sources.id, sources.title, sources.tags, sources.spout,
                 sources.params, sources.filter, sources.error, sources.lastentry,
@@ -201,9 +207,9 @@ class Sources {
                  WHERE items.id=icons.maxid AND items.source=icons.source
                  ) AS sourceicons
                 ON sources.id=sourceicons.source
-            ORDER BY ' . static::$stmt::nullFirst('sources.error', 'DESC') . ', lower(sources.title)');
+            ORDER BY ' . $stmt::nullFirst('sources.error', 'DESC') . ', lower(sources.title)');
 
-        return static::$stmt::ensureRowTypes($ret, [
+        return $stmt::ensureRowTypes($ret, [
             'id' => \daos\PARAM_INT,
             'tags' => \daos\PARAM_CSV
         ]);

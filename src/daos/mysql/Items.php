@@ -184,8 +184,9 @@ class Items {
      * @return void
      */
     public function updateLastSeen(array $itemIds) {
+        $stmt = static::$stmt;
         \F3::get('db')->exec('UPDATE ' . \F3::get('db_prefix') . 'items SET lastseen = CURRENT_TIMESTAMP
-            WHERE ' . static::$stmt::intRowMatches('id', $itemIds));
+            WHERE ' . $stmt::intRowMatches('id', $itemIds));
     }
 
     /**
@@ -196,12 +197,13 @@ class Items {
      * @return void
      */
     public function cleanup(DateTime $date = null) {
+        $stmt = static::$stmt;
         \F3::get('db')->exec('DELETE FROM ' . \F3::get('db_prefix') . 'items
             WHERE source NOT IN (
                 SELECT id FROM ' . \F3::get('db_prefix') . 'sources)');
         if ($date !== null) {
             \F3::get('db')->exec('DELETE FROM ' . \F3::get('db_prefix') . 'items
-                WHERE ' . static::$stmt::isFalse('starred') . ' AND lastseen<:date',
+                WHERE ' . $stmt::isFalse('starred') . ' AND lastseen<:date',
                     [':date' => $date->format('Y-m-d') . ' 00:00:00']
             );
         }
@@ -215,18 +217,19 @@ class Items {
      * @return mixed items as array
      */
     public function get($options = []) {
+        $stmt = static::$stmt;
         $params = [];
-        $where = [static::$stmt::bool(true)];
+        $where = [$stmt::bool(true)];
         $order = 'DESC';
 
         // only starred
         if (isset($options['type']) && $options['type'] === 'starred') {
-            $where[] = static::$stmt::isTrue('starred');
+            $where[] = $stmt::isTrue('starred');
         }
 
         // only unread
         elseif (isset($options['type']) && $options['type'] === 'unread') {
-            $where[] = static::$stmt::isTrue('unread');
+            $where[] = $stmt::isTrue('unread');
             if (\F3::get('unread_order') === 'asc') {
                 $order = 'ASC';
             }
@@ -243,7 +246,7 @@ class Items {
         if (isset($options['tag']) && strlen($options['tag']) > 0) {
             $params[':tag'] = $options['tag'];
             $where[] = 'items.source=sources.id';
-            $where[] = static::$stmt::csvRowMatches('sources.tags', ':tag');
+            $where[] = $stmt::csvRowMatches('sources.tags', ':tag');
         }
         // source filter
         elseif (isset($options['source']) && strlen($options['source']) > 0) {
@@ -266,7 +269,7 @@ class Items {
             // with seek pagination.
             $options['offset'] = 0;
 
-            $offset_from_datetime_sql = static::$stmt::datetime($options['fromDatetime']);
+            $offset_from_datetime_sql = $stmt::datetime($options['fromDatetime']);
             $params[':offset_from_datetime'] = [
                 $offset_from_datetime_sql, \PDO::PARAM_STR
             ];
@@ -297,7 +300,7 @@ class Items {
             && count($options['extraIds']) > 0
             // limit the query to a sensible max
             && count($options['extraIds']) <= \F3::get('items_perpage')) {
-            $extra_ids_stmt = static::$stmt::intRowMatches('items.id', $options['extraIds']);
+            $extra_ids_stmt = $stmt::intRowMatches('items.id', $options['extraIds']);
             if ($extra_ids_stmt !== null) {
                 $where_ids = $extra_ids_stmt;
             }
@@ -349,7 +352,7 @@ class Items {
             $query = "$select $where_sql $order_sql LIMIT " . $options['items'] . ' OFFSET ' . $options['offset'];
         }
 
-        return static::$stmt::ensureRowTypes(\F3::get('db')->exec($query, $params), [
+        return $stmt::ensureRowTypes(\F3::get('db')->exec($query, $params), [
             'id' => \daos\PARAM_INT,
             'unread' => \daos\PARAM_BOOL,
             'starred' => \daos\PARAM_BOOL,
@@ -379,12 +382,13 @@ class Items {
      * @return array of items
      */
     public function sync($sinceId, DateTime $notBefore, DateTime $since, $howMany) {
+        $stmt = static::$stmt;
         $query = 'SELECT
         items.id, datetime, items.title AS title, content, unread, starred, source, thumbnail, icon, uid, link, updatetime, author, sources.title as sourcetitle, sources.tags as tags
         FROM ' . \F3::get('db_prefix') . 'items AS items, ' . \F3::get('db_prefix') . 'sources AS sources
         WHERE items.source=sources.id
-            AND (' . static::$stmt::isTrue('unread') .
-                 ' OR ' . static::$stmt::isTrue('starred') .
+            AND (' . $stmt::isTrue('unread') .
+                 ' OR ' . $stmt::isTrue('starred') .
                  ' OR datetime >= :notBefore
                 )
             AND (items.id > :sinceId OR
@@ -398,7 +402,7 @@ class Items {
             'since' => [$since->format(\DateTime::ATOM), \PDO::PARAM_STR]
         ];
 
-        return static::$stmt::ensureRowTypes(\F3::get('db')->exec($query, $params), [
+        return $stmt::ensureRowTypes(\F3::get('db')->exec($query, $params), [
             'id' => \daos\PARAM_INT,
             'unread' => \daos\PARAM_BOOL,
             'starred' => \daos\PARAM_BOOL,
@@ -412,11 +416,12 @@ class Items {
      * @return int lowest id of interest
      */
     public function lowestIdOfInterest() {
-        $lowest = static::$stmt::ensureRowTypes(
+        $stmt = static::$stmt;
+        $lowest = $stmt::ensureRowTypes(
             \F3::get('db')->exec(
                 'SELECT id FROM ' . \F3::get('db_prefix') . 'items AS items
-                 WHERE ' . static::$stmt::isTrue('unread') .
-                    ' OR ' . static::$stmt::isTrue('starred') .
+                 WHERE ' . $stmt::isTrue('unread') .
+                    ' OR ' . $stmt::isTrue('starred') .
                 ' ORDER BY id LIMIT 1'),
             ['id' => \daos\PARAM_INT]
         );
@@ -433,7 +438,8 @@ class Items {
      * @return int last id in db
      */
     public function lastId() {
-        $lastId = static::$stmt::ensureRowTypes(
+        $stmt = static::$stmt;
+        $lastId = $stmt::ensureRowTypes(
             \F3::get('db')->exec(
                 'SELECT id FROM ' . \F3::get('db_prefix') . 'items AS items
                  ORDER BY id DESC LIMIT 1'),
@@ -573,9 +579,10 @@ class Items {
      * @return int amount of entries in database which are unread
      */
     public function numberOfUnread() {
+        $stmt = static::$stmt;
         $res = \F3::get('db')->exec('SELECT count(*) AS amount
                    FROM ' . \F3::get('db_prefix') . 'items
-                   WHERE ' . static::$stmt::isTrue('unread'));
+                   WHERE ' . $stmt::isTrue('unread'));
 
         return $res[0]['amount'];
     }
@@ -586,12 +593,13 @@ class Items {
      * @return array mount of total, unread, starred entries in database
      */
     public function stats() {
+        $stmt = static::$stmt;
         $res = \F3::get('db')->exec('SELECT
             COUNT(*) AS total,
-            ' . static::$stmt::sumBool('unread') . ' AS unread,
-            ' . static::$stmt::sumBool('starred') . ' AS starred
+            ' . $stmt::sumBool('unread') . ' AS unread,
+            ' . $stmt::sumBool('starred') . ' AS starred
             FROM ' . \F3::get('db_prefix') . 'items;');
-        $res = static::$stmt::ensureRowTypes($res, [
+        $res = $stmt::ensureRowTypes($res, [
             'total' => \daos\PARAM_INT,
             'unread' => \daos\PARAM_INT,
             'starred' => \daos\PARAM_INT
@@ -621,11 +629,12 @@ class Items {
      * @return array of unread, starred, etc. status of specified items
      */
     public function statuses(DateTime $since) {
+        $stmt = static::$stmt;
         $res = \F3::get('db')->exec('SELECT id, unread, starred
             FROM ' . \F3::get('db_prefix') . 'items
             WHERE ' . \F3::get('db_prefix') . 'items.updatetime > :since;',
                 [':since' => [$since->format(DateTime::ATOM), \PDO::PARAM_STR]]);
-        $res = static::$stmt::ensureRowTypes($res, [
+        $res = $stmt::ensureRowTypes($res, [
             'id' => \daos\PARAM_INT,
             'unread' => \daos\PARAM_BOOL,
             'starred' => \daos\PARAM_BOOL
@@ -642,6 +651,7 @@ class Items {
      * @return void
      */
     public function bulkStatusUpdate(array $statuses) {
+        $stmt = static::$stmt;
         $sql = [];
         foreach ($statuses as $status) {
             if (array_key_exists('id', $status)) {
@@ -655,12 +665,12 @@ class Items {
                             if ($status[$sk] == 'true') {
                                 $statusUpdate = [
                                     'sk' => $sk,
-                                    'sql' => static::$stmt::isTrue($sk)
+                                    'sql' => $stmt::isTrue($sk)
                                 ];
                             } elseif ($status[$sk] == 'false') {
                                 $statusUpdate = [
                                     'sk' => $sk,
-                                    'sql' => static::$stmt::isFalse($sk)
+                                    'sql' => $stmt::isFalse($sk)
                                 ];
                             }
                         }
@@ -715,7 +725,7 @@ class Items {
                     // statuses.
                     \F3::get('db')->exec(
                         'UPDATE ' . \F3::get('db_prefix') . 'items
-                         SET ' . static::$stmt::rowTouch('updatetime') . '
+                         SET ' . $stmt::rowTouch('updatetime') . '
                          WHERE id = :id', [':id' => [$id, \PDO::PARAM_INT]]);
                 }
             }

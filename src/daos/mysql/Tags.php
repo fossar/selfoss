@@ -81,16 +81,17 @@ class Tags {
      * @return array of all tags
      */
     public function getWithUnread() {
+        $stmt = static::$stmt;
         $select = 'SELECT tag, color, COUNT(items.id) AS unread
                    FROM ' . \F3::get('db_prefix') . 'tags AS tags,
                         ' . \F3::get('db_prefix') . 'sources AS sources
                    LEFT OUTER JOIN ' . \F3::get('db_prefix') . 'items AS items
-                       ON (items.source=sources.id AND ' . static::$stmt::isTrue('items.unread') . ')
-                   WHERE ' . static::$stmt::csvRowMatches('sources.tags', 'tags.tag') . '
+                       ON (items.source=sources.id AND ' . $stmt::isTrue('items.unread') . ')
+                   WHERE ' . $stmt::csvRowMatches('sources.tags', 'tags.tag') . '
                    GROUP BY tags.tag, tags.color
                    ORDER BY LOWER(tags.tag);';
 
-        return static::$stmt::ensureRowTypes(\F3::get('db')->exec($select), ['unread' => \daos\PARAM_INT]);
+        return $stmt::ensureRowTypes(\F3::get('db')->exec($select), ['unread' => \daos\PARAM_INT]);
     }
 
     /**
