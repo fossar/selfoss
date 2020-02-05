@@ -217,25 +217,6 @@ class Index {
     }
 
     /**
-     * update feeds
-     * text
-     *
-     * @return void
-     */
-    public function update() {
-        // only allow access for localhost and loggedin users
-        if (!$this->authentication->allowedToUpdate()) {
-            die('unallowed access');
-        }
-
-        // update feeds
-        $loader = new \helpers\ContentLoader();
-        $loader->update();
-
-        echo 'finished';
-    }
-
-    /**
      * load items
      *
      * @param array $params request parameters
