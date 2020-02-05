@@ -30,8 +30,10 @@ class Import {
     /** @var View view helper */
     private $view;
 
-    public function __construct(Authentication $authentication, View $view) {
+    public function __construct(Authentication $authentication, \daos\Sources $sourcesDao, \daos\Tags $tagsDao, View $view) {
         $this->authentication = $authentication;
+        $this->sourcesDao = $sourcesDao;
+        $this->tagsDao = $tagsDao;
         $this->view = $view;
     }
 
@@ -57,9 +59,6 @@ class Import {
             if (!in_array($opml['type'], ['application/xml', 'text/xml', 'text/x-opml+xml', 'text/x-opml'], true)) {
                 throw new \Exception('Unsupported file type: ' . $opml['type']);
             }
-
-            $this->sourcesDao = new \daos\Sources();
-            $this->tagsDao = new \daos\Tags();
 
             \F3::get('logger')->debug('start OPML import ');
 

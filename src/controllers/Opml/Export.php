@@ -29,9 +29,12 @@ class Export {
     /** @var \daos\Tags */
     private $tagsDao;
 
-    public function __construct(Authentication $authentication, SpoutLoader $spoutLoader) {
+    public function __construct(Authentication $authentication, \daos\Sources $sourcesDao, SpoutLoader $spoutLoader, \daos\Tags $tagsDao, \XMLWriter $writer) {
         $this->authentication = $authentication;
+        $this->sourcesDao = $sourcesDao;
         $this->spoutLoader = $spoutLoader;
+        $this->tagsDao = $tagsDao;
+        $this->writer = $writer;
     }
 
     /**
@@ -81,11 +84,7 @@ class Export {
     public function export() {
         $this->authentication->needsLoggedIn();
 
-        $this->sourcesDao = new \daos\Sources();
-        $this->tagsDao = new \daos\Tags();
-
         \F3::get('logger')->debug('start OPML export');
-        $this->writer = new \XMLWriter();
         $this->writer->openMemory();
         $this->writer->setIndent(true);
         $this->writer->setIndentString('    ');
