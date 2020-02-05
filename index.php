@@ -26,20 +26,20 @@ $f3->route('GET /update', controllers\Sources\Update::class . '->updateAll'); //
 // only for loggedin users or on public mode
 $f3->route('GET /rss', 'controllers\Rss->rss'); // rss
 $f3->route('GET /feed', 'controllers\Rss->rss'); // rss
-$f3->route('GET /items', 'controllers\Items->listItems'); // json
+$f3->route('GET /items', controllers\Items::class . '->listItems'); // json
 $f3->route('GET /tags', 'controllers\Tags->listTags'); // json
 $f3->route('GET /tagslist', 'controllers\Tags->tagslist'); // html
-$f3->route('GET /stats', 'controllers\Items->stats'); // json
-$f3->route('GET /items/sync', 'controllers\Items->sync'); // json
+$f3->route('GET /stats', controllers\Items\Stats::class . '->stats'); // json
+$f3->route('GET /items/sync', controllers\Items\Sync::class . '->sync'); // json
 $f3->route('GET /sources/stats', 'controllers\Sources->stats'); // json
 
 // only loggedin users
-$f3->route('POST /mark/@item', 'controllers\Items->mark'); // json
-$f3->route('POST /mark', 'controllers\Items->mark'); // json
-$f3->route('POST /unmark/@item', 'controllers\Items->unmark'); // json
-$f3->route('POST /starr/@item', 'controllers\Items->starr'); // json
-$f3->route('POST /unstarr/@item', 'controllers\Items->unstarr'); // json
-$f3->route('POST /items/sync', 'controllers\Items->updateStatuses'); // json
+$f3->route('POST /mark/@item', controllers\Items::class . '->mark'); // json
+$f3->route('POST /mark', controllers\Items::class . '->mark'); // json
+$f3->route('POST /unmark/@item', controllers\Items::class . '->unmark'); // json
+$f3->route('POST /starr/@item', controllers\Items::class . '->starr'); // json
+$f3->route('POST /unstarr/@item', controllers\Items::class . '->unstarr'); // json
+$f3->route('POST /items/sync', controllers\Items\Sync::class . '->updateStatuses'); // json
 
 $f3->route('GET /source/params', 'controllers\Sources->params'); // html
 $f3->route('GET /sources', 'controllers\Sources->show'); // html

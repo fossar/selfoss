@@ -17,11 +17,15 @@ class Items {
     /** @var Authentication authentication helper */
     private $authentication;
 
+    /** @var \daos\Items items */
+    private $itemsDao;
+
     /** @var View view helper */
     private $view;
 
-    public function __construct(Authentication $authentication, View $view) {
+    public function __construct(Authentication $authentication, \daos\Items $itemsDao, View $view) {
         $this->authentication = $authentication;
+        $this->itemsDao = $itemsDao;
         $this->view = $view;
     }
 
@@ -35,7 +39,7 @@ class Items {
      * @return void
      */
     public function mark(Base $f3, array $params) {
-        $f3->get('auth')->needsLoggedIn();
+        $this->authentication->needsLoggedIn();
 
         if (isset($params['item'])) {
             $lastid = $params['item'];
@@ -43,14 +47,12 @@ class Items {
             $lastid = $_POST['ids'];
         }
 
-        $itemDao = new \daos\Items();
-
         // validate id or ids
-        if (!$itemDao->isValid('id', $lastid)) {
+        if (!$this->itemsDao->isValid('id', $lastid)) {
             $this->view->error('invalid id');
         }
 
-        $itemDao->mark($lastid);
+        $this->itemsDao->mark($lastid);
 
         $return = [
             'success' => true
@@ -69,17 +71,15 @@ class Items {
      * @return void
      */
     public function unmark(Base $f3, array $params) {
-        $f3->get('auth')->needsLoggedIn();
+        $this->authentication->needsLoggedIn();
 
         $lastid = $params['item'];
 
-        $itemDao = new \daos\Items();
-
-        if (!$itemDao->isValid('id', $lastid)) {
+        if (!$this->itemsDao->isValid('id', $lastid)) {
             $this->view->error('invalid id');
         }
 
-        $itemDao->unmark($lastid);
+        $this->itemsDao->unmark($lastid);
 
         $this->view->jsonSuccess([
             'success' => true
@@ -96,17 +96,15 @@ class Items {
      * @return void
      */
     public function starr(Base $f3, array $params) {
-        $f3->get('auth')->needsLoggedIn();
+        $this->authentication->needsLoggedIn();
 
         $id = $params['item'];
 
-        $itemDao = new \daos\Items();
-
-        if (!$itemDao->isValid('id', $id)) {
+        if (!$this->itemsDao->isValid('id', $id)) {
             $this->view->error('invalid id');
         }
 
-        $itemDao->starr($id);
+        $this->itemsDao->starr($id);
         $this->view->jsonSuccess([
             'success' => true
         ]);
@@ -122,17 +120,15 @@ class Items {
      * @return void
      */
     public function unstarr(Base $f3, array $params) {
-        $f3->get('auth')->needsLoggedIn();
+        $this->authentication->needsLoggedIn();
 
         $id = $params['item'];
 
-        $itemDao = new \daos\Items();
-
-        if (!$itemDao->isValid('id', $id)) {
+        if (!$this->itemsDao->isValid('id', $id)) {
             $this->view->error('invalid id');
         }
 
-        $itemDao->unstarr($id);
+        $this->itemsDao->unstarr($id);
         $this->view->jsonSuccess([
             'success' => true
         ]);
@@ -154,155 +150,8 @@ class Items {
         }
 
         // get items
-        $itemDao = new \daos\Items();
-        $items = $itemDao->get($options);
+        $items = $this->itemsDao->get($options);
 
         $this->view->jsonSuccess($items);
-    }
-
-    /**
-     * returns current basic stats
-     * json
-     *
-     * @return void
-     */
-    public function stats() {
-        $this->authentication->needsLoggedInOrPublicMode();
-
-        $itemsDao = new \daos\Items();
-        $stats = $itemsDao->stats();
-
-        $tagsDao = new \daos\Tags();
-        $tags = $tagsDao->getWithUnread();
-
-        foreach ($tags as $tag) {
-            if (strpos($tag['tag'], '#') !== 0) {
-                continue;
-            }
-            $stats['unread'] -= $tag['unread'];
-        }
-
-        if (array_key_exists('tags', $_GET) && $_GET['tags'] == 'true') {
-            $tagsController = new \controllers\Tags($this->authentication, $this->view);
-            $stats['tagshtml'] = $tagsController->renderTags($tags);
-        }
-        if (array_key_exists('sources', $_GET) && $_GET['sources'] == 'true') {
-            $sourcesDao = new \daos\Sources();
-            $sourcesController = new \controllers\Sources($this->authentication, $this->view);
-            $stats['sourceshtml'] = $sourcesController->renderSources($sourcesDao->getWithUnread());
-        }
-
-        $this->view->jsonSuccess($stats);
-    }
-
-    /**
-     * returns updated database info (stats, item statuses)
-     * json
-     *
-     * @return void
-     */
-    public function sync() {
-        $this->authentication->needsLoggedInOrPublicMode();
-
-        $params = null;
-        if (isset($_GET['since'])) {
-            $params = $_GET;
-        } elseif (isset($_POST['since'])) {
-            $params = $_POST;
-        } else {
-            $this->view->jsonError(['sync' => 'missing since argument']);
-        }
-
-        $since = new \DateTime($params['since']);
-
-        $itemsDao = new \daos\Items();
-        $last_update = new \DateTime($itemsDao->lastUpdate());
-
-        $sync = [
-            'lastUpdate' => $last_update->format(\DateTime::ATOM),
-        ];
-
-        $sinceId = 0;
-        if (array_key_exists('itemsSinceId', $params)) {
-            $sinceId = (int) $params['itemsSinceId'];
-            if ($sinceId >= 0) {
-                $notBefore = new \DateTime($params['itemsNotBefore']);
-                if ($sinceId < 1 || !$notBefore) {
-                    $sinceId = $itemsDao->lowestIdOfInterest() - 1;
-                    // only send 1 day worth of items
-                    $notBefore = new \DateTime();
-                    $notBefore->sub(new \DateInterval('P1D'));
-                }
-
-                $itemsHowMany = \F3::get('items_perpage');
-                if (array_key_exists('itemsHowMany', $params)
-                    && is_int($params['itemsHowMany'])) {
-                    $itemsHowMany = min($params['itemsHowMany'],
-                                        2 * $itemsHowMany);
-                }
-
-                $tagsController = new \controllers\Tags($this->authentication, $this->view);
-                $sync['newItems'] = [];
-                foreach ($itemsDao->sync($sinceId, $notBefore, $since, $itemsHowMany)
-                         as $newItem) {
-                    $newItem['tags'] = $tagsController->tagsAddColors(explode(',', $newItem['tags']));
-                    $this->view->item = $newItem;
-
-                    $sync['newItems'][] = [
-                        'id' => $newItem['id'],
-                        'datetime' => \helpers\ViewHelper::date_iso8601($newItem['datetime']),
-                        'unread' => $newItem['unread'],
-                        'starred' => $newItem['starred'],
-                        'html' => $this->view->render('src/templates/item.phtml'),
-                        'source' => $newItem['source'],
-                        'tags' => array_keys($newItem['tags'])
-                    ];
-                }
-                if ($sync['newItems']) {
-                    $sync['lastId'] = $itemsDao->lastId();
-                } else {
-                    unset($sync['newItems']);
-                }
-            }
-        }
-
-        if ($last_update > $since) {
-            $sync['stats'] = $itemsDao->stats();
-
-            if (array_key_exists('tags', $params) && $_GET['tags'] == 'true') {
-                $tagsDao = new \daos\Tags();
-                $tagsController = new \controllers\Tags($this->authentication, $this->view);
-                $sync['tagshtml'] = $tagsController->renderTags($tagsDao->getWithUnread());
-            }
-            if (array_key_exists('sources', $params) && $_GET['sources'] == 'true') {
-                $sourcesDao = new \daos\Sources();
-                $sourcesController = new \controllers\Sources($this->authentication, $this->view);
-                $sync['sourceshtml'] = $sourcesController->renderSources($sourcesDao->getWithUnread());
-            }
-
-            $wantItemsStatuses = array_key_exists('itemsStatuses', $params) && $params['itemsStatuses'] == 'true';
-            if ($wantItemsStatuses) {
-                $sync['itemUpdates'] = $itemsDao->statuses($since);
-            }
-        }
-
-        $this->view->jsonSuccess($sync);
-    }
-
-    /**
-     * Items statuses bulk update.
-     *
-     * @return void
-     */
-    public function updateStatuses() {
-        $this->authentication->needsLoggedIn();
-
-        if (isset($_POST['updatedStatuses'])
-            && is_array($_POST['updatedStatuses'])) {
-            $itemsDao = new \daos\Items();
-            $itemsDao->bulkStatusUpdate($_POST['updatedStatuses']);
-        }
-
-        $this->sync();
     }
 }
