@@ -27,8 +27,8 @@ $f3->route('GET /update', controllers\Sources\Update::class . '->updateAll'); //
 $f3->route('GET /rss', 'controllers\Rss->rss'); // rss
 $f3->route('GET /feed', 'controllers\Rss->rss'); // rss
 $f3->route('GET /items', controllers\Items::class . '->listItems'); // json
-$f3->route('GET /tags', 'controllers\Tags->listTags'); // json
-$f3->route('GET /tagslist', 'controllers\Tags->tagslist'); // html
+$f3->route('GET /tags', controllers\Tags::class . '->listTags'); // json
+$f3->route('GET /tagslist', controllers\Tags::class . '->tagslist'); // html
 $f3->route('GET /stats', controllers\Items\Stats::class . '->stats'); // json
 $f3->route('GET /items/sync', controllers\Items\Sync::class . '->sync'); // json
 $f3->route('GET /sources/stats', controllers\Sources::class . '->stats'); // json
@@ -53,7 +53,7 @@ $f3->route('POST /source/delete/@id', controllers\Sources::class . '->remove'); 
 $f3->route('POST /source/@id/update', controllers\Sources::class . '\Update->update'); // json
 $f3->route('GET /sources/spouts', controllers\Sources::class . '->spouts'); // json
 
-$f3->route('POST /tags/color', 'controllers\Tags->color'); // json
+$f3->route('POST /tags/color', controllers\Tags::class . '->color'); // json
 
 $f3->route('GET /opml', controllers\Opml\ImportPage::class . '->show'); // html
 $f3->route('POST /opml', controllers\Opml\Import::class . '->add'); // json

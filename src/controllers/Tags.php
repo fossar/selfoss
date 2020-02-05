@@ -2,6 +2,7 @@
 
 namespace controllers;
 
+use Base;
 use helpers\Authentication;
 use helpers\View;
 
@@ -16,11 +17,15 @@ class Tags {
     /** @var Authentication authentication helper */
     private $authentication;
 
+    /** @var \daos\Tags tags */
+    private $tagsDao;
+
     /** @var View view helper */
     private $view;
 
-    public function __construct(Authentication $authentication, View $view) {
+    public function __construct(Authentication $authentication, \daos\Tags $tagsDao, View $view) {
         $this->authentication = $authentication;
+        $this->tagsDao = $tagsDao;
         $this->view = $view;
     }
 
@@ -43,9 +48,7 @@ class Tags {
      * @return string
      */
     public function tagsListAsString() {
-        $tagsDao = new \daos\Tags();
-
-        return $this->renderTags($tagsDao->getWithUnread());
+        return $this->renderTags($this->tagsDao->getWithUnread());
     }
 
     /**
@@ -82,8 +85,7 @@ class Tags {
     public function tagsAddColors(array $itemTags, array $tags = null) {
         if ($tags === null) {
             if ($this->tagsColors === null) {
-                $tagsDao = new \daos\Tags();
-                $this->tagsColors = $this->getTagsWithColors($tagsDao->get());
+                $this->tagsColors = $this->getTagsWithColors($this->tagsDao->get());
             }
         } else {
             $this->tagsColors = $this->getTagsWithColors($tags);
@@ -106,11 +108,11 @@ class Tags {
      *
      * @return void
      */
-    public function color() {
+    public function color(Base $f3) {
         $this->authentication->needsLoggedIn();
 
         // read data
-        parse_str(\F3::get('BODY'), $data);
+        parse_str($f3->get('BODY'), $data);
 
         $tag = $data['tag'];
         $color = $data['color'];
@@ -122,8 +124,7 @@ class Tags {
             $this->view->error('invalid or no color given');
         }
 
-        $tagsDao = new \daos\Tags();
-        $tagsDao->saveTagColor($tag, $color);
+        $this->tagsDao->saveTagColor($tag, $color);
         $this->view->jsonSuccess([
             'success' => true
         ]);
@@ -138,8 +139,7 @@ class Tags {
     public function listTags() {
         $this->authentication->needsLoggedInOrPublicMode();
 
-        $tagsDao = new \daos\Tags();
-        $tags = $tagsDao->getWithUnread();
+        $tags = $this->tagsDao->getWithUnread();
 
         $this->view->jsonSuccess($tags);
     }
