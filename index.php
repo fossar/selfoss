@@ -24,8 +24,8 @@ $f3->route('GET /logout', controllers\Authentication::class . '->logout'); // js
 $f3->route('GET /update', controllers\Sources\Update::class . '->updateAll'); // text
 
 // only for loggedin users or on public mode
-$f3->route('GET /rss', 'controllers\Rss->rss'); // rss
-$f3->route('GET /feed', 'controllers\Rss->rss'); // rss
+$f3->route('GET /rss', controllers\Rss::class . '->rss'); // rss
+$f3->route('GET /feed', controllers\Rss::class . '->rss'); // rss
 $f3->route('GET /items', controllers\Items::class . '->listItems'); // json
 $f3->route('GET /tags', controllers\Tags::class . '->listTags'); // json
 $f3->route('GET /tagslist', controllers\Tags::class . '->tagslist'); // html
