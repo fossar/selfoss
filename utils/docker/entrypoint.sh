@@ -10,8 +10,7 @@ chown -R www-data:www-data \
 
 # Create a config file when one does not exist
 if [[ ! -f config/config.ini ]]; then
-    cp defaults.ini config/config.ini \
-    && sed -i 's#^logger_destination=.*#logger_destination=file:php://stderr#' config/config.ini
+    sed 's#^logger_destination=.*#logger_destination=file:php://stderr#' defaults.ini > config/config.ini
 fi
 
 # Run updater process periodically
