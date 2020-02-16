@@ -20,8 +20,7 @@ RUN curl -o /tmp/composer-setup.php "https://getcomposer.org/installer"; \
     && groupadd --gid ${gid} node \
     && useradd --uid ${uid} --gid node --shell /bin/bash --create-home node
 
-ENV APACHE_RUN_USER=node
-ENV APACHE_RUN_GROUP=node
+ENV APACHE_RUN_USER=node APACHE_RUN_GROUP=node
 
 VOLUME /var/www/html/
 

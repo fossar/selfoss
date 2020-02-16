@@ -5,7 +5,7 @@ services:
   app:
     image: selfoss/selfoss
     build:
-      context: .
+      context: ../..
       dockerfile: ./utils/docker/Dockerfile
     volumes:
       - config:/var/www/html/config/

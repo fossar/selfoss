@@ -2,7 +2,9 @@
 
 There are two Dockerfiles bundled in the repository - one for development, one for production deployment.
 
-To build the production container use:
+### Production
+
+To build the production container first go to utils/docker directory, then use:
 ```
 docker-compose build --no-cache --pull
 ```
@@ -16,7 +18,9 @@ Selfoss web interface will be available at http://localhost:8390
 
 Selfoss config is mounted in a separate volume, so your custom settings should survive reboot.
 
-To run the development container first copy .env.dist into .env and make sure the UID and GID matches your own user and group ID, otherwise the dev scripts will create files with wrong access rights.
+### Development
+
+To run the development container first make sure you are in utils/docker directory, then copy .env.dist into .env and make sure the UID and GID matches your own user and group ID, otherwise the dev scripts will create files with wrong access rights.
 ```
 cat .env.dist | sed 's/UID=1000/UID='$(id -u)'/' | sed 's/GID=1000/GID='$(id -g)'/' > .env
 ```
