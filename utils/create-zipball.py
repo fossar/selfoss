@@ -68,7 +68,6 @@ class ZipFile(zipfile.ZipFile):
                     # directories are empty files
                     # https://mail.python.org/pipermail/python-list/2003-June/205859.html
                     info = zipfile.ZipInfo(os.path.join(self.prefix, path) + '/')
-                    print(os.path.join(self.prefix, path) + '/')
                     archive.writestr(info, '')
 
             for file in files:
@@ -103,7 +102,7 @@ with tempfile.TemporaryDirectory(prefix='selfoss-dist-') as temp_dir:
         pkg = json.load(package_json)
 
     version = pkg['ver']
-    filename = f'selfoss-{version}.zip'
+    filename = 'selfoss-{}.zip'.format(version)
 
     # fill archive with data
     with ZipFile(os.path.join(source_dir, filename), 'w', zipfile.ZIP_LZMA) as archive:
@@ -132,4 +131,4 @@ with tempfile.TemporaryDirectory(prefix='selfoss-dist-') as temp_dir:
         archive.file('run.php')
         archive.file('cliupdate.php')
 
-        logger.info(f'Zipball ‘{filename}’ was successfully generated.')
+        logger.info('Zipball ‘{}’ was successfully generated.'.format(filename))
