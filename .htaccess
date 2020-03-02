@@ -14,8 +14,7 @@ RewriteRule !data/thumbnails/(.*)$ - [C]
 RewriteRule thumbnails/(.*)$ data/thumbnails/$1 [L]
 
 # rule for front controller
-RewriteCond %{QUERY_STRING} ^(.*)$
-RewriteRule !.(js|ico|gif|jpg|png|css|map|asc|txt|svg|xml|webmanifest)$ index.php?%1
+RewriteRule !.(js|ico|gif|jpg|png|css|map|asc|txt|svg|xml|webmanifest)$ index.php
 
 # rule for files
 RewriteRule !favicons/ - [C]
