@@ -82,7 +82,7 @@
         <!-- error messages -->
         <?php if (isset($this->source) && isset($this->source['error'])) : ?>
         <li class="source-error" aria-live="assertive">
-            <?= $this->source['error']; ?>
+            <?= htmlspecialchars($this->source['error']); ?>
         </li>
         <?php endif; ?>
 
