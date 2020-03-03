@@ -290,6 +290,6 @@ class Items extends BaseController {
             $itemsDao->bulkStatusUpdate($_POST['updatedStatuses']);
         }
 
-        $this->sync($_POST);
+        $this->sync();
     }
 }
