@@ -276,7 +276,7 @@ class Opml extends BaseController {
         \F3::get('logger')->debug('start OPML export');
         $this->writer = new \XMLWriter();
         $this->writer->openMemory();
-        $this->writer->setIndent(1);
+        $this->writer->setIndent(true);
         $this->writer->setIndentString('    ');
 
         $this->writer->startDocument('1.0', 'UTF-8');
