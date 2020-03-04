@@ -54,7 +54,7 @@ class WebClient {
     /**
      * get the user agent to use for web based spouts
      *
-     * @param ?string $agentInfo
+     * @param ?string[] $agentInfo
      *
      * @return string the user agent string for this spout
      */
