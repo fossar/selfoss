@@ -4,6 +4,7 @@ namespace daos;
 
 use helpers\Authentication;
 use helpers\SpoutLoader;
+use Monolog\Logger;
 
 /**
  * Class for accessing persistent saved sources
@@ -21,6 +22,9 @@ class Sources {
     /** @var Authentication authentication helper */
     private $authentication;
 
+    /** @var Logger */
+    private $logger;
+
     /** @var SpoutLoader spout loader */
     private $spoutLoader;
 
@@ -29,9 +33,10 @@ class Sources {
      *
      * @return void
      */
-    public function __construct(Authentication $authentication, SourcesInterface $backend, SpoutLoader $spoutLoader) {
+    public function __construct(Authentication $authentication, Logger $logger, SourcesInterface $backend, SpoutLoader $spoutLoader) {
         $this->authentication = $authentication;
         $this->backend = $backend;
+        $this->logger = $logger;
         $this->spoutLoader = $spoutLoader;
     }
 
@@ -47,7 +52,7 @@ class Sources {
         if (method_exists($this->backend, $name)) {
             return call_user_func_array([$this->backend, $name], $args);
         } else {
-            \F3::get('logger')->error('Unimplemented method for ' . \F3::get('db_type') . ': ' . $name);
+            $this->logger->error('Unimplemented method for ' . \F3::get('db_type') . ': ' . $name);
         }
     }
 
@@ -78,7 +83,7 @@ class Sources {
      * @param string $spout class path for the spout
      * @param array $params parameters supplied to the spout
      *
-     * @return bool|array true on success or array of errors on failure
+     * @return true|array true on success or array of errors on failure
      *
      * @author Tobias Zeising
      */

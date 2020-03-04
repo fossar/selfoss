@@ -49,7 +49,7 @@ class hometimeline extends \spouts\twitter\usertimeline {
     ];
 
     public function load(array $params) {
-        $this->client = self::getHttpClient($params['consumer_key'], $params['consumer_secret'], $params['access_key'], $params['access_secret']);
+        $this->client = $this->getHttpClient($params['consumer_key'], $params['consumer_secret'], $params['access_key'], $params['access_secret']);
 
         $this->items = $this->fetchTwitterTimeline('statuses/home_timeline');
 

@@ -4,6 +4,7 @@ namespace controllers\Opml;
 
 use helpers\Authentication;
 use helpers\View;
+use Monolog\Logger;
 use SimpleXMLElement;
 
 /**
@@ -21,6 +22,9 @@ class Import {
     /** @var array Sources that have been imported from the OPML file */
     private $imported = [];
 
+    /** @var Logger */
+    private $logger;
+
     /** @var \daos\Sources */
     private $sourcesDao;
 
@@ -30,8 +34,9 @@ class Import {
     /** @var View view helper */
     private $view;
 
-    public function __construct(Authentication $authentication, \daos\Sources $sourcesDao, \daos\Tags $tagsDao, View $view) {
+    public function __construct(Authentication $authentication, Logger $logger, \daos\Sources $sourcesDao, \daos\Tags $tagsDao, View $view) {
         $this->authentication = $authentication;
+        $this->logger = $logger;
         $this->sourcesDao = $sourcesDao;
         $this->tagsDao = $tagsDao;
         $this->view = $view;
@@ -60,7 +65,7 @@ class Import {
                 throw new \Exception('Unsupported file type: ' . $opml['type']);
             }
 
-            \F3::get('logger')->debug('start OPML import ');
+            $this->logger->debug('start OPML import ');
 
             $subs = simplexml_load_file($opml['tmp_name']);
             $errors = $this->processGroup($subs->body);
@@ -68,7 +73,7 @@ class Import {
             // cleanup tags
             $this->tagsDao->cleanup($this->sourcesDao->getAllTags());
 
-            \F3::get('logger')->debug('finished OPML import ');
+            $this->logger->debug('finished OPML import ');
 
             // show errors
             if (count($errors) > 0) {
@@ -166,9 +171,9 @@ class Import {
         // set spout for new item
         if ($nsattrs->spout || $nsattrs->params) {
             if (!($nsattrs->spout && $nsattrs->params)) {
-                \F3::get('logger')->warning("OPML import: failed to import '$title'");
+                $this->logger->warning("OPML import: failed to import '$title'");
                 $missingAttr = $nsattrs->spout ? '"selfoss:params"' : '"selfoss:spout"';
-                \F3::get('logger')->debug("Missing attribute: $missingAttr");
+                $this->logger->debug("Missing attribute: $missingAttr");
 
                 return $title;
             }
@@ -177,8 +182,8 @@ class Import {
         } elseif (in_array((string) $attrs->type, ['rss', 'atom'], true)) {
             $spout = 'spouts\rss\feed';
         } else {
-            \F3::get('logger')->warning("OPML import: failed to import '$title'");
-            \F3::get('logger')->debug("Invalid type '$attrs->type': only 'rss' and 'atom' are supported");
+            $this->logger->warning("OPML import: failed to import '$title'");
+            $this->logger->debug("Invalid type '$attrs->type': only 'rss' and 'atom' are supported");
 
             return $title;
         }
@@ -186,8 +191,8 @@ class Import {
         // validate new item
         $validation = @$this->sourcesDao->validate($title, $spout, $data);
         if ($validation !== true) {
-            \F3::get('logger')->warning("OPML import: failed to import '$title'");
-            \F3::get('logger')->debug('Invalid source', $validation);
+            $this->logger->warning("OPML import: failed to import '$title'");
+            $this->logger->debug('Invalid source', $validation);
 
             return $title;
         }
@@ -198,16 +203,16 @@ class Import {
             $this->imported[$hash]['tags'] = array_unique(array_merge($this->imported[$hash]['tags'], $tags));
             $tags = $this->imported[$hash]['tags'];
             $this->sourcesDao->edit($this->imported[$hash]['id'], $title, $tags, '', $spout, $data);
-            \F3::get('logger')->debug("OPML import: updated tags for '$title'");
+            $this->logger->debug("OPML import: updated tags for '$title'");
         } elseif ($id = $this->sourcesDao->checkIfExists($title, $spout, $data)) {
             $tags = array_unique(array_merge($this->sourcesDao->getTags($id), $tags));
             $this->sourcesDao->edit($id, $title, $tags, '', $spout, $data);
             $this->imported[$hash] = ['id' => $id, 'tags' => $tags];
-            \F3::get('logger')->debug("OPML import: updated tags for '$title'");
+            $this->logger->debug("OPML import: updated tags for '$title'");
         } else {
             $id = $this->sourcesDao->add($title, $tags, '', $spout, $data);
             $this->imported[$hash] = ['id' => $id, 'tags' => $tags];
-            \F3::get('logger')->debug("OPML import: successfully imported '$title'");
+            $this->logger->debug("OPML import: successfully imported '$title'");
         }
 
         // success

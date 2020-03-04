@@ -6,6 +6,7 @@ use Exception;
 use Fossar\GuzzleTranscoder\GuzzleTranscoder;
 use GuzzleHttp;
 use GuzzleHttp\HandlerStack;
+use Monolog\Logger;
 
 /**
  * Helper class for web request
@@ -16,21 +17,28 @@ use GuzzleHttp\HandlerStack;
  */
 class WebClient {
     /** @var GuzzleHttp\Client */
-    private static $httpClient;
+    private $httpClient;
+
+    /** @var Logger */
+    private $logger;
+
+    public function __construct(Logger $logger) {
+        $this->logger = $logger;
+    }
 
     /**
      * Provide a HTTP client for use by spouts
      *
      * @return GuzzleHttp\Client
      */
-    public static function getHttpClient() {
-        if (!isset(self::$httpClient)) {
+    public function getHttpClient() {
+        if (!isset($this->httpClient)) {
             $stack = HandlerStack::create();
             $stack->push(new GuzzleTranscoder());
 
             if (\F3::get('logger_level') === 'DEBUG') {
                 $logger = GuzzleHttp\Middleware::log(
-                    \F3::get('logger'),
+                    $this->logger,
                     new GuzzleHttp\MessageFormatter(\F3::get('DEBUG') != 0 ? GuzzleHttp\MessageFormatter::DEBUG : GuzzleHttp\MessageFormatter::SHORT),
                     \Psr\Log\LogLevel::DEBUG
                 );
@@ -45,10 +53,10 @@ class WebClient {
                 'timeout' => 60, // seconds
             ]);
 
-            self::$httpClient = $httpClient;
+            $this->httpClient = $httpClient;
         }
 
-        return self::$httpClient;
+        return $this->httpClient;
     }
 
     /**
@@ -58,7 +66,7 @@ class WebClient {
      *
      * @return string the user agent string for this spout
      */
-    public static function getUserAgent($agentInfo = null) {
+    public function getUserAgent($agentInfo = null) {
         $userAgent = 'Selfoss/' . \F3::get('version');
 
         if ($agentInfo === null) {
@@ -81,8 +89,8 @@ class WebClient {
      *
      * @return string request data
      */
-    public static function request($url, $agentInfo = null) {
-        $http = self::getHttpClient();
+    public function request($url, $agentInfo = null) {
+        $http = $this->getHttpClient();
         $response = $http->get($url);
         $data = (string) $response->getBody();
 

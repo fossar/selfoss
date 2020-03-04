@@ -2,6 +2,8 @@
 
 namespace daos\pgsql;
 
+use Monolog\Logger;
+
 /**
  * Base class for database access -- postgresql
  *
@@ -21,15 +23,19 @@ class Database implements \daos\DatabaseInterface {
     /** @var \DB\SQL database connection */
     private $connection;
 
+    /** @var Logger */
+    private $logger;
+
     /**
      * establish connection and create undefined tables
      *
      * @return  void
      */
-    public function __construct(\DB\SQL $connection) {
+    public function __construct(\DB\SQL $connection, Logger $logger) {
         $this->connection = $connection;
+        $this->logger = $logger;
 
-        \F3::get('logger')->debug('Established database connection');
+        $this->logger->debug('Established database connection');
 
         // create tables if necessary
         $result = @$this->exec("SELECT table_name FROM information_schema.tables WHERE table_schema='public'");

@@ -4,6 +4,7 @@ namespace controllers\Opml;
 
 use helpers\Authentication;
 use helpers\SpoutLoader;
+use Monolog\Logger;
 
 /**
  * OPML loading and exporting controller
@@ -17,6 +18,9 @@ class Export {
     /** @var Authentication authentication helper */
     private $authentication;
 
+    /** @var Logger */
+    private $logger;
+
     /** @var SpoutLoader */
     private $spoutLoader;
 
@@ -29,8 +33,9 @@ class Export {
     /** @var \daos\Tags */
     private $tagsDao;
 
-    public function __construct(Authentication $authentication, \daos\Sources $sourcesDao, SpoutLoader $spoutLoader, \daos\Tags $tagsDao, \XMLWriter $writer) {
+    public function __construct(Authentication $authentication, Logger $logger, \daos\Sources $sourcesDao, SpoutLoader $spoutLoader, \daos\Tags $tagsDao, \XMLWriter $writer) {
         $this->authentication = $authentication;
+        $this->logger = $logger;
         $this->sourcesDao = $sourcesDao;
         $this->spoutLoader = $spoutLoader;
         $this->tagsDao = $tagsDao;
@@ -71,7 +76,7 @@ class Export {
         $this->writer->writeAttributeNS('selfoss', 'params', null, html_entity_decode($source['params']));
 
         $this->writer->endElement();  // outline
-        \F3::get('logger')->debug('done exporting source ' . $source['title']);
+        $this->logger->debug('done exporting source ' . $source['title']);
     }
 
     /**
@@ -84,7 +89,7 @@ class Export {
     public function export() {
         $this->authentication->needsLoggedIn();
 
-        \F3::get('logger')->debug('start OPML export');
+        $this->logger->debug('start OPML export');
         $this->writer->openMemory();
         $this->writer->setIndent(true);
         $this->writer->setIndentString('    ');
@@ -101,13 +106,13 @@ class Export {
         $this->writer->writeAttribute('version', '1.0');
         $this->writer->writeAttribute('createdOn', date('r'));
         $this->writer->endElement();  // meta
-        \F3::get('logger')->debug('OPML export: finished writing meta');
+        $this->logger->debug('OPML export: finished writing meta');
 
         $this->writer->startElement('head');
         $user = \F3::get('username');
         $this->writer->writeElement('title', ($user ? $user . '\'s' : 'My') . ' subscriptions in selfoss');
         $this->writer->endElement();  // head
-        \F3::get('logger')->debug('OPML export: finished writing head');
+        $this->logger->debug('OPML export: finished writing head');
 
         $this->writer->startElement('body');
 
@@ -126,13 +131,13 @@ class Export {
         // create associative array with tag names as keys, colors as values
         $tagColors = [];
         foreach ($this->tagsDao->get() as $key => $tag) {
-            \F3::get('logger')->debug('OPML export: tag ' . $tag['tag'] . ' has color ' . $tag['color']);
+            $this->logger->debug('OPML export: tag ' . $tag['tag'] . ' has color ' . $tag['color']);
             $tagColors[$tag['tag']] = $tag['color'];
         }
 
         // generate outline elements for all sources
         foreach ($sources['tagged'] as $tag => $children) {
-            \F3::get('logger')->debug("OPML export: exporting tag $tag sources");
+            $this->logger->debug("OPML export: exporting tag $tag sources");
             $this->writer->startElement('outline');
             $this->writer->writeAttribute('title', $tag);
             $this->writer->writeAttribute('text', $tag);
@@ -146,7 +151,7 @@ class Export {
             $this->writer->endElement();  // outline
         }
 
-        \F3::get('logger')->debug('OPML export: exporting untagged sources');
+        $this->logger->debug('OPML export: exporting untagged sources');
         foreach ($sources['untagged'] as $key => $source) {
             $this->writeSource($source);
         }
@@ -154,7 +159,7 @@ class Export {
         $this->writer->endElement();  // body
 
         $this->writer->endDocument();
-        \F3::get('logger')->debug('finished OPML export');
+        $this->logger->debug('finished OPML export');
 
         // save content as file and suggest file name
         $exportName = 'selfoss-subscriptions-' . date('YmdHis') . '.xml';

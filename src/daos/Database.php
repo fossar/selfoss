@@ -2,6 +2,8 @@
 
 namespace daos;
 
+use Monolog\Logger;
+
 const PARAM_INT = 1;
 const PARAM_BOOL = 2;
 const PARAM_CSV = 3;
@@ -18,12 +20,16 @@ class Database {
     /** @var DatabaseInterface Instance of backend specific database access class */
     private $backend = null;
 
+    /** @var Logger */
+    private $logger;
+
     /**
      * establish connection and
      * create undefined tables
      */
-    public function __construct(DatabaseInterface $backend) {
+    public function __construct(DatabaseInterface $backend, Logger $logger) {
         $this->backend = $backend;
+        $this->logger = $logger;
     }
 
     /**
@@ -38,7 +44,7 @@ class Database {
         if (method_exists($this->backend, $name)) {
             return call_user_func_array([$this->backend, $name], $args);
         } else {
-            \F3::get('logger')->error('Unimplemented method for ' . \F3::get('db_type') . ': ' . $name);
+            $this->logger->error('Unimplemented method for ' . \F3::get('db_type') . ': ' . $name);
         }
     }
 }

@@ -2,6 +2,8 @@
 
 namespace daos\sqlite;
 
+use Monolog\Logger;
+
 /**
  * Base class for database access -- sqlite
  *
@@ -14,15 +16,19 @@ class Database implements \daos\DatabaseInterface {
     /** @var \DB\SQL database connection */
     private $connection;
 
+    /** @var Logger */
+    private $logger;
+
     /**
      * establish connection and create undefined tables
      *
      * @return  void
      */
-    public function __construct(\DB\SQL $connection) {
+    public function __construct(\DB\SQL $connection, Logger $logger) {
         $this->connection = $connection;
+        $this->logger = $logger;
 
-        \F3::get('logger')->debug('Established database connection');
+        $this->logger->debug('Established database connection');
 
         // create tables if necessary
         $result = @$this->exec('SELECT name FROM sqlite_master WHERE type = "table"');

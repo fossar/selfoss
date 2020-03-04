@@ -52,6 +52,13 @@ class commits extends \spouts\spout {
     /** @var string URL of the favicon */
     protected $faviconUrl = 'https://assets-cdn.github.com/favicon.ico';
 
+    /** @var WebClient */
+    private $webClient;
+
+    public function __construct(WebClient $webClient) {
+        $this->webClient = $webClient;
+    }
+
     //
     // Source Methods
     //
@@ -61,7 +68,7 @@ class commits extends \spouts\spout {
 
         $jsonUrl = 'https://api.github.com/repos/' . urlencode($params['owner']) . '/' . urlencode($params['repo']) . '/commits?sha=' . urlencode($params['branch']);
 
-        $http = WebClient::getHttpClient();
+        $http = $this->webClient->getHttpClient();
         $response = $http->get($jsonUrl);
         $this->items = json_decode((string) $response->getBody(), true);
 

@@ -3,6 +3,7 @@
 namespace daos;
 
 use helpers\Authentication;
+use Monolog\Logger;
 
 /**
  * Class for accessing persistent saved items
@@ -19,14 +20,18 @@ class Items {
     /** @var Authentication authentication helper */
     private $authentication;
 
+    /** @var Logger */
+    private $logger;
+
     /**
      * Constructor.
      *
      * @return void
      */
-    public function __construct(Authentication $authentication, ItemsInterface $backend) {
+    public function __construct(Authentication $authentication, Logger $logger, ItemsInterface $backend) {
         $this->authentication = $authentication;
         $this->backend = $backend;
+        $this->logger = $logger;
     }
 
     /**
@@ -41,7 +46,7 @@ class Items {
         if (method_exists($this->backend, $name)) {
             return call_user_func_array([$this->backend, $name], $args);
         } else {
-            \F3::get('logger')->error('Unimplemented method for ' . \F3::get('db_type') . ': ' . $name);
+            $this->logger->error('Unimplemented method for ' . \F3::get('db_type') . ': ' . $name);
         }
     }
 

@@ -3,6 +3,7 @@
 namespace daos;
 
 use helpers\Authentication;
+use Monolog\Logger;
 
 /**
  * Class for accessing tag colors
@@ -18,14 +19,18 @@ class Tags {
     /** @var Authentication authentication helper */
     private $authentication;
 
+    /** @var Logger */
+    private $logger;
+
     /**
      * Constructor.
      *
      * @return void
      */
-    public function __construct(Authentication $authentication, TagsInterface $backend) {
+    public function __construct(Authentication $authentication, Logger $logger, TagsInterface $backend) {
         $this->authentication = $authentication;
         $this->backend = $backend;
+        $this->logger = $logger;
     }
 
     public function get() {
@@ -55,7 +60,7 @@ class Tags {
         if (method_exists($this->backend, $name)) {
             return call_user_func_array([$this->backend, $name], $args);
         } else {
-            \F3::get('logger')->error('Unimplemented method for ' . \F3::get('db_type') . ': ' . $name);
+            $this->logger->error('Unimplemented method for ' . \F3::get('db_type') . ': ' . $name);
         }
     }
 }

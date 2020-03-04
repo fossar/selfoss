@@ -6,6 +6,7 @@ use GuzzleHttp;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Uri;
 use GuzzleHttp\Psr7\UriResolver;
+use helpers\Image;
 use helpers\WebClient;
 use Stringy\Stringy as S;
 
@@ -55,6 +56,17 @@ class reddit2 extends \spouts\spout {
 
     /** @var string favicon url */
     private $faviconUrl = '';
+
+    /** @var Image image helper */
+    private $imageHelper;
+
+    /** @var WebClient */
+    private $webClient;
+
+    public function __construct(Image $imageHelper, WebClient $webClient) {
+        $this->imageHelper = $imageHelper;
+        $this->webClient = $webClient;
+    }
 
     public function load(array $params) {
         if (!empty($params['password']) && !empty($params['username'])) {
@@ -144,10 +156,9 @@ class reddit2 extends \spouts\spout {
     }
 
     public function getIcon() {
-        $imageHelper = $this->getImageHelper();
         $htmlUrl = $this->getHtmlUrl();
-        if ($htmlUrl && $imageHelper->fetchFavicon($htmlUrl)) {
-            $this->faviconUrl = $imageHelper->getFaviconUrl();
+        if ($htmlUrl && $this->imageHelper->fetchFavicon($htmlUrl)) {
+            $this->faviconUrl = $this->imageHelper->getFaviconUrl();
         }
 
         return $this->faviconUrl;
@@ -201,7 +212,7 @@ class reddit2 extends \spouts\spout {
      * @throws \Exception if the credentials are invalid
      */
     private function login(array $params) {
-        $http = WebClient::getHttpClient();
+        $http = $this->webClient->getHttpClient();
         $response = $http->post("https://ssl.reddit.com/api/login/{$params['username']}", [
             GuzzleHttp\RequestOptions::FORM_PARAMS => [
                 'api_type' => 'json',
@@ -235,7 +246,7 @@ class reddit2 extends \spouts\spout {
      * @return GuzzleHttp\Psr7\Response
      */
     private function sendRequest($url, $method = 'GET') {
-        $http = WebClient::getHttpClient();
+        $http = $this->webClient->getHttpClient();
 
         if (isset($this->reddit_session)) {
             $request = new Request($method, $url, [

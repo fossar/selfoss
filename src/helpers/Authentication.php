@@ -2,6 +2,8 @@
 
 namespace helpers;
 
+use Monolog\Logger;
+
 /**
  * Helper class for authenticate user
  *
@@ -13,10 +15,15 @@ class Authentication {
     /** @var bool loggedin */
     private $loggedin = false;
 
+    /** @var Logger */
+    private $logger;
+
     /**
      * start session and check login
      */
-    public function __construct() {
+    public function __construct(Logger $logger) {
+        $this->logger = $logger;
+
         if ($this->enabled() === false) {
             return;
         }
@@ -33,7 +40,7 @@ class Authentication {
         session_set_cookie_params(
             $cookie_expire, $cookie_path, $cookie_domain, $cookie_secure, $cookie_httponly
         );
-        \F3::get('logger')->debug("set cookie on $cookie_domain$cookie_path expiring in $cookie_expire seconds");
+        $this->logger->debug("set cookie on $cookie_domain$cookie_path expiring in $cookie_expire seconds");
 
         session_name();
         if (session_id() === '') {
@@ -41,9 +48,9 @@ class Authentication {
         }
         if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
             $this->loggedin = true;
-            \F3::get('logger')->debug('logged in using valid session');
+            $this->logger->debug('logged in using valid session');
         } else {
-            \F3::get('logger')->debug('session does not contain valid auth');
+            $this->logger->debug('session does not contain valid auth');
         }
 
         // autologin if request contains unsername and password
@@ -88,11 +95,11 @@ class Authentication {
             if ($credentialsCorrect) {
                 $this->loggedin = true;
                 $_SESSION['loggedin'] = true;
-                \F3::get('logger')->debug('logged in with supplied username and password');
+                $this->logger->debug('logged in with supplied username and password');
 
                 return true;
             } else {
-                \F3::get('logger')->debug('failed to log in with supplied username and password');
+                $this->logger->debug('failed to log in with supplied username and password');
 
                 return false;
             }
@@ -132,7 +139,7 @@ class Authentication {
         $this->loggedin = false;
         $_SESSION['loggedin'] = false;
         session_destroy();
-        \F3::get('logger')->debug('logged out and destroyed session');
+        $this->logger->debug('logged out and destroyed session');
     }
 
     /**

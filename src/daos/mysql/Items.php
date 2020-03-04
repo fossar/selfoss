@@ -3,6 +3,7 @@
 namespace daos\mysql;
 
 use DateTime;
+use Monolog\Logger;
 
 /**
  * Class for accessing persistent saved items -- mysql
@@ -22,8 +23,12 @@ class Items implements \daos\ItemsInterface {
     /** @var \daos\Database database connection */
     protected $database;
 
-    public function __construct(\daos\Database $database) {
+    /** @var Logger */
+    private $logger;
+
+    public function __construct(Logger $logger, \daos\Database $database) {
         $this->database = $database;
+        $this->logger = $logger;
     }
 
     /**
@@ -507,7 +512,7 @@ class Items implements \daos\ItemsInterface {
                   [':thumbnail' => $thumbnail]);
         $amount = $res[0]['amount'];
         if ($amount == 0) {
-            \F3::get('logger')->debug('thumbnail not found: ' . $thumbnail);
+            $this->logger->debug('thumbnail not found: ' . $thumbnail);
         }
 
         return $amount > 0;

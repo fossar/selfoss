@@ -3,8 +3,10 @@
 namespace spouts\rss;
 
 use Graby\Graby;
+use helpers\Image;
 use helpers\WebClient;
 use Http\Adapter\Guzzle6\Client as GuzzleAdapter;
+use Monolog\Logger;
 
 /**
  * Plugin for fetching the news with fivefilters Full-Text RSS
@@ -37,6 +39,20 @@ class fulltextrss extends feed {
     /** @var Graby */
     private $graby;
 
+    /** @var Logger */
+    private $logger;
+
+    /** @var WebClient */
+    private $webClient;
+
+    public function __construct(Image $imageHelper, Logger $logger, WebClient $webClient) {
+        parent::__construct($imageHelper, $logger, $webClient);
+
+        $this->imageHelper = $imageHelper;
+        $this->logger = $logger;
+        $this->webClient = $webClient;
+    }
+
     public function getContent() {
         $url = $this->getLink();
 
@@ -47,17 +63,17 @@ class fulltextrss extends feed {
                         'site_config' => [\F3::get('ftrss_custom_data_dir')],
                     ],
                 ],
-            ], new GuzzleAdapter(WebClient::getHttpClient()));
-            $logger = \F3::get('logger')->withName(self::$loggerTag);
+            ], new GuzzleAdapter($this->webClient->getHttpClient()));
+            $logger = $this->logger->withName(self::$loggerTag);
             $this->graby->setLogger($logger);
         }
 
-        \F3::get('logger')->info('Extracting content for page: ' . $url);
+        $this->logger->info('Extracting content for page: ' . $url);
 
         $response = $this->graby->fetchContent($url);
 
         if ($response['status'] !== 200) {
-            \F3::get('logger')->error('Failed loading page');
+            $this->logger->error('Failed loading page');
 
             return '<p><strong>Failed to get web page</strong></p>' . parent::getContent();
         }

@@ -159,14 +159,4 @@ abstract class spout implements \Iterator {
      */
     public function destroy() {
     }
-
-    /**
-     * returns an instance of selfoss image helper
-     * for fetching favicons
-     *
-     * @return \helpers\Image
-     */
-    public function getImageHelper() {
-        return new \helpers\Image();
-    }
 }

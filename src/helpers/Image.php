@@ -5,6 +5,7 @@ namespace helpers;
 use Elphin\IcoFileLoader\IcoFileService;
 use GuzzleHttp\Psr7\Uri;
 use GuzzleHttp\Psr7\UriResolver;
+use Monolog\Logger;
 use WideImage\WideImage;
 
 /**
@@ -29,6 +30,17 @@ class Image {
         'text/ico',
         'application/ico'
     ];
+
+    /** @var Logger */
+    private $logger;
+
+    /** @var WebClient */
+    private $webClient;
+
+    public function __construct(Logger $logger, WebClient $webClient) {
+        $this->logger = $logger;
+        $this->webClient = $webClient;
+    }
 
     /**
      * fetch favicon
@@ -56,9 +68,9 @@ class Image {
         // search on base page for <link rel="shortcut icon" url...
         $html = null;
         try {
-            $html = \helpers\WebClient::request($url);
+            $html = $this->webClient->request($url);
         } catch (\Exception $e) {
-            \F3::get('logger')->debug('icon: failed to get html page: ', ['exception' => $e]);
+            $this->logger->debug('icon: failed to get html page: ', ['exception' => $e]);
         }
 
         $shortcutIcon = self::parseShortcutIcon($html);
@@ -100,9 +112,9 @@ class Image {
     public function loadImage($url, $extension = 'png', $width = null, $height = null) {
         // load image
         try {
-            $data = \helpers\WebClient::request($url);
+            $data = $this->webClient->request($url);
         } catch (\Exception $e) {
-            \F3::get('logger')->error("failed to retrieve image $url,", ['exception' => $e]);
+            $this->logger->error("failed to retrieve image $url,", ['exception' => $e]);
 
             return null;
         }
@@ -129,7 +141,7 @@ class Image {
             try {
                 $icon = $loader->fromString($data);
             } catch (\InvalidArgumentException $e) {
-                \F3::get('logger')->error("Icon “{$url}” is not valid", ['exception' => $e]);
+                $this->logger->error("Icon “{$url}” is not valid", ['exception' => $e]);
 
                 return null;
             }

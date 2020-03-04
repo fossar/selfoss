@@ -69,6 +69,13 @@ class usertimeline extends \spouts\spout {
     /** @var ?GuzzleHttp\Client HTTP client configured with Twitter OAuth support */
     protected $client = null;
 
+    /** @var WebClient */
+    private $webClient;
+
+    public function __construct(WebClient $webClient) {
+        $this->webClient = $webClient;
+    }
+
     /**
      * Provide a HTTP client for use by spouts
      *
@@ -79,10 +86,10 @@ class usertimeline extends \spouts\spout {
      *
      * @return GuzzleHttp\Client
      */
-    public static function getHttpClient($consumerKey, $consumerSecret, $accessToken, $accessTokenSecret) {
+    public function getHttpClient($consumerKey, $consumerSecret, $accessToken, $accessTokenSecret) {
         $access_token_used = !empty($accessToken) && !empty($accessTokenSecret);
 
-        $oldClient = WebClient::getHttpClient();
+        $oldClient = $this->webClient->getHttpClient();
         $config = $oldClient->getConfig();
 
         $config['base_uri'] = 'https://api.twitter.com/1.1/';
@@ -155,7 +162,7 @@ class usertimeline extends \spouts\spout {
     //
 
     public function load(array $params) {
-        $this->client = self::getHttpClient($params['consumer_key'], $params['consumer_secret'], $params['access_token'], $params['access_token_secret']);
+        $this->client = $this->getHttpClient($params['consumer_key'], $params['consumer_secret'], $params['access_token'], $params['access_token_secret']);
 
         $this->items = $this->fetchTwitterTimeline('statuses/user_timeline', [
             'screen_name' => $params['username'],

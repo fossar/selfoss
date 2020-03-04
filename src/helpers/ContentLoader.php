@@ -2,6 +2,8 @@
 
 namespace helpers;
 
+use Monolog\Logger;
+
 /**
  * Helper class for loading extern items
  *
@@ -19,6 +21,9 @@ class ContentLoader {
     /** @var \daos\Items database access for saving new item */
     private $itemsDao;
 
+    /** @var Logger */
+    private $logger;
+
     /** @var \daos\Sources database access for saving source’s last update */
     private $sourcesDao;
 
@@ -28,10 +33,11 @@ class ContentLoader {
     /**
      * ctor
      */
-    public function __construct(\daos\Database $database, Image $imageHelper, \daos\Items $itemsDao, \daos\Sources $sourcesDao, SpoutLoader $spoutLoader) {
+    public function __construct(\daos\Database $database, Image $imageHelper, \daos\Items $itemsDao, Logger $logger, \daos\Sources $sourcesDao, SpoutLoader $spoutLoader) {
         $this->database = $database;
         $this->imageHelper = $imageHelper;
         $this->itemsDao = $itemsDao;
+        $this->logger = $logger;
         $this->sourcesDao = $sourcesDao;
         $this->spoutLoader = $spoutLoader;
     }
@@ -88,27 +94,27 @@ class ContentLoader {
         @error_reporting(E_ERROR);
 
         // logging
-        \F3::get('logger')->debug('---');
-        \F3::get('logger')->debug('start fetching source "' . $source['title'] . ' (id: ' . $source['id'] . ') ');
+        $this->logger->debug('---');
+        $this->logger->debug('start fetching source "' . $source['title'] . ' (id: ' . $source['id'] . ') ');
 
         // get spout
         $spout = $this->spoutLoader->get($source['spout']);
         if ($spout === null) {
-            \F3::get('logger')->error('unknown spout: ' . $source['spout']);
+            $this->logger->error('unknown spout: ' . $source['spout']);
             $this->sourcesDao->error($source['id'], 'unknown spout');
 
             return;
         }
-        \F3::get('logger')->debug('spout successfully loaded: ' . $source['spout']);
+        $this->logger->debug('spout successfully loaded: ' . $source['spout']);
 
         // receive content
-        \F3::get('logger')->debug('fetch content');
+        $this->logger->debug('fetch content');
         try {
             $spout->load(
                 json_decode(html_entity_decode($source['params']), true)
             );
         } catch (\Exception $e) {
-            \F3::get('logger')->error('error loading feed content for ' . $source['title'], ['exception' => $e]);
+            $this->logger->error('error loading feed content for ' . $source['title'], ['exception' => $e]);
             $this->sourcesDao->error($source['id'], date('Y-m-d H:i:s') . 'error loading feed content: ' . $e->getMessage());
 
             return;
@@ -117,10 +123,10 @@ class ContentLoader {
         // current date
         $minDate = new \DateTime();
         $minDate->sub(new \DateInterval('P' . \F3::get('items_lifetime') . 'D'));
-        \F3::get('logger')->debug('minimum date: ' . $minDate->format('Y-m-d H:i:s'));
+        $this->logger->debug('minimum date: ' . $minDate->format('Y-m-d H:i:s'));
 
         // insert new items in database
-        \F3::get('logger')->debug('start item fetching');
+        $this->logger->debug('start item fetching');
 
         $itemsInFeed = [];
         foreach ($spout as $item) {
@@ -133,7 +139,7 @@ class ContentLoader {
         foreach ($spout as $item) {
             // item already in database?
             if (isset($itemsFound[$item->getId()])) {
-                \F3::get('logger')->debug('item "' . $item->getTitle() . '" already in database.');
+                $this->logger->debug('item "' . $item->getTitle() . '" already in database.');
                 $itemsSeen[] = $itemsFound[$item->getId()];
                 continue;
             }
@@ -145,7 +151,7 @@ class ContentLoader {
                 $itemDate = new \DateTime();
             }
             if ($itemDate < $minDate) {
-                \F3::get('logger')->debug('item "' . $item->getTitle() . '" (' . $item->getDate() . ') older than ' . \F3::get('items_lifetime') . ' days');
+                $this->logger->debug('item "' . $item->getTitle() . '" (' . $item->getDate() . ') older than ' . \F3::get('items_lifetime') . ' days');
                 continue;
             }
 
@@ -156,7 +162,7 @@ class ContentLoader {
             }
 
             // insert new item
-            \F3::get('logger')->debug('start insertion of new item "' . $item->getTitle() . '"');
+            $this->logger->debug('start insertion of new item "' . $item->getTitle() . '"');
 
             $content = '';
             try {
@@ -167,7 +173,7 @@ class ContentLoader {
                 $content = $this->sanitizeContent($content);
             } catch (\Exception $e) {
                 $content = 'Error: Content not fetched. Reason: ' . $e->getMessage();
-                \F3::get('logger')->error('Can not fetch "' . $item->getTitle() . '"', ['exception' => $e]);
+                $this->logger->error('Can not fetch "' . $item->getTitle() . '"', ['exception' => $e]);
             }
 
             // sanitize title
@@ -184,12 +190,12 @@ class ContentLoader {
             // sanitize author
             $author = $this->sanitizeField($item->getAuthor());
 
-            \F3::get('logger')->debug('item content sanitized');
+            $this->logger->debug('item content sanitized');
 
             try {
                 $icon = $item->getIcon();
             } catch (\Exception $e) {
-                \F3::get('logger')->debug('icon: error', ['exception' => $e]);
+                $this->logger->debug('icon: error', ['exception' => $e]);
 
                 return;
             }
@@ -214,16 +220,16 @@ class ContentLoader {
 
             // insert new item
             $this->itemsDao->add($newItem);
-            \F3::get('logger')->debug('item inserted');
+            $this->logger->debug('item inserted');
 
-            \F3::get('logger')->debug('Memory usage: ' . memory_get_usage());
-            \F3::get('logger')->debug('Memory peak usage: ' . memory_get_peak_usage());
+            $this->logger->debug('Memory usage: ' . memory_get_usage());
+            $this->logger->debug('Memory peak usage: ' . memory_get_peak_usage());
 
             $lastEntry = max($lastEntry, $itemDate->getTimestamp());
         }
 
         // destroy feed object (prevent memory issues)
-        \F3::get('logger')->debug('destroy spout object');
+        $this->logger->debug('destroy spout object');
         $spout->destroy();
 
         // remove previous errors and set last update timestamp
@@ -249,7 +255,7 @@ class ContentLoader {
             $resultTitle = @preg_match($source['filter'], $title);
             $resultContent = @preg_match($source['filter'], $content);
             if ($resultTitle === false || $resultContent === false) {
-                \F3::get('logger')->error('filter error: ' . $source['filter']);
+                $this->logger->error('filter error: ' . $source['filter']);
 
                 return true; // do not filter out item
             }
@@ -320,13 +326,13 @@ class ContentLoader {
                 );
                 if ($written !== false) {
                     $newItem['thumbnail'] = md5($thumbnail) . '.' . $extension;
-                    \F3::get('logger')->debug('Thumbnail generated: ' . $thumbnail);
+                    $this->logger->debug('Thumbnail generated: ' . $thumbnail);
                 } else {
-                    \F3::get('logger')->warning('Unable to store thumbnail: ' . $thumbnail . '. Please check permissions of ' . \F3::get('datadir') . '/thumbnails.');
+                    $this->logger->warning('Unable to store thumbnail: ' . $thumbnail . '. Please check permissions of ' . \F3::get('datadir') . '/thumbnails.');
                 }
             } else {
                 $newItem['thumbnail'] = '';
-                \F3::get('logger')->error('thumbnail generation error: ' . $thumbnail);
+                $this->logger->error('thumbnail generation error: ' . $thumbnail);
             }
         }
 
@@ -346,7 +352,7 @@ class ContentLoader {
         if (strlen(trim($icon)) > 0) {
             $extension = 'png';
             if ($icon === $lasticon) {
-                \F3::get('logger')->debug('use last icon: ' . $lasticon);
+                $this->logger->debug('use last icon: ' . $lasticon);
                 $newItem['icon'] = md5($lasticon) . '.' . $extension;
             } else {
                 $iconAsPng = $this->imageHelper->loadImage($icon, $extension, 30, null);
@@ -358,17 +364,17 @@ class ContentLoader {
                     $lasticon = $icon;
                     if ($written !== false) {
                         $newItem['icon'] = md5($icon) . '.' . $extension;
-                        \F3::get('logger')->debug('Icon generated: ' . $icon);
+                        $this->logger->debug('Icon generated: ' . $icon);
                     } else {
-                        \F3::get('logger')->warning('Unable to store icon: ' . $icon . '. Please check permissions of ' . \F3::get('datadir') . '/favicons.');
+                        $this->logger->warning('Unable to store icon: ' . $icon . '. Please check permissions of ' . \F3::get('datadir') . '/favicons.');
                     }
                 } else {
                     $newItem['icon'] = '';
-                    \F3::get('logger')->error('icon generation error: ' . $icon);
+                    $this->logger->error('icon generation error: ' . $icon);
                 }
             }
         } else {
-            \F3::get('logger')->debug('no icon for this feed');
+            $this->logger->debug('no icon for this feed');
         }
 
         return $newItem;
@@ -380,13 +386,13 @@ class ContentLoader {
      * @param $data
      */
     public function fetchTitle($data) {
-        \F3::get('logger')->debug('Start fetching spout title');
+        $this->logger->debug('Start fetching spout title');
 
         // get spout
         $spout = $this->spoutLoader->get($data['spout']);
 
         if ($spout === null) {
-            \F3::get('logger')->error("Unknown spout '{$data['spout']}' when fetching title");
+            $this->logger->error("Unknown spout '{$data['spout']}' when fetching title");
 
             return null;
         }
@@ -398,7 +404,7 @@ class ContentLoader {
 
             $spout->load($data);
         } catch (\Exception $e) {
-            \F3::get('logger')->error('Error fetching title', ['exception' => $e]);
+            $this->logger->error('Error fetching title', ['exception' => $e]);
 
             return null;
         }
@@ -416,24 +422,24 @@ class ContentLoader {
      */
     public function cleanup() {
         // cleanup orphaned and old items
-        \F3::get('logger')->debug('cleanup orphaned and old items');
+        $this->logger->debug('cleanup orphaned and old items');
         $this->itemsDao->cleanup((int) \F3::get('items_lifetime'));
-        \F3::get('logger')->debug('cleanup orphaned and old items finished');
+        $this->logger->debug('cleanup orphaned and old items finished');
 
         // delete orphaned thumbnails
-        \F3::get('logger')->debug('delete orphaned thumbnails');
+        $this->logger->debug('delete orphaned thumbnails');
         $this->cleanupFiles('thumbnails');
-        \F3::get('logger')->debug('delete orphaned thumbnails finished');
+        $this->logger->debug('delete orphaned thumbnails finished');
 
         // delete orphaned icons
-        \F3::get('logger')->debug('delete orphaned icons');
+        $this->logger->debug('delete orphaned icons');
         $this->cleanupFiles('icons');
-        \F3::get('logger')->debug('delete orphaned icons finished');
+        $this->logger->debug('delete orphaned icons finished');
 
         // optimize database
-        \F3::get('logger')->debug('optimize database');
+        $this->logger->debug('optimize database');
         $this->database->optimize();
-        \F3::get('logger')->debug('optimize database finished');
+        $this->logger->debug('optimize database finished');
     }
 
     /**

@@ -2,6 +2,10 @@
 
 namespace spouts\rss;
 
+use helpers\Image;
+use helpers\WebClient;
+use Monolog\Logger;
+
 /**
  * Spout for fetching an rss feed
  *
@@ -35,6 +39,21 @@ class feed extends \spouts\spout {
     /** @var ?string URL of the favicon */
     protected $faviconUrl = null;
 
+    /** @var Logger */
+    private $logger;
+
+    /** @var Image image helper */
+    private $imageHelper;
+
+    /** @var WebClient */
+    private $webClient;
+
+    public function __construct(Image $imageHelper, Logger $logger, WebClient $webClient) {
+        $this->imageHelper = $imageHelper;
+        $this->logger = $logger;
+        $this->webClient = $webClient;
+    }
+
     //
     // Source Methods
     //
@@ -44,10 +63,14 @@ class feed extends \spouts\spout {
         $this->feed = @new \SimplePie();
         @$this->feed->set_cache_location(\F3::get('cache'));
         @$this->feed->set_cache_duration(1800);
+        // abuse set_curl_options since there is no sane way to pass data to SimplePie\File
+        $this->feed->set_curl_options([
+            WebClient::class => $this->webClient
+        ]);
         @$this->feed->set_file_class(\helpers\SimplePieFileGuzzle::class);
         @$this->feed->set_feed_url(htmlspecialchars_decode($params['url']));
         @$this->feed->set_autodiscovery_level(SIMPLEPIE_LOCATOR_AUTODISCOVERY | SIMPLEPIE_LOCATOR_LOCAL_EXTENSION | SIMPLEPIE_LOCATOR_LOCAL_BODY);
-        $this->feed->set_useragent(\helpers\WebClient::getUserAgent());
+        $this->feed->set_useragent($this->webClient->getUserAgent());
 
         // fetch items
         @$this->feed->init();
@@ -116,16 +139,15 @@ class feed extends \spouts\spout {
         }
 
         $this->faviconUrl = null;
-        $imageHelper = $this->getImageHelper();
         $htmlUrl = $this->getHtmlUrl();
-        if ($htmlUrl && $imageHelper->fetchFavicon($htmlUrl, true)) {
-            $this->faviconUrl = $imageHelper->getFaviconUrl();
-            \F3::get('logger')->debug('icon: using feed homepage favicon: ' . $this->faviconUrl);
+        if ($htmlUrl && $this->imageHelper->fetchFavicon($htmlUrl, true)) {
+            $this->faviconUrl = $this->imageHelper->getFaviconUrl();
+            $this->logger->debug('icon: using feed homepage favicon: ' . $this->faviconUrl);
         } else {
             $feedLogoUrl = $this->feed->get_image_url();
-            if ($feedLogoUrl && $imageHelper->fetchFavicon($feedLogoUrl)) {
-                $this->faviconUrl = $imageHelper->getFaviconUrl();
-                \F3::get('logger')->debug('icon: using feed logo: ' . $this->faviconUrl);
+            if ($feedLogoUrl && $this->imageHelper->fetchFavicon($feedLogoUrl)) {
+                $this->faviconUrl = $this->imageHelper->getFaviconUrl();
+                $this->logger->debug('icon: using feed logo: ' . $this->faviconUrl);
             }
         }
 

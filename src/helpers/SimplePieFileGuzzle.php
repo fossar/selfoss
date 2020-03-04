@@ -6,7 +6,11 @@ namespace helpers;
  * Bridge to make SimplePie fetch resources using Guzzle library
  */
 class SimplePieFileGuzzle extends \SimplePie_File {
-    public function __construct($url, $timeout = 10, $redirects = 5, $headers = null, $useragent = null, $force_fsockopen = false) {
+    /** @var WebClient */
+    private $webClient;
+
+    public function __construct($url, $timeout = 10, $redirects = 5, $headers = null, $useragent = null, $force_fsockopen = false, $curl_options = []) {
+        $this->webClient = $curl_options[WebClient::class];
         $this->url = $url;
         $this->permanent_url = $url;
         $this->useragent = $useragent;
@@ -17,7 +21,7 @@ class SimplePieFileGuzzle extends \SimplePie_File {
         if (preg_match('/^https?:\/\//i', $url)) {
             $this->method = SIMPLEPIE_FILE_SOURCE_REMOTE | SIMPLEPIE_FILE_SOURCE_CURL;
 
-            $client = \helpers\WebClient::getHttpClient();
+            $client = $this->webClient->getHttpClient();
             try {
                 $response = $client->get($url, [
                     'allow_redirects' => [

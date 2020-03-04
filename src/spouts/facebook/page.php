@@ -55,8 +55,15 @@ class page extends \spouts\spout {
     /** @var ?string page picture */
     private $pagePicture;
 
+    /** @var WebClient */
+    private $webClient;
+
+    public function __construct(WebClient $webClient) {
+        $this->webClient = $webClient;
+    }
+
     public function load(array $params) {
-        $http = WebClient::getHttpClient();
+        $http = $this->webClient->getHttpClient();
         $url = new Uri('https://graph.facebook.com/' . urlencode($params['user']));
         $url = $url->withQueryValues($url, [
             'access_token' => $params['app_id'] . '|' . $params['app_secret'],

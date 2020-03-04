@@ -153,8 +153,13 @@ $f3->set('CONTAINER', function($class) use ($dice) {
     return $dice->create($class);
 });
 
+$dice->addRule(Logger::class, [
+    'shared' => true,
+    'constructParams' => ['selfoss'],
+]);
+
 // init logger
-$log = new Logger('selfoss');
+$log = $dice->create(Logger::class);
 if ($f3->get('logger_level') === 'NONE') {
     $log->pushHandler(new NullHandler());
 } else {
@@ -174,20 +179,19 @@ if ($f3->get('logger_level') === 'NONE') {
     $handler->setFormatter($formatter);
     $log->pushHandler($handler);
 }
-$f3->set('logger', $log);
 
 // init error handling
 $f3->set('ONERROR',
-    function(Base $f3) {
+    function(Base $f3) use ($log) {
         $exception = $f3->get('EXCEPTION');
 
         if ($exception) {
-            \F3::get('logger')->error($exception->getMessage(), ['exception' => $exception]);
+            $log->error($exception->getMessage(), ['exception' => $exception]);
         } else {
-            \F3::get('logger')->error($f3->get('ERROR.text'));
+            $log->error($f3->get('ERROR.text'));
         }
 
-        if (\F3::get('DEBUG') != 0) {
+        if ($f3->get('DEBUG') != 0) {
             echo $f3->get('lang_error') . ': ';
             echo $f3->get('ERROR.text') . "\n";
             echo $f3->get('ERROR.trace');
@@ -197,6 +201,6 @@ $f3->set('ONERROR',
     }
 );
 
-if (\F3::get('DEBUG') != 0) {
+if ($f3->get('DEBUG') != 0) {
     ini_set('display_errors', '0');
 }
