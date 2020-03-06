@@ -77,5 +77,21 @@
   "lang_error_refreshing_source": "No s'ha pogut refrescar fonts:",
   "lang_error_sync": "No s'ha pogut sincronitzar els últims canvis del servidor:",
   "lang_error_offline_storage": "Error d'emmagatzematge fora de línia: {0}. Recarregar pot ajudar. Desactivant ús fora de línia per ara.",
-  "lang_error_invalid_subsection": "Subsecció invàlida:"
+  "lang_error_invalid_subsection": "Subsecció invàlida:",
+  "lang_search_label": "Cercar terme",
+  "lang_article_actions": "Accions",
+  "lang_error_configuration": "Impossible carregar configuració.",
+  "lang_info_url_copied": "URL copiada al porta-retalls.",
+  "lang_share_native_label": "Compartir",
+  "lang_share_diaspora_label": "Compartir a Diaspora",
+  "lang_share_twitter_label": "Compartir al Twitter",
+  "lang_share_facebook_label": "Compartir a Facebook",
+  "lang_share_pocket_label": "Desar a Pocket",
+  "lang_share_wallabag_label": "Desar a Wallabag",
+  "lang_share_wordpress_label": "Compartir a WordPress",
+  "lang_share_mail_label": "Compartir per e-mail",
+  "lang_share_copy_label": "Copia enllaç al porta-retalls",
+  "lang_error_share_native_abort": "Impossible compartir ítem-o no hi ha objectiu a compartir, o has cancel·lat.",
+  "lang_error_share_native": "Impossible compartir ítem.",
+  "lang_close_entry": "Tancar"
 }
