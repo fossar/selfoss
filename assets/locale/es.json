@@ -77,5 +77,21 @@
   "lang_error_refreshing_source": "No se pudo refrescar fuentes:",
   "lang_error_sync": "No se pudo sincronizar los últimos cambios del servidor:",
   "lang_error_offline_storage": "Error de almacenaje fuera de línea: {0}. Recargar puede ayudar. Desactivando uso fuera de línea por ahora.",
-  "lang_error_invalid_subsection": "Subsección inválida:"
+  "lang_error_invalid_subsection": "Subsección inválida:",
+  "lang_search_label": "Buscar término",
+  "lang_article_actions": "Acciones",
+  "lang_error_configuration": "Imposible cargar configuración.",
+  "lang_info_url_copied": "URL copiada al portapapeles.",
+  "lang_share_native_label": "Compartir",
+  "lang_share_diaspora_label": "Compartir en Diaspora",
+  "lang_share_twitter_label": "Compartir en Twitter",
+  "lang_share_facebook_label": "Compartir en Facebook",
+  "lang_share_pocket_label": "Guardar en Pocket",
+  "lang_share_wallabag_label": "Guardar en Wallabag",
+  "lang_share_wordpress_label": "Compartir en WordPress",
+  "lang_share_mail_label": "Compartir por e-mail",
+  "lang_share_copy_label": "Copiar enlace al portapapeles",
+  "lang_error_share_native_abort": "Imposible compartir ítem-no hay objetivos que compartir, o has cancelado.",
+  "lang_error_share_native": "Imposible compartir ítem.",
+  "lang_close_entry": "Cerrar"
 }
