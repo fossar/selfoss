@@ -47,6 +47,8 @@ class Import {
      * html
      *
      * @note Borrows from controllers/Sources.php:write
+     *
+     * @return void
      */
     public function add() {
         $this->authentication->needsLoggedIn();
@@ -78,8 +80,8 @@ class Import {
             // show errors
             if (count($errors) > 0) {
                 http_response_code(202);
-                $messages = 'The following feeds could not be imported:';
-                $messages += $errors;
+                $messages[] = 'The following feeds could not be imported:';
+                $messages = array_merge($messages, $errors);
             } else { // On success bring them back to their subscription list
                 http_response_code(200);
                 $amount = count($this->imported);
@@ -149,7 +151,7 @@ class Import {
      * @param SimpleXMLElement $xml xml feed entry for item
      * @param array $tags of the entry
      *
-     * @return bool|string true on success or item title on error
+     * @return true|string true on success or item title on error
      */
     private function addSubscription(SimpleXMLElement $xml, array $tags) {
         // OPML Required attributes: text, xmlUrl, type

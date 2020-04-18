@@ -20,6 +20,8 @@ class ImportPage {
     /**
      * Shows a simple html form
      * html
+     *
+     * @return void
      */
     public function show() {
         $this->authentication->needsLoggedIn();

@@ -61,6 +61,6 @@ class About {
             ],
         ];
 
-        echo $this->view->jsonSuccess($configuration);
+        $this->view->jsonSuccess($configuration);
     }
 }
