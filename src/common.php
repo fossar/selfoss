@@ -158,6 +158,12 @@ $dice->addRule(Logger::class, [
     'constructParams' => ['selfoss'],
 ]);
 
+$dice->addRule(helpers\FeedHelper::class, [
+    'constructParams' => [
+        \F3::get('cache'),
+    ],
+]);
+
 // init logger
 $log = $dice->create(Logger::class);
 if ($f3->get('logger_level') === 'NONE') {

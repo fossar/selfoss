@@ -2,8 +2,8 @@
 
 namespace spouts\rss;
 
+use helpers\FeedReader;
 use helpers\Image;
-use helpers\WebClient;
 use Monolog\Logger;
 
 /**
@@ -42,16 +42,16 @@ class feed extends \spouts\spout {
     /** @var Logger */
     private $logger;
 
+    /** @var FeedReader */
+    private $feed;
+
     /** @var Image image helper */
     private $imageHelper;
 
-    /** @var WebClient */
-    private $webClient;
-
-    public function __construct(Image $imageHelper, Logger $logger, WebClient $webClient) {
+    public function __construct(FeedReader $feed, Image $imageHelper, Logger $logger) {
         $this->imageHelper = $imageHelper;
         $this->logger = $logger;
-        $this->webClient = $webClient;
+        $this->feed = $feed;
     }
 
     //
@@ -59,41 +59,10 @@ class feed extends \spouts\spout {
     //
 
     public function load(array $params) {
-        // initialize simplepie feed loader
-        $this->feed = @new \SimplePie();
-        @$this->feed->set_cache_location(\F3::get('cache'));
-        @$this->feed->set_cache_duration(1800);
-        // abuse set_curl_options since there is no sane way to pass data to SimplePie\File
-        $this->feed->set_curl_options([
-            WebClient::class => $this->webClient
-        ]);
-        @$this->feed->set_file_class(\helpers\SimplePieFileGuzzle::class);
-        @$this->feed->set_feed_url(htmlspecialchars_decode($params['url']));
-        @$this->feed->set_autodiscovery_level(SIMPLEPIE_LOCATOR_AUTODISCOVERY | SIMPLEPIE_LOCATOR_LOCAL_EXTENSION | SIMPLEPIE_LOCATOR_LOCAL_BODY);
-        $this->feed->set_useragent($this->webClient->getUserAgent());
-
-        // fetch items
-        @$this->feed->init();
-
-        // on error retry with force_feed
-        if (@$this->feed->error()) {
-            @$this->feed->set_autodiscovery_level(SIMPLEPIE_LOCATOR_NONE);
-            @$this->feed->force_feed(true);
-            @$this->feed->init();
-        }
-
-        // check for error
-        if (@$this->feed->error()) {
-            throw new \Exception($this->feed->error());
-        } else {
-            // save fetched items
-            $this->items = @$this->feed->get_items();
-        }
-
-        // set html url
-        $this->htmlUrl = @$this->feed->get_link();
-
-        $this->spoutTitle = $this->feed->get_title();
+        $feedData = $this->feed->load(htmlspecialchars_decode($params['url']));
+        $this->items = $feedData['items'];
+        $this->htmlUrl = $feedData['htmlUrl'];
+        $this->spoutTitle = $feedData['spoutTitle'];
     }
 
     public function getXmlUrl(array $params) {
@@ -144,7 +113,7 @@ class feed extends \spouts\spout {
             $this->faviconUrl = $this->imageHelper->getFaviconUrl();
             $this->logger->debug('icon: using feed homepage favicon: ' . $this->faviconUrl);
         } else {
-            $feedLogoUrl = $this->feed->get_image_url();
+            $feedLogoUrl = $this->feed->getImageUrl();
             if ($feedLogoUrl && $this->imageHelper->fetchFavicon($feedLogoUrl)) {
                 $this->faviconUrl = $this->imageHelper->getFaviconUrl();
                 $this->logger->debug('icon: using feed logo: ' . $this->faviconUrl);

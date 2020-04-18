@@ -3,6 +3,7 @@
 namespace spouts\rss;
 
 use Graby\Graby;
+use helpers\FeedReader;
 use helpers\Image;
 use helpers\WebClient;
 use Http\Adapter\Guzzle6\Client as GuzzleAdapter;
@@ -45,8 +46,8 @@ class fulltextrss extends feed {
     /** @var WebClient */
     private $webClient;
 
-    public function __construct(Image $imageHelper, Logger $logger, WebClient $webClient) {
-        parent::__construct($imageHelper, $logger, $webClient);
+    public function __construct(FeedReader $feed, Image $imageHelper, Logger $logger, WebClient $webClient) {
+        parent::__construct($feed, $imageHelper, $logger);
 
         $this->imageHelper = $imageHelper;
         $this->logger = $logger;
