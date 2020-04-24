@@ -44,5 +44,6 @@
   "lang_login_username": "usuário",
   "lang_login_password": "senha",
   "lang_no_title": "sem título",
-  "lang_error": "um erro ocorreu"
+  "lang_error": "um erro ocorreu",
+  "lang_share_mail_label": "Compartilhar usando correio eletrônico"
 }
