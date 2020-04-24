@@ -4,10 +4,12 @@ import ca from '../locale/ca.json';
 import cs from '../locale/cs.json';
 import de from '../locale/de.json';
 import en from '../locale/en.json';
+import enGB from '../locale/en-GB.json';
 import es from '../locale/es.json';
 import et from '../locale/et.json';
 import fi from '../locale/fi.json';
 import fr from '../locale/fr.json';
+import frCA from '../locale/fr-CA.json';
 import hu from '../locale/hu.json';
 import it from '../locale/it.json';
 import ja from '../locale/ja.json';
@@ -30,10 +32,12 @@ export default {
     'cs': cs,
     'de': de,
     'en': en,
+    'en-GB': enGB,
     'es': es,
     'et': et,
     'fi': fi,
     'fr': fr,
+    'fr-CA': frCA,
     'hu': hu,
     'it': it,
     'ja': ja,
