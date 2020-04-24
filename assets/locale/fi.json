@@ -37,5 +37,9 @@
   "lang_login": "kirjaudu sis&auml;&auml;n",
   "lang_login_username": "k&auml;ytt&auml;j&auml;tunnus",
   "lang_login_password": "salasana",
-  "lang_no_title": "ei otsikkoa"
+  "lang_no_title": "ei otsikkoa",
+  "lang_error_share_native_abort": "Kohteen jakaminen epäonnistui – joko jakamiskohteita ei ole tai peruutat sen.",
+  "lang_close_entry": "Sulje",
+  "lang_login_invalid_credentials": "Väärä käyttäjänimi/salasana",
+  "lang_share_mail_label": "Jaa sähköpostitse"
 }
