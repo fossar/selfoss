@@ -24,8 +24,7 @@
         "ext-gd": "*"
     },
     "require-dev": {
-        "jakub-onderka/php-console-highlighter": "^0.4.0",
-        "jakub-onderka/php-parallel-lint": "^1.0",
+        "php-parallel-lint/php-parallel-lint": "^1.0",
         "friendsofphp/php-cs-fixer": "^2.15",
         "phpunit/phpunit": "^5.7"
     },
