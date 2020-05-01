@@ -297,17 +297,25 @@ class Image {
         $html = self::cleanString('<style', '</style>', $html);
         $html = self::cleanString('<!--', '-->', $html);
 
-        if (preg_match_all('#<link\b[^>]*\brel=("|\')(?P<rel>apple-touch-icon|apple-touch-icon-precomposed|shortcut icon|icon)\1[^>]*>#iU', $html, $links, PREG_SET_ORDER) < 1) {
+        // This is only very rough approximation of HTML tag as described by
+        // https://www.w3.org/TR/2012/WD-html-markup-20120329/syntax.html#syntax-start-tags
+        // Ideally, we would use a HTML parser but even the streaming parsers I tried
+        // were several orders of magnitude slower than this mess.
+        if (preg_match_all('#<link\b[^>]*\srel=("|\'|)(?P<rel>apple-touch-icon|apple-touch-icon-precomposed|shortcut icon|icon)\1[^>]*>#iU', $html, $links, PREG_SET_ORDER) < 1) {
             return [];
         }
 
         $icons = [];
         $i = 0;
         foreach ($links as $link) {
-            if (preg_match('#\shref=("|\')(?P<url>.+)\1#iU', $link[0], $href)) {
+            if (preg_match('#\shref=(?:("|\')(?P<url>.+)\1|(?P<uq_url>[^\s"\'=><`]+?))#iU', $link[0], $href)) {
                 $icons[] = [
-                    'url' => $href['url'],
-                    'sizes' => preg_match('#\ssizes=("|\')(?P<sizes>[0-9\.]+).*\1#i', $link[0], $sizes)
+                    // Unmatched group should return an empty string but they are missing.
+                    // https://bugs.php.net/bug.php?id=50887
+                    'url' => isset($href['uq_url']) && $href['uq_url'] !== '' ? $href['uq_url'] : $href['url'],
+                    // Sizes are only used by Apple.
+                    // https://developer.apple.com/library/archive/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html
+                    'sizes' => preg_match('#\ssizes=("|\'|)(?P<sizes>[0-9\.]+)x\2\1#i', $link[0], $sizes)
                         ? $sizes['sizes']
                         : 0,
                     'rel' => $link['rel'],

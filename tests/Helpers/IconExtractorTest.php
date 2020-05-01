@@ -215,6 +215,24 @@ EOD;
     }
 
     /**
+     * Uglified websites with unquoted atttributes are handled correctly.
+     */
+    public function testUnquotedAttributes() {
+        $page = <<<EOD
+<html><head><link rel="shortcut icon" href=//www.example.com/favicons/favicon.ico><link rel=apple-touch-icon sizes=152x152 href=//www.example.com/favicons/apple-touch-icon-152x152.png><link rel=icon type=image/png href=//www.example.com/favicons/favicon-196x196.png sizes=196x196></head><body></body></html>
+EOD;
+
+        $this->assertEquals(
+            Image::parseShortcutIcons($page),
+            [
+                '//www.example.com/favicons/favicon-196x196.png',
+                '//www.example.com/favicons/apple-touch-icon-152x152.png',
+                '//www.example.com/favicons/favicon.ico',
+            ]
+        );
+    }
+
+    /**
      * Null is returned when no icon found.
      */
     public function testMissingIcon() {
