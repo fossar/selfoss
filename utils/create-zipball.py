@@ -65,10 +65,9 @@ class ZipFile(zipfile.ZipFile):
                 path = os.path.join(root, directory)
 
                 if allowed(path):
-                    # directories are empty files
+                    # Directories are empty files whose path ends with a slash.
                     # https://mail.python.org/pipermail/python-list/2003-June/205859.html
-                    info = zipfile.ZipInfo(os.path.join(self.prefix, path) + '/')
-                    archive.writestr(info, '')
+                    archive.writestr(os.path.join(self.prefix, path) + '/', '')
 
             for file in files:
                 path = os.path.join(root, file)
@@ -105,7 +104,7 @@ with tempfile.TemporaryDirectory(prefix='selfoss-dist-') as temp_dir:
     filename = 'selfoss-{}.zip'.format(version)
 
     # fill archive with data
-    with ZipFile(os.path.join(source_dir, filename), 'w', zipfile.ZIP_LZMA) as archive:
+    with ZipFile(os.path.join(source_dir, filename), 'w', zipfile.ZIP_DEFLATED) as archive:
         archive.prefix = 'selfoss'
 
         # we only care for locale assets now, since those are still used by backend code
