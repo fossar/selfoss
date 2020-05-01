@@ -37,9 +37,17 @@ class WebClient {
             $stack->push(new GuzzleTranscoder());
 
             if (\F3::get('logger_level') === 'DEBUG') {
+                if (\F3::get('DEBUG') == 0) {
+                    $logFormat = GuzzleHttp\MessageFormatter::SHORT;
+                } elseif (\F3::get('DEBUG') == 1) {
+                    $logFormat = ">>>>>>>>\n{req_headers}\n<<<<<<<<\n{res_headers}\n--------\n{error}";
+                } else {
+                    $logFormat = GuzzleHttp\MessageFormatter::DEBUG;
+                }
+
                 $logger = GuzzleHttp\Middleware::log(
                     $this->logger,
-                    new GuzzleHttp\MessageFormatter(\F3::get('DEBUG') != 0 ? GuzzleHttp\MessageFormatter::DEBUG : GuzzleHttp\MessageFormatter::SHORT),
+                    new GuzzleHttp\MessageFormatter($logFormat),
                     \Psr\Log\LogLevel::DEBUG
                 );
                 $stack->push($logger);
