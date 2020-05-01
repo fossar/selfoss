@@ -13,7 +13,7 @@
     "jquery": "^2.2.4",
     "jquery-focusable": "^1.0.1",
     "jquery-hotkeys": "^0.2.2",
-    "reset-css": "^4.0.1",
+    "reset-css": "^5.0.1",
     "spectrum-colorpicker": "^1.8.0"
   },
   "devDependencies": {
@@ -25,10 +25,10 @@
     "eslint": "^6.5.1",
     "parcel-bundler": "^1.12.3",
     "parcel-plugin-sw-cache": "^0.3.1",
-    "prettier": "^1.18.2",
-    "stylelint": "^11.1.1",
-    "stylelint-config-prettier": "^6.0.0",
-    "stylelint-config-standard": "^19.0.0",
+    "prettier": "^2.0.0",
+    "stylelint": "^13.0.0",
+    "stylelint-config-prettier": "^8.0.0",
+    "stylelint-config-standard": "^20.0.0",
     "stylelint-prettier": "^1.1.1"
   },
   "scripts": {
