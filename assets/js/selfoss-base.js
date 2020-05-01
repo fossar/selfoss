@@ -603,9 +603,8 @@ var selfoss = {
             url: 'mark',
             type: 'POST',
             dataType: 'json',
-            data: {
-                ids: ids
-            },
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(ids),
             success: function() {
                 selfoss.db.setOnline();
                 displayNextUnread();

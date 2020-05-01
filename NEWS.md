@@ -19,10 +19,12 @@
 - URLs containing special characters like commas in query string are now handled correctly ([#1082](https://github.com/SSilence/selfoss/pull/1082))
 - Set 60 second timeout to spout HTTP requests to prevent a single feed blocking other updates ([#1104](https://github.com/SSilence/selfoss/issues/1104))
 - Significantly improved accessibility ([#1133](https://github.com/SSilence/selfoss/pull/1133), [#1134](https://github.com/SSilence/selfoss/pull/1134) and [#1141](https://github.com/SSilence/selfoss/pull/1141))
+- Fixed marking more than 1000 items as read at the same time ([#1182](https://github.com/SSilence/selfoss/issues/1182))
 
 ### API changes
 - `tags` attribute is now consistently array of strings, numbers are numbers and booleans are booleans. **This might break third-party clients that have not updated yet.** ([#948](https://github.com/SSilence/selfoss/pull/948))
 - API is now versioned separately from selfoss and follows [semantic versioning](https://semver.org/) ([#1137](https://github.com/SSilence/selfoss/pull/1137))
+- *API 2.21.0*: `/mark` now accepts list of item IDs encoded as JSON. Requests using `application/x-www-form-urlencoded` are deprecated. ([#1182](https://github.com/SSilence/selfoss/pull/1182))
 
 ### Customization changes
 - `selfoss.shares.register` changed its signature: it no longer takes a boolean argument, and the callback is expected to open a window itself, instead of returning a URL. The `register` method now also expects a label and a HTML code of an icon (you can use a `<img>` tag, inline `<svg>`, emoji, etc.).

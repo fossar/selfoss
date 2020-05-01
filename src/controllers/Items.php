@@ -43,8 +43,14 @@ class Items {
 
         if (isset($params['item'])) {
             $lastid = $params['item'];
-        } elseif (isset($_POST['ids'])) {
-            $lastid = $_POST['ids'];
+        } else {
+            $headers = \F3::get('HEADERS');
+            if (isset($headers['Content-Type']) && strpos($headers['Content-Type'], 'application/json') === 0) {
+                $body = \F3::get('BODY');
+                $lastid = json_decode($body, true);
+            } elseif (isset($_POST['ids'])) {
+                $lastid = $_POST['ids'];
+            }
         }
 
         // validate id or ids
