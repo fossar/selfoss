@@ -232,6 +232,11 @@ selfoss.events.entries = function() {
     // more)
     if (selfoss.events.entryId && selfoss.filter.fromId === undefined) {
         var entry = $('#entry' + selfoss.events.entryId);
+
+        if (!entry) {
+            return;
+        }
+
         selfoss.ui.entryActivate(entry);
         // ensure scrolling to requested entry even if scrolling to article
         // header is disabled
