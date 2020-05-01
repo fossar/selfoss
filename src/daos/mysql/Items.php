@@ -410,8 +410,8 @@ class Items implements \daos\ItemsInterface {
         $params = [
             'sinceId' => [$sinceId, \PDO::PARAM_INT],
             'howMany' => [$howMany, \PDO::PARAM_INT],
-            'notBefore' => [$notBefore->format(\DateTime::ATOM), \PDO::PARAM_STR],
-            'since' => [$since->format(\DateTime::ATOM), \PDO::PARAM_STR]
+            'notBefore' => [$notBefore->format('Y-m-d H:i:s'), \PDO::PARAM_STR],
+            'since' => [$since->format('Y-m-d H:i:s'), \PDO::PARAM_STR]
         ];
 
         return $stmt::ensureRowTypes($this->database->exec($query, $params), [
@@ -645,7 +645,7 @@ class Items implements \daos\ItemsInterface {
         $res = $this->database->exec('SELECT id, unread, starred
             FROM ' . \F3::get('db_prefix') . 'items
             WHERE ' . \F3::get('db_prefix') . 'items.updatetime > :since;',
-                [':since' => [$since->format(DateTime::ATOM), \PDO::PARAM_STR]]);
+                [':since' => [$since->format('Y-m-d H:i:s'), \PDO::PARAM_STR]]);
         $res = $stmt::ensureRowTypes($res, [
             'id' => \daos\PARAM_INT,
             'unread' => \daos\PARAM_BOOL,
@@ -712,7 +712,7 @@ class Items implements \daos\ItemsInterface {
                             // create new status update
                             $sql[$id] = [
                                 'updates' => [$sk => $statusUpdate['sql']],
-                                'datetime' => $updateDate->format(\DateTime::ATOM)
+                                'datetime' => $updateDate->format('Y-m-d H:i:s')
                             ];
                         }
                     }

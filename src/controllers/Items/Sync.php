@@ -94,7 +94,7 @@ class Sync {
         $last_update = new \DateTime($this->itemsDao->lastUpdate());
 
         $sync = [
-            'lastUpdate' => $last_update->format(\DateTime::ATOM),
+            'lastUpdate' => $last_update->format('Y-m-d H:i:s'),
         ];
 
         $sinceId = 0;
