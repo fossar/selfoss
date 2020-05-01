@@ -677,16 +677,13 @@ selfoss.dbOffline = {
             selfoss.dbOffline.needsSync = true;
         }
 
-        var newQueuedStatuses = [];
         var d = new Date().toISOString();
-        statuses.forEach(function(newStatus) {
-            newQueuedStatuses.push({
-                entryId: parseInt(newStatus.entryId),
-                name: newStatus.name,
-                value: newStatus.value,
-                datetime: d
-            });
-        });
+        let newQueuedStatuses = statuses.map(newStatus => ({
+            entryId: parseInt(newStatus.entryId),
+            name: newStatus.name,
+            value: newStatus.value,
+            datetime: d
+        }));
 
         return selfoss.dbOffline._tr('rw', selfoss.db.storage.statusq,
             function() {
@@ -706,21 +703,18 @@ selfoss.dbOffline = {
 
 
     sendNewStatuses: function() {
-        var statuses = [];
-        selfoss.dbOffline._tr('r', selfoss.db.storage.statusq, function() {
-            selfoss.db.storage.statusq.each(function(s) {
-                var statusUpdate = {
+        selfoss.db.storage.statusq.toArray().then(statuses => {
+            return statuses.map(s => {
+                let statusUpdate = {
                     id: s.entryId,
                     datetime: s.datetime
                 };
                 statusUpdate[s.name] = s.value;
-                statuses.push(statusUpdate);
+
+                return statusUpdate;
             });
-        }).then(function() {
-            var s = undefined;
-            if (statuses.length > 0) {
-                s = statuses;
-            }
+        }).then(statuses => {
+            const s = statuses.length > 0 ? statuses : undefined;
             selfoss.dbOnline.sync(s, true).then(function() {
                 selfoss.dbOffline.needsSync = false;
             });

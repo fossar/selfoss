@@ -611,14 +611,11 @@ var selfoss = {
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 selfoss.handleAjaxError(jqXHR.status).then(function() {
-                    var statuses = [];
-                    ids.forEach(function(id) {
-                        statuses.push({
-                            entryId: id,
-                            name: 'unread',
-                            value: false
-                        });
-                    });
+                    let statuses = ids.map(id => ({
+                        entryId: id,
+                        name: 'unread',
+                        value: false
+                    }));
                     selfoss.dbOffline.enqueueStatuses(statuses);
                 }, function() {
                     content.html(articleList);
