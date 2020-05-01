@@ -450,15 +450,14 @@ class ContentLoader {
      * @return void
      */
     protected function cleanupFiles($type) {
-        \F3::set('im', $this->itemsDao);
         if ($type === 'thumbnails') {
             $checker = function($file) {
-                return \F3::get('im')->hasThumbnail($file);
+                return $this->itemsDao->hasThumbnail($file);
             };
             $itemPath = \F3::get('datadir') . '/thumbnails/';
         } elseif ($type === 'icons') {
             $checker = function($file) {
-                return \F3::get('im')->hasIcon($file);
+                return $this->itemsDao->hasIcon($file);
             };
             $itemPath = \F3::get('datadir') . '/favicons/';
         }
