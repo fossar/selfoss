@@ -42,36 +42,6 @@ class Sync {
     }
 
     /**
-     * returns current basic stats
-     * json
-     *
-     * @return void
-     */
-    public function stats() {
-        $this->authentication->needsLoggedInOrPublicMode();
-
-        $stats = $this->itemsDao->stats();
-
-        $tags = $this->tagsDao->getWithUnread();
-
-        foreach ($tags as $tag) {
-            if (strpos($tag['tag'], '#') !== 0) {
-                continue;
-            }
-            $stats['unread'] -= $tag['unread'];
-        }
-
-        if (array_key_exists('tags', $_GET) && $_GET['tags'] == 'true') {
-            $stats['tagshtml'] = $this->tagsController->renderTags($tags);
-        }
-        if (array_key_exists('sources', $_GET) && $_GET['sources'] == 'true') {
-            $stats['sourceshtml'] = $this->sourcesController->renderSources($this->sourcesDao->getWithUnread());
-        }
-
-        $this->view->jsonSuccess($stats);
-    }
-
-    /**
      * returns updated database info (stats, item statuses)
      * json
      *
