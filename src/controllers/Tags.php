@@ -29,48 +29,6 @@ class Tags {
         $this->view = $view;
     }
 
-    /**
-     * returns all tags
-     * html
-     *
-     * @return void
-     */
-    public function tagslist() {
-        $this->authentication->needsLoggedInOrPublicMode();
-
-        echo $this->tagsListAsString();
-    }
-
-    /**
-     * returns all tags
-     * html
-     *
-     * @return string
-     */
-    public function tagsListAsString() {
-        return $this->renderTags($this->tagsDao->getWithUnread());
-    }
-
-    /**
-     * returns all tags
-     * html
-     *
-     * @param array $tags list of all tags to render
-     *
-     * @return string
-     */
-    public function renderTags(array $tags) {
-        $html = '';
-        foreach ($tags as $tag) {
-            $this->view->tag = $tag['tag'];
-            $this->view->color = $tag['color'];
-            $this->view->unread = $tag['unread'];
-            $html .= $this->view->render('src/templates/tag.phtml');
-        }
-
-        return $html;
-    }
-
     /* @var array cache of tags and associated colors */
     protected $tagsColors = null;
 

@@ -183,8 +183,8 @@ selfoss.dbOnline = {
                         data.stats.starred);
                 }
 
-                if ('tagshtml' in data) {
-                    selfoss.refreshTags(data.tagshtml);
+                if ('tags' in data) {
+                    selfoss.refreshTags(data.tags);
                 }
 
                 if ('sources' in data) {

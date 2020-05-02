@@ -110,7 +110,7 @@ class Sync {
             $sync['stats'] = $this->itemsDao->stats();
 
             if (array_key_exists('tags', $params) && $_GET['tags'] == 'true') {
-                $sync['tagshtml'] = $this->tagsController->renderTags($this->tagsDao->getWithUnread());
+                $sync['tags'] = $this->tagsDao->getWithUnread();
             }
             if (array_key_exists('sources', $params) && $_GET['sources'] == 'true') {
                 $sync['sources'] = $this->sourcesDao->getWithUnread();

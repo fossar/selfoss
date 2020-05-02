@@ -24,21 +24,17 @@ class Write {
     /** @var SpoutLoader spout loader */
     private $spoutLoader;
 
-    /** @var \controllers\Tags tags controller */
-    private $tagsController;
-
     /** @var \daos\Tags tags */
     private $tagsDao;
 
     /** @var View view helper */
     private $view;
 
-    public function __construct(Authentication $authentication, ContentLoader $contentLoader, \daos\Sources $sourcesDao, SpoutLoader $spoutLoader, \controllers\Tags $tagsController, \daos\Tags $tagsDao, View $view) {
+    public function __construct(Authentication $authentication, ContentLoader $contentLoader, \daos\Sources $sourcesDao, SpoutLoader $spoutLoader, \daos\Tags $tagsDao, View $view) {
         $this->authentication = $authentication;
         $this->contentLoader = $contentLoader;
         $this->sourcesDao = $sourcesDao;
         $this->spoutLoader = $spoutLoader;
-        $this->tagsController = $tagsController;
         $this->tagsDao = $tagsDao;
         $this->view = $view;
     }
@@ -140,7 +136,7 @@ class Write {
         // only for selfoss ui (update stats in navigation)
         if ($f3->ajax()) {
             // get new tag list with updated count values
-            $return['tags'] = $this->tagsController->tagsListAsString();
+            $return['tags'] = $this->tagsDao->getWithUnread();
 
             // get new sources list
             $return['sources'] = $this->sourcesDao->getWithUnread();

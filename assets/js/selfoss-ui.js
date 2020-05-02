@@ -90,7 +90,6 @@ selfoss.ui = {
                 <div id="nav-tags-wrapper">
                     <h2><button type="button" id="nav-tags-title" class="nav-section-toggle nav-tags-expanded" aria-expanded="true"><i class="fas fa-caret-down fa-lg fa-fw"></i> {selfoss.ui._('tags')}</button></h2>
                     <ul id="nav-tags" aria-labelledby="nav-tags-title">
-                        <li><a class="active nav-tags-all" href="#">{selfoss.ui._('alltags')}</a></li>
                     </ul>
                     <h2><button type="button" id="nav-sources-title" class="nav-section-toggle nav-sources-collapsed" aria-expanded="false"><i class="fas fa-caret-right fa-lg fa-fw"></i> {selfoss.ui._('sources')}</button></h2>
                     <ul id="nav-sources" aria-labelledby="nav-sources-title">

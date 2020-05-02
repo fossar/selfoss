@@ -97,9 +97,6 @@ class Index {
             $this->view->statsUnread -= $tag['unread'];
         }
 
-        // prepare tags display list
-        $this->view->tags = $this->tagsController->renderTags($tags);
-
         $result = [
             'lastUpdate' => \helpers\ViewHelper::date_iso8601($this->itemsDao->lastUpdate()),
             'hasMore' => $items['hasMore'],
@@ -107,7 +104,7 @@ class Index {
             'all' => $this->view->statsAll,
             'unread' => $this->view->statsUnread,
             'starred' => $this->view->statsStarred,
-            'tags' => $this->view->tags
+            'tags' => $tags
         ];
 
         if (isset($options['sourcesNav']) && $options['sourcesNav'] == 'true') {

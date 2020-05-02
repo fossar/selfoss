@@ -396,12 +396,10 @@ var selfoss = {
         $('#nav-tags').addClass('loading');
 
         $.ajax({
-            url: 'tagslist',
+            url: 'tags',
             type: 'GET',
             success: function(data) {
-                $('#nav-tags li:not(:first)').remove();
-                $('#nav-tags').append(data);
-                selfoss.events.navigation();
+                selfoss.refreshTags(data);
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 selfoss.ui.showError(selfoss.ui._('error_load_tags') + ' ' +
@@ -420,10 +418,10 @@ var selfoss = {
      * @return void
      * @param tags the new taglist as html
      */
-    refreshTags: function(tags) {
+    refreshTags: function(tags, delayNavigation = false) {
         $('.color').spectrum('destroy');
-        $('#nav-tags li:not(:first)').remove();
-        $('#nav-tags').append(tags);
+        let renderedTags = templates.navTags({tags});
+        $('#nav-tags').html(renderedTags);
         if (selfoss.filter.tag) {
             if (!selfoss.db.isValidTag(selfoss.filter.tag)) {
                 selfoss.ui.showError(selfoss.ui._('error_unknown_tag') + ' ' + selfoss.filter.tag);
@@ -441,7 +439,9 @@ var selfoss = {
             $('.nav-tags-all').addClass('active');
         }
 
-        selfoss.events.navigation();
+        if (!delayNavigation) {
+            selfoss.events.navigation();
+        }
     },
 
 

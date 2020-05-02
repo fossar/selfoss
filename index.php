@@ -24,7 +24,6 @@ $f3->route('GET /rss', controllers\Rss::class . '->rss'); // rss
 $f3->route('GET /feed', controllers\Rss::class . '->rss'); // rss
 $f3->route('GET /items', controllers\Items::class . '->listItems'); // json
 $f3->route('GET /tags', controllers\Tags::class . '->listTags'); // json
-$f3->route('GET /tagslist', controllers\Tags::class . '->tagslist'); // html
 $f3->route('GET /stats', controllers\Items\Stats::class . '->stats'); // json
 $f3->route('GET /items/sync', controllers\Items\Sync::class . '->sync'); // json
 $f3->route('GET /sources/stats', controllers\Sources::class . '->stats'); // json

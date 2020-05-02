@@ -57,7 +57,7 @@ class Stats {
         }
 
         if (array_key_exists('tags', $_GET) && $_GET['tags'] == 'true') {
-            $stats['tagshtml'] = $this->tagsController->renderTags($tags);
+            $stats['tags'] = $tags;
         }
         if (array_key_exists('sources', $_GET) && $_GET['sources'] == 'true') {
             $stats['sources'] = $this->sourcesDao->getWithUnread();

@@ -87,8 +87,7 @@ selfoss.events.sources = function() {
                 parent.removeClass('source-new');
 
                 // update tags
-                $('#nav-tags li:not(:first)').remove();
-                $('#nav-tags').append(response.tags);
+                selfoss.refreshTags(response.tags, true);
 
                 // update sources
                 selfoss.refreshSources(response.sources, true);
