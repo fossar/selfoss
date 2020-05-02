@@ -36,9 +36,7 @@ self.addEventListener('activate', function(event) {
 
 self.addEventListener('fetch', function(event) {
     event.respondWith(caches.match(event.request).then(function(resp) {
-        return resp || fetch(event.request).catch(function(err) {
-            return err;
-        });
+        return resp || fetch(event.request);
     }));
 });
 
