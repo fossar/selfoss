@@ -234,7 +234,7 @@ span.offline-count.diff {
     cursor: pointer;
     padding: 5px;
     padding-left: 25px;
-    padding-right: 30px;
+    padding-right: 20px;
     font-weight: lighter;
     font-size: 0.7em;
     white-space: nowrap;
@@ -247,18 +247,34 @@ span.offline-count.diff {
     color: #d7d7d7;
 }
 
+#nav-tags li .unread {
+    margin-right: 0.25em;
+}
+
 #nav-tags .color {
-    position: absolute;
-    left: 100%;
-    top: 14px;
     width: 10px;
     height: 10px;
-    margin-left: -30px;
     border-radius: 2px;
+    margin-left: auto;
+    flex-shrink: 0; /* preserve aspect ratio */
 }
 
 #nav-sources {
     display: none;
+}
+
+#nav-sources li a,
+#nav-tags li a {
+    display: flex;
+    align-items: center;
+}
+
+#nav-sources li .nav-source,
+#nav-tags li .tag {
+    text-overflow: ellipsis;
+    min-width: 0;
+    overflow: hidden;
+    margin-right: 0.25em;
 }
 
 #nav-sources li a {
@@ -266,7 +282,7 @@ span.offline-count.diff {
     color: #b9b9b9;
     cursor: pointer;
     padding-left: 25px;
-    padding-right: 30px;
+    padding-right: 20px;
     font-weight: lighter;
     font-size: 0.7em;
     white-space: nowrap;
@@ -972,11 +988,13 @@ body:not(.loggedin) .entry-unread {
         padding-top: 20px;
     }
 
+    #nav-tags li a {
+        padding-right: 15px;
+    }
+
     #nav-tags .color {
         width: 25px;
         height: 25px;
-        top: 6px;
-        margin-left: -40px;
     }
 
     #search {
