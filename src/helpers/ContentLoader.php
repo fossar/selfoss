@@ -208,7 +208,7 @@ class ContentLoader {
                 'uid' => $item->getId(),
                 'thumbnail' => $item->getThumbnail(),
                 'icon' => $icon !== null ? $icon : '',
-                'link' => htmLawed($item->getLink(), ['deny_attribute' => '*', 'elements' => '-*']),
+                'link' => $item->getLink(),
                 'author' => $author
             ];
 

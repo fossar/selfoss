@@ -340,7 +340,7 @@ class Items implements \daos\ItemsInterface {
 
         // get items from database
         $select = 'SELECT
-            items.id, datetime, items.title AS title, content, unread, starred, source, thumbnail, icon, uid, link, updatetime, author, sources.title as sourcetitle, sources.tags as tags
+            items.id, datetime, items.title AS title, content, unread, starred, source, thumbnail, icon, uid, link, updatetime, author, sources.title as sourcetitle, sources.tags as tags, items.version as itemVersion
             FROM ' . \F3::get('db_prefix') . 'items AS items, ' . \F3::get('db_prefix') . 'sources AS sources
             WHERE items.source=sources.id AND';
         $order_sql = 'ORDER BY items.datetime ' . $order . ', items.id ' . $order;
@@ -369,7 +369,8 @@ class Items implements \daos\ItemsInterface {
             'unread' => \daos\PARAM_BOOL,
             'starred' => \daos\PARAM_BOOL,
             'source' => \daos\PARAM_INT,
-            'tags' => \daos\PARAM_CSV
+            'tags' => \daos\PARAM_CSV,
+            'itemVersion' => \daos\PARAM_INT
         ]);
     }
 
@@ -396,7 +397,7 @@ class Items implements \daos\ItemsInterface {
     public function sync($sinceId, DateTime $notBefore, DateTime $since, $howMany) {
         $stmt = static::$stmt;
         $query = 'SELECT
-        items.id, datetime, items.title AS title, content, unread, starred, source, thumbnail, icon, uid, link, updatetime, author, sources.title as sourcetitle, sources.tags as tags
+        items.id, datetime, items.title AS title, content, unread, starred, source, thumbnail, icon, uid, link, updatetime, author, sources.title as sourcetitle, sources.tags as tags, items.version as itemVersion
         FROM ' . \F3::get('db_prefix') . 'items AS items, ' . \F3::get('db_prefix') . 'sources AS sources
         WHERE items.source=sources.id
             AND (' . $stmt::isTrue('unread') .
@@ -418,7 +419,8 @@ class Items implements \daos\ItemsInterface {
             'id' => \daos\PARAM_INT,
             'unread' => \daos\PARAM_BOOL,
             'starred' => \daos\PARAM_BOOL,
-            'source' => \daos\PARAM_INT
+            'source' => \daos\PARAM_INT,
+            'itemVersion' => \daos\PARAM_INT
         ]);
     }
 

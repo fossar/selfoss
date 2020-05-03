@@ -231,6 +231,13 @@ class Database implements \daos\DatabaseInterface {
                     'INSERT INTO version (version) VALUES (11)'
                 ]);
             }
+            if (strnatcmp($version, '13') < 0) {
+                $this->exec([
+                    'ALTER TABLE items ADD COLUMN version INT NOT NULL DEFAULT 2',
+                    'UPDATE items SET version = 1',
+                    'INSERT INTO version (version) VALUES (13)'
+                ]);
+            }
         }
     }
 

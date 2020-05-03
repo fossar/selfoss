@@ -90,6 +90,9 @@ class Sync {
                 foreach ($this->itemsDao->sync($sinceId, $notBefore, $since, $itemsHowMany)
                          as $newItem) {
                     $newItem['tags'] = $this->tagsController->tagsAddColors(explode(',', $newItem['tags']));
+                    if ($newItem['itemVersion'] === 1) {
+                        $newItem['link'] = htmlspecialchars_decode($newItem['link'], ENT_COMPAT);
+                    }
                     $this->view->item = $newItem;
 
                     $sync['newItems'][] = [

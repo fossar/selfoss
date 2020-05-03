@@ -144,6 +144,9 @@ class Index {
         foreach ($this->itemsDao->get($params) as $item) {
             // parse tags and assign tag colors
             $item['tags'] = $this->tagsController->tagsAddColors($item['tags'], $tags);
+            if ($item['itemVersion'] === 1) {
+                $item['link'] = htmlspecialchars_decode($item['link'], ENT_COMPAT);
+            }
 
             $this->view->item = $item;
             $itemsHtml .= $this->view->render('src/templates/item.phtml');
