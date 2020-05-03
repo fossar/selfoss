@@ -141,7 +141,7 @@ class feed extends \spouts\spout {
         if ($this->items !== null && $this->valid()) {
             $link = @current($this->items)->get_link();
 
-            return $link;
+            return htmlspecialchars_decode($link, ENT_COMPAT); // SimplePie sanitizes URLs
         }
 
         return null;

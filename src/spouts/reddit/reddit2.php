@@ -118,7 +118,8 @@ class reddit2 extends \spouts\spout {
 
     public function getHtmlUrl() {
         if ($this->items !== null && $this->valid()) {
-            return @current($this->items)['data']['url'];
+            // Reddit escapes HTML, we can get away with just ampersands, since quotes and angle brackets are excluded from URLs.
+            return htmlspecialchars_decode(current($this->items)['data']['url'], ENT_NOQUOTES);
         }
 
         return null;

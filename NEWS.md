@@ -20,6 +20,7 @@
 - Set 60 second timeout to spout HTTP requests to prevent a single feed blocking other updates ([#1104](https://github.com/SSilence/selfoss/issues/1104))
 - Significantly improved accessibility ([#1133](https://github.com/SSilence/selfoss/pull/1133), [#1134](https://github.com/SSilence/selfoss/pull/1134) and [#1141](https://github.com/SSilence/selfoss/pull/1141))
 - Fixed marking more than 1000 items as read at the same time ([#1182](https://github.com/SSilence/selfoss/issues/1182))
+- Fixed loading full text on pages containing ampersands in URLs ([#1188](https://github.com/SSilence/selfoss/pull/1188))
 
 ### API changes
 - `tags` attribute is now consistently array of strings, numbers are numbers and booleans are booleans. **This might break third-party clients that have not updated yet.** ([#948](https://github.com/SSilence/selfoss/pull/948))

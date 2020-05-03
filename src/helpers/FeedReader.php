@@ -61,7 +61,7 @@ class FeedReader {
         return [
             // save fetched items
             'items' => $this->simplepie->get_items(),
-            'htmlUrl' => @$this->simplepie->get_link(),
+            'htmlUrl' => htmlspecialchars_decode($this->simplepie->get_link(), ENT_COMPAT), // SimplePie sanitizes URLs
             'spoutTitle' => $this->simplepie->get_title(),
         ];
     }
@@ -72,7 +72,7 @@ class FeedReader {
      * @return ?string
      */
     public function getImageUrl() {
-        return $this->simplepie->get_image_url();
+        return htmlspecialchars_decode($this->simplepie->get_image_url(), ENT_COMPAT); // SimplePie sanitizes URLs
     }
 
     /**
@@ -81,6 +81,10 @@ class FeedReader {
      * @return ?string
      */
     public function getFeedUrl() {
+        // SimplePie sanitizes URLs but it unescapes ampersands here.
+        // Since double quotes and angle brackets are excluded from URIs,
+        // we need not worry about them and consider this unescaped.
+        // https://tools.ietf.org/html/rfc2396#section-2.4.3
         return $this->simplepie->subscribe_url();
     }
 
