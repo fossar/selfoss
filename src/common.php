@@ -169,7 +169,7 @@ $log = $dice->create(Logger::class);
 if ($f3->get('logger_level') === 'NONE') {
     $handler = new NullHandler();
 } else {
-    $logger_destination = in_array(PHP_SAPI, ['cli', 'cli-server'], true) ? 'error_log' : $f3->get('logger_destination');
+    $logger_destination = $f3->get('logger_destination');
 
     if (strpos($logger_destination, 'file:') === 0) {
         $handler = new StreamHandler(substr($logger_destination, 5), $f3->get('logger_level'));
