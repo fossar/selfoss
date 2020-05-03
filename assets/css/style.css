@@ -314,6 +314,7 @@ span.offline-count.diff {
     display: flex;
     padding: 0.25em;
     text-align: center;
+    margin-top: auto;
 }
 
 .nav-toolbar button {
@@ -941,7 +942,7 @@ body:not(.loggedin) .entry-unread {
         height: 100%;
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
+        justify-content: start;
     }
 
     #nav-filter {
