@@ -228,6 +228,22 @@ span.offline-count.diff {
     flex-grow: 1;
 }
 
+#nav-tags-wrapper.offline {
+    display: none;
+}
+
+.nav-unavailable {
+    display: none;
+}
+
+.nav-unavailable.offline {
+    display: block;
+    text-align: center;
+    opacity: 0.8;
+    font-size: 0.7em;
+    line-height: 1.2em;
+}
+
 #nav-tags li a {
     position: relative;
     color: #b9b9b9;

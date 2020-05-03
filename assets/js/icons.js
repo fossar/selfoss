@@ -23,9 +23,11 @@ import { faKey } from '@fortawesome/free-solid-svg-icons/faKey';
 import { faSearch } from '@fortawesome/free-solid-svg-icons/faSearch';
 import { faShareAlt } from '@fortawesome/free-solid-svg-icons/faShareAlt';
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons/faSignOutAlt';
+import { faSlash } from '@fortawesome/free-solid-svg-icons/faSlash';
 import { faStar } from '@fortawesome/free-solid-svg-icons/faStar';
 import { faSyncAlt } from '@fortawesome/free-solid-svg-icons/faSyncAlt';
 import { faTimes } from '@fortawesome/free-solid-svg-icons/faTimes';
+import { faWifi } from '@fortawesome/free-solid-svg-icons/faWifi';
 // ¡dom needs to be renamed to something else because jsx-dom takes precedence!
 import { library, dom as faDom } from '@fortawesome/fontawesome-svg-core';
 import wallabag from '../images/wallabag';
@@ -64,9 +66,11 @@ export function initIcons() {
         faSearch,
         faShareAlt,
         faSignOutAlt,
+        faSlash,
         faStar,
         faSyncAlt,
         faTimes,
+        faWifi,
         wallabagIcon
     );
 

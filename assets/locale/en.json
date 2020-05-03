@@ -6,6 +6,7 @@
   "lang_starred": "Starred",
   "lang_online_count": "Items available on the server",
   "lang_offline_count": "Items available locally",
+  "lang_offline_navigation_unavailable": "Switching tags and sources is currently not available in offline mode.",
   "lang_tags": "Tags",
   "lang_alltags": "All tags",
   "lang_timestamp": "{0,date} {0,time}",

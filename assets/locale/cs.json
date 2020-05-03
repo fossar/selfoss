@@ -78,6 +78,7 @@
   "lang_error_invalid_subsection": "Podsekce neexistuje:",
   "lang_online_count": "Položky dostupné na serveru",
   "lang_offline_count": "Položky jsou dostupné v prohlížeči",
+  "lang_offline_navigation_unavailable": "Offline režim zatím neumožňuje přepínat mezi štítky a zdroji.",
   "lang_login_offline": "Ukládat data v prohlížeči",
   "lang_app_update": "selfoss byl aktualizován, prosím znovu načtěte stránku",
   "lang_app_reload": "Znovu načíst",

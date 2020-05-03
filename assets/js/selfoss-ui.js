@@ -87,13 +87,20 @@ selfoss.ui = {
 
                 <div class="separator"><hr /></div>
 
-                <div id="nav-tags-wrapper">
+                <div id="nav-tags-wrapper" class="offlineable">
                     <h2><button type="button" id="nav-tags-title" class="nav-section-toggle nav-tags-expanded" aria-expanded="true"><i class="fas fa-caret-down fa-lg fa-fw"></i> {selfoss.ui._('tags')}</button></h2>
                     <ul id="nav-tags" aria-labelledby="nav-tags-title">
                     </ul>
                     <h2><button type="button" id="nav-sources-title" class="nav-section-toggle nav-sources-collapsed" aria-expanded="false"><i class="fas fa-caret-right fa-lg fa-fw"></i> {selfoss.ui._('sources')}</button></h2>
                     <ul id="nav-sources" aria-labelledby="nav-sources-title">
                     </ul>
+                </div>
+                <div class="nav-unavailable offlineable">
+                    <span class="fa-stack fa-2x">
+                        <i class="fas fa-wifi fa-stack-1x"></i>
+                        <i class="fas fa-slash fa-stack-1x"></i>
+                    </span>
+                    <p>{selfoss.ui._('offline_navigation_unavailable')}</p>
                 </div>
 
                 <div class="separator"><hr /></div>
@@ -201,10 +208,6 @@ selfoss.ui = {
     setOffline: function() {
         $('.offlineable').addClass('offline');
         $('.offlineable').removeClass('online');
-        $('#nav-tags li:not(:first)').remove();
-        if (!$('#nav-sources-title').hasClass('nav-sources-collapsed')) {
-            $('#nav-sources-title').click();
-        }
         selfoss.events.navigation();
     },
 
