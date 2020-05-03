@@ -176,13 +176,10 @@ class Items implements \daos\ItemsInterface {
             $value = $this->database->quote($value);
         });
         $query = 'SELECT id, uid AS uid FROM ' . \F3::get('db_prefix') . 'items WHERE source = ' . $this->database->quote($sourceId) . ' AND uid IN (' . implode(',', $itemsInFeed) . ')';
-        $res = $this->database->query($query);
-        if ($res) {
-            $all = $res->fetchAll();
-            foreach ($all as $row) {
-                $uid = $row['uid'];
-                $itemsFound[$uid] = $row['id'];
-            }
+        $res = $this->database->exec($query);
+        foreach ($res as $row) {
+            $uid = $row['uid'];
+            $itemsFound[$uid] = $row['id'];
         }
 
         return $itemsFound;
