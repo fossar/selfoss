@@ -93,5 +93,8 @@
   "lang_share_copy_label": "Kopier lenke til utklippstavle",
   "lang_error_share_native_abort": "Kunne ikke dele element, enten finnes det ingen delingsmål, eller du har avbrutt deling.",
   "lang_error_share_native": "Kunne ikke dele element.",
-  "lang_close_entry": "Lukk"
+  "lang_close_entry": "Lukk",
+  "lang_error_unwritable_logs": "Kunne ikke loggføre.",
+  "lang_error_check_log_file": "En feil inntraff, sjekk loggfilen “{0}”.",
+  "lang_error_check_system_logs": "En feil inntraff, sjekk systemloggene dine."
 }
