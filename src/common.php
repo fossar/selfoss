@@ -158,7 +158,7 @@ $dice->addRule(Logger::class, [
     'constructParams' => ['selfoss'],
 ]);
 
-$dice->addRule(helpers\FeedHelper::class, [
+$dice->addRule(helpers\FeedReader::class, [
     'constructParams' => [
         \F3::get('cache'),
     ],
