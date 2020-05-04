@@ -134,7 +134,7 @@ class ContentLoader {
         }
         $itemsFound = $this->itemsDao->findAll($itemsInFeed, $source['id']);
 
-        $lasticon = null;
+        $iconCache = [];
         $itemsSeen = [];
         foreach ($spout as $item) {
             // item already in database?
@@ -211,12 +211,19 @@ class ContentLoader {
             try {
                 $iconUrl = $item->getIcon();
                 if (strlen(trim($iconUrl)) > 0) {
-                    // save icon
-                    $newItem['icon'] = $this->fetchIcon($iconUrl, $lasticon) ?: '';
+                    if (isset($iconCache[$iconUrl])) {
+                        $this->logger->debug('reusing recently used icon: ' . $iconUrl);
+                    } else {
+                        // save icon
+                        $iconCache[$iconUrl] = $this->fetchIcon($iconUrl) ?: '';
+                    }
+                    $newItem['icon'] = $iconCache[$iconUrl];
                 } else {
                     $this->logger->debug('no icon for this feed');
                 }
             } catch (\Exception $e) {
+                // cache failure
+                $iconCache[$iconUrl] = '';
                 $this->logger->error('icon: error', ['exception' => $e]);
             }
 
@@ -343,35 +350,28 @@ class ContentLoader {
      * Fetch an image and process it as favicon.
      *
      * @param string $url icon given by the spout
-     * @param &string $lasticon the last fetched icon
      *
      * @return ?string path in the favicons directory
      */
-    protected function fetchIcon($url, &$lasticon) {
+    protected function fetchIcon($url) {
         $format = Image::FORMAT_PNG;
         $extension = Image::getExtension($format);
-        if ($url === $lasticon) {
-            $this->logger->debug('use last icon: ' . $lasticon);
+        $iconAsPng = $this->imageHelper->loadImage($url, $format, 30, null);
 
-            return md5($lasticon) . '.' . $extension;
-        } else {
-            $iconAsPng = $this->imageHelper->loadImage($url, $format, 30, null);
-            if ($iconAsPng !== null) {
-                $written = file_put_contents(
-                    \F3::get('datadir') . '/favicons/' . md5($url) . '.' . $extension,
-                    $iconAsPng
-                );
-                $lasticon = $url;
-                if ($written !== false) {
-                    $this->logger->debug('Icon generated: ' . $url);
+        if ($iconAsPng !== null) {
+            $written = file_put_contents(
+                \F3::get('datadir') . '/favicons/' . md5($url) . '.' . $extension,
+                $iconAsPng
+            );
+            if ($written !== false) {
+                $this->logger->debug('Icon generated: ' . $url);
 
-                    return md5($url) . '.' . $extension;
-                } else {
-                    $this->logger->warning('Unable to store icon: ' . $url . '. Please check permissions of ' . \F3::get('datadir') . '/favicons.');
-                }
+                return md5($url) . '.' . $extension;
             } else {
-                $this->logger->error('icon generation error: ' . $url);
+                $this->logger->warning('Unable to store icon: ' . $url . '. Please check permissions of ' . \F3::get('datadir') . '/favicons.');
             }
+        } else {
+            $this->logger->error('icon generation error: ' . $url);
         }
 
         return null;
