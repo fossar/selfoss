@@ -54,9 +54,6 @@ class reddit2 extends \spouts\spout {
     /** @var string the reddit_session cookie */
     private $reddit_session = '';
 
-    /** @var string favicon url */
-    private $faviconUrl = '';
-
     /** @var Image image helper */
     private $imageHelper;
 
@@ -159,10 +156,10 @@ class reddit2 extends \spouts\spout {
     public function getIcon() {
         $htmlUrl = $this->getHtmlUrl();
         if ($htmlUrl && ($iconData = $this->imageHelper->fetchFavicon($htmlUrl)) !== null) {
-            list($this->faviconUrl, $iconBlob) = $iconData;
+            list($faviconUrl, $iconBlob) = $iconData;
         }
 
-        return $this->faviconUrl;
+        return $faviconUrl;
     }
 
     public function getLink() {

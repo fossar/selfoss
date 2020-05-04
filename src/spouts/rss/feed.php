@@ -36,9 +36,6 @@ class feed extends \spouts\spout {
     /** @var ?string URL of the source */
     protected $htmlUrl = null;
 
-    /** @var ?string URL of the favicon */
-    protected $faviconUrl = null;
-
     /** @var Logger */
     private $logger;
 
@@ -103,35 +100,35 @@ class feed extends \spouts\spout {
     }
 
     public function getIcon() {
-        if ($this->faviconUrl !== null) {
-            return $this->faviconUrl;
-        }
+        return null;
+    }
 
+    public function getSourceIcon() {
         // Try to use feed logo first
         $feedLogoUrl = $this->feed->getImageUrl();
         if ($feedLogoUrl && ($iconData = $this->imageHelper->fetchFavicon($feedLogoUrl)) !== null) {
-            list($this->faviconUrl, $iconBlob) = $iconData;
-            $this->logger->debug('icon: using feed logo: ' . $this->faviconUrl);
+            list($faviconUrl, $iconBlob) = $iconData;
+            $this->logger->debug('icon: using feed logo: ' . $faviconUrl);
 
-            return $this->faviconUrl;
+            return $faviconUrl;
         }
 
         // else fallback to the favicon of the associated web page
         $htmlUrl = $this->getHtmlUrl();
         if ($htmlUrl && ($iconData = $this->imageHelper->fetchFavicon($htmlUrl, true)) !== null) {
-            list($this->faviconUrl, $iconBlob) = $iconData;
-            $this->logger->debug('icon: using feed homepage favicon: ' . $this->faviconUrl);
+            list($faviconUrl, $iconBlob) = $iconData;
+            $this->logger->debug('icon: using feed homepage favicon: ' . $faviconUrl);
 
-            return $this->faviconUrl;
+            return $faviconUrl;
         }
 
         // else fallback to the favicon of the feed effective domain
         $feedUrl = $this->feed->getFeedUrl();
         if ($feedUrl && ($iconData = $this->imageHelper->fetchFavicon($feedUrl, true)) !== null) {
-            list($this->faviconUrl, $iconBlob) = $iconData;
-            $this->logger->debug('icon: using feed homepage favicon: ' . $this->faviconUrl);
+            list($faviconUrl, $iconBlob) = $iconData;
+            $this->logger->debug('icon: using feed homepage favicon: ' . $faviconUrl);
 
-            return $this->faviconUrl;
+            return $faviconUrl;
         }
 
         return null;

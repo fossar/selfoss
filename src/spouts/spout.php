@@ -86,6 +86,15 @@ abstract class spout implements \Iterator {
     }
 
     /**
+     * Returns the icon common to this source.
+     *
+     * @return ?string icon as URL
+     */
+    public function getSourceIcon() {
+        return null;
+    }
+
+    /**
      * returns an unique id for this item
      *
      * @return string id as hash
@@ -122,11 +131,13 @@ abstract class spout implements \Iterator {
     }
 
     /**
-     * returns the icon of this item
+     * Returns the icon of this item.
      *
-     * @return string icon as url
+     * @return ?string icon as url
      */
-    abstract public function getIcon();
+    public function getIcon() {
+        return null;
+    }
 
     /**
      * returns the link of this item

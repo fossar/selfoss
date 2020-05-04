@@ -57,6 +57,7 @@
   ```
 
   ([#1017](https://github.com/SSilence/selfoss/pull/1017), [#1035](https://github.com/SSilence/selfoss/pull/1035))
+- Spouts can now implement `getSourceIcon()` instead of `getIcon()` when icon is associated with the feed, not individual icons. ([#1190](https://github.com/SSilence/selfoss/pull/1190))
 - Some language files have been renamed to use correct [IETF language tag](https://en.wikipedia.org/wiki/IETF_language_tag) and you might need to change the `language` key in your `config.ini`:
   * Simplified Chinese `zh-CN`
   * Traditional Chinese `zh-TW`

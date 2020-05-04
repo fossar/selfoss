@@ -135,6 +135,7 @@ class ContentLoader {
         $itemsFound = $this->itemsDao->findAll($itemsInFeed, $source['id']);
 
         $iconCache = [];
+        $sourceIconUrl = null;
         $itemsSeen = [];
         foreach ($spout as $item) {
             // item already in database?
@@ -218,8 +219,26 @@ class ContentLoader {
                         $iconCache[$iconUrl] = $this->fetchIcon($iconUrl) ?: '';
                     }
                     $newItem['icon'] = $iconCache[$iconUrl];
+                } elseif ($sourceIconUrl !== null) {
+                    $this->logger->debug('using the source icon');
+                    $newItem['icon'] = $sourceIconUrl;
                 } else {
-                    $this->logger->debug('no icon for this feed');
+                    try {
+                        // we do not want to run this more than once
+                        $sourceIconUrl = $item->getSourceIcon() ?: '';
+
+                        if (strlen(trim($sourceIconUrl)) > 0) {
+                            // save source icon
+                            $sourceIconUrl = $this->fetchIcon($sourceIconUrl) ?: '';
+                            $newItem['icon'] = $sourceIconUrl;
+                        } else {
+                            $this->logger->debug('no icon for this item or source');
+                        }
+                    } catch (\Exception $e) {
+                        // cache failure
+                        $sourceIconUrl = '';
+                        $this->logger->error('feed icon: error', ['exception' => $e]);
+                    }
                 }
             } catch (\Exception $e) {
                 // cache failure
