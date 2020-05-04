@@ -192,31 +192,25 @@ class ContentLoader {
 
             $this->logger->debug('item content sanitized');
 
-            try {
-                $icon = $item->getIcon();
-            } catch (\Exception $e) {
-                $this->logger->debug('icon: error', ['exception' => $e]);
-
-                return;
-            }
-
             $newItem = [
                 'title' => $title,
                 'content' => $content,
                 'source' => $source['id'],
                 'datetime' => $itemDate->format('Y-m-d H:i:s'),
                 'uid' => $item->getId(),
-                'thumbnail' => $item->getThumbnail(),
-                'icon' => $icon !== null ? $icon : '',
                 'link' => htmLawed($item->getLink(), ['deny_attribute' => '*', 'elements' => '-*']),
                 'author' => $author
             ];
 
             // save thumbnail
-            $newItem = $this->fetchThumbnail($item->getThumbnail(), $newItem);
+            $newItem['thumbnail'] = $this->fetchThumbnail($item->getThumbnail()) ?: '';
 
-            // save icon
-            $newItem = $this->fetchIcon($item->getIcon(), $newItem, $lasticon);
+            try {
+                // save icon
+                $newItem['icon'] = $this->fetchIcon($item->getIcon(), $lasticon) ?: '';
+            } catch (\Exception $e) {
+                $this->logger->error('icon: error', ['exception' => $e]);
+            }
 
             // insert new item
             $this->itemsDao->add($newItem);
@@ -308,78 +302,77 @@ class ContentLoader {
     }
 
     /**
-     * Fetch the thumbanil of a given item
+     * Fetch an image URL and process it as a thumbnail.
      *
-     * @param string $thumbnail the thumbnail url
-     * @param array $newItem new item for saving in database
+     * @param string $url the thumbnail URL
      *
-     * @return array the newItem Object with thumbnail
+     * @return ?string path in the thumbnails directory
      */
-    protected function fetchThumbnail($thumbnail, array $newItem) {
-        if (strlen(trim($thumbnail)) > 0) {
+    protected function fetchThumbnail($url) {
+        if (strlen(trim($url)) > 0) {
             $format = Image::FORMAT_JPEG;
             $extension = Image::getExtension($format);
-            $thumbnailAsJpg = $this->imageHelper->loadImage($thumbnail, $format, 500, 500);
+            $thumbnailAsJpg = $this->imageHelper->loadImage($url, $format, 500, 500);
             if ($thumbnailAsJpg !== null) {
                 $written = file_put_contents(
-                    \F3::get('datadir') . '/thumbnails/' . md5($thumbnail) . '.' . $extension,
+                    \F3::get('datadir') . '/thumbnails/' . md5($url) . '.' . $extension,
                     $thumbnailAsJpg
                 );
                 if ($written !== false) {
-                    $newItem['thumbnail'] = md5($thumbnail) . '.' . $extension;
-                    $this->logger->debug('Thumbnail generated: ' . $thumbnail);
+                    $this->logger->debug('Thumbnail generated: ' . $url);
+
+                    return md5($url) . '.' . $extension;
                 } else {
-                    $this->logger->warning('Unable to store thumbnail: ' . $thumbnail . '. Please check permissions of ' . \F3::get('datadir') . '/thumbnails.');
+                    $this->logger->warning('Unable to store thumbnail: ' . $url . '. Please check permissions of ' . \F3::get('datadir') . '/thumbnails.');
                 }
             } else {
-                $newItem['thumbnail'] = '';
-                $this->logger->error('thumbnail generation error: ' . $thumbnail);
+                $this->logger->error('thumbnail generation error: ' . $url);
             }
         }
 
-        return $newItem;
+        return null;
     }
 
     /**
-     * Fetch the icon of a given feed item
+     * Fetch an image and process it as favicon.
      *
-     * @param string $icon icon given by the spout
-     * @param array $newItem new item for saving in database
+     * @param string $url icon given by the spout
      * @param &string $lasticon the last fetched icon
      *
-     * @return mixed newItem with icon
+     * @return ?string path in the favicons directory
      */
-    protected function fetchIcon($icon, array $newItem, &$lasticon) {
-        if (strlen(trim($icon)) > 0) {
+    protected function fetchIcon($url, &$lasticon) {
+        if (strlen(trim($url)) > 0) {
             $format = Image::FORMAT_PNG;
             $extension = Image::getExtension($format);
-            if ($icon === $lasticon) {
+            if ($url === $lasticon) {
                 $this->logger->debug('use last icon: ' . $lasticon);
-                $newItem['icon'] = md5($lasticon) . '.' . $extension;
+
+                return md5($lasticon) . '.' . $extension;
             } else {
-                $iconAsPng = $this->imageHelper->loadImage($icon, $format, 30, null);
+                $iconAsPng = $this->imageHelper->loadImage($url, $format, 30, null);
                 if ($iconAsPng !== null) {
                     $written = file_put_contents(
-                        \F3::get('datadir') . '/favicons/' . md5($icon) . '.' . $extension,
+                        \F3::get('datadir') . '/favicons/' . md5($url) . '.' . $extension,
                         $iconAsPng
                     );
-                    $lasticon = $icon;
+                    $lasticon = $url;
                     if ($written !== false) {
-                        $newItem['icon'] = md5($icon) . '.' . $extension;
-                        $this->logger->debug('Icon generated: ' . $icon);
+                        $this->logger->debug('Icon generated: ' . $url);
+
+                        return md5($url) . '.' . $extension;
                     } else {
-                        $this->logger->warning('Unable to store icon: ' . $icon . '. Please check permissions of ' . \F3::get('datadir') . '/favicons.');
+                        $this->logger->warning('Unable to store icon: ' . $url . '. Please check permissions of ' . \F3::get('datadir') . '/favicons.');
                     }
                 } else {
-                    $newItem['icon'] = '';
-                    $this->logger->error('icon generation error: ' . $icon);
+                    $this->logger->error('icon generation error: ' . $url);
                 }
             }
         } else {
             $this->logger->debug('no icon for this feed');
         }
 
-        return $newItem;
+        return null;
     }
 
     /**
