@@ -16,8 +16,16 @@ use WideImage\WideImage;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class Image {
+    const FORMAT_JPEG = 'jpeg';
+    const FORMAT_PNG = 'png';
+
     /** @var ?string url of last fetched favicon */
     private $faviconUrl = null;
+
+    private static $extensions = [
+        self::FORMAT_JPEG => 'jpg',
+        self::FORMAT_PNG => 'png',
+    ];
 
     private static $imageTypes = [
         // IANA assigned type
@@ -54,6 +62,17 @@ class Image {
     public function __construct(Logger $logger, WebClient $webClient) {
         $this->logger = $logger;
         $this->webClient = $webClient;
+    }
+
+    /**
+     * Get preferred extension for the format.
+     *
+     * @param self::FORMAT_* $format
+     *
+     * @return string
+     */
+    public static function getExtension($format) {
+        return self::$extensions[$format];
     }
 
     /**
@@ -123,16 +142,16 @@ class Image {
     }
 
     /**
-     * load image
+     * Load image from URL, optionally resize it and convert it to desired format.
      *
      * @param string $url source url
-     * @param string $extension file extension of output file
-     * @param ?int $width
-     * @param ?int $height
+     * @param self::FORMAT_JPEG|self::FORMAT_PNG $format file format of output file
+     * @param ?int $width target width
+     * @param ?int $height target height
      *
-     * @return ?string
+     * @return ?string blob containing the processed image
      */
-    public function loadImage($url, $extension = 'png', $width = null, $height = null) {
+    public function loadImage($url, $format = self::FORMAT_PNG, $width = null, $height = null) {
         // load image
         try {
             $data = $this->webClient->request($url);
@@ -176,7 +195,7 @@ class Image {
             }
 
             $image->resizeImage($width, $height, \Imagick::FILTER_LANCZOS, 1);
-            if ($extension === 'jpg') {
+            if ($format === self::FORMAT_JPEG) {
                 $image->setImageFormat('jpeg');
                 $image->setImageCompression(\Imagick::COMPRESSION_JPEG);
                 $image->setImageCompressionQuality(75);
@@ -237,7 +256,7 @@ class Image {
         }
 
         // return image as jpg or png
-        if ($extension === 'jpg') {
+        if ($format === self::FORMAT_JPEG) {
             $data = $wideImage->asString('jpg', 75);
         } else {
             $data = $wideImage->asString('png', 4, PNG_NO_FILTER);

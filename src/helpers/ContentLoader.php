@@ -317,8 +317,9 @@ class ContentLoader {
      */
     protected function fetchThumbnail($thumbnail, array $newItem) {
         if (strlen(trim($thumbnail)) > 0) {
-            $extension = 'jpg';
-            $thumbnailAsJpg = $this->imageHelper->loadImage($thumbnail, $extension, 500, 500);
+            $format = Image::FORMAT_JPEG;
+            $extension = Image::getExtension($format);
+            $thumbnailAsJpg = $this->imageHelper->loadImage($thumbnail, $format, 500, 500);
             if ($thumbnailAsJpg !== null) {
                 $written = file_put_contents(
                     \F3::get('datadir') . '/thumbnails/' . md5($thumbnail) . '.' . $extension,
@@ -350,12 +351,13 @@ class ContentLoader {
      */
     protected function fetchIcon($icon, array $newItem, &$lasticon) {
         if (strlen(trim($icon)) > 0) {
-            $extension = 'png';
+            $format = Image::FORMAT_PNG;
+            $extension = Image::getExtension($format);
             if ($icon === $lasticon) {
                 $this->logger->debug('use last icon: ' . $lasticon);
                 $newItem['icon'] = md5($lasticon) . '.' . $extension;
             } else {
-                $iconAsPng = $this->imageHelper->loadImage($icon, $extension, 30, null);
+                $iconAsPng = $this->imageHelper->loadImage($icon, $format, 30, null);
                 if ($iconAsPng !== null) {
                     $written = file_put_contents(
                         \F3::get('datadir') . '/favicons/' . md5($icon) . '.' . $extension,
