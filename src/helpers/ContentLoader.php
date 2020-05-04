@@ -202,12 +202,20 @@ class ContentLoader {
                 'author' => $author
             ];
 
-            // save thumbnail
-            $newItem['thumbnail'] = $this->fetchThumbnail($item->getThumbnail()) ?: '';
+            $thumbnailUrl = $item->getThumbnail();
+            if (strlen(trim($thumbnailUrl)) > 0) {
+                // save thumbnail
+                $newItem['thumbnail'] = $this->fetchThumbnail($thumbnailUrl) ?: '';
+            }
 
             try {
-                // save icon
-                $newItem['icon'] = $this->fetchIcon($item->getIcon(), $lasticon) ?: '';
+                $iconUrl = $item->getIcon();
+                if (strlen(trim($iconUrl)) > 0) {
+                    // save icon
+                    $newItem['icon'] = $this->fetchIcon($iconUrl, $lasticon) ?: '';
+                } else {
+                    $this->logger->debug('no icon for this feed');
+                }
             } catch (\Exception $e) {
                 $this->logger->error('icon: error', ['exception' => $e]);
             }
@@ -309,25 +317,23 @@ class ContentLoader {
      * @return ?string path in the thumbnails directory
      */
     protected function fetchThumbnail($url) {
-        if (strlen(trim($url)) > 0) {
-            $format = Image::FORMAT_JPEG;
-            $extension = Image::getExtension($format);
-            $thumbnailAsJpg = $this->imageHelper->loadImage($url, $format, 500, 500);
-            if ($thumbnailAsJpg !== null) {
-                $written = file_put_contents(
-                    \F3::get('datadir') . '/thumbnails/' . md5($url) . '.' . $extension,
-                    $thumbnailAsJpg
-                );
-                if ($written !== false) {
-                    $this->logger->debug('Thumbnail generated: ' . $url);
+        $format = Image::FORMAT_JPEG;
+        $extension = Image::getExtension($format);
+        $thumbnailAsJpg = $this->imageHelper->loadImage($url, $format, 500, 500);
+        if ($thumbnailAsJpg !== null) {
+            $written = file_put_contents(
+                \F3::get('datadir') . '/thumbnails/' . md5($url) . '.' . $extension,
+                $thumbnailAsJpg
+            );
+            if ($written !== false) {
+                $this->logger->debug('Thumbnail generated: ' . $url);
 
-                    return md5($url) . '.' . $extension;
-                } else {
-                    $this->logger->warning('Unable to store thumbnail: ' . $url . '. Please check permissions of ' . \F3::get('datadir') . '/thumbnails.');
-                }
+                return md5($url) . '.' . $extension;
             } else {
-                $this->logger->error('thumbnail generation error: ' . $url);
+                $this->logger->warning('Unable to store thumbnail: ' . $url . '. Please check permissions of ' . \F3::get('datadir') . '/thumbnails.');
             }
+        } else {
+            $this->logger->error('thumbnail generation error: ' . $url);
         }
 
         return null;
@@ -342,34 +348,30 @@ class ContentLoader {
      * @return ?string path in the favicons directory
      */
     protected function fetchIcon($url, &$lasticon) {
-        if (strlen(trim($url)) > 0) {
-            $format = Image::FORMAT_PNG;
-            $extension = Image::getExtension($format);
-            if ($url === $lasticon) {
-                $this->logger->debug('use last icon: ' . $lasticon);
+        $format = Image::FORMAT_PNG;
+        $extension = Image::getExtension($format);
+        if ($url === $lasticon) {
+            $this->logger->debug('use last icon: ' . $lasticon);
 
-                return md5($lasticon) . '.' . $extension;
-            } else {
-                $iconAsPng = $this->imageHelper->loadImage($url, $format, 30, null);
-                if ($iconAsPng !== null) {
-                    $written = file_put_contents(
-                        \F3::get('datadir') . '/favicons/' . md5($url) . '.' . $extension,
-                        $iconAsPng
-                    );
-                    $lasticon = $url;
-                    if ($written !== false) {
-                        $this->logger->debug('Icon generated: ' . $url);
-
-                        return md5($url) . '.' . $extension;
-                    } else {
-                        $this->logger->warning('Unable to store icon: ' . $url . '. Please check permissions of ' . \F3::get('datadir') . '/favicons.');
-                    }
-                } else {
-                    $this->logger->error('icon generation error: ' . $url);
-                }
-            }
+            return md5($lasticon) . '.' . $extension;
         } else {
-            $this->logger->debug('no icon for this feed');
+            $iconAsPng = $this->imageHelper->loadImage($url, $format, 30, null);
+            if ($iconAsPng !== null) {
+                $written = file_put_contents(
+                    \F3::get('datadir') . '/favicons/' . md5($url) . '.' . $extension,
+                    $iconAsPng
+                );
+                $lasticon = $url;
+                if ($written !== false) {
+                    $this->logger->debug('Icon generated: ' . $url);
+
+                    return md5($url) . '.' . $extension;
+                } else {
+                    $this->logger->warning('Unable to store icon: ' . $url . '. Please check permissions of ' . \F3::get('datadir') . '/favicons.');
+                }
+            } else {
+                $this->logger->error('icon generation error: ' . $url);
+            }
         }
 
         return null;
