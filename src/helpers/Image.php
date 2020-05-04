@@ -19,9 +19,6 @@ class Image {
     const FORMAT_JPEG = 'jpeg';
     const FORMAT_PNG = 'png';
 
-    /** @var ?string url of last fetched favicon */
-    private $faviconUrl = null;
-
     private static $extensions = [
         self::FORMAT_JPEG => 'jpg',
         self::FORMAT_PNG => 'png',
@@ -83,16 +80,14 @@ class Image {
      * @param ?int $width
      * @param ?int $height
      *
-     * @return ?string
+     * @return ?array{string, string} pair of URL and blob containing the image data
      */
     public function fetchFavicon($url, $isHtmlUrl = false, $width = null, $height = null) {
         // try given url
         if ($isHtmlUrl === false) {
             $faviconAsPng = $this->loadImage($url, $width, $height);
             if ($faviconAsPng !== null) {
-                $this->faviconUrl = $url;
-
-                return $faviconAsPng;
+                return [$url, $faviconAsPng];
             }
         }
 
@@ -120,9 +115,7 @@ class Image {
 
                 $faviconAsPng = $this->loadImage($shortcutIconUrl, $width, $height);
                 if ($faviconAsPng !== null) {
-                    $this->faviconUrl = $shortcutIconUrl;
-
-                    return $faviconAsPng;
+                    return [$shortcutIconUrl, $faviconAsPng];
                 }
             }
         }
@@ -132,9 +125,7 @@ class Image {
             $url = $urlElements['scheme'] . '://' . $urlElements['host'] . '/favicon.ico';
             $faviconAsPng = $this->loadImage($url, $width, $height);
             if ($faviconAsPng !== null) {
-                $this->faviconUrl = $url;
-
-                return $faviconAsPng;
+                return [$url, $faviconAsPng];
             }
         }
 
@@ -263,15 +254,6 @@ class Image {
         }
 
         return $data;
-    }
-
-    /**
-     * get favicon url
-     *
-     * @return ?string
-     */
-    public function getFaviconUrl() {
-        return $this->faviconUrl;
     }
 
     /**

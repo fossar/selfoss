@@ -158,8 +158,8 @@ class reddit2 extends \spouts\spout {
 
     public function getIcon() {
         $htmlUrl = $this->getHtmlUrl();
-        if ($htmlUrl && $this->imageHelper->fetchFavicon($htmlUrl)) {
-            $this->faviconUrl = $this->imageHelper->getFaviconUrl();
+        if ($htmlUrl && ($iconData = $this->imageHelper->fetchFavicon($htmlUrl)) !== null) {
+            list($this->faviconUrl, $iconBlob) = $iconData;
         }
 
         return $this->faviconUrl;
