@@ -85,7 +85,7 @@ class Image {
     public function fetchFavicon($url, $isHtmlUrl = false, $width = null, $height = null) {
         // try given url
         if ($isHtmlUrl === false) {
-            $faviconAsPng = $this->loadImage($url, $width, $height);
+            $faviconAsPng = $this->loadImage($url, self::FORMAT_PNG, $width, $height);
             if ($faviconAsPng !== null) {
                 return [$url, $faviconAsPng];
             }
@@ -102,7 +102,7 @@ class Image {
             $effectiveUrl = new Uri(WebClient::getEffectiveUrl($url, $response));
 
             if ($response->getStatusCode() !== 200) {
-                throw new Exception(substr($html, 0, 512));
+                throw new \Exception(substr($html, 0, 512));
             }
         } catch (\Exception $e) {
             $this->logger->debug('icon: failed to get html page: ', ['exception' => $e]);
@@ -113,7 +113,7 @@ class Image {
             foreach ($shortcutIcons as $shortcutIcon) {
                 $shortcutIconUrl = (string) UriResolver::resolve($effectiveUrl, new Uri($shortcutIcon));
 
-                $faviconAsPng = $this->loadImage($shortcutIconUrl, $width, $height);
+                $faviconAsPng = $this->loadImage($shortcutIconUrl, self::FORMAT_PNG, $width, $height);
                 if ($faviconAsPng !== null) {
                     return [$shortcutIconUrl, $faviconAsPng];
                 }
@@ -123,7 +123,7 @@ class Image {
         // search domain/favicon.ico
         if (isset($urlElements['scheme']) && isset($urlElements['host'])) {
             $url = $urlElements['scheme'] . '://' . $urlElements['host'] . '/favicon.ico';
-            $faviconAsPng = $this->loadImage($url, $width, $height);
+            $faviconAsPng = $this->loadImage($url, self::FORMAT_PNG, $width, $height);
             if ($faviconAsPng !== null) {
                 return [$url, $faviconAsPng];
             }
