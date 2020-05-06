@@ -84,48 +84,61 @@ class Image {
      */
     public function fetchFavicon($url, $isHtmlUrl = false, $width = null, $height = null) {
         // try given url
+        try {
+            $http = $this->webClient->getHttpClient();
+            $response = $http->get($url);
+            $blob = (string) $response->getBody();
+            $effectiveUrl = new Uri(WebClient::getEffectiveUrl($url, $response));
+
+            if ($response->getStatusCode() !== 200) {
+                throw new \Exception(substr($blob, 0, 512));
+            }
+        } catch (\Exception $e) {
+            $this->logger->error("icon: failed to retrieve URL $url", ['exception' => $e]);
+
+            return null;
+        }
+
         if ($isHtmlUrl === false) {
-            $faviconAsPng = $this->loadImage($url, self::FORMAT_PNG, $width, $height);
+            $faviconAsPng = $this->loadImage($blob, self::FORMAT_PNG, $width, $height);
             if ($faviconAsPng !== null) {
                 return [$url, $faviconAsPng];
+            }
+        }
+
+        // When HTML page, search for icon links
+        if (preg_match('#^text/html\b#i', $response->getHeaderLine('content-type')) || preg_match('#<html[\s>]#si', $blob)) {
+            $shortcutIcons = ImageUtils::parseShortcutIcons($blob);
+            foreach ($shortcutIcons as $shortcutIcon) {
+                $shortcutIconUrl = (string) UriResolver::resolve($effectiveUrl, new Uri($shortcutIcon));
+
+                try {
+                    $data = $this->webClient->request($shortcutIconUrl);
+                    $faviconAsPng = $this->loadImage($data, self::FORMAT_PNG, $width, $height);
+
+                    if ($faviconAsPng !== null) {
+                        return [$shortcutIconUrl, $faviconAsPng];
+                    }
+                } catch (\Exception $e) {
+                    $this->logger->error("failed to retrieve image $url,", ['exception' => $e]);
+                }
             }
         }
 
         $urlElements = parse_url($url);
 
-        // search on base page for <link rel="shortcut icon" url...
-        $html = null;
-        try {
-            $http = $this->webClient->getHttpClient();
-            $response = $http->get($url);
-            $html = (string) $response->getBody();
-            $effectiveUrl = new Uri(WebClient::getEffectiveUrl($url, $response));
-
-            if ($response->getStatusCode() !== 200) {
-                throw new \Exception(substr($html, 0, 512));
-            }
-        } catch (\Exception $e) {
-            $this->logger->debug('icon: failed to get html page: ', ['exception' => $e]);
-        }
-
-        if ($html !== null) {
-            $shortcutIcons = ImageUtils::parseShortcutIcons($html);
-            foreach ($shortcutIcons as $shortcutIcon) {
-                $shortcutIconUrl = (string) UriResolver::resolve($effectiveUrl, new Uri($shortcutIcon));
-
-                $faviconAsPng = $this->loadImage($shortcutIconUrl, self::FORMAT_PNG, $width, $height);
-                if ($faviconAsPng !== null) {
-                    return [$shortcutIconUrl, $faviconAsPng];
-                }
-            }
-        }
-
         // search domain/favicon.ico
         if (isset($urlElements['scheme']) && isset($urlElements['host'])) {
             $url = $urlElements['scheme'] . '://' . $urlElements['host'] . '/favicon.ico';
-            $faviconAsPng = $this->loadImage($url, self::FORMAT_PNG, $width, $height);
-            if ($faviconAsPng !== null) {
-                return [$url, $faviconAsPng];
+            try {
+                $data = $this->webClient->request($url);
+                $faviconAsPng = $this->loadImage($data, self::FORMAT_PNG, $width, $height);
+
+                if ($faviconAsPng !== null) {
+                    return [$url, $faviconAsPng];
+                }
+            } catch (\Exception $e) {
+                $this->logger->error("failed to retrieve image $url,", ['exception' => $e]);
             }
         }
 
@@ -135,23 +148,14 @@ class Image {
     /**
      * Load image from URL, optionally resize it and convert it to desired format.
      *
-     * @param string $url source url
+     * @param string $data
      * @param self::FORMAT_JPEG|self::FORMAT_PNG $format file format of output file
      * @param ?int $width target width
      * @param ?int $height target height
      *
      * @return ?string blob containing the processed image
      */
-    public function loadImage($url, $format = self::FORMAT_PNG, $width = null, $height = null) {
-        // load image
-        try {
-            $data = $this->webClient->request($url);
-        } catch (\Exception $e) {
-            $this->logger->error("failed to retrieve image $url,", ['exception' => $e]);
-
-            return null;
-        }
-
+    public function loadImage($data, $format = self::FORMAT_PNG, $width = null, $height = null) {
         $imgInfo = null;
 
         // get image type
@@ -208,7 +212,7 @@ class Image {
             try {
                 $icon = $loader->fromString($data);
             } catch (\InvalidArgumentException $e) {
-                $this->logger->error("Icon “{$url}” is not valid", ['exception' => $e]);
+                $this->logger->error('Icon is not valid', ['exception' => $e]);
 
                 return null;
             }

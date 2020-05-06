@@ -36,13 +36,16 @@ class ContentLoader {
     /** @var ThumbnailStore thumbnail store */
     private $thumbnailStore;
 
+    /** @var WebClient thumbnail store */
+    private $webClient;
+
     const ICON_FORMAT = Image::FORMAT_PNG;
     const THUMBNAIL_FORMAT = Image::FORMAT_JPEG;
 
     /**
      * ctor
      */
-    public function __construct(\daos\Database $database, IconStore $iconStore, Image $imageHelper, \daos\Items $itemsDao, Logger $logger, \daos\Sources $sourcesDao, SpoutLoader $spoutLoader, ThumbnailStore $thumbnailStore) {
+    public function __construct(\daos\Database $database, IconStore $iconStore, Image $imageHelper, \daos\Items $itemsDao, Logger $logger, \daos\Sources $sourcesDao, SpoutLoader $spoutLoader, ThumbnailStore $thumbnailStore, WebClient $webClient) {
         $this->database = $database;
         $this->iconStore = $iconStore;
         $this->imageHelper = $imageHelper;
@@ -51,6 +54,7 @@ class ContentLoader {
         $this->sourcesDao = $sourcesDao;
         $this->spoutLoader = $spoutLoader;
         $this->thumbnailStore = $thumbnailStore;
+        $this->webClient = $webClient;
     }
 
     /**
@@ -354,12 +358,20 @@ class ContentLoader {
      * @return ?string path in the thumbnails directory
      */
     protected function fetchThumbnail($url) {
-        $format = self::THUMBNAIL_FORMAT;
-        $thumbnailAsJpg = $this->imageHelper->loadImage($url, $format, 500, 500);
-        if ($thumbnailAsJpg !== null) {
-            return $this->thumbnailStore->store($url, $thumbnailAsJpg);
-        } else {
-            $this->logger->error('thumbnail generation error: ' . $url);
+        try {
+            $data = $this->webClient->request($url);
+            $format = self::THUMBNAIL_FORMAT;
+            $thumbnailAsJpg = $this->imageHelper->loadImage($data, $format, 500, 500);
+
+            if ($thumbnailAsJpg !== null) {
+                return $this->thumbnailStore->store($url, $thumbnailAsJpg);
+            } else {
+                $this->logger->error('thumbnail generation error: ' . $url);
+            }
+        } catch (\Exception $e) {
+            $this->logger->error("failed to retrieve thumbnail $url,", ['exception' => $e]);
+
+            return null;
         }
 
         return null;
@@ -373,13 +385,20 @@ class ContentLoader {
      * @return ?string path in the favicons directory
      */
     protected function fetchIcon($url) {
-        $format = Image::FORMAT_PNG;
-        $iconAsPng = $this->imageHelper->loadImage($url, $format, 30, null);
+        try {
+            $data = $this->webClient->request($url);
+            $format = Image::FORMAT_PNG;
+            $iconAsPng = $this->imageHelper->loadImage($data, $format, 30, null);
 
-        if ($iconAsPng !== null) {
-            return $this->iconStore->store($url, $iconAsPng);
-        } else {
-            $this->logger->error('icon generation error: ' . $url);
+            if ($iconAsPng !== null) {
+                return $this->iconStore->store($url, $iconAsPng);
+            } else {
+                $this->logger->error('icon generation error: ' . $url);
+            }
+        } catch (\Exception $e) {
+            $this->logger->error("failed to retrieve image $url,", ['exception' => $e]);
+
+            return null;
         }
 
         return null;
