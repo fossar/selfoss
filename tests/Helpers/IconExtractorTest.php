@@ -2,7 +2,7 @@
 
 namespace Tests\Helpers;
 
-use helpers\Image;
+use helpers\ImageUtils;
 use PHPUnit\Framework\TestCase;
 
 final class IconExtractorTest extends TestCase {
@@ -24,7 +24,7 @@ EOD;
             [
                 'https://www.example.com/images/apple-touch-114x114.png',
             ],
-            Image::parseShortcutIcons($page)
+            ImageUtils::parseShortcutIcons($page)
         );
     }
 
@@ -46,7 +46,7 @@ EOD;
             [
                 'https://www.example.com/images/apple-touch-precomposed-114x114.png',
             ],
-            Image::parseShortcutIcons($page)
+            ImageUtils::parseShortcutIcons($page)
         );
     }
 
@@ -68,7 +68,7 @@ EOD;
             [
                 'https://www.example.com/images/apple-touch-114x114.png',
             ],
-            Image::parseShortcutIcons($page)
+            ImageUtils::parseShortcutIcons($page)
         );
     }
 
@@ -90,7 +90,7 @@ EOD;
             [
                 'https://www.example.com/favicon.ico',
             ],
-            Image::parseShortcutIcons($page)
+            ImageUtils::parseShortcutIcons($page)
         );
     }
 
@@ -112,7 +112,7 @@ EOD;
             [
                 'https://www.example.com/favicon.ico',
             ],
-            Image::parseShortcutIcons($page)
+            ImageUtils::parseShortcutIcons($page)
         );
     }
 
@@ -138,7 +138,7 @@ EOD;
                 '/favicon.ico',
                 '/favicon.svg',
             ],
-            Image::parseShortcutIcons($page)
+            ImageUtils::parseShortcutIcons($page)
         );
     }
 
@@ -162,7 +162,7 @@ EOD;
                 'https://www.example.com/images/apple-touch-114x114.png',
                 '/favicon.ico',
             ],
-            Image::parseShortcutIcons($page)
+            ImageUtils::parseShortcutIcons($page)
         );
     }
 
@@ -186,7 +186,7 @@ EOD;
                 'https://www.example.com/images/apple-touch-114x114.png',
                 'https://www.example.com/images/apple-touch-precomposed-87x87.png',
             ],
-            Image::parseShortcutIcons($page)
+            ImageUtils::parseShortcutIcons($page)
         );
     }
 
@@ -210,7 +210,7 @@ EOD;
                 'https://www.example.com/images/apple-touch-precomposed-114x114.png',
                 'https://www.example.com/images/apple-touch-114x114.png',
             ],
-            Image::parseShortcutIcons($page)
+            ImageUtils::parseShortcutIcons($page)
         );
     }
 
@@ -228,7 +228,7 @@ EOD;
                 '//www.example.com/favicons/apple-touch-icon-152x152.png',
                 '//www.example.com/favicons/favicon.ico',
             ],
-            Image::parseShortcutIcons($page)
+            ImageUtils::parseShortcutIcons($page)
         );
     }
 
@@ -247,7 +247,7 @@ EOD;
 
         $this->assertEquals(
             [],
-            Image::parseShortcutIcons($page)
+            ImageUtils::parseShortcutIcons($page)
         );
     }
 
@@ -267,7 +267,7 @@ EOD;
 
         $this->assertEquals(
             [],
-            Image::parseShortcutIcons($page)
+            ImageUtils::parseShortcutIcons($page)
         );
     }
 
@@ -289,7 +289,7 @@ EOD;
 
         $this->assertEquals(
             [],
-            Image::parseShortcutIcons($page)
+            ImageUtils::parseShortcutIcons($page)
         );
     }
 }

@@ -35,7 +35,7 @@ class images extends feed {
                 return @$item->get_enclosure(0)->get_link();
             }
         } else { // no enclosures: search image link in content
-            $image = \helpers\Image::findFirstImageSource(@$item->get_content());
+            $image = \helpers\ImageUtils::findFirstImageSource(@$item->get_content());
             if ($image !== null) {
                 return $image;
             }
