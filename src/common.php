@@ -157,6 +157,32 @@ $dice->addRule(DB\SQL::class, array_merge($shared, [
     'constructParams' => $dbParams
 ]));
 
+$dice->addRule('$iconStorageBackend', [
+    'instanceOf' => helpers\Storage\FileStorage::class,
+    'constructParams' => [
+        \F3::get('datadir') . '/favicons'
+    ],
+]);
+
+$dice->addRule(helpers\IconStore::class, array_merge($shared, [
+    'constructParams' => [
+        ['instance' => '$iconStorageBackend'],
+    ]
+]));
+
+$dice->addRule('$thumbnailStorageBackend', [
+    'instanceOf' => helpers\Storage\FileStorage::class,
+    'constructParams' => [
+        \F3::get('datadir') . '/thumbnails'
+    ],
+]);
+
+$dice->addRule(helpers\ThumbnailStore::class, array_merge($shared, [
+    'constructParams' => [
+        ['instance' => '$thumbnailStorageBackend'],
+    ]
+]));
+
 // Fallback rule
 $dice->addRule('*', $substitutions);
 

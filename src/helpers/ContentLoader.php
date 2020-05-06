@@ -15,6 +15,9 @@ class ContentLoader {
     /** @var \daos\Database database for optimization */
     private $database;
 
+    /** @var IconStore icon store */
+    private $iconStore;
+
     /** @var Image image helper */
     private $imageHelper;
 
@@ -30,16 +33,24 @@ class ContentLoader {
     /** @var SpoutLoader spout loader */
     private $spoutLoader;
 
+    /** @var ThumbnailStore thumbnail store */
+    private $thumbnailStore;
+
+    const ICON_FORMAT = Image::FORMAT_PNG;
+    const THUMBNAIL_FORMAT = Image::FORMAT_JPEG;
+
     /**
      * ctor
      */
-    public function __construct(\daos\Database $database, Image $imageHelper, \daos\Items $itemsDao, Logger $logger, \daos\Sources $sourcesDao, SpoutLoader $spoutLoader) {
+    public function __construct(\daos\Database $database, IconStore $iconStore, Image $imageHelper, \daos\Items $itemsDao, Logger $logger, \daos\Sources $sourcesDao, SpoutLoader $spoutLoader, ThumbnailStore $thumbnailStore) {
         $this->database = $database;
+        $this->iconStore = $iconStore;
         $this->imageHelper = $imageHelper;
         $this->itemsDao = $itemsDao;
         $this->logger = $logger;
         $this->sourcesDao = $sourcesDao;
         $this->spoutLoader = $spoutLoader;
+        $this->thumbnailStore = $thumbnailStore;
     }
 
     /**
@@ -343,21 +354,10 @@ class ContentLoader {
      * @return ?string path in the thumbnails directory
      */
     protected function fetchThumbnail($url) {
-        $format = Image::FORMAT_JPEG;
-        $extension = Image::getExtension($format);
+        $format = self::THUMBNAIL_FORMAT;
         $thumbnailAsJpg = $this->imageHelper->loadImage($url, $format, 500, 500);
         if ($thumbnailAsJpg !== null) {
-            $written = file_put_contents(
-                \F3::get('datadir') . '/thumbnails/' . md5($url) . '.' . $extension,
-                $thumbnailAsJpg
-            );
-            if ($written !== false) {
-                $this->logger->debug('Thumbnail generated: ' . $url);
-
-                return md5($url) . '.' . $extension;
-            } else {
-                $this->logger->warning('Unable to store thumbnail: ' . $url . '. Please check permissions of ' . \F3::get('datadir') . '/thumbnails.');
-            }
+            return $this->thumbnailStore->store($url, $thumbnailAsJpg);
         } else {
             $this->logger->error('thumbnail generation error: ' . $url);
         }
@@ -374,21 +374,10 @@ class ContentLoader {
      */
     protected function fetchIcon($url) {
         $format = Image::FORMAT_PNG;
-        $extension = Image::getExtension($format);
         $iconAsPng = $this->imageHelper->loadImage($url, $format, 30, null);
 
         if ($iconAsPng !== null) {
-            $written = file_put_contents(
-                \F3::get('datadir') . '/favicons/' . md5($url) . '.' . $extension,
-                $iconAsPng
-            );
-            if ($written !== false) {
-                $this->logger->debug('Icon generated: ' . $url);
-
-                return md5($url) . '.' . $extension;
-            } else {
-                $this->logger->warning('Unable to store icon: ' . $url . '. Please check permissions of ' . \F3::get('datadir') . '/favicons.');
-            }
+            return $this->iconStore->store($url, $iconAsPng);
         } else {
             $this->logger->error('icon generation error: ' . $url);
         }
@@ -444,48 +433,22 @@ class ContentLoader {
 
         // delete orphaned thumbnails
         $this->logger->debug('delete orphaned thumbnails');
-        $this->cleanupFiles('thumbnails');
+        $this->thumbnailStore->cleanup(function($file) {
+            return $this->itemsDao->hasThumbnail($file);
+        });
         $this->logger->debug('delete orphaned thumbnails finished');
 
         // delete orphaned icons
         $this->logger->debug('delete orphaned icons');
-        $this->cleanupFiles('icons');
+        $this->iconStore->cleanup(function($file) {
+            return $this->itemsDao->hasIcon($file);
+        });
         $this->logger->debug('delete orphaned icons finished');
 
         // optimize database
         $this->logger->debug('optimize database');
         $this->database->optimize();
         $this->logger->debug('optimize database finished');
-    }
-
-    /**
-     * clean up orphaned thumbnails or icons
-     *
-     * @param string $type thumbnails or icons
-     *
-     * @return void
-     */
-    protected function cleanupFiles($type) {
-        if ($type === 'thumbnails') {
-            $checker = function($file) {
-                return $this->itemsDao->hasThumbnail($file);
-            };
-            $itemPath = \F3::get('datadir') . '/thumbnails/';
-        } elseif ($type === 'icons') {
-            $checker = function($file) {
-                return $this->itemsDao->hasIcon($file);
-            };
-            $itemPath = \F3::get('datadir') . '/favicons/';
-        }
-
-        foreach (scandir($itemPath) as $file) {
-            if (is_file($itemPath . $file) && $file !== '.htaccess') {
-                $inUsage = $checker($file);
-                if ($inUsage === false) {
-                    unlink($itemPath . $file);
-                }
-            }
-        }
     }
 
     /**
