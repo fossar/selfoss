@@ -93,5 +93,9 @@
   "lang_share_copy_label": "Copiar enlace al portapapeles",
   "lang_error_share_native_abort": "Imposible compartir ítem-no hay objetivos que compartir, o has cancelado.",
   "lang_error_share_native": "Imposible compartir ítem.",
-  "lang_close_entry": "Cerrar"
+  "lang_close_entry": "Cerrar",
+  "lang_error_unwritable_logs": "Imposible escribir logs.",
+  "lang_error_check_system_logs": "Un error ha ocurido, por favor comprueba tus logs de sistema.",
+  "lang_error_check_log_file": "Un error ha ocurrido, por favor comprueba el fichero de log “{0}”.",
+  "lang_offline_navigation_unavailable": "Cambiar etiquetas y fuentes no está disponible en el modo fuera de línea."
 }
