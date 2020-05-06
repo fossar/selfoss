@@ -93,5 +93,9 @@
   "lang_share_copy_label": "Copia enllaç al porta-retalls",
   "lang_error_share_native_abort": "Impossible compartir ítem-o no hi ha objectiu a compartir, o has cancel·lat.",
   "lang_error_share_native": "Impossible compartir ítem.",
-  "lang_close_entry": "Tancar"
+  "lang_close_entry": "Tancar",
+  "lang_error_unwritable_logs": "Impossible escriure logs.",
+  "lang_error_check_system_logs": "Un error ha ocorregut, comprova els teus logs de sistema.",
+  "lang_error_check_log_file": "Un error ha ocorregut, comprova el fitxer de log “{0}”.",
+  "lang_offline_navigation_unavailable": "Canviar etiquetes i fonts no està disponible al mode fora de línia."
 }
