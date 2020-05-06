@@ -167,7 +167,11 @@ class Image {
         }
 
         if ($imgInfo === null) {
-            $imgInfo = @getimagesizefromstring($data);
+            $imgInfo = getimagesizefromstring($data);
+            if ($imgInfo[0] === 0 || $imgInfo[1] === 0) {
+                // unable to determine dimensions
+                return null;
+            }
         }
 
         $mimeType = isset($imgInfo['mime']) ? strtolower($imgInfo['mime']) : null;
