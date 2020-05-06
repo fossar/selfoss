@@ -181,11 +181,10 @@ class Image {
         if ($type === 'svg') {
             $image = new \Imagick();
             $image->readImageBlob($data);
-            if ($width === null || $height === null) {
-                $width = $height = 256;
+            if ($width !== null && $height !== null) {
+                $image->resizeImage($width, $height, \Imagick::FILTER_LANCZOS, 1, true);
             }
 
-            $image->resizeImage($width, $height, \Imagick::FILTER_LANCZOS, 1);
             if ($format === self::FORMAT_JPEG) {
                 $image->setImageFormat('jpeg');
                 $image->setImageCompression(\Imagick::COMPRESSION_JPEG);
