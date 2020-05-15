@@ -15,6 +15,14 @@ if ($autoloader === false) {
     exit;
 }
 
+$startup_error = error_get_last();
+
+// F3 crashes when there were PHP startups error even though
+// they might not affect the program (e.g. unable to load an extension).
+// It also sets its own error_reporting value and uses the previous one
+// as a signal to disable the initialization failure check.
+error_reporting(0);
+
 $f3 = Base::instance();
 
 $f3->set('DEBUG', 0);
@@ -185,6 +193,10 @@ if ($f3->get('logger_level') === 'NONE') {
     $handler->setFormatter($formatter);
 }
 $log->pushHandler($handler);
+
+if (isset($startup_error)) {
+    $log->warn('PHP likely encountered a startup error: ', [$startup_error]);
+}
 
 // init error handling
 $f3->set('ONERROR',

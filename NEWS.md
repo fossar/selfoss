@@ -78,6 +78,7 @@
 - RSS spout now prefers the feed logo to website favicon. ([#1152](https://github.com/SSilence/selfoss/pull/1152))
 - RSS spout now tries to use favicon from the feed domain when there is no logo or home page favicon. ([#1152](https://github.com/SSilence/selfoss/pull/1152))
 - Setting `DEBUG` to `1` in `src/common.php` no longer logs HTTP bodies, only headers. Set it to `2` if you need the bodies as well. ([#1152](https://github.com/SSilence/selfoss/pull/1152))
+- PHP startup errors are now logged, instead of having F3 crash with Error 500 ([#1195](https://github.com/SSilence/selfoss/pull/1195))
 
 
 ## 2.18 – 2018-03-05
