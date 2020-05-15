@@ -527,7 +527,7 @@ var selfoss = {
         var sourceUnreadDiff = [];
         var found = false;
         $('.entry.unread').each(function(index, item) {
-            ids.push($(item).attr('id').substr(5));
+            ids.push($(item).attr('data-entry-id'));
 
             $('.entry-tags-tag', item).each(function(index, tagEl) {
                 found = false;

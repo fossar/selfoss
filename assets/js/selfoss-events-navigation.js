@@ -115,7 +115,7 @@ selfoss.events.navigation = function() {
         $(this).addClass('active');
 
         selfoss.events.setHash(selfoss.filter.type,
-            'source-' + $(this).attr('id').substr(6));
+            'source-' + $(this).attr('data-source-id'));
 
         selfoss.ui.hideMobileNav();
     });

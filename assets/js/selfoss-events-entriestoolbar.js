@@ -85,7 +85,7 @@ selfoss.events.entriesToolbar = function(parent) {
         // starr/unstarr
         parent.find('.entry-starr').unbind('click').click(function() {
             var parent = $(this).parents('.entry');
-            var id = parent.attr('id').substr(5);
+            var id = parent.attr('data-entry-id');
             var starr = $(this).hasClass('active') == false;
 
             selfoss.ui.entryStar(id, starr);

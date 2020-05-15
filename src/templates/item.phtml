@@ -18,8 +18,7 @@
     $title = $this->viewHelper->lazyimg($title);
     $content = $this->viewHelper->lazyimg($content);
 ?>
-<div id="entry<?= $this->item['id']; ?>"
-     data-entry-id="<?= $this->item['id']; ?>"
+<div data-entry-id="<?= $this->item['id']; ?>"
      data-entry-source="<?= $this->item['source']; ?>"
      data-entry-datetime="<?= $this->viewHelper->date_iso8601($this->item['datetime']); ?>"
      data-entry-url="<?= $this->item['link']; ?>"

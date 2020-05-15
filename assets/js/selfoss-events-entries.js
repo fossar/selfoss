@@ -120,7 +120,7 @@ selfoss.events.entries = function() {
                 }
 
                 // setup fancyBox image viewer
-                selfoss.setupFancyBox(entryContent, parent.attr('id').substr(5));
+                selfoss.setupFancyBox(entryContent, parent.attr('data-entry-id'));
 
                 // scroll to article header
                 if (selfoss.config.scrollToArticleHeader) {

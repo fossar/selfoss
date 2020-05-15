@@ -45,16 +45,10 @@ selfoss.events.sources = function() {
         parent.find('.source-action').addClass('loading');
 
         // get id
-        var id = false;
-        if (typeof parent.attr('id') != 'undefined') {
-            id = parent.attr('id').substr(6);
-        }
+        let id = parent.attr('data-source-id');
 
         // set url
-        var url = 'source';
-        if (id != false) {
-            url = url + '/' + id;
-        }
+        const url = `source/${id}`;
 
         // get values and params
         var values = selfoss.getValues(parent);
@@ -67,7 +61,7 @@ selfoss.events.sources = function() {
             data: values,
             success: function(response) {
                 var id = response['id'];
-                parent.attr('id', 'source' + id);
+                parent.attr('data-source-id', id);
 
                 // show saved text
                 parent.find('.source-showparams').addClass('saved').html(selfoss.ui._('source_saved'));
@@ -112,10 +106,7 @@ selfoss.events.sources = function() {
 
         // get id
         var parent = $(this).parents('.source');
-        var id = false;
-        if (typeof parent.attr('id') != 'undefined') {
-            id = parent.attr('id').substr(6);
-        }
+        var id = parent.attr('data-source-id');
 
         // show loading
         parent.find('.source-edit-delete').addClass('loading');
@@ -132,7 +123,7 @@ selfoss.events.sources = function() {
 
                 // reload tags and remove source from navigation
                 selfoss.reloadTags();
-                $('#nav-sources li#' + parent.attr('id')).remove();
+                $(`#nav-sources [data-source-id=${id}]`).parents('li').get(0).remove();
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 parent.find('.source-edit-delete').removeClass('loading');
