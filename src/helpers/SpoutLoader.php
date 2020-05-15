@@ -43,6 +43,10 @@ class SpoutLoader {
      * @return ?spout an instance of the spout, null if this spout doesn't exist
      */
     public function get($spout) {
+        if (!class_exists($spout)) {
+            return null;
+        }
+
         try {
             $class = $this->dic->create($spout);
 
