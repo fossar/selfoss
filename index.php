@@ -40,11 +40,11 @@ $f3->route('GET /source/params', controllers\Sources::class . '->params'); // ht
 $f3->route('GET /sources', controllers\Sources::class . '->show'); // html
 $f3->route('GET /source', controllers\Sources::class . '->add'); // html
 $f3->route('GET /sources/list', controllers\Sources::class . '->listSources'); // json
-$f3->route('POST /source/@id', controllers\Sources::class . '\Write->write'); // json
-$f3->route('POST /source', controllers\Sources::class . '\Write->write'); // json
+$f3->route('POST /source/@id', controllers\Sources\Write::class . '->write'); // json
+$f3->route('POST /source', controllers\Sources\Write::class . '->write'); // json
 $f3->route('DELETE /source/@id', controllers\Sources::class . '->remove'); // json
 $f3->route('POST /source/delete/@id', controllers\Sources::class . '->remove'); // json
-$f3->route('POST /source/@id/update', controllers\Sources::class . '\Update->update'); // json
+$f3->route('POST /source/@id/update', controllers\Sources\Update::class . '->update'); // json
 $f3->route('GET /sources/spouts', controllers\Sources::class . '->spouts'); // json
 
 $f3->route('POST /tags/color', controllers\Tags::class . '->color'); // json
