@@ -1,5 +1,8 @@
 FROM php:7.4-apache-buster
 
+# TODO: basically this image should be built on top of the production image
+# replacing the source dir with mounted volume
+
 ARG gid
 ARG uid
 
