@@ -425,13 +425,14 @@ selfoss.ui = {
     },
 
 
-    beforeReloadList: function(clear) {
-        clear = (typeof clear !== 'undefined') ? clear : true;
-
+    beforeReloadList: function(clear = true) {
         var content = $('#content');
 
         content.addClass('loading');
         if (clear) {
+            // clear the selected entry
+            selfoss.ui.entrySelect(null);
+
             content.html('');
         }
 
@@ -446,9 +447,7 @@ selfoss.ui = {
     },
 
 
-    afterReloadList: function(cleared) {
-        cleared = (typeof cleared !== 'undefined') ? cleared : true;
-
+    afterReloadList: function(cleared = true) {
         selfoss.ui.listReady();
 
         if (cleared) {

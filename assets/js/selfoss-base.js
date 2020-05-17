@@ -580,7 +580,7 @@ var selfoss = {
         var articleList = content.html();
         var hadMore = $('.stream-more').is(':visible');
 
-        selfoss.ui.beforeReloadList(true);
+        selfoss.ui.beforeReloadList();
 
         var unreadstats = parseInt($('.nav-filter-unread span.count').html()) -
             ids.length;

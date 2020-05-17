@@ -8,9 +8,6 @@ selfoss.events.entries = function() {
 
     $('.entry, .entry-title').unbind('click');
 
-    // clear the selected entry
-    selfoss.ui.entrySelect(null);
-
     // show/hide entry
     var target = selfoss.isMobile() ? '.entry' : '.entry-title';
     $(target).click(function() {
