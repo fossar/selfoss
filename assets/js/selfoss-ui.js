@@ -353,7 +353,7 @@ selfoss.ui = {
 
 
     entryStar: function(id, starred, domNode) {
-        var button = $('#entry' + id + ' .entry-starr', domNode);
+        var button = $(`.entry[data-entry-id=${id}] .entry-starr`, domNode);
 
         // update button
         if (starred) {
@@ -367,8 +367,8 @@ selfoss.ui = {
 
 
     entryMark: function(id, unread, domNode) {
-        var button = $('#entry' + id + ' .entry-unread', domNode);
-        var parent = $('#entry' + id, domNode);
+        var button = $(`.entry[data-entry-id=${id}] .entry-unread`, domNode);
+        var parent = $(`.entry[data-entry-id=${id}]`, domNode);
 
         // update button and entry style
         if (unread) {
@@ -709,7 +709,7 @@ selfoss.ui = {
 
         if (selfoss.sourcesNavLoaded) {
             sourceCounts.forEach(function(sourceCount) {
-                var sourceNav = $('#source' + sourceCount.source);
+                var sourceNav = $(`#nav-sources a[data-source-id=${sourceCount.source}]`);
                 var sourcesCountEl = $('span.unread', sourceNav);
 
                 var unreadCount = 0;

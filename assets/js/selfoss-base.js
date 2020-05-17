@@ -462,7 +462,7 @@ var selfoss = {
                                      + selfoss.filter.source);
             }
 
-            $('#source' + selfoss.filter.source).addClass('active');
+            $(`#nav-sources a[data-source-id=${selfoss.filter.source}]`).addClass('active');
             $('#nav-tags > li > a').removeClass('active');
         }
 

@@ -124,7 +124,7 @@ selfoss.events = {
                 // open it.
                 if (selfoss.events.entryId
                     && selfoss.events.processHashChange) {
-                    entry = $('#entry' + selfoss.events.entryId);
+                    entry = $(`.entry[data-entry-id=${selfoss.events.entryId}]`);
                     selfoss.ui.entrySelect(entry);
                     selfoss.ui.entryExpand(entry);
                 }
@@ -141,7 +141,7 @@ selfoss.events = {
                 // scroll to entry.
                 if (selfoss.events.entryId
                     && selfoss.events.processHashChange) {
-                    entry = $('#entry' + selfoss.events.entryId);
+                    entry = $(`.entry[data-entry-id=${selfoss.events.entryId}]`);
                     if (entry) {
                         entry.get(0).scrollIntoView();
                     }

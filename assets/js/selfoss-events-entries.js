@@ -231,7 +231,7 @@ selfoss.events.entries = function() {
     // open selected entry only if entry was requested (i.e. if not streaming
     // more)
     if (selfoss.events.entryId && selfoss.filter.fromId === undefined) {
-        var entry = $('#entry' + selfoss.events.entryId);
+        var entry = $(`.entry[data-entry-id=${selfoss.events.entryId}]`);
 
         if (!entry) {
             return;
