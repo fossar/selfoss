@@ -17,7 +17,9 @@
     "spectrum-colorpicker": "^1.8.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.6.3",
+    "@babel/core": "^7.9.6",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-proposal-private-methods": "^7.8.3",
     "@babel/plugin-transform-react-jsx": "^7.3.0",
     "autoprefixer": "^9.6.5",
     "babel-eslint": "^10.0.3",
