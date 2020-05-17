@@ -269,15 +269,8 @@ selfoss.dbOnline = {
                 // update tags
                 selfoss.refreshTags(data.tags);
 
-                // drop loaded sources
-                var currentSource = -1;
-                if (selfoss.sourcesNavLoaded) {
-                    currentSource = $('#nav-sources li').index($('#nav-sources .active'));
-                    $('#nav-sources li').remove();
-                    selfoss.sourcesNavLoaded = false;
-                }
                 if (selfoss.filter.sourcesNav) {
-                    selfoss.refreshSources(data.sources, currentSource);
+                    selfoss.refreshSources(data.sources);
                 }
             },
             error: function(jqXHR, textStatus, errorThrown) {
