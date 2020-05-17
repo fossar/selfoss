@@ -89,8 +89,8 @@ selfoss.shares = {
         return this.enabledShares.filter(id => id in this.names).map(id => this.sharers[this.names[id]]);
     },
 
-    share(name, {url, title}) {
-        this.sharers[name].callback({url, title});
+    share(name, {id, url, title}) {
+        this.sharers[name].callback({id, url, title});
     },
 
     buildLinks(shares, linkBuilder) {
