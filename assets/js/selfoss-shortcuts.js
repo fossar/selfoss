@@ -231,10 +231,15 @@ selfoss.shortcuts = {
                 return false;
             }
 
-            var selected = selfoss.ui.entryGetSelected();
+            let selected = selfoss.ui.entryGetSelected();
 
-            if (selected !== null && !selfoss.ui.entryIsRead(selected)) {
-                selfoss.ui.entryMark(selected.data('entry-id'), false);
+            if (selected !== null) {
+                selfoss.events.entriesToolbar(selected);
+
+                // mark item as read if it is not already
+                if ($('.entry-unread', selected).hasClass('active')) {
+                    $('.entry-unread', selected).click();
+                }
             }
 
             selfoss.shortcuts.nextprev('next', true);
@@ -247,10 +252,15 @@ selfoss.shortcuts = {
                 return false;
             }
 
-            var selected = selfoss.ui.entryGetSelected();
+            let selected = selfoss.ui.entryGetSelected();
 
-            if (selected !== null && !selfoss.ui.entryIsRead(selected)) {
-                selfoss.ui.entryMark(selected.data('entry-id'), false);
+            if (selected !== null) {
+                selfoss.events.entriesToolbar(selected);
+
+                // mark item as read if it is not already
+                if ($('.entry-unread', selected).hasClass('active')) {
+                    $('.entry-unread', selected).click();
+                }
             }
 
             selfoss.shortcuts.nextprev('prev', true);
