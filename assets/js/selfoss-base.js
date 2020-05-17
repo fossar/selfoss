@@ -1,4 +1,5 @@
 import templates from './templates';
+import Counters from './utils/Counters';
 
 /**
  * base javascript application
@@ -35,6 +36,9 @@ var selfoss = {
      * the html title configured
      */
     htmlTitle: 'selfoss',
+
+    // exported to be usable in user.js
+    Counters,
 
     /**
      * initialize application
@@ -522,39 +526,20 @@ var selfoss = {
      * Mark all visible items as read
      */
     markVisibleRead: function() {
-        var ids = [];
-        var tagUnreadDiff = [];
-        var sourceUnreadDiff = [];
-        var found = false;
+        let ids = [];
+        let tagUnreadDiff = new Counters();
+        let sourceUnreadDiff = new Counters();
         $('.entry.unread').each(function(index, item) {
             ids.push($(item).attr('data-entry-id'));
 
             $('.entry-tags-tag', item).each(function(index, tagEl) {
-                found = false;
-                var tag = $(tagEl).html();
-                tagUnreadDiff.forEach(function(tagCount) {
-                    if (tagCount.tag == tag) {
-                        found = true;
-                        tagCount.count = tagCount.count - 1;
-                    }
-                });
-                if (!found) {
-                    tagUnreadDiff.push({tag: tag, count: -1});
-                }
+                let tag = $(tagEl).html();
+                tagUnreadDiff.decrement(tag);
             });
 
             if (selfoss.sourcesNavLoaded) {
-                found = false;
-                var source = $(item).data('entry-source');
-                sourceUnreadDiff.forEach(function(sourceCount) {
-                    if (sourceCount.source == source) {
-                        found = true;
-                        sourceCount.count = sourceCount.count - 1;
-                    }
-                });
-                if (!found) {
-                    sourceUnreadDiff.push({source: source, count: -1});
-                }
+                let source = $(item).data('entry-source');
+                sourceUnreadDiff.decrement(source);
             }
         });
 
@@ -589,8 +574,10 @@ var selfoss = {
             if (!displayed) {
                 displayed = true;
                 selfoss.refreshUnread(unreadstats);
-                selfoss.ui.refreshTagSourceUnread(tagUnreadDiff,
-                    sourceUnreadDiff);
+                selfoss.ui.refreshTagSourceUnread(
+                    tagUnreadDiff.entries('tag', 'count'),
+                    sourceUnreadDiff.entries('source', 'count')
+                );
 
                 selfoss.ui.hideMobileNav();
 
