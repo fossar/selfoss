@@ -1,4 +1,4 @@
-import hash from 'bcryptjs';
+import { hash } from 'bcryptjs';
 
 const msgContainer = document.querySelector('.message-container');
 const passwordEntry = document.getElementById('password');
@@ -10,7 +10,7 @@ document.querySelector('form').addEventListener('submit', e => {
     const originalButtonCaption = submit.value;
 
     submit.disabled = true;
-    submit.value = 'Importing…';
+    submit.value = 'Hashing password…';
 
     hash(passwordEntry.value.trim(), 10).then(hashedPassword => {
         msgContainer.innerHTML = `<p class="error"><label>Generated Password (insert this into config.ini): <input type="text" value="${hashedPassword}"></label></p>`;
