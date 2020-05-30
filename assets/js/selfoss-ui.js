@@ -592,37 +592,36 @@ selfoss.ui = {
 
 
     /**
-     * show error
+     * Show error message in the message bar in the UI.
      *
+     * @param {string} message
      * @return void
-     * @param message string
      */
     showError: function(message) {
-        selfoss.ui.showMessage(message, undefined, undefined, true);
+        selfoss.ui.showMessage(message, [], true);
     },
 
 
-    showMessage: function(message, actionText, action, error) {
-        actionText = (typeof actionText !== 'undefined') ? actionText : false;
-        action = (typeof action !== 'undefined') ? action : false;
-        error = (typeof error !== 'undefined') ? error : false;
+    /**
+     * Show message in the message bar in the UI.
+     *
+     * @param {string} message
+     * @param {Array.<Object.{label: string, callback: function>} actions
+     * @param {bool} isError
+     * @return void
+     */
+    showMessage: function(message, actions = [], isError = false) {
+        const messageContainer = $('#message');
 
-        if (typeof(message) == 'undefined') {
-            message = 'Oops! Something went wrong';
-        }
+        let buttons = actions.map(({label, callback}) => <button type="button" onClick={callback}>
+            {label}
+        </button>);
 
-        if (actionText && action) {
-            message = message + '. <button type="button">' + actionText + '</button>';
-        }
+        messageContainer.html([
+            message
+        ].concat(buttons));
 
-        var messageContainer = $('#message');
-        messageContainer.html(message);
-
-        if (action) {
-            messageContainer.find('button').unbind('click').click(action);
-        }
-
-        if (error) {
+        if (isError) {
             messageContainer.addClass('error');
         } else {
             messageContainer.removeClass('error');
@@ -645,11 +644,12 @@ selfoss.ui = {
             };
         }
 
-        selfoss.ui.showMessage(selfoss.ui._('app_update'),
-            selfoss.ui._('app_reload'),
-            function() {
-                cb();
-            });
+        selfoss.ui.showMessage(selfoss.ui._('app_update'), [
+            {
+                label: selfoss.ui._('app_reload'),
+                callback: cb
+            }
+        ]);
     },
 
 

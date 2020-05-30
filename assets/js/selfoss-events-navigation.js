@@ -201,10 +201,14 @@ selfoss.events.navigation = function() {
                 // probe stats and prompt reload to the user
                 selfoss.dbOnline.sync().done(function() {
                     if ($('.unread-count').hasClass('unread')) {
-                        selfoss.ui.showMessage(selfoss.ui._('sources_refreshed'), selfoss.ui._('reload_list'),
-                            function() {
-                                $('#nav-filter-unread').click();
-                            });
+                        selfoss.ui.showMessage(selfoss.ui._('sources_refreshed'), [
+                            {
+                                label: selfoss.ui._('reload_list'),
+                                callback() {
+                                    $('#nav-filter-unread').click();
+                                }
+                            }
+                        ]);
                     }
                 });
             },
