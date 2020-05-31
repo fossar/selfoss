@@ -116,7 +116,7 @@ class Rss {
         }
 
         if ($newestEntryDate === null) {
-            $newestEntryDate = date(\DATE_ATOM, time());
+            $newestEntryDate = new \DateTime();
         }
         $this->feedWriter->setDate($newestEntryDate);
 
