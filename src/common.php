@@ -81,6 +81,9 @@ $substitutions = [
         daos\ItemsInterface::class => ['instance' => 'daos\\' . $f3->get('db_type') . '\\Items'],
         daos\SourcesInterface::class => ['instance' => 'daos\\' . $f3->get('db_type') . '\\Sources'],
         daos\TagsInterface::class => ['instance' => 'daos\\' . $f3->get('db_type') . '\\Tags'],
+        Dice::class => ['instance' => function() use ($dice) {
+            return $dice;
+        }],
     ]
 ];
 
