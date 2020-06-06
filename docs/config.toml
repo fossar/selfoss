@@ -3,3 +3,8 @@ description = "Open source web based RSS reader and multi-source mashup aggregat
 base_url = "https://selfoss.aditu.de"
 
 compile_sass = true
+
+[extra]
+author = "Tobias Zeising"
+author_address = "tobias.zeising@aditu.de"
+current_version = "2.19-SNAPSHOT"

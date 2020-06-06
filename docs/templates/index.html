@@ -4,7 +4,7 @@
     <title>selfoss – the open source web based rss reader and multi source mashup aggregator</title>
 
     <meta charset="utf-8">
-    <meta name="copyright" content="Tobias Zeising">
+    <meta name="copyright" content="{{ config.extra.author }}">
     <meta name="keywords" content="selfoss rss reader webbased mashup aggregator tobias zeising aditu">
     <meta name="description" content="selfoss the web based open source rss reader and multi source mashup aggregator">
     <meta name="robots" content="all">
@@ -27,7 +27,7 @@
             <li class="documentation">documentation</li>
             <li class="about">about</li>
             <li class="forum"><a href="/forum">forum</a></li>
-            <li class="download"><a href="https://github.com/SSilence/selfoss/releases/download/2.18/selfoss-2.19-SNAPSHOT.zip">download</a></li>
+            <li class="download"><a href="https://github.com/SSilence/selfoss/releases/download/{{ config.extra.current_version }}/selfoss-{{ config.extra.current_version }}.zip">download</a></li>
         </ul>
 
         <a id="header-fork" href="https://github.com/SSilence/selfoss"></a>
@@ -36,7 +36,7 @@
 
         <div id="header-just-updated"></div>
 
-        <a id="header-download" href="https://github.com/SSilence/selfoss/releases/download/2.18/selfoss-2.19-SNAPSHOT.zip"><span>download selfoss 2.19-SNAPSHOT</span></a>
+        <a id="header-download" href="https://github.com/SSilence/selfoss/releases/download/{{ config.extra.current_version }}/selfoss-{{ config.extra.current_version }}.zip"><span>download selfoss {{ config.extra.current_version }}</span></a>
 
         <a id="header-donate" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=LR67F3T9DMSC8"><span>donate</span></a>
 
@@ -572,7 +572,7 @@ db_port=3306</code>
                 <h3>Your Spouts</h3>
 
                 <p>
-                    Feel free to send us your own spouts. We are really happy about new sources we can add to further versions of selfoss. You can send them by email to <a href="tobias.zeising@aditu.de">tobias.zeising@aditu.de</a>.
+                    Feel free to send us your own spouts. We are really happy about new sources we can add to further versions of selfoss. You can send them by email to <a href="{{ config.extra.author_address }}">{{ config.extra.author_address }}</a>.
                 </p>
             </div>
 
@@ -591,7 +591,7 @@ db_port=3306</code>
             <h2  id="about">About</h2>
             <div class="documentation-entry">
                 <p>
-                    selfoss is a project of <a href="http://www.aditu.de">Tobias Zeising</a> (<a href="mailto:tobias.zeising@aditu.de">tobias.zeising@aditu.de</a>).
+                    selfoss is a project of <a href="http://www.aditu.de">{{ config.extra.author }}</a> (<a href="mailto:{{ config.extra.author_address }}">{{ config.extra.author_address }}</a>).
                 </p>
 
                 <p>
@@ -624,7 +624,7 @@ db_port=3306</code>
             logo by <a href="http://www.artcoreillustrations.com/">ArtCore</a>
         </p>
         <p>
-            &copy; by Tobias Zeising &sdot; <a href="mailto:tobias.zeising@aditu.de">tobias.zeising@aditu.de</a> &sdot; <a href="http://www.aditu.de">www.aditu.de</a>
+            &copy; by {{ config.extra.author }} &sdot; <a href="mailto:{{ config.extra.author_address }}">{{ config.extra.author_address }}</a> &sdot; <a href="http://www.aditu.de">www.aditu.de</a>
         </p>
     </div>
 

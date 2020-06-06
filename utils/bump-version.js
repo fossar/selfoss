@@ -16,7 +16,7 @@ const sources = [
     'package.json',
     'README.md',
     'src/common.php',
-    'docs/templates/index.html'
+    'docs/config.toml'
 ];
 
 const replacements = [
@@ -38,10 +38,10 @@ const replacements = [
         to: "'version', '" + newVersion + "'"
     },
 
-    // rule for website/index.html
+    // rule for docs/config.toml
     {
-        from: /selfoss( |\-)\d+\.\d+(\-SNAPSHOT|\-[0-9a-f]+)?/g,
-        to: "selfoss$1" + newVersion
+        from: /current_version = "\d+\.\d+(\-SNAPSHOT|\-[0-9a-f]+)?"/g,
+        to: `current_version = "${newVersion}"`
     },
 ];
 
