@@ -82,14 +82,20 @@ dt {
 
 /************ header **************/
 
-#header-name {
+.header-homepage #header-name {
     position: relative;
     left: 50%;
     margin-left: -400px;
-    display: block;
-    background: url("images/name.png");
     width: 253px;
     height: 100px;
+}
+#header-name {
+    display: inline-block;
+    background: url("images/name.png");
+    background-size: contain;
+    margin-left: 1em;
+    width: 84px;
+    height: 33px;
 }
 
 #header-name span {
@@ -101,20 +107,33 @@ dt {
     height: 100%;
 }
 
-#header-navigation {
+.header-homepage #header-navigation {
     position: absolute;
     left: 50%;
     top: 40px;
+    margin: 0.5em 0;
     margin-left: -120px;
+}
+
+#header-navigation {
+    display: inline-block;
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     font-size: 18px;
+    margin: 0;
+    padding-left: 0;
+    margin-top: 1em;
+    vertical-align: top;
     font-weight: bold;
     list-style: none;
 }
 
-#header-navigation li {
-    float: left;
+.header-homepage #header-navigation li {
     margin-left: 30px;
+}
+
+#header-navigation li {
+    display: inline-block;
+    margin-left: 1em;
     cursor: pointer;
 }
 
