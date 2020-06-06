@@ -6,8 +6,8 @@ $(document).ready(function() {
         },
     });
 
-    $('#header-navigation li:not(.forum)').click(function() {
-        var target = $('#'+$(this).attr('class'));
+    $('#header-navigation a[href^="#"]').click(function() {
+        var target = $($(this).attr('href'));
         if(target.length==0)
             return;
         $('html,body').animate({
