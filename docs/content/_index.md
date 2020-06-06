@@ -496,11 +496,6 @@ If you would like to show thumbnails instead of text, you have to implement the 
 Feel free to send us your own spouts. We are really happy about new sources we can add to further versions of selfoss. You can send them by email to [tobias.zeising@aditu.de](mailto:tobias.zeising@aditu.de) or as a pull request to the [GitHub repository](https://github.com/SSilence/selfoss).
 </div>
 
-## API
-<div class="documentation-entry">
-
-selfoss offers a restful JSON API for accessing or changing all selfoss data. Just use this API for your selfoss App or any other programm or plugin. Visit this [github wiki page](https://github.com/SSilence/selfoss/wiki/Restful-API-for-Apps-or-any-other-external-access) for a detailed API documentation.
-</div>
 
 ## License
 <div class="documentation-entry">
