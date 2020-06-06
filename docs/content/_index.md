@@ -87,6 +87,6 @@ For further questions or on any problem use our [support forum](forum).
 ## Configuration options {#configuration_params}
 <div class="documentation-entry">
 
-Configuration entries we moved to a [separate page](@/documentation/administration/options.md).
+Configuration entries we moved to a [separate page](@/docs/administration/options.md).
 </div>
 
