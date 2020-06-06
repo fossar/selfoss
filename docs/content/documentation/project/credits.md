@@ -1,5 +1,6 @@
 +++
 title = "Credits"
+weight = 50
 +++
 
 selfoss is a project of [Tobias Zeising](http://www.aditu.de) ([tobias.zeising@aditu.de](mailto:tobias.zeising@aditu.de)).

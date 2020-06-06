@@ -1,5 +1,6 @@
 +++
 title = "Release checklist"
+weight = 40
 +++
 
 1. Update `NEWS.md` with highlights of changes that are not yet there. Set a release date.

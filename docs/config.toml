@@ -4,6 +4,8 @@ base_url = "https://selfoss.aditu.de"
 
 compile_sass = true
 
+sort_by = "weight"
+
 [extra]
 author = "Tobias Zeising"
 author_address = "tobias.zeising@aditu.de"
