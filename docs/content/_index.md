@@ -68,9 +68,3 @@ db_port=3306
 selfoss supports importing OPML files. Find the OPML export in the old application, it is usually located somewhere in settings.
 Then visit the page `https://your-selfoss-url.com/opml` and upload it there.
 </div>
-
-## Configuration options {#configuration_params}
-<div class="documentation-entry">
-
-Configuration entries we moved to a [separate page](@/docs/administration/options.md).
-</div>
