@@ -16,7 +16,7 @@
     <link rel="stylesheet" type="text/css" media="screen" href="{{ get_url(path='style.css') }}">
     <link rel="stylesheet" type="text/css" media="screen" href="{{ get_url(path='javascript/jquery.fancybox.min.css') }}">
 </head>
-<body>
+<body class="{% if current_path == '/' %}homepage{% endif %}">
 
     <!-- header -->
     <div id="header" class="{% if current_path == '/' %}header-homepage{% endif %}">
@@ -41,6 +41,13 @@
 
     <!-- Documentations -->
     <div class="wrapper-bright">
+        {% if current_path != '/' %}
+            <aside>
+                {% block side %}
+                {% endblock side %}
+            </aside>
+        {% endif %}
+
         <div class="main">
             {% block content %}
             {% endblock content %}

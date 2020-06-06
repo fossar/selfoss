@@ -59,6 +59,17 @@ dt {
     padding-bottom: 20px;
 }
 
+.wrapper-bright {
+    display: flex;
+}
+
+aside {
+    margin-right: 3em;
+    width: 15em;
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
 .wrapper-dark {
     background: url("images/bgdark.png");
     color: #ffffff;
@@ -73,11 +84,34 @@ dt {
     color: #bbb;
 }
 
-.main, #header-teaser, #screenshots {
-    position: relative;
-    left: 50%;
+.homepage .main, body:not(.homepage) .wrapper-bright, #header-teaser, #screenshots {
     width: 800px;
-    margin-left: -400px;
+    margin: auto;
+}
+
+body:not(.homepage) .wrapper-bright {
+    width: 1000px;
+}
+
+nav {
+    margin-top: 3em;
+}
+
+nav h3 {
+    font-variant: small-caps;
+    margin-bottom: 0;
+    margin-top: 0.5em;
+}
+
+nav ul {
+    margin-top: 0;
+    margin-bottom: 0.5em;
+    padding-left: 0.5em;
+    list-style: none;
+}
+
+nav .active {
+    font-weight: bold;
 }
 
 /************ header **************/

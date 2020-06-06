@@ -2,6 +2,23 @@
 
 {% block title %}{{ page.title }}{% endblock title %}
 
+{% block side %}
+<nav>
+{% set doc_section = get_section(path="docs/_index.md") %}
+{% for sec_path in doc_section.subsections %}
+{% set sec = get_section(path=sec_path) %}
+<h3>{{ sec.title }}</h3>
+<ul>
+{% for page in sec.pages %}
+  <li class="{% if current_path == page.path %}active{% endif %}">
+      <a href="{{page.permalink}}">{{page.title}}</a>
+  </li>
+{% endfor %}
+</ul>
+{% endfor %}
+</nav>
+{% endblock side %}
+
 {% block content %}
 <h1>{{ page.title }}</h1>
 {{ page.content | safe }}
