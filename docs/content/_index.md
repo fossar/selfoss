@@ -62,6 +62,13 @@ db_port=3306
 ```
 </div>
 
+## Importing feeds from a different RSS reader {#importing}
+<div class="documentation-entry">
+
+selfoss supports importing OPML files. Find the OPML export in the old application, it is usually located somewhere in settings.
+Then visit the page `https://your-selfoss-url.com/opml` and upload it there.
+</div>
+
 ## Updating selfoss {#updating}
 <div class="documentation-entry">
 
@@ -75,13 +82,6 @@ Read carefully following instructions before you update your selfoss installatio
 6. Clean your browser cache.
 
 For further questions or on any problem use our [support forum](forum).
-</div>
-
-## Importing feeds from a different RSS reader {#importing}
-<div class="documentation-entry">
-
-selfoss supports importing OPML files. Find the OPML export in the old application, it is usually located somewhere in settings.
-Then visit the page `https://your-selfoss-url.com/opml` and upload it there.
 </div>
 
 ## Configuration options {#configuration_params}
