@@ -97,4 +97,4 @@ Special thanks to the great programmers of these libraries used by selfoss:
 * [Graby](https://github.com/j0k3r/graby)
 * [FullTextRSS filters](http://help.fivefilters.org/customer/portal/articles/223153-site-patterns)
 
-Icon comes from http://www.artcoreillustrations.com/
+Icon made by http://blackbooze.com/
