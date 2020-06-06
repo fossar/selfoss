@@ -1,0 +1,524 @@
++++
+title = "selfoss – the open source web based rss reader and multi source mashup aggregator"
++++
+
+<h1>Documentation</h1>
+
+<h2>Requirements</h2>
+<div class="documentation-entry">
+<p>selfoss is not a hosted service. It has to be installed on your own webserver. This webserver must fulfil the following requirements (which are available from most providers)</p>
+<ul>
+    <li>PHP 5.6 or higher with the php-gd and php-http extensions enabled. Some spouts may also require curl or mbstring extensions. The php-imagick extension is required if you want selfoss to support SVG site icons.</li>
+    <li>MySQL 5.5.3 or higher, PostgreSQL, or SQLite</li>
+    <li>Apache Webserver (nginx and lighttpd also possible)</li>
+</ul>
+
+<p>Ensure that you have mod_authz_core, mod_rewrite and mod_headers enabled.</p>
+
+<p>selfoss supports all modern browsers, including Mozilla Firefox, Safari, Google Chrome, Opera and Internet Explorer. selfoss also supports mobile browsers on iPad, iPhone, Android and other devices.</p>
+</div>
+
+<h2 id="installation">Installation</h2>
+<div class="documentation-entry">
+<p>selfoss is a lightweight php based application. Just follow the simple installation instructions:</p>
+
+<ol>
+    <li>Upload all files of this folder (IMPORTANT: also upload the invisible .htaccess files)</li>
+    <li>Make the directories data/cache, data/favicons, data/logs, data/thumbnails, data/sqlite and public/ writeable</li>
+    <li>Insert database access data in config.ini (see below &mdash; you have not to change anything if you would like to use sqlite)</li>
+    <li>You don't have to install the database, it will be created automatically</li>
+    <li>Create cronjob for updating feeds and point it to https://yoururl.com/update via wget or curl. You can also execute the cliupdate.php from commandline.</li>
+</ol>
+
+For further questions or any problems, use our <a href="forum">support forum</a>. For a more detailed step-by-step example installation, please visit the <a href="https://github.com/SSilence/selfoss/wiki/">wiki</a>.
+</div>
+
+<h2 id="configuration">Configuration</h2>
+<div class="documentation-entry">
+<p>Configuration is optional. Any settings in config.ini will override the settings in defaults.ini. To customize settings follow these instructions:</p>
+<ol>
+    <li>Copy defaults.ini to config.ini.</li>
+    <li>Edit config.ini and delete any lines you do not wish to override.</li>
+    <li>Do not delete the <code>[globals]</code> line.</li>
+</ol>
+<p>Sample config.ini file which provides password protection:</p>
+<pre>
+    <code>
+[globals]
+username=secretagent
+password=$2y$10$xLurmBB0HJ60.sar1Z38r.ajtkruUIay7rwFRCvcaDl.1EU4epUH6</code>
+</pre>
+<p>Sample config.ini file with a MySQL database connection:</p>
+<pre>
+    <code>
+[globals]
+db_type=mysql
+db_host=localhost
+db_database=selfoss
+db_username=secretagent
+db_password=life0fD4ng3r
+db_port=3306</code>
+</pre>
+</div>
+
+<h2>Update</h2>
+<div class="documentation-entry">
+<p>Read carefully following instructions before you update your selfoss installation:</p>
+
+<ol>
+    <li>Backup your database and your "data" folder</li>
+    <li><b>IMPORTANT: don't delete the "data" folder</b>. Delete all old files and folders excluding the folder "data".</li>
+    <li>Upload all new files and folders excluding the data folder (IMPORTANT: also upload the invisible .htaccess files).</li>
+    <li>Rename your folder /data/icons into /data/favicons</li>
+    <li>If upgrading from 2.17 or earlier, delete the files <code>/public/all-v<var>*</var>.css</code> and <code>/public/all-v<var>*</var>.js</code>. Additionally, when using <code>Lighttpd</code>, please check <a href="https://github.com/SSilence/selfoss/wiki/Lighttpd-configuration#upgrading-from-selfoss-217-or-lower">the wiki</a>.</li>
+    <li>Clean your browser cache.</li>
+</ol>
+
+For further questions or on any problem use our <a href="forum">support forum</a>.
+</div>
+
+<h2>Import your feeds from a different RSS reader</h2>
+<div class="documentation-entry">
+Selfoss supports importing OPML files. Find the OPML export in the old application, it is usually located somewhere in settings.
+Then visit the page https://yourselfossurl.com/opml and upload it there.
+</div>
+
+<h2 id="configuration_params">Configuration</h2>
+<div class="documentation-entry">
+<p>selfoss offers the following configuration parameters. You can set the config parameters in the <code>config.ini</code> file.</p>
+
+<table>
+    <tr>
+        <th class="documentation-first-column">Parameter</th>
+        <th>Functionality</th>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">db_type</td>
+        <td>database type (sqlite, mysql or pgsql)</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">db_file</td>
+        <td>sqlite databasefile</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">db_host</td>
+        <td>database hostname</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">db_database</td>
+        <td>name of the database</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">db_username</td>
+        <td>database username</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">db_password</td>
+        <td>database password</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">db_prefix</td>
+        <td>table prefix for MySQL/SQLite databases</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">db_port</td>
+        <td>port for database connections (3306 for mysql, 5432 for PostgreSQL</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">logger_destination</td>
+        <td>By default, the logs are saved to <code>data/logs/default.log</code> but you can choose a different file by specifying a file path prefixed by <code>file:</code>. Setting <code>file:php://stderr</code> is especially useful when running selfoss on a PaaS or inside Docker. Alternately, you can set the option to <code>error_log</code> to redirect the messages to <a href="https://secure.php.net/manual/en/function.error-log.php">SAPI error log</a> – handy for PHP-FPM, which <a href="https://secure.php.net/manual/en/install.fpm.configuration.php#catch-workers-output">discards stderr</a> by default.</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">logger_level</td>
+        <td>set logging level – following logging levels are available: <code>EMERGENCY</code>, <code>ALERT</code>, <code>CRITICAL</code>, <code>ERROR</code>, <code>WARNING</code>, <code>NOTICE</code>, <code>INFO</code>, <code>DEBUG</code>. Additionally, you can use <code>NONE</code> pseudo-level to turn the logging off completely.<br>Use this for troubleshooting on updating feeds (but be aware that the log file can become very large.)</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">items_perpage</td>
+        <td>number of entries per page on your stream</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">items_lifetime</td>
+        <td>days until items will be deleted (starred items will never be deleted)</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">base_url</td>
+        <td>base url of the selfoss page; use this option if you use a ssl proxy which changes the $_SERVER globals, most notably the URL path in which the app is installed.</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">username</td>
+        <td>username for optional login. Just set username and password for enabling login.</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">password</td>
+        <td>password hash for optional login. You can generate a password hash by using following page of your selfoss installation. https://your_selfoss_url.com/password</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column"><del>salt</del> (deprecated)</td>
+        <td>salt for hashing the password (see <a href="https://en.wikipedia.org/wiki/Salt_(cryptography)">Wikipedia</a>). Not used for passwords generated using selfoss 2.19 or newer.</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">public</td>
+        <td>if you use login (username and password is set), you can allow guests to see your stream. Enter 1 for enabling this write-protected mode</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">rss_title</td>
+        <td>title of the generated rss feed</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">rss_max_items</td>
+        <td>maximum amount of items in the generated rss feed</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">rss_mark_as_read</td>
+        <td>set this to 1 for automatically marking items as read after you fetched them via rss</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">homepage</td>
+        <td>set here your preferred homepage. Choose between <code>newest</code>, <code>unread</code> and <code>starred</code>. It is also possible to configure a tag (e.g. <code>unread/tag-yourtag</code>) or a source (e.g. <code>newest/source-123</code>). Default = <code>newest</code>.</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">auto_mark_as_read</td>
+        <td>set this to 1 for automatically marking items as read after open/read them.</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">auto_collapse</td>
+        <td>set this to 1 for automatically collapsing items when another one is opened.</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">auto_stream_more</td>
+        <td>set this to 0 to disable autoloading of more items when you scroll down. With 1, a click on a button is required instead.</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">language</td>
+        <td>
+            <p>set 0 or leave empty for auto detection (browser language) or use one of the following language codes:</p>
+            <ul>
+                <li>Catalan: <code>ca</code></li>
+                <li>Chinese (Simplified): <code>zh-CN</code></li>
+                <li>Chinese (Traditional): <code>zh-TW</code></li>
+                <li>Czech: <code>cs</code></li>
+                <li>Dutch: <code>nl</code></li>
+                <li>English: <code>en</code></li>
+                <li>English (United Kingdom): <code>en-GB</code></li>
+                <li>Estonian: <code>et</code></li>
+                <li>Finnish: <code>fi</code></li>
+                <li>French: <code>fr</code></li>
+                <li>French (Canada): <code>fr-CA</code></li>
+                <li>German: <code>de</code></li>
+                <li>Hungarian: <code>hu</code></li>
+                <li>Italian: <code>it</code></li>
+                <li>Japanese: <code>ja</code></li>
+                <li>Latvian: <code>lv</code></li>
+                <li>Norwegian Bokmål: <code>nb</code></li>
+                <li>Polish: <code>pl</code></li>
+                <li>Portuguese (Brazil): <code>pt-BR</code></li>
+                <li>Romansh: <code>rm</code></li>
+                <li>Russian: <code>ru</code></li>
+                <li>Slovak: <code>sk</code></li>
+                <li>Spanish: <code>es</code></li>
+                <li>Swedish: <code>sv</code></li>
+                <li>Turkish: <code>tr</code></li>
+                <li>Ukrainian: <code>uk</code></li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">anonymizer</td>
+        <td>set here your anonymizer service url. e.g.: anonymizer=https://anonym.to/?</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">allow_public_update_access</td>
+        <td>set allow_public_update_access=1 for allowing public access for /update (anybody can access and start the update job).</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">share</td>
+        <td>
+            <p><code>share</code> defines which sharing buttons beneath the entry are visible. The following methods are supported:</p>
+            <dl>
+                <dt>a</dt><dd><a href="https://developer.mozilla.org/en-US/docs/Web/API/Navigator/share">Web Share API</a>, when available</dd>
+                <dt>f</dt><dd>Facebook</dd>
+                <dt>t</dt><dd>Twitter</dd>
+                <dt>p</dt><dd>Pocket</dd>
+                <dt>d</dt><dd>Diaspora</dd>
+                <dt>w</dt><dd>Wallabag</dd>
+                <dt>e</dt><dd>E-Mail</dd>
+                <dt>c</dt><dd>Copy to clipboard</dd>
+            </dl>
+            <p>Include the letters for methods you want to use. For example, if you would like to only show Facebook and Twitter share buttons, use <code>share=ft</code>.</p>
+            <p>Defaults to <code>share=atfpde</code>.</p>
+        </td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">wallabag</td>
+        <td>wallabag url. url to wallabag homepage</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">wallabag_version</td>
+        <td>set this to 1 or 2 depending on your wallabag version (1 for version 1.x or 2 for version 2.x)</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">unread_order</td>
+        <td>set unread_order=asc to read your unread items from the oldest to the newest, leave it empty or to desc to read from the newest to the oldest</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">load_images_on_mobile</td>
+        <td>set load_images_on_mobile=1 for allowing image lazy loading on mobile devices</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">auto_hide_read_on_mobile</td>
+        <td>hide read articles on mobile devices</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">scroll_to_article_header</td>
+        <td>scrolls to the article header after selecting an article (enabled by default)</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">env_prefix</td>
+        <td>only consider ENV variables that start with this prefix as additional config variables. Defaults to "SELFOSS_".</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">camo_domain</td>
+        <td>Camo domain used to proxify images (optional). See <a href="https://github.com/atmos/camo">atmos/camo</a> for more details</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">camo_key</td>
+        <td>Camo domain used to proxify images (optional). See <a href="https://github.com/atmos/camo">atmos/camo</a> for more details</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">show_thumbnails</td>
+        <td>If set to false, thumbnails are not shown in the collapsed view. Defaults to true.</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column" id="datadir">datadir</td>
+        <td>location of the data directory; especially useful when selfoss is installed to write-protected file system. <code>.htaccess</code> file (or equivalent configuration file for non-Apache web servers) will need to be adjusted accordingly.</td>
+    </tr>
+</table>
+</div>
+
+<h2>Shortcuts</h2>
+<div class="documentation-entry">
+<p>selfoss offers some keyboard shortcuts. They are very similar to the google reader shortcuts.</p>
+
+<table>
+    <tr>
+        <th class="documentation-first-column">Shortcut</th>
+        <th>Functionality</th>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">space</td>
+        <td>select and open next entry</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">j</td>
+        <td>select and open next entry</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">n</td>
+        <td>select next entry</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">&rarr;</td>
+        <td>select next entry (and open it when the current is open)</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">shift + space</td>
+        <td>select and open previous entry</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">k</td>
+        <td>select and open previous entry</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">p</td>
+        <td>select previous entry</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">&larr;</td>
+        <td>select previous entry (and open it when the current is open)</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">s</td>
+        <td>mark and unmark current selected entry as starred/unstarred</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">m</td>
+        <td>mark and unmark current selected entry as read/unread</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">t</td>
+        <td>throw current item (mark as read and open next)</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">shift + t</td>
+        <td>throw current item (mark as read and open previous)</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">v</td>
+        <td>open url of current entry in new tab/window</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">Shift + v</td>
+        <td>open url of current entry in new tab/window and mark read</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">Ctrl + m</td>
+        <td>mark all as read</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">r</td>
+        <td>reload the list</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">o</td>
+        <td>open / close current item</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">shift + o</td>
+        <td>close all open items</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">shift + n</td>
+        <td>open newest items page</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">shift + u</td>
+        <td>open unread items page</td>
+    </tr>
+    <tr>
+        <td class="documentation-first-column">shift + s</td>
+        <td>open starred items page</td>
+    </tr>
+</table>
+</div>
+
+<h2>Extend</h2>
+<div class="documentation-entry">
+<p>
+    You can easily add your own data sources. Spouts (aka plugins) fetch the content from the different sources. Some spouts are included:
+</p>
+<ul>
+    <li>RSS Feeds</li>
+    <li>Images from a RSS Feed</li>
+    <li>Images from deviantArt Users</li>
+    <li>Images from tumblr</li>
+    <li>Your twitter timeline</li>
+    <li>Tweets of a twitter user</li>
+    <li>heise News with full content</li>
+    <li>golem News with full content</li>
+    <li>MMOSpy News with full content</li>
+</ul>
+<p>
+    If you want to get the newest entries from your own source (e.g. an IMAP Email Account, Log Files or any data from your own application), you can include a new spout in your selfoss stream by writing just one php class (saved in one php file).
+</p>
+<p>
+    Create a new php file under <code>src/spouts/your_spouts/your_spout.php</code> (choose a name for <code>your_spouts</code> and <code>your_spout</code>). The easiest way is to copy the <code><a href="https://github.com/SSilence/selfoss/blob/mastersrc/spouts/rss/feed.php">src/spouts/rss/feed.php</a></code> and to modify this file.
+</p>
+
+<h3>Member Variables</h3>
+<p>
+    Set the <code>$name</code> and <code>$description</code> variable with the name and description of your spout. The <code>$params</code> contain the definition of the input fields which a user will have to fill to add a new source of your spout (e.g. username and password for accessing the source data).
+</p>
+<p>A simple example for the member variables of a spout for accessing an IMAP email account:</p>
+
+<pre>
+&lt;?PHP
+namespace spouts\mail;
+class imap extends \spouts\spout {
+public $name = 'Email';
+public $description = 'email imap account as source';
+public $params = array(
+    "email" => array(
+    "title"      => "Email",
+    "type"       => "text",
+    "default"    => "",
+    "required"   => true,
+    "validation" => array("email")
+),
+"password" => array(
+    "title"      => "Password",
+    "type"       => "password",
+    "default"    => "",
+    "required"   => true,
+    "validation" => array("notempty")
+),
+"host" => array(
+    "title"      => "URL",
+    "type"       => "text",
+    "default"    => "",
+    "required"   => true,
+    "validation" => array("notempty")
+)
+);
+}
+</pre>
+
+<h3>Methods</h3>
+
+<p>
+    Your source will have to implement a few methods. Following UML diagram shows the inheritance structure:
+</p>
+
+<p>
+    <img src="images/uml.png" alt="selfoss source uml diagramm">
+</p>
+
+<p>
+    The class has to implement three things:
+</p>
+
+<ul>
+    <li>
+        A <code>load($params)</code> function will be executed by selfoss when the content will be updated (the https://your-selfoss-url.com/update will be executed). This <code>load</code> function has one parameter <code>$params</code> which contains the user defined parameters (e.g. username, password or anything which the user has configured (as you can define in the members variable <code>$params</code>). This function contains your source code for fetching the data (e.g. loading the emails from an IMAP email account).
+    </li>
+    <li>
+        You have to implement the <code>Iterable</code> interface. selfoss will use it to iterate over all single entries of your source (e.g. the emails which were fetched by the load function). See <a href="https://secure.php.net/manual/en/language.oop5.iterations.php">php.net manual (OOP5 iterators)</a> for more informations about this iterator functions.
+    </li>
+    <li>
+        selfoss iterates over all the entries by using the iterable interface. selfoss will receive all information about the entries by using the functions defined by the abstract class <code>\spouts\spout</code> (e.g. it will get the email subject by executing the <code>getTitle()</code> method).
+    </li>
+</ul>
+
+<h3>Thumbnails</h3>
+
+<p>
+    If you would like to show thumbnails instead of text, you have to implement the optional method <code>getThumbnail()</code>. This method have to return the url of the image. selfoss will load and generate the thumbnail automatically. See <code><a href="https://github.com/SSilence/selfoss/blob/master/src/spouts/rss/images.php">src/spouts/rss/images.php</a></code> for an example. This spout searches for an image in an rss feed and returns it.
+</p>
+
+<h3>Your Spouts</h3>
+
+<p>
+    Feel free to send us your own spouts. We are really happy about new sources we can add to further versions of selfoss. You can send them by email to <a href="{{ config.extra.author_address }}">{{ config.extra.author_address }}</a>.
+</p>
+</div>
+
+<h2>API</h2>
+<div class="documentation-entry">
+<p>selfoss offers a restful JSON API for accessing or changing all selfoss data. Just use this API for your selfoss App or any other programm or plugin. Visit this <a href="https://github.com/SSilence/selfoss/wiki/Restful-API-for-Apps-or-any-other-external-access">github wiki page</a> for a detailed API documentation.</p>
+</div>
+
+<h2>License</h2>
+<div class="documentation-entry">
+<p>selfoss is licensed under the <a href="https://www.gnu.org/licenses/gpl-3.0.html">GPLv3 license</a>.</p>
+
+<p>You are allowed to use, modifiy or study this program completely for free. If you need any other licence than GPLv3 then feel free to contact me!</p>
+</div>
+
+<h2  id="about">About</h2>
+<div class="documentation-entry">
+<p>
+    selfoss is a project of <a href="http://www.aditu.de">{{ config.extra.author }}</a> (<a href="mailto:{{ config.extra.author_address }}">{{ config.extra.author_address }}</a>).
+</p>
+
+<p>
+    More information about selfoss can be found on my german speaking blog <a href="http://www.aditu.de">http://www.aditu.de</a>.
+    The icon was created by <a href="http://www.artcoreillustrations.com/">Nadja (ArtCore)</a>, thanks for licensing it as CC.
+</p>
+
+<p>
+    Selfoss is named by the wonderfull waterfall in Iceland (see <a href="https://en.wikipedia.org/wiki/Selfoss_(waterfall)">Wikipedia</a>). Many single waterfalls converge to produce one big fall. This seems to be a good metaphor for the many sources from the web which will be shown in one stream.
+</p>
+
+<p>
+    FancyBox on this page is from <a href="https://fancyapps.com/fancybox/3/">fancyapps.com</a>.
+</p>
+</div>
