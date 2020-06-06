@@ -1,74 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>{% block title %}{{ section.title }}{% endblock title %}</title>
+{% extends "layout.html" %}
 
-    <meta charset="utf-8">
-    <meta name="copyright" content="{{ config.extra.author }}">
-    <meta name="keywords" content="selfoss rss reader webbased mashup aggregator tobias zeising aditu">
-    <meta name="description" content="selfoss the web based open source rss reader and multi source mashup aggregator">
-    <meta name="robots" content="all">
+{% block title %}{{ section.title }}{% endblock title %}
 
-    <link rel="alternate" type="application/atom+xml" title="RSS Feed" href="https://github.com/SSilence/selfoss/releases.atom">
+{% block header %}
+    <div id="header-logo"></div>
 
-    <link rel="shortcut icon" href="{{ get_url(path='favicon.ico') }}" type="image/x-icon">
+    <div id="header-just-updated"></div>
 
-    <link rel="stylesheet" type="text/css" media="screen" href="{{ get_url(path='style.css') }}">
-    <link rel="stylesheet" type="text/css" media="screen" href="{{ get_url(path='javascript/jquery.fancybox.min.css') }}">
-</head>
-<body>
+    <a id="header-download" href="https://github.com/SSilence/selfoss/releases/download/{{ config.extra.current_version }}/selfoss-{{ config.extra.current_version }}.zip"><span>download selfoss {{ config.extra.current_version }}</span></a>
 
-    <!-- header -->
-    <div id="header">
-        <h1 id="header-name"><a href="/"><span>selfoss</span></a></h1>
+    <a id="header-donate" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=LR67F3T9DMSC8"><span>donate</span></a>
 
-        <ul id="header-navigation">
-            <li><a href="#screenshots">screenshots</a></li>
-            <li><a href="#documentation">documentation</a></li>
-            <li><a href="#about">about</a></li>
-            <li><a href="/forum">forum</a></li>
-            <li><a href="https://github.com/SSilence/selfoss/releases/download/{{ config.extra.current_version }}/selfoss-{{ config.extra.current_version }}.zip">download</a></li>
-        </ul>
-
-        <a id="header-fork" href="https://github.com/SSilence/selfoss"></a>
-
-        <div id="header-logo"></div>
-
-        <div id="header-just-updated"></div>
-
-        <a id="header-download" href="https://github.com/SSilence/selfoss/releases/download/{{ config.extra.current_version }}/selfoss-{{ config.extra.current_version }}.zip"><span>download selfoss {{ config.extra.current_version }}</span></a>
-
-        <a id="header-donate" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=LR67F3T9DMSC8"><span>donate</span></a>
-
-        <div id="header-appstores">
-            <a href="https://f-droid.org/packages/apps.amine.bou.readerforselfoss"><img alt="Android app on F-Droid" src="{{ get_url(path='images/f-droid.svg') }}" width="141" height="42"></a>
-        </div>
-
-        <div id="header-donate-tooltipp"><span>selfoss is completely free!<br>But if you like selfoss then feel free to donate the programmer a beer</span></div>
-
-        <div id="header-teaser">
-            <h1>The new multipurpose rss reader, live stream, mashup, aggregation web application</h1>
-
-            <h2>Features</h2>
-
-            <ul>
-                <li>web based rss reader</li>
-                <li>universal aggregator</li>
-                <li>open source and free</li>
-                <li>easy extendable with an open plugin system (write your own data connectors)</li>
-                <li>mobile support (Android, iOS, iPad)</li>
-                <li>use selfoss to live stream and collect all your posts, tweets, feeds in one place</li>
-                <li>lightweight PHP application with less than 2 MB</li>
-                <li>supports MySQL, PostgreSQL and Sqlite Databases</li>
-                <li>OPML Import</li>
-                <li>easy installation: upload and run</li>
-                <li>with restful json api</li>
-                <li>offline web app</li>
-                <li>third party <a href="https://f-droid.org/packages/apps.amine.bou.readerforselfoss">app for Android</a> available</li>
-            </ul>
-        </div>
+    <div id="header-appstores">
+        <a href="https://f-droid.org/packages/apps.amine.bou.readerforselfoss"><img alt="Android app on F-Droid" src="{{ get_url(path='images/f-droid.svg') }}" width="141" height="42"></a>
     </div>
 
+    <div id="header-donate-tooltipp"><span>selfoss is completely free!<br>But if you like selfoss then feel free to donate the programmer a beer</span></div>
+
+    <div id="header-teaser">
+        <h1>The new multipurpose rss reader, live stream, mashup, aggregation web application</h1>
+
+        <h2>Features</h2>
+
+        <ul>
+            <li>web based rss reader</li>
+            <li>universal aggregator</li>
+            <li>open source and free</li>
+            <li>easy extendable with an open plugin system (write your own data connectors)</li>
+            <li>mobile support (Android, iOS, iPad)</li>
+            <li>use selfoss to live stream and collect all your posts, tweets, feeds in one place</li>
+            <li>lightweight PHP application with less than 2 MB</li>
+            <li>supports MySQL, PostgreSQL and Sqlite Databases</li>
+            <li>OPML Import</li>
+            <li>easy installation: upload and run</li>
+            <li>with restful json api</li>
+            <li>offline web app</li>
+            <li>third party <a href="https://f-droid.org/packages/apps.amine.bou.readerforselfoss">app for Android</a> available</li>
+        </ul>
+    </div>
+{% endblock header %}
+
+{% block post_header %}
     <!-- Screenshots -->
     <div class="wrapper-dark">
         <div id="screenshots">
@@ -82,51 +54,8 @@
 
         </div>
     </div>
+{% endblock post_header %}
 
-
-    <!-- Documentations -->
-    <div class="wrapper-bright">
-        <div class="main">
-            {% block content %}
-            {{ section.content | safe }}
-            {% endblock content %}
-        </div>
-    </div>
-
-
-    <div id="footer">
-        <p>
-            <a href="https://github.com/SSilence/selfoss">Github</a>
-            |
-            <a href="forum">Forum</a>
-            |
-            <a href="http://www.aditu.de">About me</a>
-            |
-            <a href="http://www.aditu.de//#filter=.blog">Blog</a>
-            |
-            logo by <a href="http://www.artcoreillustrations.com/">ArtCore</a>
-        </p>
-        <p>
-            &copy; by {{ config.extra.author }} &sdot; <a href="mailto:{{ config.extra.author_address }}">{{ config.extra.author_address }}</a> &sdot; <a href="http://www.aditu.de">www.aditu.de</a>
-        </p>
-    </div>
-
-    <script type="text/javascript" src="{{ get_url(path='javascript/jquery-3.2.1.min.js') }}"></script>
-    <script type="text/javascript" src="{{ get_url(path='javascript/jquery.fancybox.min.js') }}"></script>
-    <script type="text/javascript" src="{{ get_url(path='javascript/base.js') }}"></script>
-
-
-    <!-- Piwik -->
-    <script type="text/javascript">
-    var pkBaseURL = (("https:" == document.location.protocol) ? "https://piwik.aditu.de/" : "http://piwik.aditu.de/");
-    document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
-    </script><script type="text/javascript">
-    try {
-    var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 7);
-    piwikTracker.trackPageView();
-    piwikTracker.enableLinkTracking();
-    } catch( err ) {}
-    </script><noscript><p><img src="http://piwik.aditu.de/piwik.php?idsite=7" style="border:0" alt=""></p></noscript>
-    <!-- End Piwik Tracking Code -->
-</body>
-</html>
+{% block content %}
+{{ section.content | safe }}
+{% endblock content %}
