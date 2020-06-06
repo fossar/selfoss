@@ -73,7 +73,7 @@ dt {
     color: #bbb;
 }
 
-#documentation, #header-teaser, #screenshots {
+.main, #header-teaser, #screenshots {
     position: relative;
     left: 50%;
     width: 800px;
@@ -257,41 +257,45 @@ dt {
 
 /************ documentation **************/
 
-#documentation {
+.main {
     font-size: 14px;
 }
 
-#documentation h2 {
+.main h2 {
     font-size: 18px;
     margin-left: 20px;
     margin-top: 40px;
 }
 
-#documentation div {
+.main div {
     margin-left: 20px;
 }
 
-#documentation th {
+.main th {
     text-align: left;
 }
 
-#documentation table {
+.main table {
     margin-left: 20px;
 }
 
-#documentation table, #documentation td, #documentation th, #documentation tr {
+.main table, .main td, .main th, .main tr {
     border: 0;
     vertical-align: top;
 }
 
-#documentation td {
+.main td {
     font-size: 12px;
     padding: 5px;
 }
 
-#documentation td.documentation-first-column {
-    width: 150px;
-    font-family: "Courier New", Courier, monospace;
+kbd {
+    border: 1px solid #353535;
+    border-radius: 0.25em;
+    padding: 0.1875em 0.3125em;
+    margin: 0.125em;
+    color: #353535;
+    text-decoration: none;
 }
 
 /************ footer **************/
