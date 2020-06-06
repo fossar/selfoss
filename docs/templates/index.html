@@ -11,10 +11,10 @@
 
     <link rel="alternate" type="application/atom+xml" title="RSS Feed" href="https://github.com/SSilence/selfoss/releases.atom">
 
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ get_url(path='favicon.ico') }}" type="image/x-icon">
 
-    <link rel="stylesheet" type="text/css" media="screen" href="style.css">
-    <link rel="stylesheet" type="text/css" media="screen" href="javascript/jquery.fancybox.min.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="{{ get_url(path='style.css') }}">
+    <link rel="stylesheet" type="text/css" media="screen" href="{{ get_url(path='javascript/jquery.fancybox.min.css') }}">
 </head>
 <body>
 
@@ -41,7 +41,7 @@
         <a id="header-donate" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=LR67F3T9DMSC8"><span>donate</span></a>
 
         <div id="header-appstores">
-            <a href="https://f-droid.org/packages/apps.amine.bou.readerforselfoss"><img alt="Android app on F-Droid" src="images/f-droid.svg" width="141" height="42"></a>
+            <a href="https://f-droid.org/packages/apps.amine.bou.readerforselfoss"><img alt="Android app on F-Droid" src="{{ get_url(path='images/f-droid.svg') }}" width="141" height="42"></a>
         </div>
 
         <div id="header-donate-tooltipp"><span>selfoss is completely free!<br>But if you like selfoss then feel free to donate the programmer a beer</span></div>
@@ -75,9 +75,9 @@
             <h1>Screenshots</h1>
 
             <ul>
-                <li><a href="images/screenshot1.png" title="selfoss on desktop" data-fancybox="screenshots"><img src="images/screenshot1_thumb.png" alt="selfoss on desktop"></a></li>
-                <li><a href="images/screenshot2.png" title="selfoss on ipad" data-fancybox="screenshots"><img src="images/screenshot2_thumb.png" alt="selfoss on ipad"></a></li>
-                <li><a href="images/screenshot3.png" title="selfoss on smartphone" data-fancybox="screenshots"><img src="images/screenshot3_thumb.png" alt="selfoss on smartphone"></a></li>
+                <li><a href="{{ get_url(path='images/screenshot1.png') }}" title="selfoss on desktop" data-fancybox="screenshots"><img src="{{ get_url(path='images/screenshot1_thumb.png') }}" alt="selfoss on desktop"></a></li>
+                <li><a href="{{ get_url(path='images/screenshot2.png') }}" title="selfoss on ipad" data-fancybox="screenshots"><img src="{{ get_url(path='images/screenshot2_thumb.png') }}" alt="selfoss on ipad"></a></li>
+                <li><a href="{{ get_url(path='images/screenshot3.png') }}" title="selfoss on smartphone" data-fancybox="screenshots"><img src="{{ get_url(path='images/screenshot3_thumb.png') }}" alt="selfoss on smartphone"></a></li>
             </ul>
 
         </div>
@@ -544,7 +544,7 @@ db_port=3306</code>
                 </p>
 
                 <p>
-                    <img src="images/uml.png" alt="selfoss source uml diagramm">
+                    <img src="{{ get_url(path='images/uml.png') }}" alt="selfoss source uml diagramm">
                 </p>
 
                 <p>
@@ -628,9 +628,9 @@ db_port=3306</code>
         </p>
     </div>
 
-    <script type="text/javascript" src="javascript/jquery-3.2.1.min.js"></script>
-    <script type="text/javascript" src="javascript/jquery.fancybox.min.js"></script>
-    <script type="text/javascript" src="javascript/base.js"></script>
+    <script type="text/javascript" src="{{ get_url(path='javascript/jquery-3.2.1.min.js') }}"></script>
+    <script type="text/javascript" src="{{ get_url(path='javascript/jquery.fancybox.min.js') }}"></script>
+    <script type="text/javascript" src="{{ get_url(path='javascript/base.js') }}"></script>
 
 
     <!-- Piwik -->

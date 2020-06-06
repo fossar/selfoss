@@ -16,7 +16,7 @@ const sources = [
     'package.json',
     'README.md',
     'src/common.php',
-    '_docs/website/index.html'
+    'docs/templates/index.html'
 ];
 
 const replacements = [

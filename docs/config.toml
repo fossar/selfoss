@@ -1,0 +1,5 @@
+title = "selfoss"
+description = "Open source web based RSS reader and multi-source mashup aggregator."
+base_url = "https://selfoss.aditu.de"
+
+compile_sass = true
