@@ -96,6 +96,11 @@ dt {
     display: none;
 }
 
+#header-name a {
+    display: block;
+    height: 100%;
+}
+
 #header-navigation {
     position: absolute;
     left: 50%;
