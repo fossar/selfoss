@@ -32,6 +32,11 @@ button::-moz-focus-inner {
     border: 0;
 }
 
+#js-loading-message {
+    margin: 1em;
+    text-align: center;
+}
+
 #mainui {
     height: 100%;
 

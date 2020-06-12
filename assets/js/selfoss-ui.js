@@ -24,6 +24,8 @@ selfoss.ui = {
             return;
         }
 
+        document.getElementById('js-loading-message').remove();
+
         initIcons();
 
         $('body').append(<div id="loginform" role="main">

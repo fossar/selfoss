@@ -35,6 +35,12 @@
 <body>
     <div id="message"></div>
 
-    <script src="js/index.js"></script>
+    <p id="js-loading-message">selfoss requires JavaScript to run, please enable it on this page.</p>
+
+    <script type="text/javascript">
+        document.getElementById('js-loading-message').textContent = 'selfoss is still loading, please wait.';
+    </script>
+
+    <script src="js/index.js" onerror="document.getElementById('js-loading-message').textContent = 'Error loading selfoss JavaScript file. Please check the browser console or your web server logs.'"></script>
 </body>
 </html>
