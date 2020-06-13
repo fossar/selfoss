@@ -58,7 +58,6 @@ db_host=localhost
 db_database=selfoss
 db_username=secretagent
 db_password=life0fD4ng3r
-db_port=3306
 ```
 </div>
 
