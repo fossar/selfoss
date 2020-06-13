@@ -96,5 +96,6 @@
   "lang_close_entry": "Lukk",
   "lang_error_unwritable_logs": "Kunne ikke loggføre.",
   "lang_error_check_log_file": "En feil inntraff, sjekk loggfilen “{0}”.",
-  "lang_error_check_system_logs": "En feil inntraff, sjekk systemloggene dine."
+  "lang_error_check_system_logs": "En feil inntraff, sjekk systemloggene dine.",
+  "lang_offline_navigation_unavailable": "Å bytte etiketter og kilder støttes foreløpig ikke i frakoblet modus."
 }
