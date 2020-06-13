@@ -69,6 +69,10 @@ class Import {
 
             $this->logger->debug('start OPML import ');
 
+            if (!function_exists('simplexml_load_file')) {
+                throw new \Exception('Missing SimpleXML PHP extension. Please install/enable it as described on https://www.php.net/manual/en/simplexml.installation.php');
+            }
+
             $subs = simplexml_load_file($opml['tmp_name']);
             $errors = $this->processGroup($subs->body);
 
