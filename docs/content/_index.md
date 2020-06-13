@@ -35,7 +35,7 @@ For further questions or any problems, use our [support forum](forum). For a mor
 ## Configuring selfoss {#configuration}
 <div class="documentation-entry">
 
-All configuration options are optional. Any settings in `config.ini` will override the settings in `defaults.ini`. To customize settings follow these instructions:
+All [configuration options](@/docs/administration/options.md) are optional. Any settings in `config.ini` will override the settings in `defaults.ini`. To customize settings follow these instructions:
 
 1. Copy `defaults.ini` to `config.ini`.
 2. Edit `config.ini` and delete any lines you do not wish to override.
