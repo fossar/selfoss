@@ -4,6 +4,9 @@ body {
     color: #3e3e3e;
     margin: 0;
     border: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 h1, h2, h3 {
@@ -90,6 +93,7 @@ aside {
 }
 
 body:not(.homepage) .wrapper-bright {
+    flex: 1;
     width: 1000px;
 }
 
@@ -299,13 +303,13 @@ nav .active {
 
 #screenshots ul {
     margin-left: 0;
+    display:  flex
 }
 
 #screenshots li {
     list-style: none;
     margin-right: 36px;
     margin-left: -6px;
-    float: left;
 }
 
 /************ documentation **************/
@@ -356,7 +360,7 @@ kbd {
 #footer {
     background: #333;
     border-top: 3px solid #365c5a;
-    height: 100px;
+    height: 8em;
 }
 
 #footer, #footer a {
@@ -373,5 +377,27 @@ kbd {
     width: 600px;
     left: 50%;
     margin-left: -470px;
-    margin-top: 20px;
+    margin-top: 1em;
+}
+
+@media (max-width: 1050px) {
+    body:not(.homepage) .wrapper-bright {
+        width: auto;
+        margin: 0 1em;
+    }
+
+    #footer p {
+        margin: 1em;
+        position: static;
+    }
+}
+
+@media (max-width: 600px) {
+    body:not(.homepage) .wrapper-bright {
+        flex-direction: column;
+    }
+
+    nav {
+        margin-top: 0;
+    }
 }
