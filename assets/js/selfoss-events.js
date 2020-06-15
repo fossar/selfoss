@@ -22,9 +22,9 @@ selfoss.events = {
         selfoss.events.navigation();
 
         // re-init on media query change
-        if ((typeof window.matchMedia) != 'undefined') {
+        if ((typeof window.matchMedia) !== 'undefined') {
             var mq = window.matchMedia('(min-width: 641px) and (max-width: 1024px)');
-            if ((typeof mq.addListener) != 'undefined') {
+            if ((typeof mq.addListener) !== 'undefined') {
                 mq.addListener(selfoss.events.entries);
             }
         }
@@ -68,9 +68,7 @@ selfoss.events = {
      */
     processHashChange: true,
 
-    processHash: function(hash) {
-        hash = (typeof hash != 'undefined') ? hash : false;
-
+    processHash: function(hash = false) {
         var done = function() {
             selfoss.events.processHashChange = true;
         };
@@ -226,17 +224,13 @@ selfoss.events = {
     },
 
 
-    setHash: function(section, subsection, entryId) {
-        section = (typeof section !== 'undefined') ? section : 'same';
-        subsection = (typeof subsection !== 'undefined') ? subsection : 'same';
-        entryId = (typeof entryId !== 'undefined') ? entryId : false;
-
-        if (section == 'same') {
+    setHash: function(section = 'same', subsection = 'same', entryId = false) {
+        if (section === 'same') {
             section = selfoss.events.section;
         }
         var newHash = [section];
 
-        if (subsection == 'same') {
+        if (subsection === 'same') {
             subsection = selfoss.events.lastSubsection;
         }
         if (subsection) {

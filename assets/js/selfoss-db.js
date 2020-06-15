@@ -53,9 +53,7 @@ selfoss.dbOnline = {
     },
 
 
-    _syncDone: function(success) {
-        success = (typeof success !== 'undefined') ? success : true;
-
+    _syncDone: function(success = true) {
         if (selfoss.dbOnline.syncing) {
             if (success) {
                 selfoss.dbOnline.syncing.resolve();
@@ -448,9 +446,7 @@ selfoss.dbOffline = {
     },
 
 
-    GCEntries: function(more) {
-        more = (typeof more !== 'undefined') ? more : false;
-
+    GCEntries: function(more = false) {
         if (more) {
             // We need to garbage collect more, as the browser storage limit
             // seems to be exceeded: decrease the amount of days entries are
@@ -717,10 +713,7 @@ selfoss.dbOffline = {
     },
 
 
-    storeEntryStatuses: function(itemStatuses, dequeue, updateStats) {
-        dequeue = (typeof dequeue !== 'undefined') ? dequeue : false;
-        updateStats = (typeof updateStats !== 'undefined') ? updateStats : true;
-
+    storeEntryStatuses: function(itemStatuses, dequeue = false, updateStats = true) {
         return selfoss.dbOffline._tr('rw',
             selfoss.db.storage.entries,
             selfoss.db.storage.stats,
@@ -892,9 +885,7 @@ selfoss.db = {
     lastSync: null,
 
 
-    sync: function(force) {
-        force = (typeof force !== 'undefined') ? force : false;
-
+    sync: function(force = false) {
         var lastUpdateIsOld = selfoss.db.lastUpdate === null || selfoss.db.lastSync === null || Date.now() - selfoss.db.lastSync > 5 * 60 * 1000;
         var shouldSync = force || selfoss.dbOffline.needsSync || lastUpdateIsOld;
         if (selfoss.loggedin && shouldSync) {
@@ -909,10 +900,7 @@ selfoss.db = {
     },
 
 
-    reloadList: function(append, waitForSync) {
-        append = (typeof append !== 'undefined') ? append : false;
-        waitForSync = (typeof waitForSync !== 'undefined') ? waitForSync : true;
-
+    reloadList: function(append = false, waitForSync = true) {
         if (location.hash == '#sources') {
             return;
         }

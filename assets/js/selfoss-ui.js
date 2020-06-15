@@ -157,9 +157,7 @@ selfoss.ui = {
         }
     },
 
-    showLogin: function(error) {
-        error = (typeof error !== 'undefined') ? error : '';
-
+    showLogin: function(error = '') {
         $('#mainui').hide();
         $('#loginform').show();
         selfoss.ui.refreshTitle(0);
@@ -403,10 +401,7 @@ selfoss.ui = {
     },
 
 
-    refreshStreamButtons: function(entries, hasMore) {
-        entries = (typeof entries !== 'undefined') ? entries : false;
-        hasMore = (typeof hasMore !== 'undefined') ? hasMore : false;
-
+    refreshStreamButtons: function(entries = false, hasMore = false) {
         $('.stream-button, .stream-empty').css('display', 'block').hide();
         if (entries) {
             if ($('.entry').length > 0) {
@@ -681,9 +676,7 @@ selfoss.ui = {
     },
 
 
-    refreshTagSourceUnread: function(tagCounts, sourceCounts, diff) {
-        diff = (typeof diff !== 'undefined') ? diff : true;
-
+    refreshTagSourceUnread: function(tagCounts, sourceCounts, diff = true) {
         tagCounts.forEach(function(tagCount) {
             var tagsCountEl = $('#nav-tags > li > a > span.tag')
                 .filter(function() {

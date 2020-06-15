@@ -633,9 +633,7 @@ var selfoss = {
     },
 
 
-    handleAjaxError: function(httpCode, tryOffline) {
-        tryOffline = (typeof tryOffline !== 'undefined') ? tryOffline : true;
-
+    handleAjaxError: function(httpCode, tryOffline = true) {
         if (tryOffline && httpCode != 403) {
             return selfoss.db.setOffline();
         } else {

@@ -1,7 +1,8 @@
 import selfoss from './selfoss-base';
 
 selfoss.shortcuts = {
-
+    DIRECTION_PREV: 'prev',
+    DIRECTION_NEXT: 'next',
 
     /**
      * init shortcuts
@@ -17,7 +18,7 @@ selfoss.shortcuts = {
             if (selected !== null && !selfoss.ui.entryIsExpanded(selected)) {
                 selfoss.ui.entryActivate(selected);
             } else {
-                selfoss.shortcuts.nextprev('next', true);
+                selfoss.shortcuts.nextprev(selfoss.shortcuts.DIRECTION_NEXT, true);
             }
             e.preventDefault();
             return false;
@@ -29,7 +30,7 @@ selfoss.shortcuts = {
                 return false;
             }
 
-            selfoss.shortcuts.nextprev('next', false);
+            selfoss.shortcuts.nextprev(selfoss.shortcuts.DIRECTION_NEXT, false);
             e.preventDefault();
             return false;
         });
@@ -40,7 +41,7 @@ selfoss.shortcuts = {
                 return false;
             }
 
-            selfoss.shortcuts.entrynav('next');
+            selfoss.shortcuts.entrynav(selfoss.shortcuts.DIRECTION_NEXT);
             e.preventDefault();
             return false;
         });
@@ -51,7 +52,7 @@ selfoss.shortcuts = {
                 return false;
             }
 
-            selfoss.shortcuts.nextprev('next', true);
+            selfoss.shortcuts.nextprev(selfoss.shortcuts.DIRECTION_NEXT, true);
             e.preventDefault();
             return false;
         });
@@ -62,7 +63,7 @@ selfoss.shortcuts = {
                 return false;
             }
 
-            selfoss.shortcuts.nextprev('prev', true);
+            selfoss.shortcuts.nextprev(selfoss.shortcuts.DIRECTION_PREV, true);
             e.preventDefault();
             return false;
         });
@@ -73,7 +74,7 @@ selfoss.shortcuts = {
                 return false;
             }
 
-            selfoss.shortcuts.nextprev('prev', false);
+            selfoss.shortcuts.nextprev(selfoss.shortcuts.DIRECTION_PREV, false);
             e.preventDefault();
             return false;
         });
@@ -84,7 +85,7 @@ selfoss.shortcuts = {
                 return false;
             }
 
-            selfoss.shortcuts.entrynav('prev');
+            selfoss.shortcuts.entrynav(selfoss.shortcuts.DIRECTION_PREV);
             e.preventDefault();
             return false;
         });
@@ -95,7 +96,7 @@ selfoss.shortcuts = {
                 return false;
             }
 
-            selfoss.shortcuts.nextprev('prev', true);
+            selfoss.shortcuts.nextprev(selfoss.shortcuts.DIRECTION_PREV, true);
             e.preventDefault();
             return false;
         });
@@ -242,7 +243,7 @@ selfoss.shortcuts = {
                 }
             }
 
-            selfoss.shortcuts.nextprev('next', true);
+            selfoss.shortcuts.nextprev(selfoss.shortcuts.DIRECTION_NEXT, true);
             return false;
         });
 
@@ -263,7 +264,7 @@ selfoss.shortcuts = {
                 }
             }
 
-            selfoss.shortcuts.nextprev('prev', true);
+            selfoss.shortcuts.nextprev(selfoss.shortcuts.DIRECTION_PREV, true);
             e.preventDefault();
             return false;
         });
@@ -304,9 +305,9 @@ selfoss.shortcuts = {
      * get next/prev item
      * @param direction
      */
-    nextprev: function(direction, open) {
-        if (typeof direction == 'undefined' || (direction != 'next' && direction != 'prev')) {
-            direction = 'next';
+    nextprev: function(direction, open = true) {
+        if (direction != selfoss.shortcuts.DIRECTION_NEXT && direction != selfoss.shortcuts.DIRECTION_PREV) {
+            throw new Error('direction must be one of selfoss.shortcuts.DIRECTION_{PREV,NEXT}');
         }
 
         // select current
@@ -315,7 +316,7 @@ selfoss.shortcuts = {
 
         // select next/prev entry and save it to "current"
         // if we would overflow, we stay on the old one
-        if (direction == 'next') {
+        if (direction == selfoss.shortcuts.DIRECTION_NEXT) {
             if (old === null) {
                 current = $('.entry:eq(0)');
             } else {
@@ -390,8 +391,8 @@ selfoss.shortcuts = {
      * @param direction
      */
     entrynav: function(direction) {
-        if (typeof direction == 'undefined' || (direction != 'next' && direction != 'prev')) {
-            direction = 'next';
+        if (direction != selfoss.shortcuts.DIRECTION_NEXT && direction != selfoss.shortcuts.DIRECTION_PREV) {
+            throw new Error('direction must be one of selfoss.shortcuts.DIRECTION_{PREV,NEXT}');
         }
 
         var content = selfoss.ui.entryIsExpanded($('.entry'));
