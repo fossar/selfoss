@@ -1211,6 +1211,7 @@ body:not(.loggedin) .entry-unread {
         border-radius: 0;
         font-size: 0.8em;
         border-top: 1px solid #cccccc;
+        box-sizing: border-box;
     }
 
     .entry-author,
