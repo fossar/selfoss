@@ -44,7 +44,32 @@ class ViewHelper {
      * @return string with replaced img tags
      */
     public static function lazyimg($content) {
-        return preg_replace("/<img([^<]+)src=(['\"])([^\"']*)(['\"])([^<]*)>/i", "<img$1ref='$3'$5>", $content);
+        return preg_replace_callback("/<img(?P<pre>[^<]+)src=(?:['\"])(?P<src>[^\"']*)(?:['\"])(?P<post>[^<]*)>/i", function($matches) {
+            $width = null;
+            $height = null;
+
+            $attrs = "{$matches['pre']} {$matches['post']}";
+            if (preg_match('/\bwidth=([\'"]?)(?P<width>\d+)\1/i', $attrs, $widthAttr)) {
+                $width = $widthAttr['width'];
+            }
+            if (preg_match('/\bheight=([\'"]?)(?P<height>\d+)\1/i', $attrs, $heightAttr)) {
+                $height = $heightAttr['height'];
+            }
+
+            if ($width === null && $height === null) {
+                // no dimensions provided, assume a 4:3 photo
+                $width = 800;
+                $height = 600;
+            } else {
+                // assume a 4:3 photo
+                $width = $width === null ? $height * 4 / 3 : $width;
+                $height = $height === null ? $width * 3 / 4 : $height;
+            }
+
+            $placeholder = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='$width' height='$height'><rect fill='%2395c9c5' width='100%' height='100%'/></svg>";
+
+            return "<img src=\"$placeholder\"{$matches['pre']}ref=\"{$matches['src']}\"{$matches['post']}>";
+        }, $content);
     }
 
     /**
