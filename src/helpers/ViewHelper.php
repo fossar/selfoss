@@ -36,7 +36,7 @@ class ViewHelper {
     }
 
     /**
-     * removes img src attribute and saves the value in ref for
+     * removes img src attribute and saves the value in data attribute for
      * loading it later
      *
      * @param string $content which contains img tags
@@ -68,7 +68,7 @@ class ViewHelper {
 
             $placeholder = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='$width' height='$height'><rect fill='%2395c9c5' width='100%' height='100%'/></svg>";
 
-            return "<img src=\"$placeholder\"{$matches['pre']}ref=\"{$matches['src']}\"{$matches['post']}>";
+            return "<img src=\"$placeholder\"{$matches['pre']}data-selfoss-src=\"{$matches['src']}\"{$matches['post']}>";
         }, $content);
     }
 

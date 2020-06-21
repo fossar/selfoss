@@ -6,7 +6,7 @@ import jQuery from 'jquery';
 (function($) {
     $.fn.lazyLoadImages = function() {
         $(this).find('img').each(function(i, self) {
-            $(self).attr('src', $(self).attr('ref'));
+            $(self).attr('src', $(self).attr('data-selfoss-src'));
         });
     };
 })(jQuery);
