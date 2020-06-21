@@ -21,10 +21,10 @@ final class IconExtractorTest extends TestCase {
 EOD;
 
         $this->assertEquals(
-            Image::parseShortcutIcons($page),
             [
                 'https://www.example.com/images/apple-touch-114x114.png',
-            ]
+            ],
+            Image::parseShortcutIcons($page)
         );
     }
 
@@ -43,10 +43,10 @@ EOD;
 EOD;
 
         $this->assertEquals(
-            Image::parseShortcutIcons($page),
             [
                 'https://www.example.com/images/apple-touch-precomposed-114x114.png',
-            ]
+            ],
+            Image::parseShortcutIcons($page)
         );
     }
 
@@ -65,10 +65,10 @@ EOD;
 EOD;
 
         $this->assertEquals(
-            Image::parseShortcutIcons($page),
             [
                 'https://www.example.com/images/apple-touch-114x114.png',
-            ]
+            ],
+            Image::parseShortcutIcons($page)
         );
     }
 
@@ -87,10 +87,10 @@ EOD;
 EOD;
 
         $this->assertEquals(
-            Image::parseShortcutIcons($page),
             [
                 'https://www.example.com/favicon.ico',
-            ]
+            ],
+            Image::parseShortcutIcons($page)
         );
     }
 
@@ -109,10 +109,10 @@ EOD;
 EOD;
 
         $this->assertEquals(
-            Image::parseShortcutIcons($page),
             [
                 'https://www.example.com/favicon.ico',
-            ]
+            ],
+            Image::parseShortcutIcons($page)
         );
     }
 
@@ -133,12 +133,12 @@ EOD;
 EOD;
 
         $this->assertEquals(
-            Image::parseShortcutIcons($page),
             [
                 '/favicon.png',
                 '/favicon.ico',
                 '/favicon.svg',
-            ]
+            ],
+            Image::parseShortcutIcons($page)
         );
     }
 
@@ -158,11 +158,11 @@ EOD;
 EOD;
 
         $this->assertEquals(
-            Image::parseShortcutIcons($page),
             [
                 'https://www.example.com/images/apple-touch-114x114.png',
                 '/favicon.ico',
-            ]
+            ],
+            Image::parseShortcutIcons($page)
         );
     }
 
@@ -182,11 +182,11 @@ EOD;
 EOD;
 
         $this->assertEquals(
-            Image::parseShortcutIcons($page),
             [
                 'https://www.example.com/images/apple-touch-114x114.png',
                 'https://www.example.com/images/apple-touch-precomposed-87x87.png',
-            ]
+            ],
+            Image::parseShortcutIcons($page)
         );
     }
 
@@ -206,11 +206,11 @@ EOD;
 EOD;
 
         $this->assertEquals(
-            Image::parseShortcutIcons($page),
             [
                 'https://www.example.com/images/apple-touch-precomposed-114x114.png',
                 'https://www.example.com/images/apple-touch-114x114.png',
-            ]
+            ],
+            Image::parseShortcutIcons($page)
         );
     }
 
@@ -223,12 +223,12 @@ EOD;
 EOD;
 
         $this->assertEquals(
-            Image::parseShortcutIcons($page),
             [
                 '//www.example.com/favicons/favicon-196x196.png',
                 '//www.example.com/favicons/apple-touch-icon-152x152.png',
                 '//www.example.com/favicons/favicon.ico',
-            ]
+            ],
+            Image::parseShortcutIcons($page)
         );
     }
 
@@ -246,8 +246,8 @@ EOD;
 EOD;
 
         $this->assertEquals(
-            Image::parseShortcutIcons($page),
-            []
+            [],
+            Image::parseShortcutIcons($page)
         );
     }
 
@@ -266,8 +266,8 @@ EOD;
 EOD;
 
         $this->assertEquals(
-            Image::parseShortcutIcons($page),
-            []
+            [],
+            Image::parseShortcutIcons($page)
         );
     }
 
@@ -288,8 +288,8 @@ console.log('<link rel="icon" href="https://www.example.com/favicon.ico">');
 EOD;
 
         $this->assertEquals(
-            Image::parseShortcutIcons($page),
-            []
+            [],
+            Image::parseShortcutIcons($page)
         );
     }
 }
