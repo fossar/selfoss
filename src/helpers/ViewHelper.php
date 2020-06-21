@@ -19,7 +19,7 @@ class ViewHelper {
      *
      * @return string with highlited words
      */
-    public function highlight($content, $searchWords) {
+    public static function highlight($content, $searchWords) {
         if (strlen(trim($searchWords)) === 0) {
             return $content;
         }
@@ -43,7 +43,7 @@ class ViewHelper {
      *
      * @return string with replaced img tags
      */
-    public function lazyimg($content) {
+    public static function lazyimg($content) {
         return preg_replace("/<img([^<]+)src=(['\"])([^\"']*)(['\"])([^<]*)>/i", "<img$1ref='$3'$5>", $content);
     }
 
@@ -67,7 +67,7 @@ class ViewHelper {
      *
      * @return string          item content
      */
-    public function camoflauge($content) {
+    public static function camoflauge($content) {
         if (empty($content)) {
             return $content;
         }

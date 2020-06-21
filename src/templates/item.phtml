@@ -1,26 +1,29 @@
 <?php
+
+    use helpers\ViewHelper;
+
     $title = $this->item['title'];
     $author = $this->item['author'];
     //$content = html_entity_decode($this->item['content']);
     $content = str_replace('&#34;', '"', $this->item['content']);
     $sourcetitle = $this->item['sourcetitle'];
-    $this->viewHelper = new \helpers\ViewHelper();
+
     if (isset($this->search)) {
-        $sourcetitle = $this->viewHelper->highlight($sourcetitle, $this->search);
-        $title = $this->viewHelper->highlight($title, $this->search);
-        $content = $this->viewHelper->highlight($content, $this->search);
+        $sourcetitle = ViewHelper::highlight($sourcetitle, $this->search);
+        $title = ViewHelper::highlight($title, $this->search);
+        $content = ViewHelper::highlight($content, $this->search);
     }
 
     if (\F3::get('camo_key') != '') {
-        $content = $this->viewHelper->camoflauge($content);
+        $content = ViewHelper::camoflauge($content);
     }
 
-    $title = $this->viewHelper->lazyimg($title);
-    $content = $this->viewHelper->lazyimg($content);
+    $title = ViewHelper::lazyimg($title);
+    $content = ViewHelper::lazyimg($content);
 ?>
 <div data-entry-id="<?= $this->item['id']; ?>"
      data-entry-source="<?= $this->item['source']; ?>"
-     data-entry-datetime="<?= $this->viewHelper->date_iso8601($this->item['datetime']); ?>"
+     data-entry-datetime="<?= ViewHelper::date_iso8601($this->item['datetime']); ?>"
      data-entry-url="<?= $this->item['link']; ?>"
      class="entry <?= $this->item['unread'] == 1 ? 'unread' : ''; ?>" role="article">
 
