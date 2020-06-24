@@ -93,5 +93,9 @@
   "lang_share_copy_label": "Copier le lien dans le presse-papiers",
   "lang_error_share_native_abort": "Impossible de partager l'élément, soit il n'y a pas de cible, soit vous avez annulé le partage.",
   "lang_error_share_native": "Impossible de partager l'élément.",
-  "lang_close_entry": "Fermer"
+  "lang_close_entry": "Fermer",
+  "lang_error_unwritable_logs": "Impossible d'écrire les fichiers de journalisation.",
+  "lang_error_check_system_logs": "Une erreur est survenue. Veuillez consulter votre journalisation système.",
+  "lang_error_check_log_file": "Une erreur est survenue. Veuillez consulter le fichier « {0} ».",
+  "lang_offline_navigation_unavailable": "Modifier les étiquettes et les sources n'est pas possible hors ligne pour le moment."
 }
