@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { useLocation, useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { makeEntriesLink } from '../helpers/uri';
@@ -7,7 +8,10 @@ import { makeEntriesLink } from '../helpers/uri';
 function splitTerm(term) {
     if (term == '') {
         return [];
+    } else if (term.match(/^\/.+\/$/)) {
+        return [term];
     }
+
     var words = term.match(/"[^"]+"|\S+/g);
     for (var i = 0; i < words.length; i++) {
         words[i] = words[i].replace(/"/g, '');
@@ -30,13 +34,18 @@ function joinTerm(words) {
 
 
 // remove search term
-function handleRemove({ index, location, history }) {
-    const queryString = new URLSearchParams(location.search);
-    const oldTerm = queryString.get('search');
+function handleRemove({ index, location, history, regexSearch }) {
+    let newterm;
+    if (regexSearch) {
+        newterm = '';
+    } else {
+        const queryString = new URLSearchParams(location.search);
+        const oldTerm = queryString.get('search');
 
-    const termArray = splitTerm(oldTerm);
-    termArray.splice(index, 1);
-    const newterm = joinTerm(termArray);
+        const termArray = splitTerm(oldTerm);
+        termArray.splice(index, 1);
+        newterm = joinTerm(termArray);
+    }
 
     history.push(makeEntriesLink(location, { search: newterm, id: null }));
 }
@@ -55,12 +64,13 @@ export default function SearchList() {
         return queryString.get('search') ?? '';
     }, [location.search]);
 
-    const terms = splitTerm(searchText);
+    const regexSearch = searchText.match(/^\/.+\/$/);
+    const terms = regexSearch ? [searchText] : splitTerm(searchText);
 
     return (
         terms.map((item, index) => {
             return (
-                <li key={index} onClick={() => handleRemove({ index, location, history })}>
+                <li key={index} onClick={() => handleRemove({ index, location, history, regexSearch })} className={classNames({ 'regex-search-term': regexSearch })}>
                     {item} <FontAwesomeIcon icon={['fas', 'times']} />
                 </li>
             );

@@ -158,9 +158,38 @@ if ($f3->get('db_type') === 'sqlite') {
     ];
 }
 
-$dice->addRule(DB\SQL::class, array_merge($shared, [
+$sqlParams = array_merge($shared, [
     'constructParams' => $dbParams
-]));
+]);
+
+// Define regexp function for SQLite
+if ($f3->get('db_type') === 'sqlite') {
+    $sqlParams = array_merge($sqlParams, [
+        'call' => [
+            [
+                // DB\SQL uses PDO instance through composition
+                // and forwards calls of non-existent methods to it.
+                // But Dice can only call existing methods.
+                // Let’s walk around these limitations by directly
+                // calling the __call magic method.
+                '__call',
+                [
+                    // https://www.sqlite.org/lang_expr.html#the_like_glob_regexp_and_match_operators
+                    'sqliteCreateFunction',
+                    [
+                        'regexp',
+                        function($pattern, $text) {
+                            return preg_match('/' . addcslashes($pattern, '/') . '/', $text);
+                        },
+                        2
+                    ]
+                ]
+            ],
+        ]
+    ]);
+}
+
+$dice->addRule(DB\SQL::class, $sqlParams);
 
 $dice->addRule('$iconStorageBackend', [
     'instanceOf' => helpers\Storage\FileStorage::class,

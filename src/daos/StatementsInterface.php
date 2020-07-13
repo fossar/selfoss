@@ -44,6 +44,15 @@ interface StatementsInterface {
     public static function isFalse($column);
 
     /**
+     * Combine expressions using OR operator.
+     *
+     * @param string ...$exprs expressions to combine
+     *
+     * @return string combined expression
+     */
+    public static function exprOr(...$exprs);
+
+    /**
      * check if CSV column matches a value.
      *
      * @param string $column CSV column to check
@@ -112,4 +121,14 @@ interface StatementsInterface {
      * @return string
      */
     public static function csvRow(array $a);
+
+    /**
+     * Match a value to a regular expression.
+     *
+     * @param string $value value to match
+     * @param string $regex regular expression
+     *
+     * @return string expression for matching
+     */
+    public static function matchesRegex($value, $regex);
 }

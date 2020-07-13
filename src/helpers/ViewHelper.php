@@ -24,12 +24,16 @@ class ViewHelper {
             return $content;
         }
 
-        if (!is_array($searchWords)) {
+        if (is_string($searchWords)) {
+            if (preg_match('#^/(?P<regex>.+)/$#', $searchWords, $matches)) {
+                return preg_replace('/(?!<[^<>])(' . $matches[1] . ')(?![^<>]*>)/', '<span class="found">$0</span>', $content);
+            }
+
             $searchWords = \helpers\Search::splitTerms($searchWords);
         }
 
         foreach ($searchWords as $word) {
-            $content = preg_replace('/(?!<[^<>])(' . $word . ')(?![^<>]*>)/i', '<span class="found">$0</span>', $content);
+            $content = preg_replace('/(?!<[^<>])(' . preg_quote($word, '/') . ')(?![^<>]*>)/i', '<span class="found">$0</span>', $content);
         }
 
         return $content;

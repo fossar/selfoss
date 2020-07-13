@@ -246,9 +246,14 @@ class Items implements \daos\ItemsInterface {
 
         // search
         if (isset($options['search']) && strlen($options['search']) > 0) {
-            $search = implode('%', \helpers\Search::splitTerms($options['search']));
-            $params[':search'] = $params[':search2'] = $params[':search3'] = ['%' . $search . '%', \PDO::PARAM_STR];
-            $where[] = '(items.title LIKE :search OR items.content LIKE :search2 OR sources.title LIKE :search3) ';
+            if (preg_match('#^/(?P<regex>.+)/$#', $options['search'], $matches)) {
+                $params[':search'] = $params[':search2'] = $params[':search3'] = [$matches['regex'], \PDO::PARAM_STR];
+                $where[] = $stmt::exprOr($stmt::matchesRegex('items.title', ':search'), $stmt::matchesRegex('items.content', ':search2'), $stmt::matchesRegex('sources.title', ':search3'));
+            } else {
+                $search = implode('%', \helpers\Search::splitTerms($options['search']));
+                $params[':search'] = $params[':search2'] = $params[':search3'] = ['%' . $search . '%', \PDO::PARAM_STR];
+                $where[] = '(items.title LIKE :search OR items.content LIKE :search2 OR sources.title LIKE :search3) ';
+            }
         }
 
         // tag filter

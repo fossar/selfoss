@@ -108,4 +108,17 @@ class Statements extends \daos\mysql\Statements {
 
         return $rows;
     }
+
+    /**
+     * Match a value to a regular expression.
+     *
+     * @param string $value value to match
+     * @param string $regex regular expression
+     *
+     * @return string expression for matching
+     */
+    public static function matchesRegex($value, $regex) {
+        // https://www.postgresql.org/docs/12/functions-matching.html#FUNCTIONS-POSIX-REGEXP
+        return $value . ' ~ ' . $regex;
+    }
 }

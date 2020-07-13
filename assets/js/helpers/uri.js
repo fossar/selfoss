@@ -62,5 +62,5 @@ export function makeEntriesLink(location, { filter, category, id, search }) {
 
     const searchParam = typeof search !== 'undefined' ? search : queryString?.get('search');
 
-    return path + (searchParam ? `?search=${searchParam}` : '');
+    return path + (searchParam ? `?search=${encodeURIComponent(searchParam)}` : '');
 }

@@ -56,6 +56,17 @@ class Statements implements \daos\StatementsInterface {
     }
 
     /**
+     * Combine expressions using OR operator.
+     *
+     * @param string ...$exprs expressions to combine
+     *
+     * @return string combined expression
+     */
+    public static function exprOr(...$exprs) {
+        return '(' . implode(' OR ', $exprs) . ')';
+    }
+
+    /**
      * check if CSV column matches a value.
      *
      * @param string $column CSV column to check
@@ -199,5 +210,18 @@ class Statements implements \daos\StatementsInterface {
         }
 
         return implode(',', $filtered);
+    }
+
+    /**
+     * Match a value to a regular expression.
+     *
+     * @param string $value value to match
+     * @param string $regex regular expression
+     *
+     * @return string expression for matching
+     */
+    public static function matchesRegex($value, $regex) {
+        // https://dev.mysql.com/doc/refman/5.7/en/regexp.html
+        return $value . ' REGEXP ' . $regex;
     }
 }

@@ -63,4 +63,17 @@ class Statements extends \daos\mysql\Statements {
 
         return $date->format('Y-m-d H:i:s');
     }
+
+    /**
+     * Match a value to a regular expression.
+     *
+     * @param string $value value to match
+     * @param string $regex regular expression
+     *
+     * @return string expression for matching
+     */
+    public static function matchesRegex($value, $regex) {
+        // https://www.sqlite.org/lang_expr.html#the_like_glob_regexp_and_match_operators
+        return $value . ' REGEXP ' . $regex;
+    }
 }
