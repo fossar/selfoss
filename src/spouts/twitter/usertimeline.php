@@ -135,6 +135,10 @@ class usertimeline extends \spouts\spout {
 
             $timeline = json_decode((string) $response->getBody());
 
+            if (isset($timeline->statuses)) {
+                $timeline = $timeline->statuses;
+            }
+
             if (!is_array($timeline)) {
                 throw new \Exception('Invalid twitter response');
             }
