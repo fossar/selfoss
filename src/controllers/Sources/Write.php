@@ -78,6 +78,9 @@ class Write {
 
         // clean up title and tag data to prevent XSS
         $title = htmlspecialchars($data['title']);
+        if (!isset($data['tags'])) {
+            $data['tags'] = [];
+        }
         $tags = array_map('htmlspecialchars', $data['tags']);
         $spout = $data['spout'];
         $filter = $data['filter'];

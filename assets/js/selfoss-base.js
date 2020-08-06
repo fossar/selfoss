@@ -171,32 +171,6 @@ var selfoss = {
     },
 
 
-    /**
-     * returns an array of name value pairs of all form elements in given element
-     *
-     * @return void
-     * @param element containing the form elements
-     */
-    getValues: function(element) {
-        var values = {};
-
-        $(element).find(':input').each(function(i, el) {
-            // get only input elements with name
-            if (el.hasAttribute('name')) {
-                let name = el.getAttribute('name').trim();
-                if (name.length != 0) {
-                    values[name] = $(el).val();
-                    if ($(el).attr('type') == 'checkbox') {
-                        values[name] = $(el).attr('checked') ? 1 : 0;
-                    }
-                }
-            }
-        });
-
-        return values;
-    },
-
-
     loggedin: false,
 
 

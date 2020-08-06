@@ -6,7 +6,9 @@ import * as ajax from './helpers/ajax';
  */
 selfoss.events.sources = function() {
     // cancel source editing
-    $('.source-cancel').unbind('click').click(function() {
+    $('.source-cancel').unbind('click').click(function(event) {
+        event.preventDefault();
+
         var parent = $(this).parents('.source');
         if (parent.hasClass('source-new')) {
             parent.fadeOut('fast', function() {
@@ -18,7 +20,9 @@ selfoss.events.sources = function() {
     });
 
     // add new source
-    $('.source-add').unbind('click').click(function() {
+    $('.source-add').unbind('click').click(function(event) {
+        event.preventDefault();
+
         ajax.get('source').promise.then(response => response.text()).then((text) => {
             $('.source-opml').after(text);
             selfoss.events.sources();
@@ -29,8 +33,10 @@ selfoss.events.sources = function() {
     });
 
     // save source
-    $('.source-save').unbind('click').click(function() {
-        var parent = $(this).parents('.source');
+    $('.source-save').unbind('click').click(function(event) {
+        event.preventDefault();
+
+        var parent = $(this).parents('form.source');
 
         // remove old errors
         parent.find('span.error').remove();
@@ -42,15 +48,18 @@ selfoss.events.sources = function() {
         // get id
         let id = parent.attr('data-source-id');
 
-        // set url
-        const url = `source/${id}`;
-
         // get values and params
-        var values = selfoss.getValues(parent);
-        values['tags'] = values['tags'].split(',');
+        var values = new FormData(parent.get(0));
 
-        ajax.post(url, {
-            body: ajax.makeSearchParams(values),
+        // make tags into a list
+        let oldTags = values.get('tags').split(',');
+        values.delete('tags');
+        oldTags.map(tag => tag.trim())
+            .filter(tag => tag !== '')
+            .forEach(tag => values.append('tags[]', tag));
+
+        ajax.post(`source/${id}`, {
+            body: new URLSearchParams(values),
             failOnHttpErrors: false
         }).promise
             .then(ajax.rejectUnless(response => response.ok || response.status === 400))
@@ -95,7 +104,9 @@ selfoss.events.sources = function() {
     });
 
     // delete source
-    $('.source-delete').unbind('click').click(function() {
+    $('.source-delete').unbind('click').click(function(event) {
+        event.preventDefault();
+
         var answer = confirm(selfoss.ui._('source_warn'));
         if (answer == false) {
             return;
@@ -124,7 +135,8 @@ selfoss.events.sources = function() {
     });
 
     // show params
-    $('.source-showparams').unbind('click').click(function() {
+    $('.source-showparams').unbind('click').click(function(event) {
+        event.preventDefault();
         $(this).parent().parent().find('.source-edit-form').show();
     });
 

@@ -1,5 +1,5 @@
 <?php $idAttr = isset($this->source) ? $this->source['id'] : 'new-' . rand(); ?>
-<div role="form" data-source-id="<?= $idAttr ?>"
+<form data-source-id="<?= $idAttr ?>"
         class="source <?= isset($this->source) === false ? 'source-new' : '' ?> <?= (isset($this->source) && isset($this->source['error']) && strlen($this->source['error']) > 0) ? 'error' : '' ?>">
     <div class="source-icon">
         <?php if (isset($this->source) && isset($this->source['icon']) && $this->source['icon'] != '0') : ?>
@@ -9,8 +9,8 @@
 
     <div class="source-title"><?= isset($this->source) ? $this->source['title'] : \F3::get('lang_source_new'); ?></div>
 
-    <div class="source-edit-delete"><button accesskey="e" class="source-showparams"><?= \F3::get('lang_source_edit')?>
-        </button> &bull; <button accesskey="d" class="source-delete"><?= \F3::get('lang_source_delete') ?></button>
+    <div class="source-edit-delete"><button type="button" accesskey="e" class="source-showparams"><?= \F3::get('lang_source_edit')?>
+        </button> &bull; <button type="button" accesskey="d" class="source-delete"><?= \F3::get('lang_source_delete') ?></button>
     </div>
 
     <div class="source-days">
@@ -88,9 +88,9 @@
 
         <!-- save/delete -->
         <li class="source-action">
-            <button class="source-save" accesskey="s"><?= \F3::get('lang_source_save')?></button> &bull; <button class="source-cancel" accesskey="c"><?= \F3::get('lang_source_cancel')?></button>
+            <button type="submit" class="source-save" accesskey="s"><?= \F3::get('lang_source_save')?></button> &bull; <button type="submit" class="source-cancel" accesskey="c"><?= \F3::get('lang_source_cancel')?></button>
         </li>
     </ul>
 
 
-</div>
+</form>
