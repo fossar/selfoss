@@ -152,16 +152,15 @@ selfoss.events = {
         }
 
         // load items
-        if ($.inArray(selfoss.events.section,
-            ['newest', 'unread', 'starred']) > -1) {
+        if (['newest', 'unread', 'starred'].includes(selfoss.events.section)) {
             selfoss.filter.type = selfoss.events.section;
             selfoss.filter.tag = '';
             selfoss.filter.source = '';
             if (selfoss.events.subsection) {
                 selfoss.events.lastSubsection = selfoss.events.subsection;
-                if (selfoss.events.subsection.substr(0, 4) == 'tag-') {
+                if (selfoss.events.subsection.startsWith('tag-')) {
                     selfoss.filter.tag = selfoss.events.subsection.substr(4);
-                } else if (selfoss.events.subsection.substr(0, 7) == 'source-') {
+                } else if (selfoss.events.subsection.startsWith('source-')) {
                     var sourceId = parseInt(selfoss.events.subsection.substr(7));
                     if (sourceId) {
                         selfoss.filter.source = sourceId;

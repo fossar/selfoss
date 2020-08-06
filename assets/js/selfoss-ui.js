@@ -481,8 +481,7 @@ selfoss.ui = {
                 if (placeholder) {
                     if (state == 'plural') {
                         pluralKeyword = buffer.trim();
-                        if ($.inArray(pluralKeyword,
-                            ['zero', 'one', 'other']) > -1) {
+                        if (['zero', 'one', 'other'].includes(pluralKeyword)) {
                             buffer = '';
                         } else {
                             pluralKeyword = undefined;

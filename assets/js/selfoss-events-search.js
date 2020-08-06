@@ -33,10 +33,8 @@ selfoss.events.search = function() {
         var words = splitTerm(term);
         term = joinTerm(words);
         $('#search-list').html('');
-        var itemId = 0;
-        $.each(words, function(index, item) {
-            $('#search-list').append('<li id="search-item-' + itemId + '">' + item + ' <i class="fas fa-times"></i></li>');
-            itemId++;
+        words.forEach((item, index) => {
+            $('#search-list').append('<li id="search-item-' + index + '">' + item + ' <i class="fas fa-times"></i></li>');
         });
 
         // execute search

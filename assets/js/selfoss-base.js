@@ -182,10 +182,13 @@ var selfoss = {
 
         $(element).find(':input').each(function(i, el) {
             // get only input elements with name
-            if ($.trim($(el).attr('name')).length != 0) {
-                values[$(el).attr('name')] = $(el).val();
-                if ($(el).attr('type') == 'checkbox') {
-                    values[$(el).attr('name')] = $(el).attr('checked') ? 1 : 0;
+            if (el.hasAttribute('name')) {
+                let name = el.getAttribute('name').trim();
+                if (name.length != 0) {
+                    values[name] = $(el).val();
+                    if ($(el).attr('type') == 'checkbox') {
+                        values[name] = $(el).attr('checked') ? 1 : 0;
+                    }
                 }
             }
         });
@@ -273,7 +276,7 @@ var selfoss = {
      */
     showErrors: function(form, errors) {
         $(form).find('span.error').remove();
-        $.each(errors, function(key, val) {
+        Object.entries(errors).forEach(([key, val]) => {
             form.find("[name='" + key + "']").addClass('error').parent('li').append('<span class="error">' + val + '</span>');
         });
     },
