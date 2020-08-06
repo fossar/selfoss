@@ -10,6 +10,8 @@
  */
 
 import selfoss from './selfoss-base';
+import { OfflineStorageNotAvailableError } from './errors';
+import * as ajax from './helpers/ajax';
 import Dexie from 'dexie';
 
 selfoss.dbOnline = {
@@ -58,10 +60,10 @@ selfoss.dbOnline = {
             if (success) {
                 selfoss.dbOnline.syncing.resolve();
             } else {
-                var request = selfoss.dbOnline.syncing.request;
+                let request = selfoss.dbOnline.syncing.request;
                 selfoss.dbOnline.syncing.reject();
                 if (request) {
-                    request.abort();
+                    request.controller.abort();
                 }
             }
         }
@@ -113,122 +115,121 @@ selfoss.dbOnline = {
 
         selfoss.dbOnline.statsDirty = false;
 
-        syncing.request = $.ajax({
-            url: 'items/sync',
-            type: updatedStatuses ? 'POST' : 'GET',
-            dataType: 'json',
-            data: syncParams,
-            success: function(data) {
-                selfoss.db.setOnline();
+        syncing.request = ajax.fetch('items/sync', {
+            method: updatedStatuses ? 'POST' : 'GET',
+            body: ajax.makeSearchParams(syncParams)
+        });
 
-                selfoss.db.lastSync = Date.now();
-                selfoss.dbOnline.firstSync = false;
+        syncing.request.promise.then(response => response.json()).then((data) => {
+            selfoss.db.setOnline();
 
-                var dataDate = new Date(data.lastUpdate);
+            selfoss.db.lastSync = Date.now();
+            selfoss.dbOnline.firstSync = false;
 
-                var storing = false;
+            var dataDate = new Date(data.lastUpdate);
 
-                if (selfoss.db.storage) {
-                    if ('newItems' in data) {
-                        var maxId = 0;
-                        data.newItems.forEach(function(item) {
-                            item.datetime = new Date(item.datetime);
-                            maxId = Math.max(item.id, maxId);
+            var storing = false;
+
+            if (selfoss.db.storage) {
+                if ('newItems' in data) {
+                    var maxId = 0;
+                    data.newItems.forEach(function(item) {
+                        item.datetime = new Date(item.datetime);
+                        maxId = Math.max(item.id, maxId);
+                    });
+
+                    selfoss.dbOffline.newerEntriesMissing = 'lastId' in data
+                        && data.lastId > selfoss.dbOffline.lastItemId
+                        && data.lastId > maxId;
+                    storing = selfoss.dbOffline.newerEntriesMissing;
+
+                    selfoss.dbOffline
+                        .shouldLoadEntriesOnline = 'lastId' in data
+                        && data.lastId - selfoss.dbOffline.lastItemId >
+                        2 * selfoss.filter.itemsPerPage;
+
+                    selfoss.dbOffline.storeEntries(data.newItems)
+                        .then(function() {
+                            selfoss.dbOffline.storeLastUpdate(dataDate);
+                            selfoss.dbOnline._syncDone();
                         });
+                }
 
-                        selfoss.dbOffline.newerEntriesMissing = 'lastId' in data
-                            && data.lastId > selfoss.dbOffline.lastItemId
-                            && data.lastId > maxId;
-                        storing = selfoss.dbOffline.newerEntriesMissing;
+                if (selfoss.dbOffline.newerEntriesMissing
+                    || selfoss.dbOffline.needsSync) {
+                    // There are still new items to fetch
+                    // or statuses to send
+                    syncing.then(function() {
+                        selfoss.dbOffline.sendNewStatuses();
+                    });
+                }
 
-                        selfoss.dbOffline
-                            .shouldLoadEntriesOnline = 'lastId' in data
-                            && data.lastId - selfoss.dbOffline.lastItemId >
-                            2 * selfoss.filter.itemsPerPage;
+                if ('itemUpdates' in data) {
+                    // refresh entry statuses in db and dequeue queued
+                    // statuses but do not calculate stats as they are taken
+                    // directly from the server as provided.
+                    selfoss.dbOffline
+                        .storeEntryStatuses(data.itemUpdates, true, false)
+                        .then(function() {
+                            selfoss.dbOffline.storeLastUpdate(dataDate);
+                        });
+                }
 
-                        selfoss.dbOffline.storeEntries(data.newItems)
-                            .then(function() {
-                                selfoss.dbOffline.storeLastUpdate(dataDate);
+                if ('stats' in data) {
+                    selfoss.dbOffline.storeStats(data.stats);
+                }
+            }
 
-                                selfoss.dbOnline._syncDone();
+            if (!selfoss.dbOnline.statsDirty && 'stats' in data) {
+                selfoss.refreshStats(data.stats.total,
+                    data.stats.unread,
+                    data.stats.starred);
+            }
 
-                                // fetch more if server has more
-                                if (selfoss.dbOffline.newerEntriesMissing) {
-                                    selfoss.dbOnline.sync();
-                                }
-                            });
-                    }
+            if ('tags' in data) {
+                selfoss.refreshTags(data.tags);
+            }
 
-                    if ('itemUpdates' in data) {
-                        // refresh entry statuses in db and dequeue queued
-                        // statuses but do not calculate stats as they are taken
-                        // directly from the server as provided.
-                        selfoss.dbOffline
-                            .storeEntryStatuses(data.itemUpdates, true, false)
-                            .then(function() {
-                                selfoss.dbOffline.storeLastUpdate(dataDate);
-                            });
-                    }
+            if ('sources' in data) {
+                selfoss.refreshSources(data.sources);
+            }
 
+            if ('stats' in data && data.stats.unread > 0 &&
+                ($('.stream-empty').is(':visible') ||
+                $('.stream-error').is(':visible'))) {
+                selfoss.db.reloadList();
+            } else {
+                if ('itemUpdates' in data) {
+                    selfoss.ui.refreshEntryStatuses(data.itemUpdates);
+                }
+
+                if (selfoss.filter.type == 'unread') {
+                    var unreadCount = 0;
                     if ('stats' in data) {
-                        selfoss.dbOffline.storeStats(data.stats);
+                        unreadCount = data.stats.unread;
+                    } else {
+                        unreadCount = parseInt($('.unread-count .count')
+                            .html());
+                    }
+                    if (unreadCount > $('.entry.unread').length) {
+                        $('.stream-more').show();
                     }
                 }
+            }
 
-                if (!selfoss.dbOnline.statsDirty && 'stats' in data) {
-                    selfoss.refreshStats(data.stats.total,
-                        data.stats.unread,
-                        data.stats.starred);
-                }
+            selfoss.db.lastUpdate = dataDate;
 
-                if ('tags' in data) {
-                    selfoss.refreshTags(data.tags);
-                }
-
-                if ('sources' in data) {
-                    selfoss.refreshSources(data.sources);
-                }
-
-                if ('stats' in data && data.stats.unread > 0 &&
-                    ($('.stream-empty').is(':visible') ||
-                    $('.stream-error').is(':visible'))) {
-                    selfoss.db.reloadList();
-                } else {
-                    if ('itemUpdates' in data) {
-                        selfoss.ui.refreshEntryStatuses(data.itemUpdates);
-                    }
-
-                    if (selfoss.filter.type == 'unread') {
-                        var unreadCount = 0;
-                        if ('stats' in data) {
-                            unreadCount = data.stats.unread;
-                        } else {
-                            unreadCount = parseInt($('.unread-count .count')
-                                .html());
-                        }
-                        if (unreadCount > $('.entry.unread').length) {
-                            $('.stream-more').show();
-                        }
-                    }
-                }
-
-                selfoss.db.lastUpdate = dataDate;
-
-                if (!storing) {
-                    selfoss.dbOnline._syncDone();
-                }
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                selfoss.dbOnline._syncDone(false);
-                selfoss.handleAjaxError(jqXHR.status).fail(function() {
-                    selfoss.ui.showError(selfoss.ui._('error_sync') + ' ' +
-                                         textStatus + ' ' + errorThrown);
-                });
-            },
-            complete: function() {
-                if (selfoss.dbOnline.syncing) {
-                    selfoss.dbOnline.syncing.request = null;
-                }
+            if (!storing) {
+                selfoss.dbOnline._syncDone();
+            }
+        }).catch(function(error) {
+            selfoss.dbOnline._syncDone(false);
+            selfoss.handleAjaxError(error?.response?.status || 0).catch(function() {
+                selfoss.ui.showError(selfoss.ui._('error_sync') + ' ' + error.message);
+            });
+        }).finally(function() {
+            if (selfoss.dbOnline.syncing) {
+                selfoss.dbOnline.syncing.request = null;
             }
         });
 
@@ -243,57 +244,52 @@ selfoss.dbOnline = {
      */
     reloadList: function() {
         if (selfoss.activeAjaxReq !== null) {
-            selfoss.activeAjaxReq.abort();
+            selfoss.activeAjaxReq.controller.abort();
         }
 
-        selfoss.activeAjaxReq = $.ajax({
-            url: '',
-            type: 'GET',
-            dataType: 'json',
-            data: selfoss.filter,
-            success: function(data) {
-                selfoss.db.setOnline();
-
-                if (!selfoss.db.storage) {
-                    selfoss.db.lastSync = Date.now();
-                    selfoss.db.lastUpdate = new Date(data.lastUpdate);
-                }
-
-                selfoss.refreshStats(data.all, data.unread, data.starred);
-
-                $('#content').append(data.entries);
-                selfoss.ui.refreshStreamButtons(true, data.hasMore);
-
-                // update tags
-                selfoss.refreshTags(data.tags);
-
-                if (selfoss.filter.sourcesNav) {
-                    selfoss.refreshSources(data.sources);
-                }
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                if (textStatus == 'abort') {
-                    return;
-                }
-
-                selfoss.handleAjaxError(jqXHR.status).then(function() {
-                    selfoss.dbOffline.reloadList();
-                    selfoss.ui.afterReloadList();
-                }, function() {
-                    selfoss.ui.showError(selfoss.ui._('error_loading') +
-                                         ' ' + textStatus + ' ' + errorThrown);
-                    selfoss.events.entries();
-                    selfoss.ui.refreshStreamButtons();
-                    $('.stream-error').show();
-                });
-            },
-            complete: function() {
-                // clean up
-                selfoss.activeAjaxReq = null;
-            }
+        selfoss.activeAjaxReq = ajax.get('', {
+            body: ajax.makeSearchParams(selfoss.filter)
         });
 
-        return selfoss.activeAjaxReq;
+        let promise = selfoss.activeAjaxReq.promise.then(response => response.json()).then((data) => {
+            selfoss.db.setOnline();
+
+            if (!selfoss.db.storage) {
+                selfoss.db.lastSync = Date.now();
+                selfoss.db.lastUpdate = new Date(data.lastUpdate);
+            }
+
+            selfoss.refreshStats(data.all, data.unread, data.starred);
+
+            $('#content').append(data.entries);
+            selfoss.ui.refreshStreamButtons(true, data.hasMore);
+
+            // update tags
+            selfoss.refreshTags(data.tags);
+
+            if (selfoss.filter.sourcesNav) {
+                selfoss.refreshSources(data.sources);
+            }
+        }).catch((error) => {
+            if (error.name == 'AbortError') {
+                return;
+            }
+
+            selfoss.handleAjaxError(error?.response?.status || 0).then(function() {
+                selfoss.dbOffline.reloadList();
+                selfoss.ui.afterReloadList();
+            }).catch(() => {
+                selfoss.ui.showError(selfoss.ui._('error_loading') + ' ' + error.message);
+                selfoss.events.entries();
+                selfoss.ui.refreshStreamButtons();
+                $('.stream-error').show();
+            });
+        }).finally(() => {
+            // clean up
+            selfoss.activeAjaxReq = null;
+        });
+
+        return promise;
     }
 
 
@@ -335,12 +331,7 @@ selfoss.dbOffline = {
 
     init: function() {
         if (!selfoss.db.enableOffline) {
-            var d = $.Deferred();
-            d.catch = function(fn) {
-                d.then(null, fn);
-            };
-            d.reject();
-            return d;
+            return Promise.reject();
         }
 
         selfoss.db.storage = new Dexie('selfoss');
@@ -401,7 +392,16 @@ selfoss.dbOffline = {
                     selfoss.db.tryOnline();
                 });
                 $(window).bind('offline', function() {
-                    selfoss.db.setOffline();
+                    selfoss.db.setOffline().catch((error) => {
+                        if (error instanceof OfflineStorageNotAvailableError) {
+                            selfoss.ui.showError(selfoss.ui._('error_offline_storage_not_available', [
+                                '<a href="https://caniuse.com/#feat=indexeddb">',
+                                '</a>'
+                            ]));
+                        } else {
+                            throw error;
+                        }
+                    });
                 });
 
                 selfoss.ui.setOnline();
@@ -410,7 +410,7 @@ selfoss.dbOffline = {
                     .then(function() {
                         selfoss.reloadTags();
                     })
-                    .always(selfoss.events.init);
+                    .finally(selfoss.events.init);
                 selfoss.dbOffline.reloadOnlineStats();
                 selfoss.dbOffline.refreshStats();
             }).catch(function() {
@@ -583,7 +583,6 @@ selfoss.dbOffline = {
                                 && entry.id < fromId);
                         }
                     }
-
 
                     if (!ascOrder && !alwaysInDb
                     && entry.datetime < selfoss.dbOffline.newestGCedEntry) {
@@ -828,17 +827,16 @@ selfoss.db = {
 
 
     setOffline: function() {
-        var d = $.Deferred();
-
         if (selfoss.db.storage) {
             selfoss.dbOnline._syncDone(false);
-            d.resolve();
             selfoss.db.online = false;
             selfoss.ui.setOffline();
+
+            return Promise.resolve();
         } else {
-            d.reject();
+            let err = new OfflineStorageNotAvailableError();
+            return Promise.reject(err);
         }
-        return d;
     },
 
 
@@ -850,9 +848,7 @@ selfoss.db = {
             selfoss.db.lastUpdate = null;
             return clearing;
         } else {
-            var d = $.Deferred();
-            d.resolve();
-            return d;
+            return Promise.resolve();
         }
     },
 

@@ -1,4 +1,5 @@
 import selfoss from './selfoss-base';
+import * as ajax from './helpers/ajax';
 
 selfoss.events = {
 
@@ -190,30 +191,24 @@ selfoss.events = {
             }
 
             if (selfoss.activeAjaxReq !== null) {
-                selfoss.activeAjaxReq.abort();
+                selfoss.activeAjaxReq.controller.abort();
             }
             selfoss.ui.refreshStreamButtons();
             $('#content').addClass('loading').html('');
-            selfoss.activeAjaxReq = $.ajax({
-                url: 'sources',
-                type: 'GET',
-                success: function(data) {
-                    $('#content').html(data);
-                    selfoss.events.sources();
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    if (textStatus == 'abort') {
-                        return;
-                    }
-
-                    selfoss.handleAjaxError(jqXHR.status, false).fail(function() {
-                        selfoss.ui.showError(selfoss.ui._('error_loading') + ' ' +
-                                             textStatus + ' ' + errorThrown);
-                    });
-                },
-                complete: function() {
-                    $('#content').removeClass('loading');
+            selfoss.activeAjaxReq = ajax.get('sources');
+            selfoss.activeAjaxReq.promise.then(res => res.text()).then((data) => {
+                $('#content').html(data);
+                selfoss.events.sources();
+            }).catch((error) => {
+                if (error.name === 'AbortError') {
+                    return;
                 }
+
+                selfoss.handleAjaxError(error?.response?.status || 0, false).catch(function() {
+                    selfoss.ui.showError(selfoss.ui._('error_loading') + ' ' + error.message);
+                });
+            }).finally(() => {
+                $('#content').removeClass('loading');
             });
         } else if (hash == 'login') {
             selfoss.ui.showLogin();

@@ -1,4 +1,5 @@
 import templates from './templates';
+import * as ajax from './helpers/ajax';
 
 /**
  * base javascript application
@@ -48,37 +49,33 @@ var selfoss = {
             // We will try to obtain a new configuration anyway
         }
 
-        $.get({
-            url: 'api/about',
-            dataType: 'json',
+        ajax.get('api/about', {
             // we want fresh configuration each time
-            cache: false,
-            success: function({configuration}) {
-                localStorage.setItem('configuration', JSON.stringify(configuration));
+            cache: 'no-store'
+        }).promise.then(response => response.json()).then(({configuration}) => {
+            localStorage.setItem('configuration', JSON.stringify(configuration));
 
-                if (oldConfiguration && 'caches' in window) {
-                    if (oldConfiguration.userCss !== configuration.userCss) {
-                        caches.delete('userCss').then(() =>
-                            caches.open('userCss').then(cache => cache.add(`user.css?v=${configuration.userCss}`))
-                        );
-                    }
-                    if (oldConfiguration.userJs !== configuration.userJs) {
-                        caches.delete('userJs').then(() =>
-                            caches.open('userJs').then(cache => cache.add(`user.js?v=${configuration.userJs}`))
-                        );
-                    }
+            if (oldConfiguration && 'caches' in window) {
+                if (oldConfiguration.userCss !== configuration.userCss) {
+                    caches.delete('userCss').then(() =>
+                        caches.open('userCss').then(cache => cache.add(`user.css?v=${configuration.userCss}`))
+                    );
                 }
+                if (oldConfiguration.userJs !== configuration.userJs) {
+                    caches.delete('userJs').then(() =>
+                        caches.open('userJs').then(cache => cache.add(`user.js?v=${configuration.userJs}`))
+                    );
+                }
+            }
 
-                selfoss.initMain(configuration);
-            },
+            selfoss.initMain(configuration);
+        }).catch(() => {
             // on failure, we will try to use the last cached config
-            error: function() {
-                if (oldConfiguration) {
-                    selfoss.initMain(oldConfiguration);
-                } else {
-                    // TODO: Add a more proper error page
-                    $('body').html(selfoss.ui._('error_configuration'));
-                }
+            if (oldConfiguration) {
+                selfoss.initMain(oldConfiguration);
+            } else {
+                // TODO: Add a more proper error page
+                $('body').html(selfoss.ui._('error_configuration'));
             }
         });
     },
@@ -109,10 +106,6 @@ var selfoss = {
                 }
             );
         }
-
-        // offline db consistency requires ajax calls to fail reliably,
-        // so we enforce a default timeout on ajax calls
-        jQuery.ajaxSetup({timeout: 60000 });
 
         $(function() {
             document.body.classList.toggle('publicupdate', configuration.allowPublicUpdate);
@@ -231,33 +224,28 @@ var selfoss = {
             selfoss.db.clear();
         }
 
-        var f = $('#loginform form');
-        $.ajax({
-            type: 'POST',
-            url: 'login',
-            dataType: 'json',
-            data: f.serialize(),
-            success: function(data) {
-                if (data.success) {
-                    $('#password').val('');
-                    selfoss.setSession();
-                    selfoss.ui.login();
-                    selfoss.ui.showMainUi();
-                    selfoss.initUi();
-                    if (selfoss.db.storage || !selfoss.db.enableOffline) {
-                        selfoss.db.reloadList();
-                    } else {
-                        selfoss.dbOffline.init().catch(selfoss.events.init);
-                    }
-                    selfoss.events.initHash();
+        var f = document.querySelector('#loginform form');
+        ajax.post('login', {
+            body: new URLSearchParams(new FormData(f))
+        }).promise.then(response => response.json()).then((data) => {
+            if (data.success) {
+                $('#password').val('');
+                selfoss.setSession();
+                selfoss.ui.login();
+                selfoss.ui.showMainUi();
+                selfoss.initUi();
+                if (selfoss.db.storage || !selfoss.db.enableOffline) {
+                    selfoss.db.reloadList();
                 } else {
-                    selfoss.events.setHash('login', false);
-                    selfoss.ui.showLogin(data.error);
+                    selfoss.dbOffline.init().catch(selfoss.events.init);
                 }
-            },
-            complete: function() {
-                $('#loginform').removeClass('loading');
+                selfoss.events.initHash();
+            } else {
+                selfoss.events.setHash('login', false);
+                selfoss.ui.showLogin(data.error);
             }
+        }).finally(() => {
+            $('#loginform').removeClass('loading');
         });
         e.preventDefault();
     },
@@ -270,14 +258,8 @@ var selfoss = {
             selfoss.events.setHash('login', false);
         }
 
-        $.ajax({
-            type: 'GET',
-            url: 'logout',
-            dataType: 'json',
-            error: function(jqXHR, textStatus, errorThrown) {
-                selfoss.ui.showError(selfoss.ui._('error_logout') + ' ' +
-                                     textStatus + ' ' + errorThrown);
-            }
+        ajax.get('logout').promise.catch((error) => {
+            selfoss.ui.showError(selfoss.ui._('error_logout') + ' ' + error.message);
         });
     },
 
@@ -395,19 +377,12 @@ var selfoss = {
     reloadTags: function() {
         $('#nav-tags').addClass('loading');
 
-        $.ajax({
-            url: 'tags',
-            type: 'GET',
-            success: function(data) {
-                selfoss.refreshTags(data);
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                selfoss.ui.showError(selfoss.ui._('error_load_tags') + ' ' +
-                                     textStatus + ' ' + errorThrown);
-            },
-            complete: function() {
-                $('#nav-tags').removeClass('loading');
-            }
+        ajax.get('tags').promise.then(response => response.json()).then((data) => {
+            selfoss.refreshTags(data);
+        }).catch((error) => {
+            selfoss.ui.showError(selfoss.ui._('error_load_tags') + ' ' + error.message);
+        }).finally(() => {
+            $('#nav-tags').removeClass('loading');
         });
     },
 
@@ -603,32 +578,28 @@ var selfoss = {
             selfoss.dbOffline.entriesMark(ids, false).then(displayNextUnread);
         }
 
-        $.ajax({
-            url: 'mark',
-            type: 'POST',
-            dataType: 'json',
-            contentType: 'application/json; charset=utf-8',
-            data: JSON.stringify(ids),
-            success: function() {
-                selfoss.db.setOnline();
-                displayNextUnread();
+        ajax.post('mark', {
+            headers: {
+                'content-type': 'application/json; charset=utf-8'
             },
-            error: function(jqXHR, textStatus, errorThrown) {
-                selfoss.handleAjaxError(jqXHR.status).then(function() {
-                    let statuses = ids.map(id => ({
-                        entryId: id,
-                        name: 'unread',
-                        value: false
-                    }));
-                    selfoss.dbOffline.enqueueStatuses(statuses);
-                }, function() {
-                    content.html(articleList);
-                    selfoss.ui.refreshStreamButtons(true, hadMore);
-                    selfoss.ui.listReady();
-                    selfoss.ui.showError(selfoss.ui._('error_mark_items') +
-                                         ' ' + textStatus + ' ' + errorThrown);
-                });
-            }
+            body: JSON.stringify(ids)
+        }).promise.then(response => response.json()).then(function() {
+            selfoss.db.setOnline();
+            displayNextUnread();
+        }).catch(function(error) {
+            selfoss.handleAjaxError(error?.response?.status || 0).then(function() {
+                let statuses = ids.map(id => ({
+                    entryId: id,
+                    name: 'unread',
+                    value: false
+                }));
+                selfoss.dbOffline.enqueueStatuses(statuses);
+            }).catch(function() {
+                content.html(articleList);
+                selfoss.ui.refreshStreamButtons(true, hadMore);
+                selfoss.ui.listReady();
+                selfoss.ui.showError(selfoss.ui._('error_mark_items') + ' ' + error.message);
+            });
         });
     },
 
@@ -637,13 +608,11 @@ var selfoss = {
         if (tryOffline && httpCode != 403) {
             return selfoss.db.setOffline();
         } else {
-            var handled  = $.Deferred();
-            handled.reject();
             if (httpCode == 403) {
                 selfoss.ui.logout();
                 selfoss.ui.showLogin(selfoss.ui._('error_session_expired'));
             }
-            return handled;
+            return Promise.reject();
         }
     },
 
@@ -683,8 +652,11 @@ var selfoss = {
             });
         });
         selfoss.logout();
-    }
+    },
 
+
+    // Include helpers for user scripts.
+    ajax
 
 };
 

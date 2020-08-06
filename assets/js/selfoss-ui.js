@@ -24,7 +24,7 @@ selfoss.ui = {
             return;
         }
 
-        document.getElementById('js-loading-message').remove();
+        document.getElementById('js-loading-message')?.remove();
 
         initIcons();
 

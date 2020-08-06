@@ -1,4 +1,5 @@
 import selfoss from './selfoss-base';
+import * as ajax from './helpers/ajax';
 
 /**
  * toolbar of an single entry
@@ -107,24 +108,17 @@ selfoss.events.entriesToolbar = function(parent) {
                 selfoss.dbOffline.entryStar(id, starr);
             }
 
-            $.ajax({
-                url: (starr ? 'starr/' : 'unstarr/') + id,
-                data: {},
-                type: 'POST',
-                success: function() {
-                    selfoss.db.setOnline();
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    selfoss.handleAjaxError(jqXHR.status).then(function() {
-                        selfoss.dbOffline.enqueueStatus(id, 'starred', starr);
-                    }, function() {
-                        // rollback ui changes
-                        selfoss.ui.entryStar(id, !starr);
-                        updateStats(!starr);
-                        selfoss.ui.showError(selfoss.ui._('error_star_item') + ' ' +
-                                             textStatus + ' ' + errorThrown);
-                    });
-                }
+            ajax.post(`${starr ? 'starr' : 'unstarr'}/${id}`).promise.then(() => {
+                selfoss.db.setOnline();
+            }).catch((error) => {
+                selfoss.handleAjaxError(error?.response?.status || 0).then(function() {
+                    selfoss.dbOffline.enqueueStatus(id, 'starred', starr);
+                }).catch(function() {
+                    // rollback ui changes
+                    selfoss.ui.entryStar(id, !starr);
+                    updateStats(!starr);
+                    selfoss.ui.showError(selfoss.ui._('error_star_item') + ' ' + error.message);
+                });
             });
 
             return false;
@@ -162,24 +156,17 @@ selfoss.events.entriesToolbar = function(parent) {
                 selfoss.dbOffline.entryMark(id, !unread);
             }
 
-            $.ajax({
-                url: (unread ? 'mark/' : 'unmark/') + id,
-                data: {},
-                type: 'POST',
-                success: function() {
-                    selfoss.db.setOnline();
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    selfoss.handleAjaxError(jqXHR.status).then(function() {
-                        selfoss.dbOffline.enqueueStatus(id, 'unread', !unread);
-                    }, function() {
-                        // rollback ui changes
-                        selfoss.ui.entryMark(id, unread);
-                        updateStats(!unread);
-                        selfoss.ui.showError(selfoss.ui._('error_mark_item') + ' ' +
-                                             textStatus + ' ' + errorThrown);
-                    });
-                }
+            ajax.post(`${unread ? 'mark' : 'unmark'}/${id}`).promise.then(() => {
+                selfoss.db.setOnline();
+            }).catch((error) => {
+                selfoss.handleAjaxError(error?.response?.status || 0).then(function() {
+                    selfoss.dbOffline.enqueueStatus(id, 'unread', !unread);
+                }).catch(function() {
+                    // rollback ui changes
+                    selfoss.ui.entryMark(id, unread);
+                    updateStats(!unread);
+                    selfoss.ui.showError(selfoss.ui._('error_mark_item') + ' ' + error.message);
+                });
             });
 
             return false;

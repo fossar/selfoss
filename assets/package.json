@@ -10,9 +10,11 @@
     "core-js": "^3.2.1",
     "dexie": "^2.0.1",
     "focus-trap": "^5.0.2",
+    "form-urlencoded": "^4.2.1",
     "jquery": "^2.2.4",
     "jquery-focusable": "^1.0.1",
     "jquery-hotkeys": "^0.2.2",
+    "ramda": "^0.27.1",
     "reset-css": "^5.0.1",
     "spectrum-colorpicker": "^1.8.1"
   },

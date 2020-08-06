@@ -1,5 +1,6 @@
 import createFocusTrap from 'focus-trap';
 import selfoss from './selfoss-base';
+import * as ajax from './helpers/ajax';
 
 /**
  * initialize events for entries
@@ -203,25 +204,20 @@ selfoss.events.entries = function() {
         var articleList = content.html();
         $('#content').addClass('loading').html('');
 
-        $.ajax({
-            url: 'source/' + selfoss.filter.source + '/update',
-            type: 'POST',
-            dataType: 'text',
-            data: {},
-            success: function() {
-                // hide nav on smartphone
-                if (selfoss.isSmartphone()) {
-                    $('#nav-mobile-settings').click();
-                }
-                // refresh list
-                selfoss.db.reloadList();
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                content.html(articleList);
-                $('#content').removeClass('loading');
-                alert(selfoss.ui._('error_refreshing_source') + ' ' + errorThrown);
-            },
+        ajax.post('source/' + selfoss.filter.source + '/update', {
             timeout: 0
+        }).promise.then(() => {
+            // hide nav on smartphone
+            if (selfoss.isSmartphone()) {
+                $('#nav-mobile-settings').click();
+            }
+
+            // refresh list
+            selfoss.db.reloadList();
+        }).catch((error) => {
+            content.html(articleList);
+            $('#content').removeClass('loading');
+            alert(selfoss.ui._('error_refreshing_source') + ' ' + error.message);
         });
     });
 
