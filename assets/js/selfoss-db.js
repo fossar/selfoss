@@ -17,46 +17,54 @@ import Dexie from 'dexie';
 selfoss.dbOnline = {
 
 
-    syncing: false,
+    syncing: {
+        promise: null,
+        request: null,
+        resolve: null,
+        reject: null
+    },
     statsDirty: false,
     firstSync: true,
 
 
     _syncBegin: function() {
-        if (!selfoss.dbOnline.syncing) {
-            selfoss.dbOnline.syncing = $.Deferred();
-            selfoss.dbOnline.syncing.always(function() {
-                selfoss.dbOnline.syncing = false;
-                selfoss.db.userWaiting = false;
-            });
-
-            var monitor = window.setInterval(function() {
-                var stopChecking = false;
-                if (selfoss.dbOnline.syncing) {
-                    if (selfoss.db.userWaiting) {
-                        // reject if user has been waiting for more than 10s,
-                        // this means that connectivity is bad: user will get
-                        // local content and server request will continue in
-                        // the background.
-                        selfoss.dbOnline.syncing.reject();
+        if (!selfoss.dbOnline.syncing.promise) {
+            selfoss.dbOnline.syncing.promise = new Promise(function(resolve, reject) {
+                selfoss.dbOnline.syncing.resolve = resolve;
+                selfoss.dbOnline.syncing.reject = reject;
+                var monitor = window.setInterval(function() {
+                    var stopChecking = false;
+                    if (selfoss.dbOnline.syncing.promise) {
+                        if (selfoss.db.userWaiting) {
+                            // reject if user has been waiting for more than 10s,
+                            // this means that connectivity is bad: user will get
+                            // local content and server request will continue in
+                            // the background.
+                            reject();
+                            stopChecking = true;
+                        }
+                    } else {
                         stopChecking = true;
                     }
-                } else {
-                    stopChecking = true;
-                }
 
-                if (stopChecking) {
-                    window.clearInterval(monitor);
-                }
-            }, 10000);
+                    if (stopChecking) {
+                        window.clearInterval(monitor);
+                    }
+                }, 10000);
+            });
+
+            selfoss.dbOnline.syncing.promise.finally(function() {
+                selfoss.dbOnline.syncing.promise = null;
+                selfoss.db.userWaiting = false;
+            });
         }
 
-        return selfoss.dbOnline.syncing;
+        return selfoss.dbOnline.syncing.promise;
     },
 
 
     _syncDone: function(success = true) {
-        if (selfoss.dbOnline.syncing) {
+        if (selfoss.dbOnline.syncing.promise) {
             if (success) {
                 selfoss.dbOnline.syncing.resolve();
             } else {
@@ -76,15 +84,13 @@ selfoss.dbOnline = {
      * @return Promise
      */
     sync: function(updatedStatuses, chained) {
-        if (selfoss.dbOnline.syncing && !chained) {
+        if (selfoss.dbOnline.syncing.promise && !chained) {
             if (updatedStatuses) {
                 // Ensure the status queue is not cleared and gets sync'ed at
                 // next sync.
-                var d = $.Deferred();
-                d.reject();
-                return d;
+                return Promise.reject();
             } else {
-                return selfoss.dbOnline.syncing;
+                return selfoss.dbOnline.syncing.promise;
             }
         }
 
@@ -115,12 +121,12 @@ selfoss.dbOnline = {
 
         selfoss.dbOnline.statsDirty = false;
 
-        syncing.request = ajax.fetch('items/sync', {
+        selfoss.dbOnline.syncing.request = ajax.fetch('items/sync', {
             method: updatedStatuses ? 'POST' : 'GET',
             body: ajax.makeSearchParams(syncParams)
         });
 
-        syncing.request.promise.then(response => response.json()).then((data) => {
+        selfoss.dbOnline.syncing.request.promise.then(response => response.json()).then((data) => {
             selfoss.db.setOnline();
 
             selfoss.db.lastSync = Date.now();
@@ -228,7 +234,7 @@ selfoss.dbOnline = {
                 selfoss.ui.showError(selfoss.ui._('error_sync') + ' ' + error.message);
             });
         }).finally(function() {
-            if (selfoss.dbOnline.syncing) {
+            if (selfoss.dbOnline.syncing.promise) {
                 selfoss.dbOnline.syncing.request = null;
             }
         });
@@ -891,7 +897,7 @@ selfoss.db = {
                 return selfoss.dbOnline.sync();
             }
         } else {
-            return $.Deferred().resolve(); // ensure any chained function runs
+            return Promise.resolve(); // ensure any chained function runs
         }
     },
 
@@ -930,9 +936,9 @@ selfoss.db = {
             });
         };
 
-        if (waitForSync && selfoss.dbOnline.syncing) {
+        if (waitForSync && selfoss.dbOnline.syncing.promise) {
             selfoss.db.userWaiting = true;
-            selfoss.dbOnline.syncing.always(reload);
+            selfoss.dbOnline.syncing.promise.finally(reload);
         } else {
             reload();
         }
