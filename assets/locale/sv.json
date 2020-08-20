@@ -92,5 +92,6 @@
   "lang_share_mail_label": "Dela med e-post",
   "lang_share_copy_label": "Kopiera länk till urklipp",
   "lang_error_share_native_abort": "Det går inte att dela objektet - antingen finns det inga delningsmål eller så avbröt du det.",
-  "lang_error_share_native": "Det går inte att dela objektet."
+  "lang_error_share_native": "Det går inte att dela objektet.",
+  "lang_close_entry": "Stäng"
 }
