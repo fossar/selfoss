@@ -1,7 +1,7 @@
 import React from 'jsx-dom';
 import selfoss from './selfoss-base';
-import SourceParams from '../templates/SourceParams';
-import Source from '../templates/Source';
+import SourceParams from './templates/SourceParams';
+import Source from './templates/Source';
 import * as ajax from './helpers/ajax';
 
 /**

@@ -1,4 +1,6 @@
-import templates from './templates';
+import React from 'jsx-dom';
+import NavTags from './templates/NavTags';
+import NavSources from './templates/NavSources';
 import * as ajax from './helpers/ajax';
 
 /**
@@ -376,8 +378,7 @@ var selfoss = {
      */
     refreshTags: function(tags, delayNavigation = false) {
         $('.color').spectrum('destroy');
-        let renderedTags = templates.navTags({tags});
-        $('#nav-tags').html(renderedTags);
+        $('#nav-tags').html(<NavTags tags={tags} />);
         if (selfoss.filter.tag) {
             if (!selfoss.db.isValidTag(selfoss.filter.tag)) {
                 selfoss.ui.showError(selfoss.ui._('error_unknown_tag') + ' ' + selfoss.filter.tag);
@@ -410,8 +411,7 @@ var selfoss = {
      * @param sources the new sourceslist as html
      */
     refreshSources: function(sources, delayNavigation = false) {
-        let renderedSources = templates.navSources({sources});
-        $('#nav-sources').html(renderedSources);
+        $('#nav-sources').html(<NavSources sources={sources} />);
         if (selfoss.filter.source) {
             if (!selfoss.db.isValidSource(selfoss.filter.source)) {
                 selfoss.ui.showError(selfoss.ui._('error_unknown_source') + ' '

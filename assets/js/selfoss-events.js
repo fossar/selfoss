@@ -1,6 +1,6 @@
 import React from 'jsx-dom';
 import selfoss from './selfoss-base';
-import Source from '../templates/Source';
+import Source from './templates/Source';
 import * as ajax from './helpers/ajax';
 
 selfoss.events = {
