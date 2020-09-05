@@ -1,6 +1,9 @@
 {
     "root": true,
-    "extends": "eslint:recommended",
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended"
+    ],
     "parser": "@babel/eslint-parser",
     "parserOptions": {
         "sourceType": "module"
@@ -36,7 +39,10 @@
         "space-before-function-paren": ["error", "never"],
         "space-in-parens": "error",
         "space-infix-ops": "error",
-        "unicode-bom": "error"
+        "unicode-bom": "error",
+        "react/jsx-key": [0],
+        "react/no-unknown-property": [0, {"ignore": ["class"]}],
+        "react/prop-types": [1]
     },
     "env": {
         "browser": true,

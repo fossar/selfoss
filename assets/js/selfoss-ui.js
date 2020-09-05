@@ -1,3 +1,4 @@
+import React from 'jsx-dom';
 import locales from './locales';
 import selfoss from './selfoss-base';
 import { initIcons } from './icons';
@@ -31,7 +32,7 @@ selfoss.ui = {
         $('body').append(<div id="loginform" role="main">
             <form action="" method="post">
                 <ul id="login">
-                    <li><h1>{`${selfoss.config.htmlTitle} login`}</h1></li>
+                    <li><h1>{selfoss.config.htmlTitle} login</h1></li>
                     <li><label for="username">{selfoss.ui._('login_username')}</label> <input type="text" name="username" id="username" accesskey="u" autocomplete="username" required /></li>
                     <li><label for="password">{selfoss.ui._('login_password')}</label> <input type="password" name="password" id="password" accesskey="p" autocomplete="current-password" /></li>
                     <li><label for="enableoffline">{selfoss.ui._('login_offline')}</label> <label><input type="checkbox" name="enableoffline" id="enableoffline" accesskey="o" /> <span class="badge-experimental">{selfoss.ui._('experimental')}</span></label></li>

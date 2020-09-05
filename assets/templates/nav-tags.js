@@ -1,4 +1,5 @@
 import { unescape } from 'html-escaper';
+import React from 'jsx-dom';
 
 export default ({tags}) =>
     [
@@ -6,8 +7,8 @@ export default ({tags}) =>
     ].concat(tags.map(tag =>
         <li>
             <a href="#">
-                <span class="tag">{`${unescape(tag.tag)}`}</span>
-                <span class="unread">{`${(tag.unread > 0) ? tag.unread : ''}`}</span>
+                <span class="tag">{unescape(tag.tag)}</span>
+                <span class="unread">{tag.unread > 0 ? tag.unread : ''}</span>
                 <span class="color" style={`background-color: ${tag.color}`}></span>
             </a>
         </li>
