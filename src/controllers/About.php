@@ -51,6 +51,7 @@ class About {
                 'unreadOrder' => $f3->get('unread_order'), // string
                 'autoHideReadOnMobile' => $f3->get('auto_hide_read_on_mobile') == 1, // bool
                 'scrollToArticleHeader' => $f3->get('scroll_to_article_header') == 1, // bool
+                'showThumbnails' => $f3->get('show_thumbnails') == 1, // bool
                 'htmlTitle' => trim($f3->get('html_title')), // string
                 'allowPublicUpdate' => $f3->get('allow_public_update_access') == 1, // bool
                 'publicMode' => $f3->get('public') == 1, // bool

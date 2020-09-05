@@ -11,7 +11,7 @@ if ($lang != '0' && $lang != '') {
 // define routes
 
 // all users
-$f3->route('GET /', controllers\Index::class . '->home'); // html
+$f3->route('GET /', controllers\Index::class . '->home'); // json
 $f3->route('GET /api/about', controllers\About::class . '->about'); // json
 $f3->route('GET /password', controllers\Authentication::class . '->password'); // html
 $f3->route('GET /login', controllers\Authentication::class . '->login'); // json

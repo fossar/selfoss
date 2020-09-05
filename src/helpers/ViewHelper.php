@@ -103,4 +103,41 @@ class ViewHelper {
             return '<img' . $matches[1] . 'src=' . $matches[2] . $camo->camoHttpOnly($matches[3]) . $matches[4] . $matches[5] . '>';
         }, $content);
     }
+
+    /**
+     * Prepare entry as expected by the client.
+     *
+     * @param array $item item to modify
+     * @param \controllers\Tags $tagsController tags controller
+     * @param ?array $tags list of tags
+     * @param ?string $search search query
+     *
+     * @return array modified item
+     */
+    public static function preprocessEntry(array $item, \controllers\Tags $tagsController, array $tags = null, $search = null) {
+        // parse tags and assign tag colors
+        $item['tags'] = $tagsController->tagsAddColors($item['tags'], $tags);
+
+        $item['content'] = str_replace('&#34;', '"', $item['content']);
+
+        // highlight search results
+        if (isset($search)) {
+            $item['sourcetitle'] = ViewHelper::highlight($item['sourcetitle'], $search);
+            $item['title'] = ViewHelper::highlight($item['title'], $search);
+            $item['content'] = ViewHelper::highlight($item['content'], $search);
+        }
+
+        if (\F3::get('camo_key') != '') {
+            $item['content'] = ViewHelper::camoflauge($item['content']);
+        }
+
+        $item['title'] = ViewHelper::lazyimg($item['title']);
+        $item['strippedTitle'] = htmLawed(htmlspecialchars_decode($item['title']), ['deny_attribute' => '*', 'elements' => '-*']);
+        $item['content'] = ViewHelper::lazyimg($item['content']);
+        $contentWithoutTags = strip_tags($item['content']);
+        $item['wordCount'] = str_word_count($contentWithoutTags);
+        $item['lengthWithoutTags'] = strlen($contentWithoutTags);
+
+        return $item;
+    }
 }

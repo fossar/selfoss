@@ -5,6 +5,7 @@ namespace controllers;
 use Base;
 use helpers\Authentication;
 use helpers\View;
+use helpers\ViewHelper;
 
 /**
  * Controller for root
@@ -47,7 +48,7 @@ class Index {
 
     /**
      * home site
-     * html
+     * json
      *
      * @param Base $f3 fatfree base instance
      *
@@ -73,16 +74,16 @@ class Index {
         $this->authentication->needsLoggedInOrPublicMode();
 
         // get search param
+        $search = null;
         if (isset($options['search']) && strlen($options['search']) > 0) {
-            $this->view->search = $options['search'];
+            $search = $options['search'];
         }
 
         // load tags
         $tags = $this->tagsDao->getWithUnread();
 
         // load items
-        $items = $this->loadItems($options, $tags);
-        $this->view->content = $items['html'];
+        $items = $this->loadItems($options, $tags, $search);
 
         // load stats
         $stats = $this->itemsDao->stats();
@@ -100,7 +101,7 @@ class Index {
         $result = [
             'lastUpdate' => \helpers\ViewHelper::date_iso8601($this->itemsDao->lastUpdate()),
             'hasMore' => $items['hasMore'],
-            'entries' => $this->view->content,
+            'entries' => $items['entries'],
             'all' => $this->view->statsAll,
             'unread' => $this->view->statsUnread,
             'starred' => $this->view->statsStarred,
@@ -120,29 +121,18 @@ class Index {
      *
      * @param array $params request parameters
      * @param array $tags information about tags
+     * @param ?string $search optional search query
      *
-     * @return string html with items
+     * @return array{entries: array, hasMore: bool} html with items
      */
-    private function loadItems(array $params, array $tags) {
-        $itemsHtml = '';
-
-        $firstPage = !isset($params['offset']) || $params['offset'] == 0
-            && (!isset($params['fromId']) || $params['fromId'] == '')
-            && (!isset($params['fromDatetime']) || $params['fromDatetime'] == '');
-        if (!empty($params['source']) && $this->authentication->allowedToUpdate() && $firstPage) {
-            $itemsHtml = '<button type="button" id="refresh-source" class="refresh-source">' . \F3::get('lang_source_refresh') . '</button>';
-        }
-
+    private function loadItems(array $params, array $tags, $search = null) {
+        $entries = [];
         foreach ($this->itemsDao->get($params) as $item) {
-            // parse tags and assign tag colors
-            $item['tags'] = $this->tagsController->tagsAddColors($item['tags'], $tags);
-
-            $this->view->item = $item;
-            $itemsHtml .= $this->view->render('src/templates/item.phtml');
+            $entries[] = ViewHelper::preprocessEntry($item, $this->tagsController, $tags, $search);
         }
 
         return [
-            'html' => $itemsHtml,
+            'entries' => $entries,
             'hasMore' => $this->itemsDao->hasMore()
         ];
     }

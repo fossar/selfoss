@@ -18,17 +18,6 @@ class Anonymizer {
     }
 
     /**
-     * anonymizes the url unless the anonymize parameter is set to boolean false
-     *
-     * @param string $url which is the url to anonymize
-     *
-     * @return string anonymized string
-     */
-    public static function anonymize($url) {
-        return self::getAnonymizer() . $url;
-    }
-
-    /**
      * @return string the anonymizer string if we should anonymize otherwise blank
      */
     public static function getAnonymizer() {

@@ -5,6 +5,7 @@ namespace controllers\Items;
 use Base;
 use helpers\Authentication;
 use helpers\View;
+use helpers\ViewHelper;
 
 /**
  * Controller for synchronizing item statuses
@@ -88,18 +89,7 @@ class Sync {
                 $sync['newItems'] = [];
                 foreach ($this->itemsDao->sync($sinceId, $notBefore, $since, $itemsHowMany)
                          as $newItem) {
-                    $newItem['tags'] = $this->tagsController->tagsAddColors(explode(',', $newItem['tags']));
-                    $this->view->item = $newItem;
-
-                    $sync['newItems'][] = [
-                        'id' => $newItem['id'],
-                        'datetime' => \helpers\ViewHelper::date_iso8601($newItem['datetime']),
-                        'unread' => $newItem['unread'],
-                        'starred' => $newItem['starred'],
-                        'html' => $this->view->render('src/templates/item.phtml'),
-                        'source' => $newItem['source'],
-                        'tags' => array_keys($newItem['tags'])
-                    ];
+                    $sync['newItems'][] = ViewHelper::preprocessEntry($newItem, $this->tagsController);
                 }
                 if ($sync['newItems']) {
                     $sync['lastId'] = $this->itemsDao->lastId();

@@ -71,22 +71,6 @@ class View {
     }
 
     /**
-     * render template
-     *
-     * @param string $template file
-     *
-     * @return string rendered html
-     */
-    public function render($template) {
-        ob_start();
-        include $template;
-        $content = ob_get_contents();
-        ob_end_clean();
-
-        return $content;
-    }
-
-    /**
      * send error message
      *
      * @param string $message

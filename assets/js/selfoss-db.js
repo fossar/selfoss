@@ -9,9 +9,11 @@
  * dbOffline is the entry point for the offline database held in the client.
  */
 
+import React from 'jsx-dom';
 import selfoss from './selfoss-base';
 import { OfflineStorageNotAvailableError } from './errors';
 import * as ajax from './helpers/ajax';
+import Item from './templates/Item';
 import Dexie from 'dexie';
 
 selfoss.dbOnline = {
@@ -267,7 +269,12 @@ selfoss.dbOnline = {
 
             selfoss.refreshStats(data.all, data.unread, data.starred);
 
-            $('#content').append(data.entries);
+            const firstPage = selfoss.filter.offset == 0 && typeof selfoss.filter.fromId === 'undefined' && typeof selfoss.filter.fromDatetime === 'undefined';
+            const allowedToUpdate = !selfoss.config.authEnabled || selfoss.config.allowPublicUpdate || document.body.classList.contains('loggedin');
+            if (selfoss.filter.source && allowedToUpdate && firstPage) {
+                $('#content').append(<button type="button" id="refresh-source" class="refresh-source">{selfoss.ui._('source_refresh')}</button>);
+            }
+            $('#content').append(data.entries.map(entry => <Item item={entry} />));
             selfoss.ui.refreshStreamButtons(true, data.hasMore);
 
             // update tags
@@ -623,7 +630,7 @@ selfoss.dbOffline = {
                     return false;
                 }, true).each(function(entry) {
                     if (isMore) {
-                        newContent.append(entry.html);
+                        newContent.append(<Item item={entry} />);
                         selfoss.ui.entryMark(entry.id, entry.unread, newContent);
                         selfoss.ui.entryStar(entry.id, entry.starred, newContent);
 

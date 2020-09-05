@@ -415,7 +415,8 @@ class Items implements \daos\ItemsInterface {
             'id' => \daos\PARAM_INT,
             'unread' => \daos\PARAM_BOOL,
             'starred' => \daos\PARAM_BOOL,
-            'source' => \daos\PARAM_INT
+            'source' => \daos\PARAM_INT,
+            'tags' => \daos\PARAM_CSV
         ]);
     }
 
