@@ -36,9 +36,9 @@ $f3->route('POST /starr/@item', controllers\Items::class . '->starr'); // json
 $f3->route('POST /unstarr/@item', controllers\Items::class . '->unstarr'); // json
 $f3->route('POST /items/sync', controllers\Items\Sync::class . '->updateStatuses'); // json
 
-$f3->route('GET /source/params', controllers\Sources::class . '->params'); // html
-$f3->route('GET /sources', controllers\Sources::class . '->show'); // html
-$f3->route('GET /source', controllers\Sources::class . '->add'); // html
+$f3->route('GET /source/params', controllers\Sources::class . '->params'); // json
+$f3->route('GET /sources', controllers\Sources::class . '->show'); // json
+$f3->route('GET /source', controllers\Sources::class . '->add'); // json
 $f3->route('GET /sources/list', controllers\Sources::class . '->listSources'); // json
 $f3->route('POST /source/@id', controllers\Sources\Write::class . '->write'); // json
 $f3->route('POST /source', controllers\Sources\Write::class . '->write'); // json

@@ -1,4 +1,6 @@
+import React from 'jsx-dom';
 import selfoss from './selfoss-base';
+import Source from '../templates/Source';
 import * as ajax from './helpers/ajax';
 
 selfoss.events = {
@@ -195,8 +197,16 @@ selfoss.events = {
             selfoss.ui.refreshStreamButtons();
             $('#content').addClass('loading').html('');
             selfoss.activeAjaxReq = ajax.get('sources');
-            selfoss.activeAjaxReq.promise.then(res => res.text()).then((data) => {
-                $('#content').html(data);
+            selfoss.activeAjaxReq.promise.then(response => response.json()).then(({sources, spouts}) => {
+                let renderedSources = sources.map((source) => <Source source={source} spouts={spouts} />);
+                $('#content').html(
+                    <div>
+                        <button class="source-add">{selfoss.ui._('source_add')}</button>
+                        <a class="source-export" href="opmlexport">{selfoss.ui._('source_export')}</a>
+                        <a class="source-opml" href="opml">{selfoss.ui._('source_opml')}</a>
+                        {renderedSources}
+                    </div>
+                );
                 selfoss.events.sources();
             }).catch((error) => {
                 if (error.name === 'AbortError') {

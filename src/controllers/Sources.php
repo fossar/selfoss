@@ -40,7 +40,7 @@ class Sources {
 
     /**
      * list all available sources
-     * html
+     * json
      *
      * @return void
      */
@@ -48,38 +48,41 @@ class Sources {
         $this->authentication->needsLoggedIn();
 
         // get available spouts
-        $this->view->spouts = $this->spoutLoader->all();
+        $spouts = $this->spoutLoader->all();
+        $sources = [];
 
         // load sources
-        echo '<button class="source-add">' . \F3::get('lang_source_add') . '</button>' .
-             '<a class="source-export" href="opmlexport">' . \F3::get('lang_source_export') . '</a>' .
-             '<a class="source-opml" href="opml">' . \F3::get('lang_source_opml');
-        $sourcesHtml = '</a>';
-
         foreach ($this->sourcesDao->getWithIcon() as $source) {
-            $this->view->source = $source;
-            $sourcesHtml .= $this->view->render('src/templates/source.phtml');
+            // decode params
+            $source['params'] = json_decode(html_entity_decode($source['params']), true);
+            $sources[] = $source;
         }
 
-        echo $sourcesHtml;
+        $this->view->jsonSuccess([
+            'spouts' => $spouts,
+            'sources' => $sources,
+        ]);
     }
 
     /**
      * add new source
-     * html
+     * json
      *
      * @return void
      */
     public function add() {
         $this->authentication->needsLoggedIn();
 
-        $this->view->spouts = $this->spoutLoader->all();
-        echo $this->view->render('src/templates/source.phtml');
+        $spouts = $this->spoutLoader->all();
+
+        $this->view->jsonSuccess([
+            'spouts' => $spouts,
+        ]);
     }
 
     /**
      * render spouts params
-     * html
+     * json
      *
      * @return void
      */
@@ -90,17 +93,18 @@ class Sources {
             $this->view->error('no spout type given');
         }
 
-        $spout = str_replace('_', '\\', $_GET['spout']);
-        $this->view->spout = $this->spoutLoader->get($spout);
+        $spoutClass = str_replace('_', '\\', $_GET['spout']);
+        $spout = $this->spoutLoader->get($spoutClass);
 
-        if ($this->view->spout === null) {
+        if ($spout === null) {
             $this->view->error('invalid spout type given');
         }
 
-        if (count($this->view->spout->params) > 0) {
-            $this->view->idAttr = 'new-' . rand();
-            echo $this->view->render('src/templates/source_params.phtml');
-        }
+        $id = 'new-' . rand();
+        $this->view->jsonSuccess([
+            'id' => $id,
+            'spout' => $spout,
+        ]);
     }
 
     /**

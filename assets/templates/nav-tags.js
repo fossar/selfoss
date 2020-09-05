@@ -12,4 +12,4 @@ export default ({tags}) =>
                 <span class="color" style={`background-color: ${tag.color}`}></span>
             </a>
         </li>
-    ))
+    ));

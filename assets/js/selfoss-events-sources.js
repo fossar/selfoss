@@ -1,4 +1,7 @@
+import React from 'jsx-dom';
 import selfoss from './selfoss-base';
+import SourceParams from '../templates/SourceParams';
+import Source from '../templates/Source';
 import * as ajax from './helpers/ajax';
 
 /**
@@ -23,8 +26,8 @@ selfoss.events.sources = function() {
     $('.source-add').unbind('click').click(function(event) {
         event.preventDefault();
 
-        ajax.get('source').promise.then(response => response.text()).then((text) => {
-            $('.source-opml').after(text);
+        ajax.get('source').promise.then(response => response.json()).then(({spouts}) => {
+            $('.source-opml').after(<Source spouts={spouts} />);
             selfoss.events.sources();
         }).catch((error) => {
             parent.find('.source-edit-delete').removeClass('loading');
@@ -161,8 +164,8 @@ selfoss.events.sources = function() {
         params.addClass('loading');
         ajax.get('source/params', {
             body: ajax.makeSearchParams({ spout: val })
-        }).promise.then(res => res.text()).then((data) => {
-            params.removeClass('loading').html(data);
+        }).promise.then(res => res.json()).then(({spout, id}) => {
+            params.removeClass('loading').html(<SourceParams spout={spout} sourceId={id} />);
 
             // restore param values
             params.find('input').each(function(index, param) {
