@@ -56,11 +56,12 @@ class Sync {
         }
 
         $since = new \DateTime($params['since']);
+        $since->setTimeZone(new \DateTimeZone(date_default_timezone_get()));
 
         $last_update = new \DateTime($this->itemsDao->lastUpdate());
 
         $sync = [
-            'lastUpdate' => $last_update->format('Y-m-d H:i:s'),
+            'lastUpdate' => $last_update->format(\DateTime::ATOM),
         ];
 
         $sinceId = 0;
@@ -72,7 +73,9 @@ class Sync {
                     $sinceId = $this->itemsDao->lowestIdOfInterest() - 1;
                     // only send 1 day worth of items
                     $notBefore = new \DateTime();
+                    $notBefore->setTimeZone(new \DateTimeZone(date_default_timezone_get()));
                     $notBefore->sub(new \DateInterval('P1D'));
+                    $notBefore->setTimeZone(new \DateTimeZone(date_default_timezone_get()));
                 }
 
                 $itemsHowMany = $f3->get('items_perpage');
