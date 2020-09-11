@@ -22,7 +22,7 @@ class mmospy extends fulltextrss {
     /**
      * addresses of feeds for the sections
      */
-    private $feedUrl = 'http://www.mmo-spy.de/misc.php?action=newsfeed';
+    private $feedUrl = 'https://www.mmo-spy.de/misc.php?action=newsfeed';
 
     public function load(array $params) {
         parent::load(['url' => $this->getXmlUrl($params)]);
