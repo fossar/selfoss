@@ -2,6 +2,9 @@
 
 namespace helpers;
 
+use function Http\Response\send;
+use Psr\Http\Message\ResponseInterface;
+
 /**
  * Helper class for rendering template
  *
@@ -105,4 +108,32 @@ class View {
         header('Content-type: application/json');
         exit(json_encode($data));
     }
+
+    /**
+     * Send a PSR-7 response.
+     *
+     * @return void
+     */
+    public function sendResponse(ResponseInterface $response) {
+        send($response);
+        exit;
+    }
+}
+
+/**
+ * Create a PSR-7 response for given JSON-encodable data.
+ *
+ * @param mixed $data
+ *
+ * @return ResponseInterface
+ */
+function json_response($data) {
+    $encoder = new \Violet\StreamingJsonEncoder\BufferJsonEncoder($data);
+    $stream = new \Violet\StreamingJsonEncoder\JsonStream($encoder);
+
+    $response = new \GuzzleHttp\Psr7\Response();
+    $response = $response->withHeader('Content-type', 'application/json');
+    $response = $response->withBody($stream);
+
+    return $response;
 }

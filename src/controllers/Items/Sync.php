@@ -4,6 +4,7 @@ namespace controllers\Items;
 
 use Base;
 use helpers\Authentication;
+use function helpers\json_response;
 use helpers\View;
 use helpers\ViewHelper;
 
@@ -86,16 +87,14 @@ class Sync {
                                         2 * $itemsHowMany);
                 }
 
-                $sync['newItems'] = [];
-                foreach ($this->itemsDao->sync($sinceId, $notBefore, $since, $itemsHowMany)
-                         as $newItem) {
-                    $sync['newItems'][] = ViewHelper::preprocessEntry($newItem, $this->tagsController);
-                }
-                if ($sync['newItems']) {
-                    $sync['lastId'] = $this->itemsDao->lastId();
-                } else {
-                    unset($sync['newItems']);
-                }
+                $sync['newItems'] = function() use ($sinceId, $notBefore, $since, $itemsHowMany) {
+                    foreach ($this->itemsDao->sync($sinceId, $notBefore, $since, $itemsHowMany)
+                             as $newItem) {
+                        yield ViewHelper::preprocessEntry($newItem, $this->tagsController);
+                    }
+                };
+
+                $sync['lastId'] = $this->itemsDao->lastId();
             }
         }
 
@@ -115,7 +114,7 @@ class Sync {
             }
         }
 
-        $this->view->jsonSuccess($sync);
+        $this->view->sendResponse(json_response($sync));
     }
 
     /**

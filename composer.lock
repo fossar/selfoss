@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2f6d6e8753fa33bc9d3253ea3cac7af9",
+    "content-hash": "4d95603a08bc65f8db5f408fede9182e",
     "packages": [
         {
             "name": "bcosca/fatfree-core",
@@ -606,6 +606,47 @@
                 "url"
             ],
             "time": "2020-09-30T07:37:11+00:00"
+        },
+        {
+            "name": "http-interop/response-sender",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/http-interop/response-sender.git",
+                "reference": "fd63be06cd6c9216ef3c725af1a3f6b155eebc84"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/http-interop/response-sender/zipball/fd63be06cd6c9216ef3c725af1a3f6b155eebc84",
+                "reference": "fd63be06cd6c9216ef3c725af1a3f6b155eebc84",
+                "shasum": ""
+            },
+            "require": {
+                "psr/http-message": "^1.0"
+            },
+            "require-dev": {
+                "guzzlehttp/psr7": "^1.4",
+                "php-mock/php-mock-phpunit": "^1.1",
+                "phpunit/phpunit": "^5.6"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/functions.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Woody Gilk",
+                    "email": "woody.gilk@gmail.com"
+                }
+            ],
+            "description": "A function to convert PSR-7 Response to HTTP output",
+            "time": "2017-03-17T15:46:19+00:00"
         },
         {
             "name": "j0k3r/graby",
@@ -2511,6 +2552,54 @@
                 "punycode"
             ],
             "time": "2016-11-16T10:37:54+00:00"
+        },
+        {
+            "name": "violet/streaming-json-encoder",
+            "version": "v1.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/violet-php/streaming-json-encoder.git",
+                "reference": "7067297cfb8b3fbf6d45cdb03f877eb5e7abb2b6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/violet-php/streaming-json-encoder/zipball/7067297cfb8b3fbf6d45cdb03f877eb5e7abb2b6",
+                "reference": "7067297cfb8b3fbf6d45cdb03f877eb5e7abb2b6",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6.0",
+                "psr/http-message": "^1.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.7 || ^6.5 || ^9.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Violet\\StreamingJsonEncoder\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Riikka Kalliomäki",
+                    "email": "riikka.kalliomaki@gmail.com",
+                    "homepage": "http://riimu.net"
+                }
+            ],
+            "description": "Library for iteratively encoding large JSON documents piece by piece",
+            "homepage": "http://violet.riimu.net",
+            "keywords": [
+                "encoder",
+                "json",
+                "psr-7",
+                "streaming"
+            ],
+            "time": "2020-11-29T13:07:28+00:00"
         },
         {
             "name": "willwashburn/phpamo",
