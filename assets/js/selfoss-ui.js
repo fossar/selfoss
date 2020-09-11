@@ -409,15 +409,15 @@ selfoss.ui = {
                 if (selfoss.isSmartphone()) {
                     $('.mark-these-read').show();
                 }
-                if (hasMore) {
-                    $('.stream-more').show();
-                }
             } else {
                 $('.stream-empty').show();
                 if (selfoss.isSmartphone()) {
                     $('.mark-these-read').hide();
                 }
             }
+        }
+        if (hasMore) {
+            $('.stream-more').show();
         }
     },
 

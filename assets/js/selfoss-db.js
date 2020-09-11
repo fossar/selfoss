@@ -558,19 +558,29 @@ selfoss.dbOffline = {
                 var isMore = false;
                 var alwaysInDb = selfoss.filter.type === 'starred'
                              || selfoss.filter.type === 'unread';
+                var offset = selfoss.filter.offset;
 
                 entries.filter(function(entry) {
+                    var keepEntry = false;
+
                     if (selfoss.filter.extraIds.indexOf(entry.id) > -1) {
                         return true;
                     }
 
                     if (selfoss.filter.type == 'starred') {
-                        return entry.starred;
+                        keepEntry = entry.starred;
                     } else if (selfoss.filter.type == 'unread') {
-                        return entry.unread;
+                        keepEntry = entry.unread;
+                    } else {
+                        keepEntry = true;
                     }
 
-                    return true;
+                    if (keepEntry && offset > 0) {
+                        offset = offset - 1;
+                        return false;
+                    }
+
+                    return keepEntry;
                 }).until(function(entry) {
                     // stop iteration if enough entries have been shown
                     // go one further to assess if has more
