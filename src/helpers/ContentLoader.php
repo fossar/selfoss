@@ -361,10 +361,10 @@ class ContentLoader {
         try {
             $data = $this->webClient->request($url);
             $format = self::THUMBNAIL_FORMAT;
-            $thumbnailAsJpg = $this->imageHelper->loadImage($data, $format, 500, 500);
+            $image = $this->imageHelper->loadImage($data, $format, 500, 500);
 
-            if ($thumbnailAsJpg !== null) {
-                return $this->thumbnailStore->store($url, $thumbnailAsJpg);
+            if ($image !== null) {
+                return $this->thumbnailStore->store($url, $image->getData());
             } else {
                 $this->logger->error('thumbnail generation error: ' . $url);
             }
@@ -388,10 +388,10 @@ class ContentLoader {
         try {
             $data = $this->webClient->request($url);
             $format = Image::FORMAT_PNG;
-            $iconAsPng = $this->imageHelper->loadImage($data, $format, 30, null);
+            $image = $this->imageHelper->loadImage($data, $format, 30, null);
 
-            if ($iconAsPng !== null) {
-                return $this->iconStore->store($url, $iconAsPng);
+            if ($image !== null) {
+                return $this->iconStore->store($url, $image->getData());
             } else {
                 $this->logger->error('icon generation error: ' . $url);
             }

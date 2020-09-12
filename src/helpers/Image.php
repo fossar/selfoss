@@ -80,7 +80,7 @@ class Image {
      * @param ?int $width
      * @param ?int $height
      *
-     * @return ?array{string, string} pair of URL and blob containing the image data
+     * @return ?array{string, ImageHolder} pair of URL and blob containing the image data
      */
     public function fetchFavicon($url, $isHtmlUrl = false, $width = null, $height = null) {
         // try given url
@@ -100,9 +100,9 @@ class Image {
         }
 
         if ($isHtmlUrl === false) {
-            $faviconAsPng = $this->loadImage($blob, self::FORMAT_PNG, $width, $height);
-            if ($faviconAsPng !== null) {
-                return [$url, $faviconAsPng];
+            $image = $this->loadImage($blob, self::FORMAT_PNG, $width, $height);
+            if ($image !== null) {
+                return [$url, $image];
             }
         }
 
@@ -114,10 +114,10 @@ class Image {
 
                 try {
                     $data = $this->webClient->request($shortcutIconUrl);
-                    $faviconAsPng = $this->loadImage($data, self::FORMAT_PNG, $width, $height);
+                    $image = $this->loadImage($data, self::FORMAT_PNG, $width, $height);
 
-                    if ($faviconAsPng !== null) {
-                        return [$shortcutIconUrl, $faviconAsPng];
+                    if ($image !== null) {
+                        return [$shortcutIconUrl, $image];
                     }
                 } catch (\Exception $e) {
                     $this->logger->error("failed to retrieve image $url,", ['exception' => $e]);
@@ -132,10 +132,10 @@ class Image {
             $url = $urlElements['scheme'] . '://' . $urlElements['host'] . '/favicon.ico';
             try {
                 $data = $this->webClient->request($url);
-                $faviconAsPng = $this->loadImage($data, self::FORMAT_PNG, $width, $height);
+                $image = $this->loadImage($data, self::FORMAT_PNG, $width, $height);
 
-                if ($faviconAsPng !== null) {
-                    return [$url, $faviconAsPng];
+                if ($image !== null) {
+                    return [$url, $image];
                 }
             } catch (\Exception $e) {
                 $this->logger->error("failed to retrieve image $url,", ['exception' => $e]);
@@ -153,7 +153,7 @@ class Image {
      * @param ?int $width target width
      * @param ?int $height target height
      *
-     * @return ?string blob containing the processed image
+     * @return ?ImageHolder blob containing the processed image
      */
     public function loadImage($data, $format = self::FORMAT_PNG, $width = null, $height = null) {
         $imgInfo = null;
@@ -203,7 +203,7 @@ class Image {
                 $image->setOption('png:compression-level', 9);
             }
 
-            return $image;
+            return new ImageHolder((string) $image, $format, $image->getImageWidth(), $image->getImageHeight());
         }
 
         // convert ico to png
@@ -260,6 +260,6 @@ class Image {
             $data = $wideImage->asString('png', 4, PNG_NO_FILTER);
         }
 
-        return $data;
+        return new ImageHolder($data, $format, $wideImage->getWidth(), $wideImage->getHeight());
     }
 }

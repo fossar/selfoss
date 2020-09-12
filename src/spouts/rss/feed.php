@@ -108,9 +108,16 @@ class feed extends \spouts\spout {
         $feedLogoUrl = $this->feed->getImageUrl();
         if ($feedLogoUrl && ($iconData = $this->imageHelper->fetchFavicon($feedLogoUrl)) !== null) {
             list($faviconUrl, $iconBlob) = $iconData;
-            $this->logger->debug('icon: using feed logo: ' . $faviconUrl);
 
-            return $faviconUrl;
+            $aspectRatio = $iconBlob->getWidth() / $iconBlob->getHeight();
+
+            if (0.8 < $aspectRatio && $aspectRatio < 1.3) {
+                $this->logger->debug('icon: using feed logo: ' . $faviconUrl);
+
+                return $faviconUrl;
+            } else {
+                $this->logger->debug('icon: feed logo “' . $faviconUrl . '” not square enough with aspect ratio ' . $aspectRatio . '. Not using it.');
+            }
         }
 
         // else fallback to the favicon of the associated web page
