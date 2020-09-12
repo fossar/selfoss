@@ -165,7 +165,7 @@ class Image {
                 $data = $d;
             }
 
-            if (preg_match('#<svg[\s>]#si', $data)) {
+            if (ImageUtils::detectSvg($data)) {
                 $imgInfo = ['mime' => 'image/svg+xml'];
             }
         }

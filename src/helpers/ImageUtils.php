@@ -134,4 +134,15 @@ class ImageUtils {
             return null;
         }
     }
+
+    /**
+     * Detect if given data is an SVG file and not just a HTML document with SVG embedded.
+     *
+     * @param string $blob
+     *
+     * @return bool true when it is a SVG
+     */
+    public static function detectSvg($blob) {
+        return preg_match('#<svg[\s>]#si', $blob) && !preg_match('#<((!doctype )?html|body)[\s>]#si', $blob);
+    }
 }
