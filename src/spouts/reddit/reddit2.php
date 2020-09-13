@@ -89,7 +89,9 @@ class reddit2 extends \spouts\spout {
             throw new \Exception($json['message']);
         }
 
-        $this->items = $json['data']['children'];
+        if (isset($json['data']) && isset($json['data']['children'])) {
+            $this->items = $json['data']['children'];
+        }
     }
 
     public function getId() {
