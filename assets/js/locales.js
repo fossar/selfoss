@@ -17,6 +17,7 @@ import lv from '../locale/lv.json';
 import nb from '../locale/nb.json';
 import nl from '../locale/nl.json';
 import pl from '../locale/pl.json';
+import pt from '../locale/pt.json';
 import ptBR from '../locale/pt-BR.json';
 import rm from '../locale/rm.json';
 import ru from '../locale/ru.json';
@@ -45,6 +46,7 @@ export default {
     'nb': nb,
     'nl': nl,
     'pl': pl,
+    'pt': pt,
     'pt-BR': ptBR,
     'rm': rm,
     'ru': ru,

@@ -174,6 +174,7 @@ set `0` or leave empty for auto detection (browser language) or use one of the f
 * Latvian: `lv`
 * Norwegian Bokmål: `nb`
 * Polish: `pl`
+* Portuguese: `pt`
 * Portuguese (Brazil): `pt-BR`
 * Romansh: `rm`
 * Russian: `ru`
