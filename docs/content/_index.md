@@ -29,7 +29,7 @@ selfoss is a lightweight php based application. Just follow the simple installat
 4. You do not need to create database tables, they will be created automatically.
 5. Create cron job for updating feeds and point it to https://yoururl.com/update via `wget` or `curl`. You can also execute the `cliupdate.php` from command line.
 
-For further questions or any problems, use our [support forum](forum). For a more detailed step-by-step example installation, please visit the [wiki](https://github.com/SSilence/selfoss/wiki/).
+For further questions or any problems, use our [support forum](forum). For a more detailed step-by-step example installation, please visit the [wiki](https://github.com/fossar/selfoss/wiki/).
 </div>
 
 ## Configuring selfoss {#configuration}

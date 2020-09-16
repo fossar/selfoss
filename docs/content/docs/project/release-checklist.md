@@ -4,7 +4,7 @@ weight = 40
 +++
 
 1. Update `NEWS.md` with highlights of changes that are not yet there. Set a release date.
-2. Prepare a [draft of release](https://github.com/SSilence/selfoss/releases/new) on GitHub with the most recent part of the changelog as the body. Set the tag name to the expected version of the release.
+2. Prepare a [draft of release](https://github.com/fossar/selfoss/releases/new) on GitHub with the most recent part of the changelog as the body. Set the tag name to the expected version of the release.
 3. Update the version strings throughout the code base to the new release using `npm run bump-version 2.19` and commit the changes.
 4. Create a tag using `git tag 2.19`.
 5. Push the tag to GitHub `git push origin master --tags`, draft will be automatically published and release tarball will be built.

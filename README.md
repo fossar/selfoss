@@ -6,9 +6,9 @@ For more information visit our [web site](https://selfoss.aditu.de).
 
 ## Download
 
-* [Stable releases](https://github.com/SSilence/selfoss/releases) – if you just want to use selfoss.
+* [Stable releases](https://github.com/fossar/selfoss/releases) – if you just want to use selfoss.
 * [Development builds](https://bintray.com/fossar/selfoss/selfoss-git) ([latest](https://bintray.com/fossar/selfoss/selfoss-git/_latestVersion#files)) – if you want to try unreleased features or bug fixes, or help testing them.
-* [Git-tracked source code](https://github.com/SSilence/selfoss) – if you want to join selfoss development. Some [assembly](#development) required.
+* [Git-tracked source code](https://github.com/fossar/selfoss) – if you want to join selfoss development. Some [assembly](#development) required.
 
 
 ## Installation
@@ -50,7 +50,7 @@ For further questions or on any problem use our support forum: https://selfoss.a
 
 ## Support
 
-* [Issue tracker](https://github.com/SSilence/selfoss/issues) for reporting problems and requesting new features
+* [Issue tracker](https://github.com/fossar/selfoss/issues) for reporting problems and requesting new features
 * [Forum](https://selfoss.aditu.de/forum/) for general questions about usage
 * [Chat on Gitter](https://gitter.im/fossar/selfoss) (or [`#selfoss:matrix.org` mirror](https://matrix.to/#/#selfoss:matrix.org)) for discussing selfoss development or just about anything
 
@@ -81,7 +81,7 @@ Every patch is expected to adhere to our coding style, which is checked automati
 
 selfoss was created by [Tobias Zeising](tobias.zeising@aditu.de) and it is licensed under the GPLv3 license.
 
-Very special thanks to all contributors of pull requests here on [GitHub](https://github.com/SSilence/selfoss), as well as translators on [Weblate](https://hosted.weblate.org/projects/selfoss/translations/). Your improvements are awesome!!!
+Very special thanks to all contributors of pull requests here on [GitHub](https://github.com/fossar/selfoss), as well as translators on [Weblate](https://hosted.weblate.org/projects/selfoss/translations/). Your improvements are awesome!!!
 
 Special thanks to the great programmers of these libraries used by selfoss:
 

@@ -4,7 +4,7 @@
   "ver": "2.19-SNAPSHOT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/SSilence/selfoss.git"
+    "url": "https://github.com/fossar/selfoss.git"
   },
   "engines": {
     "npm": ">=5"

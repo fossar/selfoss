@@ -2,12 +2,12 @@
 
 ## Reporting an issue
 
-If you discover a bug or wish to have a feature added, [report it to the issue tracker](https://github.com/SSilence/selfoss/issues/new). Try to describe the problem in as much detail as possible.
+If you discover a bug or wish to have a feature added, [report it to the issue tracker](https://github.com/fossar/selfoss/issues/new). Try to describe the problem in as much detail as possible.
 
 
 ## Contributing code
 
-We accept [pull requests](https://github.com/SSilence/selfoss/compare) with your changes.
+We accept [pull requests](https://github.com/fossar/selfoss/compare) with your changes.
 
 Every patch is expected to adhere to our coding style, which is checked automatically by Travis. You can install the checkers locally using `npm run install-dependencies`, and then run the checks using `npm run check` before submitting a pull request. There is also `npm run fix`, that will attempt to fix the formatting.
 

@@ -571,7 +571,7 @@
           }
         },
         "requestBody": {
-          "description": "JSON support added in <https://github.com/SSilence/selfoss/pull/849>",
+          "description": "JSON support added in <https://github.com/fossar/selfoss/pull/849>",
           "content": {
             "application/json": {
               "schema": {
@@ -625,7 +625,7 @@
           }
         },
         "requestBody": {
-          "description": "JSON support added in <https://github.com/SSilence/selfoss/pull/849>",
+          "description": "JSON support added in <https://github.com/fossar/selfoss/pull/849>",
           "content": {
             "application/json": {
               "schema": {
