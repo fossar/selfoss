@@ -127,4 +127,29 @@ class WebClient {
 
         return $urlStack[count($urlStack) - 1];
     }
+
+    /**
+     * Get permanent URL of the response.
+     * RedirectMiddleware will need to be enabled for this to work.
+     *
+     * @param string $url requested URL, to use as a fallback
+     * @param GuzzleHttp\Psr7\Response $response response to inspect
+     *
+     * @return string URL we should change the future requests to
+     */
+    public static function getPermanentUrl($url, GuzzleHttp\Psr7\Response $response) {
+        // Sequence of fetched URLs
+        $urlStack = array_merge([$url], $response->getHeader(\GuzzleHttp\RedirectMiddleware::HISTORY_HEADER));
+        // Let’s consider the first URL a permanent redirect since it is our start point.
+        $statusStack = array_merge([301], $response->getHeader(\GuzzleHttp\RedirectMiddleware::STATUS_HISTORY_HEADER));
+
+        // Follow the chain util first non-permanent redirect, since non-permanent
+        // redirect could invalidate permanent ones later in the chain.
+        $index = 0;
+        while (($statusStack[$i] === 301 || $statusStack[$i] === 308) && $index < count($urlStack)) {
+            ++$index;
+        }
+
+        return $urlStack[$index - 1];
+    }
 }

@@ -53,6 +53,7 @@ class SimplePieFileGuzzle extends \SimplePie_File {
                 });
 
                 $this->url = WebClient::getEffectiveUrl($url, $response);
+                $this->permanent_url = WebClient::getPermanentUrl($url, $response);
                 $this->body = (string) $response->getBody();
                 $this->status_code = $response->getStatusCode();
             } catch (\GuzzleHttp\Exception\RequestException $e) {
