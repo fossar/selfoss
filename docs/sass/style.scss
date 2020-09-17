@@ -239,6 +239,10 @@ nav .active {
     top: 500px;
 }
 
+#header-donate:hover + #header-donate-tooltipp {
+    display: block;
+}
+
 #header-donate-tooltipp {
     position: absolute;
     display: none;
@@ -401,3 +405,5 @@ kbd {
         margin-top: 0;
     }
 }
+
+@import 'simple-lightbox';
