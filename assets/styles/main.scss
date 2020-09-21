@@ -1,6 +1,6 @@
 @import '@fancyapps/fancybox/dist/jquery.fancybox.css';
 @import 'spectrum-colorpicker/spectrum.css';
-@import 'reset-css';
+@import 'reset-css/sass/reset';
 
 /* base */
 
@@ -519,6 +519,8 @@ span.offline-count.diff {
     overflow: hidden;
     padding: 0 1em;
     overflow-wrap: break-word;
+
+    @import 'unreset-css/unreset';
 }
 
 .entry-content a {
@@ -533,16 +535,9 @@ span.offline-count.diff {
 }
 
 .entry-content p {
+    // unreset uses 1em for bottom and top
+    margin-top: 0;
     margin-bottom: 0.6em;
-}
-
-.entry-content ol li {
-    list-style: decimal inside;
-}
-
-.entry-content li {
-    margin: 0.3em;
-    list-style: disc inside;
 }
 
 .entry-content blockquote {
@@ -579,15 +574,9 @@ span.offline-count.diff {
 }
 
 .entry-content dd {
+    // unreset adds margin
+    margin: 0;
     text-indent: 1.3em;
-}
-
-.entry-content sup {
-    vertical-align: super;
-}
-
-.entry-content sub {
-    vertical-align: sub;
 }
 
 .entry-icon {
