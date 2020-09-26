@@ -79,7 +79,11 @@ Every patch is expected to adhere to our coding style, which is checked automati
 
 ## Credits
 
-selfoss was created by [Tobias Zeising](tobias.zeising@aditu.de) and it is licensed under the GPLv3 license.
+selfoss was created by [Tobias Zeising](tobias.zeising@aditu.de), and the source code is licensed under the GNU General Public licence version 3, or (at your option) any later version.
+
+Some parts of the source code can be licensed under version 3 only, we are [currently trying to resolve it](https://github.com/fossar/selfoss/issues/1218).
+
+The package with bundled dependencies might be distributed under version 3 only.
 
 Very special thanks to all contributors of pull requests here on [GitHub](https://github.com/fossar/selfoss), as well as translators on [Weblate](https://hosted.weblate.org/projects/selfoss/translations/). Your improvements are awesome!!!
 
