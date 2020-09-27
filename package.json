@@ -23,7 +23,7 @@
     "fix:server": "composer run-script fix",
     "install-dependencies": "npm run install-dependencies:client && npm run install-dependencies:server",
     "install-dependencies:client": "npm install --production=false --prefix assets/",
-    "install-dependencies:server": "composer install --dev",
+    "install-dependencies:server": "composer install",
     "lint:client": "npm run --prefix assets/ lint",
     "lint:server": "composer run-script lint",
     "test:server": "composer run-script test",
