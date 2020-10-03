@@ -23,13 +23,6 @@ selfoss.events.entriesToolbar = function(parent) {
         return false;
     });
 
-    // open in new window
-    parent.find('.entry-newwindow').unbind('click').click(function(e) {
-        window.open($(this).parents('.entry').children('.entry-datetime').attr('href'));
-        e.preventDefault();
-        return false;
-    });
-
     // next item on tablet
     parent.find('.entry-toolbar .entry-next').unbind('click').click(function() {
         selfoss.shortcuts.nextprev('next', true);

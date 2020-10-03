@@ -79,7 +79,7 @@ export default function Item({item}) {
             <ul aria-label={selfoss.ui._('article_actions')} class="entry-toolbar">
                 <li><button accesskey="a" class={['entry-starr', item.starred == 1 ? 'active' : null]}><i class={[`fa${item.starred == 1 ? 's' : 'r'}`, 'fa-star']}></i> {item.starred == 1 ? selfoss.ui._('unstar') : selfoss.ui._('star')}</button></li>
                 <li><button accesskey="u" class={['entry-unread', item.unread == 1 ? 'active' : null]}><i class={[`fa${item.unread == 1 ? 's' : 'r'}`, 'fa-check-circle']}></i> {item.unread == 1 ? selfoss.ui._('mark') : selfoss.ui._('unmark')}</button></li>
-                <li><button accesskey="o" class="entry-newwindow" aria-haspopup="true"><i class="fas fa-external-link-alt"></i> {selfoss.ui._('open_window')}</button></li>
+                <li><a href={anonymize(item.link)} class="entry-newwindow" target="_blank" rel="noopener noreferrer" accesskey="o"><i class="fas fa-external-link-alt"></i> {selfoss.ui._('open_window')}</a></li>
                 <li><button class="entry-loadimages"><i class="fas fa-arrow-alt-circle-down"></i> {selfoss.ui._('load_img')}</button></li>
                 <li><button accesskey="n" class="entry-next"><i class="fas fa-arrow-right"></i> {selfoss.ui._('next')}</button></li>
                 <li><button accesskey="c" class="entry-close"><i class="far fa-times-circle"></i> {selfoss.ui._('close_entry')}</button></li>

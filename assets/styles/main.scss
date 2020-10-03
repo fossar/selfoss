@@ -621,9 +621,12 @@ span.offline-count.diff {
 }
 
 .entry-smartphone-share button,
-.entry-toolbar button {
+.entry-toolbar button,
+.entry-toolbar a {
     background-color: transparent;
     color: black;
+    text-decoration: none;
+    font-size: 0.91rem;
     border: none;
     cursor: pointer;
     padding: 0.5em;
