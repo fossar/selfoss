@@ -13,11 +13,11 @@ For more information visit our [web site](https://selfoss.aditu.de).
 
 ## Installation
 
-1. Upload all files of this folder (IMPORTANT: also upload the invisible .htaccess files)
-2. Make the directories data/cache, data/favicons, data/logs, data/thumbnails and data/sqlite writeable
-3. Insert database access data in config.ini (see below -- you don't have to change anything if you want to use sqlite)
-3. You don't have to install the database, it will be created automatically (ensure that your database has enought rights for creating triggers)
-4. Create cronjob for updating feeds and point it to https://yourselfossurl.com/update via wget or curl. You can also execute the cliupdate.php from commandline.
+1. Upload all files of this folder (IMPORTANT: also upload the invisible .htaccess files).
+2. Make the directories data/cache, data/favicons, data/logs, data/thumbnails and data/sqlite writeable.
+3. Insert database access data in config.ini (see below). You do not need to change anything if you want to use SQLite.
+3. You do not need to create the database tables, they will be created automatically (ensure that your database user is allowed to create triggers).
+4. Create cronjob or systemd timer for updating feeds and point it to https://yourselfossurl.com/update via wget or curl. You can also execute the cliupdate.php from command line.
 
 If you obtained selfoss using Git, some more steps will be required. See the [development](#development) section.
 
@@ -26,22 +26,21 @@ For further questions or on any problem use our support forum: https://selfoss.a
 
 ## Configuration
 
-1. Copy defaults.ini to config.ini
-2. Edit config.ini and delete any lines you do not wish to override
-3. Do not delete the [globals] line
-4. See https://selfoss.aditu.de/ for examples
+1. Copy defaults.ini to config.ini.
+2. Edit config.ini and delete any lines you do not wish to override.
+3. Do not delete the [globals] line.
+4. See https://selfoss.aditu.de/ for examples.
 
 
 ## Update
 
-1. Backup your database and your "data" folder
-2. (IMPORTANT: don't delete the "data" folder) delete all old files and folders excluding the folder "data" and the file config.ini
+1. Backup your database and your "data" folder.
+2. (IMPORTANT: do NOT delete the "data" folder) delete all old files and folders excluding the folder "data" and the file config.ini
 3. Upload all new files and folders excluding the data folder (IMPORTANT: also upload the invisible .htaccess files)
 4. Consult the [NEWS file](NEWS.md) to learn about backwards incompatible changes.
-5. Rename your folder /data/icons into /data/favicons
-6. Clean your browser cache
-7. Insert your current database connection and your individual configuration in config.ini. Important: we change the config.ini and add new options in newer versions. You have to update the config.ini too.
-8. The database will be updated automatically (ensure that your database has enought rights for creating triggers)
+5. Clean your browser cache
+6. Insert your current database connection and your individual configuration in config.ini. Important: we change the config.ini and add new options in newer versions. You have to update the config.ini too.
+7. The database will be updated automatically (ensure that your database user is allowed to create triggers).
 
 If you obtained selfoss using Git, some more steps might be required. See the [development](#development) section.
 
