@@ -47,7 +47,6 @@
       window.open('http://moo.foobar/share?u=' + encodeURIComponent(data.url) + '&t=' + encodeURIComponent(data.title));
   });
   ```
-- Custom FullTextRss filter were moved to `fulltextrss` directory in data directory ([#1043](https://github.com/fossar/selfoss/pull/1043))
 
   or if your browser supports it, simply
 
@@ -58,6 +57,7 @@
   ```
 
   ([#1017](https://github.com/fossar/selfoss/pull/1017), [#1035](https://github.com/SSilence/selfoss/pull/1035))
+- Custom FullTextRss filter were moved to `fulltextrss` directory in data directory ([#1043](https://github.com/fossar/selfoss/pull/1043))
 - Spouts can now implement `getSourceIcon()` instead of `getIcon()` when icon is associated with the feed, not individual icons. ([#1190](https://github.com/fossar/selfoss/pull/1190))
 - Some language files have been renamed to use correct [IETF language tag](https://en.wikipedia.org/wiki/IETF_language_tag) and you might need to change the `language` key in your `config.ini`:
   * Simplified Chinese `zh-CN`
@@ -82,6 +82,9 @@
 - RSS spout now tries to use favicon from the feed domain when there is no logo or home page favicon. ([#1152](https://github.com/fossar/selfoss/pull/1152))
 - Setting `DEBUG` to `1` in `src/common.php` no longer logs HTTP bodies, only headers. Set it to `2` if you need the bodies as well. ([#1152](https://github.com/fossar/selfoss/pull/1152))
 - PHP startup errors are now logged, instead of having F3 crash with Error 500 ([#1195](https://github.com/fossar/selfoss/pull/1195))
+- In order to support offline mode, we moved much of the UI to the browser. ([#1150](https://github.com/fossar/selfoss/pull/1150), [#1184](https://github.com/fossar/selfoss/pull/1184), [#1215](https://github.com/fossar/selfoss/pull/1215), [#1216](https://github.com/fossar/selfoss/pull/1216))
+- We carried out a significant internal refactoring ([#1164](https://github.com/fossar/selfoss/pull/1164), [#1190](https://github.com/fossar/selfoss/pull/1190))
+- Placeholders are now used for images before they are loaded to avoid content jumping around ([#1204](https://github.com/fossar/selfoss/pull/1204))
 
 
 ## 2.18 – 2018-03-05
