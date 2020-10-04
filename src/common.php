@@ -84,6 +84,11 @@ $dice->addRule(daos\ItemsInterface::class, $shared);
 $dice->addRule(daos\SourcesInterface::class, $shared);
 $dice->addRule(daos\TagsInterface::class, $shared);
 
+if ($configuration->isChanged('dbSocket') && $configuration->isChanged('dbHost')) {
+    echo 'You cannot set both `db_socket` and `db_host` options.' . PHP_EOL;
+    exit;
+}
+
 // Database connection
 if ($configuration->dbType === 'sqlite') {
     $db_file = $configuration->dbFile;
@@ -93,16 +98,21 @@ if ($configuration->dbType === 'sqlite') {
         touch($db_file);
     }
 
+    // https://www.php.net/manual/en/ref.pdo-sqlite.connection.php
     $dsn = 'sqlite:' . $db_file;
     $dbParams = [
         $dsn,
     ];
 } elseif ($configuration->dbType === 'mysql') {
+    $socket = $configuration->dbSocket;
     $host = $configuration->dbHost;
     $port = $configuration->dbPort;
     $database = $configuration->dbDatabase;
 
-    if ($port !== null) {
+    // https://www.php.net/manual/en/ref.pdo-mysql.connection.php
+    if ($socket !== null) {
+        $dsn = "mysql:unix_socket=$socket; dbname=$database";
+    } elseif ($port !== null) {
         $dsn = "mysql:host=$host; port=$port; dbname=$database";
     } else {
         $dsn = "mysql:host=$host; dbname=$database";
@@ -115,10 +125,13 @@ if ($configuration->dbType === 'sqlite') {
         [PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8mb4;'],
     ];
 } elseif ($configuration->dbType === 'pgsql') {
-    $host = $configuration->dbHost;
+    $socket = $configuration->dbSocket;
+    // PostgreSQL uses host key for socket.
+    $host = $configuration->dbSocket !== null ? $configuration->dbSocket : $configuration->dbHost;
     $port = $configuration->dbPort;
     $database = $configuration->dbDatabase;
 
+    // https://www.php.net/manual/en/ref.pdo-pgsql.connection.php
     if ($port !== null) {
         $dsn = "pgsql:host=$host; port=$port; dbname=$database";
     } else {

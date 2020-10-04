@@ -19,6 +19,9 @@ class Configuration {
         'ftrssCustomDataDir',
     ];
 
+    /** @var array<string, bool> Keeps track of options that have been changed. */
+    private $modifiedOptions = [];
+
     // Internal but overridable values.
 
     /** @var int debugging level @internal */
@@ -55,6 +58,9 @@ class Configuration {
 
     /** @var ?int */
     public $dbPort = null;
+
+    /** @var ?string */
+    public $dbSocket = null;
 
     /** @var string */
     public $dbPrefix = '';
@@ -217,6 +223,7 @@ class Configuration {
             }
 
             $this->{$propertyName} = $value;
+            $this->modifiedOptions[$propertyName] = true;
         }
 
         // Interpolate variables in the config values.
@@ -225,5 +232,16 @@ class Configuration {
             $value = $this->{$property};
             $this->{$property} = str_replace('%datadir%', $datadir, $value);
         }
+    }
+
+    /**
+     * Checks whether given configuration option has been changed.
+     *
+     * @param string $key
+     *
+     * @return bool
+     */
+    public function isChanged($key) {
+        return isset($this->modifiedOptions[$key]);
     }
 }

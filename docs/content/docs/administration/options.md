@@ -53,6 +53,12 @@ Table prefix for MySQL/SQLite databases. This is useful to avoid conflicts when 
 Port for database connections. By default `3306` will be used for MySQL and `5432` for PostgreSQL.
 </div>
 
+### `db_socket`
+<div class="config-option">
+
+A UNIX domain socket used for connecting to the MySQL database server. Usually, you want to use `db_host=localhost`, which should use the default socket path (typically `/run/mysqld/mysqld.sock` for MySQL or `/run/postgresql` for PostgreSQL) but if you need to specify a different location, you can. This is orthogonal to `db_host` option.
+</div>
+
 ### `logger_destination`
 <div class="config-option">
 
