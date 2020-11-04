@@ -168,6 +168,7 @@ set `0` or leave empty for auto detection (browser language) or use one of the f
 * French: `fr`
 * French (Canada): `fr-CA`
 * German: `de`
+* Hebrew: `he`
 * Hungarian: `hu`
 * Italian: `it`
 * Japanese: `ja`
