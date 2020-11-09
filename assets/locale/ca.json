@@ -97,5 +97,7 @@
   "lang_error_unwritable_logs": "Impossible escriure logs.",
   "lang_error_check_system_logs": "Un error ha ocorregut, comprova els teus logs de sistema.",
   "lang_error_check_log_file": "Un error ha ocorregut, comprova el fitxer de log “{0}”.",
-  "lang_offline_navigation_unavailable": "Canviar etiquetes i fonts no està disponible al mode fora de línia."
+  "lang_offline_navigation_unavailable": "Canviar etiquetes i fonts no està disponible al mode fora de línia.",
+  "lang_error_offline_storage_not_available": "Emmagatzematge fora de línia no disponible. Asseguris que el seu navegador {0}suporta IndexedDB API{1} i, si està utilitzant un navegador basat a Google Chrome, que no està utilitzant selfoss en mode incògnit.",
+  "lang_error_edit_source": "No es pot desar els canvis a les fonts:"
 }
