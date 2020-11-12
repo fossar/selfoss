@@ -364,7 +364,7 @@ span.offline-count.diff {
 
 #search {
     z-index: 9;
-    position: absolute;
+    position: fixed;
     padding: 5px;
     background: rgba(61, 109, 105, 0.4);
     border-top-right-radius: 4px;

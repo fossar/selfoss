@@ -85,6 +85,7 @@
 - In order to support offline mode, we moved much of the UI to the browser. ([#1150](https://github.com/fossar/selfoss/pull/1150), [#1184](https://github.com/fossar/selfoss/pull/1184), [#1215](https://github.com/fossar/selfoss/pull/1215), [#1216](https://github.com/fossar/selfoss/pull/1216))
 - We carried out a significant internal refactoring ([#1164](https://github.com/fossar/selfoss/pull/1164), [#1190](https://github.com/fossar/selfoss/pull/1190))
 - Placeholders are now used for images before they are loaded to avoid content jumping around ([#1204](https://github.com/fossar/selfoss/pull/1204))
+- Search button is now always on the screen, avoiding the need to scroll to top to be able to use it. ([#1231](https://github.com/fossar/selfoss/issues/1231))
 
 
 ## 2.18 – 2018-03-05
