@@ -93,5 +93,11 @@
   "lang_share_copy_label": "Link in die Zwischenablage kopieren",
   "lang_error_share_native_abort": "Es ist nicht möglich das Objekt zu teilen – entweder gibt es keine Ziele zum Teilen oder die Aktion wurde abgebrochen.",
   "lang_error_share_native": "Es ist nicht möglich das Objekt zu teilen.",
-  "lang_close_entry": "Schließen"
+  "lang_close_entry": "Schließen",
+  "lang_error_offline_storage_not_available": "Offline-Speicherung ist nicht verfügbar. Stelle sicher, dass dein Browser die {0}IndexedDB-API unterstützt{1} und, falls du einen Browser auf Grundlage von Google Chrome benutzt, dass du selfoss nicht im Incognito-Modus ausführst.",
+  "lang_error_edit_source": "Konnte die Änderungen an den Quellen nicht speichern:",
+  "lang_error_unwritable_logs": "Logdateien konnten nicht geschrieben werden.",
+  "lang_error_check_system_logs": "Ein Fehler ist aufgetreten, bitte die Systemlogs prüfen.",
+  "lang_error_check_log_file": "Es ist ein Fehler aufgetreten, bitte Logdatei \"{0}\" prüfen.",
+  "lang_offline_navigation_unavailable": "Tags und Quellen zu wechseln wird derzeit im Offline-Modus nicht unterstützt."
 }
