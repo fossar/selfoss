@@ -284,3 +284,9 @@ If set to `0`, thumbnails are not shown in the collapsed view. Defaults to `1`.
 
 Location of the data directory; especially useful when selfoss is installed to write-protected file system. `.htaccess` file (or equivalent configuration file for non-Apache web servers) will need to be adjusted accordingly.
 </div>
+
+### `reading_speed_wpm`
+<div class="config-option">
+
+Reading speed in words per minute used to calculate the estimated reading time of each article. On average, adults can read between 200 and 300 wpm and you can find many tools that can help you determine your reading speed on-line. If set to `0` (the default value), the estimated reading time is not shown.
+</div>

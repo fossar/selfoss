@@ -55,6 +55,7 @@ class About {
                 'allowPublicUpdate' => $f3->get('allow_public_update_access') == 1, // bool
                 'publicMode' => $f3->get('public') == 1, // bool
                 'authEnabled' => $this->authentication->enabled() === true, // bool
+                'readingSpeed' => $f3->get('reading_speed_wpm') > 0 ? (int) $f3->get('reading_speed_wpm') : null, // ?int
                 'language' => $f3->get('language') === 0 ? null : $f3->get('language'), // ?string
                 'userCss' => file_exists(BASEDIR . '/user.css') ? filemtime(BASEDIR . '/user.css') : null, // ?int
                 'userJs' => file_exists(BASEDIR . '/user.js') ? filemtime(BASEDIR . '/user.js') : null, // ?int

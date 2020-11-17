@@ -99,5 +99,6 @@
   "lang_error_share_native": "Unable to share item.",
   "lang_info_url_copied": "URL copied to clipboard.",
   "lang_close_entry": "Close",
-  "lang_article_actions": "Actions"
+  "lang_article_actions": "Actions",
+  "lang_article_reading_time": "{0} min read"
 }

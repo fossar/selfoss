@@ -57,6 +57,12 @@
     <!-- datetime -->
     <a href="<?= \helpers\Anonymizer::anonymize($this->item['link']); ?>" class="entry-datetime" target="_blank" rel="noopener noreferrer"></a>
 
+    <!-- read time -->
+    <?php if (\F3::get('reading_speed_wpm') > 0) : ?>
+    <span class="entry-separator">&bull;</span>
+    <span class="entry-readtime"><?= \F3::get('lang_article_reading_time', round((str_word_count(strip_tags($content)) / \F3::get('reading_speed_wpm'))))?></span>
+    <?php endif; ?>
+
     <!-- thumbnail -->
     <?php if (\F3::get('show_thumbnails') && isset($this->item['thumbnail']) && strlen(trim($this->item['thumbnail'])) > 0) : ?>
     <div class="entry-thumbnail">
