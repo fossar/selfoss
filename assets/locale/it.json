@@ -93,5 +93,11 @@
   "lang_filter": "Filtra",
   "lang_share_mail_label": "Condividi via posta elettronica",
   "lang_login_offline": "Archiviazione offline",
-  "lang_login_invalid_credentials": "Nome utente o password errato"
+  "lang_login_invalid_credentials": "Nome utente o password errato",
+  "lang_error_offline_storage_not_available": "Non è disponibile memoria offline. Assicurati che il tuo browser web {0} supporti IdexedDB API {1} e che tu non stia utilizzando la modalità incognito su browser basati su Google Chrome.",
+  "lang_error_edit_source": "Impossibile salvare le modifiche alla fonte:",
+  "lang_error_unwritable_logs": "Impossibile scrivere i log.",
+  "lang_error_check_system_logs": "Si è verificato un errore, controlla i tuoi log di sistema.",
+  "lang_error_check_log_file": "Si è verificato un errore, controlla il file di log \"{0}\".",
+  "lang_offline_navigation_unavailable": "Al momento non è possibile modificare tag e fonti in modalità offline."
 }
