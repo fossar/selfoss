@@ -142,7 +142,7 @@ selfoss.events.entriesToolbar = function(parent) {
 
                 // update unread on tags and sources
                 var entryTags = [];
-                $(`.entry[data-entry-id=${id}] .entry-tags-tag`).each(function() {
+                $(`.entry[data-entry-id="${id}"] .entry-tags-tag`).each(function() {
                     entryTags.push({tag: $(this).html(), count: diff});
                 });
                 selfoss.ui.refreshTagSourceUnread(
