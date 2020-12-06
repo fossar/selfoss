@@ -217,10 +217,11 @@ var selfoss = {
                 selfoss.ui.login();
                 selfoss.ui.showMainUi();
                 selfoss.initUi();
-                if (selfoss.db.storage || !selfoss.db.enableOffline) {
-                    selfoss.db.reloadList();
-                } else {
+                if ((!selfoss.db.storage || selfoss.db.broken) && selfoss.db.enableOffline) {
+                    // Initialize database in offline mode when it has not been initialized yet or it got broken.
                     selfoss.dbOffline.init().catch(selfoss.events.init);
+                } else {
+                    selfoss.db.reloadList();
                 }
                 selfoss.events.initHash();
             } else {
@@ -554,7 +555,7 @@ var selfoss = {
             }
         };
 
-        if (selfoss.db.storage) {
+        if (selfoss.db.enableOffline) {
             selfoss.refreshUnread(unreadstats);
             selfoss.dbOffline.entriesMark(ids, false).then(displayNextUnread);
         }

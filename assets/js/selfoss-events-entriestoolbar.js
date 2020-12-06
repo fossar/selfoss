@@ -97,7 +97,7 @@ selfoss.events.entriesToolbar = function(parent) {
             };
             updateStats(starr);
 
-            if (selfoss.db.storage) {
+            if (selfoss.db.enableOffline) {
                 selfoss.dbOffline.entryStar(id, starr);
             }
 
@@ -145,7 +145,7 @@ selfoss.events.entriesToolbar = function(parent) {
             };
             updateStats(unread);
 
-            if (selfoss.db.storage) {
+            if (selfoss.db.enableOffline) {
                 selfoss.dbOffline.entryMark(id, !unread);
             }
 

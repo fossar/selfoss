@@ -115,7 +115,7 @@ selfoss.dbOnline = {
             syncParams.updatedStatuses = updatedStatuses;
         }
 
-        if (selfoss.db.storage) {
+        if (selfoss.db.enableOffline) {
             syncParams.itemsSinceId = selfoss.dbOffline.lastItemId;
             syncParams.itemsNotBefore = selfoss.dbOffline.newestGCedEntry.toISOString();
             syncParams.itemsHowMany = selfoss.filter.itemsPerPage;
@@ -138,7 +138,7 @@ selfoss.dbOnline = {
 
             var storing = false;
 
-            if (selfoss.db.storage) {
+            if (selfoss.db.enableOffline) {
                 if ('newItems' in data) {
                     var maxId = 0;
                     data.newItems.forEach(function(item) {
@@ -262,7 +262,7 @@ selfoss.dbOnline = {
         let promise = selfoss.activeAjaxReq.promise.then(response => response.json()).then((data) => {
             selfoss.db.setOnline();
 
-            if (!selfoss.db.storage) {
+            if (!selfoss.db.enableOffline) {
                 selfoss.db.lastSync = Date.now();
                 selfoss.db.lastUpdate = new Date(data.lastUpdate);
             }
@@ -328,7 +328,8 @@ selfoss.dbOffline = {
 
         promise.catch(function(error) {
             selfoss.ui.showError(selfoss.ui._('error_offline_storage', [error.message]));
-            selfoss.db.storage = null;
+            selfoss.db.broken = true;
+            selfoss.db.enableOffline = false;
             selfoss.db.reloadList();
 
             // If this is a QuotaExceededError, garbage collect more
@@ -349,6 +350,7 @@ selfoss.dbOffline = {
             return Promise.reject();
         }
 
+        selfoss.db.broken = false;
         selfoss.db.storage = new Dexie('selfoss');
         selfoss.db.storage.version(1).stores({
             entries: '&id,*datetime,[datetime+id]',
@@ -429,7 +431,8 @@ selfoss.dbOffline = {
                 selfoss.dbOffline.reloadOnlineStats();
                 selfoss.dbOffline.refreshStats();
             }).catch(function() {
-                selfoss.db.storage = null;
+                selfoss.db.broken = true;
+                selfoss.db.enableOffline = false;
             });
     },
 
@@ -822,7 +825,8 @@ selfoss.dbOffline = {
 
 selfoss.db = {
 
-
+    /** When an error occurs we disable the offline mode and mark the database as broken so it can be retried. */
+    broken: false,
     storage: null,
     online: true,
     enableOffline: window.localStorage.getItem('enableOffline') === 'true',
@@ -852,7 +856,7 @@ selfoss.db = {
 
 
     setOffline: function() {
-        if (selfoss.db.storage) {
+        if (selfoss.db.storage && !selfoss.db.broken) {
             selfoss.dbOnline._syncDone(false);
             selfoss.db.online = false;
             selfoss.ui.setOffline();
@@ -910,7 +914,7 @@ selfoss.db = {
         var lastUpdateIsOld = selfoss.db.lastUpdate === null || selfoss.db.lastSync === null || Date.now() - selfoss.db.lastSync > 5 * 60 * 1000;
         var shouldSync = force || selfoss.dbOffline.needsSync || lastUpdateIsOld;
         if (selfoss.loggedin && shouldSync) {
-            if (selfoss.db.storage) {
+            if (selfoss.db.enableOffline) {
                 return selfoss.dbOffline.sendNewStatuses();
             } else {
                 return selfoss.dbOnline.sync();
@@ -946,7 +950,7 @@ selfoss.db = {
             }
 
             var forceLoadOnline = selfoss.dbOffline.olderEntriesOnline || selfoss.dbOffline.shouldLoadEntriesOnline;
-            if (!selfoss.db.storage || (selfoss.db.online && forceLoadOnline)) {
+            if (!selfoss.db.enableOffline || (selfoss.db.online && forceLoadOnline)) {
                 reloader = selfoss.dbOnline.reloadList;
             }
 
