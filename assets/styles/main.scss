@@ -827,8 +827,8 @@ span.offline-count.diff {
     position: absolute;
     left: 50%;
     top: 50%;
-    margin-left: -100px;
-    margin-top: -100px;
+    margin-left: -12em;
+    margin-top: -6em;
 }
 
 #login h1 {
@@ -842,7 +842,7 @@ span.offline-count.diff {
 
 #login label {
     display: inline-block;
-    width: 135px;
+    width: 12em;
 }
 
 #login .error {
@@ -853,6 +853,28 @@ span.offline-count.diff {
     margin-left: 7px;
     padding: 5px;
     font-size: 1.2em;
+}
+
+.badge-experimental {
+    background-color: #c29c1ccc;
+    background-image: linear-gradient(
+        135deg,
+        #c29c1ccc 25%,
+        #302c25cc 25%,
+        #302c25cc 50%,
+        #c29c1ccc 50%,
+        #c29c1ccc 75%,
+        #302c25cc 75%,
+        #302c25cc 100%
+    );
+    background-size: 1em 1em;
+    color: white;
+    text-transform: uppercase;
+    font-weight: bold;
+    border-radius: 0.3em;
+    padding: 0.1em;
+    font-size: 50%;
+    vertical-align: top;
 }
 
 /* opml import */

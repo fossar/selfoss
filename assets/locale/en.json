@@ -66,6 +66,7 @@
   "lang_login_invalid_credentials": "Wrong username/password",
   "lang_login_offline": "Offline storage",
   "lang_no_title": "No title",
+  "lang_experimental": "Experimental",
   "lang_error": "An error occurred",
   "lang_error_check_log_file": "An error occured, please check the log file “{0}”.",
   "lang_error_check_system_logs": "An error occured, please check your system logs.",
