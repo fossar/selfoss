@@ -186,7 +186,7 @@ selfoss.events.navigation = function() {
             }
 
             // probe stats and prompt reload to the user
-            selfoss.dbOnline.sync().done(function() {
+            selfoss.dbOnline.sync().then(function() {
                 if ($('.unread-count').hasClass('unread')) {
                     selfoss.ui.showMessage(selfoss.ui._('sources_refreshed'), [
                         {
