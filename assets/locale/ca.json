@@ -96,7 +96,7 @@
   "lang_close_entry": "Tanca",
   "lang_error_unwritable_logs": "No es poden escriure els registres.",
   "lang_error_check_system_logs": "S'ha produït un error. Comproveu els registres del sistema.",
-  "lang_error_check_log_file": "S'ha produït un error. Comproveu el fitxer de registre «{0}».",
+  "lang_error_check_log_file": "S'ha produït un error. Comproveu el fitxer de registre \"{0}\".",
   "lang_offline_navigation_unavailable": "Canviar etiquetes i fonts no és disponible en el mode fora de línia.",
   "lang_error_offline_storage_not_available": "Emmagatzematge fora de línia no disponible. Assegureu-vos que el navegador {0}suporta IndexedDB API{1}. Si utilitzeu un navegador basat en Google Chrome, que no estigueu utilitzant selfoss en mode incògnit.",
   "lang_error_edit_source": "No es pot desar els canvis a les fonts:"
