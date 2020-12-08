@@ -1,7 +1,7 @@
 import formurlencoded from 'form-urlencoded';
 import mergeDeepLeft from 'ramda/src/mergeDeepLeft.js';
 import pipe from 'ramda/src/pipe.js';
-import { TimeoutError } from '../errors';
+import { HttpError, TimeoutError } from '../errors';
 
 /**
  * Passing this function as a Promise handler will make the promise fail when the predicate is not true.
@@ -10,7 +10,7 @@ export const rejectUnless = (pred) => (response) => {
     if (pred(response)) {
         return response;
     } else {
-        let err = new Error(response.statusText);
+        let err = new HttpError(response.statusText);
         err.response = response;
         throw err;
     }

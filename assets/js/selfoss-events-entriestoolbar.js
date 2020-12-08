@@ -103,10 +103,10 @@ selfoss.events.entriesToolbar = function(parent) {
 
             itemsRequests.starr(id, starr).then(() => {
                 selfoss.db.setOnline();
-            }).catch((error) => {
-                selfoss.handleAjaxError(error?.response?.status || 0).then(function() {
+            }).catch(function(error) {
+                selfoss.handleAjaxError(error).then(function() {
                     selfoss.dbOffline.enqueueStatus(id, 'starred', starr);
-                }).catch(function() {
+                }).catch(function(error) {
                     // rollback ui changes
                     selfoss.ui.entryStar(id, !starr);
                     updateStats(!starr);
@@ -151,10 +151,10 @@ selfoss.events.entriesToolbar = function(parent) {
 
             itemsRequests.mark(id, !unread).then(() => {
                 selfoss.db.setOnline();
-            }).catch((error) => {
-                selfoss.handleAjaxError(error?.response?.status || 0).then(function() {
+            }).catch(function(error) {
+                selfoss.handleAjaxError(error).then(function() {
                     selfoss.dbOffline.enqueueStatus(id, 'unread', !unread);
-                }).catch(function() {
+                }).catch(function(error) {
                     // rollback ui changes
                     selfoss.ui.entryMark(id, unread);
                     updateStats(!unread);

@@ -228,7 +228,7 @@ selfoss.dbOnline = {
             }
         }).catch(function(error) {
             selfoss.dbOnline._syncDone(false);
-            selfoss.handleAjaxError(error?.response?.status || 0).catch(function() {
+            selfoss.handleAjaxError(error).catch(function(error) {
                 selfoss.ui.showError(selfoss.ui._('error_sync') + ' ' + error.message);
             });
         }).finally(function() {
@@ -282,10 +282,10 @@ selfoss.dbOnline = {
                 return;
             }
 
-            selfoss.handleAjaxError(error?.response?.status || 0).then(function() {
+            selfoss.handleAjaxError(error).then(function() {
                 selfoss.dbOffline.reloadList();
                 selfoss.ui.afterReloadList();
-            }).catch(() => {
+            }).catch(function(error) {
                 selfoss.ui.showError(selfoss.ui._('error_loading') + ' ' + error.message);
                 selfoss.events.entries();
                 selfoss.ui.refreshStreamButtons();

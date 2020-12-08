@@ -11,3 +11,10 @@ export class TimeoutError extends Error {
         this.name = 'TimeoutError';
     }
 }
+
+export class HttpError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = 'HttpError';
+    }
+}

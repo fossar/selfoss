@@ -5,6 +5,7 @@ import { getInstanceInfo, login, logout } from './requests/common';
 import * as itemsRequests from './requests/items';
 import { getAllTags } from './requests/tags';
 import * as ajax from './helpers/ajax';
+import { HttpError, TimeoutError } from './errors';
 
 /**
  * base javascript application
@@ -566,14 +567,14 @@ var selfoss = {
             selfoss.db.setOnline();
             displayNextUnread();
         }).catch(function(error) {
-            selfoss.handleAjaxError(error?.response?.status || 0).then(function() {
+            selfoss.handleAjaxError(error).then(function() {
                 let statuses = ids.map(id => ({
                     entryId: id,
                     name: 'unread',
                     value: false
                 }));
                 selfoss.dbOffline.enqueueStatuses(statuses);
-            }).catch(function() {
+            }).catch(function(error) {
                 content.html(articleList);
                 selfoss.ui.refreshStreamButtons(true, hadMore);
                 selfoss.ui.listReady();
@@ -583,7 +584,13 @@ var selfoss = {
     },
 
 
-    handleAjaxError: function(httpCode, tryOffline = true) {
+    handleAjaxError: function(error, tryOffline = true) {
+        if (!(error instanceof HttpError || error instanceof TimeoutError)) {
+            throw error;
+        }
+
+        const httpCode = error?.response?.status || 0;
+
         if (tryOffline && httpCode != 403) {
             return selfoss.db.setOffline();
         } else {
@@ -591,7 +598,7 @@ var selfoss = {
                 selfoss.ui.logout();
                 selfoss.ui.showLogin(selfoss.ui._('error_session_expired'));
             }
-            return Promise.reject();
+            throw error;
         }
     },
 

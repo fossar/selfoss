@@ -213,7 +213,7 @@ selfoss.events = {
                     return;
                 }
 
-                selfoss.handleAjaxError(error?.response?.status || 0, false).catch(function() {
+                selfoss.handleAjaxError(error, false).catch(function(error) {
                     selfoss.ui.showError(selfoss.ui._('error_loading') + ' ' + error.message);
                 });
             }).finally(() => {
