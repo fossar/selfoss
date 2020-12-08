@@ -93,5 +93,11 @@
   "lang_unread": "Unread",
   "lang_newest": "Newest",
   "lang_filter": "Filter",
-  "lang_markread": "Mark as read"
+  "lang_markread": "Mark as read",
+  "lang_error_offline_storage_not_available": "Offline storage is not available. Make sure your web browser {0}supports IndexedDB API{1} and, if you are using Google Chrome based browser, that you are not running selfoss in incognito mode.",
+  "lang_error_edit_source": "Could not save source changes:",
+  "lang_error_unwritable_logs": "Unable to write logs.",
+  "lang_error_check_system_logs": "An error occured, please check your system logs.",
+  "lang_error_check_log_file": "An error occured, please check the log file ‘{0}’.",
+  "lang_offline_navigation_unavailable": "Switching tags and sources is currently not available in offline mode."
 }
