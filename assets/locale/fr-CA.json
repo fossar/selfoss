@@ -93,5 +93,11 @@
   "lang_unread": "Non lu",
   "lang_newest": "Le plus récent",
   "lang_filter": "Filtrer",
-  "lang_markread": "Marquer comme lu"
+  "lang_markread": "Marquer comme lu",
+  "lang_error_offline_storage_not_available": "Le stockage hors ligne n’est pas disponible. Assurez-vous que votre navigateur Web {0}prend en charge l’API IndexedDB{1} et, si vous utilisez un navigateur basé sur Google Chrome, que vous n’exécutez pas selfoss en mode de navigation privée.",
+  "lang_error_edit_source": "Impossible d'enregistrer les modifications de la source :",
+  "lang_error_unwritable_logs": "Impossible d'écrire les fichiers de journalisation.",
+  "lang_error_check_system_logs": "Une erreur est survenue. Veuillez consulter votre journalisation système.",
+  "lang_error_check_log_file": "Une erreur est survenue. Veuillez consulter le fichier « {0} ».",
+  "lang_offline_navigation_unavailable": "Modifier les étiquettes et les sources n'est pas possible hors ligne pour le moment."
 }
