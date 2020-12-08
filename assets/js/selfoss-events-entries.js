@@ -169,7 +169,7 @@ selfoss.events.entries = function() {
         var lastEntry = $('.entry').filter(':last');
         selfoss.events.setHash();
         selfoss.filter.extraIds.length = 0;
-        selfoss.filter.fromDatetime = lastEntry.data('entry-datetime');
+        selfoss.filter.fromDatetime = new Date(lastEntry.data('entry-datetime'));
         selfoss.filter.fromId = lastEntry.data('entry-id');
 
         selfoss.db.reloadList(true);

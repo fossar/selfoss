@@ -105,7 +105,7 @@ selfoss.dbOnline = {
         }
 
         var syncParams = {
-            since: selfoss.db.lastUpdate.toISOString(),
+            since: selfoss.db.lastUpdate,
             tags: true,
             sources: selfoss.filter.sourcesNav ? true : undefined,
             itemsStatuses: getStatuses
@@ -117,7 +117,7 @@ selfoss.dbOnline = {
 
         if (selfoss.db.enableOffline) {
             syncParams.itemsSinceId = selfoss.dbOffline.lastItemId;
-            syncParams.itemsNotBefore = selfoss.dbOffline.newestGCedEntry.toISOString();
+            syncParams.itemsNotBefore = selfoss.dbOffline.newestGCedEntry;
             syncParams.itemsHowMany = selfoss.filter.itemsPerPage;
         }
 
@@ -131,7 +131,7 @@ selfoss.dbOnline = {
             selfoss.db.lastSync = Date.now();
             selfoss.dbOnline.firstSync = false;
 
-            var dataDate = new Date(data.lastUpdate);
+            var dataDate = data.lastUpdate;
 
             var storing = false;
 
@@ -139,7 +139,6 @@ selfoss.dbOnline = {
                 if ('newItems' in data) {
                     var maxId = 0;
                     data.newItems.forEach(function(item) {
-                        item.datetime = new Date(item.datetime);
                         maxId = Math.max(item.id, maxId);
                     });
 
@@ -259,7 +258,7 @@ selfoss.dbOnline = {
 
             if (!selfoss.db.enableOffline) {
                 selfoss.db.lastSync = Date.now();
-                selfoss.db.lastUpdate = new Date(data.lastUpdate);
+                selfoss.db.lastUpdate = data.lastUpdate;
             }
 
             selfoss.refreshStats(data.all, data.unread, data.starred);
@@ -307,8 +306,7 @@ selfoss.dbOnline = {
 selfoss.dbOffline = {
 
 
-    // the datetime of the newest garbage collected entry, i.e. deleted
-    // because not of interest.
+    /** @var Date the datetime of the newest garbage collected entry, i.e. deleted because not of interest. */
     newestGCedEntry: null,
     offlineDays: 10,
 
@@ -558,7 +556,6 @@ selfoss.dbOffline = {
                 var fromId = selfoss.filter.fromId;
                 if (fromDatetime && fromId) {
                     seek = true;
-                    fromDatetime = new Date(fromDatetime);
                 }
                 var isMore = false;
                 var alwaysInDb = selfoss.filter.type === 'starred'
@@ -688,7 +685,7 @@ selfoss.dbOffline = {
             selfoss.dbOffline.needsSync = true;
         }
 
-        var d = new Date().toISOString();
+        var d = new Date();
         let newQueuedStatuses = statuses.map(newStatus => ({
             entryId: parseInt(newStatus.entryId),
             name: newStatus.name,

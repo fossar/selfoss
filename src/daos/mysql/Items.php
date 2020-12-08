@@ -271,7 +271,6 @@ class Items implements \daos\ItemsInterface {
 
         // seek pagination (alternative to offset)
         if (isset($options['fromDatetime'])
-            && strlen($options['fromDatetime']) > 0
             && isset($options['fromId'])
             && is_numeric($options['fromId'])) {
             // discard offset as it makes no sense to mix offset pagination

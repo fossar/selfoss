@@ -10,7 +10,7 @@ export default function Item({item}) {
     return (
         <div data-entry-id={item.id}
             data-entry-source={item.source}
-            data-entry-datetime={item.datetime}
+            data-entry-datetime={item.datetime.toISOString()}
             data-entry-url={item.link}
             class={['entry', item.unread == 1 ? 'unread' : null]} role="article">
 

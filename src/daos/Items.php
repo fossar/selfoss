@@ -84,6 +84,12 @@ class Items {
             $options
         );
 
+        if (isset($options['fromDatetime']) && strlen($options['fromDatetime']) > 0) {
+            $options['fromDatetime'] = new \DateTime($options['fromDatetime']);
+        } else {
+            unset($options['fromDatetime']);
+        }
+
         $items = $this->backend->get($options);
 
         // remove private posts with private tags

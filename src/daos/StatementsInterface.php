@@ -83,14 +83,14 @@ interface StatementsInterface {
     public static function bool($bool);
 
     /**
-     * Convert a date string into a representation suitable for comparison by
+     * Convert a date into a representation suitable for comparison by
      * the database engine.
      *
-     * @param string $datestr ISO8601 datetime
+     * @param \DateTime $date datetime
      *
      * @return string representation of datetime
      */
-    public static function datetime($datestr);
+    public static function datetime(\DateTime $datestr);
 
     /**
      * Ensure row values have the appropriate PHP type. This assumes we are

@@ -125,15 +125,16 @@ class Statements implements \daos\StatementsInterface {
     }
 
     /**
-     * Convert a date string into a representation suitable for comparison by
+     * Convert a date into a representation suitable for comparison by
      * the database engine.
      *
-     * @param string $datestr ISO8601 datetime
+     * @param \DateTime $date datetime
      *
      * @return string representation of datetime
      */
-    public static function datetime($datestr) {
-        return $datestr; // mysql supports ISO8601 datetime comparisons
+    public static function datetime(\DateTime $date) {
+        // mysql supports ISO8601 datetime comparisons
+        return $date->format(\DateTime::ATOM);
     }
 
     /**
