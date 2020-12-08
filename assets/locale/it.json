@@ -25,7 +25,7 @@
   "lang_source_warn": "Vuoi veramente eliminare questa fonte?",
   "lang_source_new": "Nuova fonte",
   "lang_source_title": "Titolo",
-  "lang_source_tags": "Parole chiave",
+  "lang_source_tags": "Etichette",
   "lang_source_comma": "separate da una virgola",
   "lang_source_select": "seleziona il tipo di fonte",
   "lang_source_type": "Tipo",
@@ -98,6 +98,6 @@
   "lang_error_edit_source": "Impossibile salvare le modifiche alla fonte:",
   "lang_error_unwritable_logs": "Impossibile scrivere i log.",
   "lang_error_check_system_logs": "Si è verificato un errore, controlla i tuoi log di sistema.",
-  "lang_error_check_log_file": "Si è verificato un errore, controlla il file di log \"{0}\".",
-  "lang_offline_navigation_unavailable": "Al momento non è possibile modificare tag e fonti in modalità offline."
+  "lang_error_check_log_file": "Si è verificato un errore, controlla il file di log «{0}».",
+  "lang_offline_navigation_unavailable": "Al momento non è possibile modificare etichette e fonti nella modalità fuori linea."
 }
