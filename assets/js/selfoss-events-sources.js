@@ -1,8 +1,8 @@
 import React from 'jsx-dom';
 import selfoss from './selfoss-base';
+import * as sourceRequests from './requests/sources';
 import SourceParams from './templates/SourceParams';
 import Source from './templates/Source';
-import * as ajax from './helpers/ajax';
 
 /**
  * initialize source editing events for loggedin users
@@ -26,7 +26,7 @@ selfoss.events.sources = function() {
     $('.source-add').unbind('click').click(function(event) {
         event.preventDefault();
 
-        ajax.get('source').promise.then(response => response.json()).then(({spouts}) => {
+        sourceRequests.getSpouts().then(({spouts}) => {
             $('.source-opml').after(<Source spouts={spouts} />);
             selfoss.events.sources();
         }).catch((error) => {
@@ -61,12 +61,7 @@ selfoss.events.sources = function() {
             .filter(tag => tag !== '')
             .forEach(tag => values.append('tags[]', tag));
 
-        ajax.post(`source/${id}`, {
-            body: new URLSearchParams(values),
-            failOnHttpErrors: false
-        }).promise
-            .then(ajax.rejectUnless(response => response.ok || response.status === 400))
-            .then(response => response.json())
+        sourceRequests.update(id, values)
             .then((response) => {
                 if (!response.success) {
                     selfoss.showErrors(parent, response);
@@ -123,7 +118,7 @@ selfoss.events.sources = function() {
         parent.find('.source-edit-delete').addClass('loading');
 
         // delete on server
-        ajax.post(`source/delete/${id}`).promise.then(() => {
+        sourceRequests.remove(id).then(() => {
             parent.fadeOut('fast', function() {
                 $(this).remove();
             });
@@ -145,7 +140,7 @@ selfoss.events.sources = function() {
 
     // select new source spout type
     $('.source-spout').unbind('change').change(function() {
-        var val = $(this).val();
+        var spoutClass = $(this).val();
         var params = $(this).parents('ul').find('.source-params');
 
         // save param values
@@ -157,14 +152,12 @@ selfoss.events.sources = function() {
         });
 
         params.show();
-        if (val.trim().length === 0) {
+        if (spoutClass.trim().length === 0) {
             params.html('');
             return;
         }
         params.addClass('loading');
-        ajax.get('source/params', {
-            body: ajax.makeSearchParams({ spout: val })
-        }).promise.then(res => res.json()).then(({spout, id}) => {
+        sourceRequests.getSpoutParams(spoutClass).then(({spout, id}) => {
             params.removeClass('loading').html(<SourceParams spout={spout} sourceId={id} />);
 
             // restore param values

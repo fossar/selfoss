@@ -11,8 +11,8 @@
 
 import React from 'jsx-dom';
 import selfoss from './selfoss-base';
+import * as itemsRequests from './requests/items';
 import { OfflineStorageNotAvailableError } from './errors';
-import * as ajax from './helpers/ajax';
 import Item from './templates/Item';
 import Dexie from 'dexie';
 
@@ -123,12 +123,9 @@ selfoss.dbOnline = {
 
         selfoss.dbOnline.statsDirty = false;
 
-        selfoss.dbOnline.syncing.request = ajax.fetch('items/sync', {
-            method: updatedStatuses ? 'POST' : 'GET',
-            body: ajax.makeSearchParams(syncParams)
-        });
+        selfoss.dbOnline.syncing.request = itemsRequests.sync(updatedStatuses, syncParams);
 
-        selfoss.dbOnline.syncing.request.promise.then(response => response.json()).then((data) => {
+        selfoss.dbOnline.syncing.request.promise.then((data) => {
             selfoss.db.setOnline();
 
             selfoss.db.lastSync = Date.now();
@@ -255,11 +252,9 @@ selfoss.dbOnline = {
             selfoss.activeAjaxReq.controller.abort();
         }
 
-        selfoss.activeAjaxReq = ajax.get('', {
-            body: ajax.makeSearchParams(selfoss.filter)
-        });
+        selfoss.activeAjaxReq = itemsRequests.getItems(selfoss.filter);
 
-        let promise = selfoss.activeAjaxReq.promise.then(response => response.json()).then((data) => {
+        let promise = selfoss.activeAjaxReq.promise.then((data) => {
             selfoss.db.setOnline();
 
             if (!selfoss.db.enableOffline) {

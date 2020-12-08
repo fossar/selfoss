@@ -1,6 +1,6 @@
 import { createFocusTrap } from 'focus-trap';
 import selfoss from './selfoss-base';
-import * as ajax from './helpers/ajax';
+import * as sourceRequests from './requests/sources';
 
 /**
  * initialize events for entries
@@ -204,9 +204,7 @@ selfoss.events.entries = function() {
         var articleList = content.html();
         $('#content').addClass('loading').html('');
 
-        ajax.post('source/' + selfoss.filter.source + '/update', {
-            timeout: 0
-        }).promise.then(() => {
+        sourceRequests.refreshSingle(selfoss.filter.source).then(() => {
             // hide nav on smartphone
             if (selfoss.isSmartphone()) {
                 $('#nav-mobile-settings').click();

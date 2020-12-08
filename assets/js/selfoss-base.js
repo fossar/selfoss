@@ -1,6 +1,9 @@
 import React from 'jsx-dom';
 import NavTags from './templates/NavTags';
 import NavSources from './templates/NavSources';
+import { getInstanceInfo, login, logout } from './requests/common';
+import * as itemsRequests from './requests/items';
+import { getAllTags } from './requests/tags';
 import * as ajax from './helpers/ajax';
 
 /**
@@ -55,10 +58,7 @@ var selfoss = {
             // We will try to obtain a new configuration anyway
         }
 
-        ajax.get('api/about', {
-            // we want fresh configuration each time
-            cache: 'no-store'
-        }).promise.then(response => response.json()).then(({configuration}) => {
+        getInstanceInfo().then(({configuration}) => {
             localStorage.setItem('configuration', JSON.stringify(configuration));
 
             if (oldConfiguration && 'caches' in window) {
@@ -207,10 +207,12 @@ var selfoss = {
             selfoss.db.clear();
         }
 
-        var f = document.querySelector('#loginform form');
-        ajax.post('login', {
-            body: new URLSearchParams(new FormData(f))
-        }).promise.then(response => response.json()).then((data) => {
+        var f = new FormData(document.querySelector('#loginform form'));
+        const credentials = {
+            username: f.get('username'),
+            password: f.get('password')
+        };
+        login(credentials).then((data) => {
             if (data.success) {
                 $('#password').val('');
                 selfoss.setSession();
@@ -242,7 +244,7 @@ var selfoss = {
             selfoss.events.setHash('login', false);
         }
 
-        ajax.get('logout').promise.catch((error) => {
+        logout().catch((error) => {
             selfoss.ui.showError(selfoss.ui._('error_logout') + ' ' + error.message);
         });
     },
@@ -361,7 +363,7 @@ var selfoss = {
     reloadTags: function() {
         $('#nav-tags').addClass('loading');
 
-        ajax.get('tags').promise.then(response => response.json()).then((data) => {
+        getAllTags().then((data) => {
             selfoss.refreshTags(data);
         }).catch((error) => {
             selfoss.ui.showError(selfoss.ui._('error_load_tags') + ' ' + error.message);
@@ -560,12 +562,7 @@ var selfoss = {
             selfoss.dbOffline.entriesMark(ids, false).then(displayNextUnread);
         }
 
-        ajax.post('mark', {
-            headers: {
-                'content-type': 'application/json; charset=utf-8'
-            },
-            body: JSON.stringify(ids)
-        }).promise.then(response => response.json()).then(function() {
+        itemsRequests.markAll(ids).then(function() {
             selfoss.db.setOnline();
             displayNextUnread();
         }).catch(function(error) {

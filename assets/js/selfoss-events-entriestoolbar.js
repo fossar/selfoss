@@ -1,5 +1,5 @@
 import selfoss from './selfoss-base';
-import * as ajax from './helpers/ajax';
+import * as itemsRequests from './requests/items';
 
 /**
  * toolbar of an single entry
@@ -101,7 +101,7 @@ selfoss.events.entriesToolbar = function(parent) {
                 selfoss.dbOffline.entryStar(id, starr);
             }
 
-            ajax.post(`${starr ? 'starr' : 'unstarr'}/${id}`).promise.then(() => {
+            itemsRequests.starr(id, starr).then(() => {
                 selfoss.db.setOnline();
             }).catch((error) => {
                 selfoss.handleAjaxError(error?.response?.status || 0).then(function() {
@@ -149,7 +149,7 @@ selfoss.events.entriesToolbar = function(parent) {
                 selfoss.dbOffline.entryMark(id, !unread);
             }
 
-            ajax.post(`${unread ? 'mark' : 'unmark'}/${id}`).promise.then(() => {
+            itemsRequests.mark(id, !unread).then(() => {
                 selfoss.db.setOnline();
             }).catch((error) => {
                 selfoss.handleAjaxError(error?.response?.status || 0).then(function() {

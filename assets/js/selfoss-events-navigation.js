@@ -1,5 +1,6 @@
 import selfoss from './selfoss-base';
-import * as ajax from './helpers/ajax';
+import { updateTag } from './requests/tags';
+import * as sourceRequests from './requests/sources';
 
 /**
  * initialize navigation events
@@ -16,12 +17,12 @@ selfoss.events.navigation = function() {
         change: function(color) {
             $(this).css('backgroundColor', color.toHexString());
 
-            ajax.post('tags/color', {
-                body: ajax.makeSearchParams({
-                    tag: $(this).parent().find('.tag').html(),
-                    color: color.toHexString()
-                })
-            }).promise.then(() => {
+            const tagName = $(this).parent().find('.tag').html();
+
+            updateTag(
+                tagName,
+                color.toHexString()
+            ).then(() => {
                 selfoss.ui.beforeReloadList();
                 selfoss.dbOnline.reloadList();
                 selfoss.ui.afterReloadList();
@@ -133,7 +134,7 @@ selfoss.events.navigation = function() {
 
         selfoss.filter.sourcesNav = $('#nav-sources-title').hasClass('nav-sources-collapsed');
         if (selfoss.filter.sourcesNav && !selfoss.sourcesNavLoaded) {
-            ajax.get('sources/stats').promise.then(response => response.json()).then((data) => {
+            sourceRequests.getStats().then((data) => {
                 selfoss.refreshSources(data);
             }).catch(function(error) {
                 selfoss.ui.showError(selfoss.ui._('error_loading_stats') + ' ' + error.message);
@@ -177,9 +178,7 @@ selfoss.events.navigation = function() {
 
         $('#nav-refresh').find('svg').addClass('fa-spin');
 
-        ajax.get('update', {
-            timeout: 0
-        }).promise.then(() => {
+        sourceRequests.refreshAll().then(() => {
             // hide nav on smartphone
             if (selfoss.isSmartphone()) {
                 $('#nav-mobile-settings').click();
