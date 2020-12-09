@@ -99,5 +99,6 @@
   "lang_offline_navigation_unavailable": "Etiketleri ve kaynakları değiştirmek şu anda çevrim dışı modda kullanılamıyor.",
   "lang_offline_count": "Yerel olarak kullanılabilen ögeler",
   "lang_online_count": "Sunucuda bulunan ögeler",
-  "lang_filter": "Filtrele"
+  "lang_filter": "Filtrele",
+  "lang_article_reading_time": "{0} dakika okuma"
 }
