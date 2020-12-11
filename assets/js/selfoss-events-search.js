@@ -40,7 +40,7 @@ selfoss.events.search = function() {
         // execute search
         $('#search').removeClass('active');
         selfoss.filterReset();
-        selfoss.filter.search = term;
+        selfoss.filter.update({ search: term });
         selfoss.events.setHash();
         selfoss.db.reloadList();
 
@@ -97,7 +97,7 @@ selfoss.events.search = function() {
         }
 
         selfoss.filterReset();
-        selfoss.filter.search = '';
+        selfoss.filter.update({ search: '' });
         selfoss.events.setHash();
         $('#search-list').hide();
         $('#search-list').html('');

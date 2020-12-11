@@ -168,9 +168,11 @@ selfoss.events.entries = function() {
     $('.stream-more').unbind('click').click(function() {
         var lastEntry = $('.entry').filter(':last');
         selfoss.events.setHash();
-        selfoss.filter.extraIds.length = 0;
-        selfoss.filter.fromDatetime = new Date(lastEntry.data('entry-datetime'));
-        selfoss.filter.fromId = lastEntry.data('entry-id');
+        selfoss.filter.update({
+            extraIds: [],
+            fromDatetime: new Date(lastEntry.data('entry-datetime')),
+            fromId: lastEntry.data('entry-id')
+        });
 
         selfoss.db.reloadList(true);
     });

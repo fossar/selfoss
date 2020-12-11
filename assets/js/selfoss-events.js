@@ -2,6 +2,7 @@ import React from 'jsx-dom';
 import selfoss from './selfoss-base';
 import Source from './templates/Source';
 import { getAllSources } from './requests/sources';
+import { filterTypeFromString } from './helpers/uri';
 
 selfoss.events = {
 
@@ -155,18 +156,20 @@ selfoss.events = {
 
         // load items
         if (['newest', 'unread', 'starred'].includes(selfoss.events.section)) {
-            selfoss.filter.type = selfoss.events.section;
-            selfoss.filter.tag = '';
-            selfoss.filter.source = '';
+            let filter = {
+                type: filterTypeFromString(selfoss.events.section),
+                tag: null,
+                source: null
+            };
             if (selfoss.events.subsection) {
                 selfoss.events.lastSubsection = selfoss.events.subsection;
                 if (selfoss.events.subsection.startsWith('tag-')) {
-                    selfoss.filter.tag = selfoss.events.subsection.substr(4);
+                    filter.tag = selfoss.events.subsection.substr(4);
                 } else if (selfoss.events.subsection.startsWith('source-')) {
                     var sourceId = parseInt(selfoss.events.subsection.substr(7));
                     if (sourceId) {
-                        selfoss.filter.source = sourceId;
-                        selfoss.filter.sourcesNav = true;
+                        filter.source = sourceId;
+                        filter.sourcesNav = true;
                     }
                 } else if (selfoss.events.subsection != 'all') {
                     selfoss.ui.showError(selfoss.ui._('error_invalid_subsection') + ' '
@@ -175,6 +178,8 @@ selfoss.events = {
                     return;
                 }
             }
+
+            selfoss.filter.update(filter);
 
             selfoss.events.reloadSamePath = false;
             selfoss.filterReset();

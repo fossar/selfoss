@@ -15,6 +15,7 @@ import * as itemsRequests from './requests/items';
 import { OfflineStorageNotAvailableError } from './errors';
 import Item from './templates/Item';
 import Dexie from 'dexie';
+import { FilterType } from './Filter';
 
 selfoss.dbOnline = {
 
@@ -207,7 +208,7 @@ selfoss.dbOnline = {
                     selfoss.ui.refreshEntryStatuses(data.itemUpdates);
                 }
 
-                if (selfoss.filter.type == 'unread') {
+                if (selfoss.filter.type == FilterType.UNREAD) {
                     var unreadCount = 0;
                     if ('stats' in data) {
                         unreadCount = data.stats.unread;
@@ -558,20 +559,20 @@ selfoss.dbOffline = {
                     seek = true;
                 }
                 var isMore = false;
-                var alwaysInDb = selfoss.filter.type === 'starred'
-                             || selfoss.filter.type === 'unread';
+                var alwaysInDb = selfoss.filter.type === FilterType.STARRED
+                             || selfoss.filter.type === FilterType.UNREAD;
                 var offset = selfoss.filter.offset;
 
                 entries.filter(function(entry) {
                     var keepEntry = false;
 
-                    if (selfoss.filter.extraIds.indexOf(entry.id) > -1) {
+                    if (selfoss.filter.extraIds.includes(entry.id)) {
                         return true;
                     }
 
-                    if (selfoss.filter.type == 'starred') {
+                    if (selfoss.filter.type === FilterType.STARRED) {
                         keepEntry = entry.starred;
-                    } else if (selfoss.filter.type == 'unread') {
+                    } else if (selfoss.filter.type === FilterType.UNREAD) {
                         keepEntry = entry.unread;
                     } else {
                         keepEntry = true;
@@ -895,7 +896,7 @@ selfoss.db = {
 
 
     ascOrder: function() {
-        return selfoss.config.unreadOrder === 'asc' && selfoss.filter.type == 'unread';
+        return selfoss.config.unreadOrder === 'asc' && selfoss.filter.type === FilterType.UNREAD;
     },
 
 
@@ -923,10 +924,10 @@ selfoss.db = {
         }
 
         if (selfoss.events.entryId && selfoss.filter.fromId === undefined) {
-            selfoss.filter.extraIds.push(selfoss.events.entryId);
+            selfoss.filter.update({ extraIds: [...selfoss.filter.extraIds, selfoss.events.entryId] });
         }
 
-        if (!append || selfoss.filter.type != 'newest') {
+        if (!append || selfoss.filter.type !== FilterType.NEWEST) {
             selfoss.dbOffline.olderEntriesOnline = false;
         }
 

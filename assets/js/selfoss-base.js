@@ -1,5 +1,6 @@
 import React from 'jsx-dom';
 import NavTags from './templates/NavTags';
+import { Filter, FilterType } from './Filter';
 import NavSources from './templates/NavSources';
 import { getInstanceInfo, login, logout } from './requests/common';
 import * as itemsRequests from './requests/items';
@@ -18,20 +19,9 @@ var selfoss = {
 
     /**
      * current filter settings
-     * @var mixed
+     * @var Filter
      */
-    filter: {
-        offset: 0,
-        fromDatetime: undefined,
-        fromId: undefined,
-        itemsPerPage: 0,
-        search: '',
-        type: 'newest',
-        tag: '',
-        source: '',
-        sourcesNav: false,
-        extraIds: []
-    },
+    filter: new Filter({}),
 
     /**
      * instance of the currently running XHR that is used to reload the items list
@@ -151,7 +141,7 @@ var selfoss = {
             selfoss.initUiDone = true;
 
             // set items per page
-            selfoss.filter.itemsPerPage = selfoss.config.itemsPerPage;
+            selfoss.filter.update({ itemsPerPage: selfoss.config.itemsPerPage });
 
             // read the html title configured
             selfoss.htmlTitle = selfoss.config.htmlTitle;
@@ -314,10 +304,12 @@ var selfoss = {
      * @return void
      */
     filterReset: function() {
-        selfoss.filter.offset = 0;
-        selfoss.filter.fromDatetime = undefined;
-        selfoss.filter.fromId = undefined;
-        selfoss.filter.extraIds.length = 0;
+        selfoss.filter.update({
+            offset: 0,
+            fromDatetime: undefined,
+            fromId: undefined,
+            extraIds: []
+        });
     },
 
 
@@ -522,10 +514,9 @@ var selfoss = {
         selfoss.events.setHash();
         selfoss.filterReset();
 
-        if (ids.length === 0 && selfoss.filter.type == 'unread') {
+        if (ids.length === 0 && selfoss.filter.type === FilterType.UNREAD) {
             $('.entry').remove();
-            if (selfoss.filter.type == 'unread' &&
-                parseInt($('.unread-count .count').html()) > 0) {
+            if (parseInt($('.unread-count .count').html()) > 0) {
                 selfoss.db.reloadList();
             } else {
                 selfoss.ui.refreshStreamButtons(true);

@@ -1,6 +1,8 @@
 import selfoss from './selfoss-base';
 import { updateTag } from './requests/tags';
 import * as sourceRequests from './requests/sources';
+import { FilterType } from './Filter';
+import { filterTypeToString } from './helpers/uri';
 
 /**
  * initialize navigation events
@@ -38,18 +40,18 @@ selfoss.events.navigation = function() {
         e.preventDefault();
 
         if ($(this).hasClass('nav-filter-newest')) {
-            selfoss.filter.type = 'newest';
+            selfoss.filter.update({ type: FilterType.NEWEST });
         } else if ($(this).hasClass('nav-filter-unread')) {
-            selfoss.filter.type = 'unread';
+            selfoss.filter.update({ type: FilterType.UNREAD });
         } else if ($(this).hasClass('nav-filter-starred')) {
-            selfoss.filter.type = 'starred';
+            selfoss.filter.update({ type: FilterType.STARRED });
         }
 
         selfoss.events.reloadSamePath = true;
         if (selfoss.events.lastSubsection == null) {
             selfoss.events.lastSubsection = 'all';
         }
-        selfoss.events.setHash(selfoss.filter.type, 'same');
+        selfoss.events.setHash(filterTypeToString(selfoss.filter.type), 'same');
 
         $('#nav-filter > li > a').removeClass('active');
         $(this).addClass('active');
@@ -80,10 +82,10 @@ selfoss.events.navigation = function() {
         $(this).addClass('active');
 
         if ($(this).hasClass('nav-tags-all') == false) {
-            selfoss.events.setHash(selfoss.filter.type,
+            selfoss.events.setHash(filterTypeToString(selfoss.filter.type),
                 'tag-' + $(this).find('span').html());
         } else {
-            selfoss.events.setHash(selfoss.filter.type, 'all');
+            selfoss.events.setHash(filterTypeToString(selfoss.filter.type), 'all');
         }
 
         selfoss.ui.hideMobileNav();
@@ -111,7 +113,7 @@ selfoss.events.navigation = function() {
         $('#nav-sources > li > a').removeClass('active');
         $(this).addClass('active');
 
-        selfoss.events.setHash(selfoss.filter.type,
+        selfoss.events.setHash(filterTypeToString(selfoss.filter.type),
             'source-' + $(this).attr('data-source-id'));
 
         selfoss.ui.hideMobileNav();
@@ -132,7 +134,7 @@ selfoss.events.navigation = function() {
             });
         };
 
-        selfoss.filter.sourcesNav = $('#nav-sources-title').hasClass('nav-sources-collapsed');
+        selfoss.filter.update({ sourcesNav: $('#nav-sources-title').hasClass('nav-sources-collapsed') });
         if (selfoss.filter.sourcesNav && !selfoss.sourcesNavLoaded) {
             sourceRequests.getStats().then((data) => {
                 selfoss.refreshSources(data);

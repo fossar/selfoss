@@ -180,4 +180,6 @@ export const post = liftToPromiseField(option('method', 'POST'))(fetch);
  * Using URLSearchParams directly handles dictionaries inconveniently.
  * For example, it joins arrays with commas or includes undefined keys.
  */
-export const makeSearchParams = (data) => new URLSearchParams(formurlencoded(data));
+export const makeSearchParams = (data) => new URLSearchParams(formurlencoded(data, {
+    ignorenull: true
+}));
