@@ -27,6 +27,7 @@
     "lint:client": "npm run --prefix assets/ lint",
     "lint:server": "composer run-script lint",
     "test:server": "composer run-script test",
+    "test:integration": "python3 tests/integration/run.py",
     "postinstall": "npm run install-dependencies"
   }
 }

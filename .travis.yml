@@ -32,6 +32,9 @@ cache:
 
 before_install:
     - nvm install 12
+    - pyenv install 3.6.3
+    - pyenv global 3.6.3
+    - pip3 install requests bcrypt
     - if [ -n "$GH_TOKEN" ]; then composer config github-oauth.github.com ${GH_TOKEN}; fi
     - composer self-update
 
@@ -44,6 +47,7 @@ script:
     - npm run lint:server
     - if [ "$CS_FIXER" = true ]; then npm run cs:server; fi
     - npm run test:server
+    - npm run test:integration
 
 before_deploy:
     - git config --global user.email 'Travis CI'
