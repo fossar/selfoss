@@ -35,7 +35,7 @@ class Index {
     /** @var View view helper */
     private $view;
 
-    public function __construct(Authentication $authentication, \daos\Items $itemsDao, \controllers\Sources $sourcesController, \daos\Sources $sourcesDao, \controllers\Tags $tagsController, \daos\Tags $tagsDao, View $view) {
+    public function __construct(Authentication $authentication, \daos\Items $itemsDao, Sources $sourcesController, \daos\Sources $sourcesDao, Tags $tagsController, \daos\Tags $tagsDao, View $view) {
         $this->authentication = $authentication;
         $this->itemsDao = $itemsDao;
         $this->sourcesController = $sourcesController;
@@ -61,7 +61,7 @@ class Index {
             if (!file_exists($home)) {
                 http_response_code(500);
                 echo 'Please build the assets using `npm run build` or obtain a pre-built packages from https://selfoss.aditu.de.';
-                die;
+                exit;
             }
 
             // show as full html page

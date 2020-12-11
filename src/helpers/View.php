@@ -94,7 +94,7 @@ class View {
      */
     public function error($message) {
         header('HTTP/1.0 400 Bad Request');
-        die($message);
+        exit($message);
     }
 
     /**
@@ -118,6 +118,6 @@ class View {
      */
     public function jsonSuccess($data) {
         header('Content-type: application/json');
-        die(json_encode($data));
+        exit(json_encode($data));
     }
 }

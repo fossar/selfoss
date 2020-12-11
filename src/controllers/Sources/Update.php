@@ -30,7 +30,7 @@ class Update {
     public function updateAll() {
         // only allow access for localhost and loggedin users
         if (!$this->authentication->allowedToUpdate()) {
-            die('unallowed access');
+            exit('unallowed access');
         }
 
         // update all feeds
@@ -53,7 +53,7 @@ class Update {
 
         // only allow access for localhost and authenticated users
         if (!$this->authentication->allowedToUpdate()) {
-            die('unallowed access');
+            exit('unallowed access');
         }
 
         // update the feed

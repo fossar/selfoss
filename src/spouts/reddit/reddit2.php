@@ -198,7 +198,7 @@ class reddit2 extends \spouts\spout {
     }
 
     public function getXmlUrl(array $params) {
-        return  'reddit://' . urlencode($params['url']);
+        return 'reddit://' . urlencode($params['url']);
     }
 
     /**

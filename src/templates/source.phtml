@@ -2,9 +2,9 @@
 <form data-source-id="<?= $idAttr ?>"
         class="source <?= isset($this->source) === false ? 'source-new' : '' ?> <?= (isset($this->source) && isset($this->source['error']) && strlen($this->source['error']) > 0) ? 'error' : '' ?>">
     <div class="source-icon">
-        <?php if (isset($this->source) && isset($this->source['icon']) && $this->source['icon'] != '0') : ?>
+        <?php if (isset($this->source) && isset($this->source['icon']) && $this->source['icon'] != '0') { ?>
         <img src="<?= 'favicons/' . $this->source['icon']; ?>" aria-hidden="true" alt="" />
-        <?php endif; ?>
+        <?php } ?>
     </div>
 
     <div class="source-title"><?= isset($this->source) ? $this->source['title'] : \F3::get('lang_source_new'); ?></div>
@@ -57,11 +57,11 @@
         <li><label for="type-<?= $idAttr ?>"><?= \F3::get('lang_source_type')?></label>
             <select id="type-<?= $idAttr ?>" class="source-spout" name="spout" accesskey="y">
                 <option value=""><?= \F3::get('lang_source_select')?></option>
-                <?php foreach ($this->spouts as $spouttype => $spout) : ?>
+                <?php foreach ($this->spouts as $spouttype => $spout) { ?>
                 <option title="<?= $spout->description ?>" value="<?= str_replace('\\', '_', $spouttype); ?>" <?= isset($this->source) && $spouttype === $this->source['spout'] ? 'selected="selected"' : ''; ?>>
                     <?= $spout->name; ?>
                 </option>
-                <?php endforeach; ?>
+                <?php } ?>
             </select>
         </li>
 
@@ -80,11 +80,11 @@
         </li>
 
         <!-- error messages -->
-        <?php if (isset($this->source) && isset($this->source['error'])) : ?>
+        <?php if (isset($this->source) && isset($this->source['error'])) { ?>
         <li class="source-error" aria-live="assertive">
             <?= htmlspecialchars($this->source['error']); ?>
         </li>
-        <?php endif; ?>
+        <?php } ?>
 
         <!-- save/delete -->
         <li class="source-action">
