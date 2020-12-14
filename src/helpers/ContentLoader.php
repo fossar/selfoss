@@ -215,7 +215,9 @@ class ContentLoader {
                 'datetime' => $itemDate->format('Y-m-d H:i:s'),
                 'uid' => $item->getId(),
                 'link' => htmLawed($item->getLink(), ['deny_attribute' => '*', 'elements' => '-*']),
-                'author' => $author
+                'author' => $author,
+                'thumbnail' => null,
+                'icon' => null,
             ];
 
             $thumbnailUrl = $item->getThumbnail();

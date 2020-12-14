@@ -83,7 +83,7 @@ class Write {
         }
         $tags = array_map('htmlspecialchars', $data['tags']);
         $spout = $data['spout'];
-        $filter = $data['filter'];
+        $filter = isset($data['filter']) ? $data['filter'] : null;
 
         unset($data['title']);
         unset($data['spout']);
@@ -91,8 +91,8 @@ class Write {
         unset($data['tags']);
 
         // check if source already exists
-        $id = $params['id'];
-        $sourceExists = $this->sourcesDao->isValid('id', $id);
+        $id = isset($params['id']) ? $params['id'] : null;
+        $sourceExists = $id !== null && $this->sourcesDao->isValid('id', $id);
 
         // load password value if not changed for spouts containing passwords
         if ($sourceExists) {

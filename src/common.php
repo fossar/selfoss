@@ -25,6 +25,11 @@ error_reporting(0);
 
 $f3 = Base::instance();
 
+// Disable deprecation warnings.
+// Dice uses ReflectionParameter::getClass(), which is deprecated in PHP 8
+// but we have not set an error handler yet because it needs a Logger instantiated by Dice.
+error_reporting(E_ALL & ~E_DEPRECATED);
+
 $f3->set('DEBUG', 0);
 $f3->set('version', '2.19-SNAPSHOT');
 
@@ -203,6 +208,7 @@ $dice->addRule(helpers\FeedReader::class, [
 
 // init logger
 $log = $dice->create(Logger::class);
+
 if ($f3->get('logger_level') === 'NONE') {
     $handler = new NullHandler();
 } else {

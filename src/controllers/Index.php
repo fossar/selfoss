@@ -127,8 +127,8 @@ class Index {
         $itemsHtml = '';
 
         $firstPage = $params['offset'] == 0
-            && $params['fromId'] == ''
-            && $params['fromDatetime'] == '';
+            && (!isset($params['fromId']) || $params['fromId'] == '')
+            && (!isset($params['fromDatetime']) || $params['fromDatetime'] == '');
         if ($params['source'] && $this->authentication->allowedToUpdate() && $firstPage) {
             $itemsHtml = '<button type="button" id="refresh-source" class="refresh-source">' . \F3::get('lang_source_refresh') . '</button>';
         }
