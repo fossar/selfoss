@@ -3,6 +3,8 @@
 # variables need to be set.
 language: php
 
+dist: xenial
+
 matrix:
     include:
         - php: 8.0
