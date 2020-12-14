@@ -35,7 +35,7 @@ class Authentication {
         $cookie_secure = $base_url['scheme'] === 'https';
         $cookie_httponly = true;
         $cookie_path = $base_url['path'];
-        $cookie_domain = $base_url['host'];
+        $cookie_domain = $base_url['host'] === 'localhost' ? null : $base_url['host'];
 
         session_set_cookie_params(
             $cookie_expire, $cookie_path, $cookie_domain, $cookie_secure, $cookie_httponly
