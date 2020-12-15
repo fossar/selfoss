@@ -13,27 +13,38 @@
   };
 
   outputs = { self, flake-compat, nixpkgs, utils }:
-    utils.lib.eachDefaultSystem (system:
-      let
-        pkgs = nixpkgs.legacyPackages.${system};
-      in {
-        devShell =
-          let
-            php = pkgs.php.withExtensions ({ enabled, all }: with all; enabled ++ [
-              imagick
+    let
+      mkDevShell = pkgs: phpPackage:
+        let
+          php = pkgs.${phpPackage}.withExtensions ({ enabled, all }: with all; enabled ++ [
+            imagick
+          ]);
+        in
+          pkgs.mkShell {
+            nativeBuildInputs = [
+              php
+              pkgs.zola
+              pkgs.nodejs_latest
+            ] ++ (with php.packages; [
+              composer
+              psalm
+              phpstan
             ]);
-          in
-            pkgs.mkShell {
-              nativeBuildInputs = [
-                php
-                pkgs.zola
-                pkgs.nodejs_latest
-              ] ++ (with php.packages; [
-                composer
-                psalm
-                phpstan
-              ]);
-            };
-      }
-    );
+          };
+    in
+      utils.lib.eachDefaultSystem (system:
+        let
+          pkgs = import nixpkgs.outPath {
+            inherit system;
+            overlays = [
+              (import ./utils/nix/phps.nix nixpkgs.outPath)
+            ];
+          };
+        in {
+          packages = {
+            inherit (pkgs) php56 php70 php71 php72;
+          };
+          devShell = mkDevShell pkgs "php";
+        }
+      );
 }

@@ -1,0 +1,87 @@
+--- a
++++ b
+@@ -58,7 +58,7 @@
+ --- a/ext/intl/breakiterator/rulebasedbreakiterator_methods.cpp
+ +++ b/ext/intl/breakiterator/rulebasedbreakiterator_methods.cpp
+-@@ -26,6 +26,9 @@
++@@ -25,6 +25,9 @@
++ 
+  #include "../intl_convertcpp.h"
+- #include "../intl_common.h"
+  
+ +using U_ICU_NAMESPACE::RuleBasedBreakIterator;
+ +using U_ICU_NAMESPACE::Locale;
+@@ -111,9 +111,9 @@
+ +
+  extern "C" {
+  #include "../php_intl.h"
+- #include "../intl_common.h"
+-@@ -34,6 +36,11 @@
+- #include "zend_exceptions.h"
++ #define USE_TIMEZONE_POINTER 1
++@@ -32,6 +34,11 @@
++ #include <ext/date/php_date.h>
+  }
+  
+ +using U_ICU_NAMESPACE::GregorianCalendar;
+@@ -133,9 +133,9 @@
+ +using U_ICU_NAMESPACE::TimeZone;
+ +using U_ICU_NAMESPACE::UnicodeString;
+ +
+- #include "zend_portability.h"
+- 
+- /* {{{ timezone_convert_datetimezone
++ #ifndef INFINITY
++ #define INFINITY (DBL_MAX+DBL_MAX)
++ #endif
+ --- a/ext/intl/common/common_date.h
+ +++ b/ext/intl/common/common_date.h
+ @@ -28,6 +28,8 @@
+@@ -144,19 +144,19 @@
+  
+ +using U_ICU_NAMESPACE::TimeZone;
+ +
+- U_CFUNC TimeZone *timezone_convert_datetimezone(int type, void *object, int is_datetime, intl_error *outside_error, const char *func);
++ U_CFUNC TimeZone *timezone_convert_datetimezone(int type, void *object, int is_datetime, intl_error *outside_error, const char *func TSRMLS_DC);
+  U_CFUNC int intl_datetime_decompose(zval *z, double *millis, TimeZone **tz,
+- 		intl_error *err, const char *func);
++ 		intl_error *err, const char *func TSRMLS_DC);
+ --- a/ext/intl/common/common_enum.h
+ +++ b/ext/intl/common/common_enum.h
+-@@ -75,6 +75,7 @@
+- U_CFUNC void zoi_with_current_invalidate_current(zend_object_iterator *iter);
++@@ -69,6 +69,7 @@
++ U_CFUNC void zoi_with_current_invalidate_current(zend_object_iterator *iter TSRMLS_DC);
+  
+  #ifdef __cplusplus
+ +using U_ICU_NAMESPACE::StringEnumeration;
+- U_CFUNC void IntlIterator_from_StringEnumeration(StringEnumeration *se, zval *object);
++ U_CFUNC void IntlIterator_from_StringEnumeration(StringEnumeration *se, zval *object TSRMLS_DC);
+  #endif
+  
+ --- a/ext/intl/dateformat/dateformat_format_object.cpp
+ +++ b/ext/intl/dateformat/dateformat_format_object.cpp
+ @@ -33,6 +33,12 @@
+@@ -203,16 +203,16 @@
+  								 Locale const& locale,
+  								 const char *func_name,
+ --- a/ext/intl/intl_convertcpp.h
+ +++ b/ext/intl/intl_convertcpp.h
+-@@ -26,6 +26,8 @@
++@@ -25,6 +25,8 @@
++ 
+  #include <unicode/unistr.h>
+- #include <zend_types.h>
+  
+ +using U_ICU_NAMESPACE::UnicodeString;
+ +
+- int intl_stringFromChar(UnicodeString &ret, char *str, size_t str_len, UErrorCode *status);
+- 
+- zend_string* intl_charFromString(const UnicodeString &from, UErrorCode *status);
++ int intl_stringFromChar(UnicodeString &ret, char *str, int32_t str_len, UErrorCode *status);
++ 
++ int intl_charFromString(const UnicodeString &from, char **res, int *res_len, UErrorCode *status);
+ --- a/ext/intl/msgformat/msgformat_helpers.cpp
+ +++ b/ext/intl/msgformat/msgformat_helpers.cpp
+ @@ -76,6 +76,16 @@MessageFormatAdapter::getMessagePattern(MessageFormat* m) {
+EOF

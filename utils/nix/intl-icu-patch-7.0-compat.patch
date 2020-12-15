@@ -1,0 +1,15 @@
+--- a
++++ b
+@@ -133,8 +133,8 @@
+ +using U_ICU_NAMESPACE::TimeZone;
+ +using U_ICU_NAMESPACE::UnicodeString;
+ +
+- #include "zend_portability.h"
+- 
+- /* {{{ timezone_convert_datetimezone
++ #ifndef INFINITY
++ #define INFINITY (DBL_MAX+DBL_MAX)
++ #endif
+ --- a/ext/intl/common/common_date.h
+ +++ b/ext/intl/common/common_date.h
+EOF
