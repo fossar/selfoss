@@ -172,7 +172,7 @@ class Image {
 
         if ($imgInfo === null) {
             $imgInfo = getimagesizefromstring($data);
-            if ($imgInfo[0] === 0 || $imgInfo[1] === 0) {
+            if ($imgInfo === false || $imgInfo[0] === 0 || $imgInfo[1] === 0) {
                 // unable to determine dimensions
                 return null;
             }

@@ -153,7 +153,7 @@ class Sources implements \daos\SourcesInterface {
         $stmt = static::$stmt;
         // select source by id if specified or return all sources
         if (isset($id)) {
-            $ret = $this->database->exec('SELECT id, title, tags, spout, params, filter, error FROM ' . \F3::get('db_prefix') . 'sources WHERE id=:id', [':id' => $id]);
+            $ret = $this->database->exec('SELECT id, title, tags, spout, params, filter, error, lastupdate, lastentry FROM ' . \F3::get('db_prefix') . 'sources WHERE id=:id', [':id' => $id]);
             $ret = $stmt::ensureRowTypes($ret, ['id' => \daos\PARAM_INT]);
             if (isset($ret[0])) {
                 $ret = $ret[0];
@@ -161,7 +161,7 @@ class Sources implements \daos\SourcesInterface {
                 $ret = null;
             }
         } else {
-            $ret = $this->database->exec('SELECT id, title, tags, spout, params, filter, error FROM ' . \F3::get('db_prefix') . 'sources ORDER BY error DESC, lower(title) ASC');
+            $ret = $this->database->exec('SELECT id, title, tags, spout, params, filter, error, lastupdate, lastentry FROM ' . \F3::get('db_prefix') . 'sources ORDER BY error DESC, lower(title) ASC');
             $ret = $stmt::ensureRowTypes($ret, [
                 'id' => \daos\PARAM_INT,
                 'tags' => \daos\PARAM_CSV
