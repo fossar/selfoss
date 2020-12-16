@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 const fs = require('fs');
 
 if (process.argv.length <= 2) {

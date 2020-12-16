@@ -14,6 +14,8 @@
 
   outputs = { self, flake-compat, nixpkgs, utils }:
     let
+      matrix.php = "php";
+
       mkDevShell = pkgs: phpPackage:
         let
           php = pkgs.${phpPackage}.withExtensions ({ enabled, all }: with all; enabled ++ [
@@ -31,11 +33,14 @@
               pkgs.zola
               pkgs.nodejs_latest
               python
+              pkgs.jq
             ] ++ (with php.packages; [
               composer
               psalm
               phpstan
             ]);
+
+            LOCALE_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
           };
     in
       utils.lib.eachDefaultSystem (system:
@@ -50,7 +55,7 @@
           packages = {
             inherit (pkgs) php56 php70 php71 php72;
           };
-          devShell = mkDevShell pkgs "php";
+          devShell = mkDevShell pkgs matrix.php;
         }
       );
 }
