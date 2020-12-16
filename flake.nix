@@ -19,12 +19,18 @@
           php = pkgs.${phpPackage}.withExtensions ({ enabled, all }: with all; enabled ++ [
             imagick
           ]);
+
+          python = pkgs.python3.withPackages (pp: with pp; [
+            requests
+            bcrypt
+          ]);
         in
           pkgs.mkShell {
             nativeBuildInputs = [
               php
               pkgs.zola
               pkgs.nodejs_latest
+              python
             ] ++ (with php.packages; [
               composer
               psalm
