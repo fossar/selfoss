@@ -9,6 +9,8 @@ Then you will be able to run `npm run install-dependencies` to install the libra
 
 To run the server side you will need at least [PHP](https://www.php.net/downloads) to be able to run the development server using `php -S 127.0.0.1:8000 run.php`. It would be also nice to have an array of database servers (MySQL and PostgreSQL) and web servers (Apache httpd and nginx) but the server built into PHP and SQLite will suffice for small changes.
 
+Integration tests require [Python](https://python.org/) ≥ 3.6 with `requests` and `bcrypt` Python libraries.
+
 For changing the selfoss web page in `docs/` directory, you will also want [Zola](https://www.getzola.org/documentation/getting-started/installation/).
 
 You can install all of the above using your package manager of choice or by downloading the programs from the linked pages.
