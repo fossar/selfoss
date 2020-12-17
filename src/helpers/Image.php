@@ -93,7 +93,12 @@ class Image {
             if ($response->getStatusCode() !== 200) {
                 throw new \Exception(substr($blob, 0, 512));
             }
+        } catch (\Throwable $e) {
+            $this->logger->error("icon: failed to retrieve URL $url", ['exception' => $e]);
+
+            return null;
         } catch (\Exception $e) {
+            // For PHP 5
             $this->logger->error("icon: failed to retrieve URL $url", ['exception' => $e]);
 
             return null;
@@ -119,7 +124,10 @@ class Image {
                     if ($image !== null) {
                         return [$shortcutIconUrl, $image];
                     }
+                } catch (\Throwable $e) {
+                    $this->logger->error("failed to retrieve image $url,", ['exception' => $e]);
                 } catch (\Exception $e) {
+                    // For PHP 5
                     $this->logger->error("failed to retrieve image $url,", ['exception' => $e]);
                 }
             }
@@ -137,7 +145,10 @@ class Image {
                 if ($image !== null) {
                     return [$url, $image];
                 }
+            } catch (\Throwable $e) {
+                $this->logger->error("failed to retrieve image $url,", ['exception' => $e]);
             } catch (\Exception $e) {
+                // For PHP 5
                 $this->logger->error("failed to retrieve image $url,", ['exception' => $e]);
             }
         }
@@ -241,7 +252,10 @@ class Image {
         // parse image for saving it later
         try {
             $wideImage = WideImage::load($data);
+        } catch (\Throwable $e) {
+            return null;
         } catch (\Exception $e) {
+            // For PHP 5
             return null;
         }
 

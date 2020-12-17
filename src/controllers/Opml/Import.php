@@ -91,7 +91,10 @@ class Import {
                 $amount = count($this->imported);
                 $messages[] = 'Success! ' . $amount . ' feed' . ($amount !== 1 ? 's have' : ' has') . ' been imported.';
             }
+        } catch (\Throwable $e) {
+            $messages[] = $e->getMessage();
         } catch (\Exception $e) {
+            // For PHP 5
             $messages[] = $e->getMessage();
         }
 
