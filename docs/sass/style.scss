@@ -401,3 +401,17 @@ kbd {
         margin-top: 0;
     }
 }
+
+// Footnotes from pulldown-cmark
+.footnote-definition {
+    display: flex;
+    font-size: 0.95em;
+}
+
+.footnote-definition p {
+    margin: 0;
+}
+
+.footnote-definition-label {
+    margin-right: 0.95em;
+}
