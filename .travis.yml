@@ -38,7 +38,7 @@ before_install:
     - nix path-info --all > /tmp/store-path-pre-build
 
     # Update flake.nix to match the current CI job from matrix.
-    - sed -i "s/matrix.php = \"php\";/matrix.php = \"php${PHP}\";/" flake.nix
+    - sed -i "s/matrix.phpPackage = \"php\";/matrix.phpPackage = \"php${PHP}\";/" flake.nix
 
     - if [ -n "$GH_TOKEN" ]; then nix-shell --run "composer config github-oauth.github.com ${GH_TOKEN}"; fi
 
