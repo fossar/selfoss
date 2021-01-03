@@ -12,7 +12,7 @@ import zipfile
 logger = logging.getLogger('create-zipfile')
 
 DISALLOWED_FILENAME_PATTERNS = list(map(re.compile, [
-    r'^\.git(ignore|attributes|keep)$',
+    r'^\.git(hub|ignore|attributes|keep)$',
     r'^\.travis\.yml$',
     r'^\.editorconfig$',
     r'(?i)^changelog',

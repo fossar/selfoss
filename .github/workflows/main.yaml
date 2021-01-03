@@ -1,0 +1,168 @@
+# This file lints the code, runs tests, builds a package and then deploys it.
+# The following secrets need to be set:
+# - “BINTRAY_API_KEY” for pushing built package to Bintray
+# - “CACHIX_AUTH_TOKEN” for uploading built Nix packages to Cachix
+name: CI
+
+on:
+  pull_request:
+  push:
+
+env:
+  COMPOSER_FLAGS: "--ansi --no-interaction --no-progress --no-suggest --prefer-dist"
+
+jobs:
+  tests:
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        include:
+          - php: 80
+          - php: 74
+          - php: 73
+          - php: 72
+          - php: 71
+          - php: 70
+            cs_fixer: true
+            lint_js: true
+          - php: 56
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v12
+
+      - name: Set up Nix cache
+        uses: cachix/cachix-action@v8
+        with:
+          name: fossar
+          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+
+      - name: Update flake.nix to match the current CI job from matrix
+        run: sed -i 's/matrix.phpPackage = "php";/matrix.phpPackage = "php${{ matrix.php }}";/' flake.nix
+
+      - name: Cache Node modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: |
+          echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - uses: actions/cache@v2
+        env:
+          cache-name: cache-composer-modules
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: nix-shell --run 'npm run install-dependencies'
+
+      - name: Lint front-end code
+        if: matrix.lint_js
+        run: nix-shell --run 'npm run lint:client'
+
+      - name: Check syntax of back-end code
+        run: nix-shell --run 'npm run lint:server'
+
+      - name: Lint back-end code
+        if: matrix.cs_fixer
+        run: nix-shell --run 'npm run cs:server'
+
+      - name: Run unit tests
+        run: nix-shell --run 'npm run test:server'
+
+      - name: Run integration tests
+        run: nix-shell --run 'npm run test:integration'
+
+  deploy:
+    runs-on: ubuntu-20.04
+    needs:
+      - tests
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v12
+
+      - name: Cache Node modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: |
+          echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - uses: actions/cache@v2
+        env:
+          cache-name: cache-composer-modules
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Build a zipball
+        id: zipball
+        run: |
+          nix-shell --run 'npm run dist'
+          echo "::set-output name=file_name::$(echo selfoss-*.zip)"
+          echo "::set-output name=version::$(echo selfoss-*.zip | sed -e 's/^selfoss-//' -e 's/\.zip$//')"
+
+      - name: Upload the zipball to GitHub
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ steps.zipball.outputs.file_name }}
+          if-no-files-found: error
+          path: ${{ steps.zipball.outputs.file_name }}
+
+      - name: Upload the zipball to Bintray
+        uses: bpicode/github-action-upload-bintray@v0.9.0
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        with:
+          file: ${{ steps.zipball.outputs.file_name }}
+          api_user: jtojnar
+          api_key: ${{ secrets.BINTRAY_API_KEY }}
+          repository: selfoss
+          package: selfoss-git
+          version: ${{ steps.zipball.outputs.version }}
+          publish: 1
+          calculate_metadata: false
+
+      - name: Create a release
+        id: create_release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && startsWith(github.ref, 'refs/tags/')
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.zipball.outputs.version }}
+          release_name: ${{ steps.zipball.outputs.version }}
+
+      - name: Upload zipball to release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && startsWith(github.ref, 'refs/tags/')
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{ steps.zipball.outputs.file_name }}
+          asset_name: ${{ steps.zipball.outputs.file_name }}
+          asset_content_type: application/zip
