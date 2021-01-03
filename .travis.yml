@@ -57,9 +57,7 @@ after_success:
     - comm -13 <(sort /tmp/store-path-pre-build | grep -v '\.drv$') <(nix path-info --all | grep -v '\.drv$' | sort) | cachix push $CACHIX_CACHE
 
 before_deploy:
-    - git config --global user.email 'Travis CI'
-    - git config --global user.name 'builds@travis-ci.org'
-    - nix-shell --run "utils/package.sh"
+    - nix-shell --run "npm run dist"
     - SELFOSS_ZIPBALL=$(nix-shell --run "utils/bintray.sh")
 
 deploy:

@@ -89,6 +89,18 @@ with tempfile.TemporaryDirectory(prefix='selfoss-dist-') as temp_dir:
 
     os.chdir(temp_dir)
 
+    with open('package.json', encoding='utf-8') as package_json:
+        pkg = json.load(package_json)
+
+    version = pkg['ver']
+
+    # Tagged releases will be bumped by a developer to version not including -SNAPSHOT suffix and we do not need to include the commit.
+    if 'SNAPSHOT' in version:
+        logger.info('Inserting commit hash into version numbers…')
+        short_commit = subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD'], encoding='utf-8').strip()
+        version = version.replace('SNAPSHOT', short_commit)
+        subprocess.check_call(['npm', 'run', 'bump-version', version])
+
     logger.info('Installing dependencies…')
     subprocess.check_call(['npm', 'run', 'install-dependencies'])
 
@@ -98,10 +110,6 @@ with tempfile.TemporaryDirectory(prefix='selfoss-dist-') as temp_dir:
     logger.info('Optimizing PHP dependencies…')
     subprocess.check_call(['composer', 'install', '--no-dev', '--optimize-autoloader'])
 
-    with open('package.json', encoding='utf-8') as package_json:
-        pkg = json.load(package_json)
-
-    version = pkg['ver']
     filename = 'selfoss-{}.zip'.format(version)
 
     # fill archive with data
