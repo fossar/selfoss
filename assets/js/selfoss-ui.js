@@ -2,9 +2,8 @@ import React from 'jsx-dom';
 import locales from './locales';
 import selfoss from './selfoss-base';
 import { initIcons } from './icons';
-import NavSources from './templates/NavSources';
+import * as NavSources from './templates/NavSources';
 import * as NavTags from './templates/NavTags';
-import { filterTypeToString } from './helpers/uri';
 
 /**
  * ui change functions
@@ -175,39 +174,20 @@ selfoss.ui = {
 
         selfoss.tags.addEventListener('change', setupTags);
 
-        selfoss.sources.addEventListener('change', (event) => {
-            $('#nav-sources').html(<NavSources sources={event.sources} />);
+        selfoss.sources.addEventListener('change', () => {
+            NavSources.anchor(document.querySelector('#nav-sources'), selfoss.sources, selfoss.filter);
 
             if (selfoss.filter.source) {
                 if (!selfoss.db.isValidSource(selfoss.filter.source)) {
                     selfoss.ui.showError(selfoss.ui._('error_unknown_source') + ' '
                                          + selfoss.filter.source);
                 }
-
-                $(`#nav-sources a[data-source-id="${selfoss.filter.source}"]`).addClass('active');
             }
 
             selfoss.sourcesNavLoaded = true;
             if ($('#nav-sources-title').hasClass('nav-sources-collapsed')) {
                 $('#nav-sources-title').click(); // expand sources nav
             }
-
-            // source
-            $('#nav-sources > li > a').unbind('click').click(function(e) {
-                e.preventDefault();
-
-                if (!selfoss.db.online) {
-                    return;
-                }
-
-                $('#nav-sources > li > a').removeClass('active');
-                $(this).addClass('active');
-
-                selfoss.events.setHash(filterTypeToString(selfoss.filter.type),
-                    'source-' + $(this).attr('data-source-id'));
-
-                selfoss.ui.hideMobileNav();
-            });
         });
     },
 
@@ -753,33 +733,24 @@ selfoss.ui = {
         selfoss.tags.update(tags);
 
         if (selfoss.sourcesNavLoaded) {
-            $('#nav-sources a').each(function() {
-                const source = this.getAttribute('data-source-id');
-
-                if (!(source in sourceCounts)) {
-                    return;
+            const sources = selfoss.sources.sources.map((source) => {
+                if (!(source.id in sourceCounts)) {
+                    return source;
                 }
 
-                var sourcesCountEl = $('span.unread', this);
-
-                var unreadCount = 0;
+                let unread;
                 if (diff) {
-                    if (sourcesCountEl.html() != '') {
-                        unreadCount = parseInt(sourcesCountEl.html());
-                    }
-                    unreadCount = unreadCount + sourceCounts[source];
+                    unread = source.unread + sourceCounts[source.id];
                 } else {
-                    unreadCount = sourceCounts[source];
+                    unread = sourceCounts[source.id];
                 }
 
-                if (unreadCount > 0) {
-                    $(this).addClass('unread');
-                    sourcesCountEl.html(unreadCount);
-                } else {
-                    $(this).removeClass('unread');
-                    sourcesCountEl.html('');
-                }
+                return {
+                    ...source,
+                    unread
+                };
             });
+            selfoss.sources.update(sources);
         }
     },
 
