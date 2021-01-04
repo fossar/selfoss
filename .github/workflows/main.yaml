@@ -134,11 +134,12 @@ jobs:
           path: ${{ steps.zipball.outputs.file_name }}
 
       - name: Upload the zipball to Bintray
-        uses: bpicode/github-action-upload-bintray@v0.9.0
+        uses: bpicode/github-action-upload-bintray@7c33b56d01c41301a3346f2fd9af590cb1c81899
         if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         with:
           file: ${{ steps.zipball.outputs.file_name }}
           api_user: jtojnar
+          repository_user: fossar
           api_key: ${{ secrets.BINTRAY_API_KEY }}
           repository: selfoss
           package: selfoss-git
