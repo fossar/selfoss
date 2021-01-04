@@ -51,19 +51,18 @@ selfoss.events.search = function() {
 
     // search button shows search input or executes search
     $('#search-button').unbind('click').click(function() {
-        if ($('#search').hasClass('active') == false) {
+        if (!selfoss.isSmartphone() && $('#search').hasClass('active') == false) {
             $('#search').addClass('active');
             $('#search-term').focus().select();
             return;
         }
+
         executeSearch($('#search-term').val());
         $('#search-term').blur();
-    });
 
-    // navigation search button for mobile navigation
-    $('#nav-search-button').unbind('click').click(function() {
-        executeSearch($('#nav-search-term').val());
-        $('#nav-mobile-settings').click();
+        if (selfoss.isSmartphone()) {
+            $('#nav-mobile-settings').click();
+        }
     });
 
     // keypress enter in search inputfield

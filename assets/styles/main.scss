@@ -324,10 +324,6 @@ span.offline-count.diff {
     color: #777777;
 }
 
-#nav-search {
-    display: none;
-}
-
 .nav-toolbar {
     display: flex;
     padding: 0.25em;
@@ -358,36 +354,6 @@ span.offline-count.diff {
 }
 
 /* search */
-
-#search {
-    z-index: 9;
-    position: fixed;
-    padding: 5px;
-    background: rgba(61, 109, 105, 0.4);
-    border-top-right-radius: 4px;
-    border-bottom-right-radius: 4px;
-    transition: left 0.5s ease-in-out;
-}
-
-#search.offline {
-    display: none;
-}
-
-#search-term {
-    width: 20rem;
-    margin-left: 0.5em;
-}
-
-#search-button,
-#search-remove {
-    box-sizing: content-box;
-    background: transparent;
-    padding: 0;
-    border: none;
-    width: 30px;
-    height: 30px;
-    cursor: pointer;
-}
 
 #search-list {
     display: none;
@@ -949,6 +915,10 @@ body:not(.loggedin) .entry-unread {
     display: none;
 }
 
+#search.offline {
+    display: none;
+}
+
 /* mobile version */
 
 /* only desktop */
@@ -960,10 +930,12 @@ body:not(.loggedin) .entry-unread {
     #search {
         left: calc(108px - 20rem + 0.5em + 30px);
         top: 25px;
+        clip-path: inset(0 0 0 357px);
     }
 
     #search.active {
         left: 185px;
+        clip-path: inset(0);
     }
 }
 
@@ -989,6 +961,70 @@ body:not(.loggedin) .entry-unread {
     body.publicmode.authenabled #nav-login,
     body.authenabled.loggedin #nav-logout {
         display: inline-block;
+    }
+
+    /* search */
+
+    .search-button-label {
+        display: none;
+    }
+
+    #search-button,
+    #search-remove {
+        box-sizing: content-box;
+        background: transparent;
+        padding: 0;
+        border: none;
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+    }
+
+    #search {
+        z-index: 9;
+        position: fixed;
+        padding: 5px;
+        background: rgba(61, 109, 105, 0.4);
+        border-top-right-radius: 4px;
+        border-bottom-right-radius: 4px;
+        transition-property: left, clip-path;
+        transition-duration: 0.5s;
+        transition-timing-function: ease-in-out;
+    }
+
+    #search-term {
+        width: 20rem;
+        margin-left: 0.5em;
+    }
+
+    #search hr {
+        display: none;
+    }
+}
+
+/* ipad */
+@media screen and (min-width: 641px) and (max-width: 1024px) {
+    #search {
+        width: calc(20rem + 0.5em + 30px);
+        top: -46px;
+        right: 65px;
+        transition: top 0.5s ease-in-out;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 4px;
+    }
+
+    #search.active {
+        top: 0;
+    }
+
+    #search-button {
+        position: absolute;
+        bottom: -30px;
+        left: 100%;
+        margin-left: -50px;
+        background-color: rgba(61, 109, 105, 0.4);
+        border-bottom-left-radius: 4px;
+        border-bottom-right-radius: 4px;
     }
 }
 
@@ -1029,29 +1065,6 @@ body:not(.loggedin) .entry-unread {
     #nav-tags .color {
         width: 25px;
         height: 25px;
-    }
-
-    #search {
-        width: calc(20rem + 0.5em + 30px);
-        top: -46px;
-        right: 65px;
-        transition: top 0.5s ease-in-out;
-        border-bottom-right-radius: 0;
-        border-bottom-left-radius: 4px;
-    }
-
-    #search.active {
-        top: 0;
-    }
-
-    #search-button {
-        position: absolute;
-        bottom: -30px;
-        left: 100%;
-        margin-left: -50px;
-        background-color: rgba(61, 109, 105, 0.4);
-        border-bottom-left-radius: 4px;
-        border-bottom-right-radius: 4px;
     }
 
     #search-list {
@@ -1162,26 +1175,31 @@ body:not(.loggedin) .entry-unread {
         width: 90%;
     }
 
-    #nav-search {
+    #search {
         display: block;
     }
 
-    #nav-search.offline {
+    #search.offline {
         display: none;
     }
 
-    #nav-search-term {
+    #search-term {
         background: #cccccc;
         width: 50%;
         margin-left: 10px;
     }
 
-    #nav-search-button {
+    #search-button {
         color: #ededed;
         border: 0;
         background: #333333;
         border-radius: 4px;
         cursor: pointer;
+        height: 2.25em;
+    }
+
+    #search-remove {
+        display: none;
     }
 
     .nav-toolbar {
@@ -1195,10 +1213,6 @@ body:not(.loggedin) .entry-unread {
     body.publicmode.authenabled #nav-login,
     body.authenabled.loggedin #nav-logout {
         display: inline-block;
-    }
-
-    #search {
-        display: none;
     }
 
     #search-list {

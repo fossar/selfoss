@@ -83,8 +83,10 @@ selfoss.ui = {
                 <div class="separator"><hr /></div>
 
                 {/* navigation search input just for smartphone version */}
-                <div id="nav-search" class="offlineable" role="search">
-                    <input aria-label={selfoss.ui._('search_label')} type="search" id="nav-search-term" accesskey="s" /> <input type="button" id="nav-search-button" value={selfoss.ui._('searchbutton')} accesskey="e" />
+                <div id="search" class="offlineable" role="search">
+                    <input aria-label={selfoss.ui._('search_label')} type="search" id="search-term" accesskey="s" />
+                    <button id="search-remove" title={selfoss.ui._('searchremove')} accesskey="h" aria-label={selfoss.ui._('searchremove')}><i class="fas fa-times"></i></button>
+                    <button id="search-button" title={selfoss.ui._('searchbutton')} aria-label={selfoss.ui._('searchbutton')} accesskey="e"><i class="fas fa-search"></i> <span class="search-button-label">{selfoss.ui._('searchbutton')}</span></button>
                     <hr />
                 </div>
 
@@ -94,13 +96,6 @@ selfoss.ui = {
                     <button id="nav-logout" title={selfoss.ui._('logoutbutton')} aria-label={selfoss.ui._('logoutbutton')} accesskey="l"><i class="fas fa-sign-out-alt fa-fw"></i></button>
                     <button id="nav-login" title={selfoss.ui._('loginbutton')} aria-label={selfoss.ui._('loginbutton')} accesskey="l"><i class="fas fa-key fa-fw"></i></button>
                 </div>
-            </div>
-
-            {/* search */}
-            <div id="search" role="search" class="offlineable">
-                <input aria-label={selfoss.ui._('search_label')} type="search" id="search-term" accesskey="s" />
-                <button id="search-remove" title={selfoss.ui._('searchremove')} accesskey="h" aria-label={selfoss.ui._('searchremove')}><i class="fas fa-times"></i></button>
-                <button id="search-button" title={selfoss.ui._('searchbutton')} aria-label={selfoss.ui._('searchbutton')} accesskey="e"><i class="fas fa-search"></i></button>
             </div>
 
             <ul id="search-list">
