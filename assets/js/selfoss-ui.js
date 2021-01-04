@@ -2,6 +2,9 @@ import React from 'jsx-dom';
 import locales from './locales';
 import selfoss from './selfoss-base';
 import { initIcons } from './icons';
+import NavTags from './templates/NavTags';
+import { updateTag } from './requests/tags';
+import { filterTypeToString } from './helpers/uri';
 
 /**
  * ui change functions
@@ -156,6 +159,83 @@ selfoss.ui = {
             script.setAttribute('src', `user.js?v=${selfoss.config.userJs}`);
             document.body.appendChild(script);
         }
+
+        selfoss.tags.addEventListener('statechange', (event) => {
+            if (event.state === 'loading') {
+                $('#nav-tags').addClass('loading');
+            } else {
+                $('#nav-tags').removeClass('loading');
+            }
+        });
+
+        selfoss.tags.addEventListener('change', (event) => {
+            $('#nav-tags').html(<NavTags tags={event.tags} />);
+            if (selfoss.filter.tag) {
+                if (!selfoss.db.isValidTag(selfoss.filter.tag)) {
+                    selfoss.ui.showError(selfoss.ui._('error_unknown_tag') + ' ' + selfoss.filter.tag);
+                }
+
+                $('#nav-tags li:first a').removeClass('active');
+                $('#nav-tags > li > a').filter(function() {
+                    if ($('.tag', this)) {
+                        return $('.tag', this).html() == selfoss.filter.tag;
+                    } else {
+                        return false;
+                    }
+                }).addClass('active');
+            } else {
+                $('.nav-tags-all').addClass('active');
+            }
+
+            // init colorpicker
+            $('.color').spectrum('destroy');
+            $('.color').spectrum({
+                showPaletteOnly: true,
+                color: 'blanchedalmond',
+                palette: [
+                    ['#ffccc9', '#ffce93', '#fffc9e', '#ffffc7', '#9aff99', '#96fffb', '#cdffff', '#cbcefb', '#fffe65', '#cfcfcf', '#fd6864', '#fe996b', '#fcff2f', '#67fd9a', '#38fff8', '#68fdff', '#9698ed', '#c0c0c0', '#fe0000', '#f8a102', '#ffcc67', '#f8ff00', '#34ff34', '#68cbd0', '#34cdf9', '#6665cd', '#9b9b9b', '#cb0000', '#f56b00', '#ffcb2f', '#ffc702', '#32cb00', '#00d2cb', '#3166ff', '#6434fc', '#656565', '#9a0000', '#ce6301', '#cd9934', '#999903', '#009901', '#329a9d', '#3531ff', '#6200c9', '#343434', '#680100', '#963400', '#986536', '#646809', '#036400', '#34696d', '#00009b', '#303498', '#000000', '#330001', '#643403', '#663234', '#343300', '#013300', '#003532', '#010066', '#340096']
+                ],
+                change: function(color) {
+                    $(this).css('backgroundColor', color.toHexString());
+
+                    const tagName = $(this).parent().find('.tag').html();
+
+                    updateTag(
+                        tagName,
+                        color.toHexString()
+                    ).then(() => {
+                        selfoss.ui.beforeReloadList();
+                        selfoss.dbOnline.reloadList();
+                        selfoss.ui.afterReloadList();
+                    }).catch((error) => {
+                        selfoss.ui.showError(selfoss.ui._('error_saving_color') + ' ' + error.message);
+                    });
+
+                }
+            });
+
+            // tag
+            $('#nav-tags > li > a').unbind('click').click(function(e) {
+                e.preventDefault();
+
+                if (!selfoss.db.online) {
+                    return;
+                }
+
+                $('#nav-tags > li > a').removeClass('active');
+                $('#nav-sources > li > a').removeClass('active');
+                $(this).addClass('active');
+
+                if ($(this).hasClass('nav-tags-all') == false) {
+                    selfoss.events.setHash(filterTypeToString(selfoss.filter.type),
+                        'tag-' + $(this).find('span').html());
+                } else {
+                    selfoss.events.setHash(filterTypeToString(selfoss.filter.type), 'all');
+                }
+
+                selfoss.ui.hideMobileNav();
+            });
+        });
     },
 
     showLogin: function(error = '') {

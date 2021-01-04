@@ -192,7 +192,7 @@ selfoss.dbOnline = {
             }
 
             if ('tags' in data) {
-                selfoss.refreshTags(data.tags);
+                selfoss.tags.update(data.tags);
             }
 
             if ('sources' in data) {
@@ -273,7 +273,7 @@ selfoss.dbOnline = {
             selfoss.ui.refreshStreamButtons(true, data.hasMore);
 
             // update tags
-            selfoss.refreshTags(data.tags);
+            selfoss.tags.update(data.tags);
 
             if (selfoss.filter.sourcesNav) {
                 selfoss.refreshSources(data.sources);
@@ -875,13 +875,8 @@ selfoss.db = {
     },
 
 
-    isValidTag: function(tag) {
-        var isValid = false;
-        $('#nav-tags > li:not(:first) > a').each(function() {
-            isValid = $('.tag', this).html() == tag;
-            return !isValid; // break the loop if valid
-        });
-        return isValid;
+    isValidTag: function(name) {
+        return selfoss.tags.tags.find((tag) => tag.tag === name) !== undefined;
     },
 
 

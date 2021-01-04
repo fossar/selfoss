@@ -87,7 +87,7 @@ selfoss.events.sources = function() {
                     parent.removeClass('source-new');
 
                     // update tags
-                    selfoss.refreshTags(response.tags, true);
+                    selfoss.tags.update(response.tags);
 
                     // update sources
                     selfoss.refreshSources(response.sources, true);

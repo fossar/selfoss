@@ -1,12 +1,13 @@
 import React from 'jsx-dom';
-import NavTags from './templates/NavTags';
 import { Filter, FilterType } from './Filter';
+import { TagsRepository } from './model/TagsRepository';
 import NavSources from './templates/NavSources';
 import { getInstanceInfo, login, logout } from './requests/common';
 import * as itemsRequests from './requests/items';
 import { getAllTags } from './requests/tags';
 import * as ajax from './helpers/ajax';
 import { HttpError, TimeoutError } from './errors';
+import { LoadingState } from './requests/LoadingState';
 
 /**
  * base javascript application
@@ -22,6 +23,12 @@ var selfoss = {
      * @var Filter
      */
     filter: new Filter({}),
+
+    /**
+     * tag repository
+     * @var TagsRepository
+     */
+    tags: new TagsRepository({}),
 
     /**
      * instance of the currently running XHR that is used to reload the items list
@@ -361,49 +368,16 @@ var selfoss = {
      * @return void
      */
     reloadTags: function() {
-        $('#nav-tags').addClass('loading');
+        selfoss.tags.setState(LoadingState.LOADING);
 
         getAllTags().then((data) => {
-            selfoss.refreshTags(data);
+            selfoss.tags.update(data);
+            selfoss.tags.setState(LoadingState.SUCCESS);
         }).catch((error) => {
+            selfoss.tags.setState(LoadingState.FAILURE);
             selfoss.ui.showError(selfoss.ui._('error_load_tags') + ' ' + error.message);
-        }).finally(() => {
-            $('#nav-tags').removeClass('loading');
         });
     },
-
-
-    /**
-     * refresh taglist.
-     *
-     * @return void
-     * @param tags the new taglist as html
-     */
-    refreshTags: function(tags, delayNavigation = false) {
-        $('.color').spectrum('destroy');
-        $('#nav-tags').html(<NavTags tags={tags} />);
-        if (selfoss.filter.tag) {
-            if (!selfoss.db.isValidTag(selfoss.filter.tag)) {
-                selfoss.ui.showError(selfoss.ui._('error_unknown_tag') + ' ' + selfoss.filter.tag);
-            }
-
-            $('#nav-tags li:first a').removeClass('active');
-            $('#nav-tags > li > a').filter(function() {
-                if ($('.tag', this)) {
-                    return $('.tag', this).html() == selfoss.filter.tag;
-                } else {
-                    return false;
-                }
-            }).addClass('active');
-        } else {
-            $('.nav-tags-all').addClass('active');
-        }
-
-        if (!delayNavigation) {
-            selfoss.events.navigation();
-        }
-    },
-
 
     sourcesNavLoaded: false,
 

@@ -1,5 +1,4 @@
 import selfoss from './selfoss-base';
-import { updateTag } from './requests/tags';
 import * as sourceRequests from './requests/sources';
 import { FilterType } from './Filter';
 import { filterTypeToString } from './helpers/uri';
@@ -8,33 +7,6 @@ import { filterTypeToString } from './helpers/uri';
  * initialize navigation events
  */
 selfoss.events.navigation = function() {
-
-    // init colorpicker
-    $('.color').spectrum({
-        showPaletteOnly: true,
-        color: 'blanchedalmond',
-        palette: [
-            ['#ffccc9', '#ffce93', '#fffc9e', '#ffffc7', '#9aff99', '#96fffb', '#cdffff', '#cbcefb', '#fffe65', '#cfcfcf', '#fd6864', '#fe996b', '#fcff2f', '#67fd9a', '#38fff8', '#68fdff', '#9698ed', '#c0c0c0', '#fe0000', '#f8a102', '#ffcc67', '#f8ff00', '#34ff34', '#68cbd0', '#34cdf9', '#6665cd', '#9b9b9b', '#cb0000', '#f56b00', '#ffcb2f', '#ffc702', '#32cb00', '#00d2cb', '#3166ff', '#6434fc', '#656565', '#9a0000', '#ce6301', '#cd9934', '#999903', '#009901', '#329a9d', '#3531ff', '#6200c9', '#343434', '#680100', '#963400', '#986536', '#646809', '#036400', '#34696d', '#00009b', '#303498', '#000000', '#330001', '#643403', '#663234', '#343300', '#013300', '#003532', '#010066', '#340096']
-        ],
-        change: function(color) {
-            $(this).css('backgroundColor', color.toHexString());
-
-            const tagName = $(this).parent().find('.tag').html();
-
-            updateTag(
-                tagName,
-                color.toHexString()
-            ).then(() => {
-                selfoss.ui.beforeReloadList();
-                selfoss.dbOnline.reloadList();
-                selfoss.ui.afterReloadList();
-            }).catch((error) => {
-                selfoss.ui.showError(selfoss.ui._('error_saving_color') + ' ' + error.message);
-            });
-
-        }
-    });
-
     // filter
     $('#nav-filter > li > a').unbind('click').click(function(e) {
         e.preventDefault();
@@ -67,28 +39,6 @@ selfoss.events.navigation = function() {
         $('#nav-filter-title').attr('aria-expanded', function(i, attr) {
             return attr == 'true' ? 'false' : 'true';
         });
-    });
-
-    // tag
-    $('#nav-tags > li > a').unbind('click').click(function(e) {
-        e.preventDefault();
-
-        if (!selfoss.db.online) {
-            return;
-        }
-
-        $('#nav-tags > li > a').removeClass('active');
-        $('#nav-sources > li > a').removeClass('active');
-        $(this).addClass('active');
-
-        if ($(this).hasClass('nav-tags-all') == false) {
-            selfoss.events.setHash(filterTypeToString(selfoss.filter.type),
-                'tag-' + $(this).find('span').html());
-        } else {
-            selfoss.events.setHash(filterTypeToString(selfoss.filter.type), 'all');
-        }
-
-        selfoss.ui.hideMobileNav();
     });
 
     // hide/show tags
