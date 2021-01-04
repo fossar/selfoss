@@ -5,6 +5,7 @@ import { initIcons } from './icons';
 import * as NavSources from './templates/NavSources';
 import * as NavFilters from './templates/NavFilters';
 import * as NavTags from './templates/NavTags';
+import { LoadingState } from './requests/LoadingState';
 
 /**
  * ui change functions
@@ -66,14 +67,11 @@ selfoss.ui = {
 
                 <div class="separator"><hr /></div>
 
-                <div id="nav-tags-wrapper" class="offlineable">
-                    <h2><button type="button" id="nav-tags-title" class="nav-section-toggle nav-tags-expanded" aria-expanded="true"><i class="fas fa-caret-down fa-lg fa-fw"></i> {selfoss.ui._('tags')}</button></h2>
-                    <ul id="nav-tags" aria-labelledby="nav-tags-title">
-                    </ul>
-                    <h2><button type="button" id="nav-sources-title" class="nav-section-toggle nav-sources-collapsed" aria-expanded="false"><i class="fas fa-caret-right fa-lg fa-fw"></i> {selfoss.ui._('sources')}</button></h2>
-                    <ul id="nav-sources" aria-labelledby="nav-sources-title">
-                    </ul>
+                <div class="nav-ts-wrapper offlineable">
+                    <div id="nav-tags-wrapper" />
+                    <div id="nav-sources-wrapper" />
                 </div>
+
                 <div class="nav-unavailable offlineable">
                     <span class="fa-stack fa-2x">
                         <i class="fas fa-wifi fa-stack-1x"></i>
@@ -135,7 +133,7 @@ selfoss.ui = {
             document.body.appendChild(script);
         }
 
-        NavTags.anchor(document.querySelector('#nav-tags'), selfoss.tags, selfoss.filter);
+        NavTags.anchor(document.querySelector('#nav-tags-wrapper'), selfoss.tags, selfoss.filter);
 
         function setupTags() {
             if (selfoss.filter.tag) {
@@ -150,9 +148,9 @@ selfoss.ui = {
 
         selfoss.tags.addEventListener('change', setupTags);
 
-        selfoss.sources.addEventListener('change', () => {
-            NavSources.anchor(document.querySelector('#nav-sources'), selfoss.sources, selfoss.filter);
+        NavSources.anchor(document.querySelector('#nav-sources-wrapper'), selfoss.sources, selfoss.filter);
 
+        selfoss.sources.addEventListener('change', () => {
             if (selfoss.filter.source) {
                 if (!selfoss.db.isValidSource(selfoss.filter.source)) {
                     selfoss.ui.showError(selfoss.ui._('error_unknown_source') + ' '
@@ -160,7 +158,7 @@ selfoss.ui = {
                 }
             }
 
-            selfoss.sourcesNavLoaded = true;
+            selfoss.sources.setState(LoadingState.SUCCESS);
             if ($('#nav-sources-title').hasClass('nav-sources-collapsed')) {
                 $('#nav-sources-title').click(); // expand sources nav
             }
@@ -710,7 +708,7 @@ selfoss.ui = {
         });
         selfoss.tags.update(tags);
 
-        if (selfoss.sourcesNavLoaded) {
+        if (selfoss.sources.sources.length > 0) {
             const sources = selfoss.sources.sources.map((source) => {
                 if (!(source.id in sourceCounts)) {
                     return source;

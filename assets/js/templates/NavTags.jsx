@@ -4,6 +4,8 @@ import ReactDOM from 'react-dom';
 import classNames from 'classnames';
 import { unescape } from 'html-escaper';
 import { updateTag } from '../requests/tags';
+import Collapse from '@kunukn/react-collapse';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function handleClick(e, tag) {
     e.preventDefault();
@@ -58,6 +60,7 @@ function ColorChooser({tag}) {
 }
 
 function NavTags({tagsRepository, filter}) {
+    const [expanded, setExpanded] = React.useState(true);
     const [currentAllTags, setCurrentAllTags] = React.useState(filter.tag === null && filter.source === null);
     const [currentTag, setCurrentTag] = React.useState(filter.tag);
     const [tags, setTags] = React.useState(tagsRepository.tags);
@@ -86,16 +89,21 @@ function NavTags({tagsRepository, filter}) {
 
     return (
         <React.Fragment>
-            <li><a className={classNames({'nav-tags-all': true, active: currentAllTags})} href="#" onClick={(e) => handleClick(e, null)}>{selfoss.ui._('alltags')}</a></li>
-            {tags.map(tag =>
-                <li key={tag.tag}>
-                    <a className={classNames({active: currentTag === tag.tag})} href="#" onClick={(e) => handleClick(e, tag.tag)}>
-                        <span className="tag">{unescape(tag.tag)}</span>
-                        <span className="unread">{tag.unread > 0 ? tag.unread : ''}</span>
-                        <ColorChooser tag={tag} />
-                    </a>
-                </li>
-            )}
+            <h2><button type="button" id="nav-tags-title" className={classNames({'nav-section-toggle': true, 'nav-tags-collapsed': !expanded, 'nav-tags-expanded': expanded})} aria-expanded={expanded} onClick={() => setExpanded((expanded) => !expanded)}><FontAwesomeIcon icon={['fas', expanded ? 'caret-down' : 'caret-right']} size="lg" fixedWidth />  {selfoss.ui._('tags')}</button></h2>
+            <Collapse isOpen={expanded} className="collapse-css-transition">
+                <ul id="nav-tags" aria-labelledby="nav-tags-title">
+                    <li><a className={classNames({'nav-tags-all': true, active: currentAllTags})} href="#" onClick={(e) => handleClick(e, null)}>{selfoss.ui._('alltags')}</a></li>
+                    {tags.map(tag =>
+                        <li key={tag.tag}>
+                            <a className={classNames({active: currentTag === tag.tag})} href="#" onClick={(e) => handleClick(e, tag.tag)}>
+                                <span className="tag">{unescape(tag.tag)}</span>
+                                <span className="unread">{tag.unread > 0 ? tag.unread : ''}</span>
+                                <ColorChooser tag={tag} />
+                            </a>
+                        </li>
+                    )}
+                </ul>
+            </Collapse>
         </React.Fragment>
     );
 }

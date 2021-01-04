@@ -1,7 +1,16 @@
+import { LoadingState } from '../requests/LoadingState';
+
 export class SourcesChangeEvent extends Event {
     constructor(sources) {
         super('change');
         this.sources = sources;
+    }
+}
+
+export class SourcesStateChangeEvent extends Event {
+    constructor(state) {
+        super('statechange');
+        this.state = state;
     }
 }
 
@@ -11,11 +20,16 @@ export class SourcesChangeEvent extends Event {
 export class SourcesRepository extends EventTarget {
     /**
      * @param {Object[]} sources
+     * @param {LoadingState} state
      */
-    constructor({sources = []}) {
+    constructor({
+        sources = [],
+        state = LoadingState.INITIAL
+    }) {
         super();
 
         this.sources = sources;
+        this.state = state;
     }
 
     update(sources) {
@@ -30,6 +44,14 @@ export class SourcesRepository extends EventTarget {
         }
 
         if (changed) {
+            this.dispatchEvent(event);
+        }
+    }
+
+    setState(state) {
+        const event = new SourcesStateChangeEvent(state);
+
+        if (this.state !== state) {
             this.dispatchEvent(event);
         }
     }

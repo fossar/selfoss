@@ -428,8 +428,6 @@ var selfoss = {
         });
     },
 
-    sourcesNavLoaded: false,
-
 
     /**
      * anonymize links
@@ -491,13 +489,11 @@ var selfoss = {
                 }
             });
 
-            if (selfoss.sourcesNavLoaded) {
-                var source = $(item).data('entry-source');
-                if (Object.keys(sourceUnreadDiff).includes(source)) {
-                    sourceUnreadDiff[source] += -1;
-                } else {
-                    sourceUnreadDiff[source] = -1;
-                }
+            const source = $(item).data('entry-source');
+            if (Object.keys(sourceUnreadDiff).includes(source)) {
+                sourceUnreadDiff[source] += -1;
+            } else {
+                sourceUnreadDiff[source] = -1;
             }
         });
 

@@ -5,53 +5,6 @@ import * as sourceRequests from './requests/sources';
  * initialize navigation events
  */
 selfoss.events.navigation = function() {
-    // hide/show filters
-    $('#nav-filter-title').unbind('click').click(function() {
-        $('#nav-filter').slideToggle('slow');
-        $('#nav-filter-title').toggleClass('nav-filter-collapsed nav-filter-expanded');
-        $('#nav-filter-title').find('svg').toggleClass('fa-caret-down fa-caret-right');
-        $('#nav-filter-title').attr('aria-expanded', function(i, attr) {
-            return attr == 'true' ? 'false' : 'true';
-        });
-    });
-
-    // hide/show tags
-    $('#nav-tags-title').unbind('click').click(function() {
-        $('#nav-tags').slideToggle('slow');
-        $('#nav-tags-title').toggleClass('nav-tags-collapsed nav-tags-expanded');
-        $('#nav-tags-title').find('svg').toggleClass('fa-caret-down fa-caret-right');
-        $('#nav-tags-title').attr('aria-expanded', function(i, attr) {
-            return attr == 'true' ? 'false' : 'true';
-        });
-    });
-
-    // hide/show sources
-    $('#nav-sources-title').unbind('click').click(function() {
-        if (!selfoss.db.online) {
-            return;
-        }
-
-        var toggle = function() {
-            $('#nav-sources').slideToggle('slow');
-            $('#nav-sources-title').toggleClass('nav-sources-collapsed nav-sources-expanded');
-            $('#nav-sources-title').find('svg').toggleClass('fa-caret-down fa-caret-right');
-            $('#nav-sources-title').attr('aria-expanded', function(i, attr) {
-                return attr == 'true' ? 'false' : 'true';
-            });
-        };
-
-        selfoss.filter.update({ sourcesNav: $('#nav-sources-title').hasClass('nav-sources-collapsed') });
-        if (selfoss.filter.sourcesNav && !selfoss.sourcesNavLoaded) {
-            sourceRequests.getStats().then((data) => {
-                selfoss.sources.update(data);
-            }).catch(function(error) {
-                selfoss.ui.showError(selfoss.ui._('error_loading_stats') + ' ' + error.message);
-            });
-        } else {
-            toggle();
-        }
-    });
-
     // emulate clicking when using keyboard
     $('.entry-title-link').unbind('keypress').keypress(function(e) {
         if (e.keyCode === 13) { // ENTER key

@@ -226,14 +226,14 @@ span.offline-count.diff {
     font-weight: bold;
 }
 
-#nav-tags-wrapper {
+.nav-ts-wrapper {
     overflow: auto;
     scrollbar-width: thin;
     scrollbar-color: dark;
     flex-grow: 1;
 }
 
-#nav-tags-wrapper.offline {
+.nav-ts-wrapper.offline {
     display: none;
 }
 
@@ -279,10 +279,6 @@ span.offline-count.diff {
     border-radius: 2px;
     margin-left: auto;
     flex-shrink: 0; /* preserve aspect ratio */
-}
-
-#nav-sources {
-    display: none;
 }
 
 #nav-sources li a,
@@ -1382,4 +1378,8 @@ img[src^='https://s.w.org/images/core/emoji']
     display: inline;
     height: 1em;
     margin: 0;
+}
+
+.collapse-css-transition {
+    transition: height 280ms cubic-bezier(0.4, 0, 0.2, 1);
 }

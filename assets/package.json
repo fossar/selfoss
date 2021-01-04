@@ -5,6 +5,8 @@
     "@fortawesome/free-brands-svg-icons": "^5.14.0",
     "@fortawesome/free-regular-svg-icons": "^5.14.0",
     "@fortawesome/free-solid-svg-icons": "^5.14.0",
+    "@fortawesome/react-fontawesome": "^0.1.14",
+    "@kunukn/react-collapse": "^1.2.7",
     "bcryptjs": "^2.4.3",
     "classnames": "^2.2.6",
     "clipboard-polyfill": "^3.0.0",

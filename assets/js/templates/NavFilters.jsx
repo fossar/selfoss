@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import classNames from 'classnames';
 import { FilterType } from '../Filter';
 import { filterTypeToString } from '../helpers/uri';
+import Collapse from '@kunukn/react-collapse';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function handleClick(e, filterType) {
     e.preventDefault();
@@ -19,6 +21,7 @@ function handleClick(e, filterType) {
 }
 
 export function NavFilters({filter}) {
+    const [expanded, setExpanded] = React.useState(true);
     const [currentType, setCurrenttype] = React.useState(filter.type);
     const [offlineState, setOfflineState] = React.useState(selfoss.offlineState.value);
     const [allItemsCount, setallItemsCount] = React.useState(selfoss.allItemsCount.value);
@@ -94,32 +97,34 @@ export function NavFilters({filter}) {
 
     return (
         <React.Fragment>
-            <h2><button type="button" id="nav-filter-title" className="nav-section-toggle nav-filter-expanded" aria-expanded="true"><i className="fas fa-caret-down fa-lg fa-fw"></i> {selfoss.ui._('filter')}</button></h2>
-            <ul id="nav-filter" aria-labelledby="nav-filter-title">
-                <li>
-                    <a id="nav-filter-newest" href="#" className={classNames({'nav-filter-newest': true, active: currentType === FilterType.NEWEST})} onClick={(event) => handleClick(event, FilterType.NEWEST)}>
-                        {selfoss.ui._('newest')}
-                        <span className={classNames({'offline-count': true, offline: offlineState, online: !offlineState, diff: allItemsCount !== allItemsOfflineCount && allItemsOfflineCount})} title={selfoss.ui._('offline_count')}>{allItemsOfflineCount > 0 ? allItemsOfflineCount : ''}</span>
-                        <span className="count" title={selfoss.ui._('online_count')}>{allItemsCount > 0 ? allItemsCount : ''}</span>
-                    </a>
-                </li>
-                <li>
-                    <a id="nav-filter-unread" href="#" className={classNames({'nav-filter-unread': true, active: currentType === FilterType.UNREAD})} onClick={(event) => handleClick(event, FilterType.UNREAD)}>
-                        {selfoss.ui._('unread')}
-                        <span className={classNames({'unread-count': true, offline: offlineState, online: !offlineState, unread: unreadItemsCount > 0})}>
-                            <span className={classNames({'offline-count': true, offline: offlineState, online: !offlineState, diff: unreadItemsCount !== unreadItemsOfflineCount && unreadItemsOfflineCount})} title={selfoss.ui._('offline_count')}>{unreadItemsOfflineCount > 0 ? unreadItemsOfflineCount : ''}</span>
-                            <span className="count" title={selfoss.ui._('online_count')}>{unreadItemsCount > 0 ? unreadItemsCount : ''}</span>
-                        </span>
-                    </a>
-                </li>
-                <li>
-                    <a id="nav-filter-starred" href="#" className={classNames({'nav-filter-starred': true, active: currentType === FilterType.STARRED})} onClick={(event) => handleClick(event, FilterType.STARRED)}>
-                        {selfoss.ui._('starred')}
-                        <span className={classNames({'offline-count': true, offline: offlineState, online: !offlineState, diff: starredItemsCount !== starredItemsOfflineCount && starredItemsOfflineCount})} title={selfoss.ui._('offline_count')}>{starredItemsOfflineCount > 0 ? starredItemsOfflineCount : ''}</span>
-                        <span className="count" title={selfoss.ui._('online_count')}>{starredItemsCount > 0 ? starredItemsCount : ''}</span>
-                    </a>
-                </li>
-            </ul>
+            <h2><button type="button" id="nav-filter-title" className={classNames({'nav-section-toggle': true, 'nav-filter-collapsed': !expanded, 'nav-filter-expanded': expanded})} aria-expanded={expanded} onClick={() => setExpanded((expanded) => !expanded)}><FontAwesomeIcon icon={['fas', expanded ? 'caret-down' : 'caret-right']} size="lg" fixedWidth /> {selfoss.ui._('filter')}</button></h2>
+            <Collapse isOpen={expanded} className="collapse-css-transition">
+                <ul id="nav-filter" aria-labelledby="nav-filter-title">
+                    <li>
+                        <a id="nav-filter-newest" href="#" className={classNames({'nav-filter-newest': true, active: currentType === FilterType.NEWEST})} onClick={(event) => handleClick(event, FilterType.NEWEST)}>
+                            {selfoss.ui._('newest')}
+                            <span className={classNames({'offline-count': true, offline: offlineState, online: !offlineState, diff: allItemsCount !== allItemsOfflineCount && allItemsOfflineCount})} title={selfoss.ui._('offline_count')}>{allItemsOfflineCount > 0 ? allItemsOfflineCount : ''}</span>
+                            <span className="count" title={selfoss.ui._('online_count')}>{allItemsCount > 0 ? allItemsCount : ''}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a id="nav-filter-unread" href="#" className={classNames({'nav-filter-unread': true, active: currentType === FilterType.UNREAD})} onClick={(event) => handleClick(event, FilterType.UNREAD)}>
+                            {selfoss.ui._('unread')}
+                            <span className={classNames({'unread-count': true, offline: offlineState, online: !offlineState, unread: unreadItemsCount > 0})}>
+                                <span className={classNames({'offline-count': true, offline: offlineState, online: !offlineState, diff: unreadItemsCount !== unreadItemsOfflineCount && unreadItemsOfflineCount})} title={selfoss.ui._('offline_count')}>{unreadItemsOfflineCount > 0 ? unreadItemsOfflineCount : ''}</span>
+                                <span className="count" title={selfoss.ui._('online_count')}>{unreadItemsCount > 0 ? unreadItemsCount : ''}</span>
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a id="nav-filter-starred" href="#" className={classNames({'nav-filter-starred': true, active: currentType === FilterType.STARRED})} onClick={(event) => handleClick(event, FilterType.STARRED)}>
+                            {selfoss.ui._('starred')}
+                            <span className={classNames({'offline-count': true, offline: offlineState, online: !offlineState, diff: starredItemsCount !== starredItemsOfflineCount && starredItemsOfflineCount})} title={selfoss.ui._('offline_count')}>{starredItemsOfflineCount > 0 ? starredItemsOfflineCount : ''}</span>
+                            <span className="count" title={selfoss.ui._('online_count')}>{starredItemsCount > 0 ? starredItemsCount : ''}</span>
+                        </a>
+                    </li>
+                </ul>
+            </Collapse>
         </React.Fragment>
     );
 }
