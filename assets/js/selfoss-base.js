@@ -143,6 +143,12 @@ var selfoss = {
             // set items per page
             selfoss.filter.update({ itemsPerPage: selfoss.config.itemsPerPage });
 
+            selfoss.filter.addEventListener('change', (event) => {
+                if (event.setHash) {
+                    selfoss.events.setHash();
+                }
+            });
+
             // read the html title configured
             selfoss.htmlTitle = selfoss.config.htmlTitle;
 
@@ -303,13 +309,14 @@ var selfoss = {
      *
      * @return void
      */
-    filterReset: function() {
+    filterReset: function(extras, notify = false) {
         selfoss.filter.update({
             offset: 0,
             fromDatetime: undefined,
             fromId: undefined,
-            extraIds: []
-        });
+            extraIds: [],
+            ...extras
+        }, notify);
     },
 
 
@@ -511,8 +518,7 @@ var selfoss = {
         });
 
         // close opened entry and list
-        selfoss.events.setHash();
-        selfoss.filterReset();
+        selfoss.filterReset({}, true);
 
         if (ids.length === 0 && selfoss.filter.type === FilterType.UNREAD) {
             $('.entry').remove();

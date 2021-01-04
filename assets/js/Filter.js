@@ -8,10 +8,17 @@ export const FilterType = {
     STARRED: 'starred'
 };
 
+export class FilterChangeEvent extends Event {
+    constructor(filter) {
+        super('change');
+        this.filter = filter;
+    }
+}
+
 /**
  * Object describing how feed items are filtered in the view.
  */
-export class Filter {
+export class Filter extends EventTarget {
     /**
      * @param {number} offset
      * @param {?Date} fromDatetime
@@ -36,6 +43,8 @@ export class Filter {
         sourcesNav = false,
         extraIds = []
     }) {
+        super();
+
         this.offset = offset;
         this.fromDatetime = fromDatetime;
         this.fromId = fromId;
@@ -48,36 +57,56 @@ export class Filter {
         this.extraIds = extraIds;
     }
 
-    update(newProps) {
-        if (Object.keys(newProps).includes('offset')) {
+    update(newProps, setHash = false) {
+        const event = new FilterChangeEvent(this);
+        event.setHash = setHash;
+
+        let changed = false;
+
+        if (Object.keys(newProps).includes('offset') && this.offset !== newProps.offset) {
+            changed = true;
             this.offset = newProps.offset;
         }
-        if (Object.keys(newProps).includes('fromDatetime')) {
+        if (Object.keys(newProps).includes('fromDatetime') && this.fromDatetime !== newProps.fromDatetime) {
+            changed = true;
             this.fromDatetime = newProps.fromDatetime;
         }
-        if (Object.keys(newProps).includes('fromId')) {
+        if (Object.keys(newProps).includes('fromId') && this.fromId !== newProps.fromId) {
+            changed = true;
             this.fromId = newProps.fromId;
         }
-        if (Object.keys(newProps).includes('itemsPerPage')) {
+        if (Object.keys(newProps).includes('itemsPerPage') && this.itemsPerPage !== newProps.itemsPerPage) {
+            changed = true;
             this.itemsPerPage = newProps.itemsPerPage;
         }
-        if (Object.keys(newProps).includes('search')) {
+        if (Object.keys(newProps).includes('search') && this.search !== newProps.search) {
+            changed = true;
             this.search = newProps.search;
         }
-        if (Object.keys(newProps).includes('type')) {
+        if (Object.keys(newProps).includes('type') && this.type !== newProps.type) {
+            changed = true;
             this.type = newProps.type;
         }
-        if (Object.keys(newProps).includes('tag')) {
+        if (Object.keys(newProps).includes('tag') && this.tag !== newProps.tag) {
+            changed = true;
             this.tag = newProps.tag;
         }
-        if (Object.keys(newProps).includes('source')) {
+        if (Object.keys(newProps).includes('source') && this.source !== newProps.source) {
+            changed = true;
             this.source = newProps.source;
         }
-        if (Object.keys(newProps).includes('sourcesNav')) {
+        if (Object.keys(newProps).includes('sourcesNav') && this.sourcesNav !== newProps.sourcesNav) {
+            changed = true;
             this.sourcesNav = newProps.sourcesNav;
         }
-        if (Object.keys(newProps).includes('extraIds')) {
+        if (Object.keys(newProps).includes('extraIds') && !(this.extraIds.length === 0 && newProps.extraIds.length === 0)) {
+            // Only empty arrays can be considered equal,
+            changed = true;
             this.extraIds = newProps.extraIds;
+        }
+
+        if (changed) {
+            this.dispatchEvent(event);
         }
     }
 }
