@@ -68,8 +68,8 @@ class Sync {
         if (array_key_exists('itemsSinceId', $params)) {
             $sinceId = (int) $params['itemsSinceId'];
             if ($sinceId >= 0) {
-                $notBefore = new \DateTime($params['itemsNotBefore']);
-                if ($sinceId < 1 || !$notBefore) {
+                $notBefore = isset($params['itemsNotBefore']) ? new \DateTime($params['itemsNotBefore']) : null;
+                if ($sinceId === 0 || !$notBefore) {
                     $sinceId = $this->itemsDao->lowestIdOfInterest() - 1;
                     // only send 1 day worth of items
                     $notBefore = new \DateTime();
