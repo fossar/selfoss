@@ -1,7 +1,6 @@
-import React from 'jsx-dom';
 import { Filter, FilterType } from './Filter';
 import { TagsRepository } from './model/TagsRepository';
-import NavSources from './templates/NavSources';
+import { SourcesRepository } from './model/SourcesRepository';
 import { getInstanceInfo, login, logout } from './requests/common';
 import * as itemsRequests from './requests/items';
 import { getAllTags } from './requests/tags';
@@ -29,6 +28,12 @@ var selfoss = {
      * @var TagsRepository
      */
     tags: new TagsRepository({}),
+
+    /**
+     * source repository
+     * @var SourcesRepository
+     */
+    sources: new SourcesRepository({}),
 
     /**
      * instance of the currently running XHR that is used to reload the items list
@@ -380,33 +385,6 @@ var selfoss = {
     },
 
     sourcesNavLoaded: false,
-
-    /**
-     * refresh sources list.
-     *
-     * @return void
-     * @param sources the new sourceslist as html
-     */
-    refreshSources: function(sources, delayNavigation = false) {
-        $('#nav-sources').html(<NavSources sources={sources} />);
-        if (selfoss.filter.source) {
-            if (!selfoss.db.isValidSource(selfoss.filter.source)) {
-                selfoss.ui.showError(selfoss.ui._('error_unknown_source') + ' '
-                                     + selfoss.filter.source);
-            }
-
-            $(`#nav-sources a[data-source-id="${selfoss.filter.source}"]`).addClass('active');
-        }
-
-        selfoss.sourcesNavLoaded = true;
-        if ($('#nav-sources-title').hasClass('nav-sources-collapsed')) {
-            $('#nav-sources-title').click(); // expand sources nav
-        }
-
-        if (!delayNavigation) {
-            selfoss.events.navigation();
-        }
-    },
 
 
     /**

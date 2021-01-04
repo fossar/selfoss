@@ -196,7 +196,7 @@ selfoss.dbOnline = {
             }
 
             if ('sources' in data) {
-                selfoss.refreshSources(data.sources);
+                selfoss.sources.update(data.sources);
             }
 
             if ('stats' in data && data.stats.unread > 0 &&
@@ -276,7 +276,7 @@ selfoss.dbOnline = {
             selfoss.tags.update(data.tags);
 
             if (selfoss.filter.sourcesNav) {
-                selfoss.refreshSources(data.sources);
+                selfoss.sources.update(data.sources);
             }
         }).catch((error) => {
             if (error.name == 'AbortError') {
@@ -881,12 +881,7 @@ selfoss.db = {
 
 
     isValidSource: function(id) {
-        var isValid = false;
-        $('#nav-sources > li > a').each(function() {
-            isValid = $(this).data('source-id') == id;
-            return !isValid; // break the loop if valid
-        });
-        return isValid;
+        return selfoss.sources.sources.find((source) => source.id === id) !== undefined;
     },
 
 

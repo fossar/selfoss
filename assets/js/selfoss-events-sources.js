@@ -90,7 +90,7 @@ selfoss.events.sources = function() {
                     selfoss.tags.update(response.tags);
 
                     // update sources
-                    selfoss.refreshSources(response.sources, true);
+                    selfoss.sources.update(response.sources);
 
                     selfoss.events.navigation();
                 }
