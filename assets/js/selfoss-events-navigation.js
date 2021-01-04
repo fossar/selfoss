@@ -59,7 +59,6 @@ selfoss.events.navigation = function() {
             return;
         }
 
-        $('#nav-tags > li > a').removeClass('active');
         $('#nav-sources > li > a').removeClass('active');
         $(this).addClass('active');
 

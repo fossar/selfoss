@@ -396,7 +396,6 @@ var selfoss = {
             }
 
             $(`#nav-sources a[data-source-id="${selfoss.filter.source}"]`).addClass('active');
-            $('#nav-tags > li > a').removeClass('active');
         }
 
         selfoss.sourcesNavLoaded = true;
