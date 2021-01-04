@@ -134,13 +134,14 @@ selfoss.events.entriesToolbar = function(parent) {
                 selfoss.refreshUnread(unreadstats + diff);
 
                 // update unread on tags and sources
-                var entryTags = [];
+                var entryTags = {};
                 $(`.entry[data-entry-id="${id}"] .entry-tags-tag`).each(function() {
-                    entryTags.push({tag: $(this).html(), count: diff});
+                    // Only a single instance of each tag per entry so we can just assign.
+                    entryTags[$(this).html()] = diff;
                 });
                 selfoss.ui.refreshTagSourceUnread(
                     entryTags,
-                    [{source: entry.attr('data-entry-source'), count: diff}]
+                    {[entry.attr('data-entry-source')]: diff}
                 );
             };
             updateStats(unread);

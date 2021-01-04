@@ -456,37 +456,26 @@ var selfoss = {
      */
     markVisibleRead: function() {
         var ids = [];
-        var tagUnreadDiff = [];
+        var tagUnreadDiff = {};
         var sourceUnreadDiff = [];
-        var found = false;
         $('.entry.unread').each(function(index, item) {
             ids.push($(item).attr('data-entry-id'));
 
             $('.entry-tags-tag', item).each(function(index, tagEl) {
-                found = false;
                 var tag = $(tagEl).html();
-                tagUnreadDiff.forEach(function(tagCount) {
-                    if (tagCount.tag == tag) {
-                        found = true;
-                        tagCount.count = tagCount.count - 1;
-                    }
-                });
-                if (!found) {
-                    tagUnreadDiff.push({tag: tag, count: -1});
+                if (Object.keys(tagUnreadDiff).includes(tag)) {
+                    tagUnreadDiff[tag] += -1;
+                } else {
+                    tagUnreadDiff[tag] = -1;
                 }
             });
 
             if (selfoss.sourcesNavLoaded) {
-                found = false;
                 var source = $(item).data('entry-source');
-                sourceUnreadDiff.forEach(function(sourceCount) {
-                    if (sourceCount.source == source) {
-                        found = true;
-                        sourceCount.count = sourceCount.count - 1;
-                    }
-                });
-                if (!found) {
-                    sourceUnreadDiff.push({source: source, count: -1});
+                if (Object.keys(sourceUnreadDiff).includes(source)) {
+                    sourceUnreadDiff[source] += -1;
+                } else {
+                    sourceUnreadDiff[source] = -1;
                 }
             }
         });

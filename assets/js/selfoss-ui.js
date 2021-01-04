@@ -760,21 +760,23 @@ selfoss.ui = {
 
 
     refreshTagSourceUnread: function(tagCounts, sourceCounts, diff = true) {
-        tagCounts.forEach(function(tagCount) {
-            var tagsCountEl = $('#nav-tags > li > a > span.tag')
-                .filter(function() {
-                    return $(this).html() == tagCount.tag;
-                }
-                ).next();
+        $('#nav-tags > li > a > span.tag').each(function() {
+            const tag = this.textContent;
+
+            if (!(tag in tagCounts)) {
+                return;
+            }
+
+            const tagsCountEl = $(this).next();
 
             var unreadCount = 0;
             if (diff) {
                 if (tagsCountEl.html() != '') {
                     unreadCount = parseInt(tagsCountEl.html());
                 }
-                unreadCount = unreadCount + tagCount.count;
+                unreadCount = unreadCount + tagCounts[tag];
             } else {
-                unreadCount = tagCount.count;
+                unreadCount = tagCounts[tag];
             }
 
             if (unreadCount > 0) {
@@ -785,25 +787,30 @@ selfoss.ui = {
         });
 
         if (selfoss.sourcesNavLoaded) {
-            sourceCounts.forEach(function(sourceCount) {
-                var sourceNav = $(`#nav-sources a[data-source-id="${sourceCount.source}"]`);
-                var sourcesCountEl = $('span.unread', sourceNav);
+            $('#nav-sources a').each(function() {
+                const source = this.getAttribute('data-source-id');
+
+                if (!(source in sourceCounts)) {
+                    return;
+                }
+
+                var sourcesCountEl = $('span.unread', this);
 
                 var unreadCount = 0;
                 if (diff) {
                     if (sourcesCountEl.html() != '') {
                         unreadCount = parseInt(sourcesCountEl.html());
                     }
-                    unreadCount = unreadCount + sourceCount.count;
+                    unreadCount = unreadCount + sourceCounts[source];
                 } else {
-                    unreadCount = sourceCount.count;
+                    unreadCount = sourceCounts[source];
                 }
 
                 if (unreadCount > 0) {
-                    sourceNav.addClass('unread');
+                    $(this).addClass('unread');
                     sourcesCountEl.html(unreadCount);
                 } else {
-                    sourceNav.removeClass('unread');
+                    $(this).removeClass('unread');
                     sourcesCountEl.html('');
                 }
             });
