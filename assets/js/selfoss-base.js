@@ -5,6 +5,7 @@ import { getInstanceInfo, login, logout } from './requests/common';
 import * as itemsRequests from './requests/items';
 import { getAllTags } from './requests/tags';
 import * as ajax from './helpers/ajax';
+import { ValueListenable } from './helpers/ValueListenable';
 import { HttpError, TimeoutError } from './errors';
 import { LoadingState } from './requests/LoadingState';
 
@@ -24,6 +25,12 @@ var selfoss = {
     filter: new Filter({}),
 
     /**
+     * whether off-line mode is enabled
+     * @var ValueListenable
+     */
+    offlineState: new ValueListenable(false),
+
+    /**
      * tag repository
      * @var TagsRepository
      */
@@ -34,6 +41,42 @@ var selfoss = {
      * @var SourcesRepository
      */
     sources: new SourcesRepository({}),
+
+    /**
+     * number of unread items
+     * @var ValueListenable
+     */
+    unreadItemsCount: new ValueListenable(0),
+
+    /**
+     * number of unread items available offline
+     * @var ValueListenable
+     */
+    unreadItemsOfflineCount: new ValueListenable(0),
+
+    /**
+     * number of starred items
+     * @var ValueListenable
+     */
+    starredItemsCount: new ValueListenable(0),
+
+    /**
+     * number of starred items available offline
+     * @var ValueListenable
+     */
+    starredItemsOfflineCount: new ValueListenable(0),
+
+    /**
+     * number of all items
+     * @var ValueListenable
+     */
+    allItemsCount: new ValueListenable(0),
+
+    /**
+     * number of all items available offline
+     * @var ValueListenable
+     */
+    allItemsOfflineCount: new ValueListenable(0),
 
     /**
      * instance of the currently running XHR that is used to reload the items list
@@ -336,13 +379,13 @@ var selfoss = {
      * refresh stats.
      *
      * @return void
-     * @param new all stats
-     * @param new unread stats
-     * @param new starred stats
+     * @param {Number} new all stats
+     * @param {Number} new unread stats
+     * @param {Number} new starred stats
      */
     refreshStats: function(all, unread, starred) {
-        $('.nav-filter-newest span.count').html(all);
-        $('.nav-filter-starred span.count').html(starred);
+        selfoss.allItemsCount.update(all);
+        selfoss.starredItemsCount.update(starred);
 
         selfoss.refreshUnread(unread);
     },
@@ -352,15 +395,16 @@ var selfoss = {
      * refresh unread stats.
      *
      * @return void
-     * @param new unread stats
+     * @param {Number} new unread stats
      */
     refreshUnread: function(unread) {
-        $('.unread-count .count').html(unread);
+        $('#nav-mobile-count .count').html(unread);
+        selfoss.unreadItemsCount.update(unread);
 
         if (unread > 0) {
-            $('.unread-count').addClass('unread');
+            $('#nav-mobile-count').addClass('unread');
         } else {
-            $('.unread-count').removeClass('unread');
+            $('#nav-mobile-count').removeClass('unread');
         }
 
         selfoss.ui.refreshTitle(unread);
@@ -462,7 +506,7 @@ var selfoss = {
 
         if (ids.length === 0 && selfoss.filter.type === FilterType.UNREAD) {
             $('.entry').remove();
-            if (parseInt($('.unread-count .count').html()) > 0) {
+            if (selfoss.unreadItemsCount.value > 0) {
                 selfoss.db.reloadList();
             } else {
                 selfoss.ui.refreshStreamButtons(true);
@@ -479,8 +523,7 @@ var selfoss = {
 
         selfoss.ui.beforeReloadList();
 
-        var unreadstats = parseInt($('.nav-filter-unread span.count').html()) -
-            ids.length;
+        const unreadstats = selfoss.unreadItemsCount.value - ids.length;
         var displayed = false;
         var displayNextUnread = function() {
             if (!displayed) {

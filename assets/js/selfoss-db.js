@@ -213,8 +213,7 @@ selfoss.dbOnline = {
                     if ('stats' in data) {
                         unreadCount = data.stats.unread;
                     } else {
-                        unreadCount = parseInt($('.unread-count .count')
-                            .html());
+                        unreadCount = selfoss.unreadItemsCount.value;
                     }
                     if (unreadCount > $('.entry.unread').length) {
                         $('.stream-more').show();

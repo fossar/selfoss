@@ -184,9 +184,6 @@ selfoss.events = {
             selfoss.events.reloadSamePath = false;
             selfoss.filterReset();
 
-            $('#nav-filter > li > a').removeClass('active');
-            $('#nav-filter-' + selfoss.events.section).addClass('active');
-
             selfoss.db.reloadList();
         } else if (hash == 'sources') { // load sources
             if (selfoss.events.subsection) {

@@ -85,16 +85,15 @@ selfoss.events.entriesToolbar = function(parent) {
 
             selfoss.ui.entryStar(id, starr);
 
-            // update statistics in main menue
-            var updateStats = function(starr) {
-                var starred = parseInt($('.nav-filter-starred span.count').html());
+            // update statistics in main menu
+            function updateStats(starr) {
+                const starred = selfoss.starredItemsCount.value;
                 if (starr) {
-                    starred++;
+                    selfoss.starredItemsCount.update(starred + 1);
                 } else {
-                    starred--;
+                    selfoss.starredItemsCount.update(starred - 1);
                 }
-                $('.nav-filter-starred span').html(starred);
-            };
+            }
             updateStats(starr);
 
             if (selfoss.db.enableOffline) {
@@ -126,10 +125,10 @@ selfoss.events.entriesToolbar = function(parent) {
             selfoss.ui.entryMark(id, !unread);
 
             // update statistics in main menue and the currently active tag
-            var updateStats = function(unread) {
+            function updateStats(unread) {
                 // update all unread counters
-                var unreadstats = parseInt($('.nav-filter-unread span.count').html());
-                var diff = unread ? -1 : 1;
+                const unreadstats = selfoss.unreadItemsCount.value;
+                const diff = unread ? -1 : 1;
 
                 selfoss.refreshUnread(unreadstats + diff);
 
@@ -143,7 +142,7 @@ selfoss.events.entriesToolbar = function(parent) {
                     entryTags,
                     {[entry.attr('data-entry-source')]: diff}
                 );
-            };
+            }
             updateStats(unread);
 
             if (selfoss.db.enableOffline) {

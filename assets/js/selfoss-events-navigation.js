@@ -1,36 +1,10 @@
 import selfoss from './selfoss-base';
 import * as sourceRequests from './requests/sources';
-import { FilterType } from './Filter';
-import { filterTypeToString } from './helpers/uri';
 
 /**
  * initialize navigation events
  */
 selfoss.events.navigation = function() {
-    // filter
-    $('#nav-filter > li > a').unbind('click').click(function(e) {
-        e.preventDefault();
-
-        if ($(this).hasClass('nav-filter-newest')) {
-            selfoss.filter.update({ type: FilterType.NEWEST });
-        } else if ($(this).hasClass('nav-filter-unread')) {
-            selfoss.filter.update({ type: FilterType.UNREAD });
-        } else if ($(this).hasClass('nav-filter-starred')) {
-            selfoss.filter.update({ type: FilterType.STARRED });
-        }
-
-        selfoss.events.reloadSamePath = true;
-        if (selfoss.events.lastSubsection == null) {
-            selfoss.events.lastSubsection = 'all';
-        }
-        selfoss.events.setHash(filterTypeToString(selfoss.filter.type), 'same');
-
-        $('#nav-filter > li > a').removeClass('active');
-        $(this).addClass('active');
-
-        selfoss.ui.hideMobileNav();
-    });
-
     // hide/show filters
     $('#nav-filter-title').unbind('click').click(function() {
         $('#nav-filter').slideToggle('slow');
@@ -120,7 +94,7 @@ selfoss.events.navigation = function() {
 
             // probe stats and prompt reload to the user
             selfoss.dbOnline.sync().then(function() {
-                if ($('.unread-count').hasClass('unread')) {
+                if (selfoss.unreadItemsCount.value > 0) {
                     selfoss.ui.showMessage(selfoss.ui._('sources_refreshed'), [
                         {
                             label: selfoss.ui._('reload_list'),

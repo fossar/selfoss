@@ -3,6 +3,7 @@ import locales from './locales';
 import selfoss from './selfoss-base';
 import { initIcons } from './icons';
 import * as NavSources from './templates/NavSources';
+import * as NavFilters from './templates/NavFilters';
 import * as NavTags from './templates/NavTags';
 
 /**
@@ -61,34 +62,7 @@ selfoss.ui = {
                 <div id="nav-logo"></div>
                 <button accesskey="a" id="nav-mark">{selfoss.ui._('markread')}</button>
 
-                <div id="nav-filter-wrapper">
-                    <h2><button type="button" id="nav-filter-title" class="nav-section-toggle nav-filter-expanded" aria-expanded="true"><i class="fas fa-caret-down fa-lg fa-fw"></i> {selfoss.ui._('filter')}</button></h2>
-                    <ul id="nav-filter" aria-labelledby="nav-filter-title">
-                        <li>
-                            <a id="nav-filter-newest" class="nav-filter-newest" href="#">
-                                {selfoss.ui._('newest')}
-                                <span class="offline-count offlineable" title={selfoss.ui._('offline_count')}></span>
-                                <span class="count" title={selfoss.ui._('online_count')}></span>
-                            </a>
-                        </li>
-                        <li>
-                            <a id="nav-filter-unread" class="nav-filter-unread" href="#">
-                                {selfoss.ui._('unread')}
-                                <span class="unread-count offlineable">
-                                    <span class="offline-count offlineable" title={selfoss.ui._('offline_count')}></span>
-                                    <span class="count" title={selfoss.ui._('online_count')}></span>
-                                </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a id="nav-filter-starred" class="nav-filter-starred" href="#">
-                                {selfoss.ui._('starred')}
-                                <span class="offline-count offlineable" title={selfoss.ui._('offline_count')}></span>
-                                <span class="count" title={selfoss.ui._('online_count')}></span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+                <div id="nav-filter-wrapper" />
 
                 <div class="separator"><hr /></div>
 
@@ -145,6 +119,8 @@ selfoss.ui = {
                 <button class="stream-button stream-error" aria-live="assertive" aria-label={selfoss.ui._('streamerror')}>{selfoss.ui._('streamerror')}</button>
             </div>
         </div>);
+
+        NavFilters.anchor(document.querySelector('#nav-filter-wrapper'), selfoss.filter);
 
         // Cannot add these to the append above, since jQuery automatically cache-busts links, which would prevent them from loading off-line.
         if (selfoss.config.userCss !== null) {
@@ -218,7 +194,7 @@ selfoss.ui = {
 
 
     refreshTitle: function(unread) {
-        unread = (typeof unread !== 'undefined') ? unread : parseInt($('.unread-count .count').html());
+        unread = (typeof unread !== 'undefined') ? unread : selfoss.unreadItemsCount.value;
 
         if (unread > 0) {
             $(document).attr('title', selfoss.htmlTitle + ' (' + unread + ')');
@@ -240,6 +216,7 @@ selfoss.ui = {
 
 
     setOffline: function() {
+        selfoss.offlineState.update(true);
         $('.offlineable').addClass('offline');
         $('.offlineable').removeClass('online');
         selfoss.events.navigation();
@@ -247,6 +224,7 @@ selfoss.ui = {
 
 
     setOnline: function() {
+        selfoss.offlineState.update(false);
         $('.offlineable').addClass('online');
         $('.offlineable').removeClass('offline');
         selfoss.events.navigation();
@@ -756,24 +734,27 @@ selfoss.ui = {
 
 
     refreshOfflineCounts: function(offlineCounts) {
-        for (let [kind, count] of Object.entries(offlineCounts)) {
-            var selector = '#nav-filter-' + kind;
-            if (kind == 'unread') {
-                selector = selector + ', #nav-mobile-count';
-            }
-            var widget = $(selector);
-            var offlineWidget = $('span.offline-count', widget);
-
-            if (count == 'keep') {
-                count = parseInt(offlineWidget.html());
-            } else {
-                offlineWidget.html(count);
+        for (let [kind, newCount] of Object.entries(offlineCounts)) {
+            if (newCount === 'keep') {
+                continue;
             }
 
-            if (parseInt($('span.count', widget).html()) != count) {
-                offlineWidget.addClass('diff');
-            } else {
-                offlineWidget.removeClass('diff');
+            if (kind === 'newest') {
+                kind = 'all';
+            }
+
+            const count = selfoss[`${kind}ItemsCount`];
+            const offlineCount = selfoss[`${kind}ItemsOfflineCount`];
+
+            offlineCount.update(newCount);
+            if (kind === 'unread') {
+                $('#nav-mobile-count span.offline-count').html(newCount);
+
+                if (count.value !== offlineCount.value) {
+                    $('#nav-mobile-count span.offline-count').addClass('diff');
+                } else {
+                    $('#nav-mobile-count span.offline-count').removeClass('diff');
+                }
             }
         }
     }
