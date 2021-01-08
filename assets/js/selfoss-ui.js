@@ -158,6 +158,13 @@ selfoss.ui = {
                 $('#nav-sources-title').click(); // expand sources nav
             }
         });
+
+        function loggedinChanged(event) {
+            document.body.classList.toggle('loggedin', event.value);
+        }
+        // It might happen that the value changes before event handler is attached.
+        loggedinChanged({ value: selfoss.loggedin.value });
+        selfoss.loggedin.addEventListener('change', loggedinChanged);
     },
 
     showLogin: function(error = '') {
@@ -197,14 +204,8 @@ selfoss.ui = {
     },
 
 
-    login: function() {
-        $('body').addClass('loggedin').removeClass('notloggedin');
-    },
-
-
     logout: function() {
         selfoss.ui.hideMobileNav();
-        $('body').removeClass('loggedin').addClass('notloggedin');
     },
 
 

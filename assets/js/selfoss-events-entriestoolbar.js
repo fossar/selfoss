@@ -76,7 +76,7 @@ selfoss.events.entriesToolbar = function(parent) {
     }
 
     // only loggedin users
-    if ($('body').hasClass('loggedin') == true) {
+    if (selfoss.loggedin.value) {
         // starr/unstarr
         parent.find('.entry-starr').unbind('click').click(function() {
             var parent = $(this).parents('.entry');

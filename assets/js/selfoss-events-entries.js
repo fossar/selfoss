@@ -19,7 +19,7 @@ selfoss.events.entries = function() {
             return;
         }
 
-        var autoMarkAsRead = $('body').hasClass('loggedin') && selfoss.config.autoMarkAsRead && parent.hasClass('unread');
+        var autoMarkAsRead = selfoss.loggedin.value && selfoss.config.autoMarkAsRead && parent.hasClass('unread');
         var autoHideReadOnMobile = selfoss.config.autoHideReadOnMobile && parent.hasClass('unread');
 
         // anonymize

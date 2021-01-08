@@ -71,7 +71,7 @@ selfoss.events.navigation = function() {
     });
 
     // only loggedin users
-    if ($('body').hasClass('loggedin') == true) {
+    if (selfoss.loggedin.value) {
         $('#nav-mark').unbind('click').click(selfoss.markVisibleRead);
 
         // show sources

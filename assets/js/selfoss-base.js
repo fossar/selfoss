@@ -172,8 +172,7 @@ var selfoss = {
 
             selfoss.ui.init();
 
-            if (selfoss.hasSession() || !$('body').hasClass('authenabled')) {
-                selfoss.ui.login();
+            if (selfoss.hasSession() || !configuration.authEnabled) {
                 selfoss.initUi();
             } else if ($('body').hasClass('publicmode')) {
                 selfoss.ui.logout();
@@ -229,24 +228,24 @@ var selfoss = {
     },
 
 
-    loggedin: false,
+    loggedin: new ValueListenable(false),
 
 
     setSession: function() {
         window.localStorage.setItem('onlineSession', true);
-        selfoss.loggedin = true;
+        selfoss.loggedin.update(true);
     },
 
 
     clearSession: function() {
         window.localStorage.removeItem('onlineSession');
-        selfoss.loggedin = false;
+        selfoss.loggedin.update(false);
     },
 
 
     hasSession: function() {
-        selfoss.loggedin = window.localStorage.getItem('onlineSession') == 'true';
-        return selfoss.loggedin;
+        selfoss.loggedin.update(window.localStorage.getItem('onlineSession') == 'true');
+        return selfoss.loggedin.value;
     },
 
 
@@ -268,7 +267,6 @@ var selfoss = {
             if (data.success) {
                 $('#password').val('');
                 selfoss.setSession();
-                selfoss.ui.login();
                 selfoss.ui.showMainUi();
                 selfoss.initUi();
                 if ((!selfoss.db.storage || selfoss.db.broken) && selfoss.db.enableOffline) {

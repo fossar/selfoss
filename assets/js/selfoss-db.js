@@ -264,7 +264,7 @@ selfoss.dbOnline = {
             selfoss.refreshStats(data.all, data.unread, data.starred);
 
             const firstPage = selfoss.filter.offset == 0 && typeof selfoss.filter.fromId === 'undefined' && typeof selfoss.filter.fromDatetime === 'undefined';
-            const allowedToUpdate = !selfoss.config.authEnabled || selfoss.config.allowPublicUpdate || document.body.classList.contains('loggedin');
+            const allowedToUpdate = !selfoss.config.authEnabled || selfoss.config.allowPublicUpdate || selfoss.loggedin.value;
             if (selfoss.filter.source && allowedToUpdate && firstPage) {
                 $('#content').append(<button type="button" id="refresh-source" class="refresh-source">{selfoss.ui._('source_refresh')}</button>);
             }
@@ -895,7 +895,7 @@ selfoss.db = {
     sync: function(force = false) {
         var lastUpdateIsOld = selfoss.db.lastUpdate === null || selfoss.db.lastSync === null || Date.now() - selfoss.db.lastSync > 5 * 60 * 1000;
         var shouldSync = force || selfoss.dbOffline.needsSync || lastUpdateIsOld;
-        if (selfoss.loggedin && shouldSync) {
+        if (selfoss.loggedin.value && shouldSync) {
             if (selfoss.db.enableOffline) {
                 return selfoss.dbOffline.sendNewStatuses();
             } else {
