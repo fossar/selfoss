@@ -17,15 +17,16 @@ jobs:
     strategy:
       matrix:
         include:
-          - php: 80
-          - php: 74
-          - php: 73
-          - php: 72
-          - php: 71
-          - php: 70
+          - php: '8.0'
+          - php: '7.4'
+          - php: '7.3'
+          - php: '7.2'
+          - php: '7.1'
+          - php: '7.0'
             cs_fixer: true
             lint_js: true
-          - php: 56
+          - php: '5.6'
+    name: 'Check with PHP ${{ matrix.php }}'
     steps:
       - uses: actions/checkout@v2
 
@@ -39,7 +40,7 @@ jobs:
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
 
       - name: Update flake.nix to match the current CI job from matrix
-        run: sed -i 's/matrix.phpPackage = "php";/matrix.phpPackage = "php${{ matrix.php }}";/' flake.nix
+        run: sed -i 's/matrix.phpPackage = "php";/matrix.phpPackage = builtins.replaceStrings ["."] [""] "php${{ matrix.php }}";/' flake.nix
 
       - name: Cache Node modules
         uses: actions/cache@v2
@@ -86,6 +87,7 @@ jobs:
         run: nix-shell --run 'npm run test:integration'
 
   deploy:
+    name: 'Upload artefacts'
     runs-on: ubuntu-20.04
     needs:
       - tests
