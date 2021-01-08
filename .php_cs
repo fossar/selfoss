@@ -1,7 +1,7 @@
 <?php
 
 $finder = PhpCsFixer\Finder::create()
-    ->exclude('libs')
+    ->exclude('assets')
     ->exclude('utils')
     ->in(__DIR__)
     ->name('*.phtml');
