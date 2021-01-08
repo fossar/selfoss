@@ -1,4 +1,4 @@
-import createFocusTrap from 'focus-trap';
+import { createFocusTrap } from 'focus-trap';
 import selfoss from './selfoss-base';
 import * as ajax from './helpers/ajax';
 
