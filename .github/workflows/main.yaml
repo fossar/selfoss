@@ -16,16 +16,18 @@ jobs:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
+        php:
+          - '8.0'
+          - '7.4'
+          - '7.3'
+          - '7.2'
+          - '7.1'
+          - '7.0'
+          - '5.6'
         include:
-          - php: '8.0'
-          - php: '7.4'
-          - php: '7.3'
-          - php: '7.2'
-          - php: '7.1'
           - php: '7.0'
             cs_fixer: true
             lint_js: true
-          - php: '5.6'
     name: 'Check with PHP ${{ matrix.php }}'
     steps:
       - uses: actions/checkout@v2
