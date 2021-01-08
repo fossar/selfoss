@@ -25,7 +25,7 @@
     "@babel/eslint-parser": "^7.12.1",
     "@babel/plugin-transform-react-jsx": "^7.10.4",
     "@babel/types": "^7.9.6",
-    "autoprefixer": "^10.0.0",
+    "autoprefixer": "^9.8.6",
     "babel-plugin-transform-dom": "^0.5.0",
     "eslint": "^7.17.0",
     "parcel-bundler": "^1.12.3",
