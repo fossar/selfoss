@@ -182,8 +182,6 @@ var selfoss = {
                 selfoss.ui.logout();
                 selfoss.events.setHash('login', false);
             }
-
-            $('#loginform').submit(selfoss.login);
         });
     },
 
@@ -249,24 +247,23 @@ var selfoss = {
         return selfoss.loggedin.value;
     },
 
-
-    login: function(e) {
-        $('#loginform').addClass('loading');
-
-        selfoss.db.enableOffline = $('#enableoffline').is(':checked');
+    /**
+     * Try to log in using given credentials
+     * @return Promise<undefined>
+     */
+    login: function({username, password, offlineEnabled}) {
+        selfoss.db.enableOffline = offlineEnabled;
         window.localStorage.setItem('enableOffline', selfoss.db.enableOffline);
         if (!selfoss.db.enableOffline) {
             selfoss.db.clear();
         }
 
-        var f = new FormData(document.querySelector('#loginform form'));
         const credentials = {
-            username: f.get('username'),
-            password: f.get('password')
+            username,
+            password
         };
-        login(credentials).then((data) => {
+        return login(credentials).then((data) => {
             if (data.success) {
-                $('#password').val('');
                 selfoss.setSession();
                 selfoss.ui.showMainUi();
                 selfoss.initUi();
@@ -277,14 +274,12 @@ var selfoss = {
                     selfoss.db.reloadList();
                 }
                 selfoss.events.initHash();
+                return Promise.resolve();
             } else {
                 selfoss.events.setHash('login', false);
-                selfoss.ui.showLogin(data.error);
+                return Promise.reject(new Error(data.error));
             }
-        }).finally(() => {
-            $('#loginform').removeClass('loading');
         });
-        e.preventDefault();
     },
 
 

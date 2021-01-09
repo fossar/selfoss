@@ -2,6 +2,7 @@ import React from 'jsx-dom';
 import locales from './locales';
 import selfoss from './selfoss-base';
 import { initIcons } from './icons';
+import * as LoginForm from './templates/LoginForm';
 import * as Navigation from './templates/Navigation';
 import { LoadingState } from './requests/LoadingState';
 import { initSearchEvents } from './SearchHandler';
@@ -32,18 +33,7 @@ selfoss.ui = {
 
         initIcons();
 
-        $('body').append(<div id="loginform" role="main">
-            <form action="" method="post">
-                <ul id="login">
-                    <li><h1>{selfoss.config.htmlTitle} login</h1></li>
-                    <li><label for="username">{selfoss.ui._('login_username')}</label> <input type="text" name="username" id="username" accesskey="u" autocomplete="username" required /></li>
-                    <li><label for="password">{selfoss.ui._('login_password')}</label> <input type="password" name="password" id="password" accesskey="p" autocomplete="current-password" /></li>
-                    <li><label for="enableoffline">{selfoss.ui._('login_offline')}</label> <label><input type="checkbox" name="enableoffline" id="enableoffline" accesskey="o" /> <span class="badge-experimental">{selfoss.ui._('experimental')}</span></label></li>
-                    <li class="error" aria-live="assertive"></li>
-                    <li class="button"><label>&nbsp;</label><input type="submit" accesskey="l" value={selfoss.ui._('login')} /></li>
-                </ul>
-            </form>
-        </div>);
+        $('body').append(<div id="loginform" role="main" />);
 
         $('body').append(<div id="mainui">
             {/* menu open for smartphone */}
@@ -76,6 +66,7 @@ selfoss.ui = {
             </div>
         </div>);
 
+        selfoss.loginForm = LoginForm.anchor(document.querySelector('#loginform'));
         Navigation.anchor(document.querySelector('#nav'));
 
         // Cannot add these to the append above, since jQuery automatically cache-busts links, which would prevent them from loading off-line.
@@ -130,9 +121,9 @@ selfoss.ui = {
         $('#mainui').hide();
         $('#loginform').show();
         selfoss.ui.refreshTitle(0);
-        $('#loginform .error').html(error);
+        selfoss.loginForm.setError(error);
+        selfoss.loginForm.setOfflineEnabled(selfoss.db.enableOffline);
         $('#username').focus();
-        $('#enableoffline').prop('checked', selfoss.db.enableOffline);
     },
 
 

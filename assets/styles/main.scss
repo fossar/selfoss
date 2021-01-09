@@ -774,18 +774,19 @@ span.offline-count.diff {
     display: none;
 }
 
+.spinner-big {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 /* login */
 
 #loginform {
     display: none;
 }
 
-#loginform.loading {
-    background: url(../images/ajax-loader-big.gif) center center no-repeat;
-    height: 90%;
-}
-
-#loginform.loading form {
+#loginform form.loading {
     display: none;
 }
 

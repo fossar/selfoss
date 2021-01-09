@@ -24,6 +24,7 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons/faSearch';
 import { faShareAlt } from '@fortawesome/free-solid-svg-icons/faShareAlt';
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons/faSignOutAlt';
 import { faSlash } from '@fortawesome/free-solid-svg-icons/faSlash';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons/faSpinner';
 import { faStar } from '@fortawesome/free-solid-svg-icons/faStar';
 import { faSyncAlt } from '@fortawesome/free-solid-svg-icons/faSyncAlt';
 import { faTimes } from '@fortawesome/free-solid-svg-icons/faTimes';
@@ -67,6 +68,7 @@ export function initIcons() {
         faShareAlt,
         faSignOutAlt,
         faSlash,
+        faSpinner,
         faStar,
         faSyncAlt,
         faTimes,
