@@ -60,6 +60,10 @@ class Write {
             parse_str($body, $data);
         }
 
+        if (empty($data['spout'])) {
+            $this->view->jsonError(['spout' => 'spout not selected']);
+        }
+
         $data['spout'] = str_replace('_', '\\', $data['spout']);
         if (!isset($data['title']) || strlen(trim($data['title'])) === 0) {
             // try to fetch title, if it is not filled in
@@ -70,10 +74,6 @@ class Write {
             } else {
                 $this->view->jsonError(['title' => 'no title given and could not fetch it']);
             }
-        }
-
-        if (!isset($data['spout'])) {
-            $this->view->jsonError(['spout' => 'no data for spout given']);
         }
 
         // clean up title and tag data to prevent XSS
