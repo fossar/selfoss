@@ -105,7 +105,7 @@ class Write {
                         $oldSource = $this->sourcesDao->get($id);
                         $oldParams = json_decode(html_entity_decode($oldSource['params']), true);
                     }
-                    $data[$spoutParamName] = $oldParams[$spoutParamName];
+                    $data[$spoutParamName] = isset($oldParams[$spoutParamName]) ? $oldParams[$spoutParamName] : '';
                 }
             }
         }
