@@ -6,6 +6,7 @@ import * as NavSearch from './templates/NavSearch';
 import * as NavSources from './templates/NavSources';
 import * as NavFilters from './templates/NavFilters';
 import * as NavTags from './templates/NavTags';
+import * as NavToolBar from './templates/NavToolBar';
 import { LoadingState } from './requests/LoadingState';
 import { initSearchEvents } from './SearchHandler';
 
@@ -86,12 +87,7 @@ selfoss.ui = {
 
                 <div id="search-wrapper" />
 
-                <div class="nav-toolbar">
-                    <button id="nav-refresh" title={selfoss.ui._('refreshbutton')} aria-label={selfoss.ui._('refreshbutton')} accesskey="r"><i class="fas fa-sync-alt fa-fw"></i></button>
-                    <button id="nav-settings" title={selfoss.ui._('settingsbutton')} aria-label={selfoss.ui._('settingsbutton')} accesskey="t"><i class="fas fa-cloud-upload-alt fa-fw"></i></button>
-                    <button id="nav-logout" title={selfoss.ui._('logoutbutton')} aria-label={selfoss.ui._('logoutbutton')} accesskey="l"><i class="fas fa-sign-out-alt fa-fw"></i></button>
-                    <button id="nav-login" title={selfoss.ui._('loginbutton')} aria-label={selfoss.ui._('loginbutton')} accesskey="l"><i class="fas fa-key fa-fw"></i></button>
-                </div>
+                <div class="nav-toolbar" />
             </div>
 
             <ul id="search-list">
@@ -111,6 +107,7 @@ selfoss.ui = {
 
         NavFilters.anchor(document.querySelector('#nav-filter-wrapper'), selfoss.filter);
         NavSearch.anchor(document.querySelector('#search-wrapper'));
+        NavToolBar.anchor(document.querySelector('.nav-toolbar'));
 
         // Cannot add these to the append above, since jQuery automatically cache-busts links, which would prevent them from loading off-line.
         if (selfoss.config.userCss !== null) {

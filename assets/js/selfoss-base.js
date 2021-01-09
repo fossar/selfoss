@@ -3,6 +3,7 @@ import { TagsRepository } from './model/TagsRepository';
 import { SourcesRepository } from './model/SourcesRepository';
 import { getInstanceInfo, login, logout } from './requests/common';
 import * as itemsRequests from './requests/items';
+import * as sourceRequests from './requests/sources';
 import { getAllTags } from './requests/tags';
 import * as ajax from './helpers/ajax';
 import { ValueListenable } from './helpers/ValueListenable';
@@ -554,6 +555,40 @@ var selfoss = {
                 selfoss.ui.listReady();
                 selfoss.ui.showError(selfoss.ui._('error_mark_items') + ' ' + error.message);
             });
+        });
+    },
+
+
+    /**
+     * Triggers fetching news from all sources.
+     * @return Promise<undefined>
+     */
+    reloadAll: function() {
+        if (!selfoss.db.online) {
+            return Promise.resolve();
+        }
+
+        return sourceRequests.refreshAll().then(() => {
+            // hide nav on smartphone
+            if (selfoss.isSmartphone()) {
+                $('#nav-mobile-settings').click();
+            }
+
+            // probe stats and prompt reload to the user
+            selfoss.dbOnline.sync().then(function() {
+                if (selfoss.unreadItemsCount.value > 0) {
+                    selfoss.ui.showMessage(selfoss.ui._('sources_refreshed'), [
+                        {
+                            label: selfoss.ui._('reload_list'),
+                            callback() {
+                                $('#nav-filter-unread').click();
+                            }
+                        }
+                    ]);
+                }
+            });
+        }).catch((error) => {
+            selfoss.ui.showError(selfoss.ui._('error_refreshing_source') + ' ' + error.message);
         });
     },
 
