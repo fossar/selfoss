@@ -89,6 +89,11 @@ var selfoss = {
      */
     htmlTitle: 'selfoss',
 
+    /**
+     * React component for sources page.
+     */
+    sourcesPage: null,
+
     windowLoaded: new Promise((resolve) => {
         window.addEventListener('load', () => resolve());
     }),
@@ -292,21 +297,6 @@ var selfoss = {
 
         logout().catch((error) => {
             selfoss.ui.showError(selfoss.ui._('error_logout') + ' ' + error.message);
-        });
-    },
-
-
-    /**
-     * insert error messages in form
-     *
-     * @return void
-     * @param form target where input fields in
-     * @param errors an array with all error messages
-     */
-    showErrors: function(form, errors) {
-        $(form).find('span.error').remove();
-        Object.entries(errors).forEach(([key, val]) => {
-            form.find("[name='" + key + "']").addClass('error').parent('li').append('<span class="error">' + val + '</span>');
         });
     },
 

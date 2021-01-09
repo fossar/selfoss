@@ -11,7 +11,6 @@ import './selfoss-events';
 import './selfoss-events-navigation';
 import './selfoss-events-entries';
 import './selfoss-events-entriestoolbar';
-import './selfoss-events-sources';
 import './selfoss-shortcuts';
 import '@fancyapps/fancybox';
 

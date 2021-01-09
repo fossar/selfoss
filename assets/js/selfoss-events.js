@@ -1,6 +1,6 @@
-import React from 'jsx-dom';
+import ReactDOM from 'react-dom';
 import selfoss from './selfoss-base';
-import Source from './templates/Source';
+import * as SourcesPage from './templates/SourcesPage';
 import { getAllSources } from './requests/sources';
 import { filterTypeFromString } from './helpers/uri';
 
@@ -154,6 +154,11 @@ selfoss.events = {
             return;
         }
 
+        if (hash !== 'sources' && selfoss.sourcesPage) {
+            ReactDOM.unmountComponentAtNode(document.getElementById('content'));
+            selfoss.sourcesPage = null;
+        }
+
         // load items
         if (['newest', 'unread', 'starred'].includes(selfoss.events.section)) {
             let filter = {
@@ -200,16 +205,11 @@ selfoss.events = {
             $('#content').addClass('loading').html('');
             selfoss.activeAjaxReq = getAllSources();
             selfoss.activeAjaxReq.promise.then(({sources, spouts}) => {
-                let renderedSources = sources.map((source) => <Source source={source} spouts={spouts} />);
-                $('#content').html(
-                    <div>
-                        <button class="source-add">{selfoss.ui._('source_add')}</button>
-                        <a class="source-export" href="opmlexport">{selfoss.ui._('source_export')}</a>
-                        <a class="source-opml" href="opml">{selfoss.ui._('source_opml')}</a>
-                        {renderedSources}
-                    </div>
-                );
-                selfoss.events.sources();
+                if (!selfoss.sourcesPage) {
+                    selfoss.sourcesPage = SourcesPage.anchor(document.getElementById('content'));
+                }
+                selfoss.sourcesPage.setSpouts(spouts);
+                selfoss.sourcesPage.setSources(sources);
             }).catch((error) => {
                 if (error.name === 'AbortError') {
                     return;
