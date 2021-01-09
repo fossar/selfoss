@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import classNames from 'classnames';
 import { unescape } from 'html-escaper';
 import { filterTypeToString } from '../helpers/uri';
@@ -39,7 +38,7 @@ function handleClick(e, sourceId) {
     selfoss.ui.hideMobileNav();
 }
 
-export function NavSources({sourcesRepository, filter}) {
+export default function NavSources({sourcesRepository, filter}) {
     const [expanded, setExpanded] = React.useState(false);
     const [currentSource, setCurrentSource] = React.useState(filter.source);
     const [sourcesState, setSourcesState] = React.useState(sourcesRepository.state);
@@ -91,8 +90,4 @@ export function NavSources({sourcesRepository, filter}) {
             </Collapse>
         </React.Fragment>
     );
-}
-
-export function anchor(element, sources, filter) {
-    ReactDOM.render(<NavSources sourcesRepository={sources} filter={filter} />, element);
 }

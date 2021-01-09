@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function handleReloadAll({ setReloading }) {
@@ -37,11 +36,11 @@ function handleLogOut() {
     selfoss.logout();
 }
 
-export function NavToolBar() {
+export default function NavToolBar() {
     const [reloading, setReloading] = React.useState(false);
 
     return (
-        <React.Fragment>
+        <div className="nav-toolbar">
             <button
                 id="nav-refresh"
                 title={selfoss.ui._('refreshbutton')}
@@ -85,10 +84,6 @@ export function NavToolBar() {
             >
                 <FontAwesomeIcon icon={['fas', 'key']} fixedWidth />
             </button>
-        </React.Fragment>
+        </div>
     );
-}
-
-export function anchor(element) {
-    ReactDOM.render(<NavToolBar />, element);
 }

@@ -1,6 +1,5 @@
 import { filterTypeToString } from '../helpers/uri';
 import React from 'react';
-import ReactDOM from 'react-dom';
 import classNames from 'classnames';
 import { unescape } from 'html-escaper';
 import { updateTag } from '../requests/tags';
@@ -59,7 +58,7 @@ function ColorChooser({tag}) {
     );
 }
 
-function NavTags({tagsRepository, filter}) {
+export default function NavTags({tagsRepository, filter}) {
     const [expanded, setExpanded] = React.useState(true);
     const [currentAllTags, setCurrentAllTags] = React.useState(filter.tag === null && filter.source === null);
     const [currentTag, setCurrentTag] = React.useState(filter.tag);
@@ -106,8 +105,4 @@ function NavTags({tagsRepository, filter}) {
             </Collapse>
         </React.Fragment>
     );
-}
-
-export function anchor(element, tags, filter) {
-    ReactDOM.render(<NavTags tagsRepository={tags} filter={filter} />, element);
 }

@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import classNames from 'classnames';
 import { FilterType } from '../Filter';
 import { filterTypeToString } from '../helpers/uri';
@@ -20,7 +19,7 @@ function handleClick(e, filterType) {
     selfoss.ui.hideMobileNav();
 }
 
-export function NavFilters({filter}) {
+export default function NavFilters({filter}) {
     const [expanded, setExpanded] = React.useState(true);
     const [currentType, setCurrenttype] = React.useState(filter.type);
     const [offlineState, setOfflineState] = React.useState(selfoss.offlineState.value);
@@ -96,7 +95,7 @@ export function NavFilters({filter}) {
     }, [filter]);
 
     return (
-        <React.Fragment>
+        <div id="nav-filter-wrapper">
             <h2><button type="button" id="nav-filter-title" className={classNames({'nav-section-toggle': true, 'nav-filter-collapsed': !expanded, 'nav-filter-expanded': expanded})} aria-expanded={expanded} onClick={() => setExpanded((expanded) => !expanded)}><FontAwesomeIcon icon={['fas', expanded ? 'caret-down' : 'caret-right']} size="lg" fixedWidth /> {selfoss.ui._('filter')}</button></h2>
             <Collapse isOpen={expanded} className="collapse-css-transition">
                 <ul id="nav-filter" aria-labelledby="nav-filter-title">
@@ -125,10 +124,6 @@ export function NavFilters({filter}) {
                     </li>
                 </ul>
             </Collapse>
-        </React.Fragment>
+        </div>
     );
-}
-
-export function anchor(element, filter) {
-    ReactDOM.render(<NavFilters filter={filter} />, element);
 }

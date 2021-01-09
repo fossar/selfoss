@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import classNames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { executeSearch } from '../SearchHandler';
@@ -47,7 +46,7 @@ function handleRemove({ setActive, searchField }) {
     selfoss.db.reloadList();
 }
 
-export function NavSearch() {
+export default function NavSearch() {
     const [active, setActive] = React.useState(false);
     const [searchText, setSearchText] = React.useState(selfoss.filter.search);
     const [offlineState, setOfflineState] = React.useState(
@@ -137,8 +136,4 @@ export function NavSearch() {
             <hr />
         </div>
     );
-}
-
-export function anchor(element) {
-    ReactDOM.render(<NavSearch />, element);
 }

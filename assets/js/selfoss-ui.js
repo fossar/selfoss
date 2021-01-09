@@ -2,11 +2,7 @@ import React from 'jsx-dom';
 import locales from './locales';
 import selfoss from './selfoss-base';
 import { initIcons } from './icons';
-import * as NavSearch from './templates/NavSearch';
-import * as NavSources from './templates/NavSources';
-import * as NavFilters from './templates/NavFilters';
-import * as NavTags from './templates/NavTags';
-import * as NavToolBar from './templates/NavToolBar';
+import * as Navigation from './templates/Navigation';
 import { LoadingState } from './requests/LoadingState';
 import { initSearchEvents } from './SearchHandler';
 
@@ -63,31 +59,6 @@ selfoss.ui = {
 
             {/* navigation */}
             <div id="nav" role="navigation">
-                <div id="nav-logo"></div>
-                <button accesskey="a" id="nav-mark">{selfoss.ui._('markread')}</button>
-
-                <div id="nav-filter-wrapper" />
-
-                <div class="separator"><hr /></div>
-
-                <div class="nav-ts-wrapper offlineable">
-                    <div id="nav-tags-wrapper" />
-                    <div id="nav-sources-wrapper" />
-                </div>
-
-                <div class="nav-unavailable offlineable">
-                    <span class="fa-stack fa-2x">
-                        <i class="fas fa-wifi fa-stack-1x"></i>
-                        <i class="fas fa-slash fa-stack-1x"></i>
-                    </span>
-                    <p>{selfoss.ui._('offline_navigation_unavailable')}</p>
-                </div>
-
-                <div class="separator"><hr /></div>
-
-                <div id="search-wrapper" />
-
-                <div class="nav-toolbar" />
             </div>
 
             <ul id="search-list">
@@ -105,9 +76,7 @@ selfoss.ui = {
             </div>
         </div>);
 
-        NavFilters.anchor(document.querySelector('#nav-filter-wrapper'), selfoss.filter);
-        NavSearch.anchor(document.querySelector('#search-wrapper'));
-        NavToolBar.anchor(document.querySelector('.nav-toolbar'));
+        Navigation.anchor(document.querySelector('#nav'));
 
         // Cannot add these to the append above, since jQuery automatically cache-busts links, which would prevent them from loading off-line.
         if (selfoss.config.userCss !== null) {
@@ -122,8 +91,6 @@ selfoss.ui = {
             document.body.appendChild(script);
         }
 
-        NavTags.anchor(document.querySelector('#nav-tags-wrapper'), selfoss.tags, selfoss.filter);
-
         function setupTags() {
             if (selfoss.filter.tag) {
                 if (!selfoss.db.isValidTag(selfoss.filter.tag)) {
@@ -136,8 +103,6 @@ selfoss.ui = {
         setupTags();
 
         selfoss.tags.addEventListener('change', setupTags);
-
-        NavSources.anchor(document.querySelector('#nav-sources-wrapper'), selfoss.sources, selfoss.filter);
 
         selfoss.sources.addEventListener('change', () => {
             if (selfoss.filter.source) {
