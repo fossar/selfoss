@@ -121,7 +121,7 @@ class Sources {
                 if (!isset($spout->params[$id])) {
                     $result[$id] = 'unexpected param ' . $id;
 
-                    continue;
+                    return $result;
                 }
 
                 $validation = $spout->params[$id]['validation'];
