@@ -9,7 +9,6 @@ import './selfoss-db';
 import './selfoss-ui';
 import './selfoss-events';
 import './selfoss-events-navigation';
-import './selfoss-events-search';
 import './selfoss-events-entries';
 import './selfoss-events-entriestoolbar';
 import './selfoss-events-sources';
