@@ -355,8 +355,11 @@ span.offline-count.diff {
 
 /* search */
 
-#search-list {
+#search-list:empty {
     display: none;
+}
+
+#search-list {
     margin-left: 220px;
     padding-top: 10px;
     height: 15px;

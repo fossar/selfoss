@@ -4,8 +4,8 @@ import selfoss from './selfoss-base';
 import { initIcons } from './icons';
 import * as LoginForm from './templates/LoginForm';
 import * as Navigation from './templates/Navigation';
+import * as SearchList from './templates/SearchList';
 import { LoadingState } from './requests/LoadingState';
-import { initSearchEvents } from './SearchHandler';
 
 /**
  * ui change functions
@@ -68,6 +68,7 @@ selfoss.ui = {
 
         selfoss.loginForm = LoginForm.anchor(document.querySelector('#loginform'));
         Navigation.anchor(document.querySelector('#nav'));
+        SearchList.anchor(document.querySelector('#search-list'));
 
         // Cannot add these to the append above, since jQuery automatically cache-busts links, which would prevent them from loading off-line.
         if (selfoss.config.userCss !== null) {
@@ -408,7 +409,6 @@ selfoss.ui = {
         }
 
         selfoss.ui.refreshEntryDatetimes();
-        initSearchEvents();
     },
 
 

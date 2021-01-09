@@ -40,8 +40,6 @@ function handleRemove({ setActive, searchField }) {
     }
 
     selfoss.filterReset({ search: '' }, true);
-    $('#search-list').hide();
-    $('#search-list').html('');
     setActive(false);
     selfoss.db.reloadList();
 }
