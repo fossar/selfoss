@@ -5,6 +5,8 @@ import 'spectrum-colorpicker';
 import 'jquery-hotkeys';
 import selfoss from './selfoss-base';
 import './selfoss-shares';
+import './selfoss-db-online';
+import './selfoss-db-offline';
 import './selfoss-db';
 import './selfoss-ui';
 import './selfoss-events';
