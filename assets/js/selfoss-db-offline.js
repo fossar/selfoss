@@ -18,26 +18,25 @@ selfoss.dbOffline = {
     shouldLoadEntriesOnline: false,
     olderEntriesOnline: false,
 
-
     _tr: function() {
-        let promise = selfoss.db.storage.transaction.apply(selfoss.db.storage, arguments);
+        return selfoss.db.storage.transaction
+            .apply(selfoss.db.storage, arguments)
+            .catch(function(error) {
+                selfoss.ui.showError(
+                    selfoss.ui._('error_offline_storage', [error.message])
+                );
+                selfoss.db.broken = true;
+                selfoss.db.enableOffline = false;
+                selfoss.db.reloadList();
 
-        promise.catch(function(error) {
-            selfoss.ui.showError(selfoss.ui._('error_offline_storage', [error.message]));
-            selfoss.db.broken = true;
-            selfoss.db.enableOffline = false;
-            selfoss.db.reloadList();
+                // If this is a QuotaExceededError, garbage collect more
+                // entries and hope it helps.
+                if (error.name === Dexie.errnames.QuotaExceeded) {
+                    selfoss.dbOffline.GCEntries(true);
+                }
 
-            // If this is a QuotaExceededError, garbage collect more
-            // entries and hope it helps.
-            if (error.name === Dexie.errnames.QuotaExceeded) {
-                selfoss.dbOffline.GCEntries(true);
-            }
-
-            throw error;
-        });
-
-        return promise;
+                return Promise.reject(error);
+            });
     },
 
 
