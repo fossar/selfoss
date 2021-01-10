@@ -23,7 +23,7 @@ Nix language allows loading files containing Nix expressions using `import "path
 
 ## Our set-up  {#selfoss-nix}
 
-As we have already mentioned, we describe the development environment in `flake.nix` and we pull some packages from Nixpkgs repository. For maintenance reasons, Nixpkgs usually only contains a single version of each package or, in case of platforms like PHP, single version of each supported branch. Since selfoss aims to support even shared hosts with older PHP versions, we have to build those versions ourselves. Fortunately, it is quite easy using existing Nixpkgs infrastructure – we just pass version, hash and some patches to the Nixpkgs’s PHP builder function (see [`utils/nix/phps.nix`](https://github.com/fossar/selfoss/blob/master/utils/nix/phps.nix)).
+As we have already mentioned, we describe the development environment in `flake.nix` and we pull some packages from Nixpkgs repository. For maintenance reasons, Nixpkgs usually only contains a single version of each package or, in case of platforms like PHP, single version of each supported branch. Since selfoss aims to support even shared hosts with older PHP versions, we have to build those versions ourselves. Fortunately, it is quite easy using existing Nixpkgs infrastructure – we maintain [a repository](https://github.com/fossar/nix-phps) that contains expressions for those versions.
 
 ## Bumping pinned dependencies {#bumping}
 
@@ -39,6 +39,6 @@ As mentioned above, we are not actually using Flakes but emulate them using stab
 
 By default, the environment will contain the default PHP version from Nixpkgs. You can change the version by replacing `matrix.php = "php";` with `matrix.php = "phpXY";` in `flake.nix`, where `X` and `Y` are major and minor version respectively.
 
-Supported versions depend on which versions are in the pinned version of Nixpkgs in [`pkgs/development/interpreters/php`](https://github.com/NixOS/nixpkgs/tree/nixpkgs-unstable/pkgs/development/interpreters/php) and whichever versions are we keeping locally in [`utils/nix/phps.nix`](https://github.com/fossar/selfoss/blob/master/utils/nix/phps.nix).
+Supported versions depend on which versions are in the pinned version of Nixpkgs in [`pkgs/development/interpreters/php`](https://github.com/NixOS/nixpkgs/tree/nixpkgs-unstable/pkgs/development/interpreters/php) and whichever versions we are keeping in [our repository](https://github.com/fossar/nix-phps).
 
 After you change the value, exit the shell and start a new one, or if you are using `direnv`, execute `touch shell.nix` to trigger the reload of the environment.

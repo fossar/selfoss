@@ -12,9 +12,12 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
     utils.url = "github:numtide/flake-utils";
+
+    # Package expression for old PHP versions.
+    phps.url = "github:fossar/nix-phps";
   };
 
-  outputs = { self, flake-compat, nixpkgs, utils }:
+  outputs = { self, flake-compat, nixpkgs, phps, utils }:
     let
       # Configure the development shell here (e.g. for CI).
 
@@ -24,16 +27,11 @@
       # For each supported platform,
       utils.lib.eachDefaultSystem (system:
         let
-          # Let’s merge the package set from Nixpkgs with our custom PHP versions.
-          pkgs = import nixpkgs.outPath {
-            inherit system;
-            overlays = [
-              (import ./utils/nix/phps.nix nixpkgs.outPath)
-            ];
-          };
+          # Get Nixpkgs packages for current platform.
+          pkgs = nixpkgs.legacyPackages.${system};
 
           # Create a PHP package from the selected PHP package, with some extra extensions enabled.
-          php = pkgs.${matrix.phpPackage}.withExtensions ({ enabled, all }: with all; enabled ++ [
+          php = phps.packages.${system}.${matrix.phpPackage}.withExtensions ({ enabled, all }: with all; enabled ++ [
             imagick
           ]);
 
@@ -70,11 +68,6 @@
 
             # node-gyp wants some locales, let’s make them available through an environment variable.
             LOCALE_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
-          };
-
-          # Expose our custom PHP packages for testing.
-          packages = {
-            inherit (pkgs) php56 php70 php71 php72;
           };
         }
       );
