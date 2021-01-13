@@ -319,12 +319,12 @@ class Items implements \daos\ItemsInterface {
         $where_sql = implode(' AND ', $where);
 
         // set limit
-        if (!is_numeric($options['items']) || $options['items'] > 200) {
+        if (!isset($options['items']) || !is_numeric($options['items']) || $options['items'] > 200) {
             $options['items'] = \F3::get('items_perpage');
         }
 
         // set offset
-        if (is_numeric($options['offset']) === false) {
+        if (!isset($params['offset']) || !is_numeric($options['offset'])) {
             $options['offset'] = 0;
         }
 
