@@ -699,7 +699,7 @@ class Items implements \daos\ItemsInterface {
                             // ensure all saved status updates have been made
                             // after the last server update for this entry.
                             if (!array_key_exists($sk, $sql[$id]['updates'])
-                                || $updateDate > $sql['id']['datetime']) {
+                                || $updateDate > $sql[$id]['datetime']) {
                                 $sql[$id]['updates'][$sk] = $statusUpdate['sql'];
                             }
                             if ($updateDate < $sql[$id]['datetime']) {
