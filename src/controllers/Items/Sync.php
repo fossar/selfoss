@@ -112,10 +112,10 @@ class Sync {
         if ($last_update > $since) {
             $sync['stats'] = $this->itemsDao->stats();
 
-            if (array_key_exists('tags', $params) && $_GET['tags'] == 'true') {
+            if (array_key_exists('tags', $params) && $params['tags'] == 'true') {
                 $sync['tags'] = $this->tagsDao->getWithUnread();
             }
-            if (array_key_exists('sources', $params) && $_GET['sources'] == 'true') {
+            if (array_key_exists('sources', $params) && $params['sources'] == 'true') {
                 $sync['sources'] = $this->sourcesDao->getWithUnread();
             }
 
