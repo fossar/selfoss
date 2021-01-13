@@ -110,7 +110,7 @@ class Sources implements \daos\SourcesInterface {
      * sets the last updated timestamp
      *
      * @param int $id the source id
-     * @param int $lastEntry timestamp of the newest item or NULL when no items were added
+     * @param ?int $lastEntry timestamp of the newest item or NULL when no items were added
      *
      * @return void
      */

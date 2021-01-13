@@ -309,7 +309,7 @@ class ContentLoader {
     /**
      * Check if a new item matches the filter
      *
-     * @param string $source
+     * @param array{filter: string} $source
      * @param string $title
      * @param string $content
      *
@@ -511,7 +511,7 @@ class ContentLoader {
      * Update source (remove previous errors, update last update)
      *
      * @param mixed $source source object
-     * @param int $lastEntry timestamp of the newest item or NULL when no items were added
+     * @param ?int $lastEntry timestamp of the newest item or NULL when no items were added
      */
     protected function updateSource($source, $lastEntry) {
         // remove previous error

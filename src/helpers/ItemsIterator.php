@@ -18,7 +18,7 @@ trait ItemsIterator {
     /**
      * receive current item
      *
-     * @return \SimplePie_Item current item
+     * @return self|false current item
      */
     public function current() {
         if ($this->items !== null) {
@@ -44,7 +44,7 @@ trait ItemsIterator {
     /**
      * select next item
      *
-     * @return \SimplePie_Item next item
+     * @return self next item
      */
     public function next() {
         if ($this->items !== null) {

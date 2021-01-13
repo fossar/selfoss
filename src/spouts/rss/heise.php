@@ -128,7 +128,7 @@ class heise extends feed {
      * @param ?string $tag optional tag
      * @param ?string $end optional ending
      *
-     * @return string content
+     * @return string[] content
      */
     private function getTag($attr, $value, $xml, $tag = null, $end = null) {
         if ($tag === null) {

@@ -29,16 +29,16 @@ class Tags {
         $this->view = $view;
     }
 
-    /* @var array cache of tags and associated colors */
+    /* @var ?array<string, array{backColor: string, foreColor: string}> cache of tags and associated colors */
     protected $tagsColors = null;
 
     /**
      * returns item tags as HTML
      *
-     * @param array $itemTags tags for this item
-     * @param array $tags list of all the tags and their color
+     * @param string[] $itemTags tags for this item
+     * @param ?array<array{tag: string, color: string}> $tags list of all the tags and their color
      *
-     * @return string
+     * @return array<string, array{backColor: string, foreColor: string}>
      */
     public function tagsAddColors(array $itemTags, array $tags = null) {
         if ($tags === null) {
@@ -103,11 +103,11 @@ class Tags {
     }
 
     /**
-     * return tag => [backColor, foreColor] array
+     * Returns an associative array of tags with their foreground and background colors.
      *
-     * @param array $tags tags to colorize
+     * @param array<array{tag: string, color: string}> $tags tags to colorize
      *
-     * @return array tag color array
+     * @return array<string, array{backColor: string, foreColor: string}> tag color array
      */
     private function getTagsWithColors(array $tags) {
         $assocTags = [];

@@ -55,7 +55,7 @@ class SpoutLoader {
             } else {
                 return null;
             }
-        } catch (\ReflectionError $e) {
+        } catch (\ReflectionException $e) {
             return null;
         }
     }

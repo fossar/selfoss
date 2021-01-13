@@ -333,7 +333,7 @@ class Items implements \daos\ItemsInterface {
                    FROM ' . \F3::get('db_prefix') . 'items AS items, ' . \F3::get('db_prefix') . 'sources AS sources
                    WHERE items.source=sources.id AND ' . $where_sql . '
                    LIMIT 1 OFFSET ' . ($options['offset'] + $options['items']), $params);
-        $this->hasMore = count($result);
+        $this->hasMore = count($result) > 0;
 
         // get items from database
         $select = 'SELECT
