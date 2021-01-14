@@ -9,9 +9,11 @@
  * dbOffline is the entry point for the offline database held in the client.
  */
 
+import React from 'jsx-dom';
 import selfoss from './selfoss-base';
 import { OfflineStorageNotAvailableError } from './errors';
 import { FilterType } from './Filter';
+import Item from './templates/Item';
 
 selfoss.db = {
 
@@ -121,7 +123,7 @@ selfoss.db = {
         selfoss.ui.beforeReloadList(!append);
 
         var reload = function() {
-            var reloader = selfoss.dbOffline.reloadList;
+            let reloader = selfoss.dbOffline.reloadList;
 
             // tag, source and search filtering not supported offline (yet?)
             if (selfoss.filter.tag || selfoss.filter.source
@@ -134,8 +136,31 @@ selfoss.db = {
                 reloader = selfoss.dbOnline.reloadList;
             }
 
-            reloader().then(function() {
+            reloader().then(({ entries, hasMore }) => {
+                const firstPage = typeof selfoss.filter.fromId === 'undefined' && typeof selfoss.filter.fromDatetime === 'undefined';
+                const allowedToUpdate = !selfoss.config.authEnabled || selfoss.config.allowPublicUpdate || selfoss.loggedin.value;
+
+                let content = $('#content');
+                let newContent = content.clone().empty();
+                if (selfoss.filter.source && allowedToUpdate && firstPage && reloader === selfoss.dbOnline.reloadList) {
+                    newContent.append(<button type="button" id="refresh-source" class="refresh-source">{selfoss.ui._('source_refresh')}</button>);
+                }
+                newContent.append(entries.map(entry => <Item item={entry} />));
+
+                if (!firstPage) {
+                    content.append(newContent.children());
+                } else {
+                    content.replaceWith(newContent);
+                }
+
+                selfoss.ui.refreshStreamButtons(true, hasMore);
+
                 selfoss.ui.afterReloadList(!append);
+            }).catch(function(error) {
+                selfoss.ui.showError(selfoss.ui._('error_loading') + ' ' + error.message);
+                selfoss.events.entries();
+                selfoss.ui.refreshStreamButtons();
+                $('.stream-error').show();
             });
         };
 

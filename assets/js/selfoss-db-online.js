@@ -250,33 +250,24 @@ selfoss.dbOnline = {
 
             selfoss.refreshStats(data.all, data.unread, data.starred);
 
-            const firstPage = typeof selfoss.filter.fromId === 'undefined' && typeof selfoss.filter.fromDatetime === 'undefined';
-            const allowedToUpdate = !selfoss.config.authEnabled || selfoss.config.allowPublicUpdate || selfoss.loggedin.value;
-            if (selfoss.filter.source && allowedToUpdate && firstPage) {
-                $('#content').append(<button type="button" id="refresh-source" class="refresh-source">{selfoss.ui._('source_refresh')}</button>);
-            }
-            $('#content').append(data.entries.map(entry => <Item item={entry} />));
-            selfoss.ui.refreshStreamButtons(true, data.hasMore);
-
             // update tags
             selfoss.tags.update(data.tags);
 
             if (selfoss.filter.sourcesNav) {
                 selfoss.sources.update(data.sources);
             }
+
+            return {
+                entries: data.entries,
+                hasMore: data.hasMore
+            };
         }).catch((error) => {
             if (error.name == 'AbortError') {
                 return;
             }
 
-            selfoss.handleAjaxError(error).then(function() {
-                selfoss.dbOffline.reloadList();
-                selfoss.ui.afterReloadList();
-            }).catch(function(error) {
-                selfoss.ui.showError(selfoss.ui._('error_loading') + ' ' + error.message);
-                selfoss.events.entries();
-                selfoss.ui.refreshStreamButtons();
-                $('.stream-error').show();
+            return selfoss.handleAjaxError(error).then(function() {
+                return selfoss.dbOffline.reloadList();
             });
         }).finally(() => {
             // clean up

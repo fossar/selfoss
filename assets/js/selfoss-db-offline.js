@@ -1,7 +1,5 @@
-import React from 'jsx-dom';
 import selfoss from './selfoss-base';
 import { OfflineStorageNotAvailableError } from './errors';
-import Item from './templates/Item';
 import Dexie from 'dexie';
 import { FilterType } from './Filter';
 
@@ -239,13 +237,10 @@ selfoss.dbOffline = {
 
 
     reloadList: function() {
+        let hasMore = false;
         return selfoss.dbOffline._tr('r', selfoss.db.storage.entries,
             function() {
-                var content = $('#content');
-                var newContent = content.clone().empty();
-
                 var howMany = 0;
-                var hasMore = false;
 
                 var ascOrder = selfoss.db.ascOrder();
                 var entries = selfoss.db.storage.entries.orderBy('[datetime+id]');
@@ -253,16 +248,13 @@ selfoss.dbOffline = {
                     entries = entries.reverse();
                 }
 
-                var seek = false;
-                var fromDatetime = selfoss.filter.fromDatetime;
-                var fromId = selfoss.filter.fromId;
-                if (fromDatetime && fromId) {
-                    seek = true;
-                }
-                var alwaysInDb = selfoss.filter.type === FilterType.STARRED
+                const fromDatetime = selfoss.filter.fromDatetime;
+                const fromId = selfoss.filter.fromId;
+                const seek = fromDatetime && fromId;
+                const alwaysInDb = selfoss.filter.type === FilterType.STARRED
                              || selfoss.filter.type === FilterType.UNREAD;
 
-                entries.filter(function(entry) {
+                return entries.filter(function(entry) {
                     var keepEntry = false;
 
                     if (selfoss.filter.extraIds.includes(entry.id)) {
@@ -310,19 +302,10 @@ selfoss.dbOffline = {
                     }
 
                     return false;
-                }).each(function(entry) {
-                    newContent.append(<Item item={entry} />);
-                    selfoss.ui.entryMark(entry.id, entry.unread, newContent);
-                    selfoss.ui.entryStar(entry.id, entry.starred, newContent);
-                }).then(function() {
-                    if (seek) {
-                        content.append(newContent.children());
-                    } else {
-                        content.replaceWith(newContent);
-                    }
-                    selfoss.ui.refreshStreamButtons(true, hasMore);
                 });
-            });
+            })
+            .then((entriesCollection) => entriesCollection.toArray())
+            .then((entries) => ({ entries, hasMore }));
     },
 
 
