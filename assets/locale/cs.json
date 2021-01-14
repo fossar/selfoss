@@ -97,5 +97,9 @@
   "lang_info_url_copied": "URL zkopírována do schránky.",
   "lang_error_share_native_abort": "Nelze sdílet položku: buď váš prohlížeč nepodporuje sdílení odkazů, nebo jste sdílení zrušili.",
   "lang_error_share_native": "Nelze sdílet položku.",
-  "lang_close_entry": "Zavřít"
+  "lang_close_entry": "Zavřít",
+  "lang_article_reading_time": "{0} min čtení",
+  "lang_error_offline_storage_not_available": "Offline úložiště není dostupné. Ujistěte se, že váš prohlížeč {0}podporuje rozhraní IndexedDB{1} a, pokud používáte prohlížeč založený na Google Chrome, že nespouštíte selfoss v režimu anonymního prohlížení.",
+  "lang_error_edit_source": "Nelze uložit změny zdroje:",
+  "lang_experimental": "Experiment"
 }
