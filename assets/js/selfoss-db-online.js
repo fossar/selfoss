@@ -250,7 +250,7 @@ selfoss.dbOnline = {
 
             selfoss.refreshStats(data.all, data.unread, data.starred);
 
-            const firstPage = selfoss.filter.offset == 0 && typeof selfoss.filter.fromId === 'undefined' && typeof selfoss.filter.fromDatetime === 'undefined';
+            const firstPage = typeof selfoss.filter.fromId === 'undefined' && typeof selfoss.filter.fromDatetime === 'undefined';
             const allowedToUpdate = !selfoss.config.authEnabled || selfoss.config.allowPublicUpdate || selfoss.loggedin.value;
             if (selfoss.filter.source && allowedToUpdate && firstPage) {
                 $('#content').append(<button type="button" id="refresh-source" class="refresh-source">{selfoss.ui._('source_refresh')}</button>);

@@ -262,7 +262,6 @@ selfoss.dbOffline = {
                 var isMore = false;
                 var alwaysInDb = selfoss.filter.type === FilterType.STARRED
                              || selfoss.filter.type === FilterType.UNREAD;
-                var offset = selfoss.filter.offset;
 
                 entries.filter(function(entry) {
                     var keepEntry = false;
@@ -277,11 +276,6 @@ selfoss.dbOffline = {
                         keepEntry = entry.unread;
                     } else {
                         keepEntry = true;
-                    }
-
-                    if (keepEntry && offset > 0) {
-                        offset = offset - 1;
-                        return false;
                     }
 
                     return keepEntry;

@@ -20,7 +20,6 @@ export class FilterChangeEvent extends Event {
  */
 export class Filter extends EventTarget {
     /**
-     * @param {number} offset
      * @param {?Date} fromDatetime
      * @param {?number} fromId
      * @param {number} itemsPerPage
@@ -32,7 +31,6 @@ export class Filter extends EventTarget {
      * @param {number[]} extraIds
      */
     constructor({
-        offset = 0,
         fromDatetime = undefined,
         fromId = undefined,
         itemsPerPage = 0,
@@ -45,7 +43,6 @@ export class Filter extends EventTarget {
     }) {
         super();
 
-        this.offset = offset;
         this.fromDatetime = fromDatetime;
         this.fromId = fromId;
         this.itemsPerPage = itemsPerPage;
@@ -63,10 +60,6 @@ export class Filter extends EventTarget {
 
         let changed = false;
 
-        if (Object.keys(newProps).includes('offset') && this.offset !== newProps.offset) {
-            changed = true;
-            this.offset = newProps.offset;
-        }
         if (Object.keys(newProps).includes('fromDatetime') && this.fromDatetime !== newProps.fromDatetime) {
             changed = true;
             this.fromDatetime = newProps.fromDatetime;

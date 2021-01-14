@@ -350,7 +350,6 @@ var selfoss = {
      */
     filterReset: function(extras, notify = false) {
         selfoss.filter.update({
-            offset: 0,
             fromDatetime: undefined,
             fromId: undefined,
             extraIds: [],
