@@ -38,9 +38,7 @@ function ColorChooser({tag}) {
                     tag.tag,
                     color.toHexString()
                 ).then(() => {
-                    selfoss.ui.beforeReloadList();
-                    selfoss.dbOnline.reloadList();
-                    selfoss.ui.afterReloadList();
+                    selfoss.db.reloadList();
                 }).catch((error) => {
                     selfoss.ui.showError(selfoss.ui._('error_saving_color') + ' ' + error.message);
                 });
