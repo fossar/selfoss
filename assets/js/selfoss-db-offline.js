@@ -259,7 +259,6 @@ selfoss.dbOffline = {
                 if (fromDatetime && fromId) {
                     seek = true;
                 }
-                var isMore = false;
                 var alwaysInDb = selfoss.filter.type === FilterType.STARRED
                              || selfoss.filter.type === FilterType.UNREAD;
 
@@ -278,55 +277,43 @@ selfoss.dbOffline = {
                         keepEntry = true;
                     }
 
-                    return keepEntry;
-                }).until(function(entry) {
-                    // stop iteration if enough entries have been shown
-                    // go one further to assess if has more
-                    if (howMany >= selfoss.filter.itemsPerPage + 1) {
-                        return true;
-                    }
-
                     // seek pagination
-                    isMore = !seek;
                     if (seek) {
                         if (ascOrder) {
-                            isMore = entry.datetime > fromDatetime
+                            keepEntry &&= entry.datetime > fromDatetime
                             || (entry.datetime.getTime() == fromDatetime.getTime()
                                 && entry.id > fromId);
                         } else {
-                            isMore = entry.datetime < fromDatetime
+                            keepEntry &&= entry.datetime < fromDatetime
                             || (entry.datetime.getTime() == fromDatetime.getTime()
                                 && entry.id < fromId);
                         }
                     }
 
-                    if (!ascOrder && !alwaysInDb
-                    && entry.datetime < selfoss.dbOffline.newestGCedEntry) {
+                    return keepEntry;
+                }).until(function(entry) {
+                    howMany += 1;
+
+                    if (!ascOrder && !alwaysInDb && entry.datetime < selfoss.dbOffline.newestGCedEntry) {
                         // the offline db is missing older entries, the next
                         // seek will have to find them online.
                         selfoss.dbOffline.olderEntriesOnline = true;
                         hasMore = true;
-                        // There are missing entries before this one, do not
-                        // display it.
-                        isMore = false;
                         return true; // stop iteration
-                    } else if (isMore && howMany >= selfoss.filter.itemsPerPage) {
+                    }
+
+                    // stop iteration if enough entries have been shown
+                    // go one further to assess if has more
+                    if (howMany >= selfoss.filter.itemsPerPage + 1) {
                         hasMore = true;
-                        // stop iteration, this entry was only to assess
-                        // if hasMore.
-                        isMore = false;
-                        return true; // stop iteration
+                        return true;
                     }
 
                     return false;
-                }, true).each(function(entry) {
-                    if (isMore) {
-                        newContent.append(<Item item={entry} />);
-                        selfoss.ui.entryMark(entry.id, entry.unread, newContent);
-                        selfoss.ui.entryStar(entry.id, entry.starred, newContent);
-
-                        howMany = howMany + 1;
-                    }
+                }).each(function(entry) {
+                    newContent.append(<Item item={entry} />);
+                    selfoss.ui.entryMark(entry.id, entry.unread, newContent);
+                    selfoss.ui.entryStar(entry.id, entry.starred, newContent);
                 }).then(function() {
                     if (seek) {
                         content.append(newContent.children());
