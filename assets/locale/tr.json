@@ -100,5 +100,6 @@
   "lang_offline_count": "Yerel olarak kullanılabilen ögeler",
   "lang_online_count": "Sunucuda bulunan ögeler",
   "lang_filter": "Filtrele",
-  "lang_article_reading_time": "{0} dakika okuma"
+  "lang_article_reading_time": "{0} dakika okuma",
+  "lang_experimental": "Deneysel"
 }
