@@ -1,8 +1,10 @@
 import ReactDOM from 'react-dom';
 import selfoss from './selfoss-base';
 import * as SourcesPage from './templates/SourcesPage';
+import * as EntriesPage from './templates/EntriesPage';
 import { getAllSources } from './requests/sources';
 import { filterTypeFromString } from './helpers/uri';
+import { LoadingState } from './requests/LoadingState';
 
 selfoss.events = {
 
@@ -25,17 +27,23 @@ selfoss.events = {
     init: function() {
         selfoss.events.navigation();
 
-        // re-init on media query change
-        if ((typeof window.matchMedia) !== 'undefined') {
-            var mq = window.matchMedia('(min-width: 641px) and (max-width: 1024px)');
-            if ((typeof mq.addListener) !== 'undefined') {
-                mq.addListener(selfoss.events.entries);
-            }
-        }
 
         if (location.hash == '') {
             selfoss.events.initHash();
         }
+
+        // scroll load more
+        $(window).unbind('scroll').scroll(function() {
+            if (!selfoss.config.autoStreamMore || selfoss.entriesPage === null) {
+                return;
+            }
+
+            if (selfoss.entriesPage.state.hasMore
+               && $('.stream-more').position().top < $(window).height() + $(window).scrollTop()
+               && selfoss.entriesPage.state.loadingState !== LoadingState.LOADING) {
+                document.querySelector('.stream-more').click();
+            }
+        });
 
         // hash change event
         window.onhashchange = selfoss.events.hashChange;
@@ -106,7 +114,6 @@ selfoss.events = {
                               + '/' + selfoss.events.subsection;
 
         var entryId = null;
-        var entry;
         if (hashPath.length > 2 && (entryId = parseInt(hashPath[2]))) {
             selfoss.events.entryId = entryId;
         } else {
@@ -126,9 +133,8 @@ selfoss.events = {
                 // open it.
                 if (selfoss.events.entryId
                     && selfoss.events.processHashChange) {
-                    entry = $(`.entry[data-entry-id="${selfoss.events.entryId}"]`);
-                    selfoss.ui.entrySelect(entry);
-                    selfoss.ui.entryExpand(entry);
+                    selfoss.ui.entrySelect(selfoss.events.entryId);
+                    selfoss.ui.entryExpand(selfoss.events.entryId);
                 }
 
                 // if navigating using browser buttons and entry opened,
@@ -143,9 +149,9 @@ selfoss.events = {
                 // scroll to entry.
                 if (selfoss.events.entryId
                     && selfoss.events.processHashChange) {
-                    entry = $(`.entry[data-entry-id="${selfoss.events.entryId}"]`);
+                    const entry = document.querySelector(`.entry[data-entry-id="${selfoss.events.entryId}"]`);
                     if (entry) {
-                        entry.get(0).scrollIntoView();
+                        entry.scrollIntoView();
                     }
                 }
             }
@@ -157,6 +163,11 @@ selfoss.events = {
         if (hash !== 'sources' && selfoss.sourcesPage) {
             ReactDOM.unmountComponentAtNode(document.getElementById('content'));
             selfoss.sourcesPage = null;
+        }
+
+        if (!['newest', 'unread', 'starred'].includes(selfoss.events.section) && selfoss.entriesPage) {
+            ReactDOM.unmountComponentAtNode(document.getElementById('content'));
+            selfoss.entriesPage = null;
         }
 
         // load items
@@ -189,6 +200,10 @@ selfoss.events = {
             selfoss.events.reloadSamePath = false;
             selfoss.filterReset();
 
+            if (!selfoss.entriesPage) {
+                selfoss.entriesPage = EntriesPage.anchor(document.getElementById('content'));
+            }
+
             selfoss.db.reloadList();
         } else if (hash == 'sources') { // load sources
             if (selfoss.events.subsection) {
@@ -201,8 +216,6 @@ selfoss.events = {
             if (selfoss.activeAjaxReq !== null) {
                 selfoss.activeAjaxReq.controller.abort();
             }
-            selfoss.ui.refreshStreamButtons();
-            $('#content').addClass('loading').html('');
             selfoss.activeAjaxReq = getAllSources();
             selfoss.activeAjaxReq.promise.then(({sources, spouts}) => {
                 if (!selfoss.sourcesPage) {
@@ -218,8 +231,6 @@ selfoss.events = {
                 selfoss.handleAjaxError(error, false).catch(function(error) {
                     selfoss.ui.showError(selfoss.ui._('error_loading') + ' ' + error.message);
                 });
-            }).finally(() => {
-                $('#content').removeClass('loading');
             });
         } else if (hash == 'login') {
             selfoss.ui.showLogin();

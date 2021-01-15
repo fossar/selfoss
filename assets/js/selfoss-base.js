@@ -90,6 +90,11 @@ var selfoss = {
     htmlTitle: 'selfoss',
 
     /**
+     * React component for entries page.
+     */
+    entriesPage: null,
+
+    /**
      * React component for sources page.
      */
     sourcesPage: null,
@@ -421,10 +426,9 @@ var selfoss = {
     anonymize: function(parent) {
         var anonymizer = selfoss.config.anonymizer;
         if (anonymizer !== null) {
-            parent.find('a').each(function(i, link) {
-                link = $(link);
-                if (typeof link.attr('href') != 'undefined' && link.attr('href').indexOf(anonymizer) != 0) {
-                    link.attr('href', anonymizer + link.attr('href'));
+            parent.querySelectorAll('a').forEach((link) => {
+                if (typeof link.getAttribute('href') !== 'undefined' && !link.getAttribute('href').startsWith(anonymizer)) {
+                    link.setAttribute('href', anonymizer + link.getAttribute('href'));
                 }
             });
         }
@@ -457,14 +461,18 @@ var selfoss = {
      * Mark all visible items as read
      */
     markVisibleRead: function() {
-        var ids = [];
-        var tagUnreadDiff = {};
-        var sourceUnreadDiff = [];
-        $('.entry.unread').each(function(index, item) {
-            ids.push($(item).attr('data-entry-id'));
+        let ids = [];
+        let tagUnreadDiff = {};
+        let sourceUnreadDiff = [];
 
-            $('.entry-tags-tag', item).each(function(index, tagEl) {
-                var tag = $(tagEl).html();
+        let markedEntries = selfoss.entriesPage.state.entries.map((entry) => {
+            if (!entry.unread) {
+                return entry;
+            }
+
+            ids.push(entry.id);
+
+            Object.keys(entry.tags).forEach((tag) => {
                 if (Object.keys(tagUnreadDiff).includes(tag)) {
                     tagUnreadDiff[tag] += -1;
                 } else {
@@ -472,59 +480,40 @@ var selfoss = {
                 }
             });
 
-            const source = $(item).data('entry-source');
+            const { source } = entry;
             if (Object.keys(sourceUnreadDiff).includes(source)) {
                 sourceUnreadDiff[source] += -1;
             } else {
                 sourceUnreadDiff[source] = -1;
             }
+
+            return {
+                ...entry,
+                unread: false
+            };
         });
+        const oldEntries = selfoss.entriesPage.state.entries;
+        const hadMore = selfoss.entriesPage.state.hasMore;
 
         // close opened entry and list
         selfoss.filterReset({}, true);
 
-        if (ids.length === 0 && selfoss.filter.type === FilterType.UNREAD) {
-            $('.entry').remove();
-            if (selfoss.unreadItemsCount.value > 0) {
-                selfoss.db.reloadList();
-            } else {
-                selfoss.ui.refreshStreamButtons(true);
-            }
+        if (ids.length !== 0 && selfoss.filter.type === FilterType.UNREAD) {
+            markedEntries = markedEntries.filter(({ id }) => ids.includes(id));
         }
 
-        if (ids.length === 0) {
-            return;
-        }
-
-        var content = $('#content');
-        var articleList = content.html();
-        var hadMore = $('.stream-more').is(':visible');
-
-        selfoss.ui.beforeReloadList();
+        selfoss.entriesPage.setLoadingState(LoadingState.LOADING);
+        selfoss.entriesPage.setEntries(markedEntries);
 
         const unreadstats = selfoss.unreadItemsCount.value - ids.length;
-        var displayed = false;
-        var displayNextUnread = function() {
-            if (!displayed) {
-                displayed = true;
-                selfoss.refreshUnread(unreadstats);
-                selfoss.ui.refreshTagSourceUnread(tagUnreadDiff,
-                    sourceUnreadDiff);
-
-                selfoss.ui.hideMobileNav();
-
-                selfoss.db.reloadList(false, false);
-            }
-        };
 
         if (selfoss.db.enableOffline) {
             selfoss.refreshUnread(unreadstats);
-            selfoss.dbOffline.entriesMark(ids, false).then(displayNextUnread);
+            selfoss.dbOffline.entriesMark(ids, false);
         }
 
         itemsRequests.markAll(ids).then(function() {
-            selfoss.db.setOnline();
-            displayNextUnread();
+            selfoss.entriesPage.setLoadingState(LoadingState.SUCCESS);
         }).catch(function(error) {
             selfoss.handleAjaxError(error).then(function() {
                 let statuses = ids.map(id => ({
@@ -534,9 +523,9 @@ var selfoss = {
                 }));
                 selfoss.dbOffline.enqueueStatuses(statuses);
             }).catch(function(error) {
-                content.html(articleList);
-                selfoss.ui.refreshStreamButtons(true, hadMore);
-                selfoss.ui.listReady();
+                selfoss.entriesPage.setLoadingState(LoadingState.SUCCESS);
+                selfoss.entriesPage.setEntries(oldEntries);
+                selfoss.entriesPage.setHasMore(hadMore);
                 selfoss.ui.showError(selfoss.ui._('error_mark_items') + ' ' + error.message);
             });
         });

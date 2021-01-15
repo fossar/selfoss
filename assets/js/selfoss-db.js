@@ -9,11 +9,10 @@
  * dbOffline is the entry point for the offline database held in the client.
  */
 
-import React from 'jsx-dom';
 import selfoss from './selfoss-base';
 import { OfflineStorageNotAvailableError } from './errors';
 import { FilterType } from './Filter';
-import Item from './templates/Item';
+import { LoadingState } from './requests/LoadingState';
 
 selfoss.db = {
 
@@ -120,7 +119,7 @@ selfoss.db = {
             selfoss.dbOffline.olderEntriesOnline = false;
         }
 
-        selfoss.ui.beforeReloadList(!append);
+        selfoss.entriesPage?.setLoadingState(LoadingState.LOADING);
 
         var reload = function() {
             let reloader = selfoss.dbOffline.reloadList;
@@ -136,31 +135,40 @@ selfoss.db = {
                 reloader = selfoss.dbOnline.reloadList;
             }
 
+            selfoss.entriesPage?.setLoadingState(LoadingState.LOADING);
             reloader().then(({ entries, hasMore }) => {
-                const firstPage = typeof selfoss.filter.fromId === 'undefined' && typeof selfoss.filter.fromDatetime === 'undefined';
-                const allowedToUpdate = !selfoss.config.authEnabled || selfoss.config.allowPublicUpdate || selfoss.loggedin.value;
+                selfoss.entriesPage.setLoadingState(LoadingState.SUCCESS);
+                selfoss.entriesPage.setHasMore(hasMore);
 
-                let content = $('#content');
-                let newContent = content.clone().empty();
-                if (selfoss.filter.source && allowedToUpdate && firstPage && reloader === selfoss.dbOnline.reloadList) {
-                    newContent.append(<button type="button" id="refresh-source" class="refresh-source">{selfoss.ui._('source_refresh')}</button>);
-                }
-                newContent.append(entries.map(entry => <Item item={entry} />));
-
-                if (!firstPage) {
-                    content.append(newContent.children());
+                if (append) {
+                    selfoss.entriesPage.appendEntries(entries);
                 } else {
-                    content.replaceWith(newContent);
+                    selfoss.entriesPage.setExpandedEntries({});
+                    selfoss.entriesPage.setEntries(entries);
                 }
 
-                selfoss.ui.refreshStreamButtons(true, hasMore);
+                // open selected entry only if entry was requested (i.e. if not streaming
+                // more)
+                if (selfoss.events.entryId && selfoss.filter.fromId === undefined) {
+                    var entry = document.querySelector(`.entry[data-entry-id="${selfoss.events.entryId}"]`);
 
-                selfoss.ui.afterReloadList(!append);
+                    if (!entry) {
+                        return;
+                    }
+
+                    selfoss.ui.entryActivate(selfoss.events.entryId);
+                    // ensure scrolling to requested entry even if scrolling to article
+                    // header is disabled
+                    if (!selfoss.config.scrollToArticleHeader) {
+                        // needs to be delayed for some reason
+                        requestAnimationFrame(function() {
+                            entry.scrollIntoView();
+                        });
+                    }
+                }
             }).catch(function(error) {
+                selfoss.entriesPage.setLoadingState(LoadingState.FAILURE);
                 selfoss.ui.showError(selfoss.ui._('error_loading') + ' ' + error.message);
-                selfoss.events.entries();
-                selfoss.ui.refreshStreamButtons();
-                $('.stream-error').show();
             });
         };
 

@@ -12,15 +12,6 @@ import { LoadingState } from './requests/LoadingState';
  */
 selfoss.ui = {
     /**
-     * Currently selected entry.
-     * The id in the location.hash should imply the selected entry.
-     * It will also be used for keyboard navigation (for finding previous/next).
-     * @private
-     * @type {?jQuery Element}
-     */
-    selectedEntry: null,
-
-    /**
      * Create basic DOM structure of the page.
      */
     init: function() {
@@ -56,13 +47,6 @@ selfoss.ui = {
 
             {/* content */}
             <div id="content" role="main">
-            </div>
-
-            <div id="stream-buttons">
-                <p aria-live="assertive" class="stream-empty">{selfoss.ui._('no_entries')}</p>
-                <button class="stream-button stream-more" accesskey="m" aria-label={selfoss.ui._('more')}><span>{selfoss.ui._('more')}</span></button>
-                <button class="stream-button mark-these-read" aria-label={selfoss.ui._('markread')}><span>{selfoss.ui._('markread')}</span></button>
-                <button class="stream-button stream-error" aria-live="assertive" aria-label={selfoss.ui._('streamerror')}>{selfoss.ui._('streamerror')}</button>
             </div>
         </div>);
 
@@ -178,29 +162,27 @@ selfoss.ui = {
 
     /**
      * Expand given entries.
-     * @param {jQuery wrapped Element(s)} entry element(s)
+     * @param {number} id of entry
      */
     entryExpand: function(entry) {
         if (!entry) {
             return;
         }
 
-        entry.addClass('expanded');
-        $('.entry-title > .entry-title-link', entry).attr('aria-expanded', 'true');
+        selfoss.entriesPage.setEntryExpanded(entry, true);
     },
 
 
     /**
      * Collapse given entries.
-     * @param {jQuery wrapped Element(s)} entry element(s)
+     * @param {number} id of entry
      */
     entryCollapse: function(entry) {
         if (!entry) {
             return;
         }
 
-        entry.removeClass('expanded');
-        $('.entry-title > .entry-title-link', entry).attr('aria-expanded', 'false');
+        selfoss.entriesPage.setEntryExpanded(entry, false);
     },
 
 
@@ -208,141 +190,114 @@ selfoss.ui = {
      * Collapse all expanded entries.
      */
     entryCollapseAll: function() {
-        selfoss.ui.entryCollapse($('.entry.expanded'));
+        selfoss.entriesPage.setExpandedEntries({});
     },
 
 
     /**
      * Is given entry expanded?
-     * @param {jQuery wrapped Element} entry element
+     * @param {number} id of entry to check
      * @return {bool} whether it is expanded
      */
     entryIsExpanded: function(entry) {
-        return entry.hasClass('expanded');
+        return selfoss.entriesPage.state.expandedEntries[entry] ?? false;
     },
 
 
     /**
      * Toggle expanded state of given entry.
-     * @param {?jQuery wrapped Element} entry element
+     * @param {number} id of entry to toggle
      */
     entryToggleExpanded: function(entry) {
         if (!entry) {
             return;
         }
 
-        if (selfoss.ui.entryIsExpanded(entry)) {
-            selfoss.ui.entryCollapse(entry);
-        } else {
-            selfoss.ui.entryExpand(entry);
-        }
+        selfoss.entriesPage.setEntryExpanded(entry, (expanded) => !(expanded ?? false));
     },
 
 
     /**
      * Activate entry as if it were clicked.
      * This will open it, focus it and based on the settings, mark it as read.
-     * @param {jQuery wrapped Element} entry element
+     * @param {number} id of entry
      */
-    entryActivate: function(entry) {
-        entry.find('.entry-title > .entry-title-link').click();
+    entryActivate: function(id) {
+        const entry = document.querySelector(`.entry[data-entry-id="${id}"]`);
+
+        if (!selfoss.ui.entryIsExpanded(id)) {
+            entry.querySelector('.entry-title > .entry-title-link').click();
+        }
     },
 
 
     /**
      * Deactivate entry, as if it were clicked.
      * This will close it and maybe something more.
-     * @param {?jQuery wrapped Element} entry element
+     * @param {number} id of entry
      */
-    entryDeactivate: function(entry) {
-        if (entry === null) {
-            return;
-        }
+    entryDeactivate: function(id) {
+        const entry = document.querySelector(`.entry[data-entry-id="${id}"]`);
 
-        if (selfoss.ui.entryIsExpanded(entry)) {
-            if (selfoss.isSmartphone()) {
-                entry = entry.get(0);
-
-                entry.closeFullScreen();
-            } else {
-                entry.find('.entry-title > .entry-title-link').click();
-            }
+        if (selfoss.ui.entryIsExpanded(id)) {
+            entry.querySelector('.entry-title > .entry-title-link').click();
         }
     },
 
 
     /**
      * Make the given entry currently selected one.
-     * @param {jQuery wrapped Element} entry element
+     * @param {number} id of entry to select
      */
     entrySelect: function(entry) {
-        if (selfoss.ui.selectedEntry !== null) {
-            selfoss.ui.selectedEntry.removeClass('selected');
-            $('.entry-title > .entry-title-link', selfoss.ui.selectedEntry).attr('aria-current', 'false');
-        }
-
-        selfoss.ui.selectedEntry = entry;
-
-        if (entry) {
-            $('.entry-title > .entry-title-link', selfoss.ui.selectedEntry).attr('aria-current', 'true');
-            entry.addClass('selected');
-        }
+        selfoss.entriesPage.setSelectedEntry(entry);
     },
 
 
     /**
      * Get the currently selected entry.
-     * @return {?jQuery wrapped Element}
+     * @return {number}
      */
     entryGetSelected: function() {
-        return selfoss.ui.selectedEntry;
+        return selfoss.entriesPage.state.selectedEntry;
     },
 
 
-    /**
-     * Is given entry marked as read?
-     * @param {jQuery wrapped Element}
-     * @return {bool}
-     */
-    entryIsRead: function(entry) {
-        return !entry.is('.unread');
+    entryStar: function(id, starred) {
+        selfoss.entriesPage.setEntries((entries) =>
+            entries.map((entry) => {
+                if (entry.id === id) {
+                    return {
+                        ...entry,
+                        starred
+                    };
+                } else {
+                    return entry;
+                }
+            })
+        );
     },
 
 
-    entryStar: function(id, starred, domNode) {
-        var button = $(`.entry[data-entry-id="${id}"] .entry-starr`, domNode);
-
-        // update button
-        if (starred) {
-            button.addClass('active');
-            button.html('<i class="fas fa-star"></i> ' + selfoss.ui._('unstar'));
-        } else {
-            button.removeClass('active');
-            button.html('<i class="far fa-star"></i> ' + selfoss.ui._('star'));
-        }
-    },
-
-
-    entryMark: function(id, unread, domNode) {
-        var button = $(`.entry[data-entry-id="${id}"] .entry-unread`, domNode);
-        var parent = $(`.entry[data-entry-id="${id}"]`, domNode);
-
-        // update button and entry style
-        if (unread) {
-            button.addClass('active');
-            button.html('<i class="fas fa-check-circle"></i> ' + selfoss.ui._('mark'));
-            parent.addClass('unread');
-        } else {
-            button.removeClass('active');
-            button.html('<i class="far fa-check-circle"></i> ' + selfoss.ui._('unmark'));
-            parent.removeClass('unread');
-        }
+    entryMark: function(id, unread) {
+        selfoss.entriesPage.setEntries((entries) =>
+            entries.map((entry) => {
+                if (entry.id === id) {
+                    return {
+                        ...entry,
+                        unread
+                    };
+                } else {
+                    return entry;
+                }
+            })
+        );
     },
 
 
     refreshEntryStatuses: function(entryStatuses) {
-        $('.entry').each(function() {
-            var id = $(this).data('entry-id');
+        selfoss.entriesPage.state.entries.forEach((entry) => {
+            const { id } = entry;
             var newStatus = false;
             entryStatuses.some(function(entryStatus) {
                 if (entryStatus.id == id) {
@@ -355,60 +310,6 @@ selfoss.ui = {
                 selfoss.ui.entryMark(id, newStatus.unread);
             }
         });
-    },
-
-
-    refreshStreamButtons: function(entries = false, hasMore = false) {
-        $('.stream-button, .stream-empty').css('display', 'block').hide();
-        if (entries) {
-            if ($('.entry').length > 0) {
-                $('.stream-empty').hide();
-                if (selfoss.isSmartphone()) {
-                    $('.mark-these-read').show();
-                }
-            } else {
-                $('.stream-empty').show();
-                if (selfoss.isSmartphone()) {
-                    $('.mark-these-read').hide();
-                }
-            }
-        }
-        if (hasMore) {
-            $('.stream-more').show();
-        }
-    },
-
-
-    beforeReloadList: function(clear = true) {
-        var content = $('#content');
-
-        content.addClass('loading');
-        if (clear) {
-            // clear the selected entry
-            selfoss.ui.entrySelect(null);
-
-            content.html('');
-        }
-
-        $('#stream-buttons').hide();
-    },
-
-
-    listReady: function() {
-        $('#content').removeClass('loading');
-        $('#stream-buttons').show();
-        selfoss.events.entries();
-    },
-
-
-    afterReloadList: function(cleared = true) {
-        selfoss.ui.listReady();
-
-        if (cleared) {
-            $(document).scrollTop(0);
-        }
-
-        selfoss.ui.refreshEntryDatetimes();
     },
 
 
@@ -608,27 +509,34 @@ selfoss.ui = {
     },
 
 
+    /**
+     * Converts Date to a relative string.
+     * When the date is too old, null is returned instead.
+     * @param {Date} datetime
+     * @return {?String} relative time reference
+     */
+    datetimeRelative: function(datetime) {
+        const ageInseconds = (new Date() - datetime) / 1000;
+        const ageInMinutes = ageInseconds / 60;
+        const ageInHours = ageInMinutes / 60;
+        const ageInDays = ageInHours / 24;
+
+        if (ageInHours < 1) {
+            return selfoss.ui._('minutes', [Math.round(ageInMinutes)]);
+        } else if (ageInDays < 1) {
+            return selfoss.ui._('hours', [Math.round(ageInHours)]);
+        } else {
+            return null;
+        }
+    },
+
+
     refreshEntryDatetimes: function() {
-        $('.entry').not('.timestamped').each(function() {
-            var datetime = $(this).data('entry-datetime');
+        document.querySelectorAll('.entry:not(.timestamped)').forEach((entry) => {
+            const datetime = entry.getAttribute('data-entry-datetime');
             if (datetime) {
-                datetime = new Date(datetime);
-                var ageInseconds = (new Date() - datetime) / 1000;
-                var ageInMinutes = ageInseconds / 60;
-                var ageInHours = ageInMinutes / 60;
-                var ageInDays = ageInHours / 24;
-
-                var datetimeStr = null;
-                if (ageInHours < 1) {
-                    datetimeStr = selfoss.ui._('minutes', [Math.round(ageInMinutes)]);
-                } else if (ageInDays < 1) {
-                    datetimeStr = selfoss.ui._('hours', [Math.round(ageInHours)]);
-                } else {
-                    $(this).addClass('timestamped');
-                    datetimeStr = datetime.toLocaleString();
-                }
-
-                $('.entry-datetime', this).html(datetimeStr);
+                const date = new Date(datetime);
+                entry.querySelector('.entry-datetime').innerHTML = selfoss.ui.datetimeRelative(date) ?? date.toLocaleString();
             }
         });
     },

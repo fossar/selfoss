@@ -1,6 +1,5 @@
 import 'regenerator-runtime/runtime';
 import './jquery';
-import './lazy-image-loader';
 import 'spectrum-colorpicker';
 import 'jquery-hotkeys';
 import selfoss from './selfoss-base';
@@ -11,8 +10,6 @@ import './selfoss-db';
 import './selfoss-ui';
 import './selfoss-events';
 import './selfoss-events-navigation';
-import './selfoss-events-entries';
-import './selfoss-events-entriestoolbar';
 import './selfoss-shortcuts';
 import '@fancyapps/fancybox';
 

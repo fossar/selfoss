@@ -381,19 +381,14 @@ span.offline-count.diff {
 
 /* content */
 
-#content,
-#stream-buttons {
-    margin-left: 220px;
-}
-
 #content {
+    margin-left: 220px;
     padding-top: 20px;
     padding-bottom: 20px;
 }
 
 .stream-empty {
     text-align: center;
-    display: none;
 }
 
 #content.loading {
@@ -639,10 +634,6 @@ span.offline-count.diff {
     display: none;
 }
 
-.stream-error {
-    display: none;
-}
-
 /* sources */
 
 .source input {
@@ -780,6 +771,7 @@ span.offline-count.diff {
     display: flex;
     justify-content: center;
     align-items: center;
+    position: fixed;
 }
 
 /* login */
@@ -1222,8 +1214,7 @@ body:not(.loggedin) .entry-unread {
         margin-left: 10px;
     }
 
-    #content,
-    #stream-buttons {
+    #content {
         margin: 0;
         padding: 0;
         width: 100%;
@@ -1375,8 +1366,7 @@ body:not(.loggedin) .entry-unread {
         width: 135px;
     }
 
-    #content,
-    #stream-buttons {
+    #content {
         margin-left: 165px;
         margin-top: 0;
         margin-right: 0;

@@ -110,8 +110,7 @@ selfoss.shortcuts = {
             var selected = selfoss.ui.entryGetSelected();
 
             if (selected !== null) {
-                selfoss.events.entriesToolbar(selected);
-                $('.entry-starr', selected).click();
+                document.querySelector(`.entry[data-entry-id="${selected}"] .entry-starr`).click();
             }
 
             e.preventDefault();
@@ -127,8 +126,7 @@ selfoss.shortcuts = {
             var selected = selfoss.ui.entryGetSelected();
 
             if (selected !== null) {
-                selfoss.events.entriesToolbar(selected);
-                $('.entry-unread', selected).click();
+                document.querySelector(`.entry[data-entry-id="${selected}"] .entry-unread`).click();
             }
 
             e.preventDefault();
@@ -165,7 +163,8 @@ selfoss.shortcuts = {
             var selected = selfoss.ui.entryGetSelected();
 
             if (selected !== null) {
-                window.open($('.entry-datetime', selected).attr('href'));
+                const elem = document.querySelector(`.entry[data-entry-id="${selected}"]`);
+                window.open(elem.querySelector('.entry-datetime').getAttribute('href'));
             }
 
             e.preventDefault();
@@ -183,15 +182,14 @@ selfoss.shortcuts = {
             var selected = selfoss.ui.entryGetSelected();
 
             if (selected !== null) {
-                selfoss.events.entriesToolbar(selected);
-
+                const elem = document.querySelector(`.entry[data-entry-id="${selected}"]`);
                 // mark item as read
-                if ($('.entry-unread', selected).hasClass('active')) {
-                    $('.entry-unread', selected).click();
+                if (elem.querySelector('.entry-unread').classList.contains('active')) {
+                    elem.querySelector('.entry-unread').click();
                 }
 
                 // open item in new window
-                $('.entry-datetime', selected).click();
+                elem.querySelector('.entry-datetime').click();
             }
         });
 
@@ -235,11 +233,10 @@ selfoss.shortcuts = {
             let selected = selfoss.ui.entryGetSelected();
 
             if (selected !== null) {
-                selfoss.events.entriesToolbar(selected);
-
+                const elem = document.querySelector(`.entry[data-entry-id="${selected}"]`);
                 // mark item as read if it is not already
-                if ($('.entry-unread', selected).hasClass('active')) {
-                    $('.entry-unread', selected).click();
+                if (elem.querySelector('.entry-unread').classList.contains('active')) {
+                    elem.querySelector('.entry-unread').click();
                 }
             }
 
@@ -256,11 +253,10 @@ selfoss.shortcuts = {
             let selected = selfoss.ui.entryGetSelected();
 
             if (selected !== null) {
-                selfoss.events.entriesToolbar(selected);
-
+                const elem = document.querySelector(`.entry[data-entry-id="${selected}"]`);
                 // mark item as read if it is not already
-                if ($('.entry-unread', selected).hasClass('active')) {
-                    $('.entry-unread', selected).click();
+                if (elem.querySelector('.entry-unread').classList.contains('active')) {
+                    elem.querySelector('.entry-unread').click();
                 }
             }
 
@@ -310,36 +306,42 @@ selfoss.shortcuts = {
             throw new Error('direction must be one of selfoss.shortcuts.DIRECTION_{PREV,NEXT}');
         }
 
+        // when there are no entries
+        if (selfoss.entriesPage.state.entries.length == 0) {
+            return;
+        }
+
         // select current
-        var old = selfoss.ui.entryGetSelected();
-        var current = null;
+        const old = selfoss.ui.entryGetSelected();
+        const oldIndex = old !== null ? selfoss.entriesPage.state.entries.findIndex(({ id }) => id === old) : null;
+        let current = null;
 
         // select next/prev entry and save it to "current"
         // if we would overflow, we stay on the old one
         if (direction == selfoss.shortcuts.DIRECTION_NEXT) {
             if (old === null) {
-                current = $('.entry:eq(0)');
+                current = selfoss.entriesPage.state.entries[0].id;
             } else {
-                if (old.next('.entry:eq(0)').length === 0) {
+                const nextIndex = oldIndex + 1;
+                if (nextIndex >= selfoss.entriesPage.state.entries.length) {
                     current = old;
 
                     // attempt to load more
-                    $('.stream-more').click();
+                    document.querySelector('.stream-more').click();
                 } else {
-                    current = old.next('.entry:eq(0)');
+                    current = selfoss.entriesPage.state.entries[nextIndex].id;
                 }
             }
         } else {
             if (old === null) {
                 return;
             } else {
-                current = old.prev('.entry:eq(0)').length == 0 ? old : old.prev('.entry:eq(0)');
+                if (oldIndex <= 0) {
+                    current = old;
+                } else {
+                    current = selfoss.entriesPage.state.entries[oldIndex - 1].id;
+                }
             }
-        }
-
-        // when there are no entries
-        if (current.length == 0) {
-            return;
         }
 
         if (old !== current) {
@@ -352,11 +354,13 @@ selfoss.shortcuts = {
                 selfoss.ui.entrySelect(current);
             }
 
+            const currentElement = document.querySelector(`.entry[data-entry-id="${current}"]`);
+
             // scroll to element
-            selfoss.shortcuts.autoscroll(current);
+            selfoss.shortcuts.autoscroll(currentElement);
 
             // focus the title link for better keyboard navigation
-            current.find('.entry-title-link').focus();
+            currentElement.querySelector('.entry-title-link').focus();
         }
     },
 
@@ -365,6 +369,7 @@ selfoss.shortcuts = {
      * autoscroll
      */
     autoscroll: function(next) {
+        next = $(next);
         var viewportHeight = $(window).height();
         var viewportScrollTop = $(window).scrollTop();
 
@@ -395,8 +400,8 @@ selfoss.shortcuts = {
             throw new Error('direction must be one of selfoss.shortcuts.DIRECTION_{PREV,NEXT}');
         }
 
-        var content = selfoss.ui.entryIsExpanded($('.entry'));
-        selfoss.shortcuts.nextprev(direction, content);
+        const open = selfoss.ui.entryIsExpanded(selfoss.ui.entryGetSelected());
+        selfoss.shortcuts.nextprev(direction, open);
     },
 
     /**

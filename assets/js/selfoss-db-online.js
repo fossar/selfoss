@@ -1,7 +1,6 @@
-import React from 'jsx-dom';
 import selfoss from './selfoss-base';
 import * as itemsRequests from './requests/items';
-import Item from './templates/Item';
+import { LoadingState } from './requests/LoadingState';
 import { FilterType } from './Filter';
 
 selfoss.dbOnline = {
@@ -187,8 +186,8 @@ selfoss.dbOnline = {
             }
 
             if ('stats' in data && data.stats.unread > 0 &&
-                ($('.stream-empty').is(':visible') ||
-                $('.stream-error').is(':visible'))) {
+                selfoss.entriesPage && (selfoss.entriesPage.state.entries.length === 0 ||
+                selfoss.entriesPage.state.entries.loadingState === LoadingState.FAILURE)) {
                 selfoss.db.reloadList();
             } else {
                 if ('itemUpdates' in data) {
@@ -202,8 +201,8 @@ selfoss.dbOnline = {
                     } else {
                         unreadCount = selfoss.unreadItemsCount.value;
                     }
-                    if (unreadCount > $('.entry.unread').length) {
-                        $('.stream-more').show();
+                    if (selfoss.entriesPage && unreadCount > selfoss.entriesPage.state.entries.filter(({ unread }) => unread == 1).length) {
+                        selfoss.entriesPage.setHasMore(true);
                     }
                 }
             }
