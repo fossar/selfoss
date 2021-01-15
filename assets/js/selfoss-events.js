@@ -25,9 +25,6 @@ selfoss.events = {
      * init events when page loads first time
      */
     init: function() {
-        selfoss.events.navigation();
-
-
         if (location.hash == '') {
             selfoss.events.initHash();
         }

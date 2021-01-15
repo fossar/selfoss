@@ -24,7 +24,7 @@ selfoss.dbOffline = {
                     selfoss.ui._('error_offline_storage', [error.message])
                 );
                 selfoss.db.broken = true;
-                selfoss.db.enableOffline = false;
+                selfoss.db.enableOffline.update(false);
                 selfoss.db.reloadList();
 
                 // If this is a QuotaExceededError, garbage collect more
@@ -39,7 +39,7 @@ selfoss.dbOffline = {
 
 
     init: function() {
-        if (!selfoss.db.enableOffline) {
+        if (!selfoss.db.enableOffline.value) {
             return Promise.reject();
         }
 
@@ -124,7 +124,7 @@ selfoss.dbOffline = {
                 selfoss.dbOffline.refreshStats();
             }).catch(function() {
                 selfoss.db.broken = true;
-                selfoss.db.enableOffline = false;
+                selfoss.db.enableOffline.update(false);
             });
     },
 

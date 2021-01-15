@@ -102,7 +102,7 @@ selfoss.dbOnline = {
             syncParams.updatedStatuses = updatedStatuses;
         }
 
-        if (selfoss.db.enableOffline) {
+        if (selfoss.db.enableOffline.value) {
             syncParams.itemsSinceId = selfoss.dbOffline.lastItemId;
             syncParams.itemsNotBefore = selfoss.dbOffline.newestGCedEntry;
             syncParams.itemsHowMany = selfoss.filter.itemsPerPage;
@@ -122,7 +122,7 @@ selfoss.dbOnline = {
 
             var storing = false;
 
-            if (selfoss.db.enableOffline) {
+            if (selfoss.db.enableOffline.value) {
                 if ('newItems' in data) {
                     var maxId = 0;
                     data.newItems.forEach(function(item) {
@@ -242,7 +242,7 @@ selfoss.dbOnline = {
         let promise = selfoss.activeAjaxReq.promise.then((data) => {
             selfoss.db.setOnline();
 
-            if (!selfoss.db.enableOffline) {
+            if (!selfoss.db.enableOffline.value) {
                 selfoss.db.lastSync = Date.now();
                 selfoss.db.lastUpdate = data.lastUpdate;
             }

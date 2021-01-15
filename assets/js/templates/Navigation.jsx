@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import classNames from 'classnames';
 import NavFilters from './NavFilters';
 import NavSources from './NavSources';
@@ -8,7 +7,7 @@ import NavTags from './NavTags';
 import NavToolBar from './NavToolBar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-export function Navigation() {
+export default function Navigation() {
     const [offlineState, setOfflineState] = React.useState(selfoss.offlineState.value);
 
     React.useEffect(() => {
@@ -55,9 +54,4 @@ export function Navigation() {
             <NavToolBar />
         </React.Fragment>
     );
-}
-
-
-export function anchor(element) {
-    ReactDOM.render(<Navigation />, element);
 }

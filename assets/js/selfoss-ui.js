@@ -1,10 +1,9 @@
-import React from 'jsx-dom';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import locales from './locales';
 import selfoss from './selfoss-base';
 import { initIcons } from './icons';
-import * as LoginForm from './templates/LoginForm';
-import * as Navigation from './templates/Navigation';
-import * as SearchList from './templates/SearchList';
+import App from './templates/App';
 import { LoadingState } from './requests/LoadingState';
 
 /**
@@ -24,35 +23,11 @@ selfoss.ui = {
 
         initIcons();
 
-        $('body').append(<div id="loginform" role="main" />);
+        const mainUi = document.createElement('div');
+        document.body.appendChild(mainUi);
+        mainUi.classList.add('app-toplevel');
 
-        $('body').append(<div id="mainui">
-            {/* menu open for smartphone */}
-            <div id="nav-mobile" role="navigation">
-                <div id="nav-mobile-logo">
-                    <div id="nav-mobile-count" class="unread-count offlineable">
-                        <span class="offline-count offlineable"></span>
-                        <span class="count"></span>
-                    </div>
-                </div>
-                <button id="nav-mobile-settings" accesskey="t" aria-label={selfoss.ui._('settingsbutton')}><i class="fas fa-cog fa-2x"></i></button>
-            </div>
-
-            {/* navigation */}
-            <div id="nav" role="navigation">
-            </div>
-
-            <ul id="search-list">
-            </ul>
-
-            {/* content */}
-            <div id="content" role="main">
-            </div>
-        </div>);
-
-        selfoss.loginForm = LoginForm.anchor(document.querySelector('#loginform'));
-        Navigation.anchor(document.querySelector('#nav'));
-        SearchList.anchor(document.querySelector('#search-list'));
+        ReactDOM.render(<App />, mainUi);
 
         // Cannot add these to the append above, since jQuery automatically cache-busts links, which would prevent them from loading off-line.
         if (selfoss.config.userCss !== null) {
@@ -106,8 +81,7 @@ selfoss.ui = {
         $('#mainui').hide();
         $('#loginform').show();
         selfoss.ui.refreshTitle(0);
-        selfoss.loginForm.setError(error);
-        selfoss.loginForm.setOfflineEnabled(selfoss.db.enableOffline);
+        selfoss.loginFormError.update(error);
         $('#username').focus();
     },
 
@@ -117,7 +91,6 @@ selfoss.ui = {
         $('#mainui').show();
 
         selfoss.ui.refreshTitle();
-        selfoss.events.navigation();
     },
 
 
@@ -146,17 +119,11 @@ selfoss.ui = {
 
     setOffline: function() {
         selfoss.offlineState.update(true);
-        $('.offlineable').addClass('offline');
-        $('.offlineable').removeClass('online');
-        selfoss.events.navigation();
     },
 
 
     setOnline: function() {
         selfoss.offlineState.update(false);
-        $('.offlineable').addClass('online');
-        $('.offlineable').removeClass('offline');
-        selfoss.events.navigation();
     },
 
 
@@ -595,19 +562,8 @@ selfoss.ui = {
                 kind = 'all';
             }
 
-            const count = selfoss[`${kind}ItemsCount`];
             const offlineCount = selfoss[`${kind}ItemsOfflineCount`];
-
             offlineCount.update(newCount);
-            if (kind === 'unread') {
-                $('#nav-mobile-count span.offline-count').html(newCount);
-
-                if (count.value !== offlineCount.value) {
-                    $('#nav-mobile-count span.offline-count').addClass('diff');
-                } else {
-                    $('#nav-mobile-count span.offline-count').removeClass('diff');
-                }
-            }
         }
     }
 

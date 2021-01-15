@@ -80,6 +80,12 @@ var selfoss = {
     allItemsOfflineCount: new ValueListenable(0),
 
     /**
+     * login form error
+     * @var ValueListenable<String>
+     */
+    loginFormError: new ValueListenable(''),
+
+    /**
      * instance of the currently running XHR that is used to reload the items list
      */
     activeAjaxReq: null,
@@ -262,9 +268,9 @@ var selfoss = {
      * @return Promise<undefined>
      */
     login: function({username, password, offlineEnabled}) {
-        selfoss.db.enableOffline = offlineEnabled;
-        window.localStorage.setItem('enableOffline', selfoss.db.enableOffline);
-        if (!selfoss.db.enableOffline) {
+        selfoss.db.enableOffline.update(offlineEnabled);
+        window.localStorage.setItem('enableOffline', selfoss.db.enableOffline.value);
+        if (!selfoss.db.enableOffline.value) {
             selfoss.db.clear();
         }
 
@@ -277,7 +283,7 @@ var selfoss = {
                 selfoss.setSession();
                 selfoss.ui.showMainUi();
                 selfoss.initUi();
-                if ((!selfoss.db.storage || selfoss.db.broken) && selfoss.db.enableOffline) {
+                if ((!selfoss.db.storage || selfoss.db.broken) && selfoss.db.enableOffline.value) {
                     // Initialize database in offline mode when it has not been initialized yet or it got broken.
                     selfoss.dbOffline.init().catch(selfoss.events.init);
                 } else {
@@ -386,14 +392,7 @@ var selfoss = {
      * @param {Number} new unread stats
      */
     refreshUnread: function(unread) {
-        $('#nav-mobile-count .count').html(unread);
         selfoss.unreadItemsCount.update(unread);
-
-        if (unread > 0) {
-            $('#nav-mobile-count').addClass('unread');
-        } else {
-            $('#nav-mobile-count').removeClass('unread');
-        }
 
         selfoss.ui.refreshTitle(unread);
     },
@@ -507,7 +506,7 @@ var selfoss = {
 
         const unreadstats = selfoss.unreadItemsCount.value - ids.length;
 
-        if (selfoss.db.enableOffline) {
+        if (selfoss.db.enableOffline.value) {
             selfoss.refreshUnread(unreadstats);
             selfoss.dbOffline.entriesMark(ids, false);
         }

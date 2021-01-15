@@ -37,9 +37,11 @@ button::-moz-focus-inner {
     text-align: center;
 }
 
-#mainui {
+.app-toplevel {
     height: 100%;
+}
 
+#mainui {
     /* to become visible after log-in */
     display: none;
 }
@@ -1155,7 +1157,6 @@ body:not(.loggedin) .entry-unread {
     }
 
     #nav {
-        display: none;
         position: relative;
         left: 0;
         width: 100%;

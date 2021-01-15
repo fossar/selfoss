@@ -222,7 +222,7 @@ function handleStarredToggle({ event, entry }) {
     }
     updateStats(starr);
 
-    if (selfoss.db.enableOffline) {
+    if (selfoss.db.enableOffline.value) {
         selfoss.dbOffline.entryStar(id, starr);
     }
 
@@ -272,7 +272,7 @@ function handleReadToggle({ event, entry }) {
     }
     updateStats(unread);
 
-    if (selfoss.db.enableOffline) {
+    if (selfoss.db.enableOffline.value) {
         selfoss.dbOffline.entryMark(id, !unread);
     }
 

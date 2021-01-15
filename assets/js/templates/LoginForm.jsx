@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import classNames from 'classnames';
 import Spinner from './Spinner';
 
@@ -25,7 +24,7 @@ function handleLogIn({
     });
 }
 
-export function LoginForm({
+export default function LoginForm({
     error,
     setError,
     offlineEnabled,
@@ -126,37 +125,4 @@ export function LoginForm({
             </form>
         </React.Fragment>
     );
-}
-
-export class StateHolder extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            error: '',
-            offlineEnabled: selfoss.db.enableOffline
-        };
-    }
-
-    setError(error) {
-        this.setState({ error });
-    }
-
-    setOfflineEnabled(offlineEnabled) {
-        this.setState({ offlineEnabled });
-    }
-
-    render() {
-        return (
-            <LoginForm
-                error={this.state.error}
-                setError={this.setError.bind(this)}
-                offlineEnabled={this.state.offlineEnabled}
-                setOfflineEnabled={this.setOfflineEnabled.bind(this)}
-            />
-        );
-    }
-}
-
-export function anchor(element) {
-    return ReactDOM.render(<StateHolder />, element);
 }

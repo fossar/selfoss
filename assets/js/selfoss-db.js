@@ -12,6 +12,7 @@
 import selfoss from './selfoss-base';
 import { OfflineStorageNotAvailableError } from './errors';
 import { FilterType } from './Filter';
+import { ValueListenable } from './helpers/ValueListenable';
 import { LoadingState } from './requests/LoadingState';
 
 selfoss.db = {
@@ -20,7 +21,7 @@ selfoss.db = {
     broken: false,
     storage: null,
     online: true,
-    enableOffline: window.localStorage.getItem('enableOffline') === 'true',
+    enableOffline: new ValueListenable(window.localStorage.getItem('enableOffline') === 'true'),
     entryStatusNames: ['unread', 'starred'],
     userWaiting: true,
 
@@ -95,7 +96,7 @@ selfoss.db = {
         var lastUpdateIsOld = selfoss.db.lastUpdate === null || selfoss.db.lastSync === null || Date.now() - selfoss.db.lastSync > 5 * 60 * 1000;
         var shouldSync = force || selfoss.dbOffline.needsSync || lastUpdateIsOld;
         if (selfoss.loggedin.value && shouldSync) {
-            if (selfoss.db.enableOffline) {
+            if (selfoss.db.enableOffline.value) {
                 return selfoss.dbOffline.sendNewStatuses();
             } else {
                 return selfoss.dbOnline.sync();
@@ -131,7 +132,7 @@ selfoss.db = {
             }
 
             var forceLoadOnline = selfoss.dbOffline.olderEntriesOnline || selfoss.dbOffline.shouldLoadEntriesOnline;
-            if (!selfoss.db.enableOffline || (selfoss.db.online && forceLoadOnline)) {
+            if (!selfoss.db.enableOffline.value || (selfoss.db.online && forceLoadOnline)) {
                 reloader = selfoss.dbOnline.reloadList;
             }
 

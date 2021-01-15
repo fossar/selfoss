@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { executeSearch } from '../SearchHandler';
 
@@ -70,9 +69,4 @@ export default function SearchList() {
             );
         })
     );
-}
-
-
-export function anchor(element) {
-    ReactDOM.render(<SearchList />, element);
 }
