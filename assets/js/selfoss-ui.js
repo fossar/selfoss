@@ -431,32 +431,7 @@ selfoss.ui = {
      * @return void
      */
     showMessage: function(message, actions = [], isError = false) {
-        const messageContainer = $('#message');
-
-        let buttons = actions.map(({label, callback}) => <button type="button" onClick={callback}>
-            {label}
-        </button>);
-
-        messageContainer.html(
-            <React.Fragment>
-                {message}
-                {buttons}
-            </React.Fragment>
-        );
-
-        if (isError) {
-            messageContainer.addClass('error');
-        } else {
-            messageContainer.removeClass('error');
-        }
-
-        messageContainer.show();
-        window.setTimeout(function() {
-            messageContainer.click();
-        }, 15000);
-        messageContainer.unbind('click').click(function() {
-            messageContainer.fadeOut();
-        });
+        selfoss.globalMessage.update({ message, actions, isError });
     },
 
 

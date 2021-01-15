@@ -86,6 +86,12 @@ var selfoss = {
     loginFormError: new ValueListenable(''),
 
     /**
+     * Global message popup.
+     * @var ValueListenable<?Object.{message: string, actions: Array.<Object.{label: string, callback: function>}, isError: bool}>
+     */
+    globalMessage: new ValueListenable(null),
+
+    /**
      * instance of the currently running XHR that is used to reload the items list
      */
     activeAjaxReq: null,

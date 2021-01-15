@@ -15,6 +15,63 @@ function handleNavToggle({ event, setNavExpanded }) {
     window.scrollTo({ top: 0 });
 }
 
+function dismissMessage(event) {
+    selfoss.globalMessage.update(null);
+    event.stopPropagation();
+}
+
+/**
+ * Global message bar for showing errors/information at the top of the page.
+ * It listens to selfoss.globalMessage ValueNotifier and updates/shows/hides itself as necessary
+ * when the value changes.
+ */
+function Message() {
+    const [message, setMessage] = React.useState(null);
+
+    // Whenever message changes, dismiss it after 15 seconds.
+    React.useEffect(() => {
+        if (message !== null) {
+            const dismissTimeout = window.setTimeout(function() {
+                selfoss.globalMessage.update(null);
+            }, 15000);
+
+            return () => {
+                // Destory previous timeout.
+                window.clearTimeout(dismissTimeout);
+            };
+        }
+    }, [message]);
+
+    React.useEffect(() => {
+        const messageListener = (event) => {
+            setMessage(event.value);
+        };
+
+        // It might happen that values change between creating the component and setting up the event handlers.
+        messageListener({ value: selfoss.globalMessage.value });
+
+        selfoss.globalMessage.addEventListener('change', messageListener);
+
+        return () => {
+            selfoss.globalMessage.removeEventListener('change', messageListener);
+        };
+    }, []);
+
+    return (
+        message !== null ?
+            <div id="message" className={classNames({ error: message.isError })} onClick={dismissMessage}>
+                {message.message}
+                {message.actions.map(({ label, callback }, index) => (
+                    <button key={index} type="button" onClick={callback}>
+                        {label}
+                    </button>
+                ))}
+            </div>
+            : null
+    );
+}
+
+
 export default function App() {
     const [navExpanded, setNavExpanded] = React.useState(false);
     const [smartphone, setSmartphone] = React.useState(false);
@@ -79,9 +136,10 @@ export default function App() {
             selfoss.unreadItemsOfflineCount.removeEventListener('change', unreadOfflineCountListener);
         };
     }, []);
-
     return (
         <React.Fragment>
+            <Message />
+
             <div id="loginform" role="main">
                 <LoginForm
                     error={loginFormError}

@@ -98,10 +98,10 @@ selfoss.dbOffline = {
                     Date.now() - (selfoss.dbOffline.offlineDays * 86400000)
                 ));
 
-                $(window).bind('online', function() {
+                window.addEventListener('online', function() {
                     selfoss.db.tryOnline();
                 });
-                $(window).bind('offline', function() {
+                window.addEventListener('offline', function() {
                     selfoss.db.setOffline().catch((error) => {
                         if (error instanceof OfflineStorageNotAvailableError) {
                             selfoss.ui.showError(selfoss.ui._('error_offline_storage_not_available', [
