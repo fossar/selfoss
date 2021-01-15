@@ -230,9 +230,6 @@ var selfoss = {
             // init offline if supported and events
             selfoss.dbOffline.init().catch(selfoss.events.init);
 
-            // init shortcut handler
-            selfoss.shortcuts.init();
-
             // setup periodic server status sync
             window.setInterval(selfoss.db.sync, 60 * 1000);
 

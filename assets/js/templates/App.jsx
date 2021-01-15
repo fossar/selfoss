@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import LoginForm from './LoginForm';
 import Navigation from './Navigation';
 import SearchList from './SearchList';
+import makeShortcuts from '../shortcuts';
 
 function handleNavToggle({ event, setNavExpanded }) {
     event.preventDefault();
@@ -24,6 +25,9 @@ export default function App() {
     const [unreadItemsOfflineCount, setUnreadItemsOfflineCount] = React.useState(selfoss.unreadItemsOfflineCount.value);
 
     React.useEffect(() => {
+        // init shortcut handler
+        const destroyShortcuts = makeShortcuts();
+
         const loginFormErrorListener = (event) => {
             setLoginFormError(event.value);
         };
@@ -66,6 +70,7 @@ export default function App() {
         selfoss.unreadItemsOfflineCount.addEventListener('change', unreadOfflineCountListener);
 
         return () => {
+            destroyShortcuts();
             selfoss.loginFormError.removeEventListener('change', loginFormErrorListener);
             smartphoneMediaQuery.removeEventListener('change', smartphoneListener);
             selfoss.offlineState.removeEventListener('change', offlineStateListener);

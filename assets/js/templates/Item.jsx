@@ -2,6 +2,7 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
 import { createFocusTrap } from 'focus-trap';
+import { nextprev } from '../shortcuts';
 import * as itemsRequests from '../requests/items';
 
 function anonymize(url) {
@@ -181,7 +182,7 @@ function loadImages({ event, setImagesLoaded, contentBlock }) {
 function openNext(event) {
     event.preventDefault();
     event.stopPropagation();
-    selfoss.shortcuts.nextprev('next');
+    nextprev('next');
 }
 
 // hookup the share icon click events

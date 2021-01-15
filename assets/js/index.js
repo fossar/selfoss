@@ -9,7 +9,6 @@ import './selfoss-db-offline';
 import './selfoss-db';
 import './selfoss-ui';
 import './selfoss-events';
-import './selfoss-shortcuts';
 import '@fancyapps/fancybox';
 
 selfoss.init();
