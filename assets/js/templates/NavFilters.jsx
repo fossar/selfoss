@@ -1,27 +1,17 @@
 import React from 'react';
+import { Link, useLocation, useRouteMatch } from 'react-router-dom';
 import classNames from 'classnames';
 import { FilterType } from '../Filter';
-import { filterTypeToString } from '../helpers/uri';
+import { makeEntriesLink, ENTRIES_ROUTE_PATTERN } from '../helpers/uri';
 import Collapse from '@kunukn/react-collapse';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-function handleClick(e, filterType) {
-    e.preventDefault();
-
-    selfoss.filter.update({ type: filterType });
-
-    selfoss.events.reloadSamePath = true;
-    if (selfoss.events.lastSubsection == null) {
-        selfoss.events.lastSubsection = 'all';
-    }
-    selfoss.events.setHash(filterTypeToString(selfoss.filter.type), 'same');
-
+function handleClick() {
     selfoss.ui.hideMobileNav();
 }
 
-export default function NavFilters({filter}) {
+export default function NavFilters() {
     const [expanded, setExpanded] = React.useState(true);
-    const [currentType, setCurrenttype] = React.useState(filter.type);
     const [offlineState, setOfflineState] = React.useState(selfoss.offlineState.value);
     const [allItemsCount, setallItemsCount] = React.useState(selfoss.allItemsCount.value);
     const [allItemsOfflineCount, setallItemsOfflineCount] = React.useState(selfoss.allItemsOfflineCount.value);
@@ -31,10 +21,6 @@ export default function NavFilters({filter}) {
     const [starredItemsOfflineCount, setStarredItemsOfflineCount] = React.useState(selfoss.starredItemsOfflineCount.value);
 
     React.useEffect(() => {
-        const filterListener = (event) => {
-            setCurrenttype(event.filter.type);
-        };
-
         const offlineStateListener = (event) => {
             setOfflineState(event.value);
         };
@@ -64,7 +50,6 @@ export default function NavFilters({filter}) {
         };
 
         // It might happen that filter changes between creating the component and setting up the event handlers.
-        filterListener({ filter });
         offlineStateListener({ value: selfoss.offlineState.value });
         allCountListener({ value: selfoss.allItemsCount.value });
         allOfflineCountListener({ value: selfoss.allItemsOfflineCount.value });
@@ -73,7 +58,6 @@ export default function NavFilters({filter}) {
         starredCountListener({ value: selfoss.starredItemsCount.value });
         starredOfflineCountListener({ value: selfoss.starredItemsOfflineCount.value });
 
-        filter.addEventListener('change', filterListener);
         selfoss.offlineState.addEventListener('change', offlineStateListener);
         selfoss.allItemsCount.addEventListener('change', allCountListener);
         selfoss.allItemsOfflineCount.addEventListener('change', allOfflineCountListener);
@@ -83,7 +67,6 @@ export default function NavFilters({filter}) {
         selfoss.starredItemsOfflineCount.addEventListener('change', starredOfflineCountListener);
 
         return () => {
-            filter.removeEventListener('change', filterListener);
             selfoss.offlineState.removeEventListener('change', offlineStateListener);
             selfoss.allItemsCount.removeEventListener('change', allCountListener);
             selfoss.allItemsOfflineCount.removeEventListener('change', allOfflineCountListener);
@@ -92,7 +75,12 @@ export default function NavFilters({filter}) {
             selfoss.starredItemsCount.removeEventListener('change', starredCountListener);
             selfoss.starredItemsOfflineCount.removeEventListener('change', starredOfflineCountListener);
         };
-    }, [filter]);
+    }, []);
+
+    const location = useLocation();
+    // useParams does not seem to work.
+    const match = useRouteMatch(ENTRIES_ROUTE_PATTERN);
+    const params = match !== null ? match.params : {};
 
     return (
         <div id="nav-filter-wrapper">
@@ -100,27 +88,27 @@ export default function NavFilters({filter}) {
             <Collapse isOpen={expanded} className="collapse-css-transition">
                 <ul id="nav-filter" aria-labelledby="nav-filter-title">
                     <li>
-                        <a id="nav-filter-newest" href="#" className={classNames({'nav-filter-newest': true, active: currentType === FilterType.NEWEST})} onClick={(event) => handleClick(event, FilterType.NEWEST)}>
+                        <Link id="nav-filter-newest" to={makeEntriesLink(location, { filter: FilterType.NEWEST })} className={classNames({'nav-filter-newest': true, active: params.filter === FilterType.NEWEST})} onClick={handleClick}>
                             {selfoss.ui._('newest')}
                             <span className={classNames({'offline-count': true, offline: offlineState, online: !offlineState, diff: allItemsCount !== allItemsOfflineCount && allItemsOfflineCount})} title={selfoss.ui._('offline_count')}>{allItemsOfflineCount > 0 ? allItemsOfflineCount : ''}</span>
                             <span className="count" title={selfoss.ui._('online_count')}>{allItemsCount > 0 ? allItemsCount : ''}</span>
-                        </a>
+                        </Link>
                     </li>
                     <li>
-                        <a id="nav-filter-unread" href="#" className={classNames({'nav-filter-unread': true, active: currentType === FilterType.UNREAD})} onClick={(event) => handleClick(event, FilterType.UNREAD)}>
+                        <Link id="nav-filter-unread" to={makeEntriesLink(location, { filter: FilterType.UNREAD })} className={classNames({'nav-filter-unread': true, active: params.filter === FilterType.UNREAD})} onClick={handleClick}>
                             {selfoss.ui._('unread')}
                             <span className={classNames({'unread-count': true, offline: offlineState, online: !offlineState, unread: unreadItemsCount > 0})}>
                                 <span className={classNames({'offline-count': true, offline: offlineState, online: !offlineState, diff: unreadItemsCount !== unreadItemsOfflineCount && unreadItemsOfflineCount})} title={selfoss.ui._('offline_count')}>{unreadItemsOfflineCount > 0 ? unreadItemsOfflineCount : ''}</span>
                                 <span className="count" title={selfoss.ui._('online_count')}>{unreadItemsCount > 0 ? unreadItemsCount : ''}</span>
                             </span>
-                        </a>
+                        </Link>
                     </li>
                     <li>
-                        <a id="nav-filter-starred" href="#" className={classNames({'nav-filter-starred': true, active: currentType === FilterType.STARRED})} onClick={(event) => handleClick(event, FilterType.STARRED)}>
+                        <Link id="nav-filter-starred" to={makeEntriesLink(location, { filter: FilterType.STARRED })} className={classNames({'nav-filter-starred': true, active: params.filter === FilterType.STARRED})} onClick={handleClick}>
                             {selfoss.ui._('starred')}
                             <span className={classNames({'offline-count': true, offline: offlineState, online: !offlineState, diff: starredItemsCount !== starredItemsOfflineCount && starredItemsOfflineCount})} title={selfoss.ui._('offline_count')}>{starredItemsOfflineCount > 0 ? starredItemsOfflineCount : ''}</span>
                             <span className="count" title={selfoss.ui._('online_count')}>{starredItemsCount > 0 ? starredItemsCount : ''}</span>
-                        </a>
+                        </Link>
                     </li>
                 </ul>
             </Collapse>

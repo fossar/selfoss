@@ -1,24 +1,13 @@
-import { filterTypeToString } from '../helpers/uri';
 import React from 'react';
+import { Link, useLocation, useRouteMatch } from 'react-router-dom';
 import classNames from 'classnames';
 import { unescape } from 'html-escaper';
+import { makeEntriesLink, ENTRIES_ROUTE_PATTERN } from '../helpers/uri';
 import { updateTag } from '../requests/tags';
 import Collapse from '@kunukn/react-collapse';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-function handleClick(e, tag) {
-    e.preventDefault();
-
-    if (!selfoss.db.online) {
-        return;
-    }
-
-    if (tag !== null) {
-        selfoss.events.setHash(filterTypeToString(selfoss.filter.type), `tag-${tag}`);
-    } else {
-        selfoss.events.setHash(filterTypeToString(selfoss.filter.type), 'all');
-    }
-
+function handleClick() {
     selfoss.ui.hideMobileNav();
 }
 
@@ -38,7 +27,7 @@ function ColorChooser({tag}) {
                     tag.tag,
                     color.toHexString()
                 ).then(() => {
-                    selfoss.db.reloadList();
+                    selfoss.entriesPage?.reloadList();
                 }).catch((error) => {
                     selfoss.ui.showError(selfoss.ui._('error_saving_color') + ' ' + error.message);
                 });
@@ -56,47 +45,46 @@ function ColorChooser({tag}) {
     );
 }
 
-export default function NavTags({tagsRepository, filter}) {
+export default function NavTags({tagsRepository}) {
     const [expanded, setExpanded] = React.useState(true);
-    const [currentAllTags, setCurrentAllTags] = React.useState(filter.tag === null && filter.source === null);
-    const [currentTag, setCurrentTag] = React.useState(filter.tag);
     const [tags, setTags] = React.useState(tagsRepository.tags);
 
+    const location = useLocation();
+    // useParams does not seem to work.
+    const match = useRouteMatch(ENTRIES_ROUTE_PATTERN);
+    const params = match !== null ? match.params : {};
+
+    const currentAllTags = params.category === 'all';
+    const currentTag = params.category?.startsWith('tag-') ? params.category.replace(/^tag-/, '') : null;
+
     React.useEffect(() => {
-        const filterListener = (event) => {
-            setCurrentAllTags(event.filter.tag === null && event.filter.source === null);
-            setCurrentTag(event.filter.tag);
-        };
         const tagsListener = (event) => {
             setTags(event.tags);
         };
 
         // It might happen that filter changes between creating the component and setting up the event handlers.
-        filterListener({ filter });
         tagsListener({ tags: tagsRepository.tags });
 
-        filter.addEventListener('change', filterListener);
         tagsRepository.addEventListener('change', tagsListener);
 
         return () => {
-            filter.removeEventListener('change', filterListener);
             tagsRepository.removeEventListener('change', tagsListener);
         };
-    }, [tagsRepository, filter]);
+    }, [tagsRepository]);
 
     return (
         <React.Fragment>
             <h2><button type="button" id="nav-tags-title" className={classNames({'nav-section-toggle': true, 'nav-tags-collapsed': !expanded, 'nav-tags-expanded': expanded})} aria-expanded={expanded} onClick={() => setExpanded((expanded) => !expanded)}><FontAwesomeIcon icon={['fas', expanded ? 'caret-down' : 'caret-right']} size="lg" fixedWidth />  {selfoss.ui._('tags')}</button></h2>
             <Collapse isOpen={expanded} className="collapse-css-transition">
                 <ul id="nav-tags" aria-labelledby="nav-tags-title">
-                    <li><a className={classNames({'nav-tags-all': true, active: currentAllTags})} href="#" onClick={(e) => handleClick(e, null)}>{selfoss.ui._('alltags')}</a></li>
+                    <li><Link to={makeEntriesLink(location, { category: 'all', id: null })} className={classNames({'nav-tags-all': true, active: currentAllTags})} onClick={handleClick}>{selfoss.ui._('alltags')}</Link></li>
                     {tags.map(tag =>
                         <li key={tag.tag}>
-                            <a className={classNames({active: currentTag === tag.tag})} href="#" onClick={(e) => handleClick(e, tag.tag)}>
+                            <Link to={makeEntriesLink(location, { category: `tag-${tag.tag}`, id: null })} className={classNames({active: currentTag === tag.tag})} onClick={handleClick}>
                                 <span className="tag">{unescape(tag.tag)}</span>
                                 <span className="unread">{tag.unread > 0 ? tag.unread : ''}</span>
                                 <ColorChooser tag={tag} />
-                            </a>
+                            </Link>
                         </li>
                     )}
                 </ul>

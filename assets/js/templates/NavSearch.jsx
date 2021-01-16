@@ -1,10 +1,11 @@
 import React from 'react';
+import { useLocation, useHistory } from 'react-router-dom';
 import classNames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { executeSearch } from '../SearchHandler';
+import { makeEntriesLink } from '../helpers/uri';
 
 // search button shows search input or executes search
-function handleSubmit({ active, setActive, searchField, searchText }) {
+function handleSubmit({ active, setActive, searchField, searchText, history, location }) {
     if (!selfoss.isSmartphone() && !active) {
         setActive(true);
         searchField.current.focus();
@@ -12,7 +13,7 @@ function handleSubmit({ active, setActive, searchField, searchText }) {
         return;
     }
 
-    executeSearch(searchText);
+    history.push(makeEntriesLink(location, { search: searchText, id: null }));
     setActive(false);
     searchField.current.blur();
 
@@ -32,21 +33,22 @@ function handleFieldKeyUp({ event, searchButton, searchRemoveButton }) {
 }
 
 // remove button of search
-function handleRemove({ setActive, searchField }) {
-    if (selfoss.filter.search == '') {
-        setActive(false);
+function handleRemove({ setActive, searchField, history, location }) {
+    const queryString = new URLSearchParams(location.search);
+    const oldTerm = queryString.get('search');
+
+    setActive(false);
+
+    if (oldTerm == '') {
         searchField.current.blur();
         return;
     }
 
-    selfoss.filterReset({ search: '' }, true);
-    setActive(false);
-    selfoss.db.reloadList();
+    history.push(makeEntriesLink(location, { search: '', id: null }));
 }
 
 export default function NavSearch() {
     const [active, setActive] = React.useState(false);
-    const [searchText, setSearchText] = React.useState(selfoss.filter.search);
     const [offlineState, setOfflineState] = React.useState(
         selfoss.offlineState.value
     );
@@ -55,24 +57,29 @@ export default function NavSearch() {
     const searchButton = React.useRef(null);
     const searchRemoveButton = React.useRef(null);
 
-    React.useEffect(() => {
-        const filterListener = (event) => {
-            setSearchText(event.filter.search);
-        };
+    const location = useLocation();
+    const history = useHistory();
 
+    const queryString = new URLSearchParams(location.search);
+    const oldTerm = queryString.get('search') ?? '';
+    const [searchText, setSearchText] = React.useState('');
+
+    React.useEffect(() => {
+        // Update the search term when the query string changes.
+        setSearchText(oldTerm);
+    }, [oldTerm]);
+
+    React.useEffect(() => {
         const offlineStateListener = (event) => {
             setOfflineState(event.value);
         };
 
         // It might happen that value changes between creating the component and setting up the event handlers.
-        filterListener({ filter: selfoss.filter });
         offlineStateListener({ value: selfoss.offlineState.value });
 
-        selfoss.filter.addEventListener('change', filterListener);
         selfoss.offlineState.addEventListener('change', offlineStateListener);
 
         return () => {
-            selfoss.filter.removeEventListener('change', filterListener);
             selfoss.offlineState.removeEventListener(
                 'change',
                 offlineStateListener
@@ -111,7 +118,7 @@ export default function NavSearch() {
                 title={selfoss.ui._('searchremove')}
                 accessKey="h"
                 aria-label={selfoss.ui._('searchremove')}
-                onClick={() => handleRemove({ setActive, searchField })}
+                onClick={() => handleRemove({ setActive, searchField, history, location })}
                 ref={searchRemoveButton}
             >
                 <FontAwesomeIcon icon={['fas', 'times']} />
@@ -122,7 +129,7 @@ export default function NavSearch() {
                 aria-label={selfoss.ui._('searchbutton')}
                 accessKey="e"
                 onClick={() =>
-                    handleSubmit({ active, setActive, searchField, searchText })
+                    handleSubmit({ active, setActive, searchField, searchText, history, location })
                 }
                 ref={searchButton}
             >

@@ -1,8 +1,10 @@
 import React from 'react';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
 import { createFocusTrap } from 'focus-trap';
 import { nextprev } from '../shortcuts';
+import { makeEntriesLink } from '../helpers/uri';
 import * as itemsRequests from '../requests/items';
 
 function anonymize(url) {
@@ -44,7 +46,7 @@ function preventDefaultOnSmartphone(event) {
 }
 
 // Handle closing fullscreen on mobile
-function closeFullScreen({ event, entry, setFullScreenTrap }) {
+function closeFullScreen({ event, history, location, entry, setFullScreenTrap }) {
     event.preventDefault();
     event.stopPropagation();
     selfoss.entriesPage.setEntryExpanded(entry.id, false);
@@ -59,7 +61,7 @@ function closeFullScreen({ event, entry, setFullScreenTrap }) {
     document.body.classList.remove('fullscreen-mode');
 
     selfoss.entriesPage.setEntryExpanded(entry.id, false);
-    selfoss.events.setHash();
+    history.replace(makeEntriesLink(location, { id: null }));
 
     const autoHideReadOnMobile = selfoss.config.autoHideReadOnMobile && entry.unread == 1;
     if (autoHideReadOnMobile && entry.unread != 1) {
@@ -68,7 +70,7 @@ function closeFullScreen({ event, entry, setFullScreenTrap }) {
 }
 
 // show/hide entry
-function handleClick({ event, target, entry, contentBlock, setFullScreenTrap, setImagesLoaded }) {
+function handleClick({ event, history, location, target, entry, contentBlock, setFullScreenTrap, setImagesLoaded }) {
     const expected = selfoss.isMobile() ? '.entry' : '.entry-title';
     if (target !== expected) {
         return;
@@ -86,14 +88,14 @@ function handleClick({ event, target, entry, contentBlock, setFullScreenTrap, se
             if (selfoss.isSmartphone()) {
                 parent.querySelector('.entry-close').click();
             } else {
-                selfoss.events.setHash();
+                history.replace(makeEntriesLink(location, { id: null }));
             }
         } else {
             if (selfoss.config.autoCollapse) {
                 selfoss.ui.entryCollapseAll();
             }
             selfoss.ui.entrySelect(entry.id);
-            selfoss.events.setHash('same', 'same', entryId);
+            history.replace(makeEntriesLink(location, { id: entryId }));
 
             // load images not on mobile devices
             if (selfoss.isMobile() == false || selfoss.config.loadImagesOnMobile) {
@@ -147,27 +149,6 @@ function handleClick({ event, target, entry, contentBlock, setFullScreenTrap, se
 
         return !expanded;
     });
-}
-
-// click a tag
-function handleTagClick({ event, tag }) {
-    if (selfoss.isSmartphone()) {
-        event.preventDefault();
-        event.stopPropagation();
-        return;
-    }
-    selfoss.events.setHash('same', `tag-${tag}`);
-}
-
-
-// click a source
-function handleSourceClick({ event, source }) {
-    if (selfoss.isSmartphone()) {
-        event.preventDefault();
-        event.stopPropagation();
-        return;
-    }
-    selfoss.events.setHash('same', `source-${source}`);
 }
 
 // load images
@@ -299,6 +280,9 @@ export default function Item({ item, selected, expanded }) {
     const [imagesLoaded, setImagesLoaded] = React.useState(false);
     const contentBlock = React.useRef(null);
 
+    const location = useLocation();
+    const history = useHistory();
+
     const relDate = selfoss.ui.datetimeRelative(item.datetime);
     const shares = selfoss.shares.getAll();
 
@@ -310,7 +294,7 @@ export default function Item({ item, selected, expanded }) {
             className={classNames({entry: true, unread: item.unread == 1, expanded, selected})}
             role="article"
             aria-modal={fullScreenTrap !== null}
-            onClick={(event) => handleClick({ event, entry: item, target: '.entry', contentBlock, setFullScreenTrap, setImagesLoaded })}
+            onClick={(event) => handleClick({ event, history, location, entry: item, target: '.entry', contentBlock, setFullScreenTrap, setImagesLoaded })}
         >
 
             {/* icon */}
@@ -330,7 +314,7 @@ export default function Item({ item, selected, expanded }) {
             {/* title */}
             <h3
                 className="entry-title"
-                onClick={(event) => handleClick({ event, entry: item, target: '.entry-title', contentBlock, setFullScreenTrap, setImagesLoaded })}
+                onClick={(event) => handleClick({ event, history, location, entry: item, target: '.entry-title', contentBlock, setFullScreenTrap, setImagesLoaded })}
             >
                 <span
                     className="entry-title-link"
@@ -345,24 +329,26 @@ export default function Item({ item, selected, expanded }) {
 
             <span className="entry-tags">
                 {Object.entries(item.tags).map(([tag, color]) =>
-                    <span
+                    <Link
                         key={tag}
                         className="entry-tags-tag"
                         style={{color: color['foreColor'], backgroundColor: color['backColor']}}
-                        onClick={(event) => handleTagClick({ event, tag })}
+                        to={makeEntriesLink(location, { category: `tag-${tag}`, id: null })}
+                        onClick={preventDefaultOnSmartphone}
                     >
                         {tag}
-                    </span>
+                    </Link>
                 )}
             </span>
 
             {/* source */}
-            <span
+            <Link
                 className="entry-source"
-                onClick={(event) => handleSourceClick({ event, source: item.source })}
+                to={makeEntriesLink(location, { category: `source-${item.source}`, id: null })}
+                onClick={preventDefaultOnSmartphone}
             >
                 {sourcetitle}
-            </span>
+            </Link>
 
             <span className="entry-separator">•</span>
 
@@ -493,7 +479,7 @@ export default function Item({ item, selected, expanded }) {
                     </li>
                 ))}
                 <li>
-                    <button accessKey="c" className="entry-close" onClick={(event) => closeFullScreen({ event, entry: item, setFullScreenTrap })}>
+                    <button accessKey="c" className="entry-close" onClick={(event) => closeFullScreen({ event, history, location, entry: item, setFullScreenTrap })}>
                         <FontAwesomeIcon icon={['far', 'times-circle']} /> {selfoss.ui._('close_entry')}
                     </button>
                 </li>

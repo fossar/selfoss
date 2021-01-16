@@ -25,7 +25,7 @@ selfoss.dbOffline = {
                 );
                 selfoss.db.broken = true;
                 selfoss.db.enableOffline.update(false);
-                selfoss.db.reloadList();
+                selfoss.entries?.reloadList();
 
                 // If this is a QuotaExceededError, garbage collect more
                 // entries and hope it helps.
@@ -39,8 +39,8 @@ selfoss.dbOffline = {
 
 
     init: function() {
-        if (!selfoss.db.enableOffline.value) {
-            return Promise.reject();
+        if (!selfoss.db.enableOffline.value || selfoss.db.storage) {
+            return;
         }
 
         selfoss.db.broken = false;
@@ -118,8 +118,7 @@ selfoss.dbOffline = {
                 selfoss.db.tryOnline()
                     .then(function() {
                         selfoss.reloadTags();
-                    })
-                    .finally(selfoss.events.init);
+                    });
                 selfoss.dbOffline.reloadOnlineStats();
                 selfoss.dbOffline.refreshStats();
             }).catch(function() {
@@ -235,34 +234,34 @@ selfoss.dbOffline = {
     },
 
 
-    reloadList: function() {
+    reloadList: function(fetchParams) {
         let hasMore = false;
         return selfoss.dbOffline._tr('r', selfoss.db.storage.entries,
             function() {
                 var howMany = 0;
 
-                var ascOrder = selfoss.db.ascOrder();
+                var ascOrder = selfoss.config.unreadOrder === 'asc' && fetchParams.type === FilterType.UNREAD;
                 var entries = selfoss.db.storage.entries.orderBy('[datetime+id]');
                 if (!ascOrder) {
                     entries = entries.reverse();
                 }
 
-                const fromDatetime = selfoss.filter.fromDatetime;
-                const fromId = selfoss.filter.fromId;
+                const fromDatetime = fetchParams.fromDatetime;
+                const fromId = fetchParams.fromId;
                 const seek = fromDatetime && fromId;
-                const alwaysInDb = selfoss.filter.type === FilterType.STARRED
-                             || selfoss.filter.type === FilterType.UNREAD;
+                const alwaysInDb = fetchParams.type === FilterType.STARRED
+                             || fetchParams.type === FilterType.UNREAD;
 
                 return entries.filter(function(entry) {
                     var keepEntry = false;
 
-                    if (selfoss.filter.extraIds.includes(entry.id)) {
+                    if (fetchParams.extraIds.includes(entry.id)) {
                         return true;
                     }
 
-                    if (selfoss.filter.type === FilterType.STARRED) {
+                    if (fetchParams.type === FilterType.STARRED) {
                         keepEntry = entry.starred;
-                    } else if (selfoss.filter.type === FilterType.UNREAD) {
+                    } else if (fetchParams.type === FilterType.UNREAD) {
                         keepEntry = entry.unread;
                     } else {
                         keepEntry = true;
@@ -295,7 +294,7 @@ selfoss.dbOffline = {
 
                     // stop iteration if enough entries have been shown
                     // go one further to assess if has more
-                    if (howMany >= selfoss.filter.itemsPerPage + 1) {
+                    if (howMany >= selfoss.config.itemsPerPage + 1) {
                         hasMore = true;
                         return true;
                     }

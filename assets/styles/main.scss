@@ -41,11 +41,6 @@ button::-moz-focus-inner {
     height: 100%;
 }
 
-#mainui {
-    /* to become visible after log-in */
-    display: none;
-}
-
 #message {
     position: fixed;
     width: 100%;
@@ -118,6 +113,13 @@ button::-moz-focus-inner {
     text-align: center;
     border-radius: 2px;
     cursor: pointer;
+}
+
+#nav-mark[disabled],
+#nav-mark[disabled]:hover {
+    background: #525858;
+    color: #808080;
+    cursor: not-allowed;
 }
 
 #nav-mark:hover {
@@ -458,6 +460,7 @@ span.offline-count.diff {
     padding: 2px;
     font-size: 0.8em;
     white-space: nowrap;
+    text-decoration: none;
 }
 
 .entry-thumbnail img {
@@ -776,10 +779,6 @@ span.offline-count.diff {
 }
 
 /* login */
-
-#loginform {
-    display: none;
-}
 
 #loginform form.loading {
     display: none;

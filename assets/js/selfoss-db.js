@@ -11,9 +11,7 @@
 
 import selfoss from './selfoss-base';
 import { OfflineStorageNotAvailableError } from './errors';
-import { FilterType } from './Filter';
 import { ValueListenable } from './helpers/ValueListenable';
-import { LoadingState } from './requests/LoadingState';
 
 selfoss.db = {
 
@@ -84,11 +82,6 @@ selfoss.db = {
     },
 
 
-    ascOrder: function() {
-        return selfoss.config.unreadOrder === 'asc' && selfoss.filter.type === FilterType.UNREAD;
-    },
-
-
     lastSync: null,
 
 
@@ -104,82 +97,5 @@ selfoss.db = {
         } else {
             return Promise.resolve(); // ensure any chained function runs
         }
-    },
-
-
-    reloadList: function(append = false, waitForSync = true) {
-        if (location.hash == '#sources') {
-            return;
-        }
-
-        if (selfoss.events.entryId && selfoss.filter.fromId === undefined) {
-            selfoss.filter.update({ extraIds: [...selfoss.filter.extraIds, selfoss.events.entryId] });
-        }
-
-        if (!append || selfoss.filter.type !== FilterType.NEWEST) {
-            selfoss.dbOffline.olderEntriesOnline = false;
-        }
-
-        selfoss.entriesPage?.setLoadingState(LoadingState.LOADING);
-
-        var reload = function() {
-            let reloader = selfoss.dbOffline.reloadList;
-
-            // tag, source and search filtering not supported offline (yet?)
-            if (selfoss.filter.tag || selfoss.filter.source
-                || selfoss.filter.search) {
-                reloader = selfoss.dbOnline.reloadList;
-            }
-
-            var forceLoadOnline = selfoss.dbOffline.olderEntriesOnline || selfoss.dbOffline.shouldLoadEntriesOnline;
-            if (!selfoss.db.enableOffline.value || (selfoss.db.online && forceLoadOnline)) {
-                reloader = selfoss.dbOnline.reloadList;
-            }
-
-            selfoss.entriesPage?.setLoadingState(LoadingState.LOADING);
-            reloader().then(({ entries, hasMore }) => {
-                selfoss.entriesPage.setLoadingState(LoadingState.SUCCESS);
-                selfoss.entriesPage.setHasMore(hasMore);
-
-                if (append) {
-                    selfoss.entriesPage.appendEntries(entries);
-                } else {
-                    selfoss.entriesPage.setExpandedEntries({});
-                    selfoss.entriesPage.setEntries(entries);
-                }
-
-                // open selected entry only if entry was requested (i.e. if not streaming
-                // more)
-                if (selfoss.events.entryId && selfoss.filter.fromId === undefined) {
-                    var entry = document.querySelector(`.entry[data-entry-id="${selfoss.events.entryId}"]`);
-
-                    if (!entry) {
-                        return;
-                    }
-
-                    selfoss.ui.entryActivate(selfoss.events.entryId);
-                    // ensure scrolling to requested entry even if scrolling to article
-                    // header is disabled
-                    if (!selfoss.config.scrollToArticleHeader) {
-                        // needs to be delayed for some reason
-                        requestAnimationFrame(function() {
-                            entry.scrollIntoView();
-                        });
-                    }
-                }
-            }).catch(function(error) {
-                selfoss.entriesPage.setLoadingState(LoadingState.FAILURE);
-                selfoss.ui.showError(selfoss.ui._('error_loading') + ' ' + error.message);
-            });
-        };
-
-        if (waitForSync && selfoss.dbOnline.syncing.promise) {
-            selfoss.db.userWaiting = true;
-            selfoss.dbOnline.syncing.promise.finally(reload);
-        } else {
-            reload();
-        }
     }
-
-
 };

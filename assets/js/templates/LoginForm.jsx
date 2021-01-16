@@ -1,14 +1,15 @@
 import React from 'react';
 import classNames from 'classnames';
 import Spinner from './Spinner';
+import { useHistory } from 'react-router-dom';
 
 function handleLogIn({
     event,
+    history,
     setLoading,
     setError,
     username,
     password,
-    setPassword,
     offlineEnabled
 }) {
     event.preventDefault();
@@ -16,7 +17,7 @@ function handleLogIn({
     setLoading(true);
 
     selfoss.login({ username, password, offlineEnabled }).then(() => {
-        setPassword('');
+        history.push('/');
     }).catch((error) => {
         setError(error.message);
     }).finally(() => {
@@ -34,6 +35,8 @@ export default function LoginForm({
     const [password, setPassword] = React.useState('');
     const [loading, setLoading] = React.useState(false);
 
+    const history = useHistory();
+
     return (
         <React.Fragment>
             {loading ? <Spinner /> : null}
@@ -44,11 +47,11 @@ export default function LoginForm({
                 onSubmit={(event) =>
                     handleLogIn({
                         event,
+                        history,
                         setLoading,
                         setError,
                         username,
                         password,
-                        setPassword,
                         offlineEnabled
                     })
                 }

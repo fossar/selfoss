@@ -94,7 +94,7 @@ selfoss.dbOnline = {
         var syncParams = {
             since: selfoss.db.lastUpdate,
             tags: true,
-            sources: selfoss.filter.sourcesNav ? true : undefined,
+            sources: selfoss.navSourcesExpanded.value || undefined,
             itemsStatuses: getStatuses
         };
 
@@ -105,7 +105,7 @@ selfoss.dbOnline = {
         if (selfoss.db.enableOffline.value) {
             syncParams.itemsSinceId = selfoss.dbOffline.lastItemId;
             syncParams.itemsNotBefore = selfoss.dbOffline.newestGCedEntry;
-            syncParams.itemsHowMany = selfoss.filter.itemsPerPage;
+            syncParams.itemsHowMany = selfoss.config.itemsPerPage;
         }
 
         selfoss.dbOnline.statsDirty = false;
@@ -137,7 +137,7 @@ selfoss.dbOnline = {
                     selfoss.dbOffline
                         .shouldLoadEntriesOnline = 'lastId' in data
                         && data.lastId - selfoss.dbOffline.lastItemId >
-                        2 * selfoss.filter.itemsPerPage;
+                        2 * selfoss.config.itemsPerPage;
 
                     selfoss.dbOffline.storeEntries(data.newItems)
                         .then(function() {
@@ -188,20 +188,16 @@ selfoss.dbOnline = {
             if ('stats' in data && data.stats.unread > 0 &&
                 selfoss.entriesPage && (selfoss.entriesPage.state.entries.length === 0 ||
                 selfoss.entriesPage.state.entries.loadingState === LoadingState.FAILURE)) {
-                selfoss.db.reloadList();
+                selfoss.entriesPage?.reloadList();
             } else {
                 if ('itemUpdates' in data) {
                     selfoss.ui.refreshEntryStatuses(data.itemUpdates);
                 }
 
-                if (selfoss.filter.type == FilterType.UNREAD) {
-                    var unreadCount = 0;
-                    if ('stats' in data) {
-                        unreadCount = data.stats.unread;
-                    } else {
-                        unreadCount = selfoss.unreadItemsCount.value;
-                    }
-                    if (selfoss.entriesPage && unreadCount > selfoss.entriesPage.state.entries.filter(({ unread }) => unread == 1).length) {
+                if (selfoss.entriesPage && selfoss.entriesPage.getActiveFilter() === FilterType.UNREAD) {
+                    const unreadCount = 'stats' in data ? data.stats.unread :  selfoss.unreadItemsCount.value;
+
+                    if (unreadCount > selfoss.entriesPage.state.entries.filter(({ unread }) => unread == 1).length) {
                         selfoss.entriesPage.setHasMore(true);
                     }
                 }
@@ -232,12 +228,15 @@ selfoss.dbOnline = {
      *
      * @return void
      */
-    reloadList: function() {
+    reloadList: function(fetchParams) {
         if (selfoss.activeAjaxReq !== null) {
             selfoss.activeAjaxReq.controller.abort();
         }
 
-        selfoss.activeAjaxReq = itemsRequests.getItems(selfoss.filter);
+        selfoss.activeAjaxReq = itemsRequests.getItems({
+            ...fetchParams,
+            itemsPerPage: selfoss.config.itemsPerPage
+        });
 
         let promise = selfoss.activeAjaxReq.promise.then((data) => {
             selfoss.db.setOnline();
@@ -252,7 +251,7 @@ selfoss.dbOnline = {
             // update tags
             selfoss.tags.update(data.tags);
 
-            if (selfoss.filter.sourcesNav) {
+            if (selfoss.navSourcesExpanded.value) {
                 selfoss.sources.update(data.sources);
             }
 
@@ -266,7 +265,7 @@ selfoss.dbOnline = {
             }
 
             return selfoss.handleAjaxError(error).then(function() {
-                return selfoss.dbOffline.reloadList();
+                return selfoss.dbOffline.reloadList(fetchParams);
             });
         }).finally(() => {
             // clean up

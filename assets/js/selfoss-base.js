@@ -1,8 +1,6 @@
-import { Filter, FilterType } from './Filter';
 import { TagsRepository } from './model/TagsRepository';
 import { SourcesRepository } from './model/SourcesRepository';
 import { getInstanceInfo, login, logout } from './requests/common';
-import * as itemsRequests from './requests/items';
 import * as sourceRequests from './requests/sources';
 import { getAllTags } from './requests/tags';
 import * as ajax from './helpers/ajax';
@@ -18,12 +16,11 @@ import { LoadingState } from './requests/LoadingState';
  * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  */
 var selfoss = {
-
     /**
-     * current filter settings
-     * @var Filter
+     * true when sources in the sidebar are expanded
+     * and we should fetch info about them in API requests.
      */
-    filter: new Filter({}),
+    navSourcesExpanded: new ValueListenable(false),
 
     /**
      * whether off-line mode is enabled
@@ -193,6 +190,9 @@ var selfoss = {
             $('meta[name="application-name"]').attr('content', configuration.htmlTitle);
             $('head').append('<link rel="alternate" type="application/rss+xml" title="RSS Feed" href="feed" />');
 
+            // init offline if supported
+            selfoss.dbOffline.init();
+
             selfoss.ui.init();
 
             if (selfoss.hasSession() || !configuration.authEnabled) {
@@ -202,7 +202,7 @@ var selfoss = {
                 selfoss.initUi();
             } else {
                 selfoss.ui.logout();
-                selfoss.events.setHash('login', false);
+                selfoss.history.push('/login');
             }
         });
     },
@@ -215,15 +215,6 @@ var selfoss = {
         if (!selfoss.initUiDone) {
             selfoss.initUiDone = true;
 
-            // set items per page
-            selfoss.filter.update({ itemsPerPage: selfoss.config.itemsPerPage });
-
-            selfoss.filter.addEventListener('change', (event) => {
-                if (event.setHash) {
-                    selfoss.events.setHash();
-                }
-            });
-
             // read the html title configured
             selfoss.htmlTitle = selfoss.config.htmlTitle;
 
@@ -233,15 +224,10 @@ var selfoss = {
             // init FancyBox
             selfoss.initFancyBox();
 
-            // init offline if supported and events
-            selfoss.dbOffline.init().catch(selfoss.events.init);
-
             // setup periodic server status sync
             window.setInterval(selfoss.db.sync, 60 * 1000);
 
             window.setInterval(selfoss.ui.refreshEntryDatetimes, 60 * 1000);
-
-            selfoss.ui.showMainUi();
         }
     },
 
@@ -284,18 +270,16 @@ var selfoss = {
         return login(credentials).then((data) => {
             if (data.success) {
                 selfoss.setSession();
-                selfoss.ui.showMainUi();
+                selfoss.history.push('/');
+                // init offline if supported and not inited yet
+                selfoss.dbOffline.init();
                 selfoss.initUi();
                 if ((!selfoss.db.storage || selfoss.db.broken) && selfoss.db.enableOffline.value) {
                     // Initialize database in offline mode when it has not been initialized yet or it got broken.
-                    selfoss.dbOffline.init().catch(selfoss.events.init);
-                } else {
-                    selfoss.db.reloadList();
+                    selfoss.dbOffline.init();
                 }
-                selfoss.events.initHash();
                 return Promise.resolve();
             } else {
-                selfoss.events.setHash('login', false);
                 return Promise.reject(new Error(data.error));
             }
         });
@@ -306,7 +290,7 @@ var selfoss = {
         selfoss.clearSession();
         selfoss.ui.logout();
         if (!$('body').hasClass('publicmode')) {
-            selfoss.events.setHash('login', false);
+            selfoss.history.push('/login');
         }
 
         logout().catch((error) => {
@@ -354,21 +338,6 @@ var selfoss = {
             return true;
         }
         return false;
-    },
-
-
-    /**
-     * reset filter
-     *
-     * @return void
-     */
-    filterReset: function(extras, notify = false) {
-        selfoss.filter.update({
-            fromDatetime: undefined,
-            fromId: undefined,
-            extraIds: [],
-            ...extras
-        }, notify);
     },
 
 
@@ -456,81 +425,6 @@ var selfoss = {
      */
     initFancyBox: function() {
         $.fancybox.defaults.hash = false;
-    },
-
-
-    /**
-     * Mark all visible items as read
-     */
-    markVisibleRead: function() {
-        let ids = [];
-        let tagUnreadDiff = {};
-        let sourceUnreadDiff = [];
-
-        let markedEntries = selfoss.entriesPage.state.entries.map((entry) => {
-            if (!entry.unread) {
-                return entry;
-            }
-
-            ids.push(entry.id);
-
-            Object.keys(entry.tags).forEach((tag) => {
-                if (Object.keys(tagUnreadDiff).includes(tag)) {
-                    tagUnreadDiff[tag] += -1;
-                } else {
-                    tagUnreadDiff[tag] = -1;
-                }
-            });
-
-            const { source } = entry;
-            if (Object.keys(sourceUnreadDiff).includes(source)) {
-                sourceUnreadDiff[source] += -1;
-            } else {
-                sourceUnreadDiff[source] = -1;
-            }
-
-            return {
-                ...entry,
-                unread: false
-            };
-        });
-        const oldEntries = selfoss.entriesPage.state.entries;
-        const hadMore = selfoss.entriesPage.state.hasMore;
-
-        // close opened entry and list
-        selfoss.filterReset({}, true);
-
-        if (ids.length !== 0 && selfoss.filter.type === FilterType.UNREAD) {
-            markedEntries = markedEntries.filter(({ id }) => ids.includes(id));
-        }
-
-        selfoss.entriesPage.setLoadingState(LoadingState.LOADING);
-        selfoss.entriesPage.setEntries(markedEntries);
-
-        const unreadstats = selfoss.unreadItemsCount.value - ids.length;
-
-        if (selfoss.db.enableOffline.value) {
-            selfoss.refreshUnread(unreadstats);
-            selfoss.dbOffline.entriesMark(ids, false);
-        }
-
-        itemsRequests.markAll(ids).then(function() {
-            selfoss.entriesPage.setLoadingState(LoadingState.SUCCESS);
-        }).catch(function(error) {
-            selfoss.handleAjaxError(error).then(function() {
-                let statuses = ids.map(id => ({
-                    entryId: id,
-                    name: 'unread',
-                    value: false
-                }));
-                selfoss.dbOffline.enqueueStatuses(statuses);
-            }).catch(function(error) {
-                selfoss.entriesPage.setLoadingState(LoadingState.SUCCESS);
-                selfoss.entriesPage.setEntries(oldEntries);
-                selfoss.entriesPage.setHasMore(hadMore);
-                selfoss.ui.showError(selfoss.ui._('error_mark_items') + ' ' + error.message);
-            });
-        });
     },
 
 

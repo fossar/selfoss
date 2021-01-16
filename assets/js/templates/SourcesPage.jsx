@@ -1,7 +1,8 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { useRouteMatch } from 'react-router-dom';
 import Source from './Source';
 import * as sourceRequests from '../requests/sources';
+import { getAllSources } from '../requests/sources';
 
 function rand() {
     // https://www.php.net/manual/en/function.mt-getrandmax.php#117620
@@ -27,7 +28,32 @@ function handleAddSource({ event, setSources, setSpouts }) {
         });
 }
 
+function loadSources() { // load sources
+    if (selfoss.activeAjaxReq !== null) {
+        selfoss.activeAjaxReq.controller.abort();
+    }
+    selfoss.activeAjaxReq = getAllSources();
+    selfoss.activeAjaxReq.promise.then(({sources, spouts}) => {
+        selfoss.sourcesPage.setSpouts(spouts);
+        selfoss.sourcesPage.setSources(sources);
+    }).catch((error) => {
+        if (error.name === 'AbortError') {
+            return;
+        }
+
+        selfoss.handleAjaxError(error, false).catch(function(error) {
+            selfoss.ui.showError(selfoss.ui._('error_loading') + ' ' + error.message);
+        });
+    });
+}
+
 export function SourcesPage({ sources, setSources, spouts, setSpouts }) {
+    const match = useRouteMatch();
+
+    React.useEffect(() => {
+        loadSources();
+    }, [match]);
+
     return (
         <React.Fragment>
             <button
@@ -54,7 +80,7 @@ export function SourcesPage({ sources, setSources, spouts, setSpouts }) {
     );
 }
 
-export class StateHolder extends React.Component {
+export default class StateHolder extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -89,8 +115,4 @@ export class StateHolder extends React.Component {
             />
         );
     }
-}
-
-export function anchor(element) {
-    return ReactDOM.render(<StateHolder />, element);
 }

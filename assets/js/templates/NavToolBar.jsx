@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function handleReloadAll({ setReloading }) {
@@ -8,22 +9,22 @@ function handleReloadAll({ setReloading }) {
     });
 }
 
-function handleSettings() {
+function handleSettings({ history }) {
     // only loggedin users
     if (!selfoss.loggedin.value || !selfoss.db.online) {
         return;
     }
 
     // show sources
-    selfoss.events.setHash('sources', false);
+    history.push('/sources');
 
     if (selfoss.isSmartphone()) {
         $('#nav-mobile-settings').click();
     }
 }
 
-function handleLogIn() {
-    selfoss.events.setHash('login', false);
+function handleLogIn({ history }) {
+    history.push('/login');
 }
 
 function handleLogOut() {
@@ -38,6 +39,8 @@ function handleLogOut() {
 
 export default function NavToolBar() {
     const [reloading, setReloading] = React.useState(false);
+
+    const history = useHistory();
 
     return (
         <div className="nav-toolbar">
@@ -59,7 +62,7 @@ export default function NavToolBar() {
                 title={selfoss.ui._('settingsbutton')}
                 aria-label={selfoss.ui._('settingsbutton')}
                 accessKey="t"
-                onClick={handleSettings}
+                onClick={() => handleSettings({ history })}
             >
                 <FontAwesomeIcon
                     icon={['fas', 'cloud-upload-alt']}
@@ -80,7 +83,7 @@ export default function NavToolBar() {
                 title={selfoss.ui._('loginbutton')}
                 aria-label={selfoss.ui._('loginbutton')}
                 accessKey="l"
-                onClick={handleLogIn}
+                onClick={() => handleLogIn({ history })}
             >
                 <FontAwesomeIcon icon={['fas', 'key']} fixedWidth />
             </button>

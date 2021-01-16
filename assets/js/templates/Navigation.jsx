@@ -7,7 +7,7 @@ import NavTags from './NavTags';
 import NavToolBar from './NavToolBar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-export default function Navigation() {
+export default function Navigation({ entriesPage }) {
     const [offlineState, setOfflineState] = React.useState(selfoss.offlineState.value);
 
     React.useEffect(() => {
@@ -28,15 +28,15 @@ export default function Navigation() {
     return (
         <React.Fragment>
             <div id="nav-logo"></div>
-            <button accessKey="a" id="nav-mark" onClick={selfoss.markVisibleRead}>{selfoss.ui._('markread')}</button>
+            <button accessKey="a" id="nav-mark" onClick={entriesPage !== null ? () => entriesPage.markVisibleRead() : null} disabled={entriesPage === null}>{selfoss.ui._('markread')}</button>
 
-            <NavFilters filter={selfoss.filter} />
+            <NavFilters />
 
             <div className="separator"><hr /></div>
 
             <div className={classNames({'nav-ts-wrapper': true, offline: offlineState, online: !offlineState})}>
-                <NavTags tagsRepository={selfoss.tags} filter={selfoss.filter} />
-                <NavSources sourcesRepository={selfoss.sources} filter={selfoss.filter} />
+                <NavTags tagsRepository={selfoss.tags} />
+                <NavSources sourcesRepository={selfoss.sources} />
             </div>
 
             <div className={classNames({'nav-unavailable': true, offline: offlineState, online: !offlineState})}>

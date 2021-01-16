@@ -1,3 +1,4 @@
+import { generatePath } from 'react-router-dom';
 import { FilterType } from '../Filter';
 
 /**
@@ -34,4 +35,32 @@ export function filterTypeToString(type) {
     } else if (type == FilterType.STARRED) {
         return 'starred';
     }
+}
+
+export const ENTRIES_ROUTE_PATTERN = '/:filter(newest|unread|starred)/:category(all|tag-[^/]+|source-[0-9]+)/:id?';
+
+export function makeEntriesLink(location, { filter, category, id, search }) {
+    const queryString = new URLSearchParams(location.search);
+
+    let path;
+    if (location.pathname.match(/^\/(newest|unread|starred)\//) !== null) {
+        const [, ...segments] = location.pathname.split('/');
+
+        path = generatePath(ENTRIES_ROUTE_PATTERN, {
+            filter: filter ?? segments[0],
+            category: category ?? segments[1],
+            id: typeof id !== 'undefined' ? id : segments[2]
+        });
+    } else {
+        path = generatePath(ENTRIES_ROUTE_PATTERN, {
+            // TODO: change default from config
+            filter: filter ?? 'unread',
+            category: category ?? 'all',
+            id
+        });
+    }
+
+    const searchParam = typeof search !== 'undefined' ? search : queryString?.get('search');
+
+    return path + (searchParam ? `?search=${searchParam}` : '');
 }

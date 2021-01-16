@@ -1,10 +1,23 @@
 import React from 'react';
+import { HashRouter as Router } from 'react-router-dom';
 import ReactDOM from 'react-dom';
 import locales from './locales';
 import selfoss from './selfoss-base';
 import { initIcons } from './icons';
 import App from './templates/App';
 import { LoadingState } from './requests/LoadingState';
+
+/**
+ * Creates the selfoss single-page application
+ * with the required contexts.
+ */
+function createApp() {
+    return (
+        <Router hashType="noslash">
+            <App />
+        </Router>
+    );
+}
 
 /**
  * ui change functions
@@ -27,7 +40,7 @@ selfoss.ui = {
         document.body.appendChild(mainUi);
         mainUi.classList.add('app-toplevel');
 
-        ReactDOM.render(<App />, mainUi);
+        ReactDOM.render(createApp(), mainUi);
 
         // Cannot add these to the append above, since jQuery automatically cache-busts links, which would prevent them from loading off-line.
         if (selfoss.config.userCss !== null) {
@@ -42,24 +55,21 @@ selfoss.ui = {
             document.body.appendChild(script);
         }
 
-        function setupTags() {
-            if (selfoss.filter.tag) {
-                if (!selfoss.db.isValidTag(selfoss.filter.tag)) {
-                    selfoss.ui.showError(selfoss.ui._('error_unknown_tag') + ' ' + selfoss.filter.tag);
+
+        selfoss.tags.addEventListener('change', () => {
+            if (selfoss.entriesPage) {
+                const tag = selfoss.entriesPage.getActiveTag();
+                if (tag !== null && !selfoss.db.isValidTag(tag)) {
+                    selfoss.ui.showError(selfoss.ui._('error_unknown_tag') + ' ' + tag);
                 }
             }
-        }
-
-        // It might happen that tags are loaded before the event listener is set up.
-        setupTags();
-
-        selfoss.tags.addEventListener('change', setupTags);
+        });
 
         selfoss.sources.addEventListener('change', () => {
-            if (selfoss.filter.source) {
-                if (!selfoss.db.isValidSource(selfoss.filter.source)) {
-                    selfoss.ui.showError(selfoss.ui._('error_unknown_source') + ' '
-                                         + selfoss.filter.source);
+            if (selfoss.entriesPage) {
+                const source = selfoss.entriesPage.getActiveSource();
+                if (source !== null && !selfoss.db.isValidSource(source)) {
+                    selfoss.ui.showError(selfoss.ui._('error_unknown_source') + ' ' + source);
                 }
             }
 
@@ -78,17 +88,16 @@ selfoss.ui = {
     },
 
     showLogin: function(error = '') {
-        $('#mainui').hide();
-        $('#loginform').show();
+        selfoss.history.push('/login');
         selfoss.ui.refreshTitle(0);
+        // TODO: Use location state once we switch to BrowserRouter
         selfoss.loginFormError.update(error);
         $('#username').focus();
     },
 
 
     showMainUi: function() {
-        $('#loginform').hide();
-        $('#mainui').show();
+        selfoss.history.push('/');
 
         selfoss.ui.refreshTitle();
     },

@@ -1,6 +1,7 @@
 import React from 'react';
+import { useLocation, useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { executeSearch } from '../SearchHandler';
+import { makeEntriesLink } from '../helpers/uri';
 
 
 function splitTerm(term) {
@@ -29,11 +30,15 @@ function joinTerm(words) {
 
 
 // remove search term
-function handleRemove(index) {
-    const termArray = splitTerm(selfoss.filter.search);
+function handleRemove({ index, location, history }) {
+    const queryString = new URLSearchParams(location.search);
+    const oldTerm = queryString.get('search');
+
+    const termArray = splitTerm(oldTerm);
     termArray.splice(index, 1);
     const newterm = joinTerm(termArray);
-    executeSearch(newterm);
+
+    history.push(makeEntriesLink(location, { search: newterm, id: null }));
 }
 
 
@@ -41,29 +46,21 @@ function handleRemove(index) {
  * Component for showing list of search terms at the top of the page.
  */
 export default function SearchList() {
-    const [searchText, setSearchText] = React.useState(selfoss.filter.search);
+    const location = useLocation();
+    const history = useHistory();
+
+    const searchText = React.useMemo(() => {
+        const queryString = new URLSearchParams(location.search);
+
+        return queryString.get('search') ?? '';
+    }, [location.search]);
 
     const terms = splitTerm(searchText);
-
-    React.useEffect(() => {
-        const filterListener = (event) => {
-            setSearchText(event.filter.search);
-        };
-
-        // It might happen that value changes between creating the component and setting up the event handlers.
-        filterListener({ filter: selfoss.filter });
-
-        selfoss.filter.addEventListener('change', filterListener);
-
-        return () => {
-            selfoss.filter.removeEventListener('change', filterListener);
-        };
-    }, []);
 
     return (
         terms.map((item, index) => {
             return (
-                <li key={index} onClick={() => handleRemove(index)}>
+                <li key={index} onClick={() => handleRemove({ index, location, history })}>
                     {item} <FontAwesomeIcon icon={['fas', 'times']} />
                 </li>
             );

@@ -1,11 +1,22 @@
 import React from 'react';
+import {
+    Switch,
+    Route,
+    Redirect,
+    useHistory,
+    useLocation
+} from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Collapse from '@kunukn/react-collapse';
 import classNames from 'classnames';
 import LoginForm from './LoginForm';
+import SourcesPage from './SourcesPage';
+import EntriesPage from './EntriesPage';
 import Navigation from './Navigation';
 import SearchList from './SearchList';
 import makeShortcuts from '../shortcuts';
+import { ENTRIES_ROUTE_PATTERN } from '../helpers/uri';
+
 
 function handleNavToggle({ event, setNavExpanded }) {
     event.preventDefault();
@@ -71,6 +82,15 @@ function Message() {
     );
 }
 
+function NotFound() {
+    const location = useLocation();
+    return (
+        <p>
+            {selfoss.ui._('error_invalid_subsection') + location.pathname}
+        </p>
+    );
+}
+
 
 export default function App() {
     const [navExpanded, setNavExpanded] = React.useState(false);
@@ -80,6 +100,7 @@ export default function App() {
     const [offlineEnabled, setOfflineEnabled] = React.useState(selfoss.db.enableOffline.value);
     const [unreadItemsCount, setUnreadItemsCount] = React.useState(selfoss.unreadItemsCount.value);
     const [unreadItemsOfflineCount, setUnreadItemsOfflineCount] = React.useState(selfoss.unreadItemsOfflineCount.value);
+    const [entriesPage, setEntriesPage] = React.useState(null);
 
     React.useEffect(() => {
         // init shortcut handler
@@ -136,49 +157,90 @@ export default function App() {
             selfoss.unreadItemsOfflineCount.removeEventListener('change', unreadOfflineCountListener);
         };
     }, []);
+
+    // TODO: move stuff that depends on this to the App.
+    const history = useHistory();
+    React.useEffect(() => {
+        selfoss.history = history;
+    }, [history]);
+
+    // Prepare path of the homepage for redirecting from /
+    let homePagePath = selfoss.config.homepage.split('/');
+    if (!homePagePath[1]) {
+        homePagePath.push('all');
+    }
+
     return (
         <React.Fragment>
             <Message />
 
-            <div id="loginform" role="main">
-                <LoginForm
-                    error={loginFormError}
-                    setError={setLoginFormError}
-                    {...{offlineEnabled, setOfflineEnabled}}
-                />
-            </div>
-            {/* menu open for smartphone */}
-            <div id="nav-mobile" role="navigation">
-                <div id="nav-mobile-logo">
-                    <div id="nav-mobile-count" className={classNames({'unread-count': true, offline: offlineState, online: !offlineState, unread: unreadItemsCount > 0})}>
-                        <span className={classNames({'offline-count': true, offline: offlineState, online: !offlineState, diff: unreadItemsCount !== unreadItemsOfflineCount && unreadItemsOfflineCount})}>{unreadItemsOfflineCount > 0 ? unreadItemsOfflineCount : ''}</span>
-                        <span className="count">{unreadItemsCount}</span>
+            <Switch>
+                <Route path="/login">
+                    {/* menu open for smartphone */}
+                    <div id="loginform" role="main">
+                        <LoginForm
+                            error={loginFormError}
+                            setError={setLoginFormError}
+                            {...{offlineEnabled, setOfflineEnabled}}
+                        />
                     </div>
-                </div>
-                <button
-                    id="nav-mobile-settings"
-                    accessKey="t"
-                    aria-label={selfoss.ui._('settingsbutton')}
-                    onClick={(event) => handleNavToggle({ event, setNavExpanded })}
-                >
-                    <FontAwesomeIcon icon={['fas', 'cog']} size="2x" />
-                </button>
-            </div>
+                </Route>
 
-            {/* navigation */}
-            <Collapse isOpen={!smartphone || navExpanded} className="collapse-css-transition">
-                <div id="nav" role="navigation">
-                    <Navigation />
-                </div>
-            </Collapse>
+                <Route path="/">
+                    <div id="nav-mobile" role="navigation">
+                        <div id="nav-mobile-logo">
+                            <div id="nav-mobile-count" className={classNames({'unread-count': true, offline: offlineState, online: !offlineState, unread: unreadItemsCount > 0})}>
+                                <span className={classNames({'offline-count': true, offline: offlineState, online: !offlineState, diff: unreadItemsCount !== unreadItemsOfflineCount && unreadItemsOfflineCount})}>{unreadItemsOfflineCount > 0 ? unreadItemsOfflineCount : ''}</span>
+                                <span className="count">{unreadItemsCount}</span>
+                            </div>
+                        </div>
+                        <button
+                            id="nav-mobile-settings"
+                            accessKey="t"
+                            aria-label={selfoss.ui._('settingsbutton')}
+                            onClick={(event) => handleNavToggle({ event, setNavExpanded })}
+                        >
+                            <FontAwesomeIcon icon={['fas', 'cog']} size="2x" />
+                        </button>
+                    </div>
 
-            <ul id="search-list">
-                <SearchList />
-            </ul>
+                    {/* navigation */}
+                    <Collapse isOpen={!smartphone || navExpanded} className="collapse-css-transition">
+                        <div id="nav" role="navigation">
+                            <Navigation entriesPage={entriesPage} />
+                        </div>
+                    </Collapse>
 
-            {/* content */}
-            <div id="content" role="main">
-            </div>
+                    <ul id="search-list">
+                        <SearchList />
+                    </ul>
+
+                    {/* content */}
+                    <div id="content" role="main">
+                        <Switch>
+                            <Route exact path="/">
+                                <Redirect to={`/${homePagePath.join('/')}`} />
+                            </Route>
+                            <Route path={ENTRIES_ROUTE_PATTERN}>
+                                {(routeProps) => (
+                                    <EntriesPage {...routeProps} ref={(entriesPage) => {
+                                        setEntriesPage(entriesPage);
+                                        selfoss.entriesPage = entriesPage;
+                                    }} />
+                                )}
+                            </Route>
+                            <Route path="/sources">
+                                <SourcesPage ref={(sourcesPage) => {
+                                    selfoss.sourcesPage = sourcesPage;
+                                }} />
+                            </Route>
+                            <Route path="*">
+                                <NotFound />
+                            </Route>
+                        </Switch>
+                    </div>
+                </Route>
+            </Switch>
         </React.Fragment>
     );
 }
