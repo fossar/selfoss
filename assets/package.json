@@ -36,6 +36,7 @@
     "autoprefixer": "^9.8.6",
     "eslint": "^7.17.0",
     "eslint-plugin-react": "^7.20.6",
+    "eslint-plugin-react-hooks": "^4.2.0",
     "parcel-bundler": "^1.12.3",
     "parcel-plugin-sw-cache": "^0.3.1",
     "prettier": "^2.0.0",
