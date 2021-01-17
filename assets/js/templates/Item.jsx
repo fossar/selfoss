@@ -395,9 +395,16 @@ export default function Item({ item, selected, expanded }) {
                 <div className="entry-smartphone-share">
                     <ul aria-label={selfoss.ui._('article_actions')}>
                         <li>
-                            <button accessKey="o" aria-haspopup="true" className="entry-newwindow">
+                            <a
+                                href={anonymize(item.link)}
+                                className="entry-newwindow"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                accessKey="o"
+                                onClick={(event) => event.stopPropagation()}
+                            >
                                 <FontAwesomeIcon icon={['fas', 'external-link-alt']} /> {selfoss.ui._('open_window')}
-                            </button>
+                            </a>
                         </li>
                         {shares.map(({ name, label, icon }) => (
                             <li key={name}>
