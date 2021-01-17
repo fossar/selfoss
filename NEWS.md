@@ -13,6 +13,7 @@
 - Data directory can be configured ([#1043](https://github.com/fossar/selfoss/pull/1043))
 - New spout for searching Twitter (e.g. following hashtags) was added. ([#1213](https://github.com/fossar/selfoss/pull/1213))
 - Added option `reading_speed_wpm` for showing estimated reading time. ([#1232](https://github.com/fossar/selfoss/pull/1232))
+- Search query is now part of URL. ([#1216](https://github.com/fossar/selfoss/pull/1216))
 
 ### Bug fixes
 - Reddit spout allows wider range of URLs, including absolute URLs and searches ([#1033](https://github.com/fossar/selfoss/pull/1033))
@@ -67,6 +68,7 @@
   * Swedish `sv`
 
 ### Other changes
+- The front-end has been modernized using React framework, this will greatly simplify future development. ([#1216](https://github.com/fossar/selfoss/pull/1216))
 - Removed broken instapaper scraping from Reddit spout ([#1033](https://github.com/fossar/selfoss/pull/1033))
 - RSS feed will be fetched more reliably ([#1052](https://github.com/fossar/selfoss/pull/1052))
 - Guzzle is now used for Twitter as well, allowing users to [install certificates](https://github.com/fossar/selfoss/issues/1099#issuecomment-477112598) on outdated hosts easily. ([#1102](https://github.com/SSilence/selfoss/pull/1102))
@@ -87,6 +89,7 @@
 - We carried out a significant internal refactoring ([#1164](https://github.com/fossar/selfoss/pull/1164), [#1190](https://github.com/fossar/selfoss/pull/1190))
 - Placeholders are now used for images before they are loaded to avoid content jumping around ([#1204](https://github.com/fossar/selfoss/pull/1204))
 - Search button is now always on the screen, avoiding the need to scroll to top to be able to use it. ([#1231](https://github.com/fossar/selfoss/issues/1231))
+- Button for opening articles, tags, sources and filters in the sidebar, as well as the source and tag links in articles are now real links, allowing to open them in a new tab by middle-clicking them. ([#1216](https://github.com/fossar/selfoss/issues/1216), [#695](https://github.com/fossar/selfoss/issues/695))
 
 
 ## 2.18 – 2018-03-05
