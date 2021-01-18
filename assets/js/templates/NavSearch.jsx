@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { makeEntriesLink } from '../helpers/uri';
 
 // search button shows search input or executes search
-function handleSubmit({ active, setActive, searchField, searchText, history, location }) {
+function handleSubmit({ active, setActive, searchField, searchText, history, location, setNavExpanded }) {
     if (!selfoss.isSmartphone() && !active) {
         setActive(true);
         searchField.current.focus();
@@ -17,9 +17,7 @@ function handleSubmit({ active, setActive, searchField, searchText, history, loc
     setActive(false);
     searchField.current.blur();
 
-    if (selfoss.isSmartphone()) {
-        $('#nav-mobile-settings').click();
-    }
+    setNavExpanded(false);
 }
 
 function handleFieldKeyUp({ event, searchButton, searchRemoveButton }) {
@@ -47,7 +45,7 @@ function handleRemove({ setActive, searchField, history, location }) {
     history.push(makeEntriesLink(location, { search: '', id: null }));
 }
 
-export default function NavSearch() {
+export default function NavSearch({ setNavExpanded }) {
     const [active, setActive] = React.useState(false);
     const [offlineState, setOfflineState] = React.useState(
         selfoss.offlineState.value
@@ -129,7 +127,7 @@ export default function NavSearch() {
                 aria-label={selfoss.ui._('searchbutton')}
                 accessKey="e"
                 onClick={() =>
-                    handleSubmit({ active, setActive, searchField, searchText, history, location })
+                    handleSubmit({ active, setActive, searchField, searchText, history, location, setNavExpanded })
                 }
                 ref={searchButton}
             >

@@ -198,10 +198,8 @@ var selfoss = {
             if (selfoss.hasSession() || !configuration.authEnabled) {
                 selfoss.initUi();
             } else if ($('body').hasClass('publicmode')) {
-                selfoss.ui.logout();
                 selfoss.initUi();
             } else {
-                selfoss.ui.logout();
                 selfoss.history.push('/login');
             }
         });
@@ -288,7 +286,6 @@ var selfoss = {
 
     logout: function() {
         selfoss.clearSession();
-        selfoss.ui.logout();
         if (!$('body').hasClass('publicmode')) {
             selfoss.history.push('/login');
         }
@@ -438,11 +435,6 @@ var selfoss = {
         }
 
         return sourceRequests.refreshAll().then(() => {
-            // hide nav on smartphone
-            if (selfoss.isSmartphone()) {
-                $('#nav-mobile-settings').click();
-            }
-
             // probe stats and prompt reload to the user
             selfoss.dbOnline.sync().then(function() {
                 if (selfoss.unreadItemsCount.value > 0) {
@@ -473,7 +465,6 @@ var selfoss = {
             return selfoss.db.setOffline();
         } else {
             if (httpCode == 403) {
-                selfoss.ui.logout();
                 selfoss.ui.showLogin(selfoss.ui._('error_session_expired'));
             }
             throw error;

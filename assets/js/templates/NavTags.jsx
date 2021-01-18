@@ -7,10 +7,6 @@ import { updateTag } from '../requests/tags';
 import Collapse from '@kunukn/react-collapse';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-function handleClick() {
-    selfoss.ui.hideMobileNav();
-}
-
 function ColorChooser({tag}) {
     const colorChooser = React.useRef(null);
 
@@ -45,7 +41,7 @@ function ColorChooser({tag}) {
     );
 }
 
-export default function NavTags({tagsRepository}) {
+export default function NavTags({ tagsRepository, setNavExpanded }) {
     const [expanded, setExpanded] = React.useState(true);
     const [tags, setTags] = React.useState(tagsRepository.tags);
 
@@ -77,10 +73,10 @@ export default function NavTags({tagsRepository}) {
             <h2><button type="button" id="nav-tags-title" className={classNames({'nav-section-toggle': true, 'nav-tags-collapsed': !expanded, 'nav-tags-expanded': expanded})} aria-expanded={expanded} onClick={() => setExpanded((expanded) => !expanded)}><FontAwesomeIcon icon={['fas', expanded ? 'caret-down' : 'caret-right']} size="lg" fixedWidth />  {selfoss.ui._('tags')}</button></h2>
             <Collapse isOpen={expanded} className="collapse-css-transition">
                 <ul id="nav-tags" aria-labelledby="nav-tags-title">
-                    <li><Link to={makeEntriesLink(location, { category: 'all', id: null })} className={classNames({'nav-tags-all': true, active: currentAllTags})} onClick={handleClick}>{selfoss.ui._('alltags')}</Link></li>
+                    <li><Link to={makeEntriesLink(location, { category: 'all', id: null })} className={classNames({'nav-tags-all': true, active: currentAllTags})} onClick={() => setNavExpanded(false)}>{selfoss.ui._('alltags')}</Link></li>
                     {tags.map(tag =>
                         <li key={tag.tag}>
-                            <Link to={makeEntriesLink(location, { category: `tag-${tag.tag}`, id: null })} className={classNames({active: currentTag === tag.tag})} onClick={handleClick}>
+                            <Link to={makeEntriesLink(location, { category: `tag-${tag.tag}`, id: null })} className={classNames({active: currentTag === tag.tag})} onClick={() => setNavExpanded(false)}>
                                 <span className="tag">{unescape(tag.tag)}</span>
                                 <span className="unread">{tag.unread > 0 ? tag.unread : ''}</span>
                                 <ColorChooser tag={tag} />

@@ -92,7 +92,7 @@ function reloadList({ fetchParams, append = false, waitForSync = true, entryId =
 }
 
 // updates a source
-function handleRefreshSource({ event, fetchParams, setLoadingState }) {
+function handleRefreshSource({ event, fetchParams, setLoadingState, setNavExpanded }) {
     event.preventDefault();
 
     // show loading
@@ -100,9 +100,7 @@ function handleRefreshSource({ event, fetchParams, setLoadingState }) {
 
     sourceRequests.refreshSingle(fetchParams.source).then(() => {
         // hide nav on smartphone
-        if (selfoss.isSmartphone()) {
-            $('#nav-mobile-settings').click();
-        }
+        setNavExpanded(false);
 
         // Fetch the new items and reload the list.
         // Will also clear the loading status.
@@ -130,7 +128,7 @@ function loadMore({ event, fetchParams, entries, setMoreLoadingState }) {
     });
 }
 
-export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, selectedEntry, expandedEntries }) {
+export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, selectedEntry, expandedEntries, setNavExpanded }) {
     const allowedToUpdate = !selfoss.config.authEnabled || selfoss.config.allowPublicUpdate || selfoss.loggedin.value;
 
     const location = useLocation();
@@ -209,7 +207,7 @@ export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, s
                 <button
                     type="button"
                     className="refresh-source"
-                    onClick={(event) => handleRefreshSource({ event, fetchParams, setLoadingState })}
+                    onClick={(event) => handleRefreshSource({ event, fetchParams, setLoadingState, setNavExpanded })}
                 >
                     {selfoss.ui._('source_refresh')}
                 </button>

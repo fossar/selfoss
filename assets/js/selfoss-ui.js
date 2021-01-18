@@ -103,13 +103,6 @@ selfoss.ui = {
     },
 
 
-    hideMobileNav: function() {
-        if (selfoss.isSmartphone() && $('#nav').is(':visible')) {
-            $('#nav-mobile-settings').click();
-        }
-    },
-
-
     refreshTitle: function(unread) {
         unread = (typeof unread !== 'undefined') ? unread : selfoss.unreadItemsCount.value;
 
@@ -118,11 +111,6 @@ selfoss.ui = {
         } else {
             $(document).attr('title', selfoss.htmlTitle);
         }
-    },
-
-
-    logout: function() {
-        selfoss.ui.hideMobileNav();
     },
 
 

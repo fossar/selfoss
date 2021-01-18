@@ -2,14 +2,15 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-function handleReloadAll({ setReloading }) {
+function handleReloadAll({ setReloading, setNavExpanded }) {
     setReloading(true);
     selfoss.reloadAll().finally(() => {
+        setNavExpanded(false);
         setReloading(false);
     });
 }
 
-function handleSettings({ history }) {
+function handleSettings({ history, setNavExpanded }) {
     // only loggedin users
     if (!selfoss.loggedin.value || !selfoss.db.online) {
         return;
@@ -18,16 +19,14 @@ function handleSettings({ history }) {
     // show sources
     history.push('/sources');
 
-    if (selfoss.isSmartphone()) {
-        $('#nav-mobile-settings').click();
-    }
+    setNavExpanded(false);
 }
 
 function handleLogIn({ history }) {
     history.push('/login');
 }
 
-function handleLogOut() {
+function handleLogOut({ setNavExpanded }) {
     // only loggedin users
     if (!selfoss.loggedin.value || !selfoss.db.online) {
         return;
@@ -35,9 +34,10 @@ function handleLogOut() {
 
     selfoss.db.clear();
     selfoss.logout();
+    setNavExpanded(false);
 }
 
-export default function NavToolBar() {
+export default function NavToolBar({ setNavExpanded }) {
     const [reloading, setReloading] = React.useState(false);
 
     const history = useHistory();
@@ -49,7 +49,7 @@ export default function NavToolBar() {
                 title={selfoss.ui._('refreshbutton')}
                 aria-label={selfoss.ui._('refreshbutton')}
                 accessKey="r"
-                onClick={() => handleReloadAll({ setReloading })}
+                onClick={() => handleReloadAll({ setReloading, setNavExpanded })}
             >
                 <FontAwesomeIcon
                     icon={['fas', 'sync-alt']}
@@ -62,7 +62,7 @@ export default function NavToolBar() {
                 title={selfoss.ui._('settingsbutton')}
                 aria-label={selfoss.ui._('settingsbutton')}
                 accessKey="t"
-                onClick={() => handleSettings({ history })}
+                onClick={() => handleSettings({ history, setNavExpanded })}
             >
                 <FontAwesomeIcon
                     icon={['fas', 'cloud-upload-alt']}
@@ -74,7 +74,7 @@ export default function NavToolBar() {
                 title={selfoss.ui._('logoutbutton')}
                 aria-label={selfoss.ui._('logoutbutton')}
                 accessKey="l"
-                onClick={handleLogOut}
+                onClick={() => handleLogOut({ setNavExpanded })}
             >
                 <FontAwesomeIcon icon={['fas', 'sign-out-alt']} fixedWidth />
             </button>

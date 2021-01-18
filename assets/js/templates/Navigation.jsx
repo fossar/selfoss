@@ -7,7 +7,7 @@ import NavTags from './NavTags';
 import NavToolBar from './NavToolBar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-export default function Navigation({ entriesPage }) {
+export default function Navigation({ entriesPage, setNavExpanded }) {
     const [offlineState, setOfflineState] = React.useState(selfoss.offlineState.value);
 
     React.useEffect(() => {
@@ -30,13 +30,13 @@ export default function Navigation({ entriesPage }) {
             <div id="nav-logo"></div>
             <button accessKey="a" id="nav-mark" onClick={entriesPage !== null ? () => entriesPage.markVisibleRead() : null} disabled={entriesPage === null}>{selfoss.ui._('markread')}</button>
 
-            <NavFilters />
+            <NavFilters setNavExpanded={setNavExpanded} />
 
             <div className="separator"><hr /></div>
 
             <div className={classNames({'nav-ts-wrapper': true, offline: offlineState, online: !offlineState})}>
-                <NavTags tagsRepository={selfoss.tags} />
-                <NavSources sourcesRepository={selfoss.sources} />
+                <NavTags tagsRepository={selfoss.tags} setNavExpanded={setNavExpanded} />
+                <NavSources sourcesRepository={selfoss.sources} setNavExpanded={setNavExpanded} />
             </div>
 
             <div className={classNames({'nav-unavailable': true, offline: offlineState, online: !offlineState})}>
@@ -49,9 +49,9 @@ export default function Navigation({ entriesPage }) {
 
             <div className="separator"><hr /></div>
 
-            <NavSearch />
+            <NavSearch setNavExpanded={setNavExpanded} />
 
-            <NavToolBar />
+            <NavToolBar setNavExpanded={setNavExpanded} />
         </React.Fragment>
     );
 }

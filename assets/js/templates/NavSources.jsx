@@ -28,11 +28,7 @@ function handleTitleClick(setExpanded, [sourcesState, setSourcesState]) {
     });
 }
 
-function handleClick() {
-    selfoss.ui.hideMobileNav();
-}
-
-export default function NavSources({sourcesRepository}) {
+export default function NavSources({ sourcesRepository, setNavExpanded }) {
     const [expanded, setExpanded] = React.useState(false);
     const [sourcesState, setSourcesState] = React.useState(sourcesRepository.state);
     const [sources, setSources] = React.useState(sourcesRepository.sources);
@@ -78,7 +74,7 @@ export default function NavSources({sourcesRepository}) {
                 <ul id="nav-sources" aria-labelledby="nav-sources-title">
                     {sources.map((source) =>
                         <li key={source.id}>
-                            <Link to={makeEntriesLink(location, { category: `source-${source.id}`, id: null })} className={classNames({active: currentSource === source.id, unread: source.unread > 0})} onClick={handleClick}>
+                            <Link to={makeEntriesLink(location, { category: `source-${source.id}`, id: null })} className={classNames({active: currentSource === source.id, unread: source.unread > 0})} onClick={() => setNavExpanded(false)}>
                                 <span className="nav-source">{unescape(source.title)}</span>
                                 <span className="unread">{source.unread > 0 ? source.unread : ''}</span>
                             </Link>

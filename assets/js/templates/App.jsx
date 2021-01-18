@@ -207,7 +207,7 @@ export default function App() {
                     {/* navigation */}
                     <Collapse isOpen={!smartphone || navExpanded} className="collapse-css-transition">
                         <div id="nav" role="navigation">
-                            <Navigation entriesPage={entriesPage} />
+                            <Navigation entriesPage={entriesPage} setNavExpanded={setNavExpanded} />
                         </div>
                     </Collapse>
 
@@ -223,10 +223,14 @@ export default function App() {
                             </Route>
                             <Route path={ENTRIES_ROUTE_PATTERN}>
                                 {(routeProps) => (
-                                    <EntriesPage {...routeProps} ref={(entriesPage) => {
-                                        setEntriesPage(entriesPage);
-                                        selfoss.entriesPage = entriesPage;
-                                    }} />
+                                    <EntriesPage
+                                        {...routeProps}
+                                        setNavExpanded={setNavExpanded}
+                                        ref={(entriesPage) => {
+                                            setEntriesPage(entriesPage);
+                                            selfoss.entriesPage = entriesPage;
+                                        }}
+                                    />
                                 )}
                             </Route>
                             <Route path="/sources">
