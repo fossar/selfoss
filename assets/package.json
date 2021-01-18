@@ -15,7 +15,7 @@
     "focus-trap": "^6.2.0",
     "form-urlencoded": "^4.2.1",
     "html-escaper": "^3.0.0",
-    "jquery": "^2.2.4",
+    "jquery": "^3.5.1",
     "lodash.pick": "^4.4.0",
     "ramda": "^0.27.1",
     "react": "^17.0.1",
