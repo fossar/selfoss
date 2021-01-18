@@ -27,11 +27,6 @@ selfoss.ui = {
      * Create basic DOM structure of the page.
      */
     init: function() {
-        if ($('body').is('#hashpasswordbody, #opmlbody')) {
-            // we do not want to create UI for non-app pages
-            return;
-        }
-
         document.getElementById('js-loading-message')?.remove();
 
         initIcons();
@@ -74,8 +69,8 @@ selfoss.ui = {
             }
 
             selfoss.sources.setState(LoadingState.SUCCESS);
-            if ($('#nav-sources-title').hasClass('nav-sources-collapsed')) {
-                $('#nav-sources-title').click(); // expand sources nav
+            if (document.querySelector('#nav-sources-title').classList.contains('nav-sources-collapsed')) {
+                document.querySelector('#nav-sources-title').click(); // expand sources nav
             }
         });
 
@@ -92,7 +87,7 @@ selfoss.ui = {
         selfoss.ui.refreshTitle(0);
         // TODO: Use location state once we switch to BrowserRouter
         selfoss.loginFormError.update(error);
-        $('#username').focus();
+        document.querySelector('#username').focus();
     },
 
 
@@ -107,9 +102,9 @@ selfoss.ui = {
         unread = (typeof unread !== 'undefined') ? unread : selfoss.unreadItemsCount.value;
 
         if (unread > 0) {
-            $(document).attr('title', selfoss.htmlTitle + ' (' + unread + ')');
+            document.title = selfoss.htmlTitle + ' (' + unread + ')';
         } else {
-            $(document).attr('title', selfoss.htmlTitle);
+            document.title = selfoss.htmlTitle;
         }
     },
 

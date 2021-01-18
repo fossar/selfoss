@@ -9,25 +9,27 @@ const Direction = {
 /**
  * autoscroll
  */
-function autoscroll(next) {
-    next = $(next);
-    var viewportHeight = $(window).height();
-    var viewportScrollTop = $(window).scrollTop();
+function autoscroll(target) {
+    const viewportHeight = document.body.clientHeight;
+    const viewportScrollTop = window.scrollY;
+    const targetBb = target.getBoundingClientRect();
+    const targetTop = window.scrollY + targetBb.top;
+    const targetHeight = targetBb.height;
 
     // scroll down
-    if (viewportScrollTop + viewportHeight < next.position().top + next.height() + 80) {
-        if (next.height() > viewportHeight) {
-            $(window).scrollTop(next.position().top);
+    if (viewportScrollTop + viewportHeight < targetTop + targetHeight + 80) {
+        if (targetHeight > viewportHeight) {
+            window.scrollTo({ top: targetTop });
         } else {
-            var marginTop = (viewportHeight - next.height()) / 2;
-            var scrollTop = next.position().top - marginTop;
-            $(window).scrollTop(scrollTop);
+            const marginTop = (viewportHeight - targetHeight) / 2;
+            const scrollTop = targetTop - marginTop;
+            window.scrollTo({ top: scrollTop });
         }
     }
 
     // scroll up
-    if (next.position().top <= viewportScrollTop) {
-        $(window).scrollTop(next.position().top);
+    if (targetTop <= viewportScrollTop) {
+        window.scrollTo({ top: targetTop });
     }
 }
 
@@ -278,18 +280,18 @@ export default function makeShortcuts() {
         // 'r': Reload the current view
         'r': ignoreWhenInteracting(function(e) {
             e.preventDefault();
-            $('#nav-filter-unread').click();
+            document.querySelector('#nav-filter-unread').click();
         }),
 
         // 'Shift + r': Refresh sources
         'Shift+r': ignoreWhenInteracting(function(e) {
             e.preventDefault();
-            $('#nav-refresh').click();
+            document.querySelector('#nav-refresh').click();
         }),
 
         // 'Control+m': mark all as read
         'Control+m': ignoreWhenInteracting(function(e) {
-            $('#nav-mark').click();
+            document.querySelector('#nav-mark').click();
             e.preventDefault();
             return false;
         }),
@@ -330,19 +332,19 @@ export default function makeShortcuts() {
         // 'Shift+n': switch to newest items overview / menu item
         'Shift+n': ignoreWhenInteracting(function(e) {
             e.preventDefault();
-            $('#nav-filter-newest').click();
+            document.querySelector('#nav-filter-newest').click();
         }),
 
         // 'Shift+u': switch to unread items overview / menu item
         'Shift+u': ignoreWhenInteracting(function(e) {
             e.preventDefault();
-            $('#nav-filter-unread').click();
+            document.querySelector('#nav-filter-unread').click();
         }),
 
         // 'Shift+s': switch to starred items overview / menu item
         'Shift+s': ignoreWhenInteracting(function(e) {
             e.preventDefault();
-            $('#nav-filter-starred').click();
+            document.querySelector('#nav-filter-starred').click();
         })
     });
 }

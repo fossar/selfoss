@@ -70,7 +70,7 @@ function closeFullScreen({ event, history, location, entry, setFullScreenTrap })
 }
 
 // show/hide entry
-function handleClick({ event, history, location, target, entry, contentBlock, setFullScreenTrap, setImagesLoaded }) {
+function handleClick({ event, history, location, target, entry, contentBlock, setFullScreenTrap, setImagesLoaded, setNavExpanded }) {
     const expected = selfoss.isMobile() ? '.entry' : '.entry-title';
     if (target !== expected) {
         return;
@@ -105,15 +105,20 @@ function handleClick({ event, history, location, target, entry, contentBlock, se
 
             if (selfoss.isSmartphone()) {
                 // save scroll position
-                let scrollTop = $(window).scrollTop();
+                let scrollTop = window.scrollY;
 
-                // hide nav
-                if ($('#nav').is(':visible')) {
-                    scrollTop = scrollTop - $('#nav').height();
-                    scrollTop = scrollTop < 0 ? 0 : scrollTop;
-                    $(window).scrollTop(scrollTop);
-                    $('#nav').hide();
-                }
+                setNavExpanded((expanded) => {
+                    // hide nav
+                    if (expanded) {
+                        scrollTop = scrollTop - document.querySelector('#nav').getBoundingClientRect().height;
+                        scrollTop = scrollTop < 0 ? 0 : scrollTop;
+                        window.scrollTo({ top: scrollTop });
+
+                        return false;
+                    }
+
+                    return expanded;
+                });
 
                 // show fullscreen
                 document.body.classList.add('fullscreen-mode');
@@ -132,7 +137,7 @@ function handleClick({ event, history, location, target, entry, contentBlock, se
                 }
 
                 // turn of column view if entry is too long
-                if ($(contentBlock.current).height() > $(window).height()) {
+                if (contentBlock.current.getBoundingClientRect().height > document.body.clientHeight) {
                     contentBlock.current.classList.add('entry-content-nocolumns');
                 }
             }
@@ -273,7 +278,7 @@ function handleReadToggle({ event, entry }) {
 }
 
 
-export default function Item({ item, selected, expanded }) {
+export default function Item({ item, selected, expanded, setNavExpanded }) {
     const { title, author, content, sourcetitle } = item;
 
     const [fullScreenTrap, setFullScreenTrap] = React.useState(false);
@@ -294,7 +299,7 @@ export default function Item({ item, selected, expanded }) {
             className={classNames({entry: true, unread: item.unread == 1, expanded, selected})}
             role="article"
             aria-modal={fullScreenTrap !== null}
-            onClick={(event) => handleClick({ event, history, location, entry: item, target: '.entry', contentBlock, setFullScreenTrap, setImagesLoaded })}
+            onClick={(event) => handleClick({ event, history, location, entry: item, target: '.entry', contentBlock, setFullScreenTrap, setImagesLoaded, setNavExpanded })}
         >
 
             {/* icon */}

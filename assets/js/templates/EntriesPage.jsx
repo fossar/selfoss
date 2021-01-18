@@ -183,8 +183,12 @@ export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, s
     React.useEffect(() => {
         // scroll load more
         function onScroll() {
-            if ($('.stream-more').position().top < $(window).height() + $(window).scrollTop()) {
-                document.querySelector('.stream-more').click();
+            const streamMoreButton = document.querySelector('.stream-more');
+            const streamMoreButtonTop = window.scrollY + streamMoreButton.getBoundingClientRect().top;
+
+            // When “More” button appears on the screen, click it.
+            if (streamMoreButtonTop < document.body.clientHeight + window.scrollY) {
+                streamMoreButton.click();
             }
         }
 
@@ -219,6 +223,7 @@ export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, s
                     item={entry}
                     selected={selectedEntry == entry.id}
                     expanded={expandedEntries[entry.id] ?? false}
+                    setNavExpanded={setNavExpanded}
                 />
             ))}
             <div id="stream-buttons">
@@ -447,6 +452,7 @@ export default class StateHolder extends React.Component {
                 hasMore={this.state.hasMore}
                 loadingState={this.state.loadingState}
                 setLoadingState={this.setLoadingState.bind(this)}
+                setNavExpanded={this.props.setNavExpanded}
             />
         );
     }

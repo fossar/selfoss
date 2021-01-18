@@ -147,7 +147,7 @@ var selfoss = {
                 selfoss.initMain(oldConfiguration);
             } else {
                 // TODO: Add a more proper error page
-                $('body').html(selfoss.ui._('error_configuration'));
+                document.body.innerHTML = selfoss.ui._('error_configuration');
             }
         });
     },
@@ -179,30 +179,34 @@ var selfoss = {
             );
         }
 
-        $(function() {
-            document.body.classList.toggle('publicupdate', configuration.allowPublicUpdate);
-            document.body.classList.toggle('publicmode', configuration.publicMode);
-            document.body.classList.toggle('authenabled', configuration.authEnabled);
-            document.body.classList.toggle('loggedin', !configuration.authEnabled);
-            document.body.classList.toggle('auto_mark_as_read', configuration.autoMarkAsRead);
+        document.body.classList.toggle('publicupdate', configuration.allowPublicUpdate);
+        document.body.classList.toggle('publicmode', configuration.publicMode);
+        document.body.classList.toggle('authenabled', configuration.authEnabled);
+        document.body.classList.toggle('loggedin', !configuration.authEnabled);
+        document.body.classList.toggle('auto_mark_as_read', configuration.autoMarkAsRead);
 
-            $('html').attr('lang', configuration.language);
-            $('meta[name="application-name"]').attr('content', configuration.htmlTitle);
-            $('head').append('<link rel="alternate" type="application/rss+xml" title="RSS Feed" href="feed" />');
+        document.documentElement.setAttribute('lang', configuration.language);
+        document.querySelector('meta[name="application-name"]').setAttribute('content', configuration.htmlTitle);
 
-            // init offline if supported
-            selfoss.dbOffline.init();
+        const feedLink = document.createElement('link');
+        feedLink.setAttribute('rel', 'alternate');
+        feedLink.setAttribute('type', 'application/rss+xml');
+        feedLink.setAttribute('title', 'RSS Feed');
+        feedLink.setAttribute('href', 'feed');
+        document.head.appendChild(feedLink);
 
-            selfoss.ui.init();
+        // init offline if supported
+        selfoss.dbOffline.init();
 
-            if (selfoss.hasSession() || !configuration.authEnabled) {
-                selfoss.initUi();
-            } else if ($('body').hasClass('publicmode')) {
-                selfoss.initUi();
-            } else {
-                selfoss.history.push('/login');
-            }
-        });
+        selfoss.ui.init();
+
+        if (selfoss.hasSession() || !configuration.authEnabled) {
+            selfoss.initUi();
+        } else if (document.body.classList.contains('publicmode')) {
+            selfoss.initUi();
+        } else {
+            selfoss.history.push('/login');
+        }
     },
 
 
@@ -286,7 +290,7 @@ var selfoss = {
 
     logout: function() {
         selfoss.clearSession();
-        if (!$('body').hasClass('publicmode')) {
+        if (!document.body.classList.contains('publicmode')) {
             selfoss.history.push('/login');
         }
 
@@ -318,7 +322,7 @@ var selfoss = {
      * @return true if device resolution smaller equals 1024
      */
     isTablet: function() {
-        if ($(window).width() <= 1024) {
+        if (document.body.clientWidth <= 1024) {
             return true;
         }
         return false;
@@ -331,7 +335,7 @@ var selfoss = {
      * @return true if device resolution smaller equals 1024
      */
     isSmartphone: function() {
-        if ($(window).width() <= 640) {
+        if (document.body.clientWidth <= 640) {
             return true;
         }
         return false;
@@ -411,9 +415,12 @@ var selfoss = {
     setupFancyBox: function(content, id) {
         // Close existing fancyBoxes
         $.fancybox.close();
-        var images = $(content).find('a[href$=".jpg"], a[href$=".jpeg"], a[href$=".png"], a[href$=".gif"], a[href$=".jpg:large"], a[href$=".jpeg:large"], a[href$=".png:large"], a[href$=".gif:large"]');
-        $(images).attr('data-fancybox', 'gallery-' + id).unbind('click');
-        $(images).attr('data-type', 'image');
+        let images = content.querySelectorAll('a[href$=".jpg"], a[href$=".jpeg"], a[href$=".png"], a[href$=".gif"], a[href$=".jpg:large"], a[href$=".jpeg:large"], a[href$=".png:large"], a[href$=".gif:large"]');
+        images.forEach((el) => {
+            el.setAttribute('data-fancybox', 'gallery-' + id);
+            $(el).off('click');
+        });
+        images.forEach((el) => el.setAttribute('data-type', 'image'));
     },
 
 
@@ -442,7 +449,7 @@ var selfoss = {
                         {
                             label: selfoss.ui._('reload_list'),
                             callback() {
-                                $('#nav-filter-unread').click();
+                                document.querySelector('#nav-filter-unread').click();
                             }
                         }
                     ]);

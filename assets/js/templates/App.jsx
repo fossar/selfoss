@@ -225,11 +225,11 @@ export default function App() {
                                 {(routeProps) => (
                                     <EntriesPage
                                         {...routeProps}
-                                        setNavExpanded={setNavExpanded}
                                         ref={(entriesPage) => {
                                             setEntriesPage(entriesPage);
                                             selfoss.entriesPage = entriesPage;
                                         }}
+                                        setNavExpanded={setNavExpanded}
                                     />
                                 )}
                             </Route>
