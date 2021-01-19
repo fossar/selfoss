@@ -208,7 +208,7 @@ export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, s
                 />
             ))}
             <div id="stream-buttons">
-                {entries.length === 0 ?
+                {loadingState === LoadingState.SUCCESS && entries.length === 0 ?
                     <p aria-live="assertive" className="stream-empty">{selfoss.ui._('no_entries')}</p>
                     : null}
                 {hasMore ?
