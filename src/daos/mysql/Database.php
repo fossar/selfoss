@@ -231,6 +231,12 @@ class Database implements \daos\DatabaseInterface {
                     'INSERT INTO ' . \F3::get('db_prefix') . 'version (version) VALUES (12)'
                 ]);
             }
+            if (strnatcmp($version, '13') < 0) {
+                $this->exec([
+                    'UPDATE ' . \F3::get('db_prefix') . "sources SET spout = 'spouts\\\\rss\\\\fulltextrss' WHERE spout = 'spouts\\\\rss\\\\instapaper'",
+                    'INSERT INTO ' . \F3::get('db_prefix') . 'version (version) VALUES (13)'
+                ]);
+            }
         }
     }
 
