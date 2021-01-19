@@ -5,10 +5,10 @@ import { FilterType } from '../Filter';
 import * as itemsRequests from '../requests/items';
 import * as sourceRequests from '../requests/sources';
 import { LoadingState } from '../requests/LoadingState';
-import Spinner from './Spinner';
+import { Spinner, SpinnerBig } from './Spinner';
 import classNames from 'classnames';
 
-function reloadList({ fetchParams, append = false, waitForSync = true, entryId = null }) {
+function reloadList({ fetchParams, append = false, waitForSync = true, entryId = null, setLoadingState = selfoss.entriesPage.setLoadingState.bind(selfoss.entriesPage) }) {
     if (entryId && fetchParams.fromId === undefined) {
         fetchParams = {
             ...fetchParams,
@@ -20,7 +20,7 @@ function reloadList({ fetchParams, append = false, waitForSync = true, entryId =
         selfoss.dbOffline.olderEntriesOnline = false;
     }
 
-    selfoss.entriesPage?.setLoadingState(LoadingState.LOADING);
+    setLoadingState(LoadingState.LOADING);
 
     var reload = () => {
         let reloader = selfoss.dbOffline.reloadList;
@@ -35,9 +35,9 @@ function reloadList({ fetchParams, append = false, waitForSync = true, entryId =
             reloader = selfoss.dbOnline.reloadList;
         }
 
-        selfoss.entriesPage?.setLoadingState(LoadingState.LOADING);
+        setLoadingState(LoadingState.LOADING);
         reloader(fetchParams).then(({ entries, hasMore }) => {
-            selfoss.entriesPage.setLoadingState(LoadingState.SUCCESS);
+            setLoadingState(LoadingState.SUCCESS);
             selfoss.entriesPage.setHasMore(hasMore);
 
             if (append) {
@@ -67,7 +67,7 @@ function reloadList({ fetchParams, append = false, waitForSync = true, entryId =
                 }
             }
         }).catch((error) => {
-            selfoss.entriesPage.setLoadingState(LoadingState.FAILURE);
+            setLoadingState(LoadingState.FAILURE);
             selfoss.ui.showError(selfoss.ui._('error_loading') + ' ' + error.message);
         });
     };
@@ -101,7 +101,7 @@ function handleRefreshSource({ event, fetchParams, setLoadingState }) {
     });
 }
 
-function loadMore({ event, fetchParams, entries }) {
+function loadMore({ event, fetchParams, entries, setMoreLoadingState }) {
     event.preventDefault();
     const lastEntry = entries[entries.length - 1];
 
@@ -112,7 +112,11 @@ function loadMore({ event, fetchParams, entries }) {
         fromId: lastEntry ? lastEntry.id : undefined
     };
 
-    reloadList({ fetchParams, append: true });
+    reloadList({
+        fetchParams,
+        append: true,
+        setLoadingState: setMoreLoadingState
+    });
 }
 
 export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, selectedEntry, expandedEntries }) {
@@ -139,6 +143,7 @@ export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, s
     };
 
     const [initialLoad, setInitialLoad] = React.useState(true);
+    const [moreLoadingState, setMoreLoadingState] = React.useState(LoadingState.INITIAL);
 
     // Fetch data and reload the list when one of the critical parameters changes.
     // We ignore the change when only id changes since that happens when reading.
@@ -174,21 +179,21 @@ export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, s
             }
         }
 
-        if (hasMore && loadingState !== LoadingState.LOADING && selfoss.config.autoStreamMore) {
+        if (hasMore && moreLoadingState !== LoadingState.LOADING && selfoss.config.autoStreamMore) {
             window.addEventListener('scroll', onScroll);
 
             return () => {
                 window.removeEventListener('scroll', onScroll);
             };
         }
-    }, [hasMore, loadingState]);
+    }, [hasMore, moreLoadingState]);
 
     // TODO: make this update when it changes
     const isOnline = selfoss.db.online;
 
     return (
         <React.Fragment>
-            {loadingState === LoadingState.LOADING ? <Spinner /> : null}
+            {loadingState === LoadingState.LOADING ? <SpinnerBig /> : null}
             {currentSource !== null && allowedToUpdate && isOnline ?
                 <button
                     type="button"
@@ -216,9 +221,9 @@ export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, s
                         className={classNames({'stream-button': true, 'stream-more': true})}
                         accessKey="m"
                         aria-label={selfoss.ui._('more')}
-                        onClick={(event) => loadMore({ event, fetchParams, entries })}
+                        onClick={moreLoadingState !== LoadingState.LOADING ? (event) => loadMore({ event, fetchParams, entries, setMoreLoadingState }) : null}
                     >
-                        <span>{selfoss.ui._('more')}</span>
+                        {moreLoadingState !== LoadingState.LOADING ? <span>{selfoss.ui._('more')}</span> : <Spinner size="3x" />}
                     </button>
                     : null}
                 {entries.length > 0 ?

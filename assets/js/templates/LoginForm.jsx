@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import Spinner from './Spinner';
+import { SpinnerBig } from './Spinner';
 import { useHistory } from 'react-router-dom';
 
 function handleLogIn({
@@ -39,7 +39,7 @@ export default function LoginForm({
 
     return (
         <React.Fragment>
-            {loading ? <Spinner /> : null}
+            {loading ? <SpinnerBig /> : null}
             <form
                 action=""
                 className={classNames({ loading: loading })}

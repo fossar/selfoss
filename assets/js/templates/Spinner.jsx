@@ -1,10 +1,18 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-export default function Spinner() {
+
+export function Spinner({ size }) {
+    return (
+        <FontAwesomeIcon icon="spinner" size={size} spin />
+    );
+}
+
+
+export function SpinnerBig() {
     return (
         <div className="spinner-big">
-            <FontAwesomeIcon icon="spinner" size="10x" spin />
+            <Spinner size="10x" />
         </div>
     );
 }
