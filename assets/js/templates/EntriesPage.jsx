@@ -35,6 +35,14 @@ function reloadList({ fetchParams, append = false, waitForSync = true, entryId =
             reloader = selfoss.dbOnline.reloadList;
         }
 
+        // Clean state when not just adding items.
+        if (!append) {
+            selfoss.entriesPage.setHasMore(false);
+            selfoss.entriesPage.setExpandedEntries({});
+            selfoss.entriesPage.setEntries([]);
+            selfoss.entriesPage.setSelectedEntry(null);
+        }
+
         setLoadingState(LoadingState.LOADING);
         reloader(fetchParams).then(({ entries, hasMore }) => {
             setLoadingState(LoadingState.SUCCESS);
