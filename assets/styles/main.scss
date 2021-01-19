@@ -394,11 +394,6 @@ span.offline-count.diff {
     text-align: center;
 }
 
-#content.loading {
-    background: url(../images/ajax-loader-big.gif) center center no-repeat;
-    min-height: 90%;
-}
-
 .entry,
 .source {
     margin: 1px 50px 3px 5px;
@@ -777,6 +772,9 @@ span.offline-count.diff {
     justify-content: center;
     align-items: center;
     position: fixed;
+    width: 100%;
+    width: stretch;
+    height: 100%;
 }
 
 /* login */
