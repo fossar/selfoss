@@ -45,27 +45,30 @@ function reloadList({ fetchParams, append = false, waitForSync = true, entryId =
             } else {
                 selfoss.entriesPage.setExpandedEntries({});
                 selfoss.entriesPage.setEntries(entries);
+
+                // open selected entry only if entry was requested (i.e. if not streaming
+                // more)
+                if (entryId && fetchParams.fromId === undefined) {
+                    var entry = document.querySelector(`.entry[data-entry-id="${entryId}"]`);
+
+                    if (!entry) {
+                        return;
+                    }
+
+                    selfoss.ui.entryActivate(entryId);
+                    // ensure scrolling to requested entry even if scrolling to article
+                    // header is disabled
+                    if (!selfoss.config.scrollToArticleHeader) {
+                        // needs to be delayed for some reason
+                        requestAnimationFrame(() => {
+                            entry.scrollIntoView();
+                        });
+                    }
+                } else {
+                    window.scrollTo({ top: 0 });
+                }
             }
 
-            // open selected entry only if entry was requested (i.e. if not streaming
-            // more)
-            if (entryId && fetchParams.fromId === undefined) {
-                var entry = document.querySelector(`.entry[data-entry-id="${entryId}"]`);
-
-                if (!entry) {
-                    return;
-                }
-
-                selfoss.ui.entryActivate(entryId);
-                // ensure scrolling to requested entry even if scrolling to article
-                // header is disabled
-                if (!selfoss.config.scrollToArticleHeader) {
-                    // needs to be delayed for some reason
-                    requestAnimationFrame(() => {
-                        entry.scrollIntoView();
-                    });
-                }
-            }
         }).catch((error) => {
             setLoadingState(LoadingState.FAILURE);
             selfoss.ui.showError(selfoss.ui._('error_loading') + ' ' + error.message);
