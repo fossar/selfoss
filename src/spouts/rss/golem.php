@@ -9,7 +9,7 @@ namespace spouts\rss;
  * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
-class golem extends feed {
+class golem extends fulltextrss {
     /** @var string name of spout */
     public $name = '[German] golem.de';
 
@@ -81,32 +81,5 @@ class golem extends feed {
 
     public function getXmlUrl(array $params) {
         return $this->feedUrls[$params['section']];
-    }
-
-    public function getContent() {
-        if ($this->items !== null && $this->valid()) {
-            $originalContent = $this->cleanContent(file_get_contents($this->getLink()));
-            preg_match_all('|<!--content-->(.*?)<!--/content-->|ims', $originalContent, $matches, PREG_PATTERN_ORDER);
-            if (is_array($matches) && is_array($matches[0]) && isset($matches[0][0])) {
-                return $matches[0][0];
-            }
-        }
-
-        return parent::getContent();
-    }
-
-    /**
-     * clean the content
-     *
-     * @param string $content original content
-     *
-     * @return string cleaned content
-     */
-    private function cleanContent($content) {
-        $content = preg_replace('|<!-- begin ad tag \(tile=4\) -->(.*?)<!-- end ad tag \(tile=4\) -->|ims', '', $content);
-        $content = preg_replace('|<figure id="([^"]+)"></figure>|ims', '', $content);
-        $content = preg_replace('|<a class="golem-gallery2-nojs" href="([^"]+)">(.*?)<img src="([^"]+)" alt="([^"]+)" title="([^"]+)" data-src="([^"]+)" data-src-full="([^"]+)">(.*?)</a>|ims', '<p><a href="$1" target="_blank" rel="noopener noreferrer"><img src="$3" alt="$4" title="$5" /></a></p>', $content);
-
-        return $content;
     }
 }
