@@ -100,5 +100,6 @@
   "lang_offline_navigation_unavailable": "Å bytte etiketter og kilder støttes foreløpig ikke i frakoblet modus.",
   "lang_error_offline_storage_not_available": "Frakoblet lager ikke tilgjengelig. Sørg for at din nettleser {0}støtter IndexedDB-API-et{1}, samt at du ikke bruker incognito-modus i en Chrome-basert nettleser.",
   "lang_error_edit_source": "Kunne ikke lagre kildeendringer:",
-  "lang_article_reading_time": "{0} min å lese"
+  "lang_article_reading_time": "{0} min å lese",
+  "lang_experimental": "Eksperimentell"
 }
