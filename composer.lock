@@ -42,12 +42,12 @@
             "version": "v1.5.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/clue/php-stream-filter.git",
+                "url": "https://github.com/clue/stream-filter.git",
                 "reference": "aeb7d8ea49c7963d3b581378955dbf5bc49aa320"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/clue/php-stream-filter/zipball/aeb7d8ea49c7963d3b581378955dbf5bc49aa320",
+                "url": "https://api.github.com/repos/clue/stream-filter/zipball/aeb7d8ea49c7963d3b581378955dbf5bc49aa320",
                 "reference": "aeb7d8ea49c7963d3b581378955dbf5bc49aa320",
                 "shasum": ""
             },
@@ -262,16 +262,16 @@
         },
         {
             "name": "fossar/htmlawed",
-            "version": "1.2.7",
+            "version": "1.2.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fossar/HTMLawed.git",
-                "reference": "4f7505e9622a96242923895c3008719b2c2283d3"
+                "reference": "08cb7a12b667afb4fc7b24504b24b65647b6d502"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fossar/HTMLawed/zipball/4f7505e9622a96242923895c3008719b2c2283d3",
-                "reference": "4f7505e9622a96242923895c3008719b2c2283d3",
+                "url": "https://api.github.com/repos/fossar/HTMLawed/zipball/08cb7a12b667afb4fc7b24504b24b65647b6d502",
+                "reference": "08cb7a12b667afb4fc7b24504b24b65647b6d502",
                 "shasum": ""
             },
             "require": {
@@ -307,7 +307,7 @@
                 "strip",
                 "tags"
             ],
-            "time": "2019-05-09T11:53:40+00:00"
+            "time": "2021-01-25T08:08:04+00:00"
         },
         {
             "name": "fossar/tcpdf-parser",
@@ -723,16 +723,16 @@
         },
         {
             "name": "j0k3r/graby-site-config",
-            "version": "1.0.122",
+            "version": "1.0.124",
             "source": {
                 "type": "git",
                 "url": "https://github.com/j0k3r/graby-site-config.git",
-                "reference": "f18f0421685a2680327db6dbc37939276ba3e45b"
+                "reference": "26978db0b2dc70f8a85aff1bd45e464b6ae82ec4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/j0k3r/graby-site-config/zipball/f18f0421685a2680327db6dbc37939276ba3e45b",
-                "reference": "f18f0421685a2680327db6dbc37939276ba3e45b",
+                "url": "https://api.github.com/repos/j0k3r/graby-site-config/zipball/26978db0b2dc70f8a85aff1bd45e464b6ae82ec4",
+                "reference": "26978db0b2dc70f8a85aff1bd45e464b6ae82ec4",
                 "shasum": ""
             },
             "require": {
@@ -759,7 +759,7 @@
                 }
             ],
             "description": "Graby site config files",
-            "time": "2021-01-04T08:36:00+00:00"
+            "time": "2021-01-25T09:32:38+00:00"
         },
         {
             "name": "j0k3r/httplug-ssrf-plugin",
@@ -1910,16 +1910,16 @@
         },
         {
             "name": "smalot/pdfparser",
-            "version": "v0.18.0",
+            "version": "v0.18.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/smalot/pdfparser.git",
-                "reference": "8b8a157050655c7380ae7a4ba3765a1dc9f768d0"
+                "reference": "b47f26425e32a814dc1ee55e3ce669b9e73b8458"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/smalot/pdfparser/zipball/8b8a157050655c7380ae7a4ba3765a1dc9f768d0",
-                "reference": "8b8a157050655c7380ae7a4ba3765a1dc9f768d0",
+                "url": "https://api.github.com/repos/smalot/pdfparser/zipball/b47f26425e32a814dc1ee55e3ce669b9e73b8458",
+                "reference": "b47f26425e32a814dc1ee55e3ce669b9e73b8458",
                 "shasum": ""
             },
             "require": {
@@ -1956,7 +1956,7 @@
                 "pdf",
                 "text"
             ],
-            "time": "2020-12-30T16:59:42+00:00"
+            "time": "2021-01-05T08:52:07+00:00"
         },
         {
             "name": "smottt/wideimage",
@@ -2970,16 +2970,16 @@
         },
         {
             "name": "friendsofphp/php-cs-fixer",
-            "version": "v2.17.3",
+            "version": "v2.18.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfPHP/PHP-CS-Fixer.git",
-                "reference": "bd32f5dd72cdfc7b53f54077f980e144bfa2f595"
+                "reference": "18f8c9d184ba777380794a389fabc179896ba913"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/zipball/bd32f5dd72cdfc7b53f54077f980e144bfa2f595",
-                "reference": "bd32f5dd72cdfc7b53f54077f980e144bfa2f595",
+                "url": "https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/zipball/18f8c9d184ba777380794a389fabc179896ba913",
+                "reference": "18f8c9d184ba777380794a389fabc179896ba913",
                 "shasum": ""
             },
             "require": {
@@ -3001,7 +3001,6 @@
                 "symfony/stopwatch": "^3.0 || ^4.0 || ^5.0"
             },
             "require-dev": {
-                "johnkary/phpunit-speedtrap": "^1.1 || ^2.0 || ^3.0",
                 "justinrainbow/json-schema": "^5.0",
                 "keradus/cli-executor": "^1.4",
                 "mikey179/vfsstream": "^1.6",
@@ -3010,11 +3009,11 @@
                 "php-cs-fixer/phpunit-constraint-isidenticalstring": "^1.2",
                 "php-cs-fixer/phpunit-constraint-xmlmatchesxsd": "^1.2.1",
                 "phpspec/prophecy-phpunit": "^1.1 || ^2.0",
-                "phpunit/phpunit": "^5.7.27 || ^6.5.14 || ^7.5.20 || ^8.5.13 || ^9.4.4 <9.5",
+                "phpunit/phpunit": "^5.7.27 || ^6.5.14 || ^7.5.20 || ^8.5.13 || ^9.5",
                 "phpunitgoodpractices/polyfill": "^1.5",
                 "phpunitgoodpractices/traits": "^1.9.1",
                 "sanmai/phpunit-legacy-adapter": "^6.4 || ^8.2.1",
-                "symfony/phpunit-bridge": "^5.1",
+                "symfony/phpunit-bridge": "^5.2.1",
                 "symfony/yaml": "^3.0 || ^4.0 || ^5.0"
             },
             "suggest": {
@@ -3066,7 +3065,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-12-24T11:14:44+00:00"
+            "time": "2021-01-26T00:22:21+00:00"
         },
         {
             "name": "myclabs/deep-copy",
