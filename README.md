@@ -13,11 +13,11 @@ For more information visit our [web site](https://selfoss.aditu.de).
 
 ## Installation
 
-1. Upload all files of this folder (IMPORTANT: also upload the invisible .htaccess files).
-2. Make the directories data/cache, data/favicons, data/logs, data/thumbnails and data/sqlite writeable.
-3. Insert database access data in config.ini (see below). You do not need to change anything if you want to use SQLite.
-3. You do not need to create the database tables, they will be created automatically (ensure that your database user is allowed to create triggers).
-4. Create cronjob or systemd timer for updating feeds and point it to https://yourselfossurl.com/update via wget or curl. You can also execute the cliupdate.php from command line.
+1. Upload all files of this directory (IMPORTANT: also upload the invisible `.htaccess` files).
+2. Make the directories `data/cache`, `data/favicons`, `data/logs`, `data/thumbnails` and `data/sqlite` writeable.
+3. Insert database access data in `config.ini` (see below). You do not need to change anything if you want to use SQLite.
+4. You do not need to create the database tables, they will be created automatically (ensure that your database user is allowed to create triggers).
+5. Create cronjob or systemd timer for updating feeds and point it to https://yourselfossurl.com/update via wget or curl. You can also execute the `cliupdate.php` from command line.
 
 If you obtained selfoss using Git, some more steps will be required. See the [development](#development) section.
 
@@ -26,20 +26,20 @@ For further questions or on any problem use our support forum: https://selfoss.a
 
 ## Configuration
 
-1. Copy defaults.ini to config.ini.
-2. Edit config.ini and delete any lines you do not wish to override.
-3. Do not delete the [globals] line.
-4. See https://selfoss.aditu.de/ for examples.
+1. Copy `defaults.ini` to `config.ini`.
+2. Edit `config.ini` and delete any lines you do not wish to override.
+3. Do not delete the `[globals]` line.
+4. See <https://selfoss.aditu.de/> for examples.
 
 
 ## Update
 
-1. Backup your database and your "data" folder.
-2. (IMPORTANT: do NOT delete the "data" folder) delete all old files and folders excluding the folder "data" and the file config.ini
-3. Upload all new files and folders excluding the data folder (IMPORTANT: also upload the invisible .htaccess files)
+1. Backup your database and your `data/` directory.
+2. (IMPORTANT: do NOT delete the `data/` directory) delete all old files and directories excluding the directory `data/` and the file `config.ini`
+3. Upload all new files and directories excluding the `data/` directory (IMPORTANT: also upload the invisible `.htaccess` files).
 4. Consult the [NEWS file](NEWS.md) to learn about backwards incompatible changes.
-5. Clean your browser cache
-6. Insert your current database connection and your individual configuration in config.ini. Important: we change the config.ini and add new options in newer versions. You have to update the config.ini too.
+5. Clean your browser cache.
+6. Insert your current database connection and your individual configuration in `config.ini`. Important: we change the `config.ini` and add new options in newer versions. You have to update the `config.ini` too.
 7. The database will be updated automatically (ensure that your database user is allowed to create triggers).
 
 If you obtained selfoss using Git, some more steps might be required. See the [development](#development) section.
@@ -84,7 +84,7 @@ Some parts of the source code can be licensed under version 3 only, we are [curr
 
 The package with bundled dependencies might be distributed under version 3 only.
 
-Very special thanks to all contributors of pull requests here on [GitHub](https://github.com/fossar/selfoss), as well as translators on [Weblate](https://hosted.weblate.org/projects/selfoss/translations/). Your improvements are awesome!!!
+Very special thanks to all contributors of pull requests here on [GitHub](https://github.com/fossar/selfoss), as well as translators on [Weblate](https://hosted.weblate.org/projects/selfoss/translations/). Your improvements are awesome!
 
 Special thanks to the great programmers of these libraries used by selfoss:
 
