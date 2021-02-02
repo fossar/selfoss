@@ -163,6 +163,12 @@ export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, s
             entryId: initialLoad ? params.id : undefined
         });
         setInitialLoad(false);
+
+        return () => {
+            if (selfoss.activeAjaxReq !== null) {
+                selfoss.activeAjaxReq.controller.abort();
+            }
+        };
     }, [fetchParams.type, fetchParams.tag, fetchParams.source, fetchParams.search]);
 
     React.useEffect(() => {

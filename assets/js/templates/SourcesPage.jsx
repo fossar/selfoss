@@ -1,5 +1,4 @@
 import React from 'react';
-import { useRouteMatch } from 'react-router-dom';
 import Source from './Source';
 import * as sourceRequests from '../requests/sources';
 import { getAllSources } from '../requests/sources';
@@ -28,31 +27,49 @@ function handleAddSource({ event, setSources, setSpouts }) {
         });
 }
 
-function loadSources() { // load sources
-    if (selfoss.activeAjaxReq !== null) {
-        selfoss.activeAjaxReq.controller.abort();
-    }
-    selfoss.activeAjaxReq = getAllSources();
-    selfoss.activeAjaxReq.promise.then(({sources, spouts}) => {
-        selfoss.sourcesPage.setSpouts(spouts);
-        selfoss.sourcesPage.setSources(sources);
-    }).catch((error) => {
-        if (error.name === 'AbortError') {
-            return;
+// load sources
+function loadSources({ setActiveAjaxReq }) {
+    setActiveAjaxReq((activeAjaxReq) => {
+        if (activeAjaxReq !== null) {
+            activeAjaxReq.controller.abort();
         }
 
-        selfoss.handleAjaxError(error, false).catch(function(error) {
-            selfoss.ui.showError(selfoss.ui._('error_loading') + ' ' + error.message);
+        const newActiveAjaxReq = getAllSources();
+        newActiveAjaxReq.promise.then(({sources, spouts}) => {
+            selfoss.sourcesPage.setSpouts(spouts);
+            selfoss.sourcesPage.setSources(sources);
+        }).catch((error) => {
+            if (error.name === 'AbortError') {
+                return;
+            }
+
+            selfoss.handleAjaxError(error, false).catch(function(error) {
+                selfoss.ui.showError(selfoss.ui._('error_loading') + ' ' + error.message);
+            });
+        }).finally(() => {
+            setActiveAjaxReq(null);
         });
+
+        return newActiveAjaxReq;
     });
 }
 
 export function SourcesPage({ sources, setSources, spouts, setSpouts }) {
-    const match = useRouteMatch();
+    const [, setActiveAjaxReq] = React.useState(null);
 
     React.useEffect(() => {
-        loadSources();
-    }, [match]);
+        loadSources({ setActiveAjaxReq });
+
+        return () => {
+            setActiveAjaxReq((activeAjaxReq) => {
+                if (activeAjaxReq !== null) {
+                    activeAjaxReq.controller.abort();
+                }
+
+                return null;
+            });
+        };
+    }, []);
 
     return (
         <React.Fragment>
