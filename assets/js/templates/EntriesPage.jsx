@@ -184,6 +184,10 @@ export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, s
         // scroll load more
         function onScroll() {
             const streamMoreButton = document.querySelector('.stream-more');
+            if (!streamMoreButton) {
+                return;
+            }
+
             const streamMoreButtonTop = window.scrollY + streamMoreButton.getBoundingClientRect().top;
 
             // When “More” button appears on the screen, click it.
