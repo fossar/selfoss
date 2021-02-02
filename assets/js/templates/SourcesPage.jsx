@@ -28,7 +28,7 @@ function handleAddSource({ event, setSources, setSpouts }) {
 }
 
 // load sources
-function loadSources({ setActiveAjaxReq }) {
+function loadSources({ setActiveAjaxReq, setSpouts, setSources }) {
     setActiveAjaxReq((activeAjaxReq) => {
         if (activeAjaxReq !== null) {
             activeAjaxReq.controller.abort();
@@ -36,8 +36,8 @@ function loadSources({ setActiveAjaxReq }) {
 
         const newActiveAjaxReq = getAllSources();
         newActiveAjaxReq.promise.then(({sources, spouts}) => {
-            selfoss.sourcesPage.setSpouts(spouts);
-            selfoss.sourcesPage.setSources(sources);
+            setSpouts(spouts);
+            setSources(sources);
         }).catch((error) => {
             if (error.name === 'AbortError') {
                 return;
@@ -54,11 +54,13 @@ function loadSources({ setActiveAjaxReq }) {
     });
 }
 
-export function SourcesPage({ sources, setSources, spouts, setSpouts }) {
+export default function SourcesPage() {
     const [, setActiveAjaxReq] = React.useState(null);
+    const [spouts, setSpouts] = React.useState([]);
+    const [sources, setSources] = React.useState([]);
 
     React.useEffect(() => {
-        loadSources({ setActiveAjaxReq });
+        loadSources({ setActiveAjaxReq, setSpouts, setSources });
 
         return () => {
             setActiveAjaxReq((activeAjaxReq) => {
@@ -95,41 +97,4 @@ export function SourcesPage({ sources, setSources, spouts, setSpouts }) {
             ))}
         </React.Fragment>
     );
-}
-
-export default class StateHolder extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            sources: [],
-            spouts: []
-        };
-    }
-
-    setSources(sources) {
-        if (typeof sources === 'function') {
-            this.setState({ sources: sources(this.state.sources) });
-        } else {
-            this.setState({ sources });
-        }
-    }
-
-    setSpouts(spouts) {
-        if (typeof spouts === 'function') {
-            this.setState({ spouts: spouts(this.state.spouts) });
-        } else {
-            this.setState({ spouts });
-        }
-    }
-
-    render() {
-        return (
-            <SourcesPage
-                sources={this.state.sources}
-                setSources={this.setSources.bind(this)}
-                spouts={this.state.spouts}
-                setSpouts={this.setSpouts.bind(this)}
-            />
-        );
-    }
 }

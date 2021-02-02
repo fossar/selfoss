@@ -234,9 +234,7 @@ export default function App() {
                                 )}
                             </Route>
                             <Route path="/sources">
-                                <SourcesPage ref={(sourcesPage) => {
-                                    selfoss.sourcesPage = sourcesPage;
-                                }} />
+                                <SourcesPage />
                             </Route>
                             <Route path="*">
                                 <NotFound />

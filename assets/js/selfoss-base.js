@@ -103,11 +103,6 @@ var selfoss = {
      */
     entriesPage: null,
 
-    /**
-     * React component for sources page.
-     */
-    sourcesPage: null,
-
     windowLoaded: new Promise((resolve) => {
         window.addEventListener('load', () => resolve());
     }),
