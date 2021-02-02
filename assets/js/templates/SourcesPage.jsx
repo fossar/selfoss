@@ -1,5 +1,6 @@
 import React from 'react';
 import Source from './Source';
+import { SpinnerBig } from './Spinner';
 import * as sourceRequests from '../requests/sources';
 import { getAllSources } from '../requests/sources';
 
@@ -55,7 +56,7 @@ function loadSources({ setActiveAjaxReq, setSpouts, setSources }) {
 }
 
 export default function SourcesPage() {
-    const [, setActiveAjaxReq] = React.useState(null);
+    const [activeAjaxReq, setActiveAjaxReq] = React.useState(null);
     const [spouts, setSpouts] = React.useState([]);
     const [sources, setSources] = React.useState([]);
 
@@ -74,27 +75,31 @@ export default function SourcesPage() {
     }, []);
 
     return (
-        <React.Fragment>
-            <button
-                className="source-add"
-                onClick={(event) =>
-                    handleAddSource({ event, setSources, setSpouts })
-                }
-            >
-                {selfoss.ui._('source_add')}
-            </button>
-            <a className="source-export" href="opmlexport">
-                {selfoss.ui._('source_export')}
-            </a>
-            <a className="source-opml" href="opml">
-                {selfoss.ui._('source_opml')}
-            </a>
-            {sources.map((source) => (
-                <Source
-                    key={source.id}
-                    {...{ source, setSources, spouts, setSpouts }}
-                />
-            ))}
-        </React.Fragment>
+        activeAjaxReq !== null ?
+            <SpinnerBig />
+            : (
+                <React.Fragment>
+                    <button
+                        className="source-add"
+                        onClick={(event) =>
+                            handleAddSource({ event, setSources, setSpouts })
+                        }
+                    >
+                        {selfoss.ui._('source_add')}
+                    </button>
+                    <a className="source-export" href="opmlexport">
+                        {selfoss.ui._('source_export')}
+                    </a>
+                    <a className="source-opml" href="opml">
+                        {selfoss.ui._('source_opml')}
+                    </a>
+                    {sources.map((source) => (
+                        <Source
+                            key={source.id}
+                            {...{ source, setSources, spouts, setSpouts }}
+                        />
+                    ))}
+                </React.Fragment>
+            )
     );
 }
