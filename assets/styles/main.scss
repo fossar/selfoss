@@ -1101,6 +1101,11 @@ body:not(.loggedin) .entry-unread {
 
 /* smartphone */
 @media only screen and (max-width: 641px) {
+    #login {
+        position: static;
+        margin: 3em 2em;
+    }
+
     #login .button input {
         margin-left: 3px;
     }
