@@ -106,7 +106,7 @@ class ContentLoader {
         }
 
         @set_time_limit(5000);
-        @error_reporting(E_ERROR);
+        error_reporting(E_ERROR);
 
         // logging
         $this->logger->debug('---');
@@ -456,7 +456,7 @@ class ContentLoader {
         // receive content
         try {
             @set_time_limit(5000);
-            @error_reporting(E_ERROR);
+            error_reporting(E_ERROR);
 
             $spout->load($data);
         } catch (\Throwable $e) {
