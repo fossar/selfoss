@@ -97,6 +97,10 @@ function handleClick({ event, history, location, target, entry, contentBlock, se
             selfoss.ui.entrySelect(entry.id);
             history.replace(makeEntriesLink(location, { id: entryId }));
 
+            if (contentBlock.current.childElementCount === 0) {
+                contentBlock.current.innerHTML = entry.content;
+            }
+
             // load images not on mobile devices
             if (selfoss.isMobile() == false || selfoss.config.loadImagesOnMobile) {
                 setImagesLoaded(true);
@@ -279,7 +283,7 @@ function handleReadToggle({ event, entry }) {
 
 
 export default function Item({ item, selected, expanded, setNavExpanded }) {
-    const { title, author, content, sourcetitle } = item;
+    const { title, author, sourcetitle } = item;
 
     const [fullScreenTrap, setFullScreenTrap] = React.useState(false);
     const [imagesLoaded, setImagesLoaded] = React.useState(false);
@@ -395,7 +399,7 @@ export default function Item({ item, selected, expanded, setNavExpanded }) {
 
             {/* content */}
             <div className={classNames({'entry-content': true, 'entry-content-nocolumns': item.lengthWithoutTags < 500})}>
-                <div ref={contentBlock} dangerouslySetInnerHTML={{__html: content}} />
+                <div ref={contentBlock} />
 
                 <div className="entry-smartphone-share">
                     <ul aria-label={selfoss.ui._('article_actions')}>
