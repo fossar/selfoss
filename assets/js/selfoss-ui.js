@@ -91,13 +91,6 @@ selfoss.ui = {
     },
 
 
-    showMainUi: function() {
-        selfoss.history.push('/');
-
-        selfoss.ui.refreshTitle();
-    },
-
-
     refreshTitle: function(unread) {
         unread = (typeof unread !== 'undefined') ? unread : selfoss.unreadItemsCount.value;
 
