@@ -34,7 +34,7 @@ class FileStorage {
     public function store($url, $extension, $blob) {
         $filename = md5($url) . '.' . $extension;
         $path = $this->directory . '/' . $filename;
-        $written = file_put_contents($path, $blob);
+        $written = @file_put_contents($path, $blob);
 
         if ($written !== false) {
             return $filename;
@@ -54,12 +54,19 @@ class FileStorage {
      */
     public function cleanup($shouldKeep) {
         $itemPath = $this->directory . '/';
+        $undeleted = [];
         foreach (scandir($itemPath) as $file) {
             if (is_file($itemPath . $file) && $file !== '.htaccess') {
                 if (!$shouldKeep($file)) {
-                    unlink($itemPath . $file);
+                    if (!@unlink($itemPath . $file)) {
+                        $undeleted[] = $itemPath . $file;
+                    }
                 }
             }
+        }
+
+        if (count($undeleted) > 0) {
+            $this->logger->warning('Unable to delete file: ' . $undeleted[0] . '. Please check permissions of ' . $this->directory);
         }
     }
 }
