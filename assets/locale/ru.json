@@ -15,7 +15,7 @@
   "lang_unmark": "не прочитано",
   "lang_load_img": "загрузить изображения",
   "lang_open_window": "открыть",
-  "lang_searchbutton": "поиск",
+  "lang_searchbutton": "Поиск",
   "lang_sources": "Источники",
   "lang_source_add": "добавить источник",
   "lang_source_opml": "или импортировать файл OPML, например из Google Reader",
@@ -37,5 +37,6 @@
   "lang_login": "вход",
   "lang_login_username": "имя",
   "lang_login_password": "пароль",
-  "lang_no_title": "без названия"
+  "lang_no_title": "без названия",
+  "lang_searchremove": "Скрыть поиск"
 }
