@@ -128,7 +128,7 @@ function loadMore({ event, fetchParams, entries, setMoreLoadingState }) {
     });
 }
 
-export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, selectedEntry, expandedEntries, setNavExpanded }) {
+export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, selectedEntry, expandedEntries, setNavExpanded, shouldUpdateItems, setShouldUpdateItems }) {
     const allowedToUpdate = !selfoss.config.authEnabled || selfoss.config.allowPublicUpdate || selfoss.loggedin.value;
 
     const location = useLocation();
@@ -151,25 +151,33 @@ export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, s
         search: queryString.get('search') ?? ''
     };
 
-    const [initialLoad, setInitialLoad] = React.useState(true);
     const [moreLoadingState, setMoreLoadingState] = React.useState(LoadingState.INITIAL);
 
-    // Fetch data and reload the list when one of the critical parameters changes.
+    // Schedule fetching data and reloading the list when one of the critical parameters changes.
     // We ignore the change when only id changes since that happens when reading.
     React.useEffect(() => {
+        setShouldUpdateItems(true);
+    }, [fetchParams.type, fetchParams.tag, fetchParams.source, fetchParams.search]);
+
+    // Perform the scheduled reload.
+    React.useEffect(() => {
+        if (!shouldUpdateItems) {
+            return;
+        }
+
         reloadList({
             fetchParams,
             // We do not want to focus the entry on successive loads.
-            entryId: initialLoad ? params.id : undefined
+            entryId: loadingState == LoadingState.INITIAL ? params.id : undefined
         });
-        setInitialLoad(false);
+        setShouldUpdateItems(false);
 
         return () => {
             if (selfoss.activeAjaxReq !== null) {
                 selfoss.activeAjaxReq.controller.abort();
             }
         };
-    }, [fetchParams.type, fetchParams.tag, fetchParams.source, fetchParams.search]);
+    }, [shouldUpdateItems]);
 
     React.useEffect(() => {
         const navSourcesExpandedListener = (event) => {
@@ -275,21 +283,24 @@ export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, s
     );
 }
 
+const initialState = {
+    entries: [],
+    hasMore: false,
+    /**
+     * Currently selected entry.
+     * The id in the location.hash should imply the selected entry.
+     * It will also be used for keyboard navigation (for finding previous/next).
+     */
+    selectedEntry: null,
+    expandedEntries: {},
+    shouldUpdateItems: true,
+    loadingState: LoadingState.INITIAL
+};
+
 export default class StateHolder extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            entries: [],
-            hasMore: false,
-            /**
-             * Currently selected entry.
-             * The id in the location.hash should imply the selected entry.
-             * It will also be used for keyboard navigation (for finding previous/next).
-             */
-            selectedEntry: null,
-            expandedEntries: {},
-            loadingState: LoadingState.INITIAL
-        };
+        this.state = initialState;
     }
 
     setEntries(entries) {
@@ -350,6 +361,10 @@ export default class StateHolder extends React.Component {
         } else {
             this.setState({ loadingState });
         }
+    }
+
+    setShouldUpdateItems(shouldUpdateItems) {
+        this.setState({ shouldUpdateItems });
     }
 
     getActiveTag() {
@@ -450,7 +465,7 @@ export default class StateHolder extends React.Component {
     }
 
     reloadList() {
-        this.constructor(this.props);
+        this.setState(initialState);
     }
 
     render() {
@@ -462,6 +477,8 @@ export default class StateHolder extends React.Component {
                 hasMore={this.state.hasMore}
                 loadingState={this.state.loadingState}
                 setLoadingState={this.setLoadingState.bind(this)}
+                shouldUpdateItems={this.state.shouldUpdateItems}
+                setShouldUpdateItems={this.setShouldUpdateItems.bind(this)}
                 setNavExpanded={this.props.setNavExpanded}
             />
         );

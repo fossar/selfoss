@@ -278,9 +278,8 @@ export default function makeShortcuts() {
         }),
 
         // 'r': Reload the current view
-        'r': ignoreWhenInteracting(function(e) {
-            e.preventDefault();
-            document.querySelector('#nav-filter-unread').click();
+        'r': ignoreWhenInteracting(function() {
+            selfoss.entriesPage?.reloadList();
         }),
 
         // 'Shift + r': Refresh sources
