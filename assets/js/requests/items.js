@@ -1,5 +1,15 @@
 import * as ajax from '../helpers/ajax';
 
+function safeDate(datetimeString) {
+    const date = new Date(datetimeString);
+
+    if (isNaN(date.valueOf())) {
+        throw new Error(`Invalid date detected: “${datetimeString}”`);
+    } else {
+        return date;
+    }
+}
+
 /**
  * Get list of entries.
  */
@@ -46,8 +56,8 @@ export function mark(id, read) {
 function enrichEntry(entry) {
     return {
         ...entry,
-        datetime: new Date(entry.datetime),
-        updatetime: entry.updatetime ? new Date(entry.updatetime) : entry.updatetime
+        datetime: safeDate(entry.datetime),
+        updatetime: entry.updatetime ? safeDate(entry.updatetime) : entry.updatetime
     };
 }
 
@@ -57,7 +67,7 @@ function enrichEntry(entry) {
 function enrichItemsResponse(data) {
     return {
         ...data,
-        lastUpdate: data.lastUpdate ? new Date(data.lastUpdate) : data.lastUpdate,
+        lastUpdate: data.lastUpdate ? safeDate(data.lastUpdate) : data.lastUpdate,
         // in getItems
         entries: data.entries?.map(enrichEntry),
         // in sync
