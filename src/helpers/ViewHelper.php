@@ -140,6 +140,8 @@ class ViewHelper {
         $item['content'] = ViewHelper::lazyimg($item['content']);
         $contentWithoutTags = strip_tags($item['content']);
         $item['wordCount'] = str_word_count($contentWithoutTags);
+        $item['datetime'] = $item['datetime']->format(\DateTime::ATOM);
+        $item['updatetime'] = $item['updatetime']->format(\DateTime::ATOM);
         $item['lengthWithoutTags'] = strlen($contentWithoutTags);
 
         return $item;

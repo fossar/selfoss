@@ -96,6 +96,13 @@ class Statements extends \daos\mysql\Statements {
                                 $value = explode(',', $row[$columnIndex]);
                             }
                             break;
+                        case \daos\PARAM_DATETIME:
+                            if (empty($row[$columnIndex])) {
+                                $value = null;
+                            } else {
+                                $value = new \DateTime($row[$columnIndex]);
+                            }
+                            break;
                         default:
                             $value = null;
                     }

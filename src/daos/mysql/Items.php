@@ -269,8 +269,10 @@ class Items implements \daos\ItemsInterface {
         }
 
         // update time filter
-        if (isset($options['updatedsince']) && strlen($options['updatedsince']) > 0) {
-            $params[':updatedsince'] = [$options['updatedsince'], \PDO::PARAM_STR];
+        if (isset($options['updatedsince'])) {
+            $params[':updatedsince'] = [
+                $stmt::datetime($options['updatedsince']), \PDO::PARAM_STR
+            ];
             $where[] = 'items.updatetime > :updatedsince ';
         }
 
@@ -367,10 +369,12 @@ class Items implements \daos\ItemsInterface {
 
         return $stmt::ensureRowTypes($this->database->exec($query, $params), [
             'id' => \daos\PARAM_INT,
+            'datetime' => \daos\PARAM_DATETIME,
             'unread' => \daos\PARAM_BOOL,
             'starred' => \daos\PARAM_BOOL,
             'source' => \daos\PARAM_INT,
-            'tags' => \daos\PARAM_CSV
+            'tags' => \daos\PARAM_CSV,
+            'updatetime' => \daos\PARAM_DATETIME
         ]);
     }
 
@@ -417,10 +421,12 @@ class Items implements \daos\ItemsInterface {
 
         return $stmt::ensureRowTypes($this->database->exec($query, $params), [
             'id' => \daos\PARAM_INT,
+            'datetime' => \daos\PARAM_DATETIME,
             'unread' => \daos\PARAM_BOOL,
             'starred' => \daos\PARAM_BOOL,
             'source' => \daos\PARAM_INT,
-            'tags' => \daos\PARAM_CSV
+            'tags' => \daos\PARAM_CSV,
+            'updatetime' => \daos\PARAM_DATETIME
         ]);
     }
 

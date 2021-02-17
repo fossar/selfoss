@@ -3,7 +3,7 @@
   "servers": [],
   "info": {
     "description": "You can access selfoss by using the same backend as selfoss user interface: The RESTful HTTP JSON API. There are a few urls where you can get information from selfoss and some for updating data. Assume you want all tags for rendering this in your own app. You have to make an HTTP GET call on the url /tags:\n\n```\nGET http://yourselfossurl.com/tags\n```\nThe result is following JSON formatted response (in this example two tags “blog” and “deviantart” are available:\n\n```\n[{\"tag\":\"blog\",\"color\":\"#251f10\",\"unread\":\"1\"},\n{\"tag\":\"deviantart\",\"color\":\"#e78e5c\",\"unread\":\"0\"}]\n```\n\nFollowing docs shows you which calls are possible and which response you can expect.",
-    "version": "2.21.0",
+    "version": "3.0.0",
     "title": "selfoss"
   },
   "tags": [
@@ -189,7 +189,7 @@
           {
             "name": "updatedsince",
             "in": "query",
-            "description": "only list items which are newer as given date in yyyy-mm-dd hh:mm:ss format",
+            "description": "only list items which are newer than given date in date-time format as specified in RFC3339",
             "required": false,
             "schema": {
               "type": "string",
@@ -919,7 +919,7 @@
             "description": "the date and time of the article",
             "type": "string",
             "format": "date-time",
-            "example": "2013-04-07 13:43:00"
+            "example": "2013-04-07T13:43:00+01:00"
           },
           "title": {
             "description": "the title of the article",

@@ -90,6 +90,12 @@ class Items {
             unset($options['fromDatetime']);
         }
 
+        if (isset($options['updatedsince']) && strlen($options['updatedsince']) > 0) {
+            $options['updatedsince'] = new \DateTime($options['updatedsince']);
+        } else {
+            unset($options['updatedsince']);
+        }
+
         $items = $this->backend->get($options);
 
         // remove private posts with private tags
