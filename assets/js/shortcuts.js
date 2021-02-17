@@ -1,6 +1,6 @@
 import tinykeys from 'tinykeys';
 
-const Direction = {
+export const Direction = {
     PREV: 'prev',
     NEXT: 'next'
 };

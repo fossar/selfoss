@@ -3,7 +3,7 @@ import { Link, useHistory, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
 import { createFocusTrap } from 'focus-trap';
-import { nextprev } from '../shortcuts';
+import { nextprev, Direction } from '../shortcuts';
 import { makeEntriesLink } from '../helpers/uri';
 import * as itemsRequests from '../requests/items';
 
@@ -172,7 +172,11 @@ function loadImages({ event, setImagesLoaded, contentBlock }) {
 function openNext(event) {
     event.preventDefault();
     event.stopPropagation();
-    nextprev('next');
+
+    // TODO: Figure out why it does not work when run immediately.
+    requestAnimationFrame(() => {
+        nextprev(Direction.NEXT, true);
+    });
 }
 
 // hookup the share icon click events
@@ -429,7 +433,7 @@ export default function Item({ item, selected, expanded, setNavExpanded }) {
                             </li>
                         ))}
                         <li>
-                            <button accessKey="n" className="entry-next" onClick={openNext}>
+                            <button type="button" accessKey="n" className="entry-next" onClick={openNext}>
                                 <FontAwesomeIcon icon={['fas', 'arrow-right']} /> {selfoss.ui._('next')}
                             </button>
                         </li>
@@ -464,6 +468,7 @@ export default function Item({ item, selected, expanded, setNavExpanded }) {
                         target="_blank"
                         rel="noopener noreferrer"
                         accessKey="o"
+                        onClick={(event) => event.stopPropagation()}
                     >
                         <FontAwesomeIcon icon={['fas', 'external-link-alt']} /> {selfoss.ui._('open_window')}
                     </a>
@@ -477,7 +482,7 @@ export default function Item({ item, selected, expanded, setNavExpanded }) {
                     : null
                 }
                 <li>
-                    <button accessKey="n" className="entry-next" onClick={openNext}>
+                    <button type="button" accessKey="n" className="entry-next" onClick={openNext}>
                         <FontAwesomeIcon icon={['fas', 'arrow-right']} /> {selfoss.ui._('next')}
                     </button>
                 </li>
