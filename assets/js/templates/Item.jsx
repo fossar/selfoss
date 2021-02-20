@@ -289,7 +289,7 @@ function handleReadToggle({ event, entry }) {
 export default function Item({ item, selected, expanded, setNavExpanded }) {
     const { title, author, sourcetitle } = item;
 
-    const [fullScreenTrap, setFullScreenTrap] = React.useState(false);
+    const [fullScreenTrap, setFullScreenTrap] = React.useState(null);
     const [imagesLoaded, setImagesLoaded] = React.useState(false);
     const contentBlock = React.useRef(null);
 
