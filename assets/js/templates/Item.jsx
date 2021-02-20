@@ -393,8 +393,8 @@ export default function Item({ item, selected, expanded, setNavExpanded }) {
                 : null}
 
             {/* thumbnail */}
-            {selfoss.config.showThumbnails && item.thumbnail && item.thumbnail.trim().length > 0 ?
-                <div className="entry-thumbnail">
+            {item.thumbnail && item.thumbnail.trim().length > 0 ?
+                <div className={classNames({'entry-thumbnail': true, 'entry-thumbnail-always-visible': selfoss.config.showThumbnails})}>
                     <a href={anonymize(item.link)} target="_blank" rel="noopener noreferrer">
                         <img src={`thumbnails/${item.thumbnail}`} alt={item.strippedTitle} />
                     </a>

@@ -469,6 +469,10 @@ span.offline-count.diff {
     margin: 0 10px 5px 0;
 }
 
+.entry:not(.expanded) .entry-thumbnail:not(.entry-thumbnail-always-visible) {
+    display: none;
+}
+
 .entry:not(.expanded) .entry-content,
 .entry:not(.expanded) .entry-toolbar {
     display: none;
