@@ -141,9 +141,12 @@ function handleClick({ event, history, location, target, entry, contentBlock, se
                 }
 
                 // turn of column view if entry is too long
-                if (contentBlock.current.getBoundingClientRect().height > document.body.clientHeight) {
-                    contentBlock.current.classList.add('entry-content-nocolumns');
-                }
+                requestAnimationFrame(() => {
+                    // Delayed into next frame so that the entry is expanded when the height is being determined.
+                    if (contentBlock.current.getBoundingClientRect().height > document.body.clientHeight) {
+                        contentBlock.current.parentNode.classList.add('entry-content-nocolumns');
+                    }
+                });
             }
 
             // automark as read
