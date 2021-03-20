@@ -27,7 +27,7 @@ As we have already mentioned, we describe the development environment in `flake.
 
 ## Bumping pinned dependencies {#bumping}
 
-The pinned Nixpkgs version can be updated with `nixUnstable` using `nix flake update --recreate-lock-file`, or with stable Nix using `nix-shell -I nixpkgs=channel:nixos-unstable -p nixUnstable --run 'nix --experimental-features "nix-command flakes" flake update --recreate-lock-file'`.
+The pinned Nixpkgs version can be updated with `nixUnstable` using `nix flake update`, or with stable Nix using `nix-shell -I nixpkgs=channel:nixos-unstable -p nixUnstable --run 'nix --experimental-features "nix-command flakes" flake update'`.
 
 ## Optimizing the workflow {#optimizing}
 
