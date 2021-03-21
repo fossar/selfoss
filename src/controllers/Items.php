@@ -165,6 +165,7 @@ class Items {
             if (!empty($item['updatetime'])) {
                 $stringifiedDates['updatetime'] = $item['updatetime']->format(\DateTime::ATOM);
             }
+
             return array_merge($item, $stringifiedDates);
         }, $items);
 
