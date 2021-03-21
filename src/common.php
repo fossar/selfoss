@@ -36,7 +36,7 @@ $f3->set('version', '2.19-SNAPSHOT');
 // independent of selfoss version
 // needs to be bumped each time public API is changed (follows semver)
 // keep in sync with docs/api-description.json
-$f3->set('apiversion', '3.0.0');
+$f3->set('apiversion', '4.0.0');
 
 $f3->set('AUTOLOAD', false);
 $f3->set('BASEDIR', BASEDIR);

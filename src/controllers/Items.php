@@ -158,6 +158,16 @@ class Items {
         // get items
         $items = $this->itemsDao->get($options);
 
+        $items = array_map(function($item) {
+            $stringifiedDates = [
+                'datetime' => $item['datetime']->format(\DateTime::ATOM),
+            ];
+            if (!empty($item['updatetime'])) {
+                $stringifiedDates['updatetime'] = $item['updatetime']->format(\DateTime::ATOM);
+            }
+            return array_merge($item, $stringifiedDates);
+        }, $items);
+
         $this->view->jsonSuccess($items);
     }
 }
