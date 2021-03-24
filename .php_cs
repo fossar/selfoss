@@ -29,7 +29,7 @@ $rules = [
     'ordered_imports' => true,
     'phpdoc_add_missing_param_annotation' => ['only_untyped' => false],
     'phpdoc_order' => true,
-    'psr4' => true,
+    'psr_autoloading' => true,
     'strict_param' => true,
 ];
 
