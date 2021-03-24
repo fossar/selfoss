@@ -99,5 +99,7 @@
   "lang_error_unwritable_logs": "Impossibile scrivere i log.",
   "lang_error_check_system_logs": "Si è verificato un errore, controlla i tuoi log di sistema.",
   "lang_error_check_log_file": "Si è verificato un errore, controlla il file di log «{0}».",
-  "lang_offline_navigation_unavailable": "Al momento non è possibile modificare etichette e fonti nella modalità fuori linea."
+  "lang_offline_navigation_unavailable": "Al momento non è possibile modificare etichette e fonti nella modalità fuori linea.",
+  "lang_article_reading_time": "{0} min letti",
+  "lang_experimental": "Sperimentale"
 }
