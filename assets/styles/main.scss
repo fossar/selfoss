@@ -1,6 +1,6 @@
 @import '@fancyapps/fancybox/dist/jquery.fancybox.css';
 @import 'spectrum-colorpicker/spectrum.css';
-@import 'reset-css/sass/reset';
+@import 'reset-css/sass/_reset.scss';
 
 /* base */
 
@@ -489,7 +489,7 @@ span.offline-count.diff {
     padding: 0 1em;
     overflow-wrap: break-word;
 
-    @import 'unreset-css/unreset';
+    @import 'unreset-css/_unreset.scss';
 }
 
 .entry-content a {

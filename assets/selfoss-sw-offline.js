@@ -1,14 +1,11 @@
-/* eslint-env worker, serviceworker, es6:false */
-/* Due to a parcel-plugin-sw-cache limitations, this file is not preprocessed so we need to limit ourselves to older syntax.
- * https://github.com/mischnic/parcel-plugin-sw-cache/issues/22
- */
+/* eslint-env worker, serviceworker */
 
-function precacheAndRoute(cachedEntries) {
-    return cachedEntries;
-}
-
-// [] will be substituted by list of {url: String, revision: String}
-const cachedEntries = precacheAndRoute([]);
+// parcel-config-precache-manifest injects a list of {url: String, revision: String}
+const disallowedEntries = [
+    './hashpassword.html',
+    './opml.html'
+];
+const cachedEntries = self.__precacheManifest.filter((entry) => !disallowedEntries.includes(entry.url));
 
 
 self.addEventListener('install', function(event) {
