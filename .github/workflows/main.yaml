@@ -148,6 +148,7 @@ jobs:
           owner: "fossar"
           repo: "selfoss-git"
           file: ${{ steps.zipball.outputs.file_name }}
+          name: selfoss.zip
           version: ${{ steps.zipball.outputs.version }}
 
       - name: Create a release
