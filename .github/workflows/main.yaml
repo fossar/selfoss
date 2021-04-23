@@ -152,6 +152,18 @@ jobs:
           publish: 1
           calculate_metadata: false
 
+      - name: Upload the zipball to Cloudsmith
+        uses: cloudsmith-io/action@v0.5
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        with:
+          api-key: ${{ secrets.CLOUDSMITH_API_KEY }}
+          command: "push"
+          format: "raw"
+          owner: "fossar"
+          repo: "selfoss-git"
+          file: ${{ steps.zipball.outputs.file_name }}
+          version: ${{ steps.zipball.outputs.version }}
+
       - name: Create a release
         id: create_release
         if: github.event_name == 'push' && github.ref == 'refs/heads/master' && startsWith(github.ref, 'refs/tags/')
