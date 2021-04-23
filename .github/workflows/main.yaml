@@ -151,23 +151,17 @@ jobs:
           name: selfoss.zip
           version: ${{ steps.zipball.outputs.version }}
 
-      - name: Create a release
-        id: create_release
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && startsWith(github.ref, 'refs/tags/')
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ steps.zipball.outputs.version }}
-          release_name: ${{ steps.zipball.outputs.version }}
+      - name: Prepare a changelog
+        run: |
+          echo "changelog_text<<CHANGES_EOF" >> $GITHUB_ENV
+          sed '1,/^## /d;/^## /Q' NEWS.md >> $GITHUB_ENV
+          echo "CHANGES_EOF" >> $GITHUB_ENV
 
-      - name: Upload zipball to release
+      - name: Create a release
+        uses: softprops/action-gh-release@v0.1.5
         if: github.event_name == 'push' && github.ref == 'refs/heads/master' && startsWith(github.ref, 'refs/tags/')
-        uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ steps.zipball.outputs.file_name }}
-          asset_name: ${{ steps.zipball.outputs.file_name }}
-          asset_content_type: application/zip
+          body: ${{ env.changelog_text }}
+          files: ${{ steps.zipball.outputs.file_name }}
