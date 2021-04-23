@@ -11,7 +11,7 @@
         "fossar/htmlawed": "^1.2.4.1",
         "fossar/tcpdf-parser": "^6.2",
         "guzzlehttp/guzzle": "^6.3",
-        "guzzlehttp/oauth-subscriber": "^0.4.0",
+        "guzzlehttp/oauth-subscriber": "^0.5.0",
         "guzzlehttp/psr7": "^1.5",
         "http-interop/response-sender": "^1.0",
         "j0k3r/graby": "2.0.0-alpha.0",
