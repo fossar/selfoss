@@ -153,7 +153,7 @@ jobs:
           calculate_metadata: false
 
       - name: Upload the zipball to Cloudsmith
-        uses: cloudsmith-io/action@v0.5
+        uses: cloudsmith-io/action@0.5
         if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         with:
           api-key: ${{ secrets.CLOUDSMITH_API_KEY }}
