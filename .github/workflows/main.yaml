@@ -1,6 +1,6 @@
 # This file lints the code, runs tests, builds a package and then deploys it.
 # The following secrets need to be set:
-# - “BINTRAY_API_KEY” for pushing built package to Bintray
+# - “CLOUDSMITH_API_KEY” for pushing built package to Cloudsmith
 # - “CACHIX_AUTH_TOKEN” for uploading built Nix packages to Cachix
 name: CI
 
@@ -137,20 +137,6 @@ jobs:
           name: ${{ steps.zipball.outputs.file_name }}
           if-no-files-found: error
           path: ${{ steps.zipball.outputs.file_name }}
-
-      - name: Upload the zipball to Bintray
-        uses: bpicode/github-action-upload-bintray@7c33b56d01c41301a3346f2fd9af590cb1c81899
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-        with:
-          file: ${{ steps.zipball.outputs.file_name }}
-          api_user: jtojnar
-          repository_user: fossar
-          api_key: ${{ secrets.BINTRAY_API_KEY }}
-          repository: selfoss
-          package: selfoss-git
-          version: ${{ steps.zipball.outputs.version }}
-          publish: 1
-          calculate_metadata: false
 
       - name: Upload the zipball to Cloudsmith
         uses: cloudsmith-io/action@v0.5.2
