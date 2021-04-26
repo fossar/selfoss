@@ -1,0 +1,641 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns:yt="http://www.youtube.com/xml/schemas/2015" xmlns:media="http://search.yahoo.com/mrss/" xmlns="http://www.w3.org/2005/Atom">
+ <link rel="self" href="http://www.youtube.com/feeds/videos.xml?user=ZoggFromBetelgeuse"/>
+ <id>yt:channel:UCKY00CSQo1MoC27bdGd-w_g</id>
+ <yt:channelId>UCKY00CSQo1MoC27bdGd-w_g</yt:channelId>
+ <title>Zogg from Betelgeuse</title>
+ <link rel="alternate" href="https://www.youtube.com/channel/UCKY00CSQo1MoC27bdGd-w_g"/>
+ <author>
+  <name>Zogg from Betelgeuse</name>
+  <uri>https://www.youtube.com/channel/UCKY00CSQo1MoC27bdGd-w_g</uri>
+ </author>
+ <published>2012-03-31T15:58:31+00:00</published>
+ <entry>
+  <id>yt:video:-0rVCmhNbYc</id>
+  <yt:videoId>-0rVCmhNbYc</yt:videoId>
+  <yt:channelId>UCKY00CSQo1MoC27bdGd-w_g</yt:channelId>
+  <title>Earthlings 101 - Channel Ad</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=-0rVCmhNbYc"/>
+  <author>
+   <name>Zogg from Betelgeuse</name>
+   <uri>https://www.youtube.com/channel/UCKY00CSQo1MoC27bdGd-w_g</uri>
+  </author>
+  <published>2014-07-04T01:31:55+00:00</published>
+  <updated>2021-03-31T00:38:23+00:00</updated>
+  <media:group>
+   <media:title>Earthlings 101 - Channel Ad</media:title>
+   <media:content url="https://www.youtube.com/v/-0rVCmhNbYc?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i2.ytimg.com/vi/-0rVCmhNbYc/hqdefault.jpg" width="480" height="360"/>
+   <media:description>A little ad video for my channel, a parody of the viral &quot;Epic Split&quot; video.
+
+Concept, animation and realization: Zogg from Betelgeuse
+Music : &quot;Only Spacetime&quot; by Martin Kuppe, inspired by Enya</media:description>
+   <media:community>
+    <media:starRating count="1233" average="4.97" min="1" max="5"/>
+    <media:statistics views="33008"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:XqpvBaiJRHo</id>
+  <yt:videoId>XqpvBaiJRHo</yt:videoId>
+  <yt:channelId>UCKY00CSQo1MoC27bdGd-w_g</yt:channelId>
+  <title>Mathematics: Measuring x laziness² (Earthlings 101, Episode 13)</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=XqpvBaiJRHo"/>
+  <author>
+   <name>Zogg from Betelgeuse</name>
+   <uri>https://www.youtube.com/channel/UCKY00CSQo1MoC27bdGd-w_g</uri>
+  </author>
+  <published>2014-07-01T00:48:48+00:00</published>
+  <updated>2021-04-01T02:33:14+00:00</updated>
+  <media:group>
+   <media:title>Mathematics: Measuring x laziness² (Earthlings 101, Episode 13)</media:title>
+   <media:content url="https://www.youtube.com/v/XqpvBaiJRHo?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i1.ytimg.com/vi/XqpvBaiJRHo/hqdefault.jpg" width="480" height="360"/>
+   <media:description>What is mathematics?
+What's the difference between earthling logic and ternary alien logic?
+What is mathematics? Why is mathematics dangerous for the Central Galactic Bureaucracy?
+What is geometry? What is arithmetic?
+What does the landscape of mathematics look like?
+What is Topology?
+What is Algebra?
+What is Analysis?
+Why is any sufficiently advanced algebra indistinguishable from magic?
+An what is Gödels First Theorem?
+
+13th episode of Earthlings 101, the crash course for alien visitors.
+
+Links
+- Concept, artwork and text by Martin Kuppe
+- Music by OcularNebula (http://www.newgrounds.com/audio/listen/407324)
+- Speech synthesis by Ivona (http://www.ivona.com/en/)
+- Map of Mathematistan: https://lh6.googleusercontent.com/-ZvtQ2goIJk0/U7L4Sz_zXII/AAAAAAAAACs/DdwEInXKx98/w1565-h881-no/Mathematistan.jpg
+- Hires version of the map: https://dl.dropboxusercontent.com/u/12617984/MathematistanHires.jpg
+- Hires version without roads: https://dl.dropboxusercontent.com/u/12617984/MathematistanHiresWithoutRoads.jpg
+
+- James Grime explains the &quot;Aldebaranian&quot; curve calculator in this video : http://youtu.be/LWkOkM0Gqa4
+
+
+Full episode text:
+ (coming soon)</media:description>
+   <media:community>
+    <media:starRating count="2753" average="4.98" min="1" max="5"/>
+    <media:statistics views="71405"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:KMyb6tu4S_I</id>
+  <yt:videoId>KMyb6tu4S_I</yt:videoId>
+  <yt:channelId>UCKY00CSQo1MoC27bdGd-w_g</yt:channelId>
+  <title>No Edge 2: The Curvature of the Universe.</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=KMyb6tu4S_I"/>
+  <author>
+   <name>Zogg from Betelgeuse</name>
+   <uri>https://www.youtube.com/channel/UCKY00CSQo1MoC27bdGd-w_g</uri>
+  </author>
+  <published>2013-09-05T12:14:26+00:00</published>
+  <updated>2021-04-18T14:31:02+00:00</updated>
+  <media:group>
+   <media:title>No Edge 2: The Curvature of the Universe.</media:title>
+   <media:content url="https://www.youtube.com/v/KMyb6tu4S_I?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i4.ytimg.com/vi/KMyb6tu4S_I/hqdefault.jpg" width="480" height="360"/>
+   <media:description>´¯`·.¸¸.·´¯`·.¸ Tweet it: http://clicktotweet.com/M9Qwa  ¸.·´¯`·.¸¸.·´¯`
+
+This is the second part of a three-part miniseries on the shape of the universe. Could the universe be curved? What is curvature, anyway? What is the cosmological principle? And is the universe maybe some sort of hyperbanana?
+
+
+Credits:
+- Concept, artwork and text by Martin Kuppe
+- Music by OcularNebula (http://www.newgrounds.com/audio/listen/381971)
+- Speech synthesis by Ivona (http://www.ivona.com/en/)</media:description>
+   <media:community>
+    <media:starRating count="2752" average="4.98" min="1" max="5"/>
+    <media:statistics views="81468"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:_k3_B9Eq7eM</id>
+  <yt:videoId>_k3_B9Eq7eM</yt:videoId>
+  <yt:channelId>UCKY00CSQo1MoC27bdGd-w_g</yt:channelId>
+  <title>No Edge: The Shape of the Universe. (Part 1: Flat Models)</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=_k3_B9Eq7eM"/>
+  <author>
+   <name>Zogg from Betelgeuse</name>
+   <uri>https://www.youtube.com/channel/UCKY00CSQo1MoC27bdGd-w_g</uri>
+  </author>
+  <published>2013-07-23T00:02:51+00:00</published>
+  <updated>2021-03-26T16:21:11+00:00</updated>
+  <media:group>
+   <media:title>No Edge: The Shape of the Universe. (Part 1: Flat Models)</media:title>
+   <media:content url="https://www.youtube.com/v/_k3_B9Eq7eM?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i4.ytimg.com/vi/_k3_B9Eq7eM/hqdefault.jpg" width="480" height="360"/>
+   <media:description>´¯`·.¸¸.·´¯`·.¸ Tweet it: http://clicktotweet.com/HDxJu ¸.·´¯`·.¸¸.·´¯`
+
+This is the first part of a three-part miniseries on the shape of the universe. Is the universe infinite? Does it have an edge? In this part, we will talk about the possibility of a flat, finite universe without edge.
+
+
+Credits:
+- Concept, artwork and text by Martin Kuppe
+- Music by OcularNebula (http://www.newgrounds.com/audio/listen/381971)
+- Speech synthesis by Ivona (http://www.ivona.com/en/)</media:description>
+   <media:community>
+    <media:starRating count="4413" average="4.94" min="1" max="5"/>
+    <media:statistics views="166266"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:hZED73seTQE</id>
+  <yt:videoId>hZED73seTQE</yt:videoId>
+  <yt:channelId>UCKY00CSQo1MoC27bdGd-w_g</yt:channelId>
+  <title>Vision: How the world gets into the brain (Earthlings 101, Episode 12)</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=hZED73seTQE"/>
+  <author>
+   <name>Zogg from Betelgeuse</name>
+   <uri>https://www.youtube.com/channel/UCKY00CSQo1MoC27bdGd-w_g</uri>
+  </author>
+  <published>2013-06-03T19:20:08+00:00</published>
+  <updated>2021-03-30T05:43:23+00:00</updated>
+  <media:group>
+   <media:title>Vision: How the world gets into the brain (Earthlings 101, Episode 12)</media:title>
+   <media:content url="https://www.youtube.com/v/hZED73seTQE?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i1.ytimg.com/vi/hZED73seTQE/hqdefault.jpg" width="480" height="360"/>
+   <media:description>What is vision?
+How does the eye preprocess data?
+What happens with the data in the brain?
+How do earthlings create a model of the world in their head?
+How do earthlings recognize shapes?
+Do earthlings have a brain cell for Halle Berry?
+Why is color a matter of biology, and not of physics?
+What is color anyway?
+What's so special about the vision of the mantis shrimp?
+What is a levy drone?
+And what has color to do with the worst brass bands in the Galaxy?
+
+12th episode of Earthlings 101, the crash course for alien visitors.
+
+Links
+- Concept, artwork and text by Martin Kuppe
+- Music by OcularNebula (http://www.newgrounds.com/audio/listen/407324)
+- Speech synthesis by Ivona (http://www.ivona.com/en/)
+- &quot;Dressed-up ovals&quot; inspred by Lego ad (see http://www.mymodernmet.com/profiles/blogs/jung-von-matt-imagine-lego-ad) 
+
+
+Full episode text:
+ (coming soon)</media:description>
+   <media:community>
+    <media:starRating count="2188" average="4.99" min="1" max="5"/>
+    <media:statistics views="43336"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:ue5gTvC4dNU</id>
+  <yt:videoId>ue5gTvC4dNU</yt:videoId>
+  <yt:channelId>UCKY00CSQo1MoC27bdGd-w_g</yt:channelId>
+  <title>Rituals: The gears of society (Earthlings 101, Episode 11)</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=ue5gTvC4dNU"/>
+  <author>
+   <name>Zogg from Betelgeuse</name>
+   <uri>https://www.youtube.com/channel/UCKY00CSQo1MoC27bdGd-w_g</uri>
+  </author>
+  <published>2013-04-29T21:23:38+00:00</published>
+  <updated>2021-03-28T20:24:05+00:00</updated>
+  <media:group>
+   <media:title>Rituals: The gears of society (Earthlings 101, Episode 11)</media:title>
+   <media:content url="https://www.youtube.com/v/ue5gTvC4dNU?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i2.ytimg.com/vi/ue5gTvC4dNU/hqdefault.jpg" width="480" height="360"/>
+   <media:description>Eleventh episode of Earthlings 101, the crash course for alien visitors.
+
+My T-shirt shop: http://betelgeuse.spreadshirt.com/
+
+What is a ritual?
+Why are rituals part of everyday's life?
+What have sports events, funerals and political gatherings in common?
+What is the purpose of rituals?
+Why would society as we know it be impossible without rituals?
+What are symbols?
+And why do earthlings put symbols onto their t-shirt?
+ 
+
+References:
+Randall Collins, &quot;Interaction Ritual Chains&quot;
+
+Disclaimer
+Please note that most things in these videos are either conclusions based on personal observation of earthlings, or ideas found in earthling literature. Although they seem pretty obvious to me, most of them are still to be scientifically proven. In terms of earthling science, those are hypotheses, not theories or facts.
+
+Links
+- Concept, artwork and text by Martin Kuppe
+- Title music by OcularNebula (http://www.newgrounds.com/audio/listen/407324)
+- Tango music by  Sadlersongs (http://www.newgrounds.com/audio/listen/222489)
+- Speech synthesis by Ivona (http://www.ivona.com/en/)
+
+Full episode text:
+ (coming soon)</media:description>
+   <media:community>
+    <media:starRating count="1766" average="4.98" min="1" max="5"/>
+    <media:statistics views="38071"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:SADDJY7e7cM</id>
+  <yt:videoId>SADDJY7e7cM</yt:videoId>
+  <yt:channelId>UCKY00CSQo1MoC27bdGd-w_g</yt:channelId>
+  <title>Closed AdSense account: A funeral speech</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=SADDJY7e7cM"/>
+  <author>
+   <name>Zogg from Betelgeuse</name>
+   <uri>https://www.youtube.com/channel/UCKY00CSQo1MoC27bdGd-w_g</uri>
+  </author>
+  <published>2013-03-11T22:05:48+00:00</published>
+  <updated>2021-03-30T09:45:32+00:00</updated>
+  <media:group>
+   <media:title>Closed AdSense account: A funeral speech</media:title>
+   <media:content url="https://www.youtube.com/v/SADDJY7e7cM?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i4.ytimg.com/vi/SADDJY7e7cM/hqdefault.jpg" width="480" height="360"/>
+   <media:description>Every Youtuber needs an AdSense account to earn money, be a YouTube partner, or join a network. I had an AdSense account as well, and I took care of respecting the rules, not clicking on my own ads etc. 
+
+But some weeks ago, AdSense closed my account for &quot;invalid action&quot; - whatever that means. They wrote of &quot;my violation&quot; but refused to specify what I'm actually accused of. They only linked to a generic list of violations, none of which applied to my case. However, they were very clear on the fact that I am banned for life and that I'm not allowed to open another account.
+
+After two refused appeals, I made this video.
+
+
+- Music by OcularNebula (http://www.newgrounds.com/audio/liste...)
+- Speech synthesis by Ivona (http://www.ivona.com/en/)</media:description>
+   <media:community>
+    <media:starRating count="1814" average="4.99" min="1" max="5"/>
+    <media:statistics views="21857"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:15C-fw9d4pE</id>
+  <yt:videoId>15C-fw9d4pE</yt:videoId>
+  <yt:channelId>UCKY00CSQo1MoC27bdGd-w_g</yt:channelId>
+  <title>Earthlings 101 Channel Trailer</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=15C-fw9d4pE"/>
+  <author>
+   <name>Zogg from Betelgeuse</name>
+   <uri>https://www.youtube.com/channel/UCKY00CSQo1MoC27bdGd-w_g</uri>
+  </author>
+  <published>2013-03-09T12:58:02+00:00</published>
+  <updated>2021-03-27T03:35:22+00:00</updated>
+  <media:group>
+   <media:title>Earthlings 101 Channel Trailer</media:title>
+   <media:content url="https://www.youtube.com/v/15C-fw9d4pE?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i2.ytimg.com/vi/15C-fw9d4pE/hqdefault.jpg" width="480" height="360"/>
+   <media:description>Earthlings 101 is a beginner's guide for alien visitors. No matter whether you are a space tourist, an alien scientist or a galactic warlord - if you want to learn more about human nature, this channel is for you.
+
+ - Concept, artwork and text by me
+ - Music by OcularNebula (http://www.newgrounds.com/audio/listen/407324)
+ - Speech synthesis by Ivona (http://www.ivona.com/en/)</media:description>
+   <media:community>
+    <media:starRating count="456" average="4.96" min="1" max="5"/>
+    <media:statistics views="78860"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:BPVtAlQot9g</id>
+  <yt:videoId>BPVtAlQot9g</yt:videoId>
+  <yt:channelId>UCKY00CSQo1MoC27bdGd-w_g</yt:channelId>
+  <title>Language: A reef of dead metaphores (Earthlings 101, Episode 10)</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=BPVtAlQot9g"/>
+  <author>
+   <name>Zogg from Betelgeuse</name>
+   <uri>https://www.youtube.com/channel/UCKY00CSQo1MoC27bdGd-w_g</uri>
+  </author>
+  <published>2013-03-07T00:42:49+00:00</published>
+  <updated>2021-04-17T09:07:44+00:00</updated>
+  <media:group>
+   <media:title>Language: A reef of dead metaphores (Earthlings 101, Episode 10)</media:title>
+   <media:content url="https://www.youtube.com/v/BPVtAlQot9g?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i3.ytimg.com/vi/BPVtAlQot9g/hqdefault.jpg" width="480" height="360"/>
+   <media:description>What is language?
+What does it reveal about how earthlings think?
+What are things, properties and actions?
+What is abstraction?
+What is a metaphore?
+How does language develop?
+Is language in decline?
+Is the development of language cyclic?
+What does it mean to say &quot;language is a reef of dead metaphores&quot;?
+
+Tenth episode of Earthlings 101, the crash course for alien visitors. 
+
+Links
+- This episode is based on the book &quot;The Unfolding of Language&quot;, Guy Deutscher.(https://sites.google.com/site/theunfoldingoflanguage/)
+- Concept, artwork and text by Martin Kuppe
+- Music by OcularNebula (http://www.newgrounds.com/audio/listen/407324)
+- Speech synthesis by Ivona (http://www.ivona.com/en/)
+
+Disclaimer
+Please note that most things in these videos are either conclusions based on personal observation of earthlings, or ideas found in earthling literature. Although they seem pretty obvious to me, most of them are still to be scientifically proven. In terms of earthling science, those are hypotheses, not theories or facts.
+
+Full episode text:
+http://tinyurl.com/E101-EP10
+
+-------------------------------------------
+
+As promised in the video, the full quotes on the decline of language:
+
+&quot;In these days of just about enough perils facing our nation, there is plenty of evidence around to conclude that our grip on our glorious language may be loosening.&quot;
+---Dick Cavett, &quot;It's Only Language.&quot; The New York Times, 2007
+
+&quot;Most people who bother with the matter at all would admit that the English language is in a bad way.&quot;
+---George Orwell, &quot;Politics and the English Language&quot;, 1946
+
+
+&quot;It is shameful to see our very colleges filled with students who seldom set down three consecutive sentences that do not reek with solecisms of expression, of syntax, and of style; while not a few, when they leave the college halls, the winners of a university degree, make blunders even of orthography that might well disgrace a swineherd.&quot;
+--- Harry Thurston Peck, &quot;What Is Good English?&quot;, 1899
+
+&quot;[English shows] how rapidly the language of a nation important both in history and literature can sink&quot;
+---August Schleicher, 1848
+
+&quot;...that many pronunciations, which thirty or forty years ago were confined to the vulgar, are gradually gaining ground [among people of fashion]; and if something is not done to stop this growing evil ...English is  likely to become a mere jargon&quot;
+---Thomas Sheridan, 1780
+
+&quot;...our Language is extremely imperfect; that its daily Improvements are by no means in proportion to its daily Corruptions; and the Pretenders to polish and refine it, have chiefly multiplied Abuses and Absurdities; and, that in many Instances, it offends against every Part of Grammar.&quot;
+--- Jonathan Swift, 1712
+
+&quot;And, in few words, I dare say; that of all the Studies of men, nothing may be sooner obtain'd, than this vicious abundance of Phrase, this trick of Metaphors, this volubility of Tongue, which makes so great a noise in the World. But I spend words in vain; for the evil is now so inveterate, that it is hard to know whom to blame, or where to begin to reform.&quot;
+--- Thomas Sprat, The History of the Royal Society, 1667
+
+&quot;Practically everyone...in those days spoke correctly, but the lapse of time has certainly had a deteriorating effect in this respect.&quot; 
+---Cicero, 46 BC.</media:description>
+   <media:community>
+    <media:starRating count="1706" average="4.98" min="1" max="5"/>
+    <media:statistics views="39256"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:UgUFwM-ghdI</id>
+  <yt:videoId>UgUFwM-ghdI</yt:videoId>
+  <yt:channelId>UCKY00CSQo1MoC27bdGd-w_g</yt:channelId>
+  <title>Food: Eating, drinking, and cooking (Earthlings 101, Episode 9)</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=UgUFwM-ghdI"/>
+  <author>
+   <name>Zogg from Betelgeuse</name>
+   <uri>https://www.youtube.com/channel/UCKY00CSQo1MoC27bdGd-w_g</uri>
+  </author>
+  <published>2012-12-16T01:29:39+00:00</published>
+  <updated>2021-03-31T22:43:21+00:00</updated>
+  <media:group>
+   <media:title>Food: Eating, drinking, and cooking (Earthlings 101, Episode 9)</media:title>
+   <media:content url="https://www.youtube.com/v/UgUFwM-ghdI?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i2.ytimg.com/vi/UgUFwM-ghdI/hqdefault.jpg" width="480" height="360"/>
+   <media:description>What is food?
+What are carbon hydrates, fats and proteins?
+How are proteins encoded in the DNA?
+How do earthlings eat?
+What is cooking?
+What happens when we boil or roast food?
+Why do earthlings do that?
+Why do they separate sweet and salty meals?
+What is the purpose of desserts?
+How much weight does a human lose by breathing each day?
+Is turning the heating down a good way to lose weight?
+
+
+Nineth episode of Earthlings 101, the crash course for alien visitors.
+
+Links
+- Concept, artwork and text by Martin Kuppe
+- Music by OcularNebula (http://www.newgrounds.com/audio/listen/407324)
+- Speech synthesis by Ivona (http://www.ivona.com/en/)
+
+Disclaimer
+Please note that most things in these videos are either conclusions based on personal observation of earthlings, or ideas found in earthling literature. Although they seem pretty obvious to me, most of them are still to be scientifically proven. In terms of earthling science, those are hypotheses, not theories or facts.
+
+
+Full episode text:
+ http://tinyurl.com/E101-EP09</media:description>
+   <media:community>
+    <media:starRating count="2913" average="4.99" min="1" max="5"/>
+    <media:statistics views="44741"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:z2FAVC2XPiM</id>
+  <yt:videoId>z2FAVC2XPiM</yt:videoId>
+  <yt:channelId>UCKY00CSQo1MoC27bdGd-w_g</yt:channelId>
+  <title>Humour: Funny things, laughing, and jokes (Earthlings 101, Episode 8)</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=z2FAVC2XPiM"/>
+  <author>
+   <name>Zogg from Betelgeuse</name>
+   <uri>https://www.youtube.com/channel/UCKY00CSQo1MoC27bdGd-w_g</uri>
+  </author>
+  <published>2012-10-29T01:53:35+00:00</published>
+  <updated>2021-03-29T13:15:44+00:00</updated>
+  <media:group>
+   <media:title>Humour: Funny things, laughing, and jokes (Earthlings 101, Episode 8)</media:title>
+   <media:content url="https://www.youtube.com/v/z2FAVC2XPiM?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i3.ytimg.com/vi/z2FAVC2XPiM/hqdefault.jpg" width="480" height="360"/>
+   <media:description>What is humor?
+What do earthlings call &quot;funny&quot;?
+Why do they enjoy humour?
+Are there species in the galaxy who have a sense for humour - and hate it?
+Why do earthlings make funny noises when encountering humour?
+What is tickling?
+What is a joke?
+What is comedy?
+Is the film &quot;Prometheus&quot; a comedy?
+
+Eighth episode of Earthlings 101, the crash course for alien visitors.
+
+Links
+- ,This episode is based on the book &quot;Inside Jokes: Using Humor to Reverse-Engineer the Mind&quot; by Matthew M. Hurley et al.(http://www.insidejokesbook.com/)
+- Concept, artwork and text by Martin Kuppe
+- Music by OcularNebula (http://www.newgrounds.com/audio/listen/407324)
+- Speech synthesis by Ivona (http://www.ivona.com/en/)
+
+Disclaimer
+Please note that most things in these videos are either conclusions based on personal observation of earthlings, or ideas found in earthling literature. Although they seem pretty obvious to me, most of them are still to be scientifically proven. In terms of earthling science, those are hypotheses, not theories or facts.
+
+Full episode text:
+ http://tinyurl.com/E101-EP08</media:description>
+   <media:community>
+    <media:starRating count="1526" average="4.97" min="1" max="5"/>
+    <media:statistics views="47178"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:oj__w87vkow</id>
+  <yt:videoId>oj__w87vkow</yt:videoId>
+  <yt:channelId>UCKY00CSQo1MoC27bdGd-w_g</yt:channelId>
+  <title>Social Mechanics: Bonding, Gratitude and Karma  (Earthlings 101, Episode 7)</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=oj__w87vkow"/>
+  <author>
+   <name>Zogg from Betelgeuse</name>
+   <uri>https://www.youtube.com/channel/UCKY00CSQo1MoC27bdGd-w_g</uri>
+  </author>
+  <published>2012-09-23T13:50:37+00:00</published>
+  <updated>2021-04-19T16:13:38+00:00</updated>
+  <media:group>
+   <media:title>Social Mechanics: Bonding, Gratitude and Karma  (Earthlings 101, Episode 7)</media:title>
+   <media:content url="https://www.youtube.com/v/oj__w87vkow?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i4.ytimg.com/vi/oj__w87vkow/hqdefault.jpg" width="480" height="360"/>
+   <media:description>Seventh episode of Earthlings 101, the crash course for alien visitors.
+
+What is a greeting?
+Why do earthlings greet each other?
+What do words like &quot;Please&quot;, &quot;Thank you&quot; or &quot;Sorry&quot; mean?
+What is gratitude?
+What is the trade of a beggar?
+What is karma?
+Why is international karma trade big business?
+What is a sofa?
+And why does the question &quot;What is a sofa?&quot; appear in the description of a video about social mecanics?
+
+Links
+- Concept, artwork and text by Martin Kuppe
+- Music by OcularNebula (http://www.newgrounds.com/audio/listen/407324)
+- Speech synthesis by Ivona (http://www.ivona.com/en/)
+
+Disclaimer
+Please note that most things in these videos are either conclusions based on personal observation of earthlings, or ideas found in earthling literature. Although they seem pretty obvious to me, most of them are still to be scientifically proven. In terms of earthling science, those are hypotheses, not theories or facts.
+
+Full episode text: 
+ http://tinyurl.com/E101-EP07</media:description>
+   <media:community>
+    <media:starRating count="2361" average="4.98" min="1" max="5"/>
+    <media:statistics views="42260"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:36-Bp9sAa3w</id>
+  <yt:videoId>36-Bp9sAa3w</yt:videoId>
+  <yt:channelId>UCKY00CSQo1MoC27bdGd-w_g</yt:channelId>
+  <title>Aesthetics: What is beauty? (Earthlings 101, Episode 6)</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=36-Bp9sAa3w"/>
+  <author>
+   <name>Zogg from Betelgeuse</name>
+   <uri>https://www.youtube.com/channel/UCKY00CSQo1MoC27bdGd-w_g</uri>
+  </author>
+  <published>2012-07-25T02:27:04+00:00</published>
+  <updated>2021-04-18T01:13:56+00:00</updated>
+  <media:group>
+   <media:title>Aesthetics: What is beauty? (Earthlings 101, Episode 6)</media:title>
+   <media:content url="https://www.youtube.com/v/36-Bp9sAa3w?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i4.ytimg.com/vi/36-Bp9sAa3w/hqdefault.jpg" width="480" height="360"/>
+   <media:description>Sixth episode of Earthlings 101, the crash course for alien visitors.
+
+What is beauty?
+What is the evolutionary purpose of beauty? 
+Why are things like landscapes and flowers beautiful?
+What about beautiful women and men?
+What is pomp?
+Is abstract beauty a tool to solve problems?
+What is art?
+Why are earthlings so crazy about beauty and art?
+Is music an imitation of bird songs? 
+And what has all this to do with lolcats, porn and diet drinks?
+
+Links
+- Concept, artwork and text by Martin Kuppe
+- Music by OcularNebula (http://www.newgrounds.com/audio/listen/407324)
+- Speech synthesis by Ivona (http://www.ivona.com/en/)
+
+Disclaimer
+Please note that most things in these videos are either conclusions based on personal observation of earthlings, or ideas found in earthling literature. Although they seem pretty obvious to me, most of them are still to be scientifically proven. In terms of earthling science, those are hypotheses, not theories or facts.
+
+Full episode text: http://tinyurl.com/E101-EP06</media:description>
+   <media:community>
+    <media:starRating count="1510" average="4.94" min="1" max="5"/>
+    <media:statistics views="56699"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:TAaSJcIIruI</id>
+  <yt:videoId>TAaSJcIIruI</yt:videoId>
+  <yt:channelId>UCKY00CSQo1MoC27bdGd-w_g</yt:channelId>
+  <title>Imagination: Games, dreams and stories (Earthlings 101, Episode 5)</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=TAaSJcIIruI"/>
+  <author>
+   <name>Zogg from Betelgeuse</name>
+   <uri>https://www.youtube.com/channel/UCKY00CSQo1MoC27bdGd-w_g</uri>
+  </author>
+  <published>2012-07-05T01:47:44+00:00</published>
+  <updated>2021-03-26T08:11:03+00:00</updated>
+  <media:group>
+   <media:title>Imagination: Games, dreams and stories (Earthlings 101, Episode 5)</media:title>
+   <media:content url="https://www.youtube.com/v/TAaSJcIIruI?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i1.ytimg.com/vi/TAaSJcIIruI/hqdefault.jpg" width="480" height="360"/>
+   <media:description>Fifth episode of Earthlings 101, the crash course for alien visitors.
+
+What is a dream? What is a game? What is a story?
+And what have they all to do with survival? 
+
+References:
+Roger Caillois, &quot;Man, Play and Games&quot;
+Joseph Champbell, &quot;The Hero with a Thousand Faces&quot;
+Christopher Vogler, &quot;The Writers Journey&quot;
+
+Disclaimer
+Please note that most things in these videos are either conclusions based on personal observation of earthlings, or ideas found in earthling literature. Although they seem pretty obvious to me, most of them are still to be scientifically proven. In terms of earthling science, those are hypotheses, not theories or facts.
+
+Links
+- Concept, artwork and text by Martin Kuppe
+- Music by OcularNebula (http://www.newgrounds.com/audio/listen/407324)
+- Speech synthesis by Ivona (http://www.ivona.com/en/)
+
+Full episode text:
+ http://tinyurl.com/E101-EP05</media:description>
+   <media:community>
+    <media:starRating count="1484" average="4.97" min="1" max="5"/>
+    <media:statistics views="51135"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:zkS6WpbLUFw</id>
+  <yt:videoId>zkS6WpbLUFw</yt:videoId>
+  <yt:channelId>UCKY00CSQo1MoC27bdGd-w_g</yt:channelId>
+  <title>Ethics: What is good and evil?  (Earthlings 101, Episode 4)</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=zkS6WpbLUFw"/>
+  <author>
+   <name>Zogg from Betelgeuse</name>
+   <uri>https://www.youtube.com/channel/UCKY00CSQo1MoC27bdGd-w_g</uri>
+  </author>
+  <published>2012-06-05T04:07:08+00:00</published>
+  <updated>2021-04-20T05:46:17+00:00</updated>
+  <media:group>
+   <media:title>Ethics: What is good and evil?  (Earthlings 101, Episode 4)</media:title>
+   <media:content url="https://www.youtube.com/v/zkS6WpbLUFw?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i3.ytimg.com/vi/zkS6WpbLUFw/hqdefault.jpg" width="480" height="360"/>
+   <media:description>Fourth episode of Earthlings 101, the crash course for alien visitors.
+
+Where does the concept of good and evil come from? 
+What does it mean?
+Why can't humans just agree to cooperate?
+Why is a human a murderer when he kills his neighbour, but a hero if he kills a thousand foreigners?
+Why do earthlings think that people in enemy countries are evil?
+And what has it all to do with Cthulhu and Xenu being thrown into prison? 
+
+Aliens, when you see this video, your eyes shall be opened, and you shall be as humans, knowing good and evil!
+
+Links
+- Concept, artwork and text by Martin Kuppe
+- Music by OcularNebula (http://www.newgrounds.com/audio/listen/407324)
+- Speech synthesis by Ivona (http://www.ivona.com/en/)
+
+Disclaimer
+Please note that most things in these videos are either conclusions based on personal observation of earthlings, or ideas found in earthling literature. Although they seem pretty obvious to me, most of them are still to be scientifically proven. In terms of earthling science, those are hypotheses, not theories or facts.
+
+Full episode text:
+ http://tinyurl.com/E101-EP04</media:description>
+   <media:community>
+    <media:starRating count="1960" average="4.89" min="1" max="5"/>
+    <media:statistics views="74925"/>
+   </media:community>
+  </media:group>
+ </entry>
+</feed>
