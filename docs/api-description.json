@@ -1096,7 +1096,7 @@
             "type": "string"
           },
           "channel": {
-            "description": "Channel in YouTube spout",
+            "description": "YouTube URL or user name for YouTube spout",
             "type": "string"
           }
         }

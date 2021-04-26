@@ -12,15 +12,15 @@ namespace spouts\youtube;
  */
 class youtube extends \spouts\rss\feed {
     /** @var string name of source */
-    public $name = 'YouTube: channel';
+    public $name = 'YouTube';
 
     /** @var string description of this source type */
-    public $description = 'Fetch posts from a YouTube channel.';
+    public $description = 'Follow videos from a YouTube channel or a playlist.';
 
     /** @var array configurable parameters */
     public $params = [
         'channel' => [
-            'title' => 'Channel',
+            'title' => 'URL or username',
             'type' => 'text',
             'default' => '',
             'required' => true,
@@ -34,25 +34,25 @@ class youtube extends \spouts\rss\feed {
     }
 
     public function getXmlUrl(array $params) {
-        $channel = $params['channel'];
-        if (preg_match('(^https?://www.youtube.com/channel/([a-zA-Z0-9_-]+)$)', $params['channel'], $matched)) {
-            $channel = $matched[1];
-            $channel_type = 'channel_id';
-        } elseif (preg_match('(^https?://www.youtube.com/user/([a-zA-Z0-9_]+)$)', $params['channel'], $matched)) {
-            $channel = $matched[1];
-            $channel_type = 'username';
-        } elseif (preg_match('(^https?://www.youtube.com/([a-zA-Z0-9_]+)$)', $params['channel'], $matched)) {
-            $channel = $matched[1];
-            $channel_type = 'username';
+        $urlOrUsername = $params['channel'];
+        if (preg_match('(^https?://www.youtube.com/channel/([a-zA-Z0-9_-]+)$)', $urlOrUsername, $matched)) {
+            $id = $matched[1];
+            $feed_type = 'channel_id';
+        } elseif (preg_match('(^https?://www.youtube.com/user/([a-zA-Z0-9_]+)$)', $urlOrUsername, $matched)) {
+            $id = $matched[1];
+            $feed_type = 'user';
+        } elseif (preg_match('(^https?://www.youtube.com/([a-zA-Z0-9_]+)$)', $urlOrUsername, $matched)) {
+            $id = $matched[1];
+            $feed_type = 'user';
+        } elseif (preg_match('(^https?://www.youtube.com/playlist\?list=([a-zA-Z0-9_]+)$)', $urlOrUsername, $matched)) {
+            $id = $matched[1];
+            $feed_type = 'playlist_id';
         } else {
-            $channel_type = 'username';
+            $id = $urlOrUsername;
+            $feed_type = 'user';
         }
 
-        if ($channel_type === 'username') {
-            return 'https://www.youtube.com/feeds/videos.xml?user=' . $channel;
-        } else {
-            return 'https://www.youtube.com/feeds/videos.xml?channel_id=' . $channel;
-        }
+        return 'https://www.youtube.com/feeds/videos.xml?' . $feed_type . '=' . $id;
     }
 
     public function getThumbnail() {

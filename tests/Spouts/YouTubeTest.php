@@ -97,6 +97,11 @@ final class YouTubeTest extends TestCase {
                 'feedTitle' => 'Zogg from Betelgeuse',
                 'firstItemTitle' => 'Earthlings 101 - Channel Ad',
             ],
+            [
+                'url' => 'https://www.youtube.com/playlist?list=PLKhDkilF5o6_pFucn5JHd6xy7muHLK6pS',
+                'feedTitle' => 'BeeKeeping',
+                'firstItemTitle' => 'Year of BeeKeeping Episode 15, Finding Queen',
+            ],
         ];
     }
 }
