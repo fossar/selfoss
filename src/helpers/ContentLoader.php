@@ -12,6 +12,9 @@ use Monolog\Logger;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class ContentLoader {
+    /** @var Configuration configuration */
+    private $configuration;
+
     /** @var \daos\Database database for optimization */
     private $database;
 
@@ -45,7 +48,8 @@ class ContentLoader {
     /**
      * ctor
      */
-    public function __construct(\daos\Database $database, IconStore $iconStore, Image $imageHelper, \daos\Items $itemsDao, Logger $logger, \daos\Sources $sourcesDao, SpoutLoader $spoutLoader, ThumbnailStore $thumbnailStore, WebClient $webClient) {
+    public function __construct(Configuration $configuration, \daos\Database $database, IconStore $iconStore, Image $imageHelper, \daos\Items $itemsDao, Logger $logger, \daos\Sources $sourcesDao, SpoutLoader $spoutLoader, ThumbnailStore $thumbnailStore, WebClient $webClient) {
+        $this->configuration = $configuration;
         $this->database = $database;
         $this->iconStore = $iconStore;
         $this->imageHelper = $imageHelper;
@@ -143,7 +147,7 @@ class ContentLoader {
 
         // current date
         $minDate = new \DateTime();
-        $minDate->sub(new \DateInterval('P' . \F3::get('items_lifetime') . 'D'));
+        $minDate->sub(new \DateInterval('P' . $this->configuration->itemsLifetime . 'D'));
         $this->logger->debug('minimum date: ' . $minDate->format('Y-m-d H:i:s'));
 
         // insert new items in database
@@ -173,7 +177,7 @@ class ContentLoader {
                 $itemDate = new \DateTime();
             }
             if ($itemDate < $minDate) {
-                $this->logger->debug('item "' . $item->getTitle() . '" (' . $item->getDate() . ') older than ' . \F3::get('items_lifetime') . ' days');
+                $this->logger->debug('item "' . $item->getTitle() . '" (' . $item->getDate() . ') older than ' . $this->configuration->itemsLifetime . ' days');
                 continue;
             }
 
@@ -484,7 +488,7 @@ class ContentLoader {
     public function cleanup() {
         // cleanup orphaned and old items
         $this->logger->debug('cleanup orphaned and old items');
-        $this->itemsDao->cleanup((int) \F3::get('items_lifetime'));
+        $this->itemsDao->cleanup($this->configuration->itemsLifetime);
         $this->logger->debug('cleanup orphaned and old items finished');
 
         // delete orphaned thumbnails

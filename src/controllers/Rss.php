@@ -5,6 +5,7 @@ namespace controllers;
 use Base;
 use FeedWriter\RSS2;
 use helpers\Authentication;
+use helpers\Configuration;
 use helpers\View;
 
 /**
@@ -18,6 +19,9 @@ class Rss {
     /** @var Authentication authentication helper */
     private $authentication;
 
+    /** @var Configuration configuration */
+    private $configuration;
+
     /** @var RSS2 feed writer */
     private $feedWriter;
 
@@ -30,8 +34,9 @@ class Rss {
     /** @var View view helper */
     private $view;
 
-    public function __construct(Authentication $authentication, RSS2 $feedWriter, \daos\Items $itemsDao, \daos\Sources $sourcesDao, View $view) {
+    public function __construct(Authentication $authentication, Configuration $configuration, RSS2 $feedWriter, \daos\Items $itemsDao, \daos\Sources $sourcesDao, View $view) {
         $this->authentication = $authentication;
+        $this->configuration = $configuration;
         $this->feedWriter = $feedWriter;
         $this->itemsDao = $itemsDao;
         $this->sourcesDao = $sourcesDao;
@@ -49,7 +54,7 @@ class Rss {
     public function rss(Base $f3, array $params) {
         $this->authentication->needsLoggedInOrPublicMode();
 
-        $this->feedWriter->setTitle($f3->get('rss_title'));
+        $this->feedWriter->setTitle($this->configuration->rssTitle);
         $this->feedWriter->setChannelElement('description', '');
         $this->feedWriter->setSelfLink($this->view->base . 'feed');
 
@@ -64,7 +69,7 @@ class Rss {
         if (count($_GET) > 0) {
             $options = $_GET;
         }
-        $options['items'] = $f3->get('rss_max_items');
+        $options['items'] = $this->configuration->rssMaxItems;
         if (isset($params['tag'])) {
             $options['tag'] = $params['tag'];
         }
@@ -110,7 +115,7 @@ class Rss {
             $lastid = $item['id'];
 
             // mark as read
-            if ($f3->get('rss_mark_as_read') == 1 && $lastid !== null) {
+            if ($this->configuration->rssMarkAsRead && $lastid !== null) {
                 $this->itemsDao->mark($lastid);
             }
         }

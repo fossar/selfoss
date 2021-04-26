@@ -1,6 +1,7 @@
 <?php
 
 use Dice\Dice;
+use helpers\Configuration;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\ErrorLogHandler;
 use Monolog\Handler\NullHandler;
@@ -30,62 +31,42 @@ $f3 = Base::instance();
 // but we have not set an error handler yet because it needs a Logger instantiated by Dice.
 error_reporting(E_ALL & ~E_DEPRECATED);
 
-$f3->set('DEBUG', 0);
-$f3->set('version', '2.19-SNAPSHOT');
+const SELFOSS_VERSION = '2.19-SNAPSHOT';
 
 // independent of selfoss version
 // needs to be bumped each time public API is changed (follows semver)
 // keep in sync with docs/api-description.json
-$f3->set('apiversion', '4.0.0');
+const SELFOSS_API_VERSION = '4.0.0';
 
 $f3->set('AUTOLOAD', false);
 $f3->set('BASEDIR', BASEDIR);
 $f3->set('LOCALES', BASEDIR . '/assets/locale/');
 
-// internal but overridable values
-$f3->set('datadir', BASEDIR . '/data');
-$f3->set('cache', '%datadir%/cache');
-$f3->set('ftrss_custom_data_dir', '%datadir%/fulltextrss');
+$configuration = new Configuration(__DIR__ . '/../config.ini', $_ENV);
 
-// read defaults
-$f3->config('defaults.ini');
-
-// read config, if it exists
-if (file_exists('config.ini')) {
-    $f3->config('config.ini');
-}
-
-// overwrite config with ENV variables
-$env_prefix = $f3->get('env_prefix');
-foreach ($f3->get('ENV') as $key => $value) {
-    if (strncasecmp($key, $env_prefix, strlen($env_prefix)) === 0) {
-        $f3->set(strtolower(substr($key, strlen($env_prefix))), $value);
-    }
-}
-
-// interpolate variables in the config values
-$interpolatedKeys = [
-    'db_file',
-    'logger_destination',
-    'cache',
-    'ftrss_custom_data_dir',
-];
-$datadir = $f3->get('datadir');
-foreach ($interpolatedKeys as $key) {
-    $value = $f3->get($key);
-    $f3->set($key, str_replace('%datadir%', $datadir, $value));
-}
+$f3->set('DEBUG', $configuration->debug);
+$f3->set('cache', $configuration->cache);
+$f3->set('language', $configuration->language);
 
 $dice = new Dice();
 
 // DI rules
-// Choose database implementation based on config
 $substitutions = [
     'substitutions' => [
-        daos\DatabaseInterface::class => ['instance' => 'daos\\' . $f3->get('db_type') . '\\Database'],
-        daos\ItemsInterface::class => ['instance' => 'daos\\' . $f3->get('db_type') . '\\Items'],
-        daos\SourcesInterface::class => ['instance' => 'daos\\' . $f3->get('db_type') . '\\Sources'],
-        daos\TagsInterface::class => ['instance' => 'daos\\' . $f3->get('db_type') . '\\Tags'],
+        // Instantiate configuration container.
+        Configuration::class => [
+            'instance' => function() use ($configuration) {
+                return $configuration;
+            },
+            'shared' => true,
+        ],
+
+        // Choose database implementation based on config
+        daos\DatabaseInterface::class => ['instance' => 'daos\\' . $configuration->dbType . '\\Database'],
+        daos\ItemsInterface::class => ['instance' => 'daos\\' . $configuration->dbType . '\\Items'],
+        daos\SourcesInterface::class => ['instance' => 'daos\\' . $configuration->dbType . '\\Sources'],
+        daos\TagsInterface::class => ['instance' => 'daos\\' . $configuration->dbType . '\\Tags'],
+
         Dice::class => ['instance' => function() use ($dice) {
             return $dice;
         }],
@@ -111,8 +92,8 @@ $dice->addRule(daos\SourcesInterface::class, $shared);
 $dice->addRule(daos\TagsInterface::class, $shared);
 
 // Database connection
-if ($f3->get('db_type') === 'sqlite') {
-    $db_file = $f3->get('db_file');
+if ($configuration->dbType === 'sqlite') {
+    $db_file = $configuration->dbFile;
 
     // create empty database file if it does not exist
     if (!is_file($db_file)) {
@@ -123,12 +104,12 @@ if ($f3->get('db_type') === 'sqlite') {
     $dbParams = [
         $dsn
     ];
-} elseif ($f3->get('db_type') === 'mysql') {
-    $host = $f3->get('db_host');
-    $port = $f3->get('db_port');
-    $database = $f3->get('db_database');
+} elseif ($configuration->dbType === 'mysql') {
+    $host = $configuration->dbHost;
+    $port = $configuration->dbPort;
+    $database = $configuration->dbDatabase;
 
-    if ($port) {
+    if ($port !== null) {
         $dsn = "mysql:host=$host; port=$port; dbname=$database";
     } else {
         $dsn = "mysql:host=$host; dbname=$database";
@@ -136,16 +117,16 @@ if ($f3->get('db_type') === 'sqlite') {
 
     $dbParams = [
         $dsn,
-        $f3->get('db_username'),
-        $f3->get('db_password'),
+        $configuration->dbUsername,
+        $configuration->dbPassword,
         [PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8mb4;']
     ];
-} elseif ($f3->get('db_type') === 'pgsql') {
-    $host = $f3->get('db_host');
-    $port = $f3->get('db_port');
-    $database = $f3->get('db_database');
+} elseif ($configuration->dbType === 'pgsql') {
+    $host = $configuration->dbHost;
+    $port = $configuration->dbPort;
+    $database = $configuration->dbDatabase;
 
-    if ($port) {
+    if ($port !== null) {
         $dsn = "pgsql:host=$host; port=$port; dbname=$database";
     } else {
         $dsn = "pgsql:host=$host; dbname=$database";
@@ -153,8 +134,8 @@ if ($f3->get('db_type') === 'sqlite') {
 
     $dbParams = [
         $dsn,
-        $f3->get('db_username'),
-        $f3->get('db_password')
+        $configuration->dbUsername,
+        $configuration->dbPassword
     ];
 }
 
@@ -163,7 +144,7 @@ $sqlParams = array_merge($shared, [
 ]);
 
 // Define regexp function for SQLite
-if ($f3->get('db_type') === 'sqlite') {
+if ($configuration->dbType === 'sqlite') {
     $sqlParams = array_merge($sqlParams, [
         'call' => [
             [
@@ -194,7 +175,7 @@ $dice->addRule(DB\SQL::class, $sqlParams);
 $dice->addRule('$iconStorageBackend', [
     'instanceOf' => helpers\Storage\FileStorage::class,
     'constructParams' => [
-        \F3::get('datadir') . '/favicons'
+        $configuration->datadir . '/favicons'
     ],
 ]);
 
@@ -207,7 +188,7 @@ $dice->addRule(helpers\IconStore::class, array_merge($shared, [
 $dice->addRule('$thumbnailStorageBackend', [
     'instanceOf' => helpers\Storage\FileStorage::class,
     'constructParams' => [
-        \F3::get('datadir') . '/thumbnails'
+        $configuration->datadir . '/thumbnails'
     ],
 ]);
 
@@ -231,22 +212,22 @@ $dice->addRule(Logger::class, [
 
 $dice->addRule(helpers\FeedReader::class, [
     'constructParams' => [
-        \F3::get('cache'),
+        $configuration->cache,
     ],
 ]);
 
 // init logger
 $log = $dice->create(Logger::class);
 
-if ($f3->get('logger_level') === 'NONE') {
+if ($configuration->loggerLevel === 'NONE') {
     $handler = new NullHandler();
 } else {
-    $logger_destination = $f3->get('logger_destination');
+    $logger_destination = $configuration->loggerDestination;
 
     if (strpos($logger_destination, 'file:') === 0) {
-        $handler = new StreamHandler(substr($logger_destination, 5), $f3->get('logger_level'));
+        $handler = new StreamHandler(substr($logger_destination, 5), $configuration->loggerLevel);
     } elseif ($logger_destination === 'error_log') {
-        $handler = new ErrorLogHandler(ErrorLogHandler::OPERATING_SYSTEM, $f3->get('logger_level'));
+        $handler = new ErrorLogHandler(ErrorLogHandler::OPERATING_SYSTEM, $configuration->loggerLevel);
     } else {
         echo 'The `logger_destination` option needs to be either `error_log` or a file path prefixed by `file:`.';
         exit;
@@ -264,7 +245,7 @@ if (isset($startup_error)) {
 
 // init error handling
 $f3->set('ONERROR',
-    function(Base $f3) use ($log, $handler) {
+    function(Base $f3) use ($configuration, $log, $handler) {
         $exception = $f3->get('EXCEPTION');
 
         try {
@@ -274,7 +255,7 @@ $f3->set('ONERROR',
                 $log->error($f3->get('ERROR.text'));
             }
 
-            if ($f3->get('DEBUG') != 0) {
+            if ($configuration->debug !== 0) {
                 echo $f3->get('lang_error') . ': ';
                 echo $f3->get('ERROR.text') . "\n";
                 echo $f3->get('ERROR.trace');
@@ -294,6 +275,6 @@ $f3->set('ONERROR',
     }
 );
 
-if ($f3->get('DEBUG') != 0) {
+if ($configuration->debug !== 0) {
     ini_set('display_errors', '0');
 }

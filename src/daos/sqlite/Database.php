@@ -185,7 +185,7 @@ class Database implements \daos\DatabaseInterface {
             }
             if (strnatcmp($version, '9') < 0) {
                 $this->exec('
-                    ALTER TABLE ' . \F3::get('db_prefix') . 'items ADD shared BOOL;
+                    ALTER TABLE items ADD shared BOOL;
                 ');
                 $this->exec('
                     INSERT INTO version (version) VALUES (9);

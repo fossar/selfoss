@@ -3,6 +3,7 @@
 namespace daos;
 
 use helpers\Authentication;
+use helpers\Configuration;
 use helpers\SpoutLoader;
 use Monolog\Logger;
 
@@ -22,6 +23,9 @@ class Sources {
     /** @var Authentication authentication helper */
     private $authentication;
 
+    /** @var Configuration configuration */
+    private $configuration;
+
     /** @var Logger */
     private $logger;
 
@@ -33,8 +37,9 @@ class Sources {
      *
      * @return void
      */
-    public function __construct(Authentication $authentication, Logger $logger, SourcesInterface $backend, SpoutLoader $spoutLoader) {
+    public function __construct(Authentication $authentication, Configuration $configuration, Logger $logger, SourcesInterface $backend, SpoutLoader $spoutLoader) {
         $this->authentication = $authentication;
+        $this->configuration = $configuration;
         $this->backend = $backend;
         $this->logger = $logger;
         $this->spoutLoader = $spoutLoader;
@@ -52,7 +57,7 @@ class Sources {
         if (method_exists($this->backend, $name)) {
             return call_user_func_array([$this->backend, $name], $args);
         } else {
-            $this->logger->error('Unimplemented method for ' . \F3::get('db_type') . ': ' . $name);
+            $this->logger->error('Unimplemented method for ' . $this->configuration->dbType . ': ' . $name);
         }
     }
 

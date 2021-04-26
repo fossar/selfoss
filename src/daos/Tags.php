@@ -3,6 +3,7 @@
 namespace daos;
 
 use helpers\Authentication;
+use helpers\Configuration;
 use Monolog\Logger;
 
 /**
@@ -19,6 +20,9 @@ class Tags {
     /** @var Authentication authentication helper */
     private $authentication;
 
+    /** @var Configuration configuration */
+    private $configuration;
+
     /** @var Logger */
     private $logger;
 
@@ -27,9 +31,10 @@ class Tags {
      *
      * @return void
      */
-    public function __construct(Authentication $authentication, Logger $logger, TagsInterface $backend) {
+    public function __construct(Authentication $authentication, Configuration $configuration, Logger $logger, TagsInterface $backend) {
         $this->authentication = $authentication;
         $this->backend = $backend;
+        $this->configuration = $configuration;
         $this->logger = $logger;
     }
 
@@ -60,7 +65,7 @@ class Tags {
         if (method_exists($this->backend, $name)) {
             return call_user_func_array([$this->backend, $name], $args);
         } else {
-            $this->logger->error('Unimplemented method for ' . \F3::get('db_type') . ': ' . $name);
+            $this->logger->error('Unimplemented method for ' . $this->configuration->dbType . ': ' . $name);
         }
     }
 }

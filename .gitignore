@@ -10,7 +10,7 @@
 docs/public
 user.css
 user.js
-config.ini
+*.ini
 node_modules
 .env
 vendor/

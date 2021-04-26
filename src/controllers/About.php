@@ -2,8 +2,8 @@
 
 namespace controllers;
 
-use Base;
 use helpers\Authentication;
+use helpers\Configuration;
 use helpers\View;
 
 /**
@@ -13,11 +13,15 @@ class About {
     /** @var Authentication authentication helper */
     private $authentication;
 
+    /** @var Configuration configuration */
+    private $configuration;
+
     /** @var View view helper */
     private $view;
 
-    public function __construct(Authentication $authentication, View $view) {
+    public function __construct(Authentication $authentication, Configuration $configuration, View $view) {
         $this->authentication = $authentication;
+        $this->configuration = $configuration;
         $this->view = $view;
     }
 
@@ -27,37 +31,36 @@ class About {
      *
      * @return void
      */
-    public function about(Base $f3) {
-        $anonymizer = \helpers\Anonymizer::getAnonymizer();
-        $wallabag = !empty($f3->get('wallabag')) ? [
-            'url' => $f3->get('wallabag'), // string
-            'version' => $f3->get('wallabag_version'), // int
+    public function about() {
+        $wallabag = !empty($this->configuration->wallabag) ? [
+            'url' => $this->configuration->wallabag, // string
+            'version' => $this->configuration->wallabagVersion, // int
         ] : null;
 
         $configuration = [
-            'version' => $f3->get('version'),
-            'apiversion' => $f3->get('apiversion'),
+            'version' => SELFOSS_VERSION,
+            'apiversion' => SELFOSS_API_VERSION,
             'configuration' => [
-                'homepage' => $f3->get('homepage') ? $f3->get('homepage') : 'newest', // string
-                'anonymizer' => $anonymizer === '' ? null : $anonymizer, // ?string
-                'share' => (string) $f3->get('share'), // string
+                'homepage' => $this->configuration->homepage ? $this->configuration->homepage : 'newest', // string
+                'anonymizer' => $this->configuration->anonymizer, // ?string
+                'share' => $this->configuration->share, // string
                 'wallabag' => $wallabag, // ?array
-                'wordpress' => $f3->get('wordpress'), // ?string
-                'autoMarkAsRead' => $f3->get('auto_mark_as_read') == 1, // bool
-                'autoCollapse' => $f3->get('auto_collapse') == 1, // bool
-                'autoStreamMore' => $f3->get('auto_stream_more') == 1, // bool
-                'loadImagesOnMobile' => $f3->get('load_images_on_mobile') == 1, // bool
-                'itemsPerPage' => $f3->get('items_perpage'), // int
-                'unreadOrder' => $f3->get('unread_order'), // string
-                'autoHideReadOnMobile' => $f3->get('auto_hide_read_on_mobile') == 1, // bool
-                'scrollToArticleHeader' => $f3->get('scroll_to_article_header') == 1, // bool
-                'showThumbnails' => $f3->get('show_thumbnails') == 1, // bool
-                'htmlTitle' => trim($f3->get('html_title')), // string
-                'allowPublicUpdate' => $f3->get('allow_public_update_access') == 1, // bool
-                'publicMode' => $f3->get('public') == 1, // bool
+                'wordpress' => $this->configuration->wordpress, // ?string
+                'autoMarkAsRead' => $this->configuration->autoMarkAsRead, // bool
+                'autoCollapse' => $this->configuration->autoCollapse, // bool
+                'autoStreamMore' => $this->configuration->autoStreamMore, // bool
+                'loadImagesOnMobile' => $this->configuration->loadImagesOnMobile, // bool
+                'itemsPerPage' => $this->configuration->itemsPerpage, // int
+                'unreadOrder' => $this->configuration->unreadOrder, // string
+                'autoHideReadOnMobile' => $this->configuration->autoHideReadOnMobile, // bool
+                'scrollToArticleHeader' => $this->configuration->scrollToArticleHeader, // bool
+                'showThumbnails' => $this->configuration->showThumbnails, // bool
+                'htmlTitle' => trim($this->configuration->htmlTitle), // string
+                'allowPublicUpdate' => $this->configuration->allowPublicUpdateAccess, // bool
+                'publicMode' => $this->configuration->public, // bool
                 'authEnabled' => $this->authentication->enabled() === true, // bool
-                'readingSpeed' => $f3->get('reading_speed_wpm') > 0 ? (int) $f3->get('reading_speed_wpm') : null, // ?int
-                'language' => $f3->get('language') === 0 ? null : $f3->get('language'), // ?string
+                'readingSpeed' => $this->configuration->readingSpeedWpm > 0 ? $this->configuration->readingSpeedWpm : null, // ?int
+                'language' => $this->configuration->language === '0' ? null : $this->configuration->language, // ?string
                 'userCss' => file_exists(BASEDIR . '/user.css') ? filemtime(BASEDIR . '/user.css') : null, // ?int
                 'userJs' => file_exists(BASEDIR . '/user.js') ? filemtime(BASEDIR . '/user.js') : null, // ?int
             ],

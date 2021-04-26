@@ -3,6 +3,7 @@
 namespace daos;
 
 use helpers\Authentication;
+use helpers\Configuration;
 use Monolog\Logger;
 
 /**
@@ -20,6 +21,9 @@ class Items {
     /** @var Authentication authentication helper */
     private $authentication;
 
+    /** @var Configuration configuration */
+    private $configuration;
+
     /** @var Logger */
     private $logger;
 
@@ -28,9 +32,10 @@ class Items {
      *
      * @return void
      */
-    public function __construct(Authentication $authentication, Logger $logger, ItemsInterface $backend) {
+    public function __construct(Authentication $authentication, Configuration $configuration, Logger $logger, ItemsInterface $backend) {
         $this->authentication = $authentication;
         $this->backend = $backend;
+        $this->configuration = $configuration;
         $this->logger = $logger;
     }
 
@@ -46,7 +51,7 @@ class Items {
         if (method_exists($this->backend, $name)) {
             return call_user_func_array([$this->backend, $name], $args);
         } else {
-            $this->logger->error('Unimplemented method for ' . \F3::get('db_type') . ': ' . $name);
+            $this->logger->error('Unimplemented method for ' . $this->configuration->dbType . ': ' . $name);
         }
     }
 
@@ -79,7 +84,7 @@ class Items {
                 'starred' => false,
                 'offset' => 0,
                 'search' => false,
-                'items' => \F3::get('items_perpage')
+                'items' => $this->configuration->itemsPerpage
             ],
             $options
         );

@@ -35,8 +35,8 @@ const replacements = [
 
     // rule for src/common.php
     {
-        from: /'version', '\d+\.\d+(\-SNAPSHOT|\-[0-9a-f]+)?'/,
-        to: "'version', '" + newVersion + "'"
+        from: /SELFOSS_VERSION = '\d+\.\d+(\-SNAPSHOT|\-[0-9a-f]+)?'/,
+        to: "SELFOSS_VERSION = '" + newVersion + "'"
     },
 
     // rule for docs/config.toml

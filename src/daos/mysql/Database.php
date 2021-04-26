@@ -2,6 +2,7 @@
 
 namespace daos\mysql;
 
+use helpers\Configuration;
 use Monolog\Logger;
 
 /**
@@ -12,6 +13,9 @@ use Monolog\Logger;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class Database implements \daos\DatabaseInterface {
+    /** @var Configuration configuration */
+    private $configuration;
+
     /** @var \DB\SQL database connection */
     private $connection;
 
@@ -24,7 +28,8 @@ class Database implements \daos\DatabaseInterface {
      *
      * @return void
      */
-    public function __construct(\DB\SQL $connection, Logger $logger) {
+    public function __construct(Configuration $configuration, \DB\SQL $connection, Logger $logger) {
+        $this->configuration = $configuration;
         $this->connection = $connection;
         $this->logger = $logger;
 
@@ -39,9 +44,9 @@ class Database implements \daos\DatabaseInterface {
             }
         }
 
-        if (!in_array(\F3::get('db_prefix') . 'items', $tables, true)) {
+        if (!in_array($this->configuration->dbPrefix . 'items', $tables, true)) {
             $this->exec('
-                CREATE TABLE ' . \F3::get('db_prefix') . 'items (
+                CREATE TABLE ' . $this->configuration->dbPrefix . 'items (
                     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
                     datetime DATETIME NOT NULL ,
                     title TEXT NOT NULL ,
@@ -60,14 +65,14 @@ class Database implements \daos\DatabaseInterface {
             ');
             $this->exec('
                 CREATE TRIGGER insert_updatetime_trigger
-                BEFORE INSERT ON ' . \F3::get('db_prefix') . 'items FOR EACH ROW
+                BEFORE INSERT ON ' . $this->configuration->dbPrefix . 'items FOR EACH ROW
                     BEGIN
                         SET NEW.updatetime = NOW();
                     END;
             ');
             $this->exec('
                 CREATE TRIGGER update_updatetime_trigger
-                BEFORE UPDATE ON ' . \F3::get('db_prefix') . 'items FOR EACH ROW
+                BEFORE UPDATE ON ' . $this->configuration->dbPrefix . 'items FOR EACH ROW
                     BEGIN
                         SET NEW.updatetime = NOW();
                     END;
@@ -75,9 +80,9 @@ class Database implements \daos\DatabaseInterface {
         }
 
         $isNewestSourcesTable = false;
-        if (!in_array(\F3::get('db_prefix') . 'sources', $tables, true)) {
+        if (!in_array($this->configuration->dbPrefix . 'sources', $tables, true)) {
             $this->exec('
-                CREATE TABLE ' . \F3::get('db_prefix') . 'sources (
+                CREATE TABLE ' . $this->configuration->dbPrefix . 'sources (
                     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
                     title TEXT NOT NULL ,
                     tags TEXT,
@@ -93,19 +98,19 @@ class Database implements \daos\DatabaseInterface {
         }
 
         // version 1 or new
-        if (!in_array(\F3::get('db_prefix') . 'version', $tables, true)) {
+        if (!in_array($this->configuration->dbPrefix . 'version', $tables, true)) {
             $this->exec('
-                CREATE TABLE ' . \F3::get('db_prefix') . 'version (
+                CREATE TABLE ' . $this->configuration->dbPrefix . 'version (
                     version INT
                 ) ENGINE = InnoDB DEFAULT CHARSET=utf8mb4;
             ');
 
             $this->exec('
-                INSERT INTO ' . \F3::get('db_prefix') . 'version (version) VALUES (8);
+                INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (8);
             ');
 
             $this->exec('
-                CREATE TABLE ' . \F3::get('db_prefix') . 'tags (
+                CREATE TABLE ' . $this->configuration->dbPrefix . 'tags (
                     tag         TEXT NOT NULL,
                     color       VARCHAR(7) NOT NULL
                 ) ENGINE = InnoDB DEFAULT CHARSET=utf8mb4;
@@ -113,57 +118,57 @@ class Database implements \daos\DatabaseInterface {
 
             if ($isNewestSourcesTable === false) {
                 $this->exec('
-                    ALTER TABLE ' . \F3::get('db_prefix') . 'sources ADD tags TEXT;
+                    ALTER TABLE ' . $this->configuration->dbPrefix . 'sources ADD tags TEXT;
                 ');
             }
         } else {
-            $version = @$this->exec('SELECT version FROM ' . \F3::get('db_prefix') . 'version ORDER BY version DESC LIMIT 0, 1');
+            $version = @$this->exec('SELECT version FROM ' . $this->configuration->dbPrefix . 'version ORDER BY version DESC LIMIT 0, 1');
             $version = $version[0]['version'];
 
             if (strnatcmp($version, '3') < 0) {
                 $this->exec('
-                    ALTER TABLE ' . \F3::get('db_prefix') . 'sources ADD lastupdate INT;
+                    ALTER TABLE ' . $this->configuration->dbPrefix . 'sources ADD lastupdate INT;
                 ');
                 $this->exec('
-                    INSERT INTO ' . \F3::get('db_prefix') . 'version (version) VALUES (3);
+                    INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (3);
                 ');
             }
             if (strnatcmp($version, '4') < 0) {
                 $this->exec('
-                    ALTER TABLE ' . \F3::get('db_prefix') . 'items ADD updatetime DATETIME;
+                    ALTER TABLE ' . $this->configuration->dbPrefix . 'items ADD updatetime DATETIME;
                 ');
                 $this->exec('
                     CREATE TRIGGER insert_updatetime_trigger
-                    BEFORE INSERT ON ' . \F3::get('db_prefix') . 'items FOR EACH ROW
+                    BEFORE INSERT ON ' . $this->configuration->dbPrefix . 'items FOR EACH ROW
                         BEGIN
                             SET NEW.updatetime = NOW();
                         END;
                 ');
                 $this->exec('
                     CREATE TRIGGER update_updatetime_trigger
-                    BEFORE UPDATE ON ' . \F3::get('db_prefix') . 'items FOR EACH ROW
+                    BEFORE UPDATE ON ' . $this->configuration->dbPrefix . 'items FOR EACH ROW
                         BEGIN
                             SET NEW.updatetime = NOW();
                         END;
                 ');
                 $this->exec('
-                    INSERT INTO ' . \F3::get('db_prefix') . 'version (version) VALUES (4);
+                    INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (4);
                 ');
             }
             if (strnatcmp($version, '5') < 0) {
                 $this->exec('
-                    ALTER TABLE ' . \F3::get('db_prefix') . 'items ADD author VARCHAR(255);
+                    ALTER TABLE ' . $this->configuration->dbPrefix . 'items ADD author VARCHAR(255);
                 ');
                 $this->exec('
-                    INSERT INTO ' . \F3::get('db_prefix') . 'version (version) VALUES (5);
+                    INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (5);
                 ');
             }
             if (strnatcmp($version, '6') < 0) {
                 $this->exec('
-                    ALTER TABLE ' . \F3::get('db_prefix') . 'sources ADD filter TEXT;
+                    ALTER TABLE ' . $this->configuration->dbPrefix . 'sources ADD filter TEXT;
                 ');
                 $this->exec('
-                    INSERT INTO ' . \F3::get('db_prefix') . 'version (version) VALUES (6);
+                    INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (6);
                 ');
             }
             // Jump straight from v6 to v8 due to bug in previous version of the code
@@ -171,47 +176,47 @@ class Database implements \daos\DatabaseInterface {
             // set the database version to "7" for initial installs.
             if (strnatcmp($version, '8') < 0) {
                 $this->exec('
-                    ALTER TABLE ' . \F3::get('db_prefix') . 'sources ADD lastentry INT;
+                    ALTER TABLE ' . $this->configuration->dbPrefix . 'sources ADD lastentry INT;
                 ');
                 $this->exec('
-                    INSERT INTO ' . \F3::get('db_prefix') . 'version (version) VALUES (8);
+                    INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (8);
                 ');
             }
             if (strnatcmp($version, '9') < 0) {
                 $this->exec('
-                    ALTER TABLE ' . \F3::get('db_prefix') . 'items ADD shared BOOL;
+                    ALTER TABLE ' . $this->configuration->dbPrefix . 'items ADD shared BOOL;
                 ');
                 $this->exec('
-                    INSERT INTO ' . \F3::get('db_prefix') . 'version (version) VALUES (9);
+                    INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (9);
                 ');
             }
             if (strnatcmp($version, '10') < 0) {
                 $this->exec([
-                    'ALTER TABLE `' . \F3::get('db_prefix') . 'items` CONVERT TO CHARACTER SET utf8mb4;',
-                    'ALTER TABLE `' . \F3::get('db_prefix') . 'sources` CONVERT TO CHARACTER SET utf8mb4;',
-                    'ALTER TABLE `' . \F3::get('db_prefix') . 'tags` CONVERT TO CHARACTER SET utf8mb4;',
-                    'ALTER TABLE `' . \F3::get('db_prefix') . 'version` CONVERT TO CHARACTER SET utf8mb4;',
-                    'INSERT INTO `' . \F3::get('db_prefix') . 'version` (version) VALUES (10);'
+                    'ALTER TABLE `' . $this->configuration->dbPrefix . 'items` CONVERT TO CHARACTER SET utf8mb4;',
+                    'ALTER TABLE `' . $this->configuration->dbPrefix . 'sources` CONVERT TO CHARACTER SET utf8mb4;',
+                    'ALTER TABLE `' . $this->configuration->dbPrefix . 'tags` CONVERT TO CHARACTER SET utf8mb4;',
+                    'ALTER TABLE `' . $this->configuration->dbPrefix . 'version` CONVERT TO CHARACTER SET utf8mb4;',
+                    'INSERT INTO `' . $this->configuration->dbPrefix . 'version` (version) VALUES (10);'
                 ]);
             }
             if (strnatcmp($version, '11') < 0) {
                 $this->exec([
                     'DROP TRIGGER insert_updatetime_trigger',
                     'DROP TRIGGER update_updatetime_trigger',
-                    'ALTER TABLE ' . \F3::get('db_prefix') . 'items ADD lastseen DATETIME',
-                    'UPDATE ' . \F3::get('db_prefix') . 'items SET lastseen = CURRENT_TIMESTAMP',
+                    'ALTER TABLE ' . $this->configuration->dbPrefix . 'items ADD lastseen DATETIME',
+                    'UPDATE ' . $this->configuration->dbPrefix . 'items SET lastseen = CURRENT_TIMESTAMP',
                     // Needs to be a trigger since MySQL before 5.6.5 does not support default value for DATETIME.
                     // https://dev.mysql.com/doc/relnotes/mysql/5.6/en/news-5-6-5.html#mysqld-5-6-5-data-types
                     // Needs to be a single trigger due to MySQL before 5.7.2 not supporting multiple triggers for the same event on the same table.
                     // https://dev.mysql.com/doc/relnotes/mysql/5.7/en/news-5-7-2.html#mysqld-5-7-2-triggers
-                    'CREATE TRIGGER ' . \F3::get('db_prefix') . 'items_insert_trigger
-                        BEFORE INSERT ON ' . \F3::get('db_prefix') . 'items FOR EACH ROW
+                    'CREATE TRIGGER ' . $this->configuration->dbPrefix . 'items_insert_trigger
+                        BEFORE INSERT ON ' . $this->configuration->dbPrefix . 'items FOR EACH ROW
                             BEGIN
                                 SET NEW.updatetime = NOW();
                                 SET NEW.lastseen = NOW();
                             END;',
-                    'CREATE TRIGGER ' . \F3::get('db_prefix') . 'items_update_trigger
-                        BEFORE UPDATE ON ' . \F3::get('db_prefix') . 'items FOR EACH ROW
+                    'CREATE TRIGGER ' . $this->configuration->dbPrefix . 'items_update_trigger
+                        BEFORE UPDATE ON ' . $this->configuration->dbPrefix . 'items FOR EACH ROW
                         BEGIN
                             IF (
                                 OLD.unread <> NEW.unread OR
@@ -220,21 +225,21 @@ class Database implements \daos\DatabaseInterface {
                                 SET NEW.updatetime = NOW();
                             END IF;
                         END;',
-                    'INSERT INTO ' . \F3::get('db_prefix') . 'version (version) VALUES (11)'
+                    'INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (11)'
                 ]);
             }
             if (strnatcmp($version, '12') < 0) {
                 $this->exec([
-                    'UPDATE ' . \F3::get('db_prefix') . 'items SET updatetime = datetime WHERE updatetime IS NULL',
-                    'ALTER TABLE ' . \F3::get('db_prefix') . 'items MODIFY updatetime DATETIME NOT NULL',
-                    'ALTER TABLE ' . \F3::get('db_prefix') . 'items MODIFY lastseen DATETIME NOT NULL',
-                    'INSERT INTO ' . \F3::get('db_prefix') . 'version (version) VALUES (12)'
+                    'UPDATE ' . $this->configuration->dbPrefix . 'items SET updatetime = datetime WHERE updatetime IS NULL',
+                    'ALTER TABLE ' . $this->configuration->dbPrefix . 'items MODIFY updatetime DATETIME NOT NULL',
+                    'ALTER TABLE ' . $this->configuration->dbPrefix . 'items MODIFY lastseen DATETIME NOT NULL',
+                    'INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (12)'
                 ]);
             }
             if (strnatcmp($version, '13') < 0) {
                 $this->exec([
-                    'UPDATE ' . \F3::get('db_prefix') . "sources SET spout = 'spouts\\\\rss\\\\fulltextrss' WHERE spout = 'spouts\\\\rss\\\\instapaper'",
-                    'INSERT INTO ' . \F3::get('db_prefix') . 'version (version) VALUES (13)'
+                    'UPDATE ' . $this->configuration->dbPrefix . "sources SET spout = 'spouts\\\\rss\\\\fulltextrss' WHERE spout = 'spouts\\\\rss\\\\instapaper'",
+                    'INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (13)'
                 ]);
             }
         }
@@ -297,6 +302,6 @@ class Database implements \daos\DatabaseInterface {
      * @return void
      */
     public function optimize() {
-        @$this->exec('OPTIMIZE TABLE `' . \F3::get('db_prefix') . 'sources`, `' . \F3::get('db_prefix') . 'items`');
+        @$this->exec('OPTIMIZE TABLE `' . $this->configuration->dbPrefix . 'sources`, `' . $this->configuration->dbPrefix . 'items`');
     }
 }

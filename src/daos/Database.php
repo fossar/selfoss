@@ -2,6 +2,7 @@
 
 namespace daos;
 
+use helpers\Configuration;
 use Monolog\Logger;
 
 const PARAM_INT = 1;
@@ -21,6 +22,9 @@ class Database {
     /** @var DatabaseInterface Instance of backend specific database access class */
     private $backend = null;
 
+    /** @var Configuration configuration */
+    private $configuration;
+
     /** @var Logger */
     private $logger;
 
@@ -28,8 +32,9 @@ class Database {
      * establish connection and
      * create undefined tables
      */
-    public function __construct(DatabaseInterface $backend, Logger $logger) {
+    public function __construct(Configuration $configuration, DatabaseInterface $backend, Logger $logger) {
         $this->backend = $backend;
+        $this->configuration = $configuration;
         $this->logger = $logger;
     }
 
@@ -45,7 +50,7 @@ class Database {
         if (method_exists($this->backend, $name)) {
             return call_user_func_array([$this->backend, $name], $args);
         } else {
-            $this->logger->error('Unimplemented method for ' . \F3::get('db_type') . ': ' . $name);
+            $this->logger->error('Unimplemented method for ' . $this->configuration->dbType . ': ' . $name);
         }
     }
 }

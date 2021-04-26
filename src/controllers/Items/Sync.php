@@ -2,8 +2,8 @@
 
 namespace controllers\Items;
 
-use Base;
 use helpers\Authentication;
+use helpers\Configuration;
 use function helpers\json_response;
 use helpers\View;
 use helpers\ViewHelper;
@@ -14,6 +14,9 @@ use helpers\ViewHelper;
 class Sync {
     /** @var Authentication authentication helper */
     private $authentication;
+
+    /** @var Configuration configuration */
+    private $configuration;
 
     /** @var \daos\Items items */
     private $itemsDao;
@@ -30,13 +33,18 @@ class Sync {
     /** @var View view helper */
     private $view;
 
-    public function __construct(Authentication $authentication, \daos\Items $itemsDao, \daos\Sources $sourcesDao, \controllers\Tags $tagsController, \daos\Tags $tagsDao, View $view) {
+    /** @var ViewHelper */
+    private $viewHelper;
+
+    public function __construct(Authentication $authentication, Configuration $configuration, \daos\Items $itemsDao, \daos\Sources $sourcesDao, \controllers\Tags $tagsController, \daos\Tags $tagsDao, View $view, ViewHelper $viewHelper) {
         $this->authentication = $authentication;
+        $this->configuration = $configuration;
         $this->itemsDao = $itemsDao;
         $this->sourcesDao = $sourcesDao;
         $this->tagsController = $tagsController;
         $this->tagsDao = $tagsDao;
         $this->view = $view;
+        $this->viewHelper = $viewHelper;
     }
 
     /**
@@ -45,7 +53,7 @@ class Sync {
      *
      * @return void
      */
-    public function sync(Base $f3) {
+    public function sync() {
         $this->authentication->needsLoggedInOrPublicMode();
 
         $params = null;
@@ -80,7 +88,7 @@ class Sync {
                     $notBefore->setTimeZone(new \DateTimeZone(date_default_timezone_get()));
                 }
 
-                $itemsHowMany = $f3->get('items_perpage');
+                $itemsHowMany = $this->configuration->itemsPerpage;
                 if (array_key_exists('itemsHowMany', $params)
                     && is_int($params['itemsHowMany'])) {
                     $itemsHowMany = min($params['itemsHowMany'],
@@ -90,7 +98,7 @@ class Sync {
                 $sync['newItems'] = function() use ($sinceId, $notBefore, $since, $itemsHowMany) {
                     foreach ($this->itemsDao->sync($sinceId, $notBefore, $since, $itemsHowMany)
                              as $newItem) {
-                        yield ViewHelper::preprocessEntry($newItem, $this->tagsController);
+                        yield $this->viewHelper->preprocessEntry($newItem, $this->tagsController);
                     }
                 };
 
@@ -122,7 +130,7 @@ class Sync {
      *
      * @return void
      */
-    public function updateStatuses(Base $f3) {
+    public function updateStatuses() {
         $this->authentication->needsLoggedIn();
 
         if (isset($_POST['updatedStatuses'])
@@ -130,6 +138,6 @@ class Sync {
             $this->itemsDao->bulkStatusUpdate($_POST['updatedStatuses']);
         }
 
-        $this->sync($f3);
+        $this->sync();
     }
 }

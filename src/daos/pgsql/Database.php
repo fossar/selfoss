@@ -222,7 +222,7 @@ class Database implements \daos\DatabaseInterface {
             if (strnatcmp($version, '13') < 0) {
                 $this->exec([
                     "UPDATE sources SET spout = 'spouts\\rss\\fulltextrss' WHERE spout = 'spouts\\rss\\instapaper'",
-                    'INSERT INTO ' . \F3::get('db_prefix') . 'version (version) VALUES (13)'
+                    'INSERT INTO version (version) VALUES (13)'
                 ]);
             }
         }

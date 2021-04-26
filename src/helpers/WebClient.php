@@ -16,13 +16,17 @@ use Monolog\Logger;
  * @author     Alexandre Rossi <alexandre.rossi@gmail.com>
  */
 class WebClient {
+    /** @var Configuration configuration */
+    private $configuration;
+
     /** @var GuzzleHttp\Client */
     private $httpClient;
 
     /** @var Logger */
     private $logger;
 
-    public function __construct(Logger $logger) {
+    public function __construct(Configuration $configuration, Logger $logger) {
+        $this->configuration = $configuration;
         $this->logger = $logger;
     }
 
@@ -36,10 +40,10 @@ class WebClient {
             $stack = HandlerStack::create();
             $stack->push(new GuzzleTranscoder());
 
-            if (\F3::get('logger_level') === 'DEBUG') {
-                if (\F3::get('DEBUG') == 0) {
+            if ($this->configuration->loggerLevel === 'DEBUG') {
+                if ($this->configuration->debug === 0) {
                     $logFormat = GuzzleHttp\MessageFormatter::SHORT;
-                } elseif (\F3::get('DEBUG') == 1) {
+                } elseif ($this->configuration->debug === 1) {
                     $logFormat = ">>>>>>>>\n{req_headers}\n<<<<<<<<\n{res_headers}\n--------\n{error}";
                 } else {
                     $logFormat = GuzzleHttp\MessageFormatter::DEBUG;
@@ -78,7 +82,7 @@ class WebClient {
      * @return string the user agent string for this spout
      */
     public function getUserAgent($agentInfo = null) {
-        $userAgent = 'Selfoss/' . \F3::get('version');
+        $userAgent = 'Selfoss/' . SELFOSS_VERSION;
 
         if ($agentInfo === null) {
             $agentInfo = [];

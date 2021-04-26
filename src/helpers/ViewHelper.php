@@ -10,6 +10,13 @@ namespace helpers;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class ViewHelper {
+    /** @var Configuration configuration */
+    private $configuration;
+
+    public function __construct(Configuration $configuration) {
+        $this->configuration = $configuration;
+    }
+
     /**
      * Enclose all searchWords with <span class="found">$word</span>
      * for later highlighing with CSS
@@ -96,12 +103,12 @@ class ViewHelper {
      *
      * @return string          item content
      */
-    public static function camoflauge($content) {
+    public function camoflauge($content) {
         if (empty($content)) {
             return $content;
         }
 
-        $camo = new \WillWashburn\Phpamo\Phpamo(\F3::get('camo_key'), \F3::get('camo_domain'));
+        $camo = new \WillWashburn\Phpamo\Phpamo($this->configuration->camoKey, $this->configuration->camoDomain);
 
         return preg_replace_callback("/<img([^<]+)src=(['\"])([^\"']*)(['\"])([^<]*)>/i", function($matches) use ($camo) {
             return '<img' . $matches[1] . 'src=' . $matches[2] . $camo->camoHttpOnly($matches[3]) . $matches[4] . $matches[5] . '>';
@@ -118,7 +125,7 @@ class ViewHelper {
      *
      * @return array modified item
      */
-    public static function preprocessEntry(array $item, \controllers\Tags $tagsController, array $tags = null, $search = null) {
+    public function preprocessEntry(array $item, \controllers\Tags $tagsController, array $tags = null, $search = null) {
         // parse tags and assign tag colors
         $item['tags'] = $tagsController->tagsAddColors($item['tags'], $tags);
 
@@ -131,8 +138,8 @@ class ViewHelper {
             $item['content'] = ViewHelper::highlight($item['content'], $search);
         }
 
-        if (\F3::get('camo_key') != '') {
-            $item['content'] = ViewHelper::camoflauge($item['content']);
+        if ($this->configuration->camoKey != '') {
+            $item['content'] = $this->camoflauge($item['content']);
         }
 
         $item['title'] = ViewHelper::lazyimg($item['title']);

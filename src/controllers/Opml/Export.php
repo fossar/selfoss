@@ -3,6 +3,7 @@
 namespace controllers\Opml;
 
 use helpers\Authentication;
+use helpers\Configuration;
 use helpers\SpoutLoader;
 use Monolog\Logger;
 
@@ -17,6 +18,9 @@ use Monolog\Logger;
 class Export {
     /** @var Authentication authentication helper */
     private $authentication;
+
+    /** @var Configuration configuration */
+    private $configuration;
 
     /** @var Logger */
     private $logger;
@@ -33,8 +37,9 @@ class Export {
     /** @var \daos\Tags */
     private $tagsDao;
 
-    public function __construct(Authentication $authentication, Logger $logger, \daos\Sources $sourcesDao, SpoutLoader $spoutLoader, \daos\Tags $tagsDao, \XMLWriter $writer) {
+    public function __construct(Authentication $authentication, Configuration $configuration, Logger $logger, \daos\Sources $sourcesDao, SpoutLoader $spoutLoader, \daos\Tags $tagsDao, \XMLWriter $writer) {
         $this->authentication = $authentication;
+        $this->configuration = $configuration;
         $this->logger = $logger;
         $this->sourcesDao = $sourcesDao;
         $this->spoutLoader = $spoutLoader;
@@ -102,14 +107,14 @@ class Export {
 
         // selfoss version, XML format version and creation date
         $this->writer->startElementNS('selfoss', 'meta', null);
-        $this->writer->writeAttribute('generatedBy', 'selfoss-' . \F3::get('version'));
+        $this->writer->writeAttribute('generatedBy', 'selfoss-' . SELFOSS_VERSION);
         $this->writer->writeAttribute('version', '1.0');
         $this->writer->writeAttribute('createdOn', date('r'));
         $this->writer->endElement();  // meta
         $this->logger->debug('OPML export: finished writing meta');
 
         $this->writer->startElement('head');
-        $user = \F3::get('username');
+        $user = $this->configuration->username;
         $this->writer->writeElement('title', ($user ? $user . '\'s' : 'My') . ' subscriptions in selfoss');
         $this->writer->endElement();  // head
         $this->logger->debug('OPML export: finished writing head');

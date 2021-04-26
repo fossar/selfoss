@@ -3,6 +3,7 @@
 namespace spouts\rss;
 
 use Graby\Graby;
+use helpers\Configuration;
 use helpers\FeedReader;
 use helpers\Image;
 use helpers\WebClient;
@@ -37,6 +38,9 @@ class fulltextrss extends feed {
     /** @var string tag for logger */
     private static $loggerTag = 'selfoss.graby';
 
+    /** @var Configuration configuration */
+    private $configuration;
+
     /** @var Graby */
     private $graby;
 
@@ -46,9 +50,10 @@ class fulltextrss extends feed {
     /** @var WebClient */
     private $webClient;
 
-    public function __construct(FeedReader $feed, Image $imageHelper, Logger $logger, WebClient $webClient) {
+    public function __construct(Configuration $configuration, FeedReader $feed, Image $imageHelper, Logger $logger, WebClient $webClient) {
         parent::__construct($feed, $imageHelper, $logger);
 
+        $this->configuration = $configuration;
         $this->imageHelper = $imageHelper;
         $this->logger = $logger;
         $this->webClient = $webClient;
@@ -61,7 +66,7 @@ class fulltextrss extends feed {
             $this->graby = new Graby([
                 'extractor' => [
                     'config_builder' => [
-                        'site_config' => [\F3::get('ftrss_custom_data_dir')],
+                        'site_config' => [$this->configuration->ftrssCustomDataDir],
                     ],
                 ],
             ], new GuzzleAdapter($this->webClient->getHttpClient()));

@@ -12,6 +12,9 @@ use Monolog\Logger;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class Authentication {
+    /** @var Configuration configuration */
+    private $configuration;
+
     /** @var bool loggedin */
     private $loggedin = false;
 
@@ -21,14 +24,15 @@ class Authentication {
     /**
      * start session and check login
      */
-    public function __construct(Logger $logger) {
+    public function __construct(Configuration $configuration, Logger $logger, View $view) {
+        $this->configuration = $configuration;
         $this->logger = $logger;
 
         if ($this->enabled() === false) {
             return;
         }
 
-        $base_url = parse_url(\helpers\View::getBaseUrl());
+        $base_url = parse_url($view->getBaseUrl());
 
         // session cookie will be valid for one month.
         $cookie_expire = 3600 * 24 * 30;
@@ -70,7 +74,7 @@ class Authentication {
      * @return bool
      */
     public function enabled() {
-        return strlen(trim(\F3::get('username'))) != 0 && strlen(trim(\F3::get('password'))) != 0;
+        return strlen($this->configuration->username) != 0 && strlen($this->configuration->password) != 0;
     }
 
     /**
@@ -83,13 +87,13 @@ class Authentication {
      */
     public function login($username, $password) {
         if ($this->enabled()) {
-            $usernameCorrect = $username === \F3::get('username');
-            $hashedPassword = \F3::get('password');
+            $usernameCorrect = $username === $this->configuration->username;
+            $hashedPassword = $this->configuration->password;
             // Passwords hashed with password_hash start with $, otherwise use the legacy path.
             $passwordCorrect =
                 $hashedPassword !== '' && $hashedPassword[0] === '$'
                 ? password_verify($password, $hashedPassword)
-                : hash('sha512', \F3::get('salt') . $password) === $hashedPassword;
+                : hash('sha512', $this->configuration->salt . $password) === $hashedPassword;
             $credentialsCorrect = $usernameCorrect && $passwordCorrect;
 
             if ($credentialsCorrect) {
@@ -148,7 +152,7 @@ class Authentication {
      * @return void
      */
     public function needsLoggedInOrPublicMode() {
-        if ($this->isLoggedin() !== true && \F3::get('public') != 1) {
+        if ($this->isLoggedin() !== true && !$this->configuration->public) {
             \F3::error(403);
         }
     }
@@ -177,6 +181,6 @@ class Authentication {
         return $this->isLoggedin() === true
             || $_SERVER['REMOTE_ADDR'] === $_SERVER['SERVER_ADDR']
             || $_SERVER['REMOTE_ADDR'] === '127.0.0.1'
-            || \F3::get('allow_public_update_access') == 1;
+            || $this->configuration->allowPublicUpdateAccess;
     }
 }
