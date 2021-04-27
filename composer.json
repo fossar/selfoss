@@ -55,6 +55,6 @@
         "cs": "php-cs-fixer fix --verbose --dry-run --diff",
         "fix": "php-cs-fixer fix --verbose --diff",
         "lint": "parallel-lint src tests",
-        "test": "phpunit --bootstrap vendor/autoload.php tests"
+        "test": "phpunit --bootstrap tests/bootstrap.php tests"
     }
 }

@@ -8,7 +8,7 @@ use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 
-define('BASEDIR', __DIR__ . '/..');
+require __DIR__ . '/constants.php';
 
 $autoloader = @include BASEDIR . '/vendor/autoload.php'; // we will show custom error
 if ($autoloader === false) {
@@ -30,13 +30,6 @@ $f3 = Base::instance();
 // Dice uses ReflectionParameter::getClass(), which is deprecated in PHP 8
 // but we have not set an error handler yet because it needs a Logger instantiated by Dice.
 error_reporting(E_ALL & ~E_DEPRECATED);
-
-const SELFOSS_VERSION = '2.19-SNAPSHOT';
-
-// independent of selfoss version
-// needs to be bumped each time public API is changed (follows semver)
-// keep in sync with docs/api-description.json
-const SELFOSS_API_VERSION = '4.0.0';
 
 $f3->set('AUTOLOAD', false);
 $f3->set('BASEDIR', BASEDIR);
