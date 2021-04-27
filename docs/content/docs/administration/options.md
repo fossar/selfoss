@@ -229,7 +229,7 @@ URL of your [Wallabag](https://www.wallabag.org/) instance.
 ### `wallabag_version`
 <div class="config-option">
 
-Set to `1` or `2` depending on your wallabag version (`1` for version 1.x or `2` for version 2.x).
+Set to `2` or `1` depending on your wallabag version (`2` for version 2.x or `1` for version 1.x).
 </div>
 
 ### `wordpress`

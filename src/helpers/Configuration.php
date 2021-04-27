@@ -123,7 +123,7 @@ class Configuration {
     public $wallabag = '';
 
     /** @var string */
-    public $wallabagVersion = '1';
+    public $wallabagVersion = '2';
 
     /** @var ?string */
     public $wordpress = null;
