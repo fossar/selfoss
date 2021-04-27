@@ -209,7 +209,8 @@ Set to `1` to allow public access for `/update` (anybody can access and start th
 <dt><code>t</code></dt><dd>Twitter</dd>
 <dt><code>p</code></dt><dd>Pocket</dd>
 <dt><code>d</code></dt><dd>Diaspora</dd>
-<dt><code>w</code></dt><dd>Wallabag</dd>
+<dt><code>w</code></dt><dd>Wallabag (requires <a href="#wallabag"><code>wallabag</code></a> option to be set)</dd>
+<dt><code>s</code></dt><dd>Wordpress (requires <a href="#wordpress"><code>wordpress</code></a> option to be set)</dd>
 <dt><code>e</code></dt><dd>E-mail</dd>
 <dt><code>c</code></dt><dd>Copy to clipboard</dd>
 </dl>
@@ -229,6 +230,12 @@ URL of your [Wallabag](https://www.wallabag.org/) instance.
 <div class="config-option">
 
 Set to `1` or `2` depending on your wallabag version (`1` for version 1.x or `2` for version 2.x).
+</div>
+
+### `wordpress`
+<div class="config-option">
+
+URL of your WordPress blog for sharing links.
 </div>
 
 ### `unread_order`
