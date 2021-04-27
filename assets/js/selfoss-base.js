@@ -178,7 +178,9 @@ var selfoss = {
         document.body.classList.toggle('loggedin', !configuration.authEnabled);
         document.body.classList.toggle('auto_mark_as_read', configuration.autoMarkAsRead);
 
-        document.documentElement.setAttribute('lang', configuration.language);
+        if (configuration.language !== null) {
+            document.documentElement.setAttribute('lang', configuration.language);
+        }
         document.querySelector('meta[name="application-name"]').setAttribute('content', configuration.htmlTitle);
 
         const feedLink = document.createElement('link');
