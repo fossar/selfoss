@@ -54,7 +54,6 @@ class fulltextrss extends feed {
         parent::__construct($feed, $imageHelper, $logger);
 
         $this->configuration = $configuration;
-        $this->imageHelper = $imageHelper;
         $this->logger = $logger;
         $this->webClient = $webClient;
     }

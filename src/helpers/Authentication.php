@@ -68,9 +68,6 @@ class Authentication {
     /**
      * login enabled
      *
-     * @param string $username
-     * @param string $password
-     *
      * @return bool
      */
     public function enabled() {

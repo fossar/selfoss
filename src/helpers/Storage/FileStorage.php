@@ -50,7 +50,7 @@ class FileStorage {
      *
      * @param callable(string):bool $shouldKeep
      *
-     * @return ?string
+     * @return void
      */
     public function cleanup($shouldKeep) {
         $itemPath = $this->directory . '/';

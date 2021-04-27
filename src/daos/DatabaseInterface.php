@@ -29,9 +29,8 @@ interface DatabaseInterface {
     /**
      * Quote string
      *
-     * @param mixed $val
-     * @param int $type
      * @param mixed $value
+     * @param int $type
      *
      * @return string
      */

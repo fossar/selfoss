@@ -39,7 +39,7 @@ class Items implements \daos\ItemsInterface {
     /**
      * mark item as read
      *
-     * @param int $id
+     * @param int|int[] $id
      *
      * @return void
      */
@@ -59,7 +59,7 @@ class Items implements \daos\ItemsInterface {
     /**
      * mark item as unread
      *
-     * @param int $id
+     * @param int|int[] $id
      *
      * @return void
      */
@@ -317,6 +317,7 @@ class Items implements \daos\ItemsInterface {
         $where_ids = '';
         // extra ids to include in stream
         if (isset($options['extraIds'])
+            && is_array($options['extraIds'])
             && count($options['extraIds']) > 0
             // limit the query to a sensible max
             && count($options['extraIds']) <= $this->configuration->itemsPerpage) {
@@ -575,27 +576,6 @@ class Items implements \daos\ItemsInterface {
         }
 
         return $return;
-    }
-
-    /**
-     * returns the icon of the last fetched item.
-     *
-     * @param int $sourceid id of the source
-     *
-     * @return ?string
-     */
-    public function getLastIcon($sourceid) {
-        if (is_numeric($sourceid) === false) {
-            return null;
-        }
-
-        $res = $this->database->exec('SELECT icon FROM ' . $this->configuration->dbPrefix . 'items WHERE source=:sourceid AND icon!=\'\' AND icon IS NOT NULL ORDER BY ID DESC LIMIT 1',
-            [':sourceid' => $sourceid]);
-        if (count($res) === 1) {
-            return $res[0]['icon'];
-        }
-
-        return null;
     }
 
     /**

@@ -56,7 +56,7 @@ class youtube extends \spouts\rss\feed {
     }
 
     public function getThumbnail() {
-        if ($this->items === false || $this->valid() === false) {
+        if ($this->items === null || !$this->valid()) {
             return null;
         }
 

@@ -177,15 +177,6 @@ interface ItemsInterface {
     public function isValid($name, $value);
 
     /**
-     * returns the icon of the last fetched item.
-     *
-     * @param int $sourceid id of the source
-     *
-     * @return ?string
-     */
-    public function getLastIcon($sourceid);
-
-    /**
      * returns the amount of entries in database which are unread
      *
      * @return int amount of entries in database which are unread

@@ -76,7 +76,7 @@ class ContentLoader {
     /**
      * updates single source
      *
-     * @param $id int id of the source to update
+     * @param int $id id of the source to update
      *
      * @throws FileNotFoundException it there is no source with the id
      *
@@ -340,7 +340,7 @@ class ContentLoader {
     /**
      * Sanitize content for preventing XSS attacks.
      *
-     * @param $content content of the given feed
+     * @param string $content content of the given feed
      *
      * @return mixed|string sanitized content
      */
@@ -362,7 +362,7 @@ class ContentLoader {
     /**
      * Sanitize a simple field
      *
-     * @param $value content of the given field
+     * @param string $value content of the given field
      *
      * @return mixed|string sanitized content
      */
@@ -443,7 +443,7 @@ class ContentLoader {
     /**
      * Obtain title for given data
      *
-     * @param $data
+     * @param array $data
      */
     public function fetchTitle($data) {
         $this->logger->debug('Start fetching spout title');

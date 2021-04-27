@@ -86,13 +86,13 @@ class Statements implements \daos\StatementsInterface {
      * check column against int list.
      *
      * @param string $column column to check
-     * @param array $ints of string or int values to match column against
+     * @param int[] $ints of string or int values to match column against
      *
      * @return ?string full statement
      */
     public static function intRowMatches($column, array $ints) {
         // checks types
-        if (!is_array($ints) && count($ints) === 0) {
+        if (count($ints) === 0) {
             return null;
         }
         $all_ints = [];

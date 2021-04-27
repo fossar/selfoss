@@ -82,7 +82,7 @@ class page extends \spouts\spout {
     }
 
     public function getId() {
-        if ($this->items !== false) {
+        if ($this->items !== null) {
             $item = current($this->items);
 
             return $item['id'];
@@ -92,7 +92,7 @@ class page extends \spouts\spout {
     }
 
     public function getTitle() {
-        if ($this->items !== false) {
+        if ($this->items !== null) {
             $item = current($this->items);
 
             if (mb_strlen($item['message']) > 80) {
@@ -106,7 +106,7 @@ class page extends \spouts\spout {
     }
 
     public function getContent() {
-        if ($this->items !== false) {
+        if ($this->items !== null) {
             $item = current($this->items);
             $message = $item['message'];
 
@@ -137,7 +137,7 @@ class page extends \spouts\spout {
     }
 
     public function getLink() {
-        if ($this->items !== false) {
+        if ($this->items !== null) {
             $item = current($this->items);
 
             return $item['permalink_url'];
@@ -147,7 +147,7 @@ class page extends \spouts\spout {
     }
 
     public function getDate() {
-        if ($this->items !== false) {
+        if ($this->items !== null) {
             $item = current($this->items);
 
             return $item['created_time'];

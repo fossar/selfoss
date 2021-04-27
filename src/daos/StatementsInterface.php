@@ -99,7 +99,7 @@ interface StatementsInterface {
      *
      * @return string representation of datetime
      */
-    public static function datetime(\DateTime $datestr);
+    public static function datetime(\DateTime $date);
 
     /**
      * Ensure row values have the appropriate PHP type. This assumes we are
