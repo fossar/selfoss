@@ -7,9 +7,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
-use helpers\Configuration;
 use helpers\WebClient;
-use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
 use spouts\youtube\youtube;
 
@@ -38,23 +36,11 @@ final class YouTubeTest extends TestCase {
         $dice->addRule('*', [
             'substitutions' => [
                 WebClient::class => [
-                    'instance' => function() use ($dice, $httpClient) {
-                        $wc = new class($dice->create(Logger::class), $httpClient) extends WebClient {
-                            /** @var Client */
-                            private $httpClient;
+                    'instance' => function() use ($httpClient) {
+                        $stub = $this->createMock(WebClient::class);
+                        $stub->method('getHttpClient')->willReturn($httpClient);
 
-                            public function __construct($logger, $httpClient) {
-                                parent::__construct(new Configuration, $logger);
-
-                                $this->httpClient = $httpClient;
-                            }
-
-                            public function getHttpClient() {
-                                return $this->httpClient;
-                            }
-                        };
-
-                        return $wc;
+                        return $stub;
                     }
                 ],
             ],
