@@ -132,7 +132,7 @@ class Sources {
         $this->tagsDao->cleanup($allTags);
 
         $this->view->jsonSuccess([
-            'success' => true
+            'success' => true,
         ]);
     }
 

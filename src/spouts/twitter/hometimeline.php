@@ -23,29 +23,29 @@ class hometimeline extends \spouts\twitter\usertimeline {
             'type' => 'text',
             'default' => '',
             'required' => true,
-            'validation' => ['notempty']
+            'validation' => ['notempty'],
         ],
         'consumer_secret' => [
             'title' => 'Consumer Secret',
             'type' => 'password',
             'default' => '',
             'required' => true,
-            'validation' => ['notempty']
+            'validation' => ['notempty'],
         ],
         'access_key' => [
             'title' => 'Access Key',
             'type' => 'password',
             'default' => '',
             'required' => true,
-            'validation' => ['notempty']
+            'validation' => ['notempty'],
         ],
         'access_secret' => [
             'title' => 'Access Secret',
             'type' => 'password',
             'default' => '',
             'required' => true,
-            'validation' => ['notempty']
-        ]
+            'validation' => ['notempty'],
+        ],
     ];
 
     public function load(array $params) {

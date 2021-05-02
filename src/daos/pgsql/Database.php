@@ -167,13 +167,13 @@ class Database implements \daos\DatabaseInterface {
             if (strnatcmp($version, '5') < 0) {
                 $this->exec([
                     'ALTER TABLE items ADD author TEXT;',
-                    'INSERT INTO version (version) VALUES (5);'
+                    'INSERT INTO version (version) VALUES (5);',
                 ]);
             }
             if (strnatcmp($version, '6') < 0) {
                 $this->exec([
                     'ALTER TABLE sources ADD filter TEXT;',
-                    'INSERT INTO version (version) VALUES (6);'
+                    'INSERT INTO version (version) VALUES (6);',
                 ]);
             }
             // Jump straight from v6 to v8 due to bug in previous version of the code
@@ -182,20 +182,20 @@ class Database implements \daos\DatabaseInterface {
             if (strnatcmp($version, '8') < 0) {
                 $this->exec([
                     'ALTER TABLE sources ADD lastentry INT;',
-                    'INSERT INTO version (version) VALUES (8);'
+                    'INSERT INTO version (version) VALUES (8);',
                 ]);
             }
             if (strnatcmp($version, '9') < 0) {
                 $this->exec([
                     'ALTER TABLE items ADD shared BOOLEAN;',
-                    'INSERT INTO version (version) VALUES (9);'
+                    'INSERT INTO version (version) VALUES (9);',
                 ]);
             }
             if (strnatcmp($version, '10') < 0) {
                 $this->exec([
                     'ALTER TABLE items ALTER COLUMN datetime SET DATA TYPE timestamp(0) with time zone;',
                     'ALTER TABLE items ALTER COLUMN updatetime SET DATA TYPE timestamp(0) with time zone;',
-                    'INSERT INTO version (version) VALUES (10);'
+                    'INSERT INTO version (version) VALUES (10);',
                 ]);
             }
             if (strnatcmp($version, '11') < 0) {
@@ -209,20 +209,20 @@ class Database implements \daos\DatabaseInterface {
                             OLD.starred IS DISTINCT FROM NEW.starred
                         )
                         EXECUTE PROCEDURE update_updatetime_procedure();',
-                    'INSERT INTO version (version) VALUES (11);'
+                    'INSERT INTO version (version) VALUES (11);',
                 ]);
             }
             if (strnatcmp($version, '12') < 0) {
                 $this->exec([
                     'UPDATE items SET updatetime = datetime WHERE updatetime IS NULL',
                     'ALTER TABLE items ALTER COLUMN updatetime SET NOT NULL',
-                    'INSERT INTO version (version) VALUES (12)'
+                    'INSERT INTO version (version) VALUES (12)',
                 ]);
             }
             if (strnatcmp($version, '13') < 0) {
                 $this->exec([
                     "UPDATE sources SET spout = 'spouts\\rss\\fulltextrss' WHERE spout = 'spouts\\rss\\instapaper'",
-                    'INSERT INTO version (version) VALUES (13)'
+                    'INSERT INTO version (version) VALUES (13)',
                 ]);
             }
         }

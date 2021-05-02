@@ -109,7 +109,7 @@ class Index {
             'all' => $this->view->statsAll,
             'unread' => $this->view->statsUnread,
             'starred' => $this->view->statsStarred,
-            'tags' => $tags
+            'tags' => $tags,
         ];
 
         if (isset($options['sourcesNav']) && $options['sourcesNav'] == 'true') {
@@ -137,7 +137,7 @@ class Index {
 
         return [
             'entries' => $entries,
-            'hasMore' => $this->itemsDao->hasMore()
+            'hasMore' => $this->itemsDao->hasMore(),
         ];
     }
 }

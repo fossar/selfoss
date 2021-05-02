@@ -56,13 +56,13 @@ class Authentication {
         if ($error !== null) {
             $this->view->jsonError([
                 'success' => false,
-                'error' => $error
+                'error' => $error,
             ]);
         }
 
         if ($this->authentication->login($username, $password)) {
             $this->view->jsonSuccess([
-                'success' => true
+                'success' => true,
             ]);
         }
 
@@ -81,7 +81,7 @@ class Authentication {
     public function logout() {
         $this->authentication->logout();
         $this->view->jsonSuccess([
-            'success' => true
+            'success' => true,
         ]);
     }
 }

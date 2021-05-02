@@ -133,7 +133,7 @@ class Write {
         $return = [
             'success' => true,
             'id' => (int) $id,
-            'title' => $title
+            'title' => $title,
         ];
 
         // only for selfoss ui (update stats in navigation)

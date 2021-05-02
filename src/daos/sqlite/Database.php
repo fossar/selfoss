@@ -228,13 +228,13 @@ class Database implements \daos\DatabaseInterface {
                                 SET updatetime = CURRENT_TIMESTAMP
                                 WHERE id = NEW.id;
                             END',
-                    'INSERT INTO version (version) VALUES (11)'
+                    'INSERT INTO version (version) VALUES (11)',
                 ]);
             }
             if (strnatcmp($version, '13') < 0) {
                 $this->exec([
                     "UPDATE sources SET spout = 'spouts\\rss\\fulltextrss' WHERE spout = 'spouts\\rss\\instapaper'",
-                    'INSERT INTO version (version) VALUES (13)'
+                    'INSERT INTO version (version) VALUES (13)',
                 ]);
             }
         }

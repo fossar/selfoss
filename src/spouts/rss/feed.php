@@ -29,8 +29,8 @@ class feed extends \spouts\spout {
             'type' => 'url',
             'default' => '',
             'required' => true,
-            'validation' => ['notempty']
-        ]
+            'validation' => ['notempty'],
+        ],
     ];
 
     /** @var ?string URL of the source */

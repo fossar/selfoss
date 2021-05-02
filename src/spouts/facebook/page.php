@@ -31,21 +31,21 @@ class page extends \spouts\spout {
             'type' => 'text',
             'default' => '',
             'required' => true,
-            'validation' => ['notempty']
+            'validation' => ['notempty'],
         ],
         'app_id' => [
             'title' => 'App ID',
             'type' => 'text',
             'default' => '',
             'required' => true,
-            'validation' => ['notempty']
+            'validation' => ['notempty'],
         ],
         'app_secret' => [
             'title' => 'App Secret',
             'type' => 'text',
             'default' => '',
             'required' => true,
-            'validation' => ['notempty']
+            'validation' => ['notempty'],
         ],
     ];
 

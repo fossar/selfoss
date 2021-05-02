@@ -26,7 +26,7 @@ class FeedReader {
 
         // abuse set_curl_options since there is no sane way to pass data to SimplePie\File
         $this->simplepie->set_curl_options([
-            WebClient::class => $webClient
+            WebClient::class => $webClient,
         ]);
 
         $this->simplepie->set_file_class(SimplePieFileGuzzle::class);

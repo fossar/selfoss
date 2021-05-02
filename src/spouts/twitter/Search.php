@@ -23,35 +23,35 @@ class Search extends \spouts\twitter\usertimeline {
             'type' => 'text',
             'default' => '',
             'required' => true,
-            'validation' => ['notempty']
+            'validation' => ['notempty'],
         ],
         'consumer_secret' => [
             'title' => 'Consumer Secret',
             'type' => 'password',
             'default' => '',
             'required' => true,
-            'validation' => ['notempty']
+            'validation' => ['notempty'],
         ],
         'access_token' => [
             'title' => 'Access Token (optional)',
             'type' => 'text',
             'default' => '',
             'required' => false,
-            'validation' => []
+            'validation' => [],
         ],
         'access_token_secret' => [
             'title' => 'Access Token Secret (optional)',
             'type' => 'password',
             'default' => '',
             'required' => false,
-            'validation' => []
+            'validation' => [],
         ],
         'query' => [
             'title' => 'Search query',
             'type' => 'text',
             'default' => '',
             'required' => true,
-            'validation' => ['notempty']
+            'validation' => ['notempty'],
         ],
     ];
 

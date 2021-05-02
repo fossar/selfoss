@@ -45,7 +45,7 @@ class Sources implements \daos\SourcesInterface {
             ':tags' => $stmt::csvRow($tags),
             ':filter' => $filter,
             ':spout' => $spout,
-            ':params' => htmlentities(json_encode($params))
+            ':params' => htmlentities(json_encode($params)),
         ]);
     }
 
@@ -69,7 +69,7 @@ class Sources implements \daos\SourcesInterface {
             ':filter' => $filter,
             ':spout' => $spout,
             ':params' => htmlentities(json_encode($params)),
-            ':id' => $id
+            ':id' => $id,
         ]);
     }
 
@@ -98,13 +98,13 @@ class Sources implements \daos\SourcesInterface {
     public function error($id, $error) {
         if (strlen($error) === 0) {
             $arr = [
-                ':id' => $id
+                ':id' => $id,
                 ];
             $setarg = 'NULL';
         } else {
             $arr = [
                 ':id' => $id,
-                ':error' => $error
+                ':error' => $error,
             ];
             $setarg = ':error';
         }
@@ -124,14 +124,14 @@ class Sources implements \daos\SourcesInterface {
         $this->database->exec('UPDATE ' . $this->configuration->dbPrefix . 'sources SET lastupdate=:lastupdate WHERE id=:id',
             [
                 ':id' => $id,
-                ':lastupdate' => time()
+                ':lastupdate' => time(),
             ]);
 
         if ($lastEntry !== null) {
             $this->database->exec('UPDATE ' . $this->configuration->dbPrefix . 'sources SET lastentry=:lastentry WHERE id=:id',
                 [
                     ':id' => $id,
-                    ':lastentry' => $lastEntry
+                    ':lastentry' => $lastEntry,
                 ]);
         }
     }
@@ -170,7 +170,7 @@ class Sources implements \daos\SourcesInterface {
             $ret = $this->database->exec('SELECT id, title, tags, spout, params, filter, error, lastupdate, lastentry FROM ' . $this->configuration->dbPrefix . 'sources ORDER BY error DESC, lower(title) ASC');
             $ret = $stmt::ensureRowTypes($ret, [
                 'id' => \daos\PARAM_INT,
-                'tags' => \daos\PARAM_CSV
+                'tags' => \daos\PARAM_CSV,
             ]);
         }
 
@@ -194,7 +194,7 @@ class Sources implements \daos\SourcesInterface {
 
         return $stmt::ensureRowTypes($ret, [
             'id' => \daos\PARAM_INT,
-            'unread' => \daos\PARAM_INT
+            'unread' => \daos\PARAM_INT,
         ]);
     }
 
@@ -224,7 +224,7 @@ class Sources implements \daos\SourcesInterface {
 
         return $stmt::ensureRowTypes($ret, [
             'id' => \daos\PARAM_INT,
-            'tags' => \daos\PARAM_CSV
+            'tags' => \daos\PARAM_CSV,
         ]);
     }
 
@@ -295,7 +295,7 @@ class Sources implements \daos\SourcesInterface {
         $result = $this->database->exec('SELECT id FROM ' . $this->configuration->dbPrefix . 'sources WHERE title=:title AND spout=:spout AND params=:params', [
             ':title' => trim($title),
             ':spout' => $spout,
-            ':params' => htmlentities(json_encode($params))
+            ':params' => htmlentities(json_encode($params)),
         ]);
         if ($result) {
             return $result[0]['id'];

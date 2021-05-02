@@ -31,7 +31,7 @@ class fulltextrss extends feed {
             'type' => 'url',
             'default' => '',
             'required' => true,
-            'validation' => ['notempty']
+            'validation' => ['notempty'],
         ],
     ];
 

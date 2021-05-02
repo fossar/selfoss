@@ -23,8 +23,8 @@ class usersfavs extends \spouts\rss\images {
             'type' => 'text',
             'default' => '',
             'required' => true,
-            'validation' => ['notempty']
-        ]
+            'validation' => ['notempty'],
+        ],
     ];
 
     public function load(array $params) {

@@ -196,7 +196,7 @@ class Database implements \daos\DatabaseInterface {
                     'ALTER TABLE `' . $this->configuration->dbPrefix . 'sources` CONVERT TO CHARACTER SET utf8mb4;',
                     'ALTER TABLE `' . $this->configuration->dbPrefix . 'tags` CONVERT TO CHARACTER SET utf8mb4;',
                     'ALTER TABLE `' . $this->configuration->dbPrefix . 'version` CONVERT TO CHARACTER SET utf8mb4;',
-                    'INSERT INTO `' . $this->configuration->dbPrefix . 'version` (version) VALUES (10);'
+                    'INSERT INTO `' . $this->configuration->dbPrefix . 'version` (version) VALUES (10);',
                 ]);
             }
             if (strnatcmp($version, '11') < 0) {
@@ -225,7 +225,7 @@ class Database implements \daos\DatabaseInterface {
                                 SET NEW.updatetime = NOW();
                             END IF;
                         END;',
-                    'INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (11)'
+                    'INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (11)',
                 ]);
             }
             if (strnatcmp($version, '12') < 0) {
@@ -233,13 +233,13 @@ class Database implements \daos\DatabaseInterface {
                     'UPDATE ' . $this->configuration->dbPrefix . 'items SET updatetime = datetime WHERE updatetime IS NULL',
                     'ALTER TABLE ' . $this->configuration->dbPrefix . 'items MODIFY updatetime DATETIME NOT NULL',
                     'ALTER TABLE ' . $this->configuration->dbPrefix . 'items MODIFY lastseen DATETIME NOT NULL',
-                    'INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (12)'
+                    'INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (12)',
                 ]);
             }
             if (strnatcmp($version, '13') < 0) {
                 $this->exec([
                     'UPDATE ' . $this->configuration->dbPrefix . "sources SET spout = 'spouts\\\\rss\\\\fulltextrss' WHERE spout = 'spouts\\\\rss\\\\instapaper'",
-                    'INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (13)'
+                    'INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (13)',
                 ]);
             }
         }

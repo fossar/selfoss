@@ -33,22 +33,22 @@ class reddit2 extends \spouts\spout {
             'type' => 'text',
             'default' => 'r/worldnews/top',
             'required' => true,
-            'validation' => ['notempty']
+            'validation' => ['notempty'],
         ],
         'username' => [
             'title' => 'Username',
             'type' => 'text',
             'default' => '',
             'required' => false,
-            'validation' => ''
+            'validation' => '',
         ],
         'password' => [
             'title' => 'Password',
             'type' => 'password',
             'default' => '',
             'required' => false,
-            'validation' => ''
-        ]
+            'validation' => '',
+        ],
     ];
 
     /** @var string the reddit_session cookie */
@@ -217,8 +217,8 @@ class reddit2 extends \spouts\spout {
             GuzzleHttp\RequestOptions::FORM_PARAMS => [
                 'api_type' => 'json',
                 'user' => $params['username'],
-                'passwd' => $params['password']
-            ]
+                'passwd' => $params['password'],
+            ],
         ]);
         $data = json_decode((string) $response->getBody(), true);
         if (count($data['json']['errors']) > 0) {
@@ -250,7 +250,7 @@ class reddit2 extends \spouts\spout {
 
         if (isset($this->reddit_session)) {
             $request = new Request($method, $url, [
-                'cookies' => ['reddit_session' => $this->reddit_session]
+                'cookies' => ['reddit_session' => $this->reddit_session],
             ]);
         } else {
             $request = new Request($method, $url);

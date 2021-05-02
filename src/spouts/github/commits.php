@@ -28,22 +28,22 @@ class commits extends \spouts\spout {
             'type' => 'text',
             'default' => '',
             'required' => true,
-            'validation' => ['notempty']
+            'validation' => ['notempty'],
         ],
         'repo' => [
             'title' => 'Repository',
             'type' => 'text',
             'default' => '',
             'required' => true,
-            'validation' => ['notempty']
+            'validation' => ['notempty'],
         ],
         'branch' => [
             'title' => 'Branch',
             'type' => 'text',
             'default' => '',
             'required' => true,
-            'validation' => ['notempty']
-        ]
+            'validation' => ['notempty'],
+        ],
     ];
 
     /** @var string global html url for the source */

@@ -18,43 +18,43 @@ class listtimeline extends \spouts\twitter\usertimeline {
             'type' => 'text',
             'default' => '',
             'required' => true,
-            'validation' => ['notempty']
+            'validation' => ['notempty'],
         ],
         'consumer_secret' => [
             'title' => 'Consumer Secret',
             'type' => 'password',
             'default' => '',
             'required' => true,
-            'validation' => ['notempty']
+            'validation' => ['notempty'],
         ],
         'access_token' => [
             'title' => 'Access Token (optional)',
             'type' => 'text',
             'default' => '',
             'required' => false,
-            'validation' => []
+            'validation' => [],
         ],
         'access_token_secret' => [
             'title' => 'Access Token Secret (optional)',
             'type' => 'password',
             'default' => '',
             'required' => false,
-            'validation' => []
+            'validation' => [],
         ],
         'slug' => [
             'title' => 'List Slug',
             'type' => 'text',
             'default' => '',
             'required' => true,
-            'validation' => ['notempty']
+            'validation' => ['notempty'],
         ],
         'owner_screen_name' => [
             'title' => 'Username',
             'type' => 'text',
             'default' => '',
             'required' => true,
-            'validation' => ['notempty']
-        ]
+            'validation' => ['notempty'],
+        ],
     ];
 
     public function load(array $params) {

@@ -84,7 +84,7 @@ class Tags {
 
         $this->tagsDao->saveTagColor($tag, $color);
         $this->view->jsonSuccess([
-            'success' => true
+            'success' => true,
         ]);
     }
 

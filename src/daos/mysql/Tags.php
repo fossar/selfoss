@@ -38,7 +38,7 @@ class Tags implements \daos\TagsInterface {
         if ($this->hasTag($tag) === true) {
             $this->database->exec('UPDATE ' . $this->configuration->dbPrefix . 'tags SET color=:color WHERE tag=:tag', [
                 ':tag' => $tag,
-                ':color' => $color
+                ':color' => $color,
             ]);
         } else {
             $this->database->exec('INSERT INTO ' . $this->configuration->dbPrefix . 'tags (tag, color) VALUES (:tag, :color)', [

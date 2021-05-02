@@ -37,12 +37,12 @@ class heise extends fulltextrss {
                 'resale' => 'Resale',
                 'foto' => 'Foto',
                 'autos' => 'Autos',
-                'hh' => 'Hardware-Hacks'
+                'hh' => 'Hardware-Hacks',
             ],
             'default' => 'main',
             'required' => true,
-            'validation' => []
-        ]
+            'validation' => [],
+        ],
     ];
 
     /**

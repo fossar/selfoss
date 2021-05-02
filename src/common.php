@@ -63,7 +63,7 @@ $substitutions = [
         Dice::class => ['instance' => function() use ($dice) {
             return $dice;
         }],
-    ]
+    ],
 ];
 
 $shared = array_merge($substitutions, [
@@ -95,7 +95,7 @@ if ($configuration->dbType === 'sqlite') {
 
     $dsn = 'sqlite:' . $db_file;
     $dbParams = [
-        $dsn
+        $dsn,
     ];
 } elseif ($configuration->dbType === 'mysql') {
     $host = $configuration->dbHost;
@@ -112,7 +112,7 @@ if ($configuration->dbType === 'sqlite') {
         $dsn,
         $configuration->dbUsername,
         $configuration->dbPassword,
-        [PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8mb4;']
+        [PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8mb4;'],
     ];
 } elseif ($configuration->dbType === 'pgsql') {
     $host = $configuration->dbHost;
@@ -128,12 +128,12 @@ if ($configuration->dbType === 'sqlite') {
     $dbParams = [
         $dsn,
         $configuration->dbUsername,
-        $configuration->dbPassword
+        $configuration->dbPassword,
     ];
 }
 
 $sqlParams = array_merge($shared, [
-    'constructParams' => $dbParams
+    'constructParams' => $dbParams,
 ]);
 
 // Define regexp function for SQLite
@@ -155,11 +155,11 @@ if ($configuration->dbType === 'sqlite') {
                         function($pattern, $text) {
                             return preg_match('/' . addcslashes($pattern, '/') . '/', $text);
                         },
-                        2
-                    ]
-                ]
+                        2,
+                    ],
+                ],
             ],
-        ]
+        ],
     ]);
 }
 
@@ -168,27 +168,27 @@ $dice->addRule(DB\SQL::class, $sqlParams);
 $dice->addRule('$iconStorageBackend', [
     'instanceOf' => helpers\Storage\FileStorage::class,
     'constructParams' => [
-        $configuration->datadir . '/favicons'
+        $configuration->datadir . '/favicons',
     ],
 ]);
 
 $dice->addRule(helpers\IconStore::class, array_merge($shared, [
     'constructParams' => [
         ['instance' => '$iconStorageBackend'],
-    ]
+    ],
 ]));
 
 $dice->addRule('$thumbnailStorageBackend', [
     'instanceOf' => helpers\Storage\FileStorage::class,
     'constructParams' => [
-        $configuration->datadir . '/thumbnails'
+        $configuration->datadir . '/thumbnails',
     ],
 ]);
 
 $dice->addRule(helpers\ThumbnailStore::class, array_merge($shared, [
     'constructParams' => [
         ['instance' => '$thumbnailStorageBackend'],
-    ]
+    ],
 ]));
 
 // Fallback rule

@@ -84,7 +84,7 @@ class Items {
                 'starred' => false,
                 'offset' => 0,
                 'search' => false,
-                'items' => $this->configuration->itemsPerpage
+                'items' => $this->configuration->itemsPerpage,
             ],
             $options
         );

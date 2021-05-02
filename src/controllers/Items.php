@@ -61,7 +61,7 @@ class Items {
         $this->itemsDao->mark($lastid);
 
         $return = [
-            'success' => true
+            'success' => true,
         ];
 
         $this->view->jsonSuccess($return);
@@ -88,7 +88,7 @@ class Items {
         $this->itemsDao->unmark($lastid);
 
         $this->view->jsonSuccess([
-            'success' => true
+            'success' => true,
         ]);
     }
 
@@ -112,7 +112,7 @@ class Items {
 
         $this->itemsDao->starr($id);
         $this->view->jsonSuccess([
-            'success' => true
+            'success' => true,
         ]);
     }
 
@@ -136,7 +136,7 @@ class Items {
 
         $this->itemsDao->unstarr($id);
         $this->view->jsonSuccess([
-            'success' => true
+            'success' => true,
         ]);
     }
 

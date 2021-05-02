@@ -41,7 +41,7 @@ final class YouTubeTest extends TestCase {
                         $stub->method('getHttpClient')->willReturn($httpClient);
 
                         return $stub;
-                    }
+                    },
                 ],
             ],
         ]);

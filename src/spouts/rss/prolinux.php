@@ -30,12 +30,12 @@ class prolinux extends fulltextrss {
                 'polls' => 'Umfragen',
                 'security' => 'Sicherheitsmeldungen',
                 'lugs' => 'Linux User Groups (LUGs)',
-                'comments' => 'Kommentare'
+                'comments' => 'Kommentare',
             ],
             'default' => 'main',
             'required' => true,
-            'validation' => []
-        ]
+            'validation' => [],
+        ],
     ];
 
     /**
@@ -47,7 +47,7 @@ class prolinux extends fulltextrss {
         'polls' => 'http://www.pro-linux.de/NB3/rss/3/4/atom_umfragen.xml',
         'security' => 'http://www.pro-linux.de/NB3/rss/5/4/atom_sicherheit.xml',
         'lugs' => 'http://www.pro-linux.de/rss/7/4/atom_lugs.xml',
-        'comments' => 'http://www.pro-linux.de/NB3/rss/6/4/atom_kommentare.xml'
+        'comments' => 'http://www.pro-linux.de/NB3/rss/6/4/atom_kommentare.xml',
     ];
 
     public function load(array $params) {

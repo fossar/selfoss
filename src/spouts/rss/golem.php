@@ -41,12 +41,12 @@ class golem extends fulltextrss {
                 'entertainment' => 'Entertainment',
                 'tk' => 'TK',
                 'ecommerce' => 'E-Commerce',
-                'forum' => 'Forumsbeiträge'
+                'forum' => 'Forumsbeiträge',
             ],
             'default' => 'main',
             'required' => true,
-            'validation' => []
-        ]
+            'validation' => [],
+        ],
     ];
 
     /**
@@ -72,7 +72,7 @@ class golem extends fulltextrss {
         'entertainment' => 'https://rss.golem.de/rss.php?r=et&feed=RSS2.0',
         'tk' => 'https://rss.golem.de/rss.php?r=tk&feed=RSS2.0',
         'ecommerce' => 'https://rss.golem.de/rss.php?r=ec&feed=RSS2.0',
-        'forum' => 'https://forum.golem.de/rss.php?feed=RSS2.0'
+        'forum' => 'https://forum.golem.de/rss.php?feed=RSS2.0',
     ];
 
     public function load(array $params) {

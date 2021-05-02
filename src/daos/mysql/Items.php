@@ -82,7 +82,7 @@ class Items implements \daos\ItemsInterface {
     public function starr($id) {
         $this->database->exec('UPDATE ' . $this->configuration->dbPrefix . 'items SET starred=:bool WHERE id=:id', [
             ':bool' => true,
-            ':id' => $id
+            ':id' => $id,
         ]);
     }
 
@@ -96,7 +96,7 @@ class Items implements \daos\ItemsInterface {
     public function unstarr($id) {
         $this->database->exec('UPDATE ' . $this->configuration->dbPrefix . 'items SET starred=:bool WHERE id=:id', [
             ':bool' => false,
-            ':id' => $id
+            ':id' => $id,
         ]);
     }
 
@@ -144,7 +144,7 @@ class Items implements \daos\ItemsInterface {
                     ':source' => $values['source'],
                     ':uid' => $values['uid'],
                     ':link' => $values['link'],
-                    ':author' => $values['author']
+                    ':author' => $values['author'],
                  ]);
     }
 
@@ -276,7 +276,7 @@ class Items implements \daos\ItemsInterface {
         // update time filter
         if (isset($options['updatedsince'])) {
             $params[':updatedsince'] = [
-                $stmt::datetime($options['updatedsince']), \PDO::PARAM_STR
+                $stmt::datetime($options['updatedsince']), \PDO::PARAM_STR,
             ];
             $where[] = 'items.updatetime > :updatedsince ';
         }
@@ -291,13 +291,13 @@ class Items implements \daos\ItemsInterface {
 
             $offset_from_datetime_sql = $stmt::datetime($options['fromDatetime']);
             $params[':offset_from_datetime'] = [
-                $offset_from_datetime_sql, \PDO::PARAM_STR
+                $offset_from_datetime_sql, \PDO::PARAM_STR,
             ];
             $params[':offset_from_datetime2'] = [
-                $offset_from_datetime_sql, \PDO::PARAM_STR
+                $offset_from_datetime_sql, \PDO::PARAM_STR,
             ];
             $params[':offset_from_id'] = [
-                $options['fromId'], \PDO::PARAM_INT
+                $options['fromId'], \PDO::PARAM_INT,
             ];
             $ltgt = null;
             if ($order === 'ASC') {
@@ -380,7 +380,7 @@ class Items implements \daos\ItemsInterface {
             'starred' => \daos\PARAM_BOOL,
             'source' => \daos\PARAM_INT,
             'tags' => \daos\PARAM_CSV,
-            'updatetime' => \daos\PARAM_DATETIME
+            'updatetime' => \daos\PARAM_DATETIME,
         ]);
     }
 
@@ -422,7 +422,7 @@ class Items implements \daos\ItemsInterface {
             'sinceId' => [$sinceId, \PDO::PARAM_INT],
             'howMany' => [$howMany, \PDO::PARAM_INT],
             'notBefore' => [$notBefore->format('Y-m-d H:i:s'), \PDO::PARAM_STR],
-            'since' => [$since->format('Y-m-d H:i:s'), \PDO::PARAM_STR]
+            'since' => [$since->format('Y-m-d H:i:s'), \PDO::PARAM_STR],
         ];
 
         return $stmt::ensureRowTypes($this->database->exec($query, $params), [
@@ -432,7 +432,7 @@ class Items implements \daos\ItemsInterface {
             'starred' => \daos\PARAM_BOOL,
             'source' => \daos\PARAM_INT,
             'tags' => \daos\PARAM_CSV,
-            'updatetime' => \daos\PARAM_DATETIME
+            'updatetime' => \daos\PARAM_DATETIME,
         ]);
     }
 
@@ -607,7 +607,7 @@ class Items implements \daos\ItemsInterface {
         $res = $stmt::ensureRowTypes($res, [
             'total' => \daos\PARAM_INT,
             'unread' => \daos\PARAM_INT,
-            'starred' => \daos\PARAM_INT
+            'starred' => \daos\PARAM_INT,
         ]);
 
         return $res[0];
@@ -642,7 +642,7 @@ class Items implements \daos\ItemsInterface {
         $res = $stmt::ensureRowTypes($res, [
             'id' => \daos\PARAM_INT,
             'unread' => \daos\PARAM_BOOL,
-            'starred' => \daos\PARAM_BOOL
+            'starred' => \daos\PARAM_BOOL,
         ]);
 
         return $res;
@@ -670,12 +670,12 @@ class Items implements \daos\ItemsInterface {
                             if ($status[$sk] == 'true') {
                                 $statusUpdate = [
                                     'sk' => $sk,
-                                    'sql' => $stmt::isTrue($sk)
+                                    'sql' => $stmt::isTrue($sk),
                                 ];
                             } elseif ($status[$sk] == 'false') {
                                 $statusUpdate = [
                                     'sk' => $sk,
-                                    'sql' => $stmt::isFalse($sk)
+                                    'sql' => $stmt::isFalse($sk),
                                 ];
                             }
                         }
@@ -705,7 +705,7 @@ class Items implements \daos\ItemsInterface {
                             // create new status update
                             $sql[$id] = [
                                 'updates' => [$sk => $statusUpdate['sql']],
-                                'datetime' => $updateDate->format('Y-m-d H:i:s')
+                                'datetime' => $updateDate->format('Y-m-d H:i:s'),
                             ];
                         }
                     }
@@ -718,7 +718,7 @@ class Items implements \daos\ItemsInterface {
             foreach ($sql as $id => $q) {
                 $params = [
                     ':id' => [$id, \PDO::PARAM_INT],
-                    ':statusUpdate' => [$q['datetime'], \PDO::PARAM_STR]
+                    ':statusUpdate' => [$q['datetime'], \PDO::PARAM_STR],
                 ];
                 $updated = $this->database->exec(
                     'UPDATE ' . $this->configuration->dbPrefix . 'items
