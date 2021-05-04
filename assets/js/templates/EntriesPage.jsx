@@ -477,7 +477,7 @@ export default class StateHolder extends React.Component {
         this.setLoadingState(LoadingState.LOADING);
         this.setEntries(markedEntries);
 
-        const unreadstats = selfoss.unreadItemsCount.value - ids.length;
+        const unreadstats = selfoss.app.state.unreadItemsCount - ids.length;
 
         if (selfoss.db.enableOffline.value) {
             selfoss.refreshUnread(unreadstats);

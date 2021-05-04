@@ -11,30 +11,34 @@ import NavToolBar from './NavToolBar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as icons from '../icons';
 
-export default function Navigation({ entriesPage, setNavExpanded, navSourcesExpanded, setNavSourcesExpanded }) {
-    const [offlineState, setOfflineState] = React.useState(selfoss.offlineState.value);
-
-    React.useEffect(() => {
-        const offlineStateListener = (event) => {
-            setOfflineState(event.value);
-        };
-
-        // It might happen that value changes between creating the component and setting up the event handlers.
-        offlineStateListener({ value: selfoss.offlineState.value });
-
-        selfoss.offlineState.addEventListener('change', offlineStateListener);
-
-        return () => {
-            selfoss.offlineState.removeEventListener('change', offlineStateListener);
-        };
-    }, []);
-
+export default function Navigation({
+    entriesPage,
+    setNavExpanded,
+    navSourcesExpanded,
+    setNavSourcesExpanded,
+    offlineState,
+    allItemsCount,
+    allItemsOfflineCount,
+    unreadItemsCount,
+    unreadItemsOfflineCount,
+    starredItemsCount,
+    starredItemsOfflineCount,
+}) {
     return (
         <React.Fragment>
             <div id="nav-logo"></div>
             <button accessKey="a" id="nav-mark" onClick={entriesPage !== null ? entriesPage.markVisibleRead : null} disabled={entriesPage === null}>{selfoss.ui._('markread')}</button>
 
-            <NavFilters setNavExpanded={setNavExpanded} />
+            <NavFilters
+                setNavExpanded={setNavExpanded}
+                offlineState={offlineState}
+                allItemsCount={allItemsCount}
+                allItemsOfflineCount={allItemsOfflineCount}
+                unreadItemsCount={unreadItemsCount}
+                unreadItemsOfflineCount={unreadItemsOfflineCount}
+                starredItemsCount={starredItemsCount}
+                starredItemsOfflineCount={starredItemsOfflineCount}
+            />
 
             <div className="separator"><hr /></div>
 
@@ -58,7 +62,10 @@ export default function Navigation({ entriesPage, setNavExpanded, navSourcesExpa
 
             <div className="separator"><hr /></div>
 
-            <NavSearch setNavExpanded={setNavExpanded} />
+            <NavSearch
+                setNavExpanded={setNavExpanded}
+                offlineState={offlineState}
+            />
 
             <NavToolBar setNavExpanded={setNavExpanded} />
         </React.Fragment>
@@ -70,4 +77,11 @@ Navigation.propTypes = {
     setNavExpanded: PropTypes.func.isRequired,
     navSourcesExpanded: PropTypes.bool.isRequired,
     setNavSourcesExpanded: PropTypes.func.isRequired,
+    offlineState: PropTypes.bool.isRequired,
+    allItemsCount: PropTypes.number.isRequired,
+    allItemsOfflineCount: PropTypes.number.isRequired,
+    unreadItemsCount: PropTypes.number.isRequired,
+    unreadItemsOfflineCount: PropTypes.number.isRequired,
+    starredItemsCount: PropTypes.number.isRequired,
+    starredItemsOfflineCount: PropTypes.number.isRequired,
 };

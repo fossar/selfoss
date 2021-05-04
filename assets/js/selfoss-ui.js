@@ -94,7 +94,7 @@ selfoss.ui = {
 
 
     refreshTitle: function(unread) {
-        unread = (typeof unread !== 'undefined') ? unread : selfoss.unreadItemsCount.value;
+        unread = (typeof unread !== 'undefined') ? unread : selfoss.app.state.unreadItemsCount;
 
         if (unread > 0) {
             document.title = selfoss.htmlTitle + ' (' + unread + ')';
@@ -105,12 +105,12 @@ selfoss.ui = {
 
 
     setOffline: function() {
-        selfoss.offlineState.update(true);
+        selfoss.app.setOfflineState(true);
     },
 
 
     setOnline: function() {
-        selfoss.offlineState.update(false);
+        selfoss.app.setOfflineState(false);
     },
 
 
@@ -487,12 +487,13 @@ selfoss.ui = {
                 continue;
             }
 
-            if (kind === 'newest') {
-                kind = 'all';
+            if (kind === 'unread') {
+                selfoss.app.setUnreadItemsOfflineCount(newCount);
+            } else if (kind === 'starred') {
+                selfoss.app.setStarredItemsOfflineCount(newCount);
+            } else if (kind === 'newest') {
+                selfoss.app.setAllItemsOfflineCount(newCount);
             }
-
-            const offlineCount = selfoss[`${kind}ItemsOfflineCount`];
-            offlineCount.update(newCount);
         }
     }
 

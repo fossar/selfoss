@@ -217,12 +217,7 @@ function handleStarredToggle({ event, entry }) {
 
     // update statistics in main menu
     function updateStats(starr) {
-        const starred = selfoss.starredItemsCount.value;
-        if (starr) {
-            selfoss.starredItemsCount.update(starred + 1);
-        } else {
-            selfoss.starredItemsCount.update(starred - 1);
-        }
+        selfoss.app.setStarredItemsCount((starred) => starred + (starr ? 1 : -1));
     }
     updateStats(starr);
 
@@ -261,7 +256,7 @@ function handleReadToggle({ event, entry }) {
     // update statistics in main menue and the currently active tag
     function updateStats(unread) {
         // update all unread counters
-        const unreadstats = selfoss.unreadItemsCount.value;
+        const unreadstats = selfoss.app.state.unreadItemsCount;
         const diff = unread ? -1 : 1;
 
         selfoss.refreshUnread(unreadstats + diff);

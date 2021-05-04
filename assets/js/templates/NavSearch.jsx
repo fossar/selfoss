@@ -47,11 +47,8 @@ function handleRemove({ setActive, searchField, history, location }) {
     history.push(makeEntriesLink(location, { search: '', id: null }));
 }
 
-export default function NavSearch({ setNavExpanded }) {
+export default function NavSearch({ setNavExpanded, offlineState }) {
     const [active, setActive] = React.useState(false);
-    const [offlineState, setOfflineState] = React.useState(
-        selfoss.offlineState.value
-    );
 
     const searchField = React.useRef(null);
     const searchButton = React.useRef(null);
@@ -68,24 +65,6 @@ export default function NavSearch({ setNavExpanded }) {
         // Update the search term when the query string changes.
         setSearchText(oldTerm);
     }, [oldTerm]);
-
-    React.useEffect(() => {
-        const offlineStateListener = (event) => {
-            setOfflineState(event.value);
-        };
-
-        // It might happen that value changes between creating the component and setting up the event handlers.
-        offlineStateListener({ value: selfoss.offlineState.value });
-
-        selfoss.offlineState.addEventListener('change', offlineStateListener);
-
-        return () => {
-            selfoss.offlineState.removeEventListener(
-                'change',
-                offlineStateListener
-            );
-        };
-    }, []);
 
     const termOnKeyUp = React.useCallback(
         (event) =>
@@ -163,4 +142,5 @@ export default function NavSearch({ setNavExpanded }) {
 
 NavSearch.propTypes = {
     setNavExpanded: PropTypes.func.isRequired,
+    offlineState: PropTypes.bool.isRequired,
 };

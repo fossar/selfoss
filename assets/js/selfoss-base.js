@@ -23,12 +23,6 @@ var selfoss = {
     app: null,
 
     /**
-     * whether off-line mode is enabled
-     * @var ValueListenable
-     */
-    offlineState: new ValueListenable(false),
-
-    /**
      * tag repository
      * @var TagsRepository
      */
@@ -39,42 +33,6 @@ var selfoss = {
      * @var SourcesRepository
      */
     sources: new SourcesRepository({}),
-
-    /**
-     * number of unread items
-     * @var ValueListenable
-     */
-    unreadItemsCount: new ValueListenable(0),
-
-    /**
-     * number of unread items available offline
-     * @var ValueListenable
-     */
-    unreadItemsOfflineCount: new ValueListenable(0),
-
-    /**
-     * number of starred items
-     * @var ValueListenable
-     */
-    starredItemsCount: new ValueListenable(0),
-
-    /**
-     * number of starred items available offline
-     * @var ValueListenable
-     */
-    starredItemsOfflineCount: new ValueListenable(0),
-
-    /**
-     * number of all items
-     * @var ValueListenable
-     */
-    allItemsCount: new ValueListenable(0),
-
-    /**
-     * number of all items available offline
-     * @var ValueListenable
-     */
-    allItemsOfflineCount: new ValueListenable(0),
 
     /**
      * login form error
@@ -344,8 +302,8 @@ var selfoss = {
      * @param {Number} new starred stats
      */
     refreshStats: function(all, unread, starred) {
-        selfoss.allItemsCount.update(all);
-        selfoss.starredItemsCount.update(starred);
+        selfoss.app.setAllItemsCount(all);
+        selfoss.app.setStarredItemsCount(starred);
 
         selfoss.refreshUnread(unread);
     },
@@ -358,7 +316,7 @@ var selfoss = {
      * @param {Number} new unread stats
      */
     refreshUnread: function(unread) {
-        selfoss.unreadItemsCount.update(unread);
+        selfoss.app.setUnreadItemsCount(unread);
 
         selfoss.ui.refreshTitle(unread);
     },
@@ -437,7 +395,7 @@ var selfoss = {
         return sourceRequests.refreshAll().then(() => {
             // probe stats and prompt reload to the user
             selfoss.dbOnline.sync().then(function() {
-                if (selfoss.unreadItemsCount.value > 0) {
+                if (selfoss.app.state.unreadItemsCount > 0) {
                     selfoss.ui.showMessage(selfoss.ui._('sources_refreshed'), [
                         {
                             label: selfoss.ui._('reload_list'),

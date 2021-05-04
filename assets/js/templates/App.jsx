@@ -93,14 +93,21 @@ function NotFound() {
     );
 }
 
-function PureApp({ navSourcesExpanded, setNavSourcesExpanded }) {
+function PureApp({
+    navSourcesExpanded,
+    setNavSourcesExpanded,
+    offlineState,
+    allItemsCount,
+    allItemsOfflineCount,
+    unreadItemsCount,
+    unreadItemsOfflineCount,
+    starredItemsCount,
+    starredItemsOfflineCount,
+}) {
     const [navExpanded, setNavExpanded] = React.useState(false);
     const [smartphone, setSmartphone] = React.useState(false);
     const [loginFormError, setLoginFormError] = React.useState(selfoss.loginFormError.value);
-    const [offlineState, setOfflineState] = React.useState(selfoss.offlineState.value);
     const [offlineEnabled, setOfflineEnabled] = React.useState(selfoss.db.enableOffline.value);
-    const [unreadItemsCount, setUnreadItemsCount] = React.useState(selfoss.unreadItemsCount.value);
-    const [unreadItemsOfflineCount, setUnreadItemsOfflineCount] = React.useState(selfoss.unreadItemsOfflineCount.value);
     const [entriesPage, setEntriesPage] = React.useState(null);
 
     React.useEffect(() => {
@@ -115,20 +122,8 @@ function PureApp({ navSourcesExpanded, setNavSourcesExpanded }) {
             setSmartphone(event.matches);
         };
 
-        const offlineStateListener = (event) => {
-            setOfflineState(event.value);
-        };
-
         const offlineEnabledListener = (event) => {
             setOfflineEnabled(event.value);
-        };
-
-        const unreadItemsCountListener = (event) => {
-            setUnreadItemsCount(event.value);
-        };
-
-        const unreadOfflineCountListener = (event) => {
-            setUnreadItemsOfflineCount(event.value);
         };
 
         const smartphoneMediaQuery = window.matchMedia('(max-width: 641px)');
@@ -136,26 +131,17 @@ function PureApp({ navSourcesExpanded, setNavSourcesExpanded }) {
         // It might happen that values change between creating the component and setting up the event handlers.
         loginFormErrorListener({ value: selfoss.loginFormError.value });
         smartphoneListener({ matches: smartphoneMediaQuery.matches });
-        offlineStateListener({ value: selfoss.offlineState.value });
         offlineEnabledListener({ value: selfoss.db.enableOffline.value });
-        unreadItemsCountListener({ value: selfoss.db.enableOffline.value });
-        unreadOfflineCountListener({ value: selfoss.unreadItemsOfflineCount.value });
 
         selfoss.loginFormError.addEventListener('change', loginFormErrorListener);
         smartphoneMediaQuery.addEventListener('change', smartphoneListener);
-        selfoss.offlineState.addEventListener('change', offlineStateListener);
         selfoss.db.enableOffline.addEventListener('change', offlineEnabledListener);
-        selfoss.unreadItemsCount.addEventListener('change', unreadItemsCountListener);
-        selfoss.unreadItemsOfflineCount.addEventListener('change', unreadOfflineCountListener);
 
         return () => {
             destroyShortcuts();
             selfoss.loginFormError.removeEventListener('change', loginFormErrorListener);
             smartphoneMediaQuery.removeEventListener('change', smartphoneListener);
-            selfoss.offlineState.removeEventListener('change', offlineStateListener);
             selfoss.db.enableOffline.removeEventListener('change', offlineEnabledListener);
-            selfoss.unreadItemsCount.removeEventListener('change', unreadItemsCountListener);
-            selfoss.unreadItemsOfflineCount.removeEventListener('change', unreadOfflineCountListener);
         };
     }, []);
 
@@ -226,6 +212,13 @@ function PureApp({ navSourcesExpanded, setNavSourcesExpanded }) {
                                 setNavExpanded={setNavExpanded}
                                 navSourcesExpanded={navSourcesExpanded}
                                 setNavSourcesExpanded={setNavSourcesExpanded}
+                                offlineState={offlineState}
+                                allItemsCount={allItemsCount}
+                                allItemsOfflineCount={allItemsOfflineCount}
+                                unreadItemsCount={unreadItemsCount}
+                                unreadItemsOfflineCount={unreadItemsOfflineCount}
+                                starredItemsCount={starredItemsCount}
+                                starredItemsOfflineCount={starredItemsOfflineCount}
                             />
                         </div>
                     </Collapse>
@@ -267,6 +260,13 @@ function PureApp({ navSourcesExpanded, setNavSourcesExpanded }) {
 PureApp.propTypes = {
     navSourcesExpanded: PropTypes.bool.isRequired,
     setNavSourcesExpanded: PropTypes.func.isRequired,
+    offlineState: PropTypes.bool.isRequired,
+    allItemsCount: PropTypes.number.isRequired,
+    allItemsOfflineCount: PropTypes.number.isRequired,
+    unreadItemsCount: PropTypes.number.isRequired,
+    unreadItemsOfflineCount: PropTypes.number.isRequired,
+    starredItemsCount: PropTypes.number.isRequired,
+    starredItemsOfflineCount: PropTypes.number.isRequired,
 };
 
 export default class App extends React.Component {
@@ -278,9 +278,61 @@ export default class App extends React.Component {
              * and we should fetch info about them in API requests.
              */
             navSourcesExpanded: false,
+
+            /**
+             * whether off-line mode is enabled
+             */
+            offlineState: false,
+
+            /**
+             * number of unread items
+             */
+            unreadItemsCount: 0,
+
+            /**
+             * number of unread items available offline
+             */
+            unreadItemsOfflineCount: 0,
+
+            /**
+             * number of starred items
+             */
+            starredItemsCount: 0,
+
+            /**
+             * number of starred items available offline
+             */
+            starredItemsOfflineCount: 0,
+
+            /**
+             * number of all items
+             */
+            allItemsCount: 0,
+
+            /**
+             * number of all items available offline
+             */
+            allItemsOfflineCount: 0,
         };
 
+        this.setOfflineState = this.setOfflineState.bind(this);
         this.setNavSourcesExpanded = this.setNavSourcesExpanded.bind(this);
+        this.setUnreadItemsCount = this.setUnreadItemsCount.bind(this);
+        this.setUnreadItemsOfflineCount = this.setUnreadItemsOfflineCount.bind(this);
+        this.setStarredItemsCount = this.setStarredItemsCount.bind(this);
+        this.setStarredItemsOfflineCount = this.setStarredItemsOfflineCount.bind(this);
+        this.setAllItemsCount = this.setAllItemsCount.bind(this);
+        this.setAllItemsOfflineCount = this.setAllItemsOfflineCount.bind(this);
+    }
+
+    setOfflineState(offlineState) {
+        if (typeof offlineState === 'function') {
+            this.setState({
+                offlineState: offlineState(this.state.offlineState)
+            });
+        } else {
+            this.setState({ offlineState });
+        }
     }
 
     setNavSourcesExpanded(navSourcesExpanded) {
@@ -293,11 +345,78 @@ export default class App extends React.Component {
         }
     }
 
+    setUnreadItemsCount(unreadItemsCount) {
+        if (typeof unreadItemsCount === 'function') {
+            this.setState({
+                unreadItemsCount: unreadItemsCount(this.state.unreadItemsCount)
+            });
+        } else {
+            this.setState({ unreadItemsCount });
+        }
+    }
+
+    setUnreadItemsOfflineCount(unreadItemsOfflineCount) {
+        if (typeof unreadItemsOfflineCount === 'function') {
+            this.setState({
+                unreadItemsOfflineCount: unreadItemsOfflineCount(this.state.unreadItemsOfflineCount)
+            });
+        } else {
+            this.setState({ unreadItemsOfflineCount });
+        }
+    }
+
+    setStarredItemsCount(starredItemsCount) {
+        if (typeof starredItemsCount === 'function') {
+            this.setState({
+                starredItemsCount: starredItemsCount(this.state.starredItemsCount)
+            });
+        } else {
+            this.setState({ starredItemsCount });
+        }
+    }
+
+    setStarredItemsOfflineCount(starredItemsOfflineCount) {
+        if (typeof starredItemsOfflineCount === 'function') {
+            this.setState({
+                starredItemsOfflineCount: starredItemsOfflineCount(this.state.starredItemsOfflineCount)
+            });
+        } else {
+            this.setState({ starredItemsOfflineCount });
+        }
+    }
+
+    setAllItemsCount(allItemsCount) {
+        if (typeof allItemsCount === 'function') {
+            this.setState({
+                allItemsCount: allItemsCount(this.state.allItemsCount)
+            });
+        } else {
+            this.setState({ allItemsCount });
+        }
+    }
+
+    setAllItemsOfflineCount(allItemsOfflineCount) {
+        if (typeof allItemsOfflineCount === 'function') {
+            this.setState({
+                allItemsOfflineCount: allItemsOfflineCount(this.state.allItemsOfflineCount)
+            });
+        } else {
+            this.setState({ allItemsOfflineCount });
+        }
+    }
+
     render() {
         return (
             <PureApp
                 navSourcesExpanded={this.state.navSourcesExpanded}
                 setNavSourcesExpanded={this.setNavSourcesExpanded}
+                offlineState={this.state.offlineState}
+                allItemsCount={this.state.allItemsCount}
+                allItemsOfflineCount={this.state.allItemsOfflineCount}
+                unreadItemsCount={this.state.unreadItemsCount}
+                unreadItemsOfflineCount={this.state.unreadItemsOfflineCount}
+                starredItemsCount={this.state.starredItemsCount}
+                starredItemsOfflineCount={this.state.starredItemsOfflineCount}
             />
         );
     }

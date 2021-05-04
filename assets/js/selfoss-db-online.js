@@ -195,7 +195,7 @@ selfoss.dbOnline = {
                 }
 
                 if (selfoss.entriesPage && selfoss.entriesPage.getActiveFilter() === FilterType.UNREAD) {
-                    const unreadCount = 'stats' in data ? data.stats.unread :  selfoss.unreadItemsCount.value;
+                    const unreadCount = 'stats' in data ? data.stats.unread :  selfoss.app.state.unreadItemsCount;
 
                     if (unreadCount > selfoss.entriesPage.state.entries.filter(({ unread }) => unread == 1).length) {
                         selfoss.entriesPage.setHasMore(true);

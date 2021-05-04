@@ -8,72 +8,17 @@ import Collapse from '@kunukn/react-collapse';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as icons from '../icons';
 
-export default function NavFilters({ setNavExpanded }) {
+export default function NavFilters({
+    setNavExpanded,
+    offlineState,
+    allItemsCount,
+    allItemsOfflineCount,
+    unreadItemsCount,
+    unreadItemsOfflineCount,
+    starredItemsCount,
+    starredItemsOfflineCount,
+}) {
     const [expanded, setExpanded] = React.useState(true);
-    const [offlineState, setOfflineState] = React.useState(selfoss.offlineState.value);
-    const [allItemsCount, setallItemsCount] = React.useState(selfoss.allItemsCount.value);
-    const [allItemsOfflineCount, setallItemsOfflineCount] = React.useState(selfoss.allItemsOfflineCount.value);
-    const [unreadItemsCount, setUnreadItemsCount] = React.useState(selfoss.unreadItemsCount.value);
-    const [unreadItemsOfflineCount, setUnreadItemsOfflineCount] = React.useState(selfoss.unreadItemsOfflineCount.value);
-    const [starredItemsCount, setStarredItemsCount] = React.useState(selfoss.starredItemsCount.value);
-    const [starredItemsOfflineCount, setStarredItemsOfflineCount] = React.useState(selfoss.starredItemsOfflineCount.value);
-
-    React.useEffect(() => {
-        const offlineStateListener = (event) => {
-            setOfflineState(event.value);
-        };
-
-        const allCountListener = (event) => {
-            setallItemsCount(event.value);
-        };
-
-        const allOfflineCountListener = (event) => {
-            setallItemsOfflineCount(event.value);
-        };
-
-        const unreadCountListener = (event) => {
-            setUnreadItemsCount(event.value);
-        };
-
-        const unreadOfflineCountListener = (event) => {
-            setUnreadItemsOfflineCount(event.value);
-        };
-
-        const starredCountListener = (event) => {
-            setStarredItemsCount(event.value);
-        };
-
-        const starredOfflineCountListener = (event) => {
-            setStarredItemsOfflineCount(event.value);
-        };
-
-        // It might happen that filter changes between creating the component and setting up the event handlers.
-        offlineStateListener({ value: selfoss.offlineState.value });
-        allCountListener({ value: selfoss.allItemsCount.value });
-        allOfflineCountListener({ value: selfoss.allItemsOfflineCount.value });
-        unreadCountListener({ value: selfoss.unreadItemsCount.value });
-        unreadOfflineCountListener({ value: selfoss.unreadItemsOfflineCount.value });
-        starredCountListener({ value: selfoss.starredItemsCount.value });
-        starredOfflineCountListener({ value: selfoss.starredItemsOfflineCount.value });
-
-        selfoss.offlineState.addEventListener('change', offlineStateListener);
-        selfoss.allItemsCount.addEventListener('change', allCountListener);
-        selfoss.allItemsOfflineCount.addEventListener('change', allOfflineCountListener);
-        selfoss.unreadItemsCount.addEventListener('change', unreadCountListener);
-        selfoss.unreadItemsOfflineCount.addEventListener('change', unreadOfflineCountListener);
-        selfoss.starredItemsCount.addEventListener('change', starredCountListener);
-        selfoss.starredItemsOfflineCount.addEventListener('change', starredOfflineCountListener);
-
-        return () => {
-            selfoss.offlineState.removeEventListener('change', offlineStateListener);
-            selfoss.allItemsCount.removeEventListener('change', allCountListener);
-            selfoss.allItemsOfflineCount.removeEventListener('change', allOfflineCountListener);
-            selfoss.unreadItemsCount.removeEventListener('change', unreadCountListener);
-            selfoss.unreadItemsOfflineCount.removeEventListener('change', unreadOfflineCountListener);
-            selfoss.starredItemsCount.removeEventListener('change', starredCountListener);
-            selfoss.starredItemsOfflineCount.removeEventListener('change', starredOfflineCountListener);
-        };
-    }, []);
 
     const location = useLocation();
     // useParams does not seem to work.
@@ -126,4 +71,11 @@ export default function NavFilters({ setNavExpanded }) {
 
 NavFilters.propTypes = {
     setNavExpanded: PropTypes.func.isRequired,
+    offlineState: PropTypes.bool.isRequired,
+    allItemsCount: PropTypes.number.isRequired,
+    allItemsOfflineCount: PropTypes.number.isRequired,
+    unreadItemsCount: PropTypes.number.isRequired,
+    unreadItemsOfflineCount: PropTypes.number.isRequired,
+    starredItemsCount: PropTypes.number.isRequired,
+    starredItemsOfflineCount: PropTypes.number.isRequired,
 };
