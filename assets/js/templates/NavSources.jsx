@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link, useLocation, useRouteMatch } from 'react-router-dom';
+import { usePrevious } from 'rooks';
 import classNames from 'classnames';
 import { unescape } from 'html-escaper';
 import { makeEntriesLink, ENTRIES_ROUTE_PATTERN } from '../helpers/uri';
@@ -10,7 +11,7 @@ import { LoadingState } from '../requests/LoadingState';
 import * as sourceRequests from '../requests/sources';
 import * as icons from '../icons';
 
-function handleTitleClick(setExpanded, [sourcesState, setSourcesState]) {
+function handleTitleClick({ setExpanded, sourcesState, setSourcesState, setSources }) {
     if (!selfoss.db.online) {
         return;
     }
@@ -18,8 +19,8 @@ function handleTitleClick(setExpanded, [sourcesState, setSourcesState]) {
     setExpanded((expanded) => {
         if (!expanded && sourcesState === LoadingState.INITIAL) {
             sourceRequests.getStats().then((data) => {
+                setSources(data);
                 setSourcesState(LoadingState.SUCCESS);
-                selfoss.sources.update(data);
             }).catch(function(error) {
                 setSourcesState(LoadingState.FAILURE);
                 selfoss.ui.showError(selfoss.ui._('error_loading_stats') + ' ' + error.message);
@@ -49,31 +50,15 @@ Source.propTypes = {
     collapseNav: PropTypes.func.isRequired,
 };
 
-export default function NavSources({ sourcesRepository, setNavExpanded, navSourcesExpanded, setNavSourcesExpanded }) {
-    const [sourcesState, setSourcesState] = React.useState(sourcesRepository.state);
-    const [sources, setSources] = React.useState(sourcesRepository.sources);
-
-    React.useEffect(() => {
-        const sourcesStateListener = (event) => {
-            setSourcesState(event.state);
-        };
-        const sourcesListener = (event) => {
-            setSources(event.sources);
-        };
-
-        // It might happen that filter changes between creating the component and setting up the event handlers.
-        sourcesStateListener({ state: sourcesRepository.state });
-        sourcesListener({ sources: sourcesRepository.sources });
-
-        sourcesRepository.addEventListener('statechange', sourcesStateListener);
-        sourcesRepository.addEventListener('change', sourcesListener);
-
-        return () => {
-            sourcesRepository.removeEventListener('statechange', sourcesStateListener);
-            sourcesRepository.removeEventListener('change', sourcesListener);
-        };
-    }, [sourcesRepository]);
-
+export default function NavSources({
+    setNavExpanded,
+    navSourcesExpanded,
+    setNavSourcesExpanded,
+    sourcesState,
+    setSourcesState,
+    sources,
+    setSources,
+}) {
     const reallyExpanded = navSourcesExpanded && sourcesState === LoadingState.SUCCESS;
 
     // useParams does not seem to work.
@@ -82,14 +67,21 @@ export default function NavSources({ sourcesRepository, setNavExpanded, navSourc
     const currentSource = params.category?.startsWith('source-') ? parseInt(params.category.replace(/^source-/, ''), 10) : null;
 
     const toggleExpanded = React.useCallback(
-        () => handleTitleClick(setNavSourcesExpanded, [sourcesState, setSourcesState]),
-        [setNavSourcesExpanded, sourcesState]
+        () => handleTitleClick({ setExpanded: setNavSourcesExpanded, sourcesState, setSourcesState, setSources }),
+        [setNavSourcesExpanded, sourcesState, setSourcesState, setSources]
     );
 
     const collapseNav = React.useCallback(
         () => setNavExpanded(false),
         [setNavExpanded]
     );
+
+    const previousSourcesState = usePrevious(sourcesState);
+    React.useEffect(() => {
+        if (previousSourcesState === LoadingState.INITIAL && sourcesState === LoadingState.SUCCESS) {
+            setNavSourcesExpanded(true);
+        }
+    }, [previousSourcesState, sourcesState, setNavSourcesExpanded]);
 
     return (
         <React.Fragment>
@@ -111,8 +103,11 @@ export default function NavSources({ sourcesRepository, setNavExpanded, navSourc
 }
 
 NavSources.propTypes = {
-    sourcesRepository: PropTypes.object.isRequired,
     setNavExpanded: PropTypes.func.isRequired,
     navSourcesExpanded: PropTypes.bool.isRequired,
     setNavSourcesExpanded: PropTypes.func.isRequired,
+    sourcesState: PropTypes.oneOf(Object.values(LoadingState)).isRequired,
+    setSourcesState: PropTypes.func.isRequired,
+    sources: PropTypes.arrayOf(PropTypes.object).isRequired,
+    setSources: PropTypes.func.isRequired,
 };

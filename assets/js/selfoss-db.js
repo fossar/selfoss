@@ -73,12 +73,12 @@ selfoss.db = {
 
 
     isValidTag: function(name) {
-        return selfoss.tags.tags.find((tag) => tag.tag === name) !== undefined;
+        return selfoss.app.state.tags.length === 0 || selfoss.app.state.tags.find((tag) => tag.tag === name) !== undefined;
     },
 
 
     isValidSource: function(id) {
-        return selfoss.sources.sources.find((source) => source.id === id) !== undefined;
+        return selfoss.app.state.sources.length === 0 || selfoss.app.state.sources.find((source) => source.id === id) !== undefined;
     },
 
 

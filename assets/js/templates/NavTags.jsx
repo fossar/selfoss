@@ -89,9 +89,8 @@ Tag.propTypes = {
     collapseNav: PropTypes.func.isRequired,
 };
 
-export default function NavTags({ tagsRepository, setNavExpanded }) {
+export default function NavTags({ setNavExpanded, tags }) {
     const [expanded, setExpanded] = React.useState(true);
-    const [tags, setTags] = React.useState(tagsRepository.tags);
 
     // useParams does not seem to work.
     const match = useRouteMatch(ENTRIES_ROUTE_PATTERN);
@@ -99,21 +98,6 @@ export default function NavTags({ tagsRepository, setNavExpanded }) {
 
     const currentAllTags = params.category === 'all';
     const currentTag = params.category?.startsWith('tag-') ? params.category.replace(/^tag-/, '') : null;
-
-    React.useEffect(() => {
-        const tagsListener = (event) => {
-            setTags(event.tags);
-        };
-
-        // It might happen that filter changes between creating the component and setting up the event handlers.
-        tagsListener({ tags: tagsRepository.tags });
-
-        tagsRepository.addEventListener('change', tagsListener);
-
-        return () => {
-            tagsRepository.removeEventListener('change', tagsListener);
-        };
-    }, [tagsRepository]);
 
     const toggleExpanded = React.useCallback(
         () => setExpanded((expanded) => !expanded),
@@ -150,6 +134,6 @@ export default function NavTags({ tagsRepository, setNavExpanded }) {
 }
 
 NavTags.propTypes = {
-    tagsRepository: PropTypes.object.isRequired,
     setNavExpanded: PropTypes.func.isRequired,
+    tags: PropTypes.arrayOf(PropTypes.object).isRequired,
 };

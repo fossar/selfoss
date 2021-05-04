@@ -46,7 +46,7 @@ function reloadList({ fetchParams, append = false, waitForSync = true, entryId =
         }
 
         setLoadingState(LoadingState.LOADING);
-        reloader(fetchParams).then(({ entries, hasMore }) => {
+        return reloader(fetchParams).then(({ entries, hasMore }) => {
             setLoadingState(LoadingState.SUCCESS);
             selfoss.entriesPage.setHasMore(hasMore);
 
@@ -87,9 +87,9 @@ function reloadList({ fetchParams, append = false, waitForSync = true, entryId =
 
     if (waitForSync && selfoss.dbOnline.syncing.promise) {
         selfoss.db.userWaiting = true;
-        selfoss.dbOnline.syncing.promise.finally(reload);
+        return selfoss.dbOnline.syncing.promise.finally(reload);
     } else {
-        reload();
+        return reload();
     }
 }
 
@@ -176,6 +176,14 @@ export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, s
             fetchParams,
             // We do not want to focus the entry on successive loads.
             entryId: loadingState == LoadingState.INITIAL ? params.id : undefined
+        }).then(() => {
+            if (fetchParams.tag !== null && !selfoss.db.isValidTag(fetchParams.tag)) {
+                selfoss.ui.showError(selfoss.ui._('error_unknown_tag') + ' ' + fetchParams.tag);
+            }
+
+            if (fetchParams.source !== null && !selfoss.db.isValidSource(fetchParams.source)) {
+                selfoss.ui.showError(selfoss.ui._('error_unknown_source') + ' ' + fetchParams.source);
+            }
         });
         setShouldUpdateItems(false);
 

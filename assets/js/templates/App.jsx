@@ -19,6 +19,7 @@ import SearchList from './SearchList';
 import makeShortcuts from '../shortcuts';
 import * as icons from '../icons';
 import { ENTRIES_ROUTE_PATTERN } from '../helpers/uri';
+import { LoadingState } from '../requests/LoadingState';
 
 
 function handleNavToggle({ event, setNavExpanded }) {
@@ -94,6 +95,11 @@ function PureApp({
     loginFormError,
     setLoginFormError,
     globalMessage,
+    sourcesState,
+    setSourcesState,
+    sources,
+    setSources,
+    tags,
 }) {
     const [navExpanded, setNavExpanded] = React.useState(false);
     const [smartphone, setSmartphone] = React.useState(false);
@@ -202,6 +208,11 @@ function PureApp({
                                 unreadItemsOfflineCount={unreadItemsOfflineCount}
                                 starredItemsCount={starredItemsCount}
                                 starredItemsOfflineCount={starredItemsOfflineCount}
+                                sourcesState={sourcesState}
+                                setSourcesState={setSourcesState}
+                                sources={sources}
+                                setSources={setSources}
+                                tags={tags}
                             />
                         </div>
                     </Collapse>
@@ -253,12 +264,29 @@ PureApp.propTypes = {
     loginFormError: PropTypes.string.isRequired,
     setLoginFormError: PropTypes.func.isRequired,
     globalMessage: nullable(PropTypes.object).isRequired,
+    sourcesState: PropTypes.oneOf(Object.values(LoadingState)).isRequired,
+    setSourcesState: PropTypes.func.isRequired,
+    sources: PropTypes.arrayOf(PropTypes.object).isRequired,
+    setSources: PropTypes.func.isRequired,
+    tags: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            /**
+             * tag repository
+             */
+            tags: [],
+            tagsState: LoadingState.INITIAL,
+
+            /**
+             * source repository
+             */
+            sources: [],
+            sourcesState: LoadingState.INITIAL,
+
             /**
              * true when sources in the sidebar are expanded
              * and we should fetch info about them in API requests.
@@ -312,6 +340,10 @@ export default class App extends React.Component {
             globalMessage: null,
         };
 
+        this.setTags = this.setTags.bind(this);
+        this.setTagsState = this.setTagsState.bind(this);
+        this.setSources = this.setSources.bind(this);
+        this.setSourcesState = this.setSourcesState.bind(this);
         this.setOfflineState = this.setOfflineState.bind(this);
         this.setNavSourcesExpanded = this.setNavSourcesExpanded.bind(this);
         this.setUnreadItemsCount = this.setUnreadItemsCount.bind(this);
@@ -322,6 +354,46 @@ export default class App extends React.Component {
         this.setAllItemsOfflineCount = this.setAllItemsOfflineCount.bind(this);
         this.setLoginFormError = this.setLoginFormError.bind(this);
         this.setGlobalMessage = this.setGlobalMessage.bind(this);
+    }
+
+    setTags(tags) {
+        if (typeof tags === 'function') {
+            this.setState({
+                tags: tags(this.state.tags)
+            });
+        } else {
+            this.setState({ tags });
+        }
+    }
+
+    setTagsState(tagsState) {
+        if (typeof tagsState === 'function') {
+            this.setState({
+                tagsState: tagsState(this.state.tagsState)
+            });
+        } else {
+            this.setState({ tagsState });
+        }
+    }
+
+    setSources(sources) {
+        if (typeof sources === 'function') {
+            this.setState({
+                sources: sources(this.state.sources)
+            });
+        } else {
+            this.setState({ sources });
+        }
+    }
+
+    setSourcesState(sourcesState) {
+        if (typeof sourcesState === 'function') {
+            this.setState({
+                sourcesState: sourcesState(this.state.sourcesState)
+            });
+        } else {
+            this.setState({ sourcesState });
+        }
     }
 
     setOfflineState(offlineState) {
@@ -439,6 +511,11 @@ export default class App extends React.Component {
                 loginFormError={this.state.loginFormError}
                 setLoginFormError={this.setLoginFormError}
                 globalMessage={this.state.globalMessage}
+                sourcesState={this.state.sourcesState}
+                setSourcesState={this.setSourcesState}
+                sources={this.state.sources}
+                setSources={this.setSources}
+                tags={this.state.tags}
             />
         );
     }

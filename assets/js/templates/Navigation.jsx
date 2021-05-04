@@ -10,6 +10,7 @@ import NavTags from './NavTags';
 import NavToolBar from './NavToolBar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as icons from '../icons';
+import { LoadingState } from '../requests/LoadingState';
 
 export default function Navigation({
     entriesPage,
@@ -23,6 +24,11 @@ export default function Navigation({
     unreadItemsOfflineCount,
     starredItemsCount,
     starredItemsOfflineCount,
+    sourcesState,
+    setSourcesState,
+    sources,
+    setSources,
+    tags,
 }) {
     return (
         <React.Fragment>
@@ -43,12 +49,15 @@ export default function Navigation({
             <div className="separator"><hr /></div>
 
             <div className={classNames({'nav-ts-wrapper': true, offline: offlineState, online: !offlineState})}>
-                <NavTags tagsRepository={selfoss.tags} setNavExpanded={setNavExpanded} />
+                <NavTags tags={tags} setNavExpanded={setNavExpanded} />
                 <NavSources
-                    sourcesRepository={selfoss.sources}
                     setNavExpanded={setNavExpanded}
                     navSourcesExpanded={navSourcesExpanded}
                     setNavSourcesExpanded={setNavSourcesExpanded}
+                    sourcesState={sourcesState}
+                    setSourcesState={setSourcesState}
+                    sources={sources}
+                    setSources={setSources}
                 />
             </div>
 
@@ -84,4 +93,9 @@ Navigation.propTypes = {
     unreadItemsOfflineCount: PropTypes.number.isRequired,
     starredItemsCount: PropTypes.number.isRequired,
     starredItemsOfflineCount: PropTypes.number.isRequired,
+    sourcesState: PropTypes.oneOf(Object.values(LoadingState)).isRequired,
+    setSourcesState: PropTypes.func.isRequired,
+    sources: PropTypes.arrayOf(PropTypes.object).isRequired,
+    setSources: PropTypes.func.isRequired,
+    tags: PropTypes.arrayOf(PropTypes.object).isRequired,
 };

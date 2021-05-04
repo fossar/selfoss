@@ -6,6 +6,7 @@ import classNames from 'classnames';
 import pick from 'lodash.pick';
 import SourceParam from './SourceParam';
 import * as sourceRequests from '../requests/sources';
+import { LoadingState } from '../requests/LoadingState';
 
 // cancel source editing
 function handleCancel({ event, source, setSources, setEditedSource }) {
@@ -83,8 +84,10 @@ function handleSave({
                 setEditedSource(null);
 
                 // Update tags and sources for navigation.
-                selfoss.tags.update(response.tags);
-                selfoss.sources.update(response.sources);
+                selfoss.app.setTags(response.tags);
+                selfoss.app.setTagsState(LoadingState.SUCCESS);
+                selfoss.app.setSources(response.sources);
+                selfoss.app.setSourcesState(LoadingState.SUCCESS);
 
                 // Update sources in this page’s model.
                 setSources((sources) =>
@@ -148,8 +151,8 @@ function handleDelete({
 
             // Reload tags and remove source from navigation.
             selfoss.reloadTags();
-            selfoss.sources.update(
-                selfoss.sources.sources.filter((source) => source.id !== id)
+            selfoss.app.setSources((sources) =>
+                sources.filter((source) => source.id !== id)
             );
         })
         .catch((error) => {

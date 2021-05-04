@@ -178,11 +178,13 @@ selfoss.dbOnline = {
             }
 
             if ('tags' in data) {
-                selfoss.tags.update(data.tags);
+                selfoss.app.setTags(data.tags);
+                selfoss.app.setTagsState(LoadingState.SUCCESS);
             }
 
             if ('sources' in data) {
-                selfoss.sources.update(data.sources);
+                selfoss.app.setSources(data.sources);
+                selfoss.app.setSourcesState(LoadingState.SUCCESS);
             }
 
             if ('stats' in data && data.stats.unread > 0 &&
@@ -249,10 +251,12 @@ selfoss.dbOnline = {
             selfoss.refreshStats(data.all, data.unread, data.starred);
 
             // update tags
-            selfoss.tags.update(data.tags);
+            selfoss.app.setTags(data.tags);
+            selfoss.app.setTagsState(LoadingState.SUCCESS);
 
             if (selfoss.app.state.navSourcesExpanded) {
-                selfoss.sources.update(data.sources);
+                selfoss.app.setSources(data.sources);
+                selfoss.app.setSourcesState(LoadingState.SUCCESS);
             }
 
             return {

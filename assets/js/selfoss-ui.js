@@ -52,30 +52,6 @@ selfoss.ui = {
             document.body.appendChild(script);
         }
 
-
-        selfoss.tags.addEventListener('change', () => {
-            if (selfoss.entriesPage) {
-                const tag = selfoss.entriesPage.getActiveTag();
-                if (tag !== null && !selfoss.db.isValidTag(tag)) {
-                    selfoss.ui.showError(selfoss.ui._('error_unknown_tag') + ' ' + tag);
-                }
-            }
-        });
-
-        selfoss.sources.addEventListener('change', () => {
-            if (selfoss.entriesPage) {
-                const source = selfoss.entriesPage.getActiveSource();
-                if (source !== null && !selfoss.db.isValidSource(source)) {
-                    selfoss.ui.showError(selfoss.ui._('error_unknown_source') + ' ' + source);
-                }
-            }
-
-            selfoss.sources.setState(LoadingState.SUCCESS);
-            if (document.querySelector('#nav-sources-title').classList.contains('nav-sources-collapsed')) {
-                document.querySelector('#nav-sources-title').click(); // expand sources nav
-            }
-        });
-
         function loggedinChanged(event) {
             document.body.classList.toggle('loggedin', event.value);
         }
@@ -439,27 +415,28 @@ selfoss.ui = {
 
 
     refreshTagSourceUnread: function(tagCounts, sourceCounts, diff = true) {
-        const tags = selfoss.tags.tags.map((tag) => {
-            if (!(tag.tag in tagCounts)) {
-                return tag;
-            }
+        selfoss.app.setTags((tags) =>
+            tags.map((tag) => {
+                if (!(tag.tag in tagCounts)) {
+                    return tag;
+                }
 
-            let unread;
-            if (diff) {
-                unread = tag.unread + tagCounts[tag.tag];
-            } else {
-                unread = tagCounts[tag.tag];
-            }
+                let unread;
+                if (diff) {
+                    unread = tag.unread + tagCounts[tag.tag];
+                } else {
+                    unread = tagCounts[tag.tag];
+                }
 
-            return {
-                ...tag,
-                unread
-            };
-        });
-        selfoss.tags.update(tags);
+                return {
+                    ...tag,
+                    unread
+                };
+            })
+        );
 
-        if (selfoss.sources.sources.length > 0) {
-            const sources = selfoss.sources.sources.map((source) => {
+        selfoss.app.setSources((sources) =>
+            sources.map((source) => {
                 if (!(source.id in sourceCounts)) {
                     return source;
                 }
@@ -475,9 +452,8 @@ selfoss.ui = {
                     ...source,
                     unread
                 };
-            });
-            selfoss.sources.update(sources);
-        }
+            })
+        );
     },
 
 

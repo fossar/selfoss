@@ -1,5 +1,3 @@
-import { TagsRepository } from './model/TagsRepository';
-import { SourcesRepository } from './model/SourcesRepository';
 import { getInstanceInfo, login, logout } from './requests/common';
 import * as sourceRequests from './requests/sources';
 import { getAllTags } from './requests/tags';
@@ -21,18 +19,6 @@ var selfoss = {
      * @var App
      */
     app: null,
-
-    /**
-     * tag repository
-     * @var TagsRepository
-     */
-    tags: new TagsRepository({}),
-
-    /**
-     * source repository
-     * @var SourcesRepository
-     */
-    sources: new SourcesRepository({}),
 
     /**
      * instance of the currently running XHR that is used to reload the items list
@@ -316,13 +302,13 @@ var selfoss = {
      * @return void
      */
     reloadTags: function() {
-        selfoss.tags.setState(LoadingState.LOADING);
+        selfoss.app.setTagsState(LoadingState.LOADING);
 
         getAllTags().then((data) => {
-            selfoss.tags.update(data);
-            selfoss.tags.setState(LoadingState.SUCCESS);
+            selfoss.app.setTags(data);
+            selfoss.app.setTagsState(LoadingState.SUCCESS);
         }).catch((error) => {
-            selfoss.tags.setState(LoadingState.FAILURE);
+            selfoss.app.setTagsState(LoadingState.FAILURE);
             selfoss.ui.showError(selfoss.ui._('error_load_tags') + ' ' + error.message);
         });
     },
