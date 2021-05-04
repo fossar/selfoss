@@ -36,6 +36,7 @@
     "eslint": "^7.17.0",
     "eslint-plugin-react": "^7.20.6",
     "eslint-plugin-react-hooks": "^4.2.0",
+    "eslint-plugin-react-perf": "^3.3.0",
     "parcel": "^2.0.0-nightly.644",
     "parcel-config-precache-manifest": "^0.0.4",
     "prettier": "^2.0.0",
