@@ -13,7 +13,8 @@ function ColorChooser({tag}) {
 
     React.useLayoutEffect(() => {
         // init colorpicker
-        $(colorChooser.current).spectrum({
+        const picker = colorChooser.current;
+        $(picker).spectrum({
             showPaletteOnly: true,
             color: 'blanchedalmond',
             palette: [
@@ -33,7 +34,7 @@ function ColorChooser({tag}) {
         });
 
         return () => {
-            $(colorChooser.current).spectrum('destroy');
+            $(picker).spectrum('destroy');
         };
     }, [tag.tag]);
 

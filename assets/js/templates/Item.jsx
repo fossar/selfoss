@@ -425,6 +425,7 @@ export default function Item({ item, selected, expanded, setNavExpanded }) {
                         key={tag}
                         tag={tag}
                         color={color}
+                        location={location}
                     />
                 )}
             </span>
