@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import nullable from 'prop-types-nullable';
 import {
     Switch,
     Route,
@@ -29,23 +30,21 @@ function handleNavToggle({ event, setNavExpanded }) {
 }
 
 function dismissMessage(event) {
-    selfoss.globalMessage.update(null);
+    selfoss.app.setGlobalMessage(null);
     event.stopPropagation();
 }
 
 /**
  * Global message bar for showing errors/information at the top of the page.
- * It listens to selfoss.globalMessage ValueNotifier and updates/shows/hides itself as necessary
+ * It watches globalMessage and updates/shows/hides itself as necessary
  * when the value changes.
  */
-function Message() {
-    const [message, setMessage] = React.useState(null);
-
+function Message({ message }) {
     // Whenever message changes, dismiss it after 15 seconds.
     React.useEffect(() => {
         if (message !== null) {
             const dismissTimeout = window.setTimeout(function() {
-                selfoss.globalMessage.update(null);
+                selfoss.app.setGlobalMessage(null);
             }, 15000);
 
             return () => {
@@ -54,21 +53,6 @@ function Message() {
             };
         }
     }, [message]);
-
-    React.useEffect(() => {
-        const messageListener = (event) => {
-            setMessage(event.value);
-        };
-
-        // It might happen that values change between creating the component and setting up the event handlers.
-        messageListener({ value: selfoss.globalMessage.value });
-
-        selfoss.globalMessage.addEventListener('change', messageListener);
-
-        return () => {
-            selfoss.globalMessage.removeEventListener('change', messageListener);
-        };
-    }, []);
 
     return (
         message !== null ?
@@ -83,6 +67,10 @@ function Message() {
             : null
     );
 }
+
+Message.propTypes = {
+    message: nullable(PropTypes.object).isRequired,
+};
 
 function NotFound() {
     const location = useLocation();
@@ -103,20 +91,18 @@ function PureApp({
     unreadItemsOfflineCount,
     starredItemsCount,
     starredItemsOfflineCount,
+    loginFormError,
+    setLoginFormError,
+    globalMessage,
 }) {
     const [navExpanded, setNavExpanded] = React.useState(false);
     const [smartphone, setSmartphone] = React.useState(false);
-    const [loginFormError, setLoginFormError] = React.useState(selfoss.loginFormError.value);
     const [offlineEnabled, setOfflineEnabled] = React.useState(selfoss.db.enableOffline.value);
     const [entriesPage, setEntriesPage] = React.useState(null);
 
     React.useEffect(() => {
         // init shortcut handler
         const destroyShortcuts = makeShortcuts();
-
-        const loginFormErrorListener = (event) => {
-            setLoginFormError(event.value);
-        };
 
         const smartphoneListener = (event) => {
             setSmartphone(event.matches);
@@ -129,17 +115,14 @@ function PureApp({
         const smartphoneMediaQuery = window.matchMedia('(max-width: 641px)');
 
         // It might happen that values change between creating the component and setting up the event handlers.
-        loginFormErrorListener({ value: selfoss.loginFormError.value });
         smartphoneListener({ matches: smartphoneMediaQuery.matches });
         offlineEnabledListener({ value: selfoss.db.enableOffline.value });
 
-        selfoss.loginFormError.addEventListener('change', loginFormErrorListener);
         smartphoneMediaQuery.addEventListener('change', smartphoneListener);
         selfoss.db.enableOffline.addEventListener('change', offlineEnabledListener);
 
         return () => {
             destroyShortcuts();
-            selfoss.loginFormError.removeEventListener('change', loginFormErrorListener);
             smartphoneMediaQuery.removeEventListener('change', smartphoneListener);
             selfoss.db.enableOffline.removeEventListener('change', offlineEnabledListener);
         };
@@ -172,7 +155,7 @@ function PureApp({
 
     return (
         <React.Fragment>
-            <Message />
+            <Message message={globalMessage} />
 
             <Switch>
                 <Route path="/login">
@@ -267,6 +250,9 @@ PureApp.propTypes = {
     unreadItemsOfflineCount: PropTypes.number.isRequired,
     starredItemsCount: PropTypes.number.isRequired,
     starredItemsOfflineCount: PropTypes.number.isRequired,
+    loginFormError: PropTypes.string.isRequired,
+    setLoginFormError: PropTypes.func.isRequired,
+    globalMessage: nullable(PropTypes.object).isRequired,
 };
 
 export default class App extends React.Component {
@@ -313,6 +299,17 @@ export default class App extends React.Component {
              * number of all items available offline
              */
             allItemsOfflineCount: 0,
+
+            /**
+             * login form error
+             */
+            loginFormError: '',
+
+            /**
+             * Global message popup.
+             * @var ?Object.{message: string, actions: Array.<Object.{label: string, callback: function>}, isError: bool}
+             */
+            globalMessage: null,
         };
 
         this.setOfflineState = this.setOfflineState.bind(this);
@@ -323,6 +320,8 @@ export default class App extends React.Component {
         this.setStarredItemsOfflineCount = this.setStarredItemsOfflineCount.bind(this);
         this.setAllItemsCount = this.setAllItemsCount.bind(this);
         this.setAllItemsOfflineCount = this.setAllItemsOfflineCount.bind(this);
+        this.setLoginFormError = this.setLoginFormError.bind(this);
+        this.setGlobalMessage = this.setGlobalMessage.bind(this);
     }
 
     setOfflineState(offlineState) {
@@ -405,6 +404,26 @@ export default class App extends React.Component {
         }
     }
 
+    setLoginFormError(loginFormError) {
+        if (typeof loginFormError === 'function') {
+            this.setState({
+                loginFormError: loginFormError(this.state.loginFormError)
+            });
+        } else {
+            this.setState({ loginFormError });
+        }
+    }
+
+    setGlobalMessage(globalMessage) {
+        if (typeof globalMessage === 'function') {
+            this.setState({
+                globalMessage: globalMessage(this.state.globalMessage)
+            });
+        } else {
+            this.setState({ globalMessage });
+        }
+    }
+
     render() {
         return (
             <PureApp
@@ -417,6 +436,9 @@ export default class App extends React.Component {
                 unreadItemsOfflineCount={this.state.unreadItemsOfflineCount}
                 starredItemsCount={this.state.starredItemsCount}
                 starredItemsOfflineCount={this.state.starredItemsOfflineCount}
+                loginFormError={this.state.loginFormError}
+                setLoginFormError={this.setLoginFormError}
+                globalMessage={this.state.globalMessage}
             />
         );
     }

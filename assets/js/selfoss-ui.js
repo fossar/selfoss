@@ -88,7 +88,7 @@ selfoss.ui = {
         selfoss.history.push('/login');
         selfoss.ui.refreshTitle(0);
         // TODO: Use location state once we switch to BrowserRouter
-        selfoss.loginFormError.update(error);
+        selfoss.app.setLoginFormError(error);
         document.querySelector('#username').focus();
     },
 
@@ -418,7 +418,7 @@ selfoss.ui = {
      * @return void
      */
     showMessage: function(message, actions = [], isError = false) {
-        selfoss.globalMessage.update({ message, actions, isError });
+        selfoss.app.setGlobalMessage({ message, actions, isError });
     },
 
 
