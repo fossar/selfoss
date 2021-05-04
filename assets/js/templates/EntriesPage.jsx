@@ -1,5 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { useRouteMatch, useLocation } from 'react-router-dom';
+import nullable from 'prop-types-nullable';
 import Item from './Item';
 import { FilterType } from '../Filter';
 import * as itemsRequests from '../requests/items';
@@ -320,6 +322,18 @@ export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, s
     );
 }
 
+EntriesPage.propTypes = {
+    entries: PropTypes.array.isRequired,
+    hasMore: PropTypes.bool.isRequired,
+    loadingState: PropTypes.oneOf(Object.values(LoadingState)).isRequired,
+    setLoadingState: PropTypes.func.isRequired,
+    selectedEntry: nullable(PropTypes.number).isRequired,
+    expandedEntries: PropTypes.objectOf(PropTypes.bool).isRequired,
+    setNavExpanded: PropTypes.func.isRequired,
+    shouldUpdateItems: PropTypes.bool.isRequired,
+    setShouldUpdateItems: PropTypes.func.isRequired,
+};
+
 const initialState = {
     entries: [],
     hasMore: false,
@@ -525,3 +539,8 @@ export default class StateHolder extends React.Component {
         );
     }
 }
+
+StateHolder.propTypes = {
+    match: PropTypes.object.isRequired,
+    setNavExpanded: PropTypes.func.isRequired,
+};

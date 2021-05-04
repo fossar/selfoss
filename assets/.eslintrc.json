@@ -44,8 +44,7 @@
         "space-before-function-paren": ["error", "never"],
         "space-in-parens": "error",
         "space-infix-ops": "error",
-        "unicode-bom": "error",
-        "react/prop-types": [1]
+        "unicode-bom": "error"
     },
     "env": {
         "browser": true,

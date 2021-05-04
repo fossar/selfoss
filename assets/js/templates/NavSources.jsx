@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link, useLocation, useRouteMatch } from 'react-router-dom';
 import classNames from 'classnames';
 import { unescape } from 'html-escaper';
@@ -41,6 +42,12 @@ function Source({ source, active, collapseNav }) {
         </li>
     );
 }
+
+Source.propTypes = {
+    source: PropTypes.object.isRequired,
+    active: PropTypes.bool.isRequired,
+    collapseNav: PropTypes.func.isRequired,
+};
 
 export default function NavSources({ sourcesRepository, setNavExpanded }) {
     const [expanded, setExpanded] = React.useState(false);
@@ -108,3 +115,8 @@ export default function NavSources({ sourcesRepository, setNavExpanded }) {
         </React.Fragment>
     );
 }
+
+NavSources.propTypes = {
+    sourcesRepository: PropTypes.object.isRequired,
+    setNavExpanded: PropTypes.func.isRequired,
+};

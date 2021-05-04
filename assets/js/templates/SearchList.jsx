@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useLocation, useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -68,6 +69,12 @@ function SearchWord({ regexSearch, index, item }) {
     );
 }
 
+SearchWord.propTypes = {
+    regexSearch: PropTypes.bool.isRequired,
+    index: PropTypes.number.isRequired,
+    item: PropTypes.string.isRequired,
+};
+
 
 /**
  * Component for showing list of search terms at the top of the page.
@@ -81,7 +88,7 @@ export default function SearchList() {
         return queryString.get('search') ?? '';
     }, [location.search]);
 
-    const regexSearch = searchText.match(/^\/.+\/$/);
+    const regexSearch = searchText.match(/^\/.+\/$/) !== null;
     const terms = regexSearch ? [searchText] : splitTerm(searchText);
 
     return (

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as icons from '../icons';
 
@@ -9,6 +10,9 @@ export function Spinner({ size }) {
     );
 }
 
+Spinner.propTypes = {
+    size: PropTypes.string.isRequired,
+};
 
 export function SpinnerBig() {
     return (

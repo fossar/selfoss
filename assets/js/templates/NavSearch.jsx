@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { useLocation, useHistory } from 'react-router-dom';
 import classNames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -159,3 +160,7 @@ export default function NavSearch({ setNavExpanded }) {
         </div>
     );
 }
+
+NavSearch.propTypes = {
+    setNavExpanded: PropTypes.func.isRequired,
+};

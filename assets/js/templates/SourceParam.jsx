@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export default function SourceParam({
     spoutParamName,
@@ -105,3 +106,12 @@ export default function SourceParam({
         </li>
     );
 }
+
+SourceParam.propTypes = {
+    spoutParamName: PropTypes.string.isRequired,
+    spoutParam: PropTypes.object.isRequired,
+    params: PropTypes.object.isRequired,
+    sourceErrors: PropTypes.objectOf(PropTypes.string).isRequired,
+    sourceId: PropTypes.number.isRequired,
+    setEditedSource: PropTypes.func.isRequired,
+};

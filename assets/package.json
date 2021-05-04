@@ -16,6 +16,8 @@
     "html-escaper": "^3.0.0",
     "jquery": "^3.5.1",
     "lodash.pick": "^4.4.0",
+    "prop-types": "^15.7.2",
+    "prop-types-nullable": "^1.0.1",
     "ramda": "^0.27.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",

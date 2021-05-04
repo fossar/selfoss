@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link, useLocation, useRouteMatch } from 'react-router-dom';
 import classNames from 'classnames';
 import { FilterType } from '../Filter';
@@ -122,3 +123,7 @@ export default function NavFilters({ setNavExpanded }) {
         </div>
     );
 }
+
+NavFilters.propTypes = {
+    setNavExpanded: PropTypes.func.isRequired,
+};

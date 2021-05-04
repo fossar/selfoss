@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import nullable from 'prop-types-nullable';
 import { unescape } from 'html-escaper';
 import classNames from 'classnames';
 import pick from 'lodash.pick';
@@ -249,7 +251,7 @@ function SourceEditForm({
     setSourceParamsError,
     setJustSavedTimeout,
     sourceErrors,
-    setSourceErrors
+    setSourceErrors,
 }) {
     const sourceId = source.id;
     const updateEditedSource = React.useCallback(
@@ -472,6 +474,24 @@ function SourceEditForm({
     );
 }
 
+SourceEditForm.propTypes = {
+    source: PropTypes.object.isRequired,
+    sourceError: PropTypes.string,
+    setSources: PropTypes.func.isRequired,
+    spouts: PropTypes.object.isRequired,
+    setSpouts: PropTypes.func.isRequired,
+    setEditedSource: PropTypes.func.isRequired,
+    sourceActionLoading: PropTypes.bool.isRequired,
+    setSourceActionLoading: PropTypes.func.isRequired,
+    sourceParamsLoading: PropTypes.bool.isRequired,
+    setSourceParamsLoading: PropTypes.func.isRequired,
+    sourceParamsError: nullable(PropTypes.string).isRequired,
+    setSourceParamsError: PropTypes.func.isRequired,
+    setJustSavedTimeout: PropTypes.func.isRequired,
+    sourceErrors: PropTypes.objectOf(PropTypes.string).isRequired,
+    setSourceErrors: PropTypes.func.isRequired,
+};
+
 export default function Source({ source, setSources, spouts, setSpouts }) {
     const isNew = !source.title;
     let classes = {
@@ -598,3 +618,10 @@ export default function Source({ source, setSources, spouts, setSpouts }) {
         </form>
     );
 }
+
+Source.propTypes = {
+    source: PropTypes.object.isRequired,
+    setSources: PropTypes.func.isRequired,
+    spouts: PropTypes.object.isRequired,
+    setSpouts: PropTypes.func.isRequired,
+};

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as icons from '../icons';
@@ -111,3 +112,7 @@ export default function NavToolBar({ setNavExpanded }) {
         </div>
     );
 }
+
+NavToolBar.propTypes = {
+    setNavExpanded: PropTypes.func.isRequired,
+};

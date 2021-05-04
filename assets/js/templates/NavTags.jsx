@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import nullable from 'prop-types-nullable';
 import { Link, useLocation, useRouteMatch } from 'react-router-dom';
 import classNames from 'classnames';
 import { unescape } from 'html-escaper';
@@ -48,6 +50,10 @@ function ColorChooser({tag}) {
     );
 }
 
+ColorChooser.propTypes = {
+    tag: PropTypes.object.isRequired,
+};
+
 function Tag({ tag, active, collapseNav }) {
     const location = useLocation();
 
@@ -76,6 +82,12 @@ function Tag({ tag, active, collapseNav }) {
         </li>
     );
 }
+
+Tag.propTypes = {
+    tag: nullable(PropTypes.object).isRequired,
+    active: PropTypes.bool.isRequired,
+    collapseNav: PropTypes.func.isRequired,
+};
 
 export default function NavTags({ tagsRepository, setNavExpanded }) {
     const [expanded, setExpanded] = React.useState(true);
@@ -136,3 +148,8 @@ export default function NavTags({ tagsRepository, setNavExpanded }) {
         </React.Fragment>
     );
 }
+
+NavTags.propTypes = {
+    tagsRepository: PropTypes.object.isRequired,
+    setNavExpanded: PropTypes.func.isRequired,
+};

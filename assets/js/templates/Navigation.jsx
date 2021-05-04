@@ -1,5 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import nullable from 'prop-types-nullable';
 import classNames from 'classnames';
+import EntriesPage from './EntriesPage';
 import NavFilters from './NavFilters';
 import NavSources from './NavSources';
 import NavSearch from './NavSearch';
@@ -56,3 +59,8 @@ export default function Navigation({ entriesPage, setNavExpanded }) {
         </React.Fragment>
     );
 }
+
+Navigation.propTypes = {
+    entriesPage: nullable(PropTypes.instanceOf(EntriesPage)).isRequired,
+    setNavExpanded: PropTypes.func.isRequired,
+};

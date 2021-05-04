@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { SpinnerBig } from './Spinner';
 import { useHistory } from 'react-router-dom';
@@ -29,7 +30,7 @@ export default function LoginForm({
     error,
     setError,
     offlineEnabled,
-    setOfflineEnabled
+    setOfflineEnabled,
 }) {
     const [username, setUsername] = React.useState('');
     const [password, setPassword] = React.useState('');
@@ -142,3 +143,10 @@ export default function LoginForm({
         </React.Fragment>
     );
 }
+
+LoginForm.propTypes = {
+    error: PropTypes.string.isRequired,
+    setError: PropTypes.func.isRequired,
+    offlineEnabled: PropTypes.bool.isRequired,
+    setOfflineEnabled: PropTypes.func.isRequired,
+};

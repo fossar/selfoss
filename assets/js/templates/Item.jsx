@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
@@ -312,11 +313,20 @@ function ShareButton({ name, label, icon, item, showLabel = true }) {
     );
 }
 
-function ItemTag({tag, color, location}) {
+ShareButton.propTypes = {
+    name: PropTypes.string.isRequired,
+    label: PropTypes.string.isRequired,
+    icon: PropTypes.element.isRequired,
+    item: PropTypes.object.isRequired,
+    showLabel: PropTypes.bool,
+};
+
+function ItemTag({tag, color}) {
     const style = React.useMemo(
         () => ({ color: color.foreColor, backgroundColor: color.backColor }),
         [color]
     );
+    const location = useLocation();
 
     return (
         <Link
@@ -329,6 +339,11 @@ function ItemTag({tag, color, location}) {
         </Link>
     );
 }
+
+ItemTag.propTypes = {
+    tag: PropTypes.string.isRequired,
+    color: PropTypes.object.isRequired,
+};
 
 /**
  * Converts Date to a relative string.
@@ -449,7 +464,6 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
                         key={tag}
                         tag={tag}
                         color={color}
-                        location={location}
                     />
                 )}
             </span>
@@ -603,3 +617,11 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
         </div>
     );
 }
+
+Item.propTypes = {
+    currentTime: PropTypes.instanceOf(Date).isRequired,
+    item: PropTypes.object.isRequired,
+    selected: PropTypes.bool.isRequired,
+    expanded: PropTypes.bool.isRequired,
+    setNavExpanded: PropTypes.func.isRequired,
+};
