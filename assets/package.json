@@ -11,7 +11,7 @@
     "classnames": "^2.2.6",
     "clipboard-polyfill": "^3.0.0",
     "core-js": "^3.2.1",
-    "dexie": "^2.0.1",
+    "dexie": "^3.0.0",
     "focus-trap": "^6.2.0",
     "form-urlencoded": "^6.0.0",
     "html-escaper": "^3.0.0",
