@@ -37,8 +37,13 @@ function ColorChooser({tag}) {
         };
     }, [tag.tag]);
 
+    const style = React.useMemo(
+        () => ({ backgroundColor: tag.color }),
+        [tag.color]
+    );
+
     return (
-        <span className="color" style={{backgroundColor: tag.color}} ref={colorChooser} />
+        <span className="color" style={style} ref={colorChooser} />
     );
 }
 
@@ -69,15 +74,25 @@ export default function NavTags({ tagsRepository, setNavExpanded }) {
         };
     }, [tagsRepository]);
 
+    const toggleExpanded = React.useCallback(
+        () => setExpanded((expanded) => !expanded),
+        []
+    );
+
+    const collapseNav = React.useCallback(
+        () => setNavExpanded(false),
+        [setNavExpanded]
+    );
+
     return (
         <React.Fragment>
-            <h2><button type="button" id="nav-tags-title" className={classNames({'nav-section-toggle': true, 'nav-tags-collapsed': !expanded, 'nav-tags-expanded': expanded})} aria-expanded={expanded} onClick={() => setExpanded((expanded) => !expanded)}><FontAwesomeIcon icon={expanded ? icons.arrowExpanded : icons.arrowCollapsed} size="lg" fixedWidth />  {selfoss.ui._('tags')}</button></h2>
+            <h2><button type="button" id="nav-tags-title" className={classNames({'nav-section-toggle': true, 'nav-tags-collapsed': !expanded, 'nav-tags-expanded': expanded})} aria-expanded={expanded} onClick={toggleExpanded}><FontAwesomeIcon icon={expanded ? icons.arrowExpanded : icons.arrowCollapsed} size="lg" fixedWidth />  {selfoss.ui._('tags')}</button></h2>
             <Collapse isOpen={expanded} className="collapse-css-transition">
                 <ul id="nav-tags" aria-labelledby="nav-tags-title">
-                    <li><Link to={makeEntriesLink(location, { category: 'all', id: null })} className={classNames({'nav-tags-all': true, active: currentAllTags})} onClick={() => setNavExpanded(false)}>{selfoss.ui._('alltags')}</Link></li>
+                    <li><Link to={makeEntriesLink(location, { category: 'all', id: null })} className={classNames({'nav-tags-all': true, active: currentAllTags})} onClick={collapseNav}>{selfoss.ui._('alltags')}</Link></li>
                     {tags.map(tag =>
                         <li key={tag.tag}>
-                            <Link to={makeEntriesLink(location, { category: `tag-${tag.tag}`, id: null })} className={classNames({active: currentTag === tag.tag})} onClick={() => setNavExpanded(false)}>
+                            <Link to={makeEntriesLink(location, { category: `tag-${tag.tag}`, id: null })} className={classNames({active: currentTag === tag.tag})} onClick={collapseNav}>
                                 <span className="tag">{unescape(tag.tag)}</span>
                                 <span className="unread">{tag.unread > 0 ? tag.unread : ''}</span>
                                 <ColorChooser tag={tag} />

@@ -252,13 +252,69 @@ function SourceEditForm({
     setSourceErrors
 }) {
     const sourceId = source.id;
-    const updateEditedSource = (changes) => {
-        if (typeof changes === 'function') {
-            setEditedSource((source) => ({ ...source, ...changes(source) }));
-        } else {
-            setEditedSource((source) => ({ ...source, ...changes }));
-        }
-    };
+    const updateEditedSource = React.useCallback(
+        (changes) => {
+            if (typeof changes === 'function') {
+                setEditedSource((source) => ({ ...source, ...changes(source) }));
+            } else {
+                setEditedSource((source) => ({ ...source, ...changes }));
+            }
+        },
+        [setEditedSource]
+    );
+
+    const titleOnChange = React.useCallback(
+        (event) => updateEditedSource({ title: event.target.value }),
+        [updateEditedSource]
+    );
+
+    const tagsOnChange = React.useCallback(
+        (event) => updateEditedSource({ tags: event.target.value }),
+        [updateEditedSource]
+    );
+
+    const filterOnChange = React.useCallback(
+        (event) => updateEditedSource({ filter: event.target.value }),
+        [updateEditedSource]
+    );
+
+    const spoutOnChange = React.useCallback(
+        (event) =>
+            handleSpoutChange({
+                event,
+                setSpouts,
+                updateEditedSource,
+                setSourceParamsLoading,
+                setSourceParamsError
+            }),
+        [setSpouts, updateEditedSource, setSourceParamsLoading, setSourceParamsError]
+    );
+
+    const saveOnClick = React.useCallback(
+        (event) =>
+            handleSave({
+                event,
+                setSources,
+                source,
+                setEditedSource,
+                setSourceActionLoading,
+                setJustSavedTimeout,
+                setSourceErrors
+            }),
+        [setSources, source, setEditedSource, setSourceActionLoading, setJustSavedTimeout, setSourceErrors]
+    );
+
+    const cancelOnClick = React.useCallback(
+        (event) =>
+            handleCancel({
+                event,
+                source,
+                setSources,
+                setEditedSource
+            })
+        ,
+        [source, setSources, setEditedSource]
+    );
 
     return (
         <ul className="source-edit-form">
@@ -274,9 +330,7 @@ function SourceEditForm({
                     accessKey="t"
                     value={source.title ?? ''}
                     placeholder={selfoss.ui._('source_autotitle_hint')}
-                    onChange={(event) =>
-                        updateEditedSource({ title: event.target.value })
-                    }
+                    onChange={titleOnChange}
                 />
                 {sourceErrors['title'] ? (
                     <span className="error">{sourceErrors['title']}</span>
@@ -294,9 +348,7 @@ function SourceEditForm({
                     name="tags"
                     accessKey="g"
                     value={source.tags ?? ''}
-                    onChange={(event) =>
-                        updateEditedSource({ tags: event.target.value })
-                    }
+                    onChange={tagsOnChange}
                 />
                 <span className="source-edit-form-help">
                     {' '}
@@ -318,9 +370,7 @@ function SourceEditForm({
                     name="filter"
                     accessKey="f"
                     value={source.filter ?? ''}
-                    onChange={(event) =>
-                        updateEditedSource({ filter: event.target.value })
-                    }
+                    onChange={filterOnChange}
                 />
                 {sourceErrors['filter'] ? (
                     <span className="error">{sourceErrors['filter']}</span>
@@ -337,15 +387,7 @@ function SourceEditForm({
                     className="source-spout"
                     name="spout"
                     accessKey="y"
-                    onChange={(event) =>
-                        handleSpoutChange({
-                            event,
-                            setSpouts,
-                            updateEditedSource,
-                            setSourceParamsLoading,
-                            setSourceParamsError
-                        })
-                    }
+                    onChange={spoutOnChange}
                     value={source.spout}
                 >
                     <option value="">{selfoss.ui._('source_select')}</option>
@@ -412,17 +454,7 @@ function SourceEditForm({
                     type="submit"
                     className="source-save"
                     accessKey="s"
-                    onClick={(event) =>
-                        handleSave({
-                            event,
-                            setSources,
-                            source,
-                            setEditedSource,
-                            setSourceActionLoading,
-                            setJustSavedTimeout,
-                            setSourceErrors
-                        })
-                    }
+                    onClick={saveOnClick}
                 >
                     {selfoss.ui._('source_save')}
                 </button>
@@ -431,14 +463,7 @@ function SourceEditForm({
                     type="submit"
                     className="source-cancel"
                     accessKey="c"
-                    onClick={(event) =>
-                        handleCancel({
-                            event,
-                            source,
-                            setSources,
-                            setEditedSource
-                        })
-                    }
+                    onClick={cancelOnClick}
                 >
                     {selfoss.ui._('source_cancel')}
                 </button>
@@ -478,6 +503,22 @@ export default function Source({ source, setSources, spouts, setSpouts }) {
         };
     }, [justSavedTimeout]);
 
+    const editOnClick = React.useCallback(
+        (event) => handleEdit({ event, source, setEditedSource }),
+        [source]
+    );
+
+    const deleteOnClick = React.useCallback(
+        (event) =>
+            handleDelete({
+                event,
+                source,
+                setSources,
+                setSourceEditDeleteLoading
+            }),
+        [source, setSources]
+    );
+
     return (
         <form className={classNames(classes)}>
             <div className="source-icon">
@@ -507,9 +548,7 @@ export default function Source({ source, setSources, spouts, setSpouts }) {
                         'source-showparams': true,
                         saved: justSavedTimeout !== null
                     })}
-                    onClick={(event) =>
-                        handleEdit({ event, source, setEditedSource })
-                    }
+                    onClick={editOnClick}
                 >
                     {selfoss.ui._(
                         justSavedTimeout !== null ? 'source_saved' : 'source_edit'
@@ -520,14 +559,7 @@ export default function Source({ source, setSources, spouts, setSpouts }) {
                     type="button"
                     accessKey="d"
                     className="source-delete"
-                    onClick={(event) =>
-                        handleDelete({
-                            event,
-                            source,
-                            setSources,
-                            setSourceEditDeleteLoading
-                        })
-                    }
+                    onClick={deleteOnClick}
                 >
                     {selfoss.ui._('source_delete')}
                 </button>

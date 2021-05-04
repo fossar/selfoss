@@ -8,7 +8,7 @@ import { LoadingState } from '../requests/LoadingState';
 import { Spinner, SpinnerBig } from './Spinner';
 import classNames from 'classnames';
 
-function reloadList({ fetchParams, append = false, waitForSync = true, entryId = null, setLoadingState = selfoss.entriesPage.setLoadingState.bind(selfoss.entriesPage) }) {
+function reloadList({ fetchParams, append = false, waitForSync = true, entryId = null, setLoadingState = selfoss.entriesPage.setLoadingState }) {
     if (entryId && fetchParams.fromId === undefined) {
         fetchParams = {
             ...fetchParams,
@@ -132,7 +132,11 @@ export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, s
     const allowedToUpdate = !selfoss.config.authEnabled || selfoss.config.allowPublicUpdate || selfoss.loggedin.value;
 
     const location = useLocation();
-    const queryString = new URLSearchParams(location.search);
+    const searchText = React.useMemo(() => {
+        const queryString = new URLSearchParams(location.search);
+
+        return queryString.get('search') ?? '';
+    }, [location.search]);
 
     const [navSourcesExpanded, setNavSourcesExpanded] = React.useState(selfoss.navSourcesExpanded.value);
 
@@ -142,14 +146,17 @@ export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, s
 
     // Object with parameters for GET /items and similar API calls
     // based on the current location.
-    const fetchParams = {
-        type: params.filter,
-        tag: currentTag,
-        source: currentSource,
-        extraIds: [],
-        sourcesNav: navSourcesExpanded,
-        search: queryString.get('search') ?? ''
-    };
+    const fetchParams = React.useMemo(
+        () => ({
+            type: params.filter,
+            tag: currentTag,
+            source: currentSource,
+            extraIds: [],
+            sourcesNav: navSourcesExpanded,
+            search: searchText
+        }),
+        [params.filter, currentTag, currentSource, navSourcesExpanded, searchText]
+    );
 
     const [moreLoadingState, setMoreLoadingState] = React.useState(LoadingState.INITIAL);
 
@@ -222,6 +229,21 @@ export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, s
     // TODO: make this update when it changes
     const isOnline = selfoss.db.online;
 
+    const refreshOnClick = React.useCallback(
+        (event) => handleRefreshSource({ event, fetchParams, setLoadingState, setNavExpanded }),
+        [fetchParams, setLoadingState, setNavExpanded]
+    );
+
+    const moreOnClick = React.useCallback(
+        (event) => loadMore({ event, fetchParams, entries, setMoreLoadingState }),
+        [fetchParams, entries]
+    );
+
+    const errorOnClick = React.useCallback(
+        () => reloadList({ fetchParams }),
+        [fetchParams]
+    );
+
     return (
         <React.Fragment>
             {loadingState === LoadingState.LOADING ? <SpinnerBig /> : null}
@@ -229,7 +251,7 @@ export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, s
                 <button
                     type="button"
                     className="refresh-source"
-                    onClick={(event) => handleRefreshSource({ event, fetchParams, setLoadingState, setNavExpanded })}
+                    onClick={refreshOnClick}
                 >
                     {selfoss.ui._('source_refresh')}
                 </button>
@@ -253,7 +275,7 @@ export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, s
                         className={classNames({'stream-button': true, 'stream-more': true})}
                         accessKey="m"
                         aria-label={selfoss.ui._('more')}
-                        onClick={moreLoadingState !== LoadingState.LOADING ? (event) => loadMore({ event, fetchParams, entries, setMoreLoadingState }) : null}
+                        onClick={moreLoadingState !== LoadingState.LOADING ? moreOnClick : null}
                     >
                         {moreLoadingState !== LoadingState.LOADING ? <span>{selfoss.ui._('more')}</span> : <Spinner size="3x" />}
                     </button>
@@ -262,7 +284,7 @@ export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, s
                     <button
                         className="stream-button mark-these-read"
                         aria-label={selfoss.ui._('markread')}
-                        onClick={() => selfoss.entriesPage.markVisibleRead()}
+                        onClick={selfoss.entriesPage.markVisibleRead}
                     >
                         <span>{selfoss.ui._('markread')}</span>
                     </button>
@@ -273,7 +295,7 @@ export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, s
                         className="stream-button stream-error"
                         aria-live="assertive"
                         aria-label={selfoss.ui._('streamerror')}
-                        onClick={() => reloadList({ fetchParams })}
+                        onClick={errorOnClick}
                     >
                         {selfoss.ui._('streamerror')}
                     </button>
@@ -301,6 +323,10 @@ export default class StateHolder extends React.Component {
     constructor(props) {
         super(props);
         this.state = initialState;
+
+        this.setLoadingState = this.setLoadingState.bind(this);
+        this.setShouldUpdateItems = this.setShouldUpdateItems.bind(this);
+        this.markVisibleRead = this.markVisibleRead.bind(this);
     }
 
     setEntries(entries) {
@@ -476,9 +502,9 @@ export default class StateHolder extends React.Component {
                 expandedEntries={this.state.expandedEntries}
                 hasMore={this.state.hasMore}
                 loadingState={this.state.loadingState}
-                setLoadingState={this.setLoadingState.bind(this)}
+                setLoadingState={this.setLoadingState}
                 shouldUpdateItems={this.state.shouldUpdateItems}
-                setShouldUpdateItems={this.setShouldUpdateItems.bind(this)}
+                setShouldUpdateItems={this.setShouldUpdateItems}
                 setNavExpanded={this.props.setNavExpanded}
             />
         );

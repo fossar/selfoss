@@ -37,6 +37,35 @@ export default function LoginForm({
 
     const history = useHistory();
 
+    const formOnSubmit = React.useCallback(
+        (event) =>
+            handleLogIn({
+                event,
+                history,
+                setLoading,
+                setError,
+                username,
+                password,
+                offlineEnabled
+            }),
+        [history, setError, username, password, offlineEnabled]
+    );
+
+    const usernameOnChange = React.useCallback(
+        (event) => setUsername(event.target.value),
+        []
+    );
+
+    const passwordOnChange = React.useCallback(
+        (event) => setPassword(event.target.value),
+        []
+    );
+
+    const offlineOnChange = React.useCallback(
+        (event) => setOfflineEnabled(event.target.checked),
+        [setOfflineEnabled]
+    );
+
     return (
         <React.Fragment>
             {loading ? <SpinnerBig /> : null}
@@ -44,17 +73,7 @@ export default function LoginForm({
                 action=""
                 className={classNames({ loading: loading })}
                 method="post"
-                onSubmit={(event) =>
-                    handleLogIn({
-                        event,
-                        history,
-                        setLoading,
-                        setError,
-                        username,
-                        password,
-                        offlineEnabled
-                    })
-                }
+                onSubmit={formOnSubmit}
             >
                 <ul id="login">
                     <li>
@@ -70,9 +89,7 @@ export default function LoginForm({
                             id="username"
                             accessKey="u"
                             autoComplete="username"
-                            onChange={(event) =>
-                                setUsername(event.target.value)
-                            }
+                            onChange={usernameOnChange}
                             value={username}
                             required
                         />
@@ -87,9 +104,7 @@ export default function LoginForm({
                             id="password"
                             accessKey="p"
                             autoComplete="current-password"
-                            onChange={(event) =>
-                                setPassword(event.target.value)
-                            }
+                            onChange={passwordOnChange}
                             value={password}
                         />
                     </li>
@@ -103,9 +118,7 @@ export default function LoginForm({
                                 name="enableoffline"
                                 id="enableoffline"
                                 accessKey="o"
-                                onChange={(event) =>
-                                    setOfflineEnabled(event.target.checked)
-                                }
+                                onChange={offlineOnChange}
                                 checked={offlineEnabled}
                             />{' '}
                             <span className="badge-experimental">

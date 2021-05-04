@@ -8,15 +8,30 @@ export default function SourceParam({
     sourceId,
     setEditedSource
 }) {
-    const updateSourceParam = (event) => {
-        setEditedSource(({ params, ...restSource }) => ({
-            ...restSource,
-            params: {
-                ...params,
-                [spoutParamName]: event.target.value
-            }
-        }));
-    };
+    const updateSourceParam = React.useCallback(
+        (event) => {
+            setEditedSource(({ params, ...restSource }) => ({
+                ...restSource,
+                params: {
+                    ...params,
+                    [spoutParamName]: event.target.value
+                }
+            }));
+        },
+        [setEditedSource, spoutParamName]
+    );
+
+    const updateSourceParamBool = React.useCallback(
+        (event) =>
+            updateSourceParam({
+                target: {
+                    value: event.target.checked
+                        ? '1'
+                        : undefined
+                }
+            }),
+        [updateSourceParam]
+    );
 
     let value =
         spoutParamName in params ? params[spoutParamName] : spoutParam.default;
@@ -42,14 +57,7 @@ export default function SourceParam({
                 onChange={
                     spoutParam.type !== 'checkbox'
                         ? updateSourceParam
-                        : (event) =>
-                            updateSourceParam({
-                                target: {
-                                    value: event.target.checked
-                                        ? '1'
-                                        : undefined
-                                }
-                            })
+                        : updateSourceParamBool
                 }
             />
         );

@@ -68,14 +68,24 @@ export default function NavSources({ sourcesRepository, setNavExpanded }) {
     const params = match !== null ? match.params : {};
     const currentSource = params.category?.startsWith('source-') ? parseInt(params.category.replace(/^source-/, ''), 10) : null;
 
+    const toggleExpanded = React.useCallback(
+        () => handleTitleClick(setExpanded, [sourcesState, setSourcesState]),
+        [sourcesState]
+    );
+
+    const collapseNav = React.useCallback(
+        () => setNavExpanded(false),
+        [setNavExpanded]
+    );
+
     return (
         <React.Fragment>
-            <h2><button type="button" id="nav-sources-title" className={classNames({'nav-section-toggle': true, 'nav-sources-collapsed': !reallyExpanded, 'nav-sources-expanded': reallyExpanded})} aria-expanded={reallyExpanded} onClick={() => handleTitleClick(setExpanded, [sourcesState, setSourcesState])}><FontAwesomeIcon icon={expanded ? icons.arrowExpanded : icons.arrowCollapsed} size="lg" fixedWidth />  {selfoss.ui._('sources')}</button></h2>
+            <h2><button type="button" id="nav-sources-title" className={classNames({'nav-section-toggle': true, 'nav-sources-collapsed': !reallyExpanded, 'nav-sources-expanded': reallyExpanded})} aria-expanded={reallyExpanded} onClick={toggleExpanded}><FontAwesomeIcon icon={expanded ? icons.arrowExpanded : icons.arrowCollapsed} size="lg" fixedWidth />  {selfoss.ui._('sources')}</button></h2>
             <Collapse isOpen={reallyExpanded} className="collapse-css-transition">
                 <ul id="nav-sources" aria-labelledby="nav-sources-title">
                     {sources.map((source) =>
                         <li key={source.id}>
-                            <Link to={makeEntriesLink(location, { category: `source-${source.id}`, id: null })} className={classNames({active: currentSource === source.id, unread: source.unread > 0})} onClick={() => setNavExpanded(false)}>
+                            <Link to={makeEntriesLink(location, { category: `source-${source.id}`, id: null })} className={classNames({active: currentSource === source.id, unread: source.unread > 0})} onClick={collapseNav}>
                                 <span className="nav-source">{unescape(source.title)}</span>
                                 <span className="unread">{source.unread > 0 ? source.unread : ''}</span>
                             </Link>

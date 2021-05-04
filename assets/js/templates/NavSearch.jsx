@@ -86,6 +86,31 @@ export default function NavSearch({ setNavExpanded }) {
         };
     }, []);
 
+    const termOnKeyUp = React.useCallback(
+        (event) =>
+            handleFieldKeyUp({
+                event,
+                searchButton,
+                searchRemoveButton
+            }),
+        []
+    );
+
+    const termOnChange = React.useCallback(
+        (event) => setSearchText(event.target.value),
+        []
+    );
+
+    const removeOnClick = React.useCallback(
+        () => handleRemove({ setActive, searchField, history, location }),
+        [history, location]
+    );
+
+    const searchOnClick = React.useCallback(
+        () => handleSubmit({ active, setActive, searchField, searchText, history, location, setNavExpanded }),
+        [active, searchText, history, location, setNavExpanded]
+    );
+
     return (
         <div
             id="search"
@@ -103,21 +128,15 @@ export default function NavSearch({ setNavExpanded }) {
                 accessKey="s"
                 ref={searchField}
                 value={searchText}
-                onKeyUp={(event) =>
-                    handleFieldKeyUp({
-                        event,
-                        searchButton,
-                        searchRemoveButton
-                    })
-                }
-                onChange={(event) => setSearchText(event.target.value)}
+                onKeyUp={termOnKeyUp}
+                onChange={termOnChange}
             />
             <button
                 id="search-remove"
                 title={selfoss.ui._('searchremove')}
                 accessKey="h"
                 aria-label={selfoss.ui._('searchremove')}
-                onClick={() => handleRemove({ setActive, searchField, history, location })}
+                onClick={removeOnClick}
                 ref={searchRemoveButton}
             >
                 <FontAwesomeIcon icon={icons.remove} />
@@ -127,8 +146,7 @@ export default function NavSearch({ setNavExpanded }) {
                 title={selfoss.ui._('searchbutton')}
                 aria-label={selfoss.ui._('searchbutton')}
                 accessKey="e"
-                onClick={() =>
-                    handleSubmit({ active, setActive, searchField, searchText, history, location, setNavExpanded })
+                onClick={searchOnClick
                 }
                 ref={searchButton}
             >

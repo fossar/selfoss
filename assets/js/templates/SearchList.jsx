@@ -52,12 +52,28 @@ function handleRemove({ index, location, history, regexSearch }) {
 }
 
 
+function SearchWord({ regexSearch, index, item }) {
+    const location = useLocation();
+    const history = useHistory();
+
+    const removeOnClick = React.useCallback(
+        () => handleRemove({ index, location, history, regexSearch }),
+        [index, location, history, regexSearch]
+    );
+
+    return (
+        <li onClick={removeOnClick} className={classNames({ 'regex-search-term': regexSearch })}>
+            {item} <FontAwesomeIcon icon={icons.remove} />
+        </li>
+    );
+}
+
+
 /**
  * Component for showing list of search terms at the top of the page.
  */
 export default function SearchList() {
     const location = useLocation();
-    const history = useHistory();
 
     const searchText = React.useMemo(() => {
         const queryString = new URLSearchParams(location.search);
@@ -69,12 +85,13 @@ export default function SearchList() {
     const terms = regexSearch ? [searchText] : splitTerm(searchText);
 
     return (
-        terms.map((item, index) => {
-            return (
-                <li key={index} onClick={() => handleRemove({ index, location, history, regexSearch })} className={classNames({ 'regex-search-term': regexSearch })}>
-                    {item} <FontAwesomeIcon icon={icons.remove} />
-                </li>
-            );
-        })
+        terms.map((item, index) =>
+            <SearchWord
+                key={index}
+                index={index}
+                item={item}
+                regexSearch={regexSearch}
+            />
+        )
     );
 }

@@ -171,6 +171,19 @@ export default function App() {
         homePagePath.push('all');
     }
 
+    const menuButtonOnClick = React.useCallback(
+        (event) => handleNavToggle({ event, setNavExpanded }),
+        []
+    );
+
+    const entriesRef = React.useCallback(
+        (entriesPage) => {
+            setEntriesPage(entriesPage);
+            selfoss.entriesPage = entriesPage;
+        },
+        []
+    );
+
     return (
         <React.Fragment>
             <Message />
@@ -199,7 +212,7 @@ export default function App() {
                             id="nav-mobile-settings"
                             accessKey="t"
                             aria-label={selfoss.ui._('settingsbutton')}
-                            onClick={(event) => handleNavToggle({ event, setNavExpanded })}
+                            onClick={menuButtonOnClick}
                         >
                             <FontAwesomeIcon icon={icons.menu} size="2x" />
                         </button>
@@ -226,10 +239,7 @@ export default function App() {
                                 {(routeProps) => (
                                     <EntriesPage
                                         {...routeProps}
-                                        ref={(entriesPage) => {
-                                            setEntriesPage(entriesPage);
-                                            selfoss.entriesPage = entriesPage;
-                                        }}
+                                        ref={entriesRef}
                                         setNavExpanded={setNavExpanded}
                                     />
                                 )}

@@ -12,6 +12,10 @@ function anonymize(url) {
     return (selfoss.config.anonymizer ?? '') + url;
 }
 
+function stopPropagation(event) {
+    event.stopPropagation();
+}
+
 function lazyLoadImages(content) {
     content.querySelectorAll('img').forEach((img) => {
         img.setAttribute('src', img.getAttribute('data-selfoss-src'));
@@ -289,6 +293,42 @@ function handleReadToggle({ event, entry }) {
     });
 }
 
+function ShareButton({ name, label, icon, item, showLabel = true }) {
+    const shareOnClick = React.useCallback(
+        (event) => share({ event, entry: item, name }),
+        [item, name]
+    );
+
+    return (
+        <button
+            type="button"
+            className={`entry-share entry-share${name}`}
+            title={label}
+            aria-label={label}
+            onClick={shareOnClick}
+        >
+            {icon} {showLabel ? label : null}
+        </button>
+    );
+}
+
+function ItemTag({tag, color, location}) {
+    const style = React.useMemo(
+        () => ({ color: color.foreColor, backgroundColor: color.backColor }),
+        [color]
+    );
+
+    return (
+        <Link
+            className="entry-tags-tag"
+            style={style}
+            to={makeEntriesLink(location, { category: `tag-${tag}`, id: null })}
+            onClick={preventDefaultOnSmartphone}
+        >
+            {tag}
+        </Link>
+    );
+}
 
 export default function Item({ item, selected, expanded, setNavExpanded }) {
     const { title, author, sourcetitle } = item;
@@ -303,6 +343,41 @@ export default function Item({ item, selected, expanded, setNavExpanded }) {
     const relDate = selfoss.ui.datetimeRelative(item.datetime);
     const shares = selfoss.shares.getAll();
 
+    const entryOnClick = React.useCallback(
+        (event) => handleClick({ event, history, location, entry: item, target: '.entry', contentBlock, setFullScreenTrap, setImagesLoaded, setNavExpanded }),
+        [history, location, item, setNavExpanded]
+    );
+
+    const titleOnClick = React.useCallback(
+        (event) => handleClick({ event, history, location, entry: item, target: '.entry-title', contentBlock, setFullScreenTrap, setImagesLoaded }),
+        [history, location, item]
+    );
+
+    const starOnClick = React.useCallback(
+        (event) => handleStarredToggle({ event, entry: item }),
+        [item]
+    );
+
+    const markReadOnClick = React.useCallback(
+        (event) => handleReadToggle({ event, entry: item }),
+        [item]
+    );
+
+    const loadImagesOnClick = React.useCallback(
+        (event) => loadImages({ event, setImagesLoaded, contentBlock }),
+        []
+    );
+
+    const closeOnClick = React.useCallback(
+        (event) => closeFullScreen({ event, history, location, entry: item, setFullScreenTrap }),
+        [history, location, item]
+    );
+
+    const titleHtml = React.useMemo(
+        () => ({ __html: title }),
+        [title]
+    );
+
     return (
         <div data-entry-id={item.id}
             data-entry-source={item.source}
@@ -311,7 +386,7 @@ export default function Item({ item, selected, expanded, setNavExpanded }) {
             className={classNames({entry: true, unread: item.unread == 1, expanded, selected})}
             role="article"
             aria-modal={fullScreenTrap !== null}
-            onClick={(event) => handleClick({ event, history, location, entry: item, target: '.entry', contentBlock, setFullScreenTrap, setImagesLoaded, setNavExpanded })}
+            onClick={entryOnClick}
         >
 
             {/* icon */}
@@ -331,7 +406,7 @@ export default function Item({ item, selected, expanded, setNavExpanded }) {
             {/* title */}
             <h3
                 className="entry-title"
-                onClick={(event) => handleClick({ event, history, location, entry: item, target: '.entry-title', contentBlock, setFullScreenTrap, setImagesLoaded })}
+                onClick={titleOnClick}
             >
                 <span
                     className="entry-title-link"
@@ -340,21 +415,17 @@ export default function Item({ item, selected, expanded, setNavExpanded }) {
                     role="link"
                     tabIndex="0"
                     onKeyUp={handleKeyUp}
-                    dangerouslySetInnerHTML={{__html: title}}
+                    dangerouslySetInnerHTML={titleHtml}
                 />
             </h3>
 
             <span className="entry-tags">
                 {Object.entries(item.tags).map(([tag, color]) =>
-                    <Link
+                    <ItemTag
                         key={tag}
-                        className="entry-tags-tag"
-                        style={{color: color['foreColor'], backgroundColor: color['backColor']}}
-                        to={makeEntriesLink(location, { category: `tag-${tag}`, id: null })}
-                        onClick={preventDefaultOnSmartphone}
-                    >
-                        {tag}
-                    </Link>
+                        tag={tag}
+                        color={color}
+                    />
                 )}
             </span>
 
@@ -418,22 +489,19 @@ export default function Item({ item, selected, expanded, setNavExpanded }) {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 accessKey="o"
-                                onClick={(event) => event.stopPropagation()}
+                                onClick={stopPropagation}
                             >
                                 <FontAwesomeIcon icon={icons.openWindow} /> {selfoss.ui._('open_window')}
                             </a>
                         </li>
                         {shares.map(({ name, label, icon }) => (
                             <li key={name}>
-                                <button
-                                    type="button"
-                                    className={`entry-share entry-share${name}`}
-                                    title={label}
-                                    aria-label={label}
-                                    onClick={(event) => share({ event, entry: item, name })}
-                                >
-                                    {icon} {label}
-                                </button>
+                                <ShareButton
+                                    name={name}
+                                    label={label}
+                                    icon={icon}
+                                    item={item}
+                                />
                             </li>
                         ))}
                         <li>
@@ -451,7 +519,7 @@ export default function Item({ item, selected, expanded, setNavExpanded }) {
                     <button
                         accessKey="a"
                         className={classNames({'entry-starr': true, active: item.starred == 1})}
-                        onClick={(event) => handleStarredToggle({ event, entry: item })}
+                        onClick={starOnClick}
                     >
                         <FontAwesomeIcon icon={item.starred == 1 ? icons.unstar : icons.star} /> {item.starred == 1 ? selfoss.ui._('unstar') : selfoss.ui._('star')}
                     </button>
@@ -460,7 +528,7 @@ export default function Item({ item, selected, expanded, setNavExpanded }) {
                     <button
                         accessKey="u"
                         className={classNames({'entry-unread': true, active: item.unread == 1})}
-                        onClick={(event) => handleReadToggle({ event, entry: item })}
+                        onClick={markReadOnClick}
                     >
                         <FontAwesomeIcon icon={item.unread == 1 ? icons.markRead : icons.markUnread} /> {item.unread == 1 ? selfoss.ui._('mark') : selfoss.ui._('unmark')}
                     </button>
@@ -472,14 +540,14 @@ export default function Item({ item, selected, expanded, setNavExpanded }) {
                         target="_blank"
                         rel="noopener noreferrer"
                         accessKey="o"
-                        onClick={(event) => event.stopPropagation()}
+                        onClick={stopPropagation}
                     >
                         <FontAwesomeIcon icon={icons.openWindow} /> {selfoss.ui._('open_window')}
                     </a>
                 </li>
                 {!imagesLoaded ?
                     <li>
-                        <button className="entry-loadimages" onClick={(event) => loadImages({ event, setImagesLoaded, contentBlock })}>
+                        <button className="entry-loadimages" onClick={loadImagesOnClick}>
                             <FontAwesomeIcon icon={icons.loadImages} /> {selfoss.ui._('load_img')}
                         </button>
                     </li>
@@ -492,19 +560,17 @@ export default function Item({ item, selected, expanded, setNavExpanded }) {
                 </li>
                 {shares.map(({ name, label, icon }) => (
                     <li key={name}>
-                        <button
-                            type="button"
-                            className={`entry-share entry-share${name}`}
-                            title={label}
-                            aria-label={label}
-                            onClick={(event) => share({ event, entry: item, name })}
-                        >
-                            {icon}
-                        </button>
+                        <ShareButton
+                            name={name}
+                            label={label}
+                            icon={icon}
+                            item={item}
+                            showLabel={false}
+                        />
                     </li>
                 ))}
                 <li>
-                    <button accessKey="c" className="entry-close" onClick={(event) => closeFullScreen({ event, history, location, entry: item, setFullScreenTrap })}>
+                    <button accessKey="c" className="entry-close" onClick={closeOnClick}>
                         <FontAwesomeIcon icon={icons.close} /> {selfoss.ui._('close_entry')}
                     </button>
                 </li>

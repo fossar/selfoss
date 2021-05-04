@@ -43,6 +43,26 @@ export default function NavToolBar({ setNavExpanded }) {
 
     const history = useHistory();
 
+    const refreshOnClick = React.useCallback(
+        () => handleReloadAll({ setReloading, setNavExpanded }),
+        [setNavExpanded]
+    );
+
+    const settingsOnClick = React.useCallback(
+        () => handleSettings({ history, setNavExpanded }),
+        [history, setNavExpanded]
+    );
+
+    const logoutOnClick = React.useCallback(
+        () => handleLogOut({ setNavExpanded }),
+        [setNavExpanded]
+    );
+
+    const loginOnClick = React.useCallback(
+        () => handleLogIn({ history }),
+        [history]
+    );
+
     return (
         <div className="nav-toolbar">
             <button
@@ -50,7 +70,7 @@ export default function NavToolBar({ setNavExpanded }) {
                 title={selfoss.ui._('refreshbutton')}
                 aria-label={selfoss.ui._('refreshbutton')}
                 accessKey="r"
-                onClick={() => handleReloadAll({ setReloading, setNavExpanded })}
+                onClick={refreshOnClick}
             >
                 <FontAwesomeIcon
                     icon={icons.reload}
@@ -63,7 +83,7 @@ export default function NavToolBar({ setNavExpanded }) {
                 title={selfoss.ui._('settingsbutton')}
                 aria-label={selfoss.ui._('settingsbutton')}
                 accessKey="t"
-                onClick={() => handleSettings({ history, setNavExpanded })}
+                onClick={settingsOnClick}
             >
                 <FontAwesomeIcon
                     icon={icons.settings}
@@ -75,7 +95,7 @@ export default function NavToolBar({ setNavExpanded }) {
                 title={selfoss.ui._('logoutbutton')}
                 aria-label={selfoss.ui._('logoutbutton')}
                 accessKey="l"
-                onClick={() => handleLogOut({ setNavExpanded })}
+                onClick={logoutOnClick}
             >
                 <FontAwesomeIcon icon={icons.signOut} fixedWidth />
             </button>
@@ -84,7 +104,7 @@ export default function NavToolBar({ setNavExpanded }) {
                 title={selfoss.ui._('loginbutton')}
                 aria-label={selfoss.ui._('loginbutton')}
                 accessKey="l"
-                onClick={() => handleLogIn({ history })}
+                onClick={loginOnClick}
             >
                 <FontAwesomeIcon icon={icons.logIn} fixedWidth />
             </button>

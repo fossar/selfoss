@@ -29,7 +29,7 @@ export default function Navigation({ entriesPage, setNavExpanded }) {
     return (
         <React.Fragment>
             <div id="nav-logo"></div>
-            <button accessKey="a" id="nav-mark" onClick={entriesPage !== null ? () => entriesPage.markVisibleRead() : null} disabled={entriesPage === null}>{selfoss.ui._('markread')}</button>
+            <button accessKey="a" id="nav-mark" onClick={entriesPage !== null ? entriesPage.markVisibleRead : null} disabled={entriesPage === null}>{selfoss.ui._('markread')}</button>
 
             <NavFilters setNavExpanded={setNavExpanded} />
 

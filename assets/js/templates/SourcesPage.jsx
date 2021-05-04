@@ -74,6 +74,11 @@ export default function SourcesPage() {
         };
     }, []);
 
+    const addOnClick = React.useCallback(
+        (event) => handleAddSource({ event, setSources, setSpouts }),
+        []
+    );
+
     return (
         activeAjaxReq !== null ?
             <SpinnerBig />
@@ -81,9 +86,7 @@ export default function SourcesPage() {
                 <React.Fragment>
                     <button
                         className="source-add"
-                        onClick={(event) =>
-                            handleAddSource({ event, setSources, setSpouts })
-                        }
+                        onClick={addOnClick}
                     >
                         {selfoss.ui._('source_add')}
                     </button>
