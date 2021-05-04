@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { useLocation, useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { makeEntriesLink } from '../helpers/uri';
+import * as icons from '../icons';
 
 
 function splitTerm(term) {
@@ -71,7 +72,7 @@ export default function SearchList() {
         terms.map((item, index) => {
             return (
                 <li key={index} onClick={() => handleRemove({ index, location, history, regexSearch })} className={classNames({ 'regex-search-term': regexSearch })}>
-                    {item} <FontAwesomeIcon icon={['fas', 'times']} />
+                    {item} <FontAwesomeIcon icon={icons.remove} />
                 </li>
             );
         })

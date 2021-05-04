@@ -3,6 +3,7 @@ import { useLocation, useHistory } from 'react-router-dom';
 import classNames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { makeEntriesLink } from '../helpers/uri';
+import * as icons from '../icons';
 
 // search button shows search input or executes search
 function handleSubmit({ active, setActive, searchField, searchText, history, location, setNavExpanded }) {
@@ -119,7 +120,7 @@ export default function NavSearch({ setNavExpanded }) {
                 onClick={() => handleRemove({ setActive, searchField, history, location })}
                 ref={searchRemoveButton}
             >
-                <FontAwesomeIcon icon={['fas', 'times']} />
+                <FontAwesomeIcon icon={icons.remove} />
             </button>
             <button
                 id="search-button"
@@ -131,7 +132,7 @@ export default function NavSearch({ setNavExpanded }) {
                 }
                 ref={searchButton}
             >
-                <FontAwesomeIcon icon={['fas', 'search']} />{' '}
+                <FontAwesomeIcon icon={icons.search} />{' '}
                 <span className="search-button-label">
                     {selfoss.ui._('searchbutton')}
                 </span>

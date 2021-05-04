@@ -6,6 +6,7 @@ import { createFocusTrap } from 'focus-trap';
 import { nextprev, Direction } from '../shortcuts';
 import { makeEntriesLink } from '../helpers/uri';
 import * as itemsRequests from '../requests/items';
+import * as icons from '../icons';
 
 function anonymize(url) {
     return (selfoss.config.anonymizer ?? '') + url;
@@ -419,7 +420,7 @@ export default function Item({ item, selected, expanded, setNavExpanded }) {
                                 accessKey="o"
                                 onClick={(event) => event.stopPropagation()}
                             >
-                                <FontAwesomeIcon icon={['fas', 'external-link-alt']} /> {selfoss.ui._('open_window')}
+                                <FontAwesomeIcon icon={icons.openWindow} /> {selfoss.ui._('open_window')}
                             </a>
                         </li>
                         {shares.map(({ name, label, icon }) => (
@@ -437,7 +438,7 @@ export default function Item({ item, selected, expanded, setNavExpanded }) {
                         ))}
                         <li>
                             <button type="button" accessKey="n" className="entry-next" onClick={openNext}>
-                                <FontAwesomeIcon icon={['fas', 'arrow-right']} /> {selfoss.ui._('next')}
+                                <FontAwesomeIcon icon={icons.next} /> {selfoss.ui._('next')}
                             </button>
                         </li>
                     </ul>
@@ -452,7 +453,7 @@ export default function Item({ item, selected, expanded, setNavExpanded }) {
                         className={classNames({'entry-starr': true, active: item.starred == 1})}
                         onClick={(event) => handleStarredToggle({ event, entry: item })}
                     >
-                        <FontAwesomeIcon icon={[`fa${item.starred == 1 ? 's' : 'r'}`, 'star']} /> {item.starred == 1 ? selfoss.ui._('unstar') : selfoss.ui._('star')}
+                        <FontAwesomeIcon icon={item.starred == 1 ? icons.unstar : icons.star} /> {item.starred == 1 ? selfoss.ui._('unstar') : selfoss.ui._('star')}
                     </button>
                 </li>
                 <li>
@@ -461,7 +462,7 @@ export default function Item({ item, selected, expanded, setNavExpanded }) {
                         className={classNames({'entry-unread': true, active: item.unread == 1})}
                         onClick={(event) => handleReadToggle({ event, entry: item })}
                     >
-                        <FontAwesomeIcon icon={[`fa${item.unread == 1 ? 's' : 'r'}`, 'check-circle']} /> {item.unread == 1 ? selfoss.ui._('mark') : selfoss.ui._('unmark')}
+                        <FontAwesomeIcon icon={item.unread == 1 ? icons.markRead : icons.markUnread} /> {item.unread == 1 ? selfoss.ui._('mark') : selfoss.ui._('unmark')}
                     </button>
                 </li>
                 <li>
@@ -473,20 +474,20 @@ export default function Item({ item, selected, expanded, setNavExpanded }) {
                         accessKey="o"
                         onClick={(event) => event.stopPropagation()}
                     >
-                        <FontAwesomeIcon icon={['fas', 'external-link-alt']} /> {selfoss.ui._('open_window')}
+                        <FontAwesomeIcon icon={icons.openWindow} /> {selfoss.ui._('open_window')}
                     </a>
                 </li>
                 {!imagesLoaded ?
                     <li>
                         <button className="entry-loadimages" onClick={(event) => loadImages({ event, setImagesLoaded, contentBlock })}>
-                            <FontAwesomeIcon icon={['fas', 'arrow-alt-circle-down']} /> {selfoss.ui._('load_img')}
+                            <FontAwesomeIcon icon={icons.loadImages} /> {selfoss.ui._('load_img')}
                         </button>
                     </li>
                     : null
                 }
                 <li>
                     <button type="button" accessKey="n" className="entry-next" onClick={openNext}>
-                        <FontAwesomeIcon icon={['fas', 'arrow-right']} /> {selfoss.ui._('next')}
+                        <FontAwesomeIcon icon={icons.next} /> {selfoss.ui._('next')}
                     </button>
                 </li>
                 {shares.map(({ name, label, icon }) => (
@@ -504,7 +505,7 @@ export default function Item({ item, selected, expanded, setNavExpanded }) {
                 ))}
                 <li>
                     <button accessKey="c" className="entry-close" onClick={(event) => closeFullScreen({ event, history, location, entry: item, setFullScreenTrap })}>
-                        <FontAwesomeIcon icon={['far', 'times-circle']} /> {selfoss.ui._('close_entry')}
+                        <FontAwesomeIcon icon={icons.close} /> {selfoss.ui._('close_entry')}
                     </button>
                 </li>
             </ul>

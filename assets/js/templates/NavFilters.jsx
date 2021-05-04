@@ -5,6 +5,7 @@ import { FilterType } from '../Filter';
 import { makeEntriesLink, ENTRIES_ROUTE_PATTERN } from '../helpers/uri';
 import Collapse from '@kunukn/react-collapse';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import * as icons from '../icons';
 
 export default function NavFilters({ setNavExpanded }) {
     const [expanded, setExpanded] = React.useState(true);
@@ -80,7 +81,7 @@ export default function NavFilters({ setNavExpanded }) {
 
     return (
         <div id="nav-filter-wrapper">
-            <h2><button type="button" id="nav-filter-title" className={classNames({'nav-section-toggle': true, 'nav-filter-collapsed': !expanded, 'nav-filter-expanded': expanded})} aria-expanded={expanded} onClick={() => setExpanded((expanded) => !expanded)}><FontAwesomeIcon icon={['fas', expanded ? 'caret-down' : 'caret-right']} size="lg" fixedWidth /> {selfoss.ui._('filter')}</button></h2>
+            <h2><button type="button" id="nav-filter-title" className={classNames({'nav-section-toggle': true, 'nav-filter-collapsed': !expanded, 'nav-filter-expanded': expanded})} aria-expanded={expanded} onClick={() => setExpanded((expanded) => !expanded)}><FontAwesomeIcon icon={expanded ? icons.arrowExpanded : icons.arrowCollapsed} size="lg" fixedWidth /> {selfoss.ui._('filter')}</button></h2>
             <Collapse isOpen={expanded} className="collapse-css-transition">
                 <ul id="nav-filter" aria-labelledby="nav-filter-title">
                     <li>

@@ -3,7 +3,6 @@ import { HashRouter as Router } from 'react-router-dom';
 import ReactDOM from 'react-dom';
 import locales from './locales';
 import selfoss from './selfoss-base';
-import { initIcons } from './icons';
 import App from './templates/App';
 import { LoadingState } from './requests/LoadingState';
 
@@ -28,8 +27,6 @@ selfoss.ui = {
      */
     init: function() {
         document.getElementById('js-loading-message')?.remove();
-
-        initIcons();
 
         const mainUi = document.createElement('div');
         document.body.appendChild(mainUi);

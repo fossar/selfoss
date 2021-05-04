@@ -6,6 +6,7 @@ import NavSearch from './NavSearch';
 import NavTags from './NavTags';
 import NavToolBar from './NavToolBar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import * as icons from '../icons';
 
 export default function Navigation({ entriesPage, setNavExpanded }) {
     const [offlineState, setOfflineState] = React.useState(selfoss.offlineState.value);
@@ -41,8 +42,8 @@ export default function Navigation({ entriesPage, setNavExpanded }) {
 
             <div className={classNames({'nav-unavailable': true, offline: offlineState, online: !offlineState})}>
                 <span className="fa-layers fa-2x">
-                    <FontAwesomeIcon icon={['fas', 'wifi']} />
-                    <FontAwesomeIcon icon={['fas', 'slash']} />
+                    <FontAwesomeIcon icon={icons.connection} />
+                    <FontAwesomeIcon icon={icons.slash} />
                 </span>
                 <p>{selfoss.ui._('offline_navigation_unavailable')}</p>
             </div>

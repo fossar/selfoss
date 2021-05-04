@@ -1,6 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import * as icons from '../icons';
 
 function handleReloadAll({ setReloading, setNavExpanded }) {
     setReloading(true);
@@ -52,7 +53,7 @@ export default function NavToolBar({ setNavExpanded }) {
                 onClick={() => handleReloadAll({ setReloading, setNavExpanded })}
             >
                 <FontAwesomeIcon
-                    icon={['fas', 'sync-alt']}
+                    icon={icons.reload}
                     fixedWidth
                     spin={reloading}
                 />
@@ -65,7 +66,7 @@ export default function NavToolBar({ setNavExpanded }) {
                 onClick={() => handleSettings({ history, setNavExpanded })}
             >
                 <FontAwesomeIcon
-                    icon={['fas', 'cloud-upload-alt']}
+                    icon={icons.settings}
                     fixedWidth
                 />
             </button>
@@ -76,7 +77,7 @@ export default function NavToolBar({ setNavExpanded }) {
                 accessKey="l"
                 onClick={() => handleLogOut({ setNavExpanded })}
             >
-                <FontAwesomeIcon icon={['fas', 'sign-out-alt']} fixedWidth />
+                <FontAwesomeIcon icon={icons.signOut} fixedWidth />
             </button>
             <button
                 id="nav-login"
@@ -85,7 +86,7 @@ export default function NavToolBar({ setNavExpanded }) {
                 accessKey="l"
                 onClick={() => handleLogIn({ history })}
             >
-                <FontAwesomeIcon icon={['fas', 'key']} fixedWidth />
+                <FontAwesomeIcon icon={icons.logIn} fixedWidth />
             </button>
         </div>
     );

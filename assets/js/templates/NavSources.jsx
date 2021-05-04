@@ -7,6 +7,7 @@ import Collapse from '@kunukn/react-collapse';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { LoadingState } from '../requests/LoadingState';
 import * as sourceRequests from '../requests/sources';
+import * as icons from '../icons';
 
 function handleTitleClick(setExpanded, [sourcesState, setSourcesState]) {
     if (!selfoss.db.online) {
@@ -69,7 +70,7 @@ export default function NavSources({ sourcesRepository, setNavExpanded }) {
 
     return (
         <React.Fragment>
-            <h2><button type="button" id="nav-sources-title" className={classNames({'nav-section-toggle': true, 'nav-sources-collapsed': !reallyExpanded, 'nav-sources-expanded': reallyExpanded})} aria-expanded={reallyExpanded} onClick={() => handleTitleClick(setExpanded, [sourcesState, setSourcesState])}><FontAwesomeIcon icon={['fas', reallyExpanded ? 'caret-down' : 'caret-right']} size="lg" fixedWidth />  {selfoss.ui._('sources')}</button></h2>
+            <h2><button type="button" id="nav-sources-title" className={classNames({'nav-section-toggle': true, 'nav-sources-collapsed': !reallyExpanded, 'nav-sources-expanded': reallyExpanded})} aria-expanded={reallyExpanded} onClick={() => handleTitleClick(setExpanded, [sourcesState, setSourcesState])}><FontAwesomeIcon icon={expanded ? icons.arrowExpanded : icons.arrowCollapsed} size="lg" fixedWidth />  {selfoss.ui._('sources')}</button></h2>
             <Collapse isOpen={reallyExpanded} className="collapse-css-transition">
                 <ul id="nav-sources" aria-labelledby="nav-sources-title">
                     {sources.map((source) =>

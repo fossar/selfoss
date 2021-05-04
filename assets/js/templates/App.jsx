@@ -15,6 +15,7 @@ import EntriesPage from './EntriesPage';
 import Navigation from './Navigation';
 import SearchList from './SearchList';
 import makeShortcuts from '../shortcuts';
+import * as icons from '../icons';
 import { ENTRIES_ROUTE_PATTERN } from '../helpers/uri';
 
 
@@ -200,7 +201,7 @@ export default function App() {
                             aria-label={selfoss.ui._('settingsbutton')}
                             onClick={(event) => handleNavToggle({ event, setNavExpanded })}
                         >
-                            <FontAwesomeIcon icon={['fas', 'cog']} size="2x" />
+                            <FontAwesomeIcon icon={icons.menu} size="2x" />
                         </button>
                     </div>
 

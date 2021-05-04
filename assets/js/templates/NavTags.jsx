@@ -6,6 +6,7 @@ import { makeEntriesLink, ENTRIES_ROUTE_PATTERN } from '../helpers/uri';
 import { updateTag } from '../requests/tags';
 import Collapse from '@kunukn/react-collapse';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import * as icons from '../icons';
 
 function ColorChooser({tag}) {
     const colorChooser = React.useRef(null);
@@ -70,7 +71,7 @@ export default function NavTags({ tagsRepository, setNavExpanded }) {
 
     return (
         <React.Fragment>
-            <h2><button type="button" id="nav-tags-title" className={classNames({'nav-section-toggle': true, 'nav-tags-collapsed': !expanded, 'nav-tags-expanded': expanded})} aria-expanded={expanded} onClick={() => setExpanded((expanded) => !expanded)}><FontAwesomeIcon icon={['fas', expanded ? 'caret-down' : 'caret-right']} size="lg" fixedWidth />  {selfoss.ui._('tags')}</button></h2>
+            <h2><button type="button" id="nav-tags-title" className={classNames({'nav-section-toggle': true, 'nav-tags-collapsed': !expanded, 'nav-tags-expanded': expanded})} aria-expanded={expanded} onClick={() => setExpanded((expanded) => !expanded)}><FontAwesomeIcon icon={expanded ? icons.arrowExpanded : icons.arrowCollapsed} size="lg" fixedWidth />  {selfoss.ui._('tags')}</button></h2>
             <Collapse isOpen={expanded} className="collapse-css-transition">
                 <ul id="nav-tags" aria-labelledby="nav-tags-title">
                     <li><Link to={makeEntriesLink(location, { category: 'all', id: null })} className={classNames({'nav-tags-all': true, active: currentAllTags})} onClick={() => setNavExpanded(false)}>{selfoss.ui._('alltags')}</Link></li>
