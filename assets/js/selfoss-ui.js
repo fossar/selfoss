@@ -433,39 +433,6 @@ selfoss.ui = {
     },
 
 
-    /**
-     * Converts Date to a relative string.
-     * When the date is too old, null is returned instead.
-     * @param {Date} datetime
-     * @return {?String} relative time reference
-     */
-    datetimeRelative: function(datetime) {
-        const ageInseconds = (new Date() - datetime) / 1000;
-        const ageInMinutes = ageInseconds / 60;
-        const ageInHours = ageInMinutes / 60;
-        const ageInDays = ageInHours / 24;
-
-        if (ageInHours < 1) {
-            return selfoss.ui._('minutes', [Math.round(ageInMinutes)]);
-        } else if (ageInDays < 1) {
-            return selfoss.ui._('hours', [Math.round(ageInHours)]);
-        } else {
-            return null;
-        }
-    },
-
-
-    refreshEntryDatetimes: function() {
-        document.querySelectorAll('.entry:not(.timestamped)').forEach((entry) => {
-            const datetime = entry.getAttribute('data-entry-datetime');
-            if (datetime) {
-                const date = new Date(datetime);
-                entry.querySelector('.entry-datetime').innerHTML = selfoss.ui.datetimeRelative(date) ?? date.toLocaleString();
-            }
-        });
-    },
-
-
     refreshTagSourceUnread: function(tagCounts, sourceCounts, diff = true) {
         const tags = selfoss.tags.tags.map((tag) => {
             if (!(tag.tag in tagCounts)) {

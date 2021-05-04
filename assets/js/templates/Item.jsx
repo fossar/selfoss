@@ -330,7 +330,29 @@ function ItemTag({tag, color, location}) {
     );
 }
 
-export default function Item({ item, selected, expanded, setNavExpanded }) {
+/**
+ * Converts Date to a relative string.
+ * When the date is too old, null is returned instead.
+ * @param {Date} currentTime
+ * @param {Date} datetime
+ * @return {?String} relative time reference
+ */
+function datetimeRelative(currentTime, datetime) {
+    const ageInseconds = (currentTime - datetime) / 1000;
+    const ageInMinutes = ageInseconds / 60;
+    const ageInHours = ageInMinutes / 60;
+    const ageInDays = ageInHours / 24;
+
+    if (ageInHours < 1) {
+        return selfoss.ui._('minutes', [Math.round(ageInMinutes)]);
+    } else if (ageInDays < 1) {
+        return selfoss.ui._('hours', [Math.round(ageInHours)]);
+    } else {
+        return null;
+    }
+}
+
+export default function Item({ currentTime, item, selected, expanded, setNavExpanded }) {
     const { title, author, sourcetitle } = item;
 
     const [fullScreenTrap, setFullScreenTrap] = React.useState(null);
@@ -340,7 +362,10 @@ export default function Item({ item, selected, expanded, setNavExpanded }) {
     const location = useLocation();
     const history = useHistory();
 
-    const relDate = selfoss.ui.datetimeRelative(item.datetime);
+    const relDate = React.useMemo(
+        () => datetimeRelative(currentTime, item.datetime),
+        [currentTime, item.datetime]
+    );
     const shares = selfoss.shares.getAll();
 
     const entryOnClick = React.useCallback(
@@ -381,7 +406,6 @@ export default function Item({ item, selected, expanded, setNavExpanded }) {
     return (
         <div data-entry-id={item.id}
             data-entry-source={item.source}
-            data-entry-datetime={item.datetime.toISOString()}
             data-entry-url={item.link}
             className={classNames({entry: true, unread: item.unread == 1, expanded, selected})}
             role="article"

@@ -223,8 +223,6 @@ var selfoss = {
 
             // setup periodic server status sync
             window.setInterval(selfoss.db.sync, 60 * 1000);
-
-            window.setInterval(selfoss.ui.refreshEntryDatetimes, 60 * 1000);
         }
     },
 

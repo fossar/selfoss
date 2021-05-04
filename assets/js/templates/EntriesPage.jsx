@@ -244,6 +244,20 @@ export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, s
         [fetchParams]
     );
 
+    // Current time for calculating relative dates in items.
+    const [currentTime, setCurrentTime] = React.useState(null);
+    React.useEffect(() => {
+        setCurrentTime(new Date());
+
+        const tick = window.setInterval(() => {
+            setCurrentTime(new Date());
+        }, 60 * 1000);
+
+        return () => {
+            clearInterval(tick);
+        };
+    }, []);
+
     return (
         <React.Fragment>
             {loadingState === LoadingState.LOADING ? <SpinnerBig /> : null}
@@ -261,6 +275,7 @@ export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, s
                 <Item
                     key={entry.id}
                     item={entry}
+                    currentTime={currentTime}
                     selected={selectedEntry == entry.id}
                     expanded={expandedEntries[entry.id] ?? false}
                     setNavExpanded={setNavExpanded}
