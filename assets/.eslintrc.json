@@ -20,7 +20,7 @@
         "block-spacing": "error",
         "brace-style": "error",
         "camelcase": "error",
-        "comma-dangle": "error",
+        "comma-dangle": ["error", "only-multiline"],
         "comma-spacing": "error",
         "comma-style": "error",
         "curly": "error",
