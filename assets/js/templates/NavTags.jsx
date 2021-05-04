@@ -48,11 +48,39 @@ function ColorChooser({tag}) {
     );
 }
 
+function Tag({ tag, active, collapseNav }) {
+    const location = useLocation();
+
+    return (
+        <li>
+            <Link
+                to={makeEntriesLink(location, {
+                    category: tag === null ? 'all' : `tag-${tag.tag}`,
+                    id: null
+                })}
+                className={classNames({ 'nav-tags-all': tag === null, active })}
+                onClick={collapseNav}
+            >
+                {tag === null ? (
+                    selfoss.ui._('alltags')
+                ) : (
+                    <React.Fragment>
+                        <span className="tag">{unescape(tag.tag)}</span>
+                        <span className="unread">
+                            {tag.unread > 0 ? tag.unread : ''}
+                        </span>
+                        <ColorChooser tag={tag} />
+                    </React.Fragment>
+                )}
+            </Link>
+        </li>
+    );
+}
+
 export default function NavTags({ tagsRepository, setNavExpanded }) {
     const [expanded, setExpanded] = React.useState(true);
     const [tags, setTags] = React.useState(tagsRepository.tags);
 
-    const location = useLocation();
     // useParams does not seem to work.
     const match = useRouteMatch(ENTRIES_ROUTE_PATTERN);
     const params = match !== null ? match.params : {};
@@ -90,16 +118,19 @@ export default function NavTags({ tagsRepository, setNavExpanded }) {
             <h2><button type="button" id="nav-tags-title" className={classNames({'nav-section-toggle': true, 'nav-tags-collapsed': !expanded, 'nav-tags-expanded': expanded})} aria-expanded={expanded} onClick={toggleExpanded}><FontAwesomeIcon icon={expanded ? icons.arrowExpanded : icons.arrowCollapsed} size="lg" fixedWidth />  {selfoss.ui._('tags')}</button></h2>
             <Collapse isOpen={expanded} className="collapse-css-transition">
                 <ul id="nav-tags" aria-labelledby="nav-tags-title">
-                    <li><Link to={makeEntriesLink(location, { category: 'all', id: null })} className={classNames({'nav-tags-all': true, active: currentAllTags})} onClick={collapseNav}>{selfoss.ui._('alltags')}</Link></li>
-                    {tags.map(tag =>
-                        <li key={tag.tag}>
-                            <Link to={makeEntriesLink(location, { category: `tag-${tag.tag}`, id: null })} className={classNames({active: currentTag === tag.tag})} onClick={collapseNav}>
-                                <span className="tag">{unescape(tag.tag)}</span>
-                                <span className="unread">{tag.unread > 0 ? tag.unread : ''}</span>
-                                <ColorChooser tag={tag} />
-                            </Link>
-                        </li>
-                    )}
+                    <Tag
+                        tag={null}
+                        active={currentAllTags}
+                        collapseNav={collapseNav}
+                    />
+                    {tags.map((tag) => (
+                        <Tag
+                            key={tag.tag}
+                            tag={tag}
+                            active={currentTag === tag.tag}
+                            collapseNav={collapseNav}
+                        />
+                    ))}
                 </ul>
             </Collapse>
         </React.Fragment>

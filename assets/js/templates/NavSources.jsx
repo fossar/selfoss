@@ -29,6 +29,19 @@ function handleTitleClick(setExpanded, [sourcesState, setSourcesState]) {
     });
 }
 
+function Source({ source, active, collapseNav }) {
+    const location = useLocation();
+
+    return (
+        <li>
+            <Link to={makeEntriesLink(location, { category: `source-${source.id}`, id: null })} className={classNames({active, unread: source.unread > 0})} onClick={collapseNav}>
+                <span className="nav-source">{unescape(source.title)}</span>
+                <span className="unread">{source.unread > 0 ? source.unread : ''}</span>
+            </Link>
+        </li>
+    );
+}
+
 export default function NavSources({ sourcesRepository, setNavExpanded }) {
     const [expanded, setExpanded] = React.useState(false);
     const [sourcesState, setSourcesState] = React.useState(sourcesRepository.state);
@@ -62,7 +75,6 @@ export default function NavSources({ sourcesRepository, setNavExpanded }) {
 
     const reallyExpanded = expanded && sourcesState === LoadingState.SUCCESS;
 
-    const location = useLocation();
     // useParams does not seem to work.
     const match = useRouteMatch(ENTRIES_ROUTE_PATTERN);
     const params = match !== null ? match.params : {};
@@ -84,12 +96,12 @@ export default function NavSources({ sourcesRepository, setNavExpanded }) {
             <Collapse isOpen={reallyExpanded} className="collapse-css-transition">
                 <ul id="nav-sources" aria-labelledby="nav-sources-title">
                     {sources.map((source) =>
-                        <li key={source.id}>
-                            <Link to={makeEntriesLink(location, { category: `source-${source.id}`, id: null })} className={classNames({active: currentSource === source.id, unread: source.unread > 0})} onClick={collapseNav}>
-                                <span className="nav-source">{unescape(source.title)}</span>
-                                <span className="unread">{source.unread > 0 ? source.unread : ''}</span>
-                            </Link>
-                        </li>
+                        <Source
+                            key={source.id}
+                            source={source}
+                            active={currentSource === source.id}
+                            collapseNav={collapseNav}
+                        />
                     )}
                 </ul>
             </Collapse>
