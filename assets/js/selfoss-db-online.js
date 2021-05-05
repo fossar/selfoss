@@ -213,7 +213,7 @@ selfoss.dbOnline = {
         }).catch(function(error) {
             selfoss.dbOnline._syncDone(false);
             selfoss.handleAjaxError(error).catch(function(error) {
-                selfoss.ui.showError(selfoss.ui._('error_sync') + ' ' + error.message);
+                selfoss.app.showError(selfoss.app._('error_sync') + ' ' + error.message);
             });
         }).finally(function() {
             if (selfoss.dbOnline.syncing.promise) {

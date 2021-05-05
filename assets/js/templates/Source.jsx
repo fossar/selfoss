@@ -7,6 +7,7 @@ import pick from 'lodash.pick';
 import SourceParam from './SourceParam';
 import * as sourceRequests from '../requests/sources';
 import { LoadingState } from '../requests/LoadingState';
+import { LocalizationContext } from '../helpers/i18n';
 
 // cancel source editing
 function handleCancel({ event, source, setSources, setEditedSource }) {
@@ -108,8 +109,8 @@ function handleSave({
             }
         })
         .catch((error) => {
-            selfoss.ui.showError(
-                selfoss.ui._('error_edit_source') + ' ' + error.message
+            selfoss.app.showError(
+                selfoss.app._('error_edit_source') + ' ' + error.message
             );
         })
         .finally(() => {
@@ -126,7 +127,7 @@ function handleDelete({
 }) {
     event.preventDefault();
 
-    const answer = confirm(selfoss.ui._('source_warn'));
+    const answer = confirm(selfoss.app._('source_warn'));
     if (answer == false) {
         return;
     }
@@ -157,8 +158,8 @@ function handleDelete({
         })
         .catch((error) => {
             setSourceEditDeleteLoading(false);
-            selfoss.ui.showError(
-                selfoss.ui._('error_delete_source') + ' ' + error.message
+            selfoss.app.showError(
+                selfoss.app._('error_delete_source') + ' ' + error.message
             );
         });
 }
@@ -321,12 +322,14 @@ function SourceEditForm({
         [source, setSources, setEditedSource]
     );
 
+    const _ = React.useContext(LocalizationContext);
+
     return (
         <ul className="source-edit-form">
             {/* title */}
             <li>
                 <label htmlFor={`title-${sourceId}`}>
-                    {selfoss.ui._('source_title')}
+                    {_('source_title')}
                 </label>
                 <input
                     id={`title-${sourceId}`}
@@ -334,7 +337,7 @@ function SourceEditForm({
                     name="title"
                     accessKey="t"
                     value={source.title ?? ''}
-                    placeholder={selfoss.ui._('source_autotitle_hint')}
+                    placeholder={_('source_autotitle_hint')}
                     onChange={titleOnChange}
                 />
                 {sourceErrors['title'] ? (
@@ -345,7 +348,7 @@ function SourceEditForm({
             {/* tags */}
             <li>
                 <label htmlFor={`tags-${sourceId}`}>
-                    {selfoss.ui._('source_tags')}
+                    {_('source_tags')}
                 </label>
                 <input
                     id={`tags-${sourceId}`}
@@ -357,7 +360,7 @@ function SourceEditForm({
                 />
                 <span className="source-edit-form-help">
                     {' '}
-                    {selfoss.ui._('source_comma')}
+                    {_('source_comma')}
                 </span>
                 {sourceErrors['tags'] ? (
                     <span className="error">{sourceErrors['tags']}</span>
@@ -367,7 +370,7 @@ function SourceEditForm({
             {/* filter */}
             <li>
                 <label htmlFor={`filter-${sourceId}`}>
-                    {selfoss.ui._('source_filter')}
+                    {_('source_filter')}
                 </label>
                 <input
                     id={`filter-${sourceId}`}
@@ -385,7 +388,7 @@ function SourceEditForm({
             {/* type */}
             <li>
                 <label htmlFor={`type-${sourceId}`}>
-                    {selfoss.ui._('source_type')}
+                    {_('source_type')}
                 </label>
                 <select
                     id={`type-${sourceId}`}
@@ -395,7 +398,7 @@ function SourceEditForm({
                     onChange={spoutOnChange}
                     value={source.spout}
                 >
-                    <option value="">{selfoss.ui._('source_select')}</option>
+                    <option value="">{_('source_select')}</option>
                     {Object.entries(spouts).map(([spouttype, spout]) => (
                         <option
                             key={spouttype}
@@ -461,7 +464,7 @@ function SourceEditForm({
                     accessKey="s"
                     onClick={saveOnClick}
                 >
-                    {selfoss.ui._('source_save')}
+                    {_('source_save')}
                 </button>
                 {' • '}
                 <button
@@ -470,7 +473,7 @@ function SourceEditForm({
                     accessKey="c"
                     onClick={cancelOnClick}
                 >
-                    {selfoss.ui._('source_cancel')}
+                    {_('source_cancel')}
                 </button>
             </li>
         </ul>
@@ -542,6 +545,8 @@ export default function Source({ source, setSources, spouts, setSpouts }) {
         [source, setSources]
     );
 
+    const _ = React.useContext(LocalizationContext);
+
     return (
         <form className={classNames(classes)}>
             <div className="source-icon">
@@ -556,7 +561,7 @@ export default function Source({ source, setSources, spouts, setSpouts }) {
             <div className="source-title">
                 {source.title
                     ? unescape(source.title)
-                    : selfoss.ui._('source_new')}
+                    : _('source_new')}
             </div>{' '}
             <div
                 className={classNames({
@@ -573,7 +578,7 @@ export default function Source({ source, setSources, spouts, setSpouts }) {
                     })}
                     onClick={editOnClick}
                 >
-                    {selfoss.ui._(
+                    {_(
                         justSavedTimeout !== null ? 'source_saved' : 'source_edit'
                     )}
                 </button>
@@ -584,14 +589,14 @@ export default function Source({ source, setSources, spouts, setSpouts }) {
                     className="source-delete"
                     onClick={deleteOnClick}
                 >
-                    {selfoss.ui._('source_delete')}
+                    {_('source_delete')}
                 </button>
             </div>
             <div className="source-days">
                 {source.lastentry
-                    ? ` • ${selfoss.ui._(
+                    ? ` • ${_(
                         'source_last_post'
-                    )} ${selfoss.ui._('days', [
+                    )} ${_('days', [
                         daysAgo(new Date(source.lastentry * 1000))
                     ])}`
                     : null}

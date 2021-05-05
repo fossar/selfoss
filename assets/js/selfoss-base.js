@@ -74,7 +74,7 @@ var selfoss = {
                 selfoss.initMain(oldConfiguration);
             } else {
                 // TODO: Add a more proper error page
-                document.body.innerHTML = selfoss.ui._('error_configuration');
+                document.body.innerHTML = selfoss.app._('error_configuration');
             }
         });
     },
@@ -88,7 +88,7 @@ var selfoss = {
                 navigator.serviceWorker.register('../selfoss-sw-offline.js')
                     .then(function(reg) {
                         selfoss.listenWaitingSW(reg, function(reg) {
-                            selfoss.ui.notifyNewVersion(function() {
+                            selfoss.app.notifyNewVersion(function() {
                                 if (reg.waiting) {
                                     reg.waiting.postMessage('skipWaiting');
                                 }
@@ -220,7 +220,7 @@ var selfoss = {
         }
 
         logout().catch((error) => {
-            selfoss.ui.showError(selfoss.ui._('error_logout') + ' ' + error.message);
+            selfoss.app.showError(selfoss.app._('error_logout') + ' ' + error.message);
         });
     },
 
@@ -307,7 +307,7 @@ var selfoss = {
             selfoss.app.setTagsState(LoadingState.SUCCESS);
         }).catch((error) => {
             selfoss.app.setTagsState(LoadingState.FAILURE);
-            selfoss.ui.showError(selfoss.ui._('error_load_tags') + ' ' + error.message);
+            selfoss.app.showError(selfoss.app._('error_load_tags') + ' ' + error.message);
         });
     },
 
@@ -368,9 +368,9 @@ var selfoss = {
             // probe stats and prompt reload to the user
             selfoss.dbOnline.sync().then(function() {
                 if (selfoss.app.state.unreadItemsCount > 0) {
-                    selfoss.ui.showMessage(selfoss.ui._('sources_refreshed'), [
+                    selfoss.app.showMessage(selfoss.app._('sources_refreshed'), [
                         {
-                            label: selfoss.ui._('reload_list'),
+                            label: selfoss.app._('reload_list'),
                             callback() {
                                 document.querySelector('#nav-filter-unread').click();
                             }
@@ -379,7 +379,7 @@ var selfoss = {
                 }
             });
         }).catch((error) => {
-            selfoss.ui.showError(selfoss.ui._('error_refreshing_source') + ' ' + error.message);
+            selfoss.app.showError(selfoss.app._('error_refreshing_source') + ' ' + error.message);
         });
     },
 
@@ -397,7 +397,7 @@ var selfoss = {
             if (httpCode == 403) {
                 selfoss.history.push('/login');
                 // TODO: Use location state once we switch to BrowserRouter
-                selfoss.app.setLoginFormError(selfoss.ui._('error_session_expired'));
+                selfoss.app.setLoginFormError(selfoss.app._('error_session_expired'));
             }
             throw error;
         }

@@ -9,6 +9,7 @@ import * as sourceRequests from '../requests/sources';
 import { LoadingState } from '../requests/LoadingState';
 import { Spinner, SpinnerBig } from './Spinner';
 import classNames from 'classnames';
+import { LocalizationContext } from '../helpers/i18n';
 
 function reloadList({ fetchParams, append = false, waitForSync = true, entryId = null, setLoadingState = selfoss.entriesPage.setLoadingState }) {
     if (entryId && fetchParams.fromId === undefined) {
@@ -81,7 +82,7 @@ function reloadList({ fetchParams, append = false, waitForSync = true, entryId =
 
         }).catch((error) => {
             setLoadingState(LoadingState.FAILURE);
-            selfoss.ui.showError(selfoss.ui._('error_loading') + ' ' + error.message);
+            selfoss.app.showError(selfoss.app._('error_loading') + ' ' + error.message);
         });
     };
 
@@ -108,7 +109,7 @@ function handleRefreshSource({ event, fetchParams, setLoadingState, setNavExpand
         // Will also clear the loading status.
         reloadList({ fetchParams });
     }).catch((error) => {
-        alert(selfoss.ui._('error_refreshing_source') + ' ' + error.message);
+        alert(selfoss.app._('error_refreshing_source') + ' ' + error.message);
     });
 }
 
@@ -178,11 +179,11 @@ export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, s
             entryId: loadingState == LoadingState.INITIAL ? params.id : undefined
         }).then(() => {
             if (fetchParams.tag !== null && !selfoss.db.isValidTag(fetchParams.tag)) {
-                selfoss.ui.showError(selfoss.ui._('error_unknown_tag') + ' ' + fetchParams.tag);
+                selfoss.app.showError(selfoss.app._('error_unknown_tag') + ' ' + fetchParams.tag);
             }
 
             if (fetchParams.source !== null && !selfoss.db.isValidSource(fetchParams.source)) {
-                selfoss.ui.showError(selfoss.ui._('error_unknown_source') + ' ' + fetchParams.source);
+                selfoss.app.showError(selfoss.app._('error_unknown_source') + ' ' + fetchParams.source);
             }
         });
         setShouldUpdateItems(false);
@@ -251,6 +252,8 @@ export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, s
         };
     }, []);
 
+    const _ = React.useContext(LocalizationContext);
+
     return (
         <React.Fragment>
             {loadingState === LoadingState.LOADING ? <SpinnerBig /> : null}
@@ -260,7 +263,7 @@ export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, s
                     className="refresh-source"
                     onClick={refreshOnClick}
                 >
-                    {selfoss.ui._('source_refresh')}
+                    {_('source_refresh')}
                 </button>
                 : null
             }
@@ -276,25 +279,25 @@ export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, s
             ))}
             <div id="stream-buttons">
                 {loadingState === LoadingState.SUCCESS && entries.length === 0 ?
-                    <p aria-live="assertive" className="stream-empty">{selfoss.ui._('no_entries')}</p>
+                    <p aria-live="assertive" className="stream-empty">{_('no_entries')}</p>
                     : null}
                 {hasMore ?
                     <button
                         className={classNames({'stream-button': true, 'stream-more': true})}
                         accessKey="m"
-                        aria-label={selfoss.ui._('more')}
+                        aria-label={_('more')}
                         onClick={moreLoadingState !== LoadingState.LOADING ? moreOnClick : null}
                     >
-                        {moreLoadingState !== LoadingState.LOADING ? <span>{selfoss.ui._('more')}</span> : <Spinner size="3x" />}
+                        {moreLoadingState !== LoadingState.LOADING ? <span>{_('more')}</span> : <Spinner size="3x" />}
                     </button>
                     : null}
                 {entries.length > 0 ?
                     <button
                         className="stream-button mark-these-read"
-                        aria-label={selfoss.ui._('markread')}
+                        aria-label={_('markread')}
                         onClick={selfoss.entriesPage.markVisibleRead}
                     >
-                        <span>{selfoss.ui._('markread')}</span>
+                        <span>{_('markread')}</span>
                     </button>
                     : null
                 }
@@ -302,10 +305,10 @@ export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, s
                     <button
                         className="stream-button stream-error"
                         aria-live="assertive"
-                        aria-label={selfoss.ui._('streamerror')}
+                        aria-label={_('streamerror')}
                         onClick={errorOnClick}
                     >
-                        {selfoss.ui._('streamerror')}
+                        {_('streamerror')}
                     </button>
                     : null}
             </div>
@@ -627,7 +630,7 @@ export default class StateHolder extends React.Component {
                 this.setLoadingState(LoadingState.SUCCESS);
                 this.setEntries(oldEntries);
                 this.setHasMore(hadMore);
-                selfoss.ui.showError(selfoss.ui._('error_mark_items') + ' ' + error.message);
+                selfoss.app.showError(selfoss.app._('error_mark_items') + ' ' + error.message);
             });
         });
     }

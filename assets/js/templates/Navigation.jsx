@@ -11,6 +11,7 @@ import NavToolBar from './NavToolBar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as icons from '../icons';
 import { LoadingState } from '../requests/LoadingState';
+import { LocalizationContext } from '../helpers/i18n';
 
 export default function Navigation({
     entriesPage,
@@ -30,10 +31,12 @@ export default function Navigation({
     setSources,
     tags,
 }) {
+    const _ = React.useContext(LocalizationContext);
+
     return (
         <React.Fragment>
             <div id="nav-logo"></div>
-            <button accessKey="a" id="nav-mark" onClick={entriesPage !== null ? entriesPage.markVisibleRead : null} disabled={entriesPage === null}>{selfoss.ui._('markread')}</button>
+            <button accessKey="a" id="nav-mark" onClick={entriesPage !== null ? entriesPage.markVisibleRead : null} disabled={entriesPage === null}>{_('markread')}</button>
 
             <NavFilters
                 setNavExpanded={setNavExpanded}
@@ -66,7 +69,7 @@ export default function Navigation({
                     <FontAwesomeIcon icon={icons.connection} />
                     <FontAwesomeIcon icon={icons.slash} />
                 </span>
-                <p>{selfoss.ui._('offline_navigation_unavailable')}</p>
+                <p>{_('offline_navigation_unavailable')}</p>
             </div>
 
             <div className="separator"><hr /></div>

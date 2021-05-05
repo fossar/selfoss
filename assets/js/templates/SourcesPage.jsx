@@ -3,6 +3,7 @@ import Source from './Source';
 import { SpinnerBig } from './Spinner';
 import * as sourceRequests from '../requests/sources';
 import { getAllSources } from '../requests/sources';
+import { LocalizationContext } from '../helpers/i18n';
 
 function rand() {
     // https://www.php.net/manual/en/function.mt-getrandmax.php#117620
@@ -22,8 +23,8 @@ function handleAddSource({ event, setSources, setSpouts }) {
             setSources((sources) => [{ id: 'new-' + rand() }, ...sources]);
         })
         .catch((error) => {
-            selfoss.ui.showError(
-                selfoss.ui._('error_add_source') + ' ' + error.message
+            selfoss.app.showError(
+                selfoss.app._('error_add_source') + ' ' + error.message
             );
         });
 }
@@ -45,7 +46,7 @@ function loadSources({ setActiveAjaxReq, setSpouts, setSources }) {
             }
 
             selfoss.handleAjaxError(error, false).catch(function(error) {
-                selfoss.ui.showError(selfoss.ui._('error_loading') + ' ' + error.message);
+                selfoss.app.showError(selfoss.app._('error_loading') + ' ' + error.message);
             });
         }).finally(() => {
             setActiveAjaxReq(null);
@@ -79,6 +80,8 @@ export default function SourcesPage() {
         []
     );
 
+    const _ = React.useContext(LocalizationContext);
+
     return (
         activeAjaxReq !== null ?
             <SpinnerBig />
@@ -88,13 +91,13 @@ export default function SourcesPage() {
                         className="source-add"
                         onClick={addOnClick}
                     >
-                        {selfoss.ui._('source_add')}
+                        {_('source_add')}
                     </button>
                     <a className="source-export" href="opmlexport">
-                        {selfoss.ui._('source_export')}
+                        {_('source_export')}
                     </a>
                     <a className="source-opml" href="opml">
-                        {selfoss.ui._('source_opml')}
+                        {_('source_opml')}
                     </a>
                     {sources.map((source) => (
                         <Source

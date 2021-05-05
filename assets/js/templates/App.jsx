@@ -20,7 +20,9 @@ import SearchList from './SearchList';
 import makeShortcuts from '../shortcuts';
 import * as icons from '../icons';
 import { ENTRIES_ROUTE_PATTERN } from '../helpers/uri';
+import { i18nFormat, LocalizationContext } from '../helpers/i18n';
 import { LoadingState } from '../requests/LoadingState';
+import locales from '../locales';
 
 
 function handleNavToggle({ event, setNavExpanded }) {
@@ -76,9 +78,10 @@ Message.propTypes = {
 
 function NotFound() {
     const location = useLocation();
+    const _ = React.useContext(LocalizationContext);
     return (
         <p>
-            {selfoss.ui._('error_invalid_subsection') + location.pathname}
+            {_('error_invalid_subsection') + location.pathname}
         </p>
     );
 }
@@ -169,6 +172,8 @@ function PureApp({
         }
     }, [unreadItemsCount, isEntriesRoute]);
 
+    const _ = React.useContext(LocalizationContext);
+
     return (
         <React.Fragment>
             <Message message={globalMessage} />
@@ -196,7 +201,7 @@ function PureApp({
                         <button
                             id="nav-mobile-settings"
                             accessKey="t"
-                            aria-label={selfoss.ui._('settingsbutton')}
+                            aria-label={_('settingsbutton')}
                             onClick={menuButtonOnClick}
                         >
                             <FontAwesomeIcon icon={icons.menu} size="2x" />
@@ -506,27 +511,163 @@ export default class App extends React.Component {
         }
     }
 
+
+    /**
+    * Obtain a localized message for given key, substituting placeholders for values, when given.
+    * @param string key
+    * @param ?array parameters
+    * @return string
+    */
+    _(identifier, params) {
+        const fallbackLanguage = 'en';
+        const langKey = `lang_${identifier}`;
+
+        let preferredLanguage = selfoss.config.language;
+
+        // locale auto-detection
+        if (preferredLanguage === null) {
+            if ('languages' in navigator) {
+                preferredLanguage = navigator.languages.find(lang => Object.keys(locales).includes(lang));
+            }
+        }
+
+        if (!Object.keys(locales).includes(preferredLanguage)) {
+            preferredLanguage = fallbackLanguage;
+        }
+
+        let translated = locales[preferredLanguage][langKey] || locales[fallbackLanguage][langKey] || `#untranslated:${identifier}`;
+
+        if (params) {
+            translated = i18nFormat(translated, params);
+        }
+
+        return translated;
+    }
+
+
+    /**
+     * Show error message in the message bar in the UI.
+     *
+     * @param {string} message
+     * @return void
+     */
+    showError(message) {
+        this.showMessage(message, [], true);
+    }
+
+
+    /**
+     * Show message in the message bar in the UI.
+     *
+     * @param {string} message
+     * @param {Array.<Object.{label: string, callback: function>} actions
+     * @param {bool} isError
+     * @return void
+     */
+    showMessage(message, actions = [], isError = false) {
+        this.setGlobalMessage({ message, actions, isError });
+    }
+
+
+    notifyNewVersion(cb) {
+        if (!cb) {
+            cb = function() {
+                window.location.reload();
+            };
+        }
+
+        this.showMessage(this._('app_update'), [
+            {
+                label: this._('app_reload'),
+                callback: cb
+            }
+        ]);
+    }
+
+
+    refreshTagSourceUnread(tagCounts, sourceCounts, diff = true) {
+        this.setTags((tags) =>
+            tags.map((tag) => {
+                if (!(tag.tag in tagCounts)) {
+                    return tag;
+                }
+
+                let unread;
+                if (diff) {
+                    unread = tag.unread + tagCounts[tag.tag];
+                } else {
+                    unread = tagCounts[tag.tag];
+                }
+
+                return {
+                    ...tag,
+                    unread
+                };
+            })
+        );
+
+        this.setSources((sources) =>
+            sources.map((source) => {
+                if (!(source.id in sourceCounts)) {
+                    return source;
+                }
+
+                let unread;
+                if (diff) {
+                    unread = source.unread + sourceCounts[source.id];
+                } else {
+                    unread = sourceCounts[source.id];
+                }
+
+                return {
+                    ...source,
+                    unread
+                };
+            })
+        );
+    }
+
+
+    refreshOfflineCounts(offlineCounts) {
+        for (let [kind, newCount] of Object.entries(offlineCounts)) {
+            if (newCount === 'keep') {
+                continue;
+            }
+
+            if (kind === 'unread') {
+                this.setUnreadItemsOfflineCount(newCount);
+            } else if (kind === 'starred') {
+                this.setStarredItemsOfflineCount(newCount);
+            } else if (kind === 'newest') {
+                this.setAllItemsOfflineCount(newCount);
+            }
+        }
+    }
+
+
     render() {
         return (
-            <PureApp
-                navSourcesExpanded={this.state.navSourcesExpanded}
-                setNavSourcesExpanded={this.setNavSourcesExpanded}
-                offlineState={this.state.offlineState}
-                allItemsCount={this.state.allItemsCount}
-                allItemsOfflineCount={this.state.allItemsOfflineCount}
-                unreadItemsCount={this.state.unreadItemsCount}
-                unreadItemsOfflineCount={this.state.unreadItemsOfflineCount}
-                starredItemsCount={this.state.starredItemsCount}
-                starredItemsOfflineCount={this.state.starredItemsOfflineCount}
-                loginFormError={this.state.loginFormError}
-                setLoginFormError={this.setLoginFormError}
-                globalMessage={this.state.globalMessage}
-                sourcesState={this.state.sourcesState}
-                setSourcesState={this.setSourcesState}
-                sources={this.state.sources}
-                setSources={this.setSources}
-                tags={this.state.tags}
-            />
+            <LocalizationContext.Provider value={this._}>
+                <PureApp
+                    navSourcesExpanded={this.state.navSourcesExpanded}
+                    setNavSourcesExpanded={this.setNavSourcesExpanded}
+                    offlineState={this.state.offlineState}
+                    allItemsCount={this.state.allItemsCount}
+                    allItemsOfflineCount={this.state.allItemsOfflineCount}
+                    unreadItemsCount={this.state.unreadItemsCount}
+                    unreadItemsOfflineCount={this.state.unreadItemsOfflineCount}
+                    starredItemsCount={this.state.starredItemsCount}
+                    starredItemsOfflineCount={this.state.starredItemsOfflineCount}
+                    loginFormError={this.state.loginFormError}
+                    setLoginFormError={this.setLoginFormError}
+                    globalMessage={this.state.globalMessage}
+                    sourcesState={this.state.sourcesState}
+                    setSourcesState={this.setSourcesState}
+                    sources={this.state.sources}
+                    setSources={this.setSources}
+                    tags={this.state.tags}
+                />
+            </LocalizationContext.Provider>
         );
     }
 }

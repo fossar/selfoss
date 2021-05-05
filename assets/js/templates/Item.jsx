@@ -8,6 +8,7 @@ import { nextprev, Direction } from '../shortcuts';
 import { makeEntriesLink } from '../helpers/uri';
 import * as itemsRequests from '../requests/items';
 import * as icons from '../icons';
+import { LocalizationContext } from '../helpers/i18n';
 
 function anonymize(url) {
     return (selfoss.config.anonymizer ?? '') + url;
@@ -234,7 +235,7 @@ function handleStarredToggle({ event, entry }) {
             // rollback ui changes
             selfoss.entriesPage.starEntry(id, !starr);
             updateStats(!starr);
-            selfoss.ui.showError(selfoss.ui._('error_star_item') + ' ' + error.message);
+            selfoss.app.showError(selfoss.app._('error_star_item') + ' ' + error.message);
         });
     });
 }
@@ -264,7 +265,7 @@ function handleReadToggle({ event, entry }) {
         // update unread on tags and sources
         // Only a single instance of each tag per entry so we can just assign.
         const entryTags = Object.fromEntries(Object.keys(entry.tags).map((tag) => [tag, diff]));
-        selfoss.ui.refreshTagSourceUnread(
+        selfoss.app.refreshTagSourceUnread(
             entryTags,
             {[entry.source]: diff}
         );
@@ -284,7 +285,7 @@ function handleReadToggle({ event, entry }) {
             // rollback ui changes
             selfoss.entriesPage.markEntry(id, unread);
             updateStats(!unread);
-            selfoss.ui.showError(selfoss.ui._('error_mark_item') + ' ' + error.message);
+            selfoss.app.showError(selfoss.app._('error_mark_item') + ' ' + error.message);
         });
     });
 }
@@ -354,9 +355,9 @@ function datetimeRelative(currentTime, datetime) {
     const ageInDays = ageInHours / 24;
 
     if (ageInHours < 1) {
-        return selfoss.ui._('minutes', [Math.round(ageInMinutes)]);
+        return selfoss.app._('minutes', [Math.round(ageInMinutes)]);
     } else if (ageInDays < 1) {
-        return selfoss.ui._('hours', [Math.round(ageInHours)]);
+        return selfoss.app._('hours', [Math.round(ageInHours)]);
     } else {
         return null;
     }
@@ -412,6 +413,8 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
         () => ({ __html: title }),
         [title]
     );
+
+    const _ = React.useContext(LocalizationContext);
 
     return (
         <div data-entry-id={item.id}
@@ -497,7 +500,7 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
             {selfoss.config.readingSpeed !== null ?
                 <React.Fragment>
                     <span className="entry-separator">•</span>
-                    <span className="entry-readtime">{selfoss.ui._('article_reading_time', [Math.round(item.wordCount / selfoss.config.readingSpeed)])}</span>
+                    <span className="entry-readtime">{_('article_reading_time', [Math.round(item.wordCount / selfoss.config.readingSpeed)])}</span>
                 </React.Fragment>
                 : null}
 
@@ -515,7 +518,7 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
                 <div ref={contentBlock} />
 
                 <div className="entry-smartphone-share">
-                    <ul aria-label={selfoss.ui._('article_actions')}>
+                    <ul aria-label={_('article_actions')}>
                         <li>
                             <a
                                 href={anonymize(item.link)}
@@ -525,7 +528,7 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
                                 accessKey="o"
                                 onClick={stopPropagation}
                             >
-                                <FontAwesomeIcon icon={icons.openWindow} /> {selfoss.ui._('open_window')}
+                                <FontAwesomeIcon icon={icons.openWindow} /> {_('open_window')}
                             </a>
                         </li>
                         {shares.map(({ name, label, icon }) => (
@@ -540,7 +543,7 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
                         ))}
                         <li>
                             <button type="button" accessKey="n" className="entry-next" onClick={openNext}>
-                                <FontAwesomeIcon icon={icons.next} /> {selfoss.ui._('next')}
+                                <FontAwesomeIcon icon={icons.next} /> {_('next')}
                             </button>
                         </li>
                     </ul>
@@ -548,14 +551,14 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
             </div>
 
             {/* toolbar */}
-            <ul aria-label={selfoss.ui._('article_actions')} className="entry-toolbar">
+            <ul aria-label={_('article_actions')} className="entry-toolbar">
                 <li>
                     <button
                         accessKey="a"
                         className={classNames({'entry-starr': true, active: item.starred == 1})}
                         onClick={starOnClick}
                     >
-                        <FontAwesomeIcon icon={item.starred == 1 ? icons.unstar : icons.star} /> {item.starred == 1 ? selfoss.ui._('unstar') : selfoss.ui._('star')}
+                        <FontAwesomeIcon icon={item.starred == 1 ? icons.unstar : icons.star} /> {item.starred == 1 ? _('unstar') : _('star')}
                     </button>
                 </li>
                 <li>
@@ -564,7 +567,7 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
                         className={classNames({'entry-unread': true, active: item.unread == 1})}
                         onClick={markReadOnClick}
                     >
-                        <FontAwesomeIcon icon={item.unread == 1 ? icons.markRead : icons.markUnread} /> {item.unread == 1 ? selfoss.ui._('mark') : selfoss.ui._('unmark')}
+                        <FontAwesomeIcon icon={item.unread == 1 ? icons.markRead : icons.markUnread} /> {item.unread == 1 ? _('mark') : _('unmark')}
                     </button>
                 </li>
                 <li>
@@ -576,20 +579,20 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
                         accessKey="o"
                         onClick={stopPropagation}
                     >
-                        <FontAwesomeIcon icon={icons.openWindow} /> {selfoss.ui._('open_window')}
+                        <FontAwesomeIcon icon={icons.openWindow} /> {_('open_window')}
                     </a>
                 </li>
                 {!imagesLoaded ?
                     <li>
                         <button className="entry-loadimages" onClick={loadImagesOnClick}>
-                            <FontAwesomeIcon icon={icons.loadImages} /> {selfoss.ui._('load_img')}
+                            <FontAwesomeIcon icon={icons.loadImages} /> {_('load_img')}
                         </button>
                     </li>
                     : null
                 }
                 <li>
                     <button type="button" accessKey="n" className="entry-next" onClick={openNext}>
-                        <FontAwesomeIcon icon={icons.next} /> {selfoss.ui._('next')}
+                        <FontAwesomeIcon icon={icons.next} /> {_('next')}
                     </button>
                 </li>
                 {shares.map(({ name, label, icon }) => (
@@ -605,7 +608,7 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
                 ))}
                 <li>
                     <button accessKey="c" className="entry-close" onClick={closeOnClick}>
-                        <FontAwesomeIcon icon={icons.close} /> {selfoss.ui._('close_entry')}
+                        <FontAwesomeIcon icon={icons.close} /> {_('close_entry')}
                     </button>
                 </li>
             </ul>

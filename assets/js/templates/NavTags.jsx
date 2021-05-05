@@ -9,6 +9,7 @@ import { updateTag } from '../requests/tags';
 import Collapse from '@kunukn/react-collapse';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as icons from '../icons';
+import { LocalizationContext } from '../helpers/i18n';
 
 function ColorChooser({tag}) {
     const colorChooser = React.useRef(null);
@@ -29,7 +30,7 @@ function ColorChooser({tag}) {
                 ).then(() => {
                     selfoss.entriesPage?.reloadList();
                 }).catch((error) => {
-                    selfoss.ui.showError(selfoss.ui._('error_saving_color') + ' ' + error.message);
+                    selfoss.app.showError(selfoss.app._('error_saving_color') + ' ' + error.message);
                 });
 
             }
@@ -56,6 +57,7 @@ ColorChooser.propTypes = {
 
 function Tag({ tag, active, collapseNav }) {
     const location = useLocation();
+    const _ = React.useContext(LocalizationContext);
 
     return (
         <li>
@@ -68,7 +70,7 @@ function Tag({ tag, active, collapseNav }) {
                 onClick={collapseNav}
             >
                 {tag === null ? (
-                    selfoss.ui._('alltags')
+                    _('alltags')
                 ) : (
                     <React.Fragment>
                         <span className="tag">{unescape(tag.tag)}</span>
@@ -109,9 +111,11 @@ export default function NavTags({ setNavExpanded, tags }) {
         [setNavExpanded]
     );
 
+    const _ = React.useContext(LocalizationContext);
+
     return (
         <React.Fragment>
-            <h2><button type="button" id="nav-tags-title" className={classNames({'nav-section-toggle': true, 'nav-tags-collapsed': !expanded, 'nav-tags-expanded': expanded})} aria-expanded={expanded} onClick={toggleExpanded}><FontAwesomeIcon icon={expanded ? icons.arrowExpanded : icons.arrowCollapsed} size="lg" fixedWidth />  {selfoss.ui._('tags')}</button></h2>
+            <h2><button type="button" id="nav-tags-title" className={classNames({'nav-section-toggle': true, 'nav-tags-collapsed': !expanded, 'nav-tags-expanded': expanded})} aria-expanded={expanded} onClick={toggleExpanded}><FontAwesomeIcon icon={expanded ? icons.arrowExpanded : icons.arrowCollapsed} size="lg" fixedWidth />  {_('tags')}</button></h2>
             <Collapse isOpen={expanded} className="collapse-css-transition">
                 <ul id="nav-tags" aria-labelledby="nav-tags-title">
                     <Tag

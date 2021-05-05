@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { LocalizationContext } from '../helpers/i18n';
 
 export default function SourceParam({
     spoutParamName,
@@ -38,6 +39,8 @@ export default function SourceParam({
         spoutParamName in params ? params[spoutParamName] : spoutParam.default;
     let control = null;
 
+    const _ = React.useContext(LocalizationContext);
+
     if (['text', 'checkbox', 'url'].includes(spoutParam.type)) {
         let checked = undefined;
 
@@ -68,7 +71,7 @@ export default function SourceParam({
                 id={`${spoutParamName}-${sourceId}`}
                 type={spoutParam.type}
                 name={spoutParamName}
-                placeholder={selfoss.ui._('source_pwd_placeholder')}
+                placeholder={_('source_pwd_placeholder')}
                 onChange={updateSourceParam}
             />
         );

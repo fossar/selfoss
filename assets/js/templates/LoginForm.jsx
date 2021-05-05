@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { SpinnerBig } from './Spinner';
 import { useHistory } from 'react-router-dom';
+import { LocalizationContext } from '../helpers/i18n';
 
 function handleLogIn({
     event,
@@ -67,6 +68,8 @@ export default function LoginForm({
         [setOfflineEnabled]
     );
 
+    const _ = React.useContext(LocalizationContext);
+
     return (
         <React.Fragment>
             {loading ? <SpinnerBig /> : null}
@@ -82,7 +85,7 @@ export default function LoginForm({
                     </li>
                     <li>
                         <label htmlFor="username">
-                            {selfoss.ui._('login_username')}
+                            {_('login_username')}
                         </label>{' '}
                         <input
                             type="text"
@@ -98,7 +101,7 @@ export default function LoginForm({
                     </li>
                     <li>
                         <label htmlFor="password">
-                            {selfoss.ui._('login_password')}
+                            {_('login_password')}
                         </label>{' '}
                         <input
                             type="password"
@@ -112,7 +115,7 @@ export default function LoginForm({
                     </li>
                     <li>
                         <label htmlFor="enableoffline">
-                            {selfoss.ui._('login_offline')}
+                            {_('login_offline')}
                         </label>{' '}
                         <label>
                             <input
@@ -124,7 +127,7 @@ export default function LoginForm({
                                 checked={offlineEnabled}
                             />{' '}
                             <span className="badge-experimental">
-                                {selfoss.ui._('experimental')}
+                                {_('experimental')}
                             </span>
                         </label>
                     </li>
@@ -136,7 +139,7 @@ export default function LoginForm({
                         <input
                             type="submit"
                             accessKey="l"
-                            value={selfoss.ui._('login')}
+                            value={_('login')}
                         />
                     </li>
                 </ul>

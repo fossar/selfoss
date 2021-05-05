@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { makeEntriesLink } from '../helpers/uri';
 import * as icons from '../icons';
+import { LocalizationContext } from '../helpers/i18n';
 
 // search button shows search input or executes search
 function handleSubmit({ active, setActive, searchField, searchText, history, location, setNavExpanded }) {
@@ -91,6 +92,8 @@ export default function NavSearch({ setNavExpanded, offlineState }) {
         [active, searchText, history, location, setNavExpanded]
     );
 
+    const _ = React.useContext(LocalizationContext);
+
     return (
         <div
             id="search"
@@ -102,7 +105,7 @@ export default function NavSearch({ setNavExpanded, offlineState }) {
             role="search"
         >
             <input
-                aria-label={selfoss.ui._('search_label')}
+                aria-label={_('search_label')}
                 type="search"
                 id="search-term"
                 accessKey="s"
@@ -113,9 +116,9 @@ export default function NavSearch({ setNavExpanded, offlineState }) {
             />
             <button
                 id="search-remove"
-                title={selfoss.ui._('searchremove')}
+                title={_('searchremove')}
                 accessKey="h"
-                aria-label={selfoss.ui._('searchremove')}
+                aria-label={_('searchremove')}
                 onClick={removeOnClick}
                 ref={searchRemoveButton}
             >
@@ -123,8 +126,8 @@ export default function NavSearch({ setNavExpanded, offlineState }) {
             </button>
             <button
                 id="search-button"
-                title={selfoss.ui._('searchbutton')}
-                aria-label={selfoss.ui._('searchbutton')}
+                title={_('searchbutton')}
+                aria-label={_('searchbutton')}
                 accessKey="e"
                 onClick={searchOnClick
                 }
@@ -132,7 +135,7 @@ export default function NavSearch({ setNavExpanded, offlineState }) {
             >
                 <FontAwesomeIcon icon={icons.search} />{' '}
                 <span className="search-button-label">
-                    {selfoss.ui._('searchbutton')}
+                    {_('searchbutton')}
                 </span>
             </button>
             <hr />

@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { LoadingState } from '../requests/LoadingState';
 import * as sourceRequests from '../requests/sources';
 import * as icons from '../icons';
+import { LocalizationContext } from '../helpers/i18n';
 
 function handleTitleClick({ setExpanded, sourcesState, setSourcesState, setSources }) {
     if (!selfoss.db.online) {
@@ -23,7 +24,7 @@ function handleTitleClick({ setExpanded, sourcesState, setSourcesState, setSourc
                 setSourcesState(LoadingState.SUCCESS);
             }).catch(function(error) {
                 setSourcesState(LoadingState.FAILURE);
-                selfoss.ui.showError(selfoss.ui._('error_loading_stats') + ' ' + error.message);
+                selfoss.app.showError(selfoss.app._('error_loading_stats') + ' ' + error.message);
             });
         }
 
@@ -83,9 +84,11 @@ export default function NavSources({
         }
     }, [previousSourcesState, sourcesState, setNavSourcesExpanded]);
 
+    const _ = React.useContext(LocalizationContext);
+
     return (
         <React.Fragment>
-            <h2><button type="button" id="nav-sources-title" className={classNames({'nav-section-toggle': true, 'nav-sources-collapsed': !reallyExpanded, 'nav-sources-expanded': reallyExpanded})} aria-expanded={reallyExpanded} onClick={toggleExpanded}><FontAwesomeIcon icon={navSourcesExpanded ? icons.arrowExpanded : icons.arrowCollapsed} size="lg" fixedWidth />  {selfoss.ui._('sources')}</button></h2>
+            <h2><button type="button" id="nav-sources-title" className={classNames({'nav-section-toggle': true, 'nav-sources-collapsed': !reallyExpanded, 'nav-sources-expanded': reallyExpanded})} aria-expanded={reallyExpanded} onClick={toggleExpanded}><FontAwesomeIcon icon={navSourcesExpanded ? icons.arrowExpanded : icons.arrowCollapsed} size="lg" fixedWidth />  {_('sources')}</button></h2>
             <Collapse isOpen={reallyExpanded} className="collapse-css-transition">
                 <ul id="nav-sources" aria-labelledby="nav-sources-title">
                     {sources.map((source) =>

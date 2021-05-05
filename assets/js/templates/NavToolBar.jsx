@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as icons from '../icons';
+import { LocalizationContext } from '../helpers/i18n';
 
 function handleReloadAll({ setReloading, setNavExpanded }) {
     setReloading(true);
@@ -64,12 +65,14 @@ export default function NavToolBar({ setNavExpanded }) {
         [history]
     );
 
+    const _ = React.useContext(LocalizationContext);
+
     return (
         <div className="nav-toolbar">
             <button
                 id="nav-refresh"
-                title={selfoss.ui._('refreshbutton')}
-                aria-label={selfoss.ui._('refreshbutton')}
+                title={_('refreshbutton')}
+                aria-label={_('refreshbutton')}
                 accessKey="r"
                 onClick={refreshOnClick}
             >
@@ -81,8 +84,8 @@ export default function NavToolBar({ setNavExpanded }) {
             </button>
             <button
                 id="nav-settings"
-                title={selfoss.ui._('settingsbutton')}
-                aria-label={selfoss.ui._('settingsbutton')}
+                title={_('settingsbutton')}
+                aria-label={_('settingsbutton')}
                 accessKey="t"
                 onClick={settingsOnClick}
             >
@@ -93,8 +96,8 @@ export default function NavToolBar({ setNavExpanded }) {
             </button>
             <button
                 id="nav-logout"
-                title={selfoss.ui._('logoutbutton')}
-                aria-label={selfoss.ui._('logoutbutton')}
+                title={_('logoutbutton')}
+                aria-label={_('logoutbutton')}
                 accessKey="l"
                 onClick={logoutOnClick}
             >
@@ -102,8 +105,8 @@ export default function NavToolBar({ setNavExpanded }) {
             </button>
             <button
                 id="nav-login"
-                title={selfoss.ui._('loginbutton')}
-                aria-label={selfoss.ui._('loginbutton')}
+                title={_('loginbutton')}
+                aria-label={_('loginbutton')}
                 accessKey="l"
                 onClick={loginOnClick}
             >
