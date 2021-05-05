@@ -17,10 +17,10 @@ import { LoadingState } from './requests/LoadingState';
  */
 var selfoss = {
     /**
-     * true when sources in the sidebar are expanded
-     * and we should fetch info about them in API requests.
+     * The main App component.
+     * @var App
      */
-    navSourcesExpanded: new ValueListenable(false),
+    app: null,
 
     /**
      * whether off-line mode is enabled

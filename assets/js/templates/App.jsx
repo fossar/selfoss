@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
     Switch,
     Route,
@@ -92,8 +93,7 @@ function NotFound() {
     );
 }
 
-
-export default function App() {
+function PureApp({ navSourcesExpanded, setNavSourcesExpanded }) {
     const [navExpanded, setNavExpanded] = React.useState(false);
     const [smartphone, setSmartphone] = React.useState(false);
     const [loginFormError, setLoginFormError] = React.useState(selfoss.loginFormError.value);
@@ -221,7 +221,12 @@ export default function App() {
                     {/* navigation */}
                     <Collapse isOpen={!smartphone || navExpanded} className="collapse-css-transition">
                         <div id="nav" role="navigation">
-                            <Navigation entriesPage={entriesPage} setNavExpanded={setNavExpanded} />
+                            <Navigation
+                                entriesPage={entriesPage}
+                                setNavExpanded={setNavExpanded}
+                                navSourcesExpanded={navSourcesExpanded}
+                                setNavSourcesExpanded={setNavSourcesExpanded}
+                            />
                         </div>
                     </Collapse>
 
@@ -241,6 +246,7 @@ export default function App() {
                                         {...routeProps}
                                         ref={entriesRef}
                                         setNavExpanded={setNavExpanded}
+                                        navSourcesExpanded={navSourcesExpanded}
                                     />
                                 )}
                             </Route>
@@ -256,4 +262,43 @@ export default function App() {
             </Switch>
         </React.Fragment>
     );
+}
+
+PureApp.propTypes = {
+    navSourcesExpanded: PropTypes.bool.isRequired,
+    setNavSourcesExpanded: PropTypes.func.isRequired,
+};
+
+export default class App extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            /**
+             * true when sources in the sidebar are expanded
+             * and we should fetch info about them in API requests.
+             */
+            navSourcesExpanded: false,
+        };
+
+        this.setNavSourcesExpanded = this.setNavSourcesExpanded.bind(this);
+    }
+
+    setNavSourcesExpanded(navSourcesExpanded) {
+        if (typeof navSourcesExpanded === 'function') {
+            this.setState({
+                navSourcesExpanded: navSourcesExpanded(this.state.navSourcesExpanded)
+            });
+        } else {
+            this.setState({ navSourcesExpanded });
+        }
+    }
+
+    render() {
+        return (
+            <PureApp
+                navSourcesExpanded={this.state.navSourcesExpanded}
+                setNavSourcesExpanded={this.setNavSourcesExpanded}
+            />
+        );
+    }
 }

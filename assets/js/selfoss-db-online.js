@@ -94,7 +94,7 @@ selfoss.dbOnline = {
         var syncParams = {
             since: selfoss.db.lastUpdate,
             tags: true,
-            sources: selfoss.navSourcesExpanded.value || undefined,
+            sources: selfoss.app.state.navSourcesExpanded || undefined,
             itemsStatuses: getStatuses
         };
 
@@ -251,7 +251,7 @@ selfoss.dbOnline = {
             // update tags
             selfoss.tags.update(data.tags);
 
-            if (selfoss.navSourcesExpanded.value) {
+            if (selfoss.app.state.navSourcesExpanded) {
                 selfoss.sources.update(data.sources);
             }
 

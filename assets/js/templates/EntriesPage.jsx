@@ -130,7 +130,7 @@ function loadMore({ event, fetchParams, entries, setMoreLoadingState }) {
     });
 }
 
-export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, selectedEntry, expandedEntries, setNavExpanded, shouldUpdateItems, setShouldUpdateItems }) {
+export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, selectedEntry, expandedEntries, setNavExpanded, shouldUpdateItems, setShouldUpdateItems, navSourcesExpanded }) {
     const allowedToUpdate = !selfoss.config.authEnabled || selfoss.config.allowPublicUpdate || selfoss.loggedin.value;
 
     const location = useLocation();
@@ -139,8 +139,6 @@ export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, s
 
         return queryString.get('search') ?? '';
     }, [location.search]);
-
-    const [navSourcesExpanded, setNavSourcesExpanded] = React.useState(selfoss.navSourcesExpanded.value);
 
     const { params } = useRouteMatch();
     const currentTag = params.category?.startsWith('tag-') ? params.category.replace(/^tag-/, '') : null;
@@ -187,21 +185,6 @@ export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, s
             }
         };
     }, [shouldUpdateItems]);
-
-    React.useEffect(() => {
-        const navSourcesExpandedListener = (event) => {
-            setNavSourcesExpanded(event.value);
-        };
-
-        // It might happen that values change between creating the component and setting up the event handlers.
-        navSourcesExpandedListener({ value: selfoss.navSourcesExpanded.value });
-
-        selfoss.navSourcesExpanded.addEventListener('change', navSourcesExpandedListener);
-
-        return () => {
-            selfoss.navSourcesExpanded.removeEventListener('change', navSourcesExpandedListener);
-        };
-    }, []);
 
     React.useEffect(() => {
         // scroll load more
@@ -332,6 +315,7 @@ EntriesPage.propTypes = {
     setNavExpanded: PropTypes.func.isRequired,
     shouldUpdateItems: PropTypes.bool.isRequired,
     setShouldUpdateItems: PropTypes.func.isRequired,
+    navSourcesExpanded: PropTypes.bool.isRequired,
 };
 
 const initialState = {
@@ -535,6 +519,7 @@ export default class StateHolder extends React.Component {
                 shouldUpdateItems={this.state.shouldUpdateItems}
                 setShouldUpdateItems={this.setShouldUpdateItems}
                 setNavExpanded={this.props.setNavExpanded}
+                navSourcesExpanded={this.props.navSourcesExpanded}
             />
         );
     }
@@ -543,4 +528,5 @@ export default class StateHolder extends React.Component {
 StateHolder.propTypes = {
     match: PropTypes.object.isRequired,
     setNavExpanded: PropTypes.func.isRequired,
+    navSourcesExpanded: PropTypes.bool.isRequired,
 };

@@ -10,10 +10,10 @@ import { LoadingState } from './requests/LoadingState';
  * Creates the selfoss single-page application
  * with the required contexts.
  */
-function createApp() {
+function createApp(appRef) {
     return (
         <Router hashType="noslash">
-            <App />
+            <App ref={appRef} />
         </Router>
     );
 }
@@ -32,7 +32,12 @@ selfoss.ui = {
         document.body.appendChild(mainUi);
         mainUi.classList.add('app-toplevel');
 
-        ReactDOM.render(createApp(), mainUi);
+        ReactDOM.render(
+            createApp((app) => {
+                selfoss.app = app;
+            }),
+            mainUi
+        );
 
         // Cannot add these to the append above, since jQuery automatically cache-busts links, which would prevent them from loading off-line.
         if (selfoss.config.userCss !== null) {

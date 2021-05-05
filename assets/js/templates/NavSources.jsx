@@ -49,8 +49,7 @@ Source.propTypes = {
     collapseNav: PropTypes.func.isRequired,
 };
 
-export default function NavSources({ sourcesRepository, setNavExpanded }) {
-    const [expanded, setExpanded] = React.useState(false);
+export default function NavSources({ sourcesRepository, setNavExpanded, navSourcesExpanded, setNavSourcesExpanded }) {
     const [sourcesState, setSourcesState] = React.useState(sourcesRepository.state);
     const [sources, setSources] = React.useState(sourcesRepository.sources);
 
@@ -75,12 +74,7 @@ export default function NavSources({ sourcesRepository, setNavExpanded }) {
         };
     }, [sourcesRepository]);
 
-    // TODO: get rid of this
-    React.useEffect(() => {
-        selfoss.navSourcesExpanded.update(expanded);
-    }, [expanded]);
-
-    const reallyExpanded = expanded && sourcesState === LoadingState.SUCCESS;
+    const reallyExpanded = navSourcesExpanded && sourcesState === LoadingState.SUCCESS;
 
     // useParams does not seem to work.
     const match = useRouteMatch(ENTRIES_ROUTE_PATTERN);
@@ -88,8 +82,8 @@ export default function NavSources({ sourcesRepository, setNavExpanded }) {
     const currentSource = params.category?.startsWith('source-') ? parseInt(params.category.replace(/^source-/, ''), 10) : null;
 
     const toggleExpanded = React.useCallback(
-        () => handleTitleClick(setExpanded, [sourcesState, setSourcesState]),
-        [sourcesState]
+        () => handleTitleClick(setNavSourcesExpanded, [sourcesState, setSourcesState]),
+        [setNavSourcesExpanded, sourcesState]
     );
 
     const collapseNav = React.useCallback(
@@ -99,7 +93,7 @@ export default function NavSources({ sourcesRepository, setNavExpanded }) {
 
     return (
         <React.Fragment>
-            <h2><button type="button" id="nav-sources-title" className={classNames({'nav-section-toggle': true, 'nav-sources-collapsed': !reallyExpanded, 'nav-sources-expanded': reallyExpanded})} aria-expanded={reallyExpanded} onClick={toggleExpanded}><FontAwesomeIcon icon={expanded ? icons.arrowExpanded : icons.arrowCollapsed} size="lg" fixedWidth />  {selfoss.ui._('sources')}</button></h2>
+            <h2><button type="button" id="nav-sources-title" className={classNames({'nav-section-toggle': true, 'nav-sources-collapsed': !reallyExpanded, 'nav-sources-expanded': reallyExpanded})} aria-expanded={reallyExpanded} onClick={toggleExpanded}><FontAwesomeIcon icon={navSourcesExpanded ? icons.arrowExpanded : icons.arrowCollapsed} size="lg" fixedWidth />  {selfoss.ui._('sources')}</button></h2>
             <Collapse isOpen={reallyExpanded} className="collapse-css-transition">
                 <ul id="nav-sources" aria-labelledby="nav-sources-title">
                     {sources.map((source) =>
@@ -119,4 +113,6 @@ export default function NavSources({ sourcesRepository, setNavExpanded }) {
 NavSources.propTypes = {
     sourcesRepository: PropTypes.object.isRequired,
     setNavExpanded: PropTypes.func.isRequired,
+    navSourcesExpanded: PropTypes.bool.isRequired,
+    setNavSourcesExpanded: PropTypes.func.isRequired,
 };

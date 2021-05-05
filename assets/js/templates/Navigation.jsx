@@ -11,7 +11,7 @@ import NavToolBar from './NavToolBar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as icons from '../icons';
 
-export default function Navigation({ entriesPage, setNavExpanded }) {
+export default function Navigation({ entriesPage, setNavExpanded, navSourcesExpanded, setNavSourcesExpanded }) {
     const [offlineState, setOfflineState] = React.useState(selfoss.offlineState.value);
 
     React.useEffect(() => {
@@ -40,7 +40,12 @@ export default function Navigation({ entriesPage, setNavExpanded }) {
 
             <div className={classNames({'nav-ts-wrapper': true, offline: offlineState, online: !offlineState})}>
                 <NavTags tagsRepository={selfoss.tags} setNavExpanded={setNavExpanded} />
-                <NavSources sourcesRepository={selfoss.sources} setNavExpanded={setNavExpanded} />
+                <NavSources
+                    sourcesRepository={selfoss.sources}
+                    setNavExpanded={setNavExpanded}
+                    navSourcesExpanded={navSourcesExpanded}
+                    setNavSourcesExpanded={setNavSourcesExpanded}
+                />
             </div>
 
             <div className={classNames({'nav-unavailable': true, offline: offlineState, online: !offlineState})}>
@@ -63,4 +68,6 @@ export default function Navigation({ entriesPage, setNavExpanded }) {
 Navigation.propTypes = {
     entriesPage: nullable(PropTypes.instanceOf(EntriesPage)).isRequired,
     setNavExpanded: PropTypes.func.isRequired,
+    navSourcesExpanded: PropTypes.bool.isRequired,
+    setNavSourcesExpanded: PropTypes.func.isRequired,
 };
