@@ -395,7 +395,9 @@ var selfoss = {
             return selfoss.db.setOffline();
         } else {
             if (httpCode == 403) {
-                selfoss.ui.showLogin(selfoss.ui._('error_session_expired'));
+                selfoss.history.push('/login');
+                // TODO: Use location state once we switch to BrowserRouter
+                selfoss.app.setLoginFormError(selfoss.ui._('error_session_expired'));
             }
             throw error;
         }

@@ -92,6 +92,7 @@ export default function LoginForm({
                             autoComplete="username"
                             onChange={usernameOnChange}
                             value={username}
+                            autoFocus
                             required
                         />
                     </li>

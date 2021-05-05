@@ -60,13 +60,6 @@ selfoss.ui = {
         selfoss.loggedin.addEventListener('change', loggedinChanged);
     },
 
-    showLogin: function(error = '') {
-        selfoss.history.push('/login');
-        // TODO: Use location state once we switch to BrowserRouter
-        selfoss.app.setLoginFormError(error);
-        document.querySelector('#username').focus();
-    },
-
 
     setOffline: function() {
         selfoss.app.setOfflineState(true);
