@@ -65,7 +65,7 @@ function reloadList({ fetchParams, append = false, waitForSync = true, entryId =
                         return;
                     }
 
-                    selfoss.ui.entryActivate(entryId);
+                    selfoss.entriesPage.activateEntry(entryId);
                     // ensure scrolling to requested entry even if scrolling to article
                     // header is disabled
                     if (!selfoss.config.scrollToArticleHeader) {
@@ -362,12 +362,24 @@ export default class StateHolder extends React.Component {
         this.setEntries((entries) => [...entries, ...extraEntries]);
     }
 
+    /**
+     * Make the given entry currently selected one.
+     * @param {number|function(number): number} id of entry to select, or a function that transforms a previous id into a new one
+     */
     setSelectedEntry(selectedEntry) {
         if (typeof selectedEntry === 'function') {
             this.setState({ selectedEntry: selectedEntry(this.state.selectedEntry) });
         } else {
             this.setState({ selectedEntry });
         }
+    }
+
+    /**
+     * Get the currently selected entry.
+     * @return {number}
+     */
+    getSelectedEntry() {
+        return this.state.selectedEntry;
     }
 
     setExpandedEntries(expandedEntries) {
@@ -392,6 +404,115 @@ export default class StateHolder extends React.Component {
                 [id]: expand
             }));
         }
+    }
+
+
+    /**
+     * Collapse all expanded entries.
+     */
+    collapseAllEntries() {
+        this.setExpandedEntries({});
+    }
+
+
+    /**
+     * Is given entry expanded?
+     * @param {number} id of entry to check
+     * @return {bool} whether it is expanded
+     */
+    isEntryExpanded(entry) {
+        return this.state.expandedEntries[entry] ?? false;
+    }
+
+
+    /**
+     * Toggle expanded state of given entry.
+     * @param {number} id of entry to toggle
+     */
+    toggleEntryExpanded(entry) {
+        if (!entry) {
+            return;
+        }
+
+        this.setEntryExpanded(entry, (expanded) => !(expanded ?? false));
+    }
+
+
+    /**
+     * Activate entry as if it were clicked.
+     * This will open it, focus it and based on the settings, mark it as read.
+     * @param {number} id of entry
+     */
+    activateEntry(id) {
+        const entry = document.querySelector(`.entry[data-entry-id="${id}"]`);
+
+        if (!this.isEntryExpanded(id)) {
+            entry.querySelector('.entry-title > .entry-title-link').click();
+        }
+    }
+
+
+    /**
+     * Deactivate entry, as if it were clicked.
+     * This will close it and maybe something more.
+     * @param {number} id of entry
+     */
+    deactivateEntry(id) {
+        const entry = document.querySelector(`.entry[data-entry-id="${id}"]`);
+
+        if (this.isEntryExpanded(id)) {
+            entry.querySelector('.entry-title > .entry-title-link').click();
+        }
+    }
+
+
+    starEntry(id, starred) {
+        this.setEntries((entries) =>
+            entries.map((entry) => {
+                if (entry.id === id) {
+                    return {
+                        ...entry,
+                        starred
+                    };
+                } else {
+                    return entry;
+                }
+            })
+        );
+    }
+
+
+    markEntry(id, unread) {
+        this.setEntries((entries) =>
+            entries.map((entry) => {
+                if (entry.id === id) {
+                    return {
+                        ...entry,
+                        unread
+                    };
+                } else {
+                    return entry;
+                }
+            })
+        );
+    }
+
+
+    refreshEntryStatuses(entryStatuses) {
+        this.state.entries.forEach((entry) => {
+            const { id } = entry;
+            var newStatus = false;
+            entryStatuses.some(function(entryStatus) {
+                if (entryStatus.id == id) {
+                    newStatus = entryStatus;
+                }
+                return newStatus;
+            });
+            if (newStatus) {
+                this.starEntry(id, newStatus.starred);
+                this.markEntry(id, newStatus.unread);
+            }
+        });
     }
 
     setHasMore(hasMore) {

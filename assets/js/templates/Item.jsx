@@ -98,9 +98,9 @@ function handleClick({ event, history, location, target, entry, contentBlock, se
             }
         } else {
             if (selfoss.config.autoCollapse) {
-                selfoss.ui.entryCollapseAll();
+                selfoss.entriesPage.collapseAllEntries();
             }
-            selfoss.ui.entrySelect(entry.id);
+            selfoss.entriesPage.setSelectedEntry(entry.id);
             history.replace(makeEntriesLink(location, { id: entryId }));
 
             if (contentBlock.current.childElementCount === 0) {
@@ -213,7 +213,7 @@ function handleStarredToggle({ event, entry }) {
     const { id } = entry;
     const starr = entry.starred != 1;
 
-    selfoss.ui.entryStar(id, starr);
+    selfoss.entriesPage.starEntry(id, starr);
 
     // update statistics in main menu
     function updateStats(starr) {
@@ -232,7 +232,7 @@ function handleStarredToggle({ event, entry }) {
             selfoss.dbOffline.enqueueStatus(id, 'starred', starr);
         }).catch(function(error) {
             // rollback ui changes
-            selfoss.ui.entryStar(id, !starr);
+            selfoss.entriesPage.starEntry(id, !starr);
             updateStats(!starr);
             selfoss.ui.showError(selfoss.ui._('error_star_item') + ' ' + error.message);
         });
@@ -251,7 +251,7 @@ function handleReadToggle({ event, entry }) {
     const { id } = entry;
     const unread = entry.unread == 1;
 
-    selfoss.ui.entryMark(id, !unread);
+    selfoss.entriesPage.markEntry(id, !unread);
 
     // update statistics in main menue and the currently active tag
     function updateStats(unread) {
@@ -282,7 +282,7 @@ function handleReadToggle({ event, entry }) {
             selfoss.dbOffline.enqueueStatus(id, 'unread', !unread);
         }).catch(function(error) {
             // rollback ui changes
-            selfoss.ui.entryMark(id, unread);
+            selfoss.entriesPage.markEntry(id, unread);
             updateStats(!unread);
             selfoss.ui.showError(selfoss.ui._('error_mark_item') + ' ' + error.message);
         });

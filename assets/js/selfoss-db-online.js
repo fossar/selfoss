@@ -193,7 +193,7 @@ selfoss.dbOnline = {
                 selfoss.entriesPage?.reloadList();
             } else {
                 if ('itemUpdates' in data) {
-                    selfoss.ui.refreshEntryStatuses(data.itemUpdates);
+                    selfoss.entriesPage.refreshEntryStatuses(data.itemUpdates);
                 }
 
                 if (selfoss.entriesPage && selfoss.entriesPage.getActiveFilter() === FilterType.UNREAD) {

@@ -48,7 +48,7 @@ export function nextprev(direction, open = true) {
     }
 
     // select current
-    const old = selfoss.ui.entryGetSelected();
+    const old = selfoss.entriesPage.getSelectedEntry();
     const oldIndex = old !== null ? selfoss.entriesPage.state.entries.findIndex(({ id }) => id === old) : null;
     let current = null;
 
@@ -82,12 +82,12 @@ export function nextprev(direction, open = true) {
 
     if (old !== current) {
         // remove active
-        selfoss.ui.entryDeactivate(old);
+        selfoss.entriesPage.deactivateEntry(old);
 
         if (open) {
-            selfoss.ui.entryActivate(current);
+            selfoss.entriesPage.activateEntry(current);
         } else {
-            selfoss.ui.entrySelect(current);
+            selfoss.entriesPage.setSelectedEntry(current);
         }
 
         const currentElement = document.querySelector(`.entry[data-entry-id="${current}"]`);
@@ -110,7 +110,7 @@ function entrynav(direction) {
         throw new Error('direction must be one of Direction.{PREV,NEXT}');
     }
 
-    const open = selfoss.ui.entryIsExpanded(selfoss.ui.entryGetSelected());
+    const open = selfoss.entriesPage.isEntryExpanded(selfoss.entriesPage.getSelectedEntry());
     nextprev(direction, open);
 }
 
@@ -150,9 +150,9 @@ export default function makeShortcuts() {
     return tinykeys(document, {
         // 'space': next article
         'Space': ignoreWhenInteracting(function(e) {
-            var selected = selfoss.ui.entryGetSelected();
-            if (selected !== null && !selfoss.ui.entryIsExpanded(selected)) {
-                selfoss.ui.entryActivate(selected);
+            var selected = selfoss.entriesPage.getSelectedEntry();
+            if (selected !== null && !selfoss.entriesPage.isEntryExpanded(selected)) {
+                selfoss.entriesPage.activateEntry(selected);
             } else {
                 nextprev(Direction.NEXT, true);
             }
@@ -211,7 +211,7 @@ export default function makeShortcuts() {
 
         // 's': star/unstar
         's': ignoreWhenInteracting(function(e) {
-            var selected = selfoss.ui.entryGetSelected();
+            var selected = selfoss.entriesPage.getSelectedEntry();
 
             if (selected !== null) {
                 document.querySelector(`.entry[data-entry-id="${selected}"] .entry-starr`).click();
@@ -223,7 +223,7 @@ export default function makeShortcuts() {
 
         // 'm': mark/unmark
         'm': ignoreWhenInteracting(function(e) {
-            var selected = selfoss.ui.entryGetSelected();
+            var selected = selfoss.entriesPage.getSelectedEntry();
 
             if (selected !== null) {
                 document.querySelector(`.entry[data-entry-id="${selected}"] .entry-unread`).click();
@@ -235,7 +235,7 @@ export default function makeShortcuts() {
 
         // 'o': open/close entry
         'o': ignoreWhenInteracting(function(e) {
-            selfoss.ui.entryToggleExpanded(selfoss.ui.entryGetSelected());
+            selfoss.entriesPage.toggleEntryExpanded(selfoss.entriesPage.getSelectedEntry());
             e.preventDefault();
             return false;
         }),
@@ -243,12 +243,12 @@ export default function makeShortcuts() {
         // 'Shift + o': close open entries
         'Shift+o': ignoreWhenInteracting(function(e) {
             e.preventDefault();
-            selfoss.ui.entryCollapseAll();
+            selfoss.entriesPage.collapseAllEntries();
         }),
 
         // 'v': open target
         'v': ignoreWhenInteracting(function(e) {
-            var selected = selfoss.ui.entryGetSelected();
+            var selected = selfoss.entriesPage.getSelectedEntry();
 
             if (selected !== null) {
                 const elem = document.querySelector(`.entry[data-entry-id="${selected}"]`);
@@ -263,7 +263,7 @@ export default function makeShortcuts() {
         'Shift+v': ignoreWhenInteracting(function(e) {
             e.preventDefault();
 
-            var selected = selfoss.ui.entryGetSelected();
+            var selected = selfoss.entriesPage.getSelectedEntry();
 
             if (selected !== null) {
                 const elem = document.querySelector(`.entry[data-entry-id="${selected}"]`);
@@ -297,7 +297,7 @@ export default function makeShortcuts() {
 
         // 't': throw (mark as read & open next)
         't': ignoreWhenInteracting(function() {
-            let selected = selfoss.ui.entryGetSelected();
+            let selected = selfoss.entriesPage.getSelectedEntry();
 
             if (selected !== null) {
                 const elem = document.querySelector(`.entry[data-entry-id="${selected}"]`);
@@ -313,7 +313,7 @@ export default function makeShortcuts() {
 
         // throw (mark as read & open previous)
         'Shift+t': ignoreWhenInteracting(function(e) {
-            let selected = selfoss.ui.entryGetSelected();
+            let selected = selfoss.entriesPage.getSelectedEntry();
 
             if (selected !== null) {
                 const elem = document.querySelector(`.entry[data-entry-id="${selected}"]`);
