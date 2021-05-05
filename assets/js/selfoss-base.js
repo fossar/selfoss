@@ -148,9 +148,7 @@ var selfoss = {
         loggedinChanged({ value: selfoss.loggedin.value });
         selfoss.loggedin.addEventListener('change', loggedinChanged);
 
-        if (selfoss.hasSession() || !configuration.authEnabled) {
-            selfoss.initUi();
-        } else if (document.body.classList.contains('publicmode')) {
+        if (selfoss.hasSession() || !configuration.authEnabled || configuration.publicMode) {
             selfoss.initUi();
         } else {
             selfoss.history.push('/login');
