@@ -1,3 +1,4 @@
+import ReactDOM from 'react-dom';
 import { getInstanceInfo, login, logout } from './requests/common';
 import * as sourceRequests from './requests/sources';
 import { getAllTags } from './requests/tags';
@@ -5,6 +6,7 @@ import * as ajax from './helpers/ajax';
 import { ValueListenable } from './helpers/ValueListenable';
 import { HttpError, TimeoutError } from './errors';
 import { LoadingState } from './requests/LoadingState';
+import { createApp } from './templates/App';
 
 /**
  * base javascript application
@@ -122,10 +124,29 @@ var selfoss = {
         feedLink.setAttribute('href', 'feed');
         document.head.appendChild(feedLink);
 
+        if (configuration.userCss !== null) {
+            let link = document.createElement('link');
+            link.setAttribute('rel', 'stylesheet');
+            link.setAttribute('href', `user.css?v=${configuration.userCss}`);
+            document.head.appendChild(link);
+        }
+        if (configuration.userJs !== null) {
+            let script = document.createElement('script');
+            script.setAttribute('src', `user.js?v=${configuration.userJs}`);
+            document.body.appendChild(script);
+        }
+
         // init offline if supported
         selfoss.dbOffline.init();
 
-        selfoss.ui.init();
+        selfoss.attachApp();
+
+        function loggedinChanged(event) {
+            document.body.classList.toggle('loggedin', event.value);
+        }
+        // It might happen that the value changes before event handler is attached.
+        loggedinChanged({ value: selfoss.loggedin.value });
+        selfoss.loggedin.addEventListener('change', loggedinChanged);
 
         if (selfoss.hasSession() || !configuration.authEnabled) {
             selfoss.initUi();
@@ -134,6 +155,25 @@ var selfoss = {
         } else {
             selfoss.history.push('/login');
         }
+    },
+
+
+    /**
+     * Create basic DOM structure of the page.
+     */
+    attachApp: function() {
+        document.getElementById('js-loading-message')?.remove();
+
+        const mainUi = document.createElement('div');
+        document.body.appendChild(mainUi);
+        mainUi.classList.add('app-toplevel');
+
+        ReactDOM.render(
+            createApp((app) => {
+                selfoss.app = app;
+            }),
+            mainUi
+        );
     },
 
 

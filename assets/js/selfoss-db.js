@@ -35,7 +35,7 @@ selfoss.db = {
             selfoss.db.online = true;
             selfoss.db.sync();
             selfoss.reloadTags();
-            selfoss.ui.setOnline();
+            selfoss.app.setOfflineState(false);
         }
     },
 
@@ -49,7 +49,7 @@ selfoss.db = {
         if (selfoss.db.storage && !selfoss.db.broken) {
             selfoss.dbOnline._syncDone(false);
             selfoss.db.online = false;
-            selfoss.ui.setOffline();
+            selfoss.app.setOfflineState(true);
 
             return Promise.resolve();
         } else {

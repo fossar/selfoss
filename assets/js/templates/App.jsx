@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import nullable from 'prop-types-nullable';
 import {
+    HashRouter as Router,
     Switch,
     Route,
     Redirect,
@@ -670,4 +671,16 @@ export default class App extends React.Component {
             </LocalizationContext.Provider>
         );
     }
+}
+
+/**
+ * Creates the selfoss single-page application
+ * with the required contexts.
+ */
+export function createApp(appRef) {
+    return (
+        <Router hashType="noslash">
+            <App ref={appRef} />
+        </Router>
+    );
 }

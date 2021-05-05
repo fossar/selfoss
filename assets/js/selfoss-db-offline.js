@@ -114,7 +114,7 @@ selfoss.dbOffline = {
                     });
                 });
 
-                selfoss.ui.setOnline();
+                selfoss.app.setOfflineState(false);
                 selfoss.db.tryOnline()
                     .then(function() {
                         selfoss.reloadTags();
