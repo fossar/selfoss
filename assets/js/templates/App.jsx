@@ -6,7 +6,8 @@ import {
     Route,
     Redirect,
     useHistory,
-    useLocation
+    useLocation,
+    useRouteMatch,
 } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Collapse from '@kunukn/react-collapse';
@@ -158,6 +159,15 @@ function PureApp({
         },
         []
     );
+
+    const isEntriesRoute = useRouteMatch(ENTRIES_ROUTE_PATTERN) !== null;
+    React.useEffect(() => {
+        if (isEntriesRoute && unreadItemsCount > 0) {
+            document.title = selfoss.htmlTitle + ' (' + unreadItemsCount + ')';
+        } else {
+            document.title = selfoss.htmlTitle;
+        }
+    }, [unreadItemsCount, isEntriesRoute]);
 
     return (
         <React.Fragment>

@@ -291,8 +291,6 @@ var selfoss = {
      */
     refreshUnread: function(unread) {
         selfoss.app.setUnreadItemsCount(unread);
-
-        selfoss.ui.refreshTitle(unread);
     },
 
 

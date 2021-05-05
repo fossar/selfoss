@@ -62,21 +62,9 @@ selfoss.ui = {
 
     showLogin: function(error = '') {
         selfoss.history.push('/login');
-        selfoss.ui.refreshTitle(0);
         // TODO: Use location state once we switch to BrowserRouter
         selfoss.app.setLoginFormError(error);
         document.querySelector('#username').focus();
-    },
-
-
-    refreshTitle: function(unread) {
-        unread = (typeof unread !== 'undefined') ? unread : selfoss.app.state.unreadItemsCount;
-
-        if (unread > 0) {
-            document.title = selfoss.htmlTitle + ' (' + unread + ')';
-        } else {
-            document.title = selfoss.htmlTitle;
-        }
     },
 
 
