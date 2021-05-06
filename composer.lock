@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b46c756b6107ab7ff47c69f06b6448aa",
+    "content-hash": "4a71db12e6bb1a27e20d2b8295d28897",
     "packages": [
         {
             "name": "bcosca/fatfree-core",
@@ -169,16 +169,16 @@
         },
         {
             "name": "ddeboer/transcoder",
-            "version": "dev-master",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ddeboer/transcoder.git",
-                "reference": "622114bcf1fcd8786924d0e37ae0865425fa0157"
+                "reference": "8781195ad1334add26dca66a4a823b7973639754"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ddeboer/transcoder/zipball/622114bcf1fcd8786924d0e37ae0865425fa0157",
-                "reference": "622114bcf1fcd8786924d0e37ae0865425fa0157",
+                "url": "https://api.github.com/repos/ddeboer/transcoder/zipball/8781195ad1334add26dca66a4a823b7973639754",
+                "reference": "8781195ad1334add26dca66a4a823b7973639754",
                 "shasum": ""
             },
             "require": {
@@ -191,7 +191,6 @@
                 "ext-iconv": "For using the IconvTranscoder",
                 "ext-mbstring": "For using the MbTranscoder"
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -225,7 +224,6 @@
                 "iconv",
                 "iso",
                 "mb",
-                "mb_convert_encoding",
                 "multibyte",
                 "utf-8"
             ],
@@ -233,7 +231,7 @@
                 "issues": "https://github.com/ddeboer/transcoder/issues",
                 "source": "https://github.com/ddeboer/transcoder/tree/master"
             },
-            "time": "2015-01-23T17:55:34+00:00"
+            "time": "2015-01-23T14:32:33+00:00"
         },
         {
             "name": "fossar/guzzle-transcoder",
@@ -5269,8 +5267,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "j0k3r/graby": 15,
-        "ddeboer/transcoder": 20
+        "j0k3r/graby": 15
     },
     "prefer-stable": false,
     "prefer-lowest": false,
