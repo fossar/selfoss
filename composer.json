@@ -23,7 +23,8 @@
         "simplepie/simplepie": "^1.3",
         "smottt/wideimage": "^1.1",
         "violet/streaming-json-encoder": "^1.1",
-        "willwashburn/phpamo": "^1.0"
+        "willwashburn/phpamo": "^1.0",
+        "ddeboer/transcoder": "dev-master#622114bcf1fcd8786924d0e37ae0865425fa0157"
     },
     "require-dev": {
         "php-parallel-lint/php-parallel-lint": "^1.0",
