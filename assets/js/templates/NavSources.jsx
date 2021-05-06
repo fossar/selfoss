@@ -36,7 +36,9 @@ function Source({ source, active, collapseNav }) {
     const location = useLocation();
 
     return (
-        <li>
+        <li
+            className={classNames({ read: source.unread === 0 })}
+        >
             <Link to={makeEntriesLink(location, { category: `source-${source.id}`, id: null })} className={classNames({active, unread: source.unread > 0})} onClick={collapseNav}>
                 <span className="nav-source">{unescape(source.title)}</span>
                 <span className="unread">{source.unread > 0 ? source.unread : ''}</span>

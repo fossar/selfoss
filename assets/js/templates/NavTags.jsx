@@ -60,7 +60,9 @@ function Tag({ tag, active, collapseNav }) {
     const _ = React.useContext(LocalizationContext);
 
     return (
-        <li>
+        <li
+            className={classNames({ read: tag !== null && tag.unread === 0 })}
+        >
             <Link
                 to={makeEntriesLink(location, {
                     category: tag === null ? 'all' : `tag-${tag.tag}`,
