@@ -16,7 +16,7 @@ $rules = [
     'phpdoc_align' => false,
     'phpdoc_no_empty_return' => false,
     'phpdoc_summary' => false,
-    'trailing_comma_in_multiline_array' => false,
+    'trailing_comma_in_multiline' => false,
     'yoda_style' => false,
     'semicolon_after_instruction' => false,
     // additional rules
