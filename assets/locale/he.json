@@ -99,5 +99,7 @@
   "lang_unread": "לא נקרא",
   "lang_newest": "החדש ביותר",
   "lang_filter": "מסנן",
-  "lang_markread": "סימון שנקרא"
+  "lang_markread": "סימון שנקרא",
+  "lang_article_reading_time": "{0} דקות קריאה",
+  "lang_experimental": "ניסיוני"
 }
