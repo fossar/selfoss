@@ -107,8 +107,8 @@ with tempfile.TemporaryDirectory(prefix='selfoss-dist-') as temp_dir:
     logger.info('Building asset bundles…')
     subprocess.check_call(['npm', 'run', 'build'])
 
-    logger.info('Generating defaults.ini…')
-    subprocess.check_call(['php', 'utils/generate-defaults-ini.php'])
+    logger.info('Generating config-example.ini…')
+    subprocess.check_call(['php', 'utils/generate-config-example.php'])
 
     logger.info('Optimizing PHP dependencies…')
     subprocess.check_call(['composer', 'install', '--no-dev', '--optimize-autoloader'])
@@ -137,7 +137,7 @@ with tempfile.TemporaryDirectory(prefix='selfoss-dist-') as temp_dir:
 
         archive.file('.htaccess')
         archive.file('README.md')
-        archive.file('defaults.ini')
+        archive.file('config-example.ini')
         archive.file('index.php')
         archive.file('run.php')
         archive.file('cliupdate.php')

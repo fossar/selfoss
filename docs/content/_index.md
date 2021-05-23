@@ -35,16 +35,14 @@ For further questions or any problems, use our [support forum](forum). For a mor
 ## Configuring selfoss {#configuration}
 <div class="documentation-entry">
 
-All [configuration options](@/docs/administration/options.md) are optional. Any settings in `config.ini` will override the settings in `src/helpers/Configuration.php`. For convenience, the archive includes `defaults.ini` file containing the default configuration exported in INI format. To customize settings follow these instructions:
+All [configuration options](@/docs/administration/options.md) are optional. Any settings in `config.ini` will override the settings in `src/helpers/Configuration.php`. For convenience, the archive includes `config-example.ini` file containing the default configuration exported in INI format. To customize settings follow these instructions:
 
-1. Copy `defaults.ini` to `config.ini`.
+1. Rename `config-example.ini` to `config.ini`.
 2. Edit `config.ini` and delete any lines you do not wish to override.
-3. Do not delete the `[globals]` line.
 
 Sample `config.ini` file which provides password protection:
 
 ```ini
-[globals]
 username=secretagent
 password=$2y$10$xLurmBB0HJ60.sar1Z38r.ajtkruUIay7rwFRCvcaDl.1EU4epUH6
 ```
@@ -52,7 +50,6 @@ password=$2y$10$xLurmBB0HJ60.sar1Z38r.ajtkruUIay7rwFRCvcaDl.1EU4epUH6
 Sample `config.ini` file with a MySQL database connection:
 
 ```ini
-[globals]
 db_type=mysql
 db_host=localhost
 db_database=selfoss

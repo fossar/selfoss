@@ -71,6 +71,7 @@
   * Norwegian Bokmål `nb`
   * Swedish `sv`
 - Wallabag sharer now targets Wallabag 2 by default. This is potentially breaking change but hopefully, no one uses Wallabag 1 any more. ([#1261](https://github.com/fossar/selfoss/pull/1261))
+- `defaults.ini` file is no longer used, it is only provided for convenience under a new name `config-example.ini` ([#1261](https://github.com/fossar/selfoss/pull/1261), [#1267](https://github.com/fossar/selfoss/pull/1267))
 
 ### Other changes
 - The front-end has been modernized using React framework, this will greatly simplify future development. ([#1216](https://github.com/fossar/selfoss/pull/1216))

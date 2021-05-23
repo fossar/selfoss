@@ -26,10 +26,11 @@ For further questions or on any problem use our support forum: https://selfoss.a
 
 ## Configuration
 
-1. Copy `defaults.ini` to `config.ini`.
+No configuration is needed to use selfoss but you can customize the settings as follows:
+
+1. Rename `config-example.ini` to `config.ini`.
 2. Edit `config.ini` and delete any lines you do not wish to override.
-3. Do not delete the `[globals]` line.
-4. See <https://selfoss.aditu.de/> for examples.
+3. See <https://selfoss.aditu.de/> for examples.
 
 
 ## Update

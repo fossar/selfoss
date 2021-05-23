@@ -6,9 +6,8 @@ require __DIR__ . '/../vendor/autoload.php';
 
 $reflection = new ReflectionClass(Configuration::class);
 
-$defaults = '; see https://selfoss.aditu.de/docs/administration/options/' . PHP_EOL;
-$defaults .= '; for more information about the configuration parameters' . PHP_EOL;
-$defaults .= '[globals]' . PHP_EOL;
+$example = '; see https://selfoss.aditu.de/docs/administration/options/' . PHP_EOL;
+$example .= '; for more information about the configuration parameters' . PHP_EOL;
 
 foreach ($reflection->getProperties() as $property) {
     if (strpos($property->getDocComment(), '@internal') !== false) {
@@ -25,7 +24,7 @@ foreach ($reflection->getProperties() as $property) {
         $defaultValue = '0';
     }
 
-    $defaults .= $configKey . '=' . $defaultValue . PHP_EOL;
+    $example .= $configKey . '=' . $defaultValue . PHP_EOL;
 }
 
-file_put_contents(__DIR__ . '/../defaults.ini', $defaults);
+file_put_contents(__DIR__ . '/../config-example.ini', $example);
