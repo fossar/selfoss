@@ -168,87 +168,21 @@
             "time": "2017-06-12T01:10:27+00:00"
         },
         {
-            "name": "ddeboer/transcoder",
-            "version": "1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ddeboer/transcoder.git",
-                "reference": "8781195ad1334add26dca66a4a823b7973639754"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ddeboer/transcoder/zipball/8781195ad1334add26dca66a4a823b7973639754",
-                "reference": "8781195ad1334add26dca66a4a823b7973639754",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.0"
-            },
-            "suggest": {
-                "ext-iconv": "For using the IconvTranscoder",
-                "ext-mbstring": "For using the MbTranscoder"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Ddeboer\\Transcoder\\": "src/",
-                    "Ddeboer\\Transcoder\\Tests\\": "tests/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "David de Boer",
-                    "email": "david@ddeboer.nl"
-                },
-                {
-                    "name": "Community contributors",
-                    "homepage": "https://github.com/ddeboer/transcoder/graphs/contributors"
-                }
-            ],
-            "description": "Better encoding conversion for PHP",
-            "keywords": [
-                "charset",
-                "encoding",
-                "iconv",
-                "iso",
-                "mb",
-                "multibyte",
-                "utf-8"
-            ],
-            "support": {
-                "issues": "https://github.com/ddeboer/transcoder/issues",
-                "source": "https://github.com/ddeboer/transcoder/tree/master"
-            },
-            "time": "2015-01-23T14:32:33+00:00"
-        },
-        {
             "name": "fossar/guzzle-transcoder",
-            "version": "0.2.0",
+            "version": "0.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fossar/guzzle-transcoder.git",
-                "reference": "6dd006cbbdf00e087112364f540ed2a876c40134"
+                "reference": "96313b695c25c8f817d89516610e99efefd81dc4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fossar/guzzle-transcoder/zipball/6dd006cbbdf00e087112364f540ed2a876c40134",
-                "reference": "6dd006cbbdf00e087112364f540ed2a876c40134",
+                "url": "https://api.github.com/repos/fossar/guzzle-transcoder/zipball/96313b695c25c8f817d89516610e99efefd81dc4",
+                "reference": "96313b695c25c8f817d89516610e99efefd81dc4",
                 "shasum": ""
             },
             "require": {
-                "ddeboer/transcoder": "^1.0",
+                "fossar/transcoder": "^1.0",
                 "guzzlehttp/guzzle": "^6.3",
                 "guzzlehttp/psr7": "^1.5"
             },
@@ -276,9 +210,9 @@
             "description": "Guzzle plugin that converts responses to UTF-8",
             "support": {
                 "issues": "https://github.com/fossar/guzzle-transcoder/issues",
-                "source": "https://github.com/fossar/guzzle-transcoder/tree/0.2.0"
+                "source": "https://github.com/fossar/guzzle-transcoder/tree/0.2.1"
             },
-            "time": "2020-05-02T04:43:08+00:00"
+            "time": "2021-05-23T06:34:04+00:00"
         },
         {
             "name": "fossar/htmlawed",
@@ -393,6 +327,76 @@
                 "source": "https://github.com/fossar/tcpdf-parser/tree/master"
             },
             "time": "2017-03-18T13:19:42+00:00"
+        },
+        {
+            "name": "fossar/transcoder",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fossar/transcoder.git",
+                "reference": "dd4012b053b9fbfc4cf491f56e9bc5af8c6e0c23"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fossar/transcoder/zipball/dd4012b053b9fbfc4cf491f56e9bc5af8c6e0c23",
+                "reference": "dd4012b053b9fbfc4cf491f56e9bc5af8c6e0c23",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6.0"
+            },
+            "replace": {
+                "ddeboer/transcoder": "self.version"
+            },
+            "require-dev": {
+                "symfony/phpunit-bridge": "^5.2"
+            },
+            "suggest": {
+                "ext-iconv": "For using the IconvTranscoder",
+                "ext-mbstring": "For using the MbTranscoder"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Ddeboer\\Transcoder\\": "src/",
+                    "Ddeboer\\Transcoder\\Tests\\": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "David de Boer",
+                    "email": "david@ddeboer.nl"
+                },
+                {
+                    "name": "Community contributors",
+                    "homepage": "https://github.com/fossar/transcoder/graphs/contributors"
+                }
+            ],
+            "description": "Better encoding conversion for PHP",
+            "keywords": [
+                "charset",
+                "encoding",
+                "iconv",
+                "iso",
+                "mb",
+                "mb_convert_encoding",
+                "multibyte",
+                "utf-8"
+            ],
+            "support": {
+                "issues": "https://github.com/fossar/transcoder/issues",
+                "source": "https://github.com/fossar/transcoder/tree/v1.0.1"
+            },
+            "time": "2021-05-23T05:48:21+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -2915,16 +2919,16 @@
         },
         {
             "name": "composer/xdebug-handler",
-            "version": "2.0.0",
+            "version": "2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/xdebug-handler.git",
-                "reference": "31d57697eb1971712a08031cfaff5a846d10bdf5"
+                "reference": "964adcdd3a28bf9ed5d9ac6450064e0d71ed7496"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/xdebug-handler/zipball/31d57697eb1971712a08031cfaff5a846d10bdf5",
-                "reference": "31d57697eb1971712a08031cfaff5a846d10bdf5",
+                "url": "https://api.github.com/repos/composer/xdebug-handler/zipball/964adcdd3a28bf9ed5d9ac6450064e0d71ed7496",
+                "reference": "964adcdd3a28bf9ed5d9ac6450064e0d71ed7496",
                 "shasum": ""
             },
             "require": {
@@ -2959,7 +2963,7 @@
             "support": {
                 "irc": "irc://irc.freenode.org/composer",
                 "issues": "https://github.com/composer/xdebug-handler/issues",
-                "source": "https://github.com/composer/xdebug-handler/tree/2.0.0"
+                "source": "https://github.com/composer/xdebug-handler/tree/2.0.1"
             },
             "funding": [
                 {
@@ -2975,7 +2979,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-04-09T19:40:06+00:00"
+            "time": "2021-05-05T19:37:51+00:00"
         },
         {
             "name": "doctrine/annotations",
