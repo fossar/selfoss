@@ -171,6 +171,7 @@ set `0` or leave empty for auto detection (browser language) or use one of the f
 * Hebrew: `he`
 * Hungarian: `hu`
 * Italian: `it`
+* Indonesian: `id`
 * Japanese: `ja`
 * Latvian: `lv`
 * Norwegian Bokmål: `nb`

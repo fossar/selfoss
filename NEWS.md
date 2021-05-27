@@ -16,6 +16,12 @@
 - Search query is now part of URL. ([#1216](https://github.com/fossar/selfoss/pull/1216))
 - Search will be carried out using regular expressions when the search query is wrapped in forward slashes, e.g. `/regex/`. The expression syntax is database specific. ([#1205](https://github.com/fossar/selfoss/pull/1205))
 - YouTube spout now supports following playlists. ([#1260](https://github.com/fossar/selfoss/pull/1260))
+- Translations into several new languages were added:
+  - English (United Kingdom): `en-GB`
+  - French (Canada): `fr-CA`
+  - Hebrew: `he`
+  - Indonesian: `id`
+  - Portuguese (European): `pt`
 
 ### Bug fixes
 - Reddit spout allows wider range of URLs, including absolute URLs and searches ([#1033](https://github.com/fossar/selfoss/pull/1033))

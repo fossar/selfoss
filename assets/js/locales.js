@@ -12,6 +12,7 @@ import fr from '../locale/fr.json';
 import frCA from '../locale/fr-CA.json';
 import he from '../locale/he.json';
 import hu from '../locale/hu.json';
+import id from '../locale/id.json';
 import it from '../locale/it.json';
 import ja from '../locale/ja.json';
 import lv from '../locale/lv.json';
@@ -42,6 +43,7 @@ export default {
     'fr-CA': frCA,
     'he': he,
     'hu': hu,
+    'id': id,
     'it': it,
     'ja': ja,
     'lv': lv,
