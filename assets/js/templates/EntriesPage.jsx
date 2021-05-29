@@ -254,9 +254,14 @@ export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, s
 
     const _ = React.useContext(LocalizationContext);
 
+    if (loadingState === LoadingState.LOADING) {
+        return (
+            <SpinnerBig />
+        );
+    }
+
     return (
         <React.Fragment>
-            {loadingState === LoadingState.LOADING ? <SpinnerBig /> : null}
             {currentSource !== null && allowedToUpdate && isOnline ?
                 <button
                     type="button"
