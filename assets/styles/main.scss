@@ -4,17 +4,15 @@
 
 /* base */
 
-html {
+html,
+body {
     height: 100%;
-    overflow-x: hidden;
 }
 
 body {
     font: lighter 18px/27px 'Open Sans', Arial, sans-serif;
     color: black;
     background: url(../images/bg.gif) repeat;
-    height: 100%;
-    position: relative;
 }
 
 select,
