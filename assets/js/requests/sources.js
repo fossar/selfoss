@@ -40,13 +40,10 @@ export function remove(id) {
 /**
  * Gets all sources.
  */
-export function getAllSources() {
-    const { controller, promise } = ajax.get('sources');
-
-    return {
-        controller,
-        promise: promise.then(response => response.json())
-    };
+export function getAllSources(abortController) {
+    return ajax.get('sources', {
+        abortController,
+    }).promise.then(response => response.json());
 }
 
 /**

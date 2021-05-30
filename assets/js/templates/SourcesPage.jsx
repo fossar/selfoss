@@ -1,6 +1,7 @@
 import React from 'react';
 import Source from './Source';
 import { SpinnerBig } from './Spinner';
+import { LoadingState } from '../requests/LoadingState';
 import * as sourceRequests from '../requests/sources';
 import { getAllSources } from '../requests/sources';
 import { LocalizationContext } from '../helpers/i18n';
@@ -31,55 +32,54 @@ function handleAddSource({ event, setSources, setSpouts }) {
 }
 
 // load sources
-function loadSources({ setActiveAjaxReq, setSpouts, setSources }) {
-    setActiveAjaxReq((activeAjaxReq) => {
-        if (activeAjaxReq !== null) {
-            activeAjaxReq.controller.abort();
+function loadSources({ abortController, setSpouts, setSources, setLoadingState }) {
+    if (abortController.signal.aborted) {
+        return Promise.resolve();
+    }
+
+    setLoadingState(LoadingState.LOADING);
+
+    return getAllSources(abortController).then(({sources, spouts}) => {
+        if (abortController.signal.aborted) {
+            return;
         }
 
-        const newActiveAjaxReq = getAllSources();
-        newActiveAjaxReq.promise.then(({sources, spouts}) => {
-            setSpouts(spouts);
-            setSources(sources);
-        }).catch((error) => {
-            if (error.name === 'AbortError') {
+        setSpouts(spouts);
+        setSources(sources);
+        setLoadingState(LoadingState.SUCCESS);
+    }).catch((error) => {
+        if (error.name === 'AbortError' || abortController.signal.aborted) {
+            return;
+        }
+
+        selfoss.handleAjaxError(error, false).catch(function(error) {
+            if (error instanceof HttpError && error.response.status === 403) {
+                selfoss.history.push('/login');
+                // TODO: Use location state once we switch to BrowserRouter
+                selfoss.app.setLoginFormError(selfoss.app._('error_session_expired'));
                 return;
             }
 
-            selfoss.handleAjaxError(error, false).catch(function(error) {
-                if (error instanceof HttpError && error.response.status === 403) {
-                    selfoss.history.push('/login');
-                    // TODO: Use location state once we switch to BrowserRouter
-                    selfoss.app.setLoginFormError(selfoss.app._('error_session_expired'));
-                    return;
-                }
-
-                selfoss.app.showError(selfoss.app._('error_loading') + ' ' + error.message);
-            });
-        }).finally(() => {
-            setActiveAjaxReq(null);
+            selfoss.app.showError(selfoss.app._('error_loading') + ' ' + error.message);
         });
 
-        return newActiveAjaxReq;
+        setLoadingState(LoadingState.FAILURE);
     });
 }
 
 export default function SourcesPage() {
-    const [activeAjaxReq, setActiveAjaxReq] = React.useState(null);
     const [spouts, setSpouts] = React.useState([]);
     const [sources, setSources] = React.useState([]);
 
+    const [loadingState, setLoadingState] = React.useState(LoadingState.INITIAL);
+
     React.useEffect(() => {
-        loadSources({ setActiveAjaxReq, setSpouts, setSources });
+        const abortController = new AbortController();
+
+        loadSources({ abortController, setSpouts, setSources, setLoadingState });
 
         return () => {
-            setActiveAjaxReq((activeAjaxReq) => {
-                if (activeAjaxReq !== null) {
-                    activeAjaxReq.controller.abort();
-                }
-
-                return null;
-            });
+            abortController.abort();
         };
     }, []);
 
@@ -90,30 +90,36 @@ export default function SourcesPage() {
 
     const _ = React.useContext(LocalizationContext);
 
-    return (
-        activeAjaxReq !== null ?
+    if (loadingState === LoadingState.LOADING) {
+        return (
             <SpinnerBig />
-            : (
-                <React.Fragment>
-                    <button
-                        className="source-add"
-                        onClick={addOnClick}
-                    >
-                        {_('source_add')}
-                    </button>
-                    <a className="source-export" href="opmlexport">
-                        {_('source_export')}
-                    </a>
-                    <a className="source-opml" href="opml">
-                        {_('source_opml')}
-                    </a>
-                    {sources.map((source) => (
-                        <Source
-                            key={source.id}
-                            {...{ source, setSources, spouts, setSpouts }}
-                        />
-                    ))}
-                </React.Fragment>
-            )
+        );
+    }
+
+    if (loadingState !== LoadingState.SUCCESS) {
+        return null;
+    }
+
+    return (
+        <React.Fragment>
+            <button
+                className="source-add"
+                onClick={addOnClick}
+            >
+                {_('source_add')}
+            </button>
+            <a className="source-export" href="opmlexport">
+                {_('source_export')}
+            </a>
+            <a className="source-opml" href="opml">
+                {_('source_opml')}
+            </a>
+            {sources.map((source) => (
+                <Source
+                    key={source.id}
+                    {...{ source, setSources, spouts, setSpouts }}
+                />
+            ))}
+        </React.Fragment>
     );
 }
