@@ -234,7 +234,7 @@ selfoss.dbOffline = {
     },
 
 
-    reloadList: function(fetchParams) {
+    getEntries: function(fetchParams) {
         let hasMore = false;
         return selfoss.dbOffline._tr('r', selfoss.db.storage.entries,
             function() {

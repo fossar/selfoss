@@ -36,16 +36,16 @@ function reloadList({ fetchParams, abortController, append = false, waitForSync 
             return Promise.resolve();
         }
 
-        let reloader = selfoss.dbOffline.reloadList;
+        let reloader = selfoss.dbOffline.getEntries;
 
         // tag, source and search filtering not supported offline (yet?)
         if (fetchParams.tag || fetchParams.source || fetchParams.search) {
-            reloader = selfoss.dbOnline.reloadList;
+            reloader = selfoss.dbOnline.getEntries;
         }
 
         var forceLoadOnline = selfoss.dbOffline.olderEntriesOnline || selfoss.dbOffline.shouldLoadEntriesOnline;
         if (!selfoss.db.enableOffline.value || (selfoss.db.online && forceLoadOnline)) {
-            reloader = selfoss.dbOnline.reloadList;
+            reloader = selfoss.dbOnline.getEntries;
         }
 
         // Clean state when not just adding items.

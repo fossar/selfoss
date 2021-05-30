@@ -230,7 +230,7 @@ selfoss.dbOnline = {
      *
      * @return void
      */
-    reloadList: function(fetchParams, abortController) {
+    getEntries: function(fetchParams, abortController) {
         return itemsRequests.getItems({
             ...fetchParams,
             itemsPerPage: selfoss.config.itemsPerPage
@@ -263,7 +263,7 @@ selfoss.dbOnline = {
             }
 
             return selfoss.handleAjaxError(error).then(function() {
-                return selfoss.dbOffline.reloadList(fetchParams);
+                return selfoss.dbOffline.getEntries(fetchParams);
             });
         });
     }
