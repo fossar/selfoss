@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useRouteMatch, useLocation } from 'react-router-dom';
+import { useStateWithDeps } from 'use-state-with-deps';
 import nullable from 'prop-types-nullable';
 import Item from './Item';
 import { FilterType } from '../Filter';
@@ -12,7 +13,7 @@ import classNames from 'classnames';
 import { LocalizationContext } from '../helpers/i18n';
 import { HttpError } from '../errors';
 
-function reloadList({ fetchParams, append = false, waitForSync = true, entryId = null, setLoadingState = selfoss.entriesPage.setLoadingState }) {
+function reloadList({ fetchParams, append = false, waitForSync = true, entryId = null, setLoadingState }) {
     if (entryId && fetchParams.fromId === undefined) {
         fetchParams = {
             ...fetchParams,
@@ -103,13 +104,13 @@ function reloadList({ fetchParams, append = false, waitForSync = true, entryId =
 }
 
 // updates a source
-function handleRefreshSource({ event, fetchParams, setLoadingState, setNavExpanded, reload }) {
+function handleRefreshSource({ event, source, setLoadingState, setNavExpanded, reload }) {
     event.preventDefault();
 
     // show loading
     setLoadingState(LoadingState.LOADING);
 
-    return sourceRequests.refreshSingle(fetchParams.source).then(() => {
+    return sourceRequests.refreshSingle(source).then(() => {
         // hide nav on smartphone
         setNavExpanded(false);
 
@@ -121,25 +122,7 @@ function handleRefreshSource({ event, fetchParams, setLoadingState, setNavExpand
     });
 }
 
-function loadMore({ event, fetchParams, entries, setMoreLoadingState }) {
-    event.preventDefault();
-    const lastEntry = entries[entries.length - 1];
-
-    fetchParams = {
-        ...fetchParams,
-        // Calculate offset.
-        fromDatetime: lastEntry ? lastEntry.datetime : undefined,
-        fromId: lastEntry ? lastEntry.id : undefined
-    };
-
-    reloadList({
-        fetchParams,
-        append: true,
-        setLoadingState: setMoreLoadingState
-    });
-}
-
-export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, selectedEntry, expandedEntries, setNavExpanded, shouldUpdateItems, setShouldUpdateItems, navSourcesExpanded, reload }) {
+export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, selectedEntry, expandedEntries, setNavExpanded, navSourcesExpanded, reload }) {
     const allowedToUpdate = !selfoss.config.authEnabled || selfoss.config.allowPublicUpdate || selfoss.loggedin.value;
 
     const location = useLocation();
@@ -153,55 +136,69 @@ export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, s
     const currentTag = params.category?.startsWith('tag-') ? params.category.replace(/^tag-/, '') : null;
     const currentSource = params.category?.startsWith('source-') ? parseInt(params.category.replace(/^source-/, ''), 10) : null;
 
-    // Object with parameters for GET /items and similar API calls
-    // based on the current location.
-    const fetchParams = React.useMemo(
-        () => ({
-            type: params.filter,
-            tag: currentTag,
-            source: currentSource,
-            extraIds: [],
-            sourcesNav: navSourcesExpanded,
-            search: searchText
-        }),
-        [params.filter, currentTag, currentSource, navSourcesExpanded, searchText]
+    // The offsets for pagination.
+    // Clear them when URL changes, except for when only id changes since that happens when reading.
+    const [fromDatetime, setFromDatetime] = useStateWithDeps(
+        undefined,
+        [params.filter, currentTag, currentSource, searchText]
     );
+    const [fromId, setFromId] = useStateWithDeps(
+        undefined,
+        [params.filter, currentTag, currentSource, searchText]
+    );
+
+    // Cache the item id from initial URL so that we can fetch it
+    // but do not re-fetch when the id in the URI changes later
+    // since that happens when reading.
+    const initialItemId = React.useMemo(() => {
+        return params.id;
+    }, [params.filter, currentTag, currentSource, searchText]);
+    // Same for the state of navigation being expanded.
+    // It is only passed to the API request as a part of optimization scheme
+    // so there is no need for it to trigger refresh of the entries.
+    const initialNavSourcesExpanded = React.useMemo(() => {
+        return navSourcesExpanded;
+    }, [params.filter, currentTag, currentSource, searchText]);
 
     const [moreLoadingState, setMoreLoadingState] = React.useState(LoadingState.INITIAL);
 
-    // Schedule fetching data and reloading the list when one of the critical parameters changes.
-    // We ignore the change when only id changes since that happens when reading.
-    React.useEffect(() => {
-        setShouldUpdateItems(true);
-    }, [fetchParams.type, fetchParams.tag, fetchParams.source, fetchParams.search]);
-
     // Perform the scheduled reload.
     React.useEffect(() => {
-        if (!shouldUpdateItems) {
-            return;
-        }
+        const append = fromId !== undefined || fromDatetime !== undefined;
 
         reloadList({
-            fetchParams,
+            // Object with parameters for GET /items and similar API calls
+            // based on the current location.
+            fetchParams: {
+                type: params.filter,
+                tag: currentTag,
+                source: currentSource,
+                extraIds: [],
+                sourcesNav: initialNavSourcesExpanded,
+                search: searchText,
+                fromDatetime,
+                fromId,
+            },
+            append,
             // We do not want to focus the entry on successive loads.
-            entryId: loadingState == LoadingState.INITIAL ? params.id : undefined
+            entryId: append ? undefined : initialItemId,
+            setLoadingState: append ? setMoreLoadingState : setLoadingState,
         }).then(() => {
-            if (fetchParams.tag !== null && !selfoss.db.isValidTag(fetchParams.tag)) {
-                selfoss.app.showError(selfoss.app._('error_unknown_tag') + ' ' + fetchParams.tag);
+            if (currentTag !== null && !selfoss.db.isValidTag(currentTag)) {
+                selfoss.app.showError(selfoss.app._('error_unknown_tag') + ' ' + currentTag);
             }
 
-            if (fetchParams.source !== null && !selfoss.db.isValidSource(fetchParams.source)) {
-                selfoss.app.showError(selfoss.app._('error_unknown_source') + ' ' + fetchParams.source);
+            if (currentSource !== null && !selfoss.db.isValidSource(currentSource)) {
+                selfoss.app.showError(selfoss.app._('error_unknown_source') + ' ' + currentSource);
             }
         });
-        setShouldUpdateItems(false);
 
         return () => {
             if (selfoss.activeAjaxReq !== null) {
                 selfoss.activeAjaxReq.controller.abort();
             }
         };
-    }, [shouldUpdateItems]);
+    }, [params.filter, currentTag, currentSource, initialNavSourcesExpanded, searchText, fromDatetime, fromId, initialItemId, setLoadingState]);
 
     React.useEffect(() => {
         // scroll load more
@@ -232,13 +229,20 @@ export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, s
     const isOnline = selfoss.db.online;
 
     const refreshOnClick = React.useCallback(
-        (event) => handleRefreshSource({ event, fetchParams, setLoadingState, setNavExpanded, reload }),
-        [fetchParams, setLoadingState, setNavExpanded, reload]
+        (event) => handleRefreshSource({ event, source: currentSource, setLoadingState, setNavExpanded, reload }),
+        [currentSource, setLoadingState, setNavExpanded, reload]
     );
 
     const moreOnClick = React.useCallback(
-        (event) => loadMore({ event, fetchParams, entries, setMoreLoadingState }),
-        [fetchParams, entries]
+        (event) => {
+            event.preventDefault();
+            const lastEntry = entries[entries.length - 1];
+
+            // Calculate offset.
+            setFromDatetime(lastEntry ? lastEntry.datetime : undefined);
+            setFromId(lastEntry ? lastEntry.id : undefined);
+        },
+        [entries, setFromDatetime, setFromId]
     );
 
     // Current time for calculating relative dates in items.
@@ -332,8 +336,6 @@ EntriesPage.propTypes = {
     selectedEntry: nullable(PropTypes.number).isRequired,
     expandedEntries: PropTypes.objectOf(PropTypes.bool).isRequired,
     setNavExpanded: PropTypes.func.isRequired,
-    shouldUpdateItems: PropTypes.bool.isRequired,
-    setShouldUpdateItems: PropTypes.func.isRequired,
     navSourcesExpanded: PropTypes.bool.isRequired,
     reload: PropTypes.func.isRequired,
 };
@@ -348,7 +350,6 @@ const initialState = {
      */
     selectedEntry: null,
     expandedEntries: {},
-    shouldUpdateItems: true,
     loadingState: LoadingState.INITIAL
 };
 
@@ -359,7 +360,6 @@ export default class StateHolder extends React.Component {
 
         this.reload = this.reload.bind(this);
         this.setLoadingState = this.setLoadingState.bind(this);
-        this.setShouldUpdateItems = this.setShouldUpdateItems.bind(this);
         this.markVisibleRead = this.markVisibleRead.bind(this);
     }
 
@@ -544,10 +544,6 @@ export default class StateHolder extends React.Component {
         }
     }
 
-    setShouldUpdateItems(shouldUpdateItems) {
-        this.setState({ shouldUpdateItems });
-    }
-
     getActiveTag() {
         if (!this.props.match) {
             return null;
@@ -665,8 +661,6 @@ export default class StateHolder extends React.Component {
                 hasMore={this.state.hasMore}
                 loadingState={this.state.loadingState}
                 setLoadingState={this.setLoadingState}
-                shouldUpdateItems={this.state.shouldUpdateItems}
-                setShouldUpdateItems={this.setShouldUpdateItems}
                 setNavExpanded={this.props.setNavExpanded}
                 navSourcesExpanded={this.props.navSourcesExpanded}
                 reload={this.reload}

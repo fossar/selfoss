@@ -38,6 +38,9 @@
         "object-curly-newline": ["error", {"multiline": true, "consistent": true}],
         "one-var-declaration-per-line": "error",
         "quotes": ["error", "single", {"avoidEscape": true}],
+        "react-hooks/exhaustive-deps": ["warn", {
+          "additionalHooks": "(useStateWithDeps)"
+        }],
         "semi": "error",
         "semi-spacing": "error",
         "space-before-blocks": "error",

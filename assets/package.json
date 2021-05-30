@@ -26,7 +26,8 @@
     "rooks": "^5.0.2",
     "spectrum-colorpicker": "^1.8.1",
     "tinykeys": "^1.1.1",
-    "unreset-css": "^1.0.1"
+    "unreset-css": "^1.0.1",
+    "use-state-with-deps": "^1.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
