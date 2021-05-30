@@ -13,7 +13,11 @@ import classNames from 'classnames';
 import { LocalizationContext } from '../helpers/i18n';
 import { HttpError } from '../errors';
 
-function reloadList({ fetchParams, append = false, waitForSync = true, entryId = null, setLoadingState }) {
+function reloadList({ fetchParams, abortController, append = false, waitForSync = true, entryId = null, setLoadingState }) {
+    if (abortController.signal.aborted) {
+        return Promise.resolve();
+    }
+
     if (entryId && fetchParams.fromId === undefined) {
         fetchParams = {
             ...fetchParams,
@@ -28,6 +32,10 @@ function reloadList({ fetchParams, append = false, waitForSync = true, entryId =
     setLoadingState(LoadingState.LOADING);
 
     var reload = () => {
+        if (abortController.signal.aborted) {
+            return Promise.resolve();
+        }
+
         let reloader = selfoss.dbOffline.reloadList;
 
         // tag, source and search filtering not supported offline (yet?)
@@ -49,7 +57,11 @@ function reloadList({ fetchParams, append = false, waitForSync = true, entryId =
         }
 
         setLoadingState(LoadingState.LOADING);
-        return reloader(fetchParams).then(({ entries, hasMore }) => {
+        return reloader(fetchParams, abortController).then(({ entries, hasMore }) => {
+            if (abortController.signal.aborted) {
+                return;
+            }
+
             setLoadingState(LoadingState.SUCCESS);
             selfoss.entriesPage.setHasMore(hasMore);
 
@@ -83,6 +95,10 @@ function reloadList({ fetchParams, append = false, waitForSync = true, entryId =
             }
 
         }).catch((error) => {
+            if (abortController.signal.aborted) {
+                return;
+            }
+
             if (error instanceof HttpError && error.response.status === 403) {
                 selfoss.history.push('/login');
                 // TODO: Use location state once we switch to BrowserRouter
@@ -165,6 +181,7 @@ export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, s
     // Perform the scheduled reload.
     React.useEffect(() => {
         const append = fromId !== undefined || fromDatetime !== undefined;
+        const abortController = new AbortController();
 
         reloadList({
             // Object with parameters for GET /items and similar API calls
@@ -179,6 +196,7 @@ export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, s
                 fromDatetime,
                 fromId,
             },
+            abortController,
             append,
             // We do not want to focus the entry on successive loads.
             entryId: append ? undefined : initialItemId,
@@ -194,9 +212,7 @@ export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, s
         });
 
         return () => {
-            if (selfoss.activeAjaxReq !== null) {
-                selfoss.activeAjaxReq.controller.abort();
-            }
+            abortController.abort();
         };
     }, [params.filter, currentTag, currentSource, initialNavSourcesExpanded, searchText, fromDatetime, fromId, initialItemId, setLoadingState]);
 

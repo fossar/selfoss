@@ -230,17 +230,11 @@ selfoss.dbOnline = {
      *
      * @return void
      */
-    reloadList: function(fetchParams) {
-        if (selfoss.activeAjaxReq !== null) {
-            selfoss.activeAjaxReq.controller.abort();
-        }
-
-        selfoss.activeAjaxReq = itemsRequests.getItems({
+    reloadList: function(fetchParams, abortController) {
+        return itemsRequests.getItems({
             ...fetchParams,
             itemsPerPage: selfoss.config.itemsPerPage
-        });
-
-        let promise = selfoss.activeAjaxReq.promise.then((data) => {
+        }, abortController).then((data) => {
             selfoss.db.setOnline();
 
             if (!selfoss.db.enableOffline.value) {
@@ -264,19 +258,14 @@ selfoss.dbOnline = {
                 hasMore: data.hasMore
             };
         }).catch((error) => {
-            if (error.name == 'AbortError') {
+            if (error.name === 'AbortError') {
                 return;
             }
 
             return selfoss.handleAjaxError(error).then(function() {
                 return selfoss.dbOffline.reloadList(fetchParams);
             });
-        }).finally(() => {
-            // clean up
-            selfoss.activeAjaxReq = null;
         });
-
-        return promise;
     }
 
 

@@ -78,18 +78,14 @@ function enrichItemsResponse(data) {
 /**
  * Get all items matching given filter.
  */
-export function getItems(filter) {
-    const { controller, promise } = ajax.get('', {
+export function getItems(filter, abortController) {
+    return ajax.get('', {
         body: ajax.makeSearchParams({
             ...filter,
             fromDatetime: filter.fromDatetime ? filter.fromDatetime.toISOString() : filter.fromDatetime
-        })
-    });
-
-    return {
-        controller,
-        promise: promise.then(response => response.json()).then(enrichItemsResponse)
-    };
+        }),
+        abortController,
+    }).promise.then(response => response.json()).then(enrichItemsResponse);
 }
 
 /**

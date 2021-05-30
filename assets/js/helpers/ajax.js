@@ -73,7 +73,7 @@ export const liftToPromiseField = (wrapper) => (f) => (...params) => {
  * @return {controller: AbortController, promise: Promise}
  */
 export const makeAbortableFetch = (fetch) => (url, opts = {}) => {
-    let controller = new AbortController();
+    let controller = opts.abortController || new AbortController();
     let promise = fetch(url, {
         signal: controller.signal,
         ...opts

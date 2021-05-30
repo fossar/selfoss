@@ -23,11 +23,6 @@ var selfoss = {
     app: null,
 
     /**
-     * instance of the currently running XHR that is used to reload the items list
-     */
-    activeAjaxReq: null,
-
-    /**
      * the html title configured
      */
     htmlTitle: 'selfoss',
