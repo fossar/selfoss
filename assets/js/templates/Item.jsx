@@ -9,6 +9,7 @@ import { makeEntriesLink } from '../helpers/uri';
 import * as itemsRequests from '../requests/items';
 import * as icons from '../icons';
 import { LocalizationContext } from '../helpers/i18n';
+import { HttpError } from '../errors';
 
 function anonymize(url) {
     return (selfoss.config.anonymizer ?? '') + url;
@@ -232,6 +233,13 @@ function handleStarredToggle({ event, entry }) {
         selfoss.handleAjaxError(error).then(function() {
             selfoss.dbOffline.enqueueStatus(id, 'starred', starr);
         }).catch(function(error) {
+            if (error instanceof HttpError && error.response.status === 403) {
+                selfoss.history.push('/login');
+                // TODO: Use location state once we switch to BrowserRouter
+                selfoss.app.setLoginFormError(selfoss.app._('error_session_expired'));
+                return;
+            }
+
             // rollback ui changes
             selfoss.entriesPage.starEntry(id, !starr);
             updateStats(!starr);
@@ -282,6 +290,13 @@ function handleReadToggle({ event, entry }) {
         selfoss.handleAjaxError(error).then(function() {
             selfoss.dbOffline.enqueueStatus(id, 'unread', !unread);
         }).catch(function(error) {
+            if (error instanceof HttpError && error.response.status === 403) {
+                selfoss.history.push('/login');
+                // TODO: Use location state once we switch to BrowserRouter
+                selfoss.app.setLoginFormError(selfoss.app._('error_session_expired'));
+                return;
+            }
+
             // rollback ui changes
             selfoss.entriesPage.markEntry(id, unread);
             updateStats(!unread);

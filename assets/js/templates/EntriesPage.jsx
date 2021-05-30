@@ -10,6 +10,7 @@ import { LoadingState } from '../requests/LoadingState';
 import { Spinner, SpinnerBig } from './Spinner';
 import classNames from 'classnames';
 import { LocalizationContext } from '../helpers/i18n';
+import { HttpError } from '../errors';
 
 function reloadList({ fetchParams, append = false, waitForSync = true, entryId = null, setLoadingState = selfoss.entriesPage.setLoadingState }) {
     if (entryId && fetchParams.fromId === undefined) {
@@ -81,6 +82,13 @@ function reloadList({ fetchParams, append = false, waitForSync = true, entryId =
             }
 
         }).catch((error) => {
+            if (error instanceof HttpError && error.response.status === 403) {
+                selfoss.history.push('/login');
+                // TODO: Use location state once we switch to BrowserRouter
+                selfoss.app.setLoginFormError(selfoss.app._('error_session_expired'));
+                return;
+            }
+
             setLoadingState(LoadingState.FAILURE);
             selfoss.app.showError(selfoss.app._('error_loading') + ' ' + error.message);
         });
@@ -629,6 +637,13 @@ export default class StateHolder extends React.Component {
                 }));
                 selfoss.dbOffline.enqueueStatuses(statuses);
             }).catch((error) => {
+                if (error instanceof HttpError && error.response.status === 403) {
+                    selfoss.history.push('/login');
+                    // TODO: Use location state once we switch to BrowserRouter
+                    selfoss.app.setLoginFormError(selfoss.app._('error_session_expired'));
+                    return;
+                }
+
                 this.setLoadingState(LoadingState.SUCCESS);
                 this.setEntries(oldEntries);
                 this.setHasMore(hadMore);

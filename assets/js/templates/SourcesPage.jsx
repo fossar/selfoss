@@ -4,6 +4,7 @@ import { SpinnerBig } from './Spinner';
 import * as sourceRequests from '../requests/sources';
 import { getAllSources } from '../requests/sources';
 import { LocalizationContext } from '../helpers/i18n';
+import { HttpError } from '../errors';
 
 function rand() {
     // https://www.php.net/manual/en/function.mt-getrandmax.php#117620
@@ -46,6 +47,13 @@ function loadSources({ setActiveAjaxReq, setSpouts, setSources }) {
             }
 
             selfoss.handleAjaxError(error, false).catch(function(error) {
+                if (error instanceof HttpError && error.response.status === 403) {
+                    selfoss.history.push('/login');
+                    // TODO: Use location state once we switch to BrowserRouter
+                    selfoss.app.setLoginFormError(selfoss.app._('error_session_expired'));
+                    return;
+                }
+
                 selfoss.app.showError(selfoss.app._('error_loading') + ' ' + error.message);
             });
         }).finally(() => {

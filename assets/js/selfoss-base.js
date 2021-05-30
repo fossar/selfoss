@@ -424,7 +424,7 @@ var selfoss = {
 
     handleAjaxError: function(error, tryOffline = true) {
         if (!(error instanceof HttpError || error instanceof TimeoutError)) {
-            throw error;
+            return Promise.reject(error);
         }
 
         const httpCode = error?.response?.status || 0;
@@ -432,12 +432,7 @@ var selfoss = {
         if (tryOffline && httpCode != 403) {
             return selfoss.db.setOffline();
         } else {
-            if (httpCode == 403) {
-                selfoss.history.push('/login');
-                // TODO: Use location state once we switch to BrowserRouter
-                selfoss.app.setLoginFormError(selfoss.app._('error_session_expired'));
-            }
-            throw error;
+            return Promise.reject(error);
         }
     },
 
