@@ -279,7 +279,7 @@ export default function makeShortcuts() {
 
         // 'r': Reload the current view
         'r': ignoreWhenInteracting(function() {
-            selfoss.entriesPage?.reloadList();
+            selfoss.entriesPage?.reload();
         }),
 
         // 'Shift + r': Refresh sources

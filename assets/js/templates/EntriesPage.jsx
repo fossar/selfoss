@@ -95,19 +95,19 @@ function reloadList({ fetchParams, append = false, waitForSync = true, entryId =
 }
 
 // updates a source
-function handleRefreshSource({ event, fetchParams, setLoadingState, setNavExpanded }) {
+function handleRefreshSource({ event, fetchParams, setLoadingState, setNavExpanded, reload }) {
     event.preventDefault();
 
     // show loading
     setLoadingState(LoadingState.LOADING);
 
-    sourceRequests.refreshSingle(fetchParams.source).then(() => {
+    return sourceRequests.refreshSingle(fetchParams.source).then(() => {
         // hide nav on smartphone
         setNavExpanded(false);
 
         // Fetch the new items and reload the list.
         // Will also clear the loading status.
-        reloadList({ fetchParams });
+        reload();
     }).catch((error) => {
         alert(selfoss.app._('error_refreshing_source') + ' ' + error.message);
     });
@@ -131,7 +131,7 @@ function loadMore({ event, fetchParams, entries, setMoreLoadingState }) {
     });
 }
 
-export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, selectedEntry, expandedEntries, setNavExpanded, shouldUpdateItems, setShouldUpdateItems, navSourcesExpanded }) {
+export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, selectedEntry, expandedEntries, setNavExpanded, shouldUpdateItems, setShouldUpdateItems, navSourcesExpanded, reload }) {
     const allowedToUpdate = !selfoss.config.authEnabled || selfoss.config.allowPublicUpdate || selfoss.loggedin.value;
 
     const location = useLocation();
@@ -224,18 +224,13 @@ export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, s
     const isOnline = selfoss.db.online;
 
     const refreshOnClick = React.useCallback(
-        (event) => handleRefreshSource({ event, fetchParams, setLoadingState, setNavExpanded }),
-        [fetchParams, setLoadingState, setNavExpanded]
+        (event) => handleRefreshSource({ event, fetchParams, setLoadingState, setNavExpanded, reload }),
+        [fetchParams, setLoadingState, setNavExpanded, reload]
     );
 
     const moreOnClick = React.useCallback(
         (event) => loadMore({ event, fetchParams, entries, setMoreLoadingState }),
         [fetchParams, entries]
-    );
-
-    const errorOnClick = React.useCallback(
-        () => reloadList({ fetchParams }),
-        [fetchParams]
     );
 
     // Current time for calculating relative dates in items.
@@ -311,7 +306,7 @@ export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, s
                         className="stream-button stream-error"
                         aria-live="assertive"
                         aria-label={_('streamerror')}
-                        onClick={errorOnClick}
+                        onClick={reload}
                     >
                         {_('streamerror')}
                     </button>
@@ -332,6 +327,7 @@ EntriesPage.propTypes = {
     shouldUpdateItems: PropTypes.bool.isRequired,
     setShouldUpdateItems: PropTypes.func.isRequired,
     navSourcesExpanded: PropTypes.bool.isRequired,
+    reload: PropTypes.func.isRequired,
 };
 
 const initialState = {
@@ -353,6 +349,7 @@ export default class StateHolder extends React.Component {
         super(props);
         this.state = initialState;
 
+        this.reload = this.reload.bind(this);
         this.setLoadingState = this.setLoadingState.bind(this);
         this.setShouldUpdateItems = this.setShouldUpdateItems.bind(this);
         this.markVisibleRead = this.markVisibleRead.bind(this);
@@ -640,7 +637,7 @@ export default class StateHolder extends React.Component {
         });
     }
 
-    reloadList() {
+    reload() {
         this.setState(initialState);
     }
 
@@ -657,6 +654,7 @@ export default class StateHolder extends React.Component {
                 setShouldUpdateItems={this.setShouldUpdateItems}
                 setNavExpanded={this.props.setNavExpanded}
                 navSourcesExpanded={this.props.navSourcesExpanded}
+                reload={this.reload}
             />
         );
     }

@@ -23,7 +23,7 @@ function Tag({ tag, active, collapseNav }) {
                 tagName,
                 color.toHexString()
             ).then(() => {
-                selfoss.entriesPage?.reloadList();
+                selfoss.entriesPage?.reload();
             }).catch((error) => {
                 selfoss.app.showError(selfoss.app._('error_saving_color') + ' ' + error.message);
             });

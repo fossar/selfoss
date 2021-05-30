@@ -190,7 +190,7 @@ selfoss.dbOnline = {
             if ('stats' in data && data.stats.unread > 0 &&
                 selfoss.entriesPage && (selfoss.entriesPage.state.entries.length === 0 ||
                 selfoss.entriesPage.state.entries.loadingState === LoadingState.FAILURE)) {
-                selfoss.entriesPage?.reloadList();
+                selfoss.entriesPage?.reload();
             } else {
                 if ('itemUpdates' in data) {
                     selfoss.entriesPage.refreshEntryStatuses(data.itemUpdates);
