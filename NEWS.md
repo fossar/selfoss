@@ -34,6 +34,7 @@
 - Fixed loading full text on pages containing ampersands in URLs ([#1188](https://github.com/fossar/selfoss/pull/1188))
 - Fixed missing styling in article contents ([#1221](https://github.com/fossar/selfoss/pull/1221))
 - Golem, Lightreading and Heise spouts now use Graby for extracting article contents instead of our own defunct extraction rules. ([#1245](https://github.com/fossar/selfoss/pull/1245))
+- The tag colour picker now pre-selects the current colour instead of a placeholder colour. ([#1269](https://github.com/fossar/selfoss/pull/1269))
 
 ### API changes
 - `tags` attribute is now consistently array of strings, numbers are numbers and booleans are booleans. **This might break third-party clients that have not updated yet.** ([#948](https://github.com/fossar/selfoss/pull/948))
