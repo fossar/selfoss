@@ -88,6 +88,11 @@
           };
 
           packages = {
+            selfoss-docker = pkgs.callPackage ./utils/docker.nix {
+              inherit (nixpkgs.lib) nixosSystem;
+              targetPlatform = system;
+            };
+
             selfoss =
               let
                 filteredSrc = builtins.path {
