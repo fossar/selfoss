@@ -100,5 +100,6 @@
   "lang_offline_navigation_unavailable": "Cambiar etiquetas y fuentes no está disponible en el modo fuera de línea.",
   "lang_error_offline_storage_not_available": "Almacenaje fuera de línea no está disponible. Asegúrese que su navegador {0}soporta IndexedDB API{1} y, si está utilizando un navegador basado en Google Chrome, que no está usando selfoss en modo incógnito.",
   "lang_error_edit_source": "No se pudo guardar los cambios en las fuentes:",
-  "lang_experimental": "Experimental"
+  "lang_experimental": "Experimental",
+  "lang_article_reading_time": "{0} min lectura"
 }
