@@ -99,5 +99,6 @@
   "lang_error_check_log_file": "Un error ha ocurrido, por favor comprueba el fichero de log “{0}”.",
   "lang_offline_navigation_unavailable": "Cambiar etiquetas y fuentes no está disponible en el modo fuera de línea.",
   "lang_error_offline_storage_not_available": "Almacenaje fuera de línea no está disponible. Asegúrese que su navegador {0}soporta IndexedDB API{1} y, si está utilizando un navegador basado en Google Chrome, que no está usando selfoss en modo incógnito.",
-  "lang_error_edit_source": "No se pudo guardar los cambios en las fuentes:"
+  "lang_error_edit_source": "No se pudo guardar los cambios en las fuentes:",
+  "lang_experimental": "Experimental"
 }
