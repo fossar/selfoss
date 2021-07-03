@@ -781,16 +781,16 @@
         },
         {
             "name": "j0k3r/graby-site-config",
-            "version": "1.0.132",
+            "version": "1.0.133",
             "source": {
                 "type": "git",
                 "url": "https://github.com/j0k3r/graby-site-config.git",
-                "reference": "26bad84814415cd3eba0f08c2bfbb240f4e82f34"
+                "reference": "dcc32de72afe1398b41629ddb7659cfe4a5beb41"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/j0k3r/graby-site-config/zipball/26bad84814415cd3eba0f08c2bfbb240f4e82f34",
-                "reference": "26bad84814415cd3eba0f08c2bfbb240f4e82f34",
+                "url": "https://api.github.com/repos/j0k3r/graby-site-config/zipball/dcc32de72afe1398b41629ddb7659cfe4a5beb41",
+                "reference": "dcc32de72afe1398b41629ddb7659cfe4a5beb41",
                 "shasum": ""
             },
             "require": {
@@ -819,9 +819,9 @@
             "description": "Graby site config files",
             "support": {
                 "issues": "https://github.com/j0k3r/graby-site-config/issues",
-                "source": "https://github.com/j0k3r/graby-site-config/tree/1.0.132"
+                "source": "https://github.com/j0k3r/graby-site-config/tree/1.0.133"
             },
-            "time": "2021-05-04T08:13:00+00:00"
+            "time": "2021-06-01T13:30:16+00:00"
         },
         {
             "name": "j0k3r/httplug-ssrf-plugin",
@@ -1084,16 +1084,16 @@
         },
         {
             "name": "masterminds/html5",
-            "version": "2.7.4",
+            "version": "2.7.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Masterminds/html5-php.git",
-                "reference": "9227822783c75406cfe400984b2f095cdf03d417"
+                "reference": "f640ac1bdddff06ea333a920c95bbad8872429ab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Masterminds/html5-php/zipball/9227822783c75406cfe400984b2f095cdf03d417",
-                "reference": "9227822783c75406cfe400984b2f095cdf03d417",
+                "url": "https://api.github.com/repos/Masterminds/html5-php/zipball/f640ac1bdddff06ea333a920c95bbad8872429ab",
+                "reference": "f640ac1bdddff06ea333a920c95bbad8872429ab",
                 "shasum": ""
             },
             "require": {
@@ -1103,7 +1103,7 @@
                 "php": ">=5.3.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.8.35"
+                "phpunit/phpunit": "^4.8.35 || ^5.7.21 || ^6 || ^7"
             },
             "type": "library",
             "extra": {
@@ -1147,9 +1147,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Masterminds/html5-php/issues",
-                "source": "https://github.com/Masterminds/html5-php/tree/2.7.4"
+                "source": "https://github.com/Masterminds/html5-php/tree/2.7.5"
             },
-            "time": "2020-10-01T13:52:52+00:00"
+            "time": "2021-07-01T14:25:37+00:00"
         },
         {
             "name": "mibe/feedwriter",
