@@ -1,5 +1,20 @@
 {
   "nodes": {
+    "c4": {
+      "locked": {
+        "lastModified": 1622472819,
+        "narHash": "sha256-DtqsBJsWsFj6AoQJczJqYit3mByuw0cdqkZ7mDhhLoI=",
+        "owner": "fossar",
+        "repo": "composition-c4",
+        "rev": "5cd0e71a256ff20934965c5a1302f784e0c6cb0f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "fossar",
+        "repo": "composition-c4",
+        "type": "github"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -29,6 +44,26 @@
       "original": {
         "owner": "edolstra",
         "repo": "flake-compat",
+        "type": "github"
+      }
+    },
+    "napalm": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1604997796,
+        "narHash": "sha256-XxRQvE8FbmaUn5F0VFRt9x9Yg/dJJx8O2ZkeGtUsHTg=",
+        "owner": "nmattia",
+        "repo": "napalm",
+        "rev": "7c0c62207b6e70168dab91ba85d7d2568c3e0157",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nmattia",
+        "repo": "napalm",
         "type": "github"
       }
     },
@@ -86,7 +121,9 @@
     },
     "root": {
       "inputs": {
+        "c4": "c4",
         "flake-compat": "flake-compat",
+        "napalm": "napalm",
         "nixpkgs": "nixpkgs",
         "phps": "phps",
         "utils": "utils_2"
