@@ -781,16 +781,16 @@
         },
         {
             "name": "j0k3r/graby-site-config",
-            "version": "1.0.133",
+            "version": "1.0.135",
             "source": {
                 "type": "git",
                 "url": "https://github.com/j0k3r/graby-site-config.git",
-                "reference": "dcc32de72afe1398b41629ddb7659cfe4a5beb41"
+                "reference": "64eabc19a8dbe102431d92661d7f76592a4de4be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/j0k3r/graby-site-config/zipball/dcc32de72afe1398b41629ddb7659cfe4a5beb41",
-                "reference": "dcc32de72afe1398b41629ddb7659cfe4a5beb41",
+                "url": "https://api.github.com/repos/j0k3r/graby-site-config/zipball/64eabc19a8dbe102431d92661d7f76592a4de4be",
+                "reference": "64eabc19a8dbe102431d92661d7f76592a4de4be",
                 "shasum": ""
             },
             "require": {
@@ -819,9 +819,9 @@
             "description": "Graby site config files",
             "support": {
                 "issues": "https://github.com/j0k3r/graby-site-config/issues",
-                "source": "https://github.com/j0k3r/graby-site-config/tree/1.0.133"
+                "source": "https://github.com/j0k3r/graby-site-config/tree/1.0.135"
             },
-            "time": "2021-06-01T13:30:16+00:00"
+            "time": "2021-08-24T08:51:28+00:00"
         },
         {
             "name": "j0k3r/httplug-ssrf-plugin",
