@@ -81,7 +81,7 @@ selfoss.shares = {
             name,
             label,
             id,
-            icon: icon,
+            icon,
             callback: sharer
         };
         this.names[id] = name;

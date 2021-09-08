@@ -327,7 +327,10 @@ function ShareButton({ name, label, icon, item, showLabel = true }) {
 ShareButton.propTypes = {
     name: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
-    icon: PropTypes.element.isRequired,
+    icon: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.element,
+    ]).isRequired,
     item: PropTypes.object.isRequired,
     showLabel: PropTypes.bool,
 };
