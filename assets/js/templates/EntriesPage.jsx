@@ -138,7 +138,7 @@ function handleRefreshSource({ event, source, setLoadingState, setNavExpanded, r
     });
 }
 
-export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, selectedEntry, expandedEntries, setNavExpanded, navSourcesExpanded, reload }) {
+export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, forceReload, selectedEntry, expandedEntries, setNavExpanded, navSourcesExpanded, reload }) {
     const allowedToUpdate = !selfoss.config.authEnabled || selfoss.config.allowPublicUpdate || selfoss.loggedin.value;
 
     const location = useLocation();
@@ -168,7 +168,7 @@ export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, s
     // since that happens when reading.
     const initialItemId = React.useMemo(() => {
         return params.id;
-    }, [params.filter, currentTag, currentSource, searchText]);
+    }, [params.filter, currentTag, currentSource, searchText, forceReload]);
     // Same for the state of navigation being expanded.
     // It is only passed to the API request as a part of optimization scheme
     // so there is no need for it to trigger refresh of the entries.
@@ -214,7 +214,7 @@ export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, s
         return () => {
             abortController.abort();
         };
-    }, [params.filter, currentTag, currentSource, initialNavSourcesExpanded, searchText, fromDatetime, fromId, initialItemId, setLoadingState]);
+    }, [params.filter, currentTag, currentSource, initialNavSourcesExpanded, searchText, fromDatetime, fromId, initialItemId, setLoadingState, forceReload]);
 
     React.useEffect(() => {
         // scroll load more
@@ -349,6 +349,7 @@ EntriesPage.propTypes = {
     hasMore: PropTypes.bool.isRequired,
     loadingState: PropTypes.oneOf(Object.values(LoadingState)).isRequired,
     setLoadingState: PropTypes.func.isRequired,
+    forceReload: PropTypes.number.isRequired,
     selectedEntry: nullable(PropTypes.number).isRequired,
     expandedEntries: PropTypes.objectOf(PropTypes.bool).isRequired,
     setNavExpanded: PropTypes.func.isRequired,
@@ -366,7 +367,11 @@ const initialState = {
      */
     selectedEntry: null,
     expandedEntries: {},
-    loadingState: LoadingState.INITIAL
+    loadingState: LoadingState.INITIAL,
+    /**
+     * HACK: A counter that is increased every time reload action (r key) is triggered.
+     */
+    forceReload: 0,
 };
 
 export default class StateHolder extends React.Component {
@@ -665,7 +670,10 @@ export default class StateHolder extends React.Component {
     }
 
     reload() {
-        this.setState(initialState);
+        this.setState({
+            ...initialState,
+            forceReload: this.state.forceReload + 1,
+        });
     }
 
     render() {
@@ -677,6 +685,7 @@ export default class StateHolder extends React.Component {
                 hasMore={this.state.hasMore}
                 loadingState={this.state.loadingState}
                 setLoadingState={this.setLoadingState}
+                forceReload={this.state.forceReload}
                 setNavExpanded={this.props.setNavExpanded}
                 navSourcesExpanded={this.props.navSourcesExpanded}
                 reload={this.reload}
