@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link, useHistory, useLocation } from 'react-router-dom';
+import { usePrevious } from 'rooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
 import { createFocusTrap } from 'focus-trap';
@@ -54,31 +55,15 @@ function preventDefaultOnSmartphone(event) {
 }
 
 // Handle closing fullscreen on mobile
-function closeFullScreen({ event, history, location, entry, setFullScreenTrap }) {
+function closeFullScreen({ event, history, location, entryId }) {
     event.preventDefault();
     event.stopPropagation();
-    selfoss.entriesPage.setEntryExpanded(entry.id, false);
-    setFullScreenTrap((trap) => {
-        if (trap !== null) {
-            trap.deactivate();
-        }
-
-        return null;
-    });
-
-    document.body.classList.remove('fullscreen-mode');
-
-    selfoss.entriesPage.setEntryExpanded(entry.id, false);
+    selfoss.entriesPage.setEntryExpanded(entryId, false);
     history.replace(makeEntriesLink(location, { id: null }));
-
-    const autoHideReadOnMobile = selfoss.config.autoHideReadOnMobile && entry.unread == 1;
-    if (autoHideReadOnMobile && entry.unread != 1) {
-        selfoss.entriesPage.setEntries((entries) => entries.filter(({ id }) => id !== entry.id));
-    }
 }
 
 // show/hide entry
-function handleClick({ event, history, location, target, entry, contentBlock, setFullScreenTrap, setImagesLoaded, setNavExpanded }) {
+function handleClick({ event, history, location, target, entry }) {
     const expected = selfoss.isMobile() ? '.entry' : '.entry-title';
     if (target !== expected) {
         return;
@@ -93,9 +78,7 @@ function handleClick({ event, history, location, target, entry, contentBlock, se
     selfoss.entriesPage.setEntryExpanded(entry.id, (expanded) => {
         const parent = document.querySelector(`.entry[data-entry-id="${entry.id}"]`);
         if (expanded) {
-            if (selfoss.isSmartphone()) {
-                parent.querySelector('.entry-close').click();
-            } else {
+            if (!selfoss.isSmartphone()) {
                 history.replace(makeEntriesLink(location, { id: null }));
             }
         } else {
@@ -105,66 +88,11 @@ function handleClick({ event, history, location, target, entry, contentBlock, se
             selfoss.entriesPage.setSelectedEntry(entry.id);
             history.replace(makeEntriesLink(location, { id: entryId }));
 
-            if (contentBlock.current.childElementCount === 0) {
-                contentBlock.current.innerHTML = entry.content;
-            }
-
-            // load images not on mobile devices
-            if (selfoss.isMobile() == false || selfoss.config.loadImagesOnMobile) {
-                setImagesLoaded(true);
-                lazyLoadImages(contentBlock.current);
-            }
-
-            if (selfoss.isSmartphone()) {
-                // save scroll position
-                let scrollTop = window.scrollY;
-
-                setNavExpanded((expanded) => {
-                    // hide nav
-                    if (expanded) {
-                        scrollTop = scrollTop - document.querySelector('#nav').getBoundingClientRect().height;
-                        scrollTop = scrollTop < 0 ? 0 : scrollTop;
-                        window.scrollTo({ top: scrollTop });
-
-                        return false;
-                    }
-
-                    return expanded;
-                });
-
-                // show fullscreen
-                document.body.classList.add('fullscreen-mode');
-
-                let trap = createFocusTrap(parent);
-                setFullScreenTrap(trap);
-                trap.activate();
-                fixLinkBubbling(contentBlock.current);
-            } else {
-                // setup fancyBox image viewer
-                selfoss.setupFancyBox(contentBlock.current, entryId);
-
-                // scroll to article header
-                if (selfoss.config.scrollToArticleHeader) {
-                    parent.scrollIntoView();
-                }
-
-                // turn of column view if entry is too long
-                requestAnimationFrame(() => {
-                    // Delayed into next frame so that the entry is expanded when the height is being determined.
-                    if (contentBlock.current.getBoundingClientRect().height > document.body.clientHeight) {
-                        contentBlock.current.parentNode.classList.add('entry-content-nocolumns');
-                    }
-                });
-            }
-
             // automark as read
             const autoMarkAsRead = selfoss.loggedin.value && selfoss.config.autoMarkAsRead && entry.unread == 1;
             if (autoMarkAsRead) {
                 parent.querySelector('.entry-unread').click();
             }
-
-            // anonymize
-            selfoss.anonymize(contentBlock.current);
         }
 
         return !expanded;
@@ -397,6 +325,91 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
     );
     const shares = selfoss.shares.getAll();
 
+    const previouslyExpanded = usePrevious(expanded);
+
+    React.useEffect(() => {
+        // Handle entry becoming/ceasing to be expanded.
+        const parent = document.querySelector(`.entry[data-entry-id="${item.id}"]`);
+        if (expanded) {
+            if (contentBlock.current.childElementCount === 0) {
+                contentBlock.current.innerHTML = item.content;
+            }
+
+            // load images not on mobile devices
+            if (selfoss.isMobile() == false || selfoss.config.loadImagesOnMobile) {
+                setImagesLoaded(true);
+                lazyLoadImages(contentBlock.current);
+            }
+
+            if (selfoss.isSmartphone()) {
+                // save scroll position
+                let scrollTop = window.scrollY;
+
+                setNavExpanded((expanded) => {
+                    // hide nav
+                    if (expanded) {
+                        scrollTop = scrollTop - document.querySelector('#nav').getBoundingClientRect().height;
+                        scrollTop = scrollTop < 0 ? 0 : scrollTop;
+                        window.scrollTo({ top: scrollTop });
+
+                        return false;
+                    }
+
+                    return expanded;
+                });
+
+                // show fullscreen
+                document.body.classList.add('fullscreen-mode');
+
+                let trap = createFocusTrap(parent);
+                setFullScreenTrap(trap);
+                trap.activate();
+                fixLinkBubbling(contentBlock.current);
+            } else {
+                // setup fancyBox image viewer
+                selfoss.setupFancyBox(contentBlock.current, item.id);
+
+                // scroll to article header
+                if (selfoss.config.scrollToArticleHeader) {
+                    parent.scrollIntoView();
+                }
+
+                // turn of column view if entry is too long
+                requestAnimationFrame(() => {
+                    // Delayed into next frame so that the entry is expanded when the height is being determined.
+                    if (contentBlock.current.getBoundingClientRect().height > document.body.clientHeight) {
+                        contentBlock.current.parentNode.classList.add('entry-content-nocolumns');
+                    }
+                });
+            }
+
+            // anonymize
+            selfoss.anonymize(contentBlock.current);
+        } else {
+            // No longer expanded.
+
+            setFullScreenTrap((trap) => {
+                if (trap !== null) {
+                    trap.deactivate();
+                }
+
+                return null;
+            });
+
+            document.body.classList.remove('fullscreen-mode');
+        }
+    }, [expanded, item.content, item.id, setNavExpanded]);
+
+    React.useEffect(() => {
+        // Handle autoHideReadOnMobile setting.
+        if (selfoss.isSmartphone() && !expanded && previouslyExpanded) {
+            const autoHideReadOnMobile = selfoss.config.autoHideReadOnMobile && item.unread == 1;
+            if (autoHideReadOnMobile && item.unread != 1) {
+                selfoss.entriesPage.setEntries((entries) => entries.filter(({ id }) => id !== item.id));
+            }
+        }
+    }, [expanded, item.id, item.unread, previouslyExpanded]);
+
     const entryOnClick = React.useCallback(
         (event) => handleClick({ event, history, location, entry: item, target: '.entry', contentBlock, setFullScreenTrap, setImagesLoaded, setNavExpanded }),
         [history, location, item, setNavExpanded]
@@ -423,8 +436,8 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
     );
 
     const closeOnClick = React.useCallback(
-        (event) => closeFullScreen({ event, history, location, entry: item, setFullScreenTrap }),
-        [history, location, item]
+        (event) => closeFullScreen({ event, history, location, entryId: item.id }),
+        [history, location, item.id]
     );
 
     const titleHtml = React.useMemo(
