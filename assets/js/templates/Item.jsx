@@ -331,14 +331,15 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
         // Handle entry becoming/ceasing to be expanded.
         const parent = document.querySelector(`.entry[data-entry-id="${item.id}"]`);
         if (expanded) {
-            if (contentBlock.current.childElementCount === 0) {
+            const firstExpansion = contentBlock.current.childElementCount === 0;
+            if (firstExpansion) {
                 contentBlock.current.innerHTML = item.content;
-            }
 
-            // load images not on mobile devices
-            if (selfoss.isMobile() == false || selfoss.config.loadImagesOnMobile) {
-                setImagesLoaded(true);
-                lazyLoadImages(contentBlock.current);
+                // load images not on mobile devices
+                if (selfoss.isMobile() == false || selfoss.config.loadImagesOnMobile) {
+                    setImagesLoaded(true);
+                    lazyLoadImages(contentBlock.current);
+                }
             }
 
             if (selfoss.isSmartphone()) {
@@ -364,27 +365,36 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
                 let trap = createFocusTrap(parent);
                 setFullScreenTrap(trap);
                 trap.activate();
-                fixLinkBubbling(contentBlock.current);
+
+                if (firstExpansion) {
+                    fixLinkBubbling(contentBlock.current);
+                }
             } else {
-                // setup fancyBox image viewer
-                selfoss.setupFancyBox(contentBlock.current, item.id);
+                if (firstExpansion) {
+                    // setup fancyBox image viewer
+                    selfoss.setupFancyBox(contentBlock.current, item.id);
+                }
 
                 // scroll to article header
                 if (selfoss.config.scrollToArticleHeader) {
                     parent.scrollIntoView();
                 }
 
-                // turn of column view if entry is too long
-                requestAnimationFrame(() => {
-                    // Delayed into next frame so that the entry is expanded when the height is being determined.
-                    if (contentBlock.current.getBoundingClientRect().height > document.body.clientHeight) {
-                        contentBlock.current.parentNode.classList.add('entry-content-nocolumns');
-                    }
-                });
+                if (firstExpansion) {
+                    // turn of column view if entry is too long
+                    requestAnimationFrame(() => {
+                        // Delayed into next frame so that the entry is expanded when the height is being determined.
+                        if (contentBlock.current.getBoundingClientRect().height > document.body.clientHeight) {
+                            contentBlock.current.parentNode.classList.add('entry-content-nocolumns');
+                        }
+                    });
+                }
             }
 
-            // anonymize
-            selfoss.anonymize(contentBlock.current);
+            if (firstExpansion) {
+                // anonymize
+                selfoss.anonymize(contentBlock.current);
+            }
         } else {
             // No longer expanded.
 
