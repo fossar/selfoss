@@ -336,7 +336,7 @@ class Items implements \daos\ItemsInterface {
         }
 
         // set offset
-        if (!isset($params['offset']) || !is_numeric($options['offset'])) {
+        if (!isset($options['offset']) || !is_numeric($options['offset'])) {
             $options['offset'] = 0;
         }
 
