@@ -82,7 +82,7 @@ var selfoss = {
 
         if ('serviceWorker' in navigator) {
             selfoss.windowLoaded.then(function() {
-                navigator.serviceWorker.register('../selfoss-sw-offline.js')
+                navigator.serviceWorker.register(new URL('../selfoss-sw-offline.js', import.meta.url))
                     .then(function(reg) {
                         selfoss.listenWaitingSW(reg, function(reg) {
                             selfoss.app.notifyNewVersion(function() {
