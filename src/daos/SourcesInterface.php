@@ -115,4 +115,18 @@ interface SourcesInterface {
      * @return int id if any record is found
      */
     public function checkIfExists(string $title, string $spout, array $params): int;
+
+    /**
+     * returns raw sources table contents
+     *
+     * @return array<array{error: ?string, filter: string, id: int, lastentry: string, lastupdate: string, params: string, spout: string, tags: string[], title: string}> of all sources
+     */
+    public function getRaw(): array;
+
+    /**
+     * inserts raw data into sources table
+     *
+     * @param array<array{error: ?string, filter: string, id: int, lastentry: string, lastupdate: string, params: string, spout: string, tags: string[], title: string}> $sources
+     */
+    public function insertRaw(array $sources): void;
 }

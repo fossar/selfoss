@@ -685,4 +685,42 @@ class Items implements \daos\ItemsInterface {
             $this->database->commit();
         }
     }
+
+    public function getRaw(): array {
+        $stmt = static::$stmt;
+        $items = $this->database->exec('SELECT * FROM ' . $this->configuration->dbPrefix . 'items');
+
+        /** @var array<array{author: string, content: string, datetime: string, icon: string, id: int, lastseen: string, link: string, shared: int, source: int, starred: bool, thumbnail: ?string, title: string, uid: string, unread: bool, updatetime: string}> */
+        $items = array_map(function($row) {
+            // Use ISO 8601 as export format.
+            $row['datetime'] = $row['datetime']->format(\DateTimeInterface::ATOM);
+            $row['updatetime'] = $row['updatetime']->format(\DateTimeInterface::ATOM);
+            $row['lastseen'] = $row['lastseen']->format(\DateTimeInterface::ATOM);
+
+            return $row;
+        }, $stmt::ensureRowTypes($items, [
+            'id' => DatabaseInterface::PARAM_INT,
+            'datetime' => DatabaseInterface::PARAM_DATETIME,
+            'unread' => DatabaseInterface::PARAM_BOOL,
+            'starred' => DatabaseInterface::PARAM_BOOL,
+            'source' => DatabaseInterface::PARAM_INT,
+            'updatetime' => DatabaseInterface::PARAM_DATETIME,
+            'shared' => DatabaseInterface::PARAM_INT,
+            'lastseen' => DatabaseInterface::PARAM_DATETIME,
+        ]));
+
+        return $items;
+    }
+
+    public function insertRaw(array $items): void {
+        $stmt = static::$stmt;
+        foreach ($items as $item) {
+            // Use ISO 8601 as export format.
+            $item['datetime'] = $stmt::datetime(\DateTime::createFromFormat(\DateTimeInterface::ATOM, $item['datetime']));
+            $item['updatetime'] = $stmt::datetime(\DateTime::createFromFormat(\DateTimeInterface::ATOM, $item['updatetime']));
+            $item['lastseen'] = $stmt::datetime(\DateTime::createFromFormat(\DateTimeInterface::ATOM, $item['lastseen']));
+
+            $this->database->insertRaw($this->configuration->dbPrefix . 'items', ['id', 'datetime', 'title', 'content', 'thumbnail', 'icon', 'unread', 'starred', 'source', 'uid', 'link', 'updatetime', 'author', 'shared', 'lastseen'], $item);
+        }
+    }
 }

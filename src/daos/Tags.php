@@ -64,4 +64,12 @@ class Tags implements TagsInterface {
     public function delete(string $tag): void {
         $this->backend->delete($tag);
     }
+
+    public function getRaw(): array {
+        return $this->backend->getRaw();
+    }
+
+    public function insertRaw(array $items): void {
+        $this->backend->insertRaw($items);
+    }
 }

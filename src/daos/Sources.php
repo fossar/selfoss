@@ -200,4 +200,15 @@ class Sources implements SourcesInterface {
 
         return true;
     }
+
+    public function getRaw(): array {
+        /** @var array<array{error: ?string, filter: string, id: int, lastentry: string, lastupdate: string, params: string, spout: string, tags: string[], title: string}> */
+        $sources = $this->backend->getRaw();
+
+        return $sources;
+    }
+
+    public function insertRaw(array $items): void {
+        $this->backend->insertRaw($items);
+    }
 }

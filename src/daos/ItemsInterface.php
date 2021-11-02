@@ -183,4 +183,18 @@ interface ItemsInterface {
      * @param array<array{id: int, unread?: mixed, starred?: mixed, datetime?: string}> $statuses array of statuses updates
      */
     public function bulkStatusUpdate(array $statuses): void;
+
+    /**
+     * returns raw items table contents
+     *
+     * @return array<array{author: string, content: string, datetime: string, icon: string, id: int, lastseen: string, link: string, shared: int, source: int, starred: bool, thumbnail: ?string, title: string, uid: string, unread: bool, updatetime: string}> of all items
+     */
+    public function getRaw(): array;
+
+    /**
+     * inserts raw data into items table
+     *
+     * @param array<array{author: string, content: string, datetime: string, icon: string, id: int, lastseen: string, link: string, shared: int, source: int, starred: bool, thumbnail: ?string, title: string, uid: string, unread: bool, updatetime: string}> $items
+     */
+    public function insertRaw(array $items): void;
 }

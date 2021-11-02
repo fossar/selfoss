@@ -60,4 +60,24 @@ trait CommonSqlDatabase {
 
         return (int) $version[0]['version'];
     }
+
+    /**
+     * Insert raw table data into given table.
+     *
+     * @param string $table target database table
+     * @param string[] $fields column names
+     * @param array<string, mixed> $data rows to insert
+     */
+    public function insertRaw(string $table, array $fields, array $data): void {
+        $fieldsSql = implode(', ', $fields);
+        $valuesSql = implode(', ', array_map(function($field) {
+            return ":$field";
+        }, $fields));
+        $values = [];
+        foreach ($fields as $field) {
+            $values[":$field"] = $data[$field];
+        }
+
+        $this->exec("insert into $table($fieldsSql) values($valuesSql)", $values);
+    }
 }
