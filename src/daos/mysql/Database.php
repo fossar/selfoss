@@ -2,6 +2,7 @@
 
 namespace daos\mysql;
 
+use daos\CommonSqlDatabase;
 use helpers\Configuration;
 use Monolog\Logger;
 
@@ -13,6 +14,8 @@ use Monolog\Logger;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class Database implements \daos\DatabaseInterface {
+    use CommonSqlDatabase;
+
     /** @var Configuration configuration */
     private $configuration;
 
@@ -271,10 +274,6 @@ class Database implements \daos\DatabaseInterface {
         }
     }
 
-    public function exec($cmds, $args = null) {
-        return $this->connection->exec($cmds, $args);
-    }
-
     /**
      * wrap insert statement to return id
      *
@@ -288,37 +287,6 @@ class Database implements \daos\DatabaseInterface {
         $res = $this->exec('SELECT LAST_INSERT_ID() as lastid');
 
         return (int) $res[0]['lastid'];
-    }
-
-    public function quote($value, $type = \PDO::PARAM_STR) {
-        return $this->connection->quote($value, $type);
-    }
-
-    /**
-     * Begin SQL transaction
-     *
-     * @return bool
-     */
-    public function begin() {
-        return $this->connection->begin();
-    }
-
-    /**
-     * Rollback SQL transaction
-     *
-     * @return bool
-     */
-    public function rollback() {
-        return $this->connection->rollback();
-    }
-
-    /**
-     * Commit SQL transaction
-     *
-     * @return bool
-     */
-    public function commit() {
-        return $this->connection->commit();
     }
 
     /**
