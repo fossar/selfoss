@@ -122,143 +122,143 @@ class Database implements \daos\DatabaseInterface {
                     ALTER TABLE sources ADD tags TEXT;
                 ');
             }
-        } else {
-            $version = @$this->exec('SELECT version FROM version ORDER BY version DESC LIMIT 0, 1');
-            $version = $version[0]['version'];
+        }
 
-            if (strnatcmp($version, '3') < 0) {
-                $this->logger->debug('Upgrading database schema to version 3');
+        $version = @$this->exec('SELECT version FROM version ORDER BY version DESC LIMIT 0, 1');
+        $version = $version[0]['version'];
 
-                $this->exec('
-                    ALTER TABLE sources ADD lastupdate INT;
-                ');
-                $this->exec('
-                    INSERT INTO version (version) VALUES (3);
-                ');
-            }
-            if (strnatcmp($version, '4') < 0) {
-                $this->logger->debug('Upgrading database schema to version 4');
+        if (strnatcmp($version, '3') < 0) {
+            $this->logger->debug('Upgrading database schema to version 3');
 
-                $this->exec('
-                    ALTER TABLE items ADD updatetime DATETIME;
-                ');
-                $this->exec('
-                    CREATE TRIGGER insert_updatetime_trigger
-                    AFTER INSERT ON items FOR EACH ROW
-                        BEGIN
-                            UPDATE items
-                            SET updatetime = CURRENT_TIMESTAMP
-                            WHERE id = NEW.id;
-                        END;
-                ');
-                $this->exec('
-                    CREATE TRIGGER update_updatetime_trigger
+            $this->exec('
+                ALTER TABLE sources ADD lastupdate INT;
+            ');
+            $this->exec('
+                INSERT INTO version (version) VALUES (3);
+            ');
+        }
+        if (strnatcmp($version, '4') < 0) {
+            $this->logger->debug('Upgrading database schema to version 4');
+
+            $this->exec('
+                ALTER TABLE items ADD updatetime DATETIME;
+            ');
+            $this->exec('
+                CREATE TRIGGER insert_updatetime_trigger
+                AFTER INSERT ON items FOR EACH ROW
+                    BEGIN
+                        UPDATE items
+                        SET updatetime = CURRENT_TIMESTAMP
+                        WHERE id = NEW.id;
+                    END;
+            ');
+            $this->exec('
+                CREATE TRIGGER update_updatetime_trigger
+                AFTER UPDATE ON items FOR EACH ROW
+                    BEGIN
+                        UPDATE items
+                        SET updatetime = CURRENT_TIMESTAMP
+                        WHERE id = NEW.id;
+                    END;
+            ');
+            $this->exec('
+                INSERT INTO version (version) VALUES (4);
+            ');
+        }
+        if (strnatcmp($version, '5') < 0) {
+            $this->logger->debug('Upgrading database schema to version 5');
+
+            $this->exec('
+                ALTER TABLE items ADD author VARCHAR(255);
+            ');
+            $this->exec('
+                INSERT INTO version (version) VALUES (5);
+            ');
+        }
+        if (strnatcmp($version, '6') < 0) {
+            $this->logger->debug('Upgrading database schema to version 6');
+
+            $this->exec('
+                ALTER TABLE sources ADD filter TEXT;
+            ');
+            $this->exec('
+                INSERT INTO version (version) VALUES (6);
+            ');
+        }
+        // Jump straight from v6 to v8 due to bug in previous version of the code
+        // in \daos\sqlite\Database which
+        // set the database version to "7" for initial installs.
+        if (strnatcmp($version, '8') < 0) {
+            $this->logger->debug('Upgrading database schema to version 8');
+
+            $this->exec('
+                ALTER TABLE sources ADD lastentry INT;
+            ');
+            $this->exec('
+                INSERT INTO version (version) VALUES (8);
+            ');
+
+            $this->initLastEntryFieldDuringUpgrade();
+        }
+        if (strnatcmp($version, '9') < 0) {
+            $this->logger->debug('Upgrading database schema to version 9');
+
+            $this->exec('
+                ALTER TABLE items ADD shared BOOL;
+            ');
+            $this->exec('
+                INSERT INTO version (version) VALUES (9);
+            ');
+        }
+        if (strnatcmp($version, '11') < 0) {
+            $this->logger->debug('Upgrading database schema to version 11');
+
+            $this->exec([
+                // Table needs to be re-created because ALTER TABLE is rather limited.
+                // https://sqlite.org/lang_altertable.html#otheralter
+                'CREATE TABLE new_items (
+                    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+                    datetime    DATETIME NOT NULL,
+                    title       TEXT NOT NULL,
+                    content     TEXT NOT NULL,
+                    thumbnail   TEXT,
+                    icon        TEXT,
+                    unread      BOOL NOT NULL,
+                    starred     BOOL NOT NULL,
+                    source      INT NOT NULL,
+                    uid         VARCHAR(255) NOT NULL,
+                    link        TEXT NOT NULL,
+                    updatetime  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                    author      VARCHAR(255),
+                    shared      BOOL,
+                    lastseen    DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+                )',
+                'UPDATE items SET updatetime = datetime WHERE updatetime IS NULL',
+                'INSERT INTO new_items SELECT *, CURRENT_TIMESTAMP FROM items',
+                'DROP TABLE items',
+                'ALTER TABLE new_items RENAME TO items',
+                'CREATE INDEX source ON items (source)',
+                'CREATE TRIGGER update_updatetime_trigger
                     AFTER UPDATE ON items FOR EACH ROW
+                        WHEN (
+                            OLD.unread <> NEW.unread OR
+                            OLD.starred <> NEW.starred
+                        )
                         BEGIN
                             UPDATE items
                             SET updatetime = CURRENT_TIMESTAMP
                             WHERE id = NEW.id;
-                        END;
-                ');
-                $this->exec('
-                    INSERT INTO version (version) VALUES (4);
-                ');
-            }
-            if (strnatcmp($version, '5') < 0) {
-                $this->logger->debug('Upgrading database schema to version 5');
+                        END',
+                'INSERT INTO version (version) VALUES (11)',
+            ]);
+        }
+        if (strnatcmp($version, '13') < 0) {
+            $this->logger->debug('Upgrading database schema to version 13');
 
-                $this->exec('
-                    ALTER TABLE items ADD author VARCHAR(255);
-                ');
-                $this->exec('
-                    INSERT INTO version (version) VALUES (5);
-                ');
-            }
-            if (strnatcmp($version, '6') < 0) {
-                $this->logger->debug('Upgrading database schema to version 6');
-
-                $this->exec('
-                    ALTER TABLE sources ADD filter TEXT;
-                ');
-                $this->exec('
-                    INSERT INTO version (version) VALUES (6);
-                ');
-            }
-            // Jump straight from v6 to v8 due to bug in previous version of the code
-            // in \daos\sqlite\Database which
-            // set the database version to "7" for initial installs.
-            if (strnatcmp($version, '8') < 0) {
-                $this->logger->debug('Upgrading database schema to version 8');
-
-                $this->exec('
-                    ALTER TABLE sources ADD lastentry INT;
-                ');
-                $this->exec('
-                    INSERT INTO version (version) VALUES (8);
-                ');
-
-                $this->initLastEntryFieldDuringUpgrade();
-            }
-            if (strnatcmp($version, '9') < 0) {
-                $this->logger->debug('Upgrading database schema to version 9');
-
-                $this->exec('
-                    ALTER TABLE items ADD shared BOOL;
-                ');
-                $this->exec('
-                    INSERT INTO version (version) VALUES (9);
-                ');
-            }
-            if (strnatcmp($version, '11') < 0) {
-                $this->logger->debug('Upgrading database schema to version 11');
-
-                $this->exec([
-                    // Table needs to be re-created because ALTER TABLE is rather limited.
-                    // https://sqlite.org/lang_altertable.html#otheralter
-                    'CREATE TABLE new_items (
-                        id          INTEGER PRIMARY KEY AUTOINCREMENT,
-                        datetime    DATETIME NOT NULL,
-                        title       TEXT NOT NULL,
-                        content     TEXT NOT NULL,
-                        thumbnail   TEXT,
-                        icon        TEXT,
-                        unread      BOOL NOT NULL,
-                        starred     BOOL NOT NULL,
-                        source      INT NOT NULL,
-                        uid         VARCHAR(255) NOT NULL,
-                        link        TEXT NOT NULL,
-                        updatetime  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                        author      VARCHAR(255),
-                        shared      BOOL,
-                        lastseen    DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
-                    )',
-                    'UPDATE items SET updatetime = datetime WHERE updatetime IS NULL',
-                    'INSERT INTO new_items SELECT *, CURRENT_TIMESTAMP FROM items',
-                    'DROP TABLE items',
-                    'ALTER TABLE new_items RENAME TO items',
-                    'CREATE INDEX source ON items (source)',
-                    'CREATE TRIGGER update_updatetime_trigger
-                        AFTER UPDATE ON items FOR EACH ROW
-                            WHEN (
-                                OLD.unread <> NEW.unread OR
-                                OLD.starred <> NEW.starred
-                            )
-                            BEGIN
-                                UPDATE items
-                                SET updatetime = CURRENT_TIMESTAMP
-                                WHERE id = NEW.id;
-                            END',
-                    'INSERT INTO version (version) VALUES (11)',
-                ]);
-            }
-            if (strnatcmp($version, '13') < 0) {
-                $this->logger->debug('Upgrading database schema to version 13');
-
-                $this->exec([
-                    "UPDATE sources SET spout = 'spouts\\rss\\fulltextrss' WHERE spout = 'spouts\\rss\\instapaper'",
-                    'INSERT INTO version (version) VALUES (13)',
-                ]);
-            }
+            $this->exec([
+                "UPDATE sources SET spout = 'spouts\\rss\\fulltextrss' WHERE spout = 'spouts\\rss\\instapaper'",
+                'INSERT INTO version (version) VALUES (13)',
+            ]);
         }
     }
 

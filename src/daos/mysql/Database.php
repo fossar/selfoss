@@ -127,147 +127,147 @@ class Database implements \daos\DatabaseInterface {
                     ALTER TABLE ' . $this->configuration->dbPrefix . 'sources ADD tags TEXT;
                 ');
             }
-        } else {
-            $version = @$this->exec('SELECT version FROM ' . $this->configuration->dbPrefix . 'version ORDER BY version DESC LIMIT 0, 1');
-            $version = $version[0]['version'];
+        }
 
-            if (strnatcmp($version, '3') < 0) {
-                $this->logger->debug('Upgrading database schema to version 3');
+        $version = @$this->exec('SELECT version FROM ' . $this->configuration->dbPrefix . 'version ORDER BY version DESC LIMIT 0, 1');
+        $version = $version[0]['version'];
 
-                $this->exec('
-                    ALTER TABLE ' . $this->configuration->dbPrefix . 'sources ADD lastupdate INT;
-                ');
-                $this->exec('
-                    INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (3);
-                ');
-            }
-            if (strnatcmp($version, '4') < 0) {
-                $this->logger->debug('Upgrading database schema to version 4');
+        if (strnatcmp($version, '3') < 0) {
+            $this->logger->debug('Upgrading database schema to version 3');
 
-                $this->exec('
-                    ALTER TABLE ' . $this->configuration->dbPrefix . 'items ADD updatetime DATETIME;
-                ');
-                $this->exec('
-                    CREATE TRIGGER insert_updatetime_trigger
+            $this->exec('
+                ALTER TABLE ' . $this->configuration->dbPrefix . 'sources ADD lastupdate INT;
+            ');
+            $this->exec('
+                INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (3);
+            ');
+        }
+        if (strnatcmp($version, '4') < 0) {
+            $this->logger->debug('Upgrading database schema to version 4');
+
+            $this->exec('
+                ALTER TABLE ' . $this->configuration->dbPrefix . 'items ADD updatetime DATETIME;
+            ');
+            $this->exec('
+                CREATE TRIGGER insert_updatetime_trigger
+                BEFORE INSERT ON ' . $this->configuration->dbPrefix . 'items FOR EACH ROW
+                    BEGIN
+                        SET NEW.updatetime = NOW();
+                    END;
+            ');
+            $this->exec('
+                CREATE TRIGGER update_updatetime_trigger
+                BEFORE UPDATE ON ' . $this->configuration->dbPrefix . 'items FOR EACH ROW
+                    BEGIN
+                        SET NEW.updatetime = NOW();
+                    END;
+            ');
+            $this->exec('
+                INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (4);
+            ');
+        }
+        if (strnatcmp($version, '5') < 0) {
+            $this->logger->debug('Upgrading database schema to version 5');
+
+            $this->exec('
+                ALTER TABLE ' . $this->configuration->dbPrefix . 'items ADD author VARCHAR(255);
+            ');
+            $this->exec('
+                INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (5);
+            ');
+        }
+        if (strnatcmp($version, '6') < 0) {
+            $this->logger->debug('Upgrading database schema to version 6');
+
+            $this->exec('
+                ALTER TABLE ' . $this->configuration->dbPrefix . 'sources ADD filter TEXT;
+            ');
+            $this->exec('
+                INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (6);
+            ');
+        }
+        // Jump straight from v6 to v8 due to bug in previous version of the code
+        // in \daos\sqlite\Database which
+        // set the database version to "7" for initial installs.
+        if (strnatcmp($version, '8') < 0) {
+            $this->logger->debug('Upgrading database schema to version 8');
+
+            $this->exec('
+                ALTER TABLE ' . $this->configuration->dbPrefix . 'sources ADD lastentry INT;
+            ');
+            $this->exec('
+                INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (8);
+            ');
+        }
+        if (strnatcmp($version, '9') < 0) {
+            $this->logger->debug('Upgrading database schema to version 9');
+
+            $this->exec('
+                ALTER TABLE ' . $this->configuration->dbPrefix . 'items ADD shared BOOL;
+            ');
+            $this->exec('
+                INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (9);
+            ');
+        }
+        if (strnatcmp($version, '10') < 0) {
+            $this->logger->debug('Upgrading database schema to version 10');
+
+            $this->exec([
+                'ALTER TABLE `' . $this->configuration->dbPrefix . 'items` CONVERT TO CHARACTER SET utf8mb4;',
+                'ALTER TABLE `' . $this->configuration->dbPrefix . 'sources` CONVERT TO CHARACTER SET utf8mb4;',
+                'ALTER TABLE `' . $this->configuration->dbPrefix . 'tags` CONVERT TO CHARACTER SET utf8mb4;',
+                'ALTER TABLE `' . $this->configuration->dbPrefix . 'version` CONVERT TO CHARACTER SET utf8mb4;',
+                'INSERT INTO `' . $this->configuration->dbPrefix . 'version` (version) VALUES (10);',
+            ]);
+        }
+        if (strnatcmp($version, '11') < 0) {
+            $this->logger->debug('Upgrading database schema to version 11');
+
+            $this->exec([
+                'DROP TRIGGER insert_updatetime_trigger',
+                'DROP TRIGGER update_updatetime_trigger',
+                'ALTER TABLE ' . $this->configuration->dbPrefix . 'items ADD lastseen DATETIME',
+                'UPDATE ' . $this->configuration->dbPrefix . 'items SET lastseen = CURRENT_TIMESTAMP',
+                // Needs to be a trigger since MySQL before 5.6.5 does not support default value for DATETIME.
+                // https://dev.mysql.com/doc/relnotes/mysql/5.6/en/news-5-6-5.html#mysqld-5-6-5-data-types
+                // Needs to be a single trigger due to MySQL before 5.7.2 not supporting multiple triggers for the same event on the same table.
+                // https://dev.mysql.com/doc/relnotes/mysql/5.7/en/news-5-7-2.html#mysqld-5-7-2-triggers
+                'CREATE TRIGGER ' . $this->configuration->dbPrefix . 'items_insert_trigger
                     BEFORE INSERT ON ' . $this->configuration->dbPrefix . 'items FOR EACH ROW
                         BEGIN
                             SET NEW.updatetime = NOW();
-                        END;
-                ');
-                $this->exec('
-                    CREATE TRIGGER update_updatetime_trigger
-                    BEFORE UPDATE ON ' . $this->configuration->dbPrefix . 'items FOR EACH ROW
-                        BEGIN
-                            SET NEW.updatetime = NOW();
-                        END;
-                ');
-                $this->exec('
-                    INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (4);
-                ');
-            }
-            if (strnatcmp($version, '5') < 0) {
-                $this->logger->debug('Upgrading database schema to version 5');
-
-                $this->exec('
-                    ALTER TABLE ' . $this->configuration->dbPrefix . 'items ADD author VARCHAR(255);
-                ');
-                $this->exec('
-                    INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (5);
-                ');
-            }
-            if (strnatcmp($version, '6') < 0) {
-                $this->logger->debug('Upgrading database schema to version 6');
-
-                $this->exec('
-                    ALTER TABLE ' . $this->configuration->dbPrefix . 'sources ADD filter TEXT;
-                ');
-                $this->exec('
-                    INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (6);
-                ');
-            }
-            // Jump straight from v6 to v8 due to bug in previous version of the code
-            // in \daos\sqlite\Database which
-            // set the database version to "7" for initial installs.
-            if (strnatcmp($version, '8') < 0) {
-                $this->logger->debug('Upgrading database schema to version 8');
-
-                $this->exec('
-                    ALTER TABLE ' . $this->configuration->dbPrefix . 'sources ADD lastentry INT;
-                ');
-                $this->exec('
-                    INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (8);
-                ');
-            }
-            if (strnatcmp($version, '9') < 0) {
-                $this->logger->debug('Upgrading database schema to version 9');
-
-                $this->exec('
-                    ALTER TABLE ' . $this->configuration->dbPrefix . 'items ADD shared BOOL;
-                ');
-                $this->exec('
-                    INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (9);
-                ');
-            }
-            if (strnatcmp($version, '10') < 0) {
-                $this->logger->debug('Upgrading database schema to version 10');
-
-                $this->exec([
-                    'ALTER TABLE `' . $this->configuration->dbPrefix . 'items` CONVERT TO CHARACTER SET utf8mb4;',
-                    'ALTER TABLE `' . $this->configuration->dbPrefix . 'sources` CONVERT TO CHARACTER SET utf8mb4;',
-                    'ALTER TABLE `' . $this->configuration->dbPrefix . 'tags` CONVERT TO CHARACTER SET utf8mb4;',
-                    'ALTER TABLE `' . $this->configuration->dbPrefix . 'version` CONVERT TO CHARACTER SET utf8mb4;',
-                    'INSERT INTO `' . $this->configuration->dbPrefix . 'version` (version) VALUES (10);',
-                ]);
-            }
-            if (strnatcmp($version, '11') < 0) {
-                $this->logger->debug('Upgrading database schema to version 11');
-
-                $this->exec([
-                    'DROP TRIGGER insert_updatetime_trigger',
-                    'DROP TRIGGER update_updatetime_trigger',
-                    'ALTER TABLE ' . $this->configuration->dbPrefix . 'items ADD lastseen DATETIME',
-                    'UPDATE ' . $this->configuration->dbPrefix . 'items SET lastseen = CURRENT_TIMESTAMP',
-                    // Needs to be a trigger since MySQL before 5.6.5 does not support default value for DATETIME.
-                    // https://dev.mysql.com/doc/relnotes/mysql/5.6/en/news-5-6-5.html#mysqld-5-6-5-data-types
-                    // Needs to be a single trigger due to MySQL before 5.7.2 not supporting multiple triggers for the same event on the same table.
-                    // https://dev.mysql.com/doc/relnotes/mysql/5.7/en/news-5-7-2.html#mysqld-5-7-2-triggers
-                    'CREATE TRIGGER ' . $this->configuration->dbPrefix . 'items_insert_trigger
-                        BEFORE INSERT ON ' . $this->configuration->dbPrefix . 'items FOR EACH ROW
-                            BEGIN
-                                SET NEW.updatetime = NOW();
-                                SET NEW.lastseen = NOW();
-                            END;',
-                    'CREATE TRIGGER ' . $this->configuration->dbPrefix . 'items_update_trigger
-                        BEFORE UPDATE ON ' . $this->configuration->dbPrefix . 'items FOR EACH ROW
-                        BEGIN
-                            IF (
-                                OLD.unread <> NEW.unread OR
-                                OLD.starred <> NEW.starred
-                            ) THEN
-                                SET NEW.updatetime = NOW();
-                            END IF;
+                            SET NEW.lastseen = NOW();
                         END;',
-                    'INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (11)',
-                ]);
-            }
-            if (strnatcmp($version, '12') < 0) {
-                $this->logger->debug('Upgrading database schema to version 12');
+                'CREATE TRIGGER ' . $this->configuration->dbPrefix . 'items_update_trigger
+                    BEFORE UPDATE ON ' . $this->configuration->dbPrefix . 'items FOR EACH ROW
+                    BEGIN
+                        IF (
+                            OLD.unread <> NEW.unread OR
+                            OLD.starred <> NEW.starred
+                        ) THEN
+                            SET NEW.updatetime = NOW();
+                        END IF;
+                    END;',
+                'INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (11)',
+            ]);
+        }
+        if (strnatcmp($version, '12') < 0) {
+            $this->logger->debug('Upgrading database schema to version 12');
 
-                $this->exec([
-                    'UPDATE ' . $this->configuration->dbPrefix . 'items SET updatetime = datetime WHERE updatetime IS NULL',
-                    'ALTER TABLE ' . $this->configuration->dbPrefix . 'items MODIFY updatetime DATETIME NOT NULL',
-                    'ALTER TABLE ' . $this->configuration->dbPrefix . 'items MODIFY lastseen DATETIME NOT NULL',
-                    'INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (12)',
-                ]);
-            }
-            if (strnatcmp($version, '13') < 0) {
-                $this->logger->debug('Upgrading database schema to version 13');
+            $this->exec([
+                'UPDATE ' . $this->configuration->dbPrefix . 'items SET updatetime = datetime WHERE updatetime IS NULL',
+                'ALTER TABLE ' . $this->configuration->dbPrefix . 'items MODIFY updatetime DATETIME NOT NULL',
+                'ALTER TABLE ' . $this->configuration->dbPrefix . 'items MODIFY lastseen DATETIME NOT NULL',
+                'INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (12)',
+            ]);
+        }
+        if (strnatcmp($version, '13') < 0) {
+            $this->logger->debug('Upgrading database schema to version 13');
 
-                $this->exec([
-                    'UPDATE ' . $this->configuration->dbPrefix . "sources SET spout = 'spouts\\\\rss\\\\fulltextrss' WHERE spout = 'spouts\\\\rss\\\\instapaper'",
-                    'INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (13)',
-                ]);
-            }
+            $this->exec([
+                'UPDATE ' . $this->configuration->dbPrefix . "sources SET spout = 'spouts\\\\rss\\\\fulltextrss' WHERE spout = 'spouts\\\\rss\\\\instapaper'",
+                'INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (13)',
+            ]);
         }
     }
 

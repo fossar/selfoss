@@ -133,124 +133,123 @@ class Database implements \daos\DatabaseInterface {
                     ALTER TABLE sources ADD COLUMN tags TEXT;
                 ');
             }
-        } else {
-            $version = @$this->exec('SELECT version FROM version ORDER BY version DESC LIMIT 1');
-            $version = $version[0]['version'];
+        }
+        $version = @$this->exec('SELECT version FROM version ORDER BY version DESC LIMIT 1');
+        $version = $version[0]['version'];
 
-            if (strnatcmp($version, '3') < 0) {
-                $this->logger->debug('Upgrading database schema to version 3');
+        if (strnatcmp($version, '3') < 0) {
+            $this->logger->debug('Upgrading database schema to version 3');
 
-                $this->exec('
-                    ALTER TABLE sources ADD lastupdate INT;
-                ');
-                $this->exec('
-                    INSERT INTO version (version) VALUES (3);
-                ');
-            }
-            if (strnatcmp($version, '4') < 0) {
-                $this->logger->debug('Upgrading database schema to version 4');
+            $this->exec('
+                ALTER TABLE sources ADD lastupdate INT;
+            ');
+            $this->exec('
+                INSERT INTO version (version) VALUES (3);
+            ');
+        }
+        if (strnatcmp($version, '4') < 0) {
+            $this->logger->debug('Upgrading database schema to version 4');
 
-                $this->exec('
-                    ALTER TABLE items ADD updatetime TIMESTAMP WITH TIME ZONE;
-                ');
-                $this->exec('
-                    ALTER TABLE items ALTER COLUMN updatetime SET DEFAULT CURRENT_TIMESTAMP;
-                ');
-                $this->exec('
-                    CREATE OR REPLACE FUNCTION update_updatetime_procedure()
-                    RETURNS TRIGGER AS $$
-                        BEGIN
-                            NEW.updatetime = NOW();
-                            RETURN NEW;
-                        END;
-                    $$ LANGUAGE "plpgsql";
-                ');
-                $this->exec('
-                    CREATE TRIGGER update_updatetime_trigger
-                    BEFORE UPDATE ON items FOR EACH ROW EXECUTE PROCEDURE
-                    update_updatetime_procedure();
-                ');
-                $this->exec('
-                    INSERT INTO version (version) VALUES (4);
-                ');
-            }
-            if (strnatcmp($version, '5') < 0) {
-                $this->logger->debug('Upgrading database schema to version 5');
+            $this->exec('
+                ALTER TABLE items ADD updatetime TIMESTAMP WITH TIME ZONE;
+            ');
+            $this->exec('
+                ALTER TABLE items ALTER COLUMN updatetime SET DEFAULT CURRENT_TIMESTAMP;
+            ');
+            $this->exec('
+                CREATE OR REPLACE FUNCTION update_updatetime_procedure()
+                RETURNS TRIGGER AS $$
+                    BEGIN
+                        NEW.updatetime = NOW();
+                        RETURN NEW;
+                    END;
+                $$ LANGUAGE "plpgsql";
+            ');
+            $this->exec('
+                CREATE TRIGGER update_updatetime_trigger
+                BEFORE UPDATE ON items FOR EACH ROW EXECUTE PROCEDURE
+                update_updatetime_procedure();
+            ');
+            $this->exec('
+                INSERT INTO version (version) VALUES (4);
+            ');
+        }
+        if (strnatcmp($version, '5') < 0) {
+            $this->logger->debug('Upgrading database schema to version 5');
 
-                $this->exec([
-                    'ALTER TABLE items ADD author TEXT;',
-                    'INSERT INTO version (version) VALUES (5);',
-                ]);
-            }
-            if (strnatcmp($version, '6') < 0) {
-                $this->logger->debug('Upgrading database schema to version 6');
+            $this->exec([
+                'ALTER TABLE items ADD author TEXT;',
+                'INSERT INTO version (version) VALUES (5);',
+            ]);
+        }
+        if (strnatcmp($version, '6') < 0) {
+            $this->logger->debug('Upgrading database schema to version 6');
 
-                $this->exec([
-                    'ALTER TABLE sources ADD filter TEXT;',
-                    'INSERT INTO version (version) VALUES (6);',
-                ]);
-            }
-            // Jump straight from v6 to v8 due to bug in previous version of the code
-            // in \daos\sqlite\Database which
-            // set the database version to "7" for initial installs.
-            if (strnatcmp($version, '8') < 0) {
-                $this->logger->debug('Upgrading database schema to version 8');
+            $this->exec([
+                'ALTER TABLE sources ADD filter TEXT;',
+                'INSERT INTO version (version) VALUES (6);',
+            ]);
+        }
+        // Jump straight from v6 to v8 due to bug in previous version of the code
+        // in \daos\sqlite\Database which
+        // set the database version to "7" for initial installs.
+        if (strnatcmp($version, '8') < 0) {
+            $this->logger->debug('Upgrading database schema to version 8');
 
-                $this->exec([
-                    'ALTER TABLE sources ADD lastentry INT;',
-                    'INSERT INTO version (version) VALUES (8);',
-                ]);
-            }
-            if (strnatcmp($version, '9') < 0) {
-                $this->logger->debug('Upgrading database schema to version 9');
+            $this->exec([
+                'ALTER TABLE sources ADD lastentry INT;',
+                'INSERT INTO version (version) VALUES (8);',
+            ]);
+        }
+        if (strnatcmp($version, '9') < 0) {
+            $this->logger->debug('Upgrading database schema to version 9');
 
-                $this->exec([
-                    'ALTER TABLE items ADD shared BOOLEAN;',
-                    'INSERT INTO version (version) VALUES (9);',
-                ]);
-            }
-            if (strnatcmp($version, '10') < 0) {
-                $this->logger->debug('Upgrading database schema to version 10');
+            $this->exec([
+                'ALTER TABLE items ADD shared BOOLEAN;',
+                'INSERT INTO version (version) VALUES (9);',
+            ]);
+        }
+        if (strnatcmp($version, '10') < 0) {
+            $this->logger->debug('Upgrading database schema to version 10');
 
-                $this->exec([
-                    'ALTER TABLE items ALTER COLUMN datetime SET DATA TYPE timestamp(0) with time zone;',
-                    'ALTER TABLE items ALTER COLUMN updatetime SET DATA TYPE timestamp(0) with time zone;',
-                    'INSERT INTO version (version) VALUES (10);',
-                ]);
-            }
-            if (strnatcmp($version, '11') < 0) {
-                $this->logger->debug('Upgrading database schema to version 11');
+            $this->exec([
+                'ALTER TABLE items ALTER COLUMN datetime SET DATA TYPE timestamp(0) with time zone;',
+                'ALTER TABLE items ALTER COLUMN updatetime SET DATA TYPE timestamp(0) with time zone;',
+                'INSERT INTO version (version) VALUES (10);',
+            ]);
+        }
+        if (strnatcmp($version, '11') < 0) {
+            $this->logger->debug('Upgrading database schema to version 11');
 
-                $this->exec([
-                    'DROP TRIGGER update_updatetime_trigger ON items',
-                    'ALTER TABLE items ADD lastseen TIMESTAMP(0) WITH TIME ZONE NOT NULL DEFAULT NOW()',
-                    'CREATE TRIGGER update_updatetime_trigger
-                        BEFORE UPDATE ON items FOR EACH ROW
-                        WHEN (
-                            OLD.unread IS DISTINCT FROM NEW.unread OR
-                            OLD.starred IS DISTINCT FROM NEW.starred
-                        )
-                        EXECUTE PROCEDURE update_updatetime_procedure();',
-                    'INSERT INTO version (version) VALUES (11);',
-                ]);
-            }
-            if (strnatcmp($version, '12') < 0) {
-                $this->logger->debug('Upgrading database schema to version 12');
+            $this->exec([
+                'DROP TRIGGER update_updatetime_trigger ON items',
+                'ALTER TABLE items ADD lastseen TIMESTAMP(0) WITH TIME ZONE NOT NULL DEFAULT NOW()',
+                'CREATE TRIGGER update_updatetime_trigger
+                    BEFORE UPDATE ON items FOR EACH ROW
+                    WHEN (
+                        OLD.unread IS DISTINCT FROM NEW.unread OR
+                        OLD.starred IS DISTINCT FROM NEW.starred
+                    )
+                    EXECUTE PROCEDURE update_updatetime_procedure();',
+                'INSERT INTO version (version) VALUES (11);',
+            ]);
+        }
+        if (strnatcmp($version, '12') < 0) {
+            $this->logger->debug('Upgrading database schema to version 12');
 
-                $this->exec([
-                    'UPDATE items SET updatetime = datetime WHERE updatetime IS NULL',
-                    'ALTER TABLE items ALTER COLUMN updatetime SET NOT NULL',
-                    'INSERT INTO version (version) VALUES (12)',
-                ]);
-            }
-            if (strnatcmp($version, '13') < 0) {
-                $this->logger->debug('Upgrading database schema to version 13');
+            $this->exec([
+                'UPDATE items SET updatetime = datetime WHERE updatetime IS NULL',
+                'ALTER TABLE items ALTER COLUMN updatetime SET NOT NULL',
+                'INSERT INTO version (version) VALUES (12)',
+            ]);
+        }
+        if (strnatcmp($version, '13') < 0) {
+            $this->logger->debug('Upgrading database schema to version 13');
 
-                $this->exec([
-                    "UPDATE sources SET spout = 'spouts\\rss\\fulltextrss' WHERE spout = 'spouts\\rss\\instapaper'",
-                    'INSERT INTO version (version) VALUES (13)',
-                ]);
-            }
+            $this->exec([
+                "UPDATE sources SET spout = 'spouts\\rss\\fulltextrss' WHERE spout = 'spouts\\rss\\instapaper'",
+                'INSERT INTO version (version) VALUES (13)',
+            ]);
         }
     }
 
