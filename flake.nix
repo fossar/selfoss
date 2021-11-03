@@ -65,6 +65,10 @@
 
             # Website generator.
             pkgs.zola
+
+            # Database servers for testing.
+            pkgs.mariadb
+            pkgs.postgresql
           ];
 
           # node-gyp wants some locales, let’s make them available through an environment variable.
