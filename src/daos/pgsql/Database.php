@@ -47,6 +47,8 @@ class Database implements \daos\DatabaseInterface {
         }
 
         if (!in_array('items', $tables, true)) {
+            $this->logger->debug('Creating items table');
+
             $this->exec('
                 CREATE TABLE items (
                     id          SERIAL PRIMARY KEY,
@@ -87,6 +89,8 @@ class Database implements \daos\DatabaseInterface {
 
         $isNewestSourcesTable = false;
         if (!in_array('sources', $tables, true)) {
+            $this->logger->debug('Creating sources table');
+
             $this->exec('
                 CREATE TABLE sources (
                     id          SERIAL PRIMARY KEY,
@@ -105,6 +109,8 @@ class Database implements \daos\DatabaseInterface {
 
         // version 1
         if (!in_array('version', $tables, true)) {
+            $this->logger->debug('Upgrading database schema to version 8 from initial state');
+
             $this->exec('
                 CREATE TABLE version (
                     version INTEGER
@@ -132,6 +138,8 @@ class Database implements \daos\DatabaseInterface {
             $version = $version[0]['version'];
 
             if (strnatcmp($version, '3') < 0) {
+                $this->logger->debug('Upgrading database schema to version 3');
+
                 $this->exec('
                     ALTER TABLE sources ADD lastupdate INT;
                 ');
@@ -140,6 +148,8 @@ class Database implements \daos\DatabaseInterface {
                 ');
             }
             if (strnatcmp($version, '4') < 0) {
+                $this->logger->debug('Upgrading database schema to version 4');
+
                 $this->exec('
                     ALTER TABLE items ADD updatetime TIMESTAMP WITH TIME ZONE;
                 ');
@@ -165,12 +175,16 @@ class Database implements \daos\DatabaseInterface {
                 ');
             }
             if (strnatcmp($version, '5') < 0) {
+                $this->logger->debug('Upgrading database schema to version 5');
+
                 $this->exec([
                     'ALTER TABLE items ADD author TEXT;',
                     'INSERT INTO version (version) VALUES (5);',
                 ]);
             }
             if (strnatcmp($version, '6') < 0) {
+                $this->logger->debug('Upgrading database schema to version 6');
+
                 $this->exec([
                     'ALTER TABLE sources ADD filter TEXT;',
                     'INSERT INTO version (version) VALUES (6);',
@@ -180,18 +194,24 @@ class Database implements \daos\DatabaseInterface {
             // in \daos\sqlite\Database which
             // set the database version to "7" for initial installs.
             if (strnatcmp($version, '8') < 0) {
+                $this->logger->debug('Upgrading database schema to version 8');
+
                 $this->exec([
                     'ALTER TABLE sources ADD lastentry INT;',
                     'INSERT INTO version (version) VALUES (8);',
                 ]);
             }
             if (strnatcmp($version, '9') < 0) {
+                $this->logger->debug('Upgrading database schema to version 9');
+
                 $this->exec([
                     'ALTER TABLE items ADD shared BOOLEAN;',
                     'INSERT INTO version (version) VALUES (9);',
                 ]);
             }
             if (strnatcmp($version, '10') < 0) {
+                $this->logger->debug('Upgrading database schema to version 10');
+
                 $this->exec([
                     'ALTER TABLE items ALTER COLUMN datetime SET DATA TYPE timestamp(0) with time zone;',
                     'ALTER TABLE items ALTER COLUMN updatetime SET DATA TYPE timestamp(0) with time zone;',
@@ -199,6 +219,8 @@ class Database implements \daos\DatabaseInterface {
                 ]);
             }
             if (strnatcmp($version, '11') < 0) {
+                $this->logger->debug('Upgrading database schema to version 11');
+
                 $this->exec([
                     'DROP TRIGGER update_updatetime_trigger ON items',
                     'ALTER TABLE items ADD lastseen TIMESTAMP(0) WITH TIME ZONE NOT NULL DEFAULT NOW()',
@@ -213,6 +235,8 @@ class Database implements \daos\DatabaseInterface {
                 ]);
             }
             if (strnatcmp($version, '12') < 0) {
+                $this->logger->debug('Upgrading database schema to version 12');
+
                 $this->exec([
                     'UPDATE items SET updatetime = datetime WHERE updatetime IS NULL',
                     'ALTER TABLE items ALTER COLUMN updatetime SET NOT NULL',
@@ -220,6 +244,8 @@ class Database implements \daos\DatabaseInterface {
                 ]);
             }
             if (strnatcmp($version, '13') < 0) {
+                $this->logger->debug('Upgrading database schema to version 13');
+
                 $this->exec([
                     "UPDATE sources SET spout = 'spouts\\rss\\fulltextrss' WHERE spout = 'spouts\\rss\\instapaper'",
                     'INSERT INTO version (version) VALUES (13)',

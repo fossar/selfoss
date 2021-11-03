@@ -40,6 +40,8 @@ class Database implements \daos\DatabaseInterface {
         }
 
         if (!in_array('items', $tables, true)) {
+            $this->logger->debug('Creating items table');
+
             $this->exec('
                 CREATE TABLE items (
                     id          INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -76,6 +78,8 @@ class Database implements \daos\DatabaseInterface {
 
         $isNewestSourcesTable = false;
         if (!in_array('sources', $tables, true)) {
+            $this->logger->debug('Creating sources table');
+
             $this->exec('
                 CREATE TABLE sources (
                     id          INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -94,6 +98,8 @@ class Database implements \daos\DatabaseInterface {
 
         // version 1
         if (!in_array('version', $tables, true)) {
+            $this->logger->debug('Upgrading database schema to version 8 from initial state');
+
             $this->exec('
                 CREATE TABLE version (
                     version INT
@@ -121,6 +127,8 @@ class Database implements \daos\DatabaseInterface {
             $version = $version[0]['version'];
 
             if (strnatcmp($version, '3') < 0) {
+                $this->logger->debug('Upgrading database schema to version 3');
+
                 $this->exec('
                     ALTER TABLE sources ADD lastupdate INT;
                 ');
@@ -129,6 +137,8 @@ class Database implements \daos\DatabaseInterface {
                 ');
             }
             if (strnatcmp($version, '4') < 0) {
+                $this->logger->debug('Upgrading database schema to version 4');
+
                 $this->exec('
                     ALTER TABLE items ADD updatetime DATETIME;
                 ');
@@ -155,6 +165,8 @@ class Database implements \daos\DatabaseInterface {
                 ');
             }
             if (strnatcmp($version, '5') < 0) {
+                $this->logger->debug('Upgrading database schema to version 5');
+
                 $this->exec('
                     ALTER TABLE items ADD author VARCHAR(255);
                 ');
@@ -163,6 +175,8 @@ class Database implements \daos\DatabaseInterface {
                 ');
             }
             if (strnatcmp($version, '6') < 0) {
+                $this->logger->debug('Upgrading database schema to version 6');
+
                 $this->exec('
                     ALTER TABLE sources ADD filter TEXT;
                 ');
@@ -174,6 +188,8 @@ class Database implements \daos\DatabaseInterface {
             // in \daos\sqlite\Database which
             // set the database version to "7" for initial installs.
             if (strnatcmp($version, '8') < 0) {
+                $this->logger->debug('Upgrading database schema to version 8');
+
                 $this->exec('
                     ALTER TABLE sources ADD lastentry INT;
                 ');
@@ -184,6 +200,8 @@ class Database implements \daos\DatabaseInterface {
                 $this->initLastEntryFieldDuringUpgrade();
             }
             if (strnatcmp($version, '9') < 0) {
+                $this->logger->debug('Upgrading database schema to version 9');
+
                 $this->exec('
                     ALTER TABLE items ADD shared BOOL;
                 ');
@@ -192,6 +210,8 @@ class Database implements \daos\DatabaseInterface {
                 ');
             }
             if (strnatcmp($version, '11') < 0) {
+                $this->logger->debug('Upgrading database schema to version 11');
+
                 $this->exec([
                     // Table needs to be re-created because ALTER TABLE is rather limited.
                     // https://sqlite.org/lang_altertable.html#otheralter
@@ -232,6 +252,8 @@ class Database implements \daos\DatabaseInterface {
                 ]);
             }
             if (strnatcmp($version, '13') < 0) {
+                $this->logger->debug('Upgrading database schema to version 13');
+
                 $this->exec([
                     "UPDATE sources SET spout = 'spouts\\rss\\fulltextrss' WHERE spout = 'spouts\\rss\\instapaper'",
                     'INSERT INTO version (version) VALUES (13)',

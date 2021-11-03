@@ -45,6 +45,8 @@ class Database implements \daos\DatabaseInterface {
         }
 
         if (!in_array($this->configuration->dbPrefix . 'items', $tables, true)) {
+            $this->logger->debug('Creating items table');
+
             $this->exec('
                 CREATE TABLE ' . $this->configuration->dbPrefix . 'items (
                     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
@@ -81,6 +83,8 @@ class Database implements \daos\DatabaseInterface {
 
         $isNewestSourcesTable = false;
         if (!in_array($this->configuration->dbPrefix . 'sources', $tables, true)) {
+            $this->logger->debug('Creating sources table');
+
             $this->exec('
                 CREATE TABLE ' . $this->configuration->dbPrefix . 'sources (
                     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
@@ -99,6 +103,8 @@ class Database implements \daos\DatabaseInterface {
 
         // version 1 or new
         if (!in_array($this->configuration->dbPrefix . 'version', $tables, true)) {
+            $this->logger->debug('Upgrading database schema to version 8 from initial state');
+
             $this->exec('
                 CREATE TABLE ' . $this->configuration->dbPrefix . 'version (
                     version INT
@@ -126,6 +132,8 @@ class Database implements \daos\DatabaseInterface {
             $version = $version[0]['version'];
 
             if (strnatcmp($version, '3') < 0) {
+                $this->logger->debug('Upgrading database schema to version 3');
+
                 $this->exec('
                     ALTER TABLE ' . $this->configuration->dbPrefix . 'sources ADD lastupdate INT;
                 ');
@@ -134,6 +142,8 @@ class Database implements \daos\DatabaseInterface {
                 ');
             }
             if (strnatcmp($version, '4') < 0) {
+                $this->logger->debug('Upgrading database schema to version 4');
+
                 $this->exec('
                     ALTER TABLE ' . $this->configuration->dbPrefix . 'items ADD updatetime DATETIME;
                 ');
@@ -156,6 +166,8 @@ class Database implements \daos\DatabaseInterface {
                 ');
             }
             if (strnatcmp($version, '5') < 0) {
+                $this->logger->debug('Upgrading database schema to version 5');
+
                 $this->exec('
                     ALTER TABLE ' . $this->configuration->dbPrefix . 'items ADD author VARCHAR(255);
                 ');
@@ -164,6 +176,8 @@ class Database implements \daos\DatabaseInterface {
                 ');
             }
             if (strnatcmp($version, '6') < 0) {
+                $this->logger->debug('Upgrading database schema to version 6');
+
                 $this->exec('
                     ALTER TABLE ' . $this->configuration->dbPrefix . 'sources ADD filter TEXT;
                 ');
@@ -175,6 +189,8 @@ class Database implements \daos\DatabaseInterface {
             // in \daos\sqlite\Database which
             // set the database version to "7" for initial installs.
             if (strnatcmp($version, '8') < 0) {
+                $this->logger->debug('Upgrading database schema to version 8');
+
                 $this->exec('
                     ALTER TABLE ' . $this->configuration->dbPrefix . 'sources ADD lastentry INT;
                 ');
@@ -183,6 +199,8 @@ class Database implements \daos\DatabaseInterface {
                 ');
             }
             if (strnatcmp($version, '9') < 0) {
+                $this->logger->debug('Upgrading database schema to version 9');
+
                 $this->exec('
                     ALTER TABLE ' . $this->configuration->dbPrefix . 'items ADD shared BOOL;
                 ');
@@ -191,6 +209,8 @@ class Database implements \daos\DatabaseInterface {
                 ');
             }
             if (strnatcmp($version, '10') < 0) {
+                $this->logger->debug('Upgrading database schema to version 10');
+
                 $this->exec([
                     'ALTER TABLE `' . $this->configuration->dbPrefix . 'items` CONVERT TO CHARACTER SET utf8mb4;',
                     'ALTER TABLE `' . $this->configuration->dbPrefix . 'sources` CONVERT TO CHARACTER SET utf8mb4;',
@@ -200,6 +220,8 @@ class Database implements \daos\DatabaseInterface {
                 ]);
             }
             if (strnatcmp($version, '11') < 0) {
+                $this->logger->debug('Upgrading database schema to version 11');
+
                 $this->exec([
                     'DROP TRIGGER insert_updatetime_trigger',
                     'DROP TRIGGER update_updatetime_trigger',
@@ -229,6 +251,8 @@ class Database implements \daos\DatabaseInterface {
                 ]);
             }
             if (strnatcmp($version, '12') < 0) {
+                $this->logger->debug('Upgrading database schema to version 12');
+
                 $this->exec([
                     'UPDATE ' . $this->configuration->dbPrefix . 'items SET updatetime = datetime WHERE updatetime IS NULL',
                     'ALTER TABLE ' . $this->configuration->dbPrefix . 'items MODIFY updatetime DATETIME NOT NULL',
@@ -237,6 +261,8 @@ class Database implements \daos\DatabaseInterface {
                 ]);
             }
             if (strnatcmp($version, '13') < 0) {
+                $this->logger->debug('Upgrading database schema to version 13');
+
                 $this->exec([
                     'UPDATE ' . $this->configuration->dbPrefix . "sources SET spout = 'spouts\\\\rss\\\\fulltextrss' WHERE spout = 'spouts\\\\rss\\\\instapaper'",
                     'INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (13)',
