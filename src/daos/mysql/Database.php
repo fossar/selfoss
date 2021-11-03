@@ -132,10 +132,9 @@ class Database implements \daos\DatabaseInterface {
             }
         }
 
-        $version = @$this->exec('SELECT version FROM ' . $this->configuration->dbPrefix . 'version ORDER BY version DESC LIMIT 0, 1');
-        $version = $version[0]['version'];
+        $version = $this->getSchemaVersion();
 
-        if (strnatcmp($version, '3') < 0) {
+        if ($version < 3) {
             $this->logger->debug('Upgrading database schema to version 3');
 
             $this->exec('
@@ -145,7 +144,7 @@ class Database implements \daos\DatabaseInterface {
                 INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (3);
             ');
         }
-        if (strnatcmp($version, '4') < 0) {
+        if ($version < 4) {
             $this->logger->debug('Upgrading database schema to version 4');
 
             $this->exec('
@@ -169,7 +168,7 @@ class Database implements \daos\DatabaseInterface {
                 INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (4);
             ');
         }
-        if (strnatcmp($version, '5') < 0) {
+        if ($version < 5) {
             $this->logger->debug('Upgrading database schema to version 5');
 
             $this->exec('
@@ -179,7 +178,7 @@ class Database implements \daos\DatabaseInterface {
                 INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (5);
             ');
         }
-        if (strnatcmp($version, '6') < 0) {
+        if ($version < 6) {
             $this->logger->debug('Upgrading database schema to version 6');
 
             $this->exec('
@@ -192,7 +191,7 @@ class Database implements \daos\DatabaseInterface {
         // Jump straight from v6 to v8 due to bug in previous version of the code
         // in \daos\sqlite\Database which
         // set the database version to "7" for initial installs.
-        if (strnatcmp($version, '8') < 0) {
+        if ($version < 8) {
             $this->logger->debug('Upgrading database schema to version 8');
 
             $this->exec('
@@ -202,7 +201,7 @@ class Database implements \daos\DatabaseInterface {
                 INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (8);
             ');
         }
-        if (strnatcmp($version, '9') < 0) {
+        if ($version < 9) {
             $this->logger->debug('Upgrading database schema to version 9');
 
             $this->exec('
@@ -212,7 +211,7 @@ class Database implements \daos\DatabaseInterface {
                 INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (9);
             ');
         }
-        if (strnatcmp($version, '10') < 0) {
+        if ($version < 10) {
             $this->logger->debug('Upgrading database schema to version 10');
 
             $this->exec([
@@ -223,7 +222,7 @@ class Database implements \daos\DatabaseInterface {
                 'INSERT INTO `' . $this->configuration->dbPrefix . 'version` (version) VALUES (10);',
             ]);
         }
-        if (strnatcmp($version, '11') < 0) {
+        if ($version < 11) {
             $this->logger->debug('Upgrading database schema to version 11');
 
             $this->exec([
@@ -254,7 +253,7 @@ class Database implements \daos\DatabaseInterface {
                 'INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (11)',
             ]);
         }
-        if (strnatcmp($version, '12') < 0) {
+        if ($version < 12) {
             $this->logger->debug('Upgrading database schema to version 12');
 
             $this->exec([
@@ -264,7 +263,7 @@ class Database implements \daos\DatabaseInterface {
                 'INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (12)',
             ]);
         }
-        if (strnatcmp($version, '13') < 0) {
+        if ($version < 13) {
             $this->logger->debug('Upgrading database schema to version 13');
 
             $this->exec([

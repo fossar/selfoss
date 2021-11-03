@@ -63,4 +63,11 @@ interface DatabaseInterface {
      * @return void
      */
     public function optimize();
+
+    /**
+     * Get the current version database schema.
+     *
+     * @return int
+     */
+    public function getSchemaVersion();
 }
