@@ -25,13 +25,13 @@ class Items implements \daos\ItemsInterface {
     /** @var Configuration configuration */
     private $configuration;
 
-    /** @var \daos\Database database connection */
+    /** @var DatabaseInterface database connection */
     protected $database;
 
     /** @var Logger */
     private $logger;
 
-    public function __construct(Logger $logger, Configuration $configuration, \daos\Database $database) {
+    public function __construct(Logger $logger, Configuration $configuration, DatabaseInterface $database) {
         $this->configuration = $configuration;
         $this->database = $database;
         $this->logger = $logger;

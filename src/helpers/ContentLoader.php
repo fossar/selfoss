@@ -15,7 +15,7 @@ class ContentLoader {
     /** @var Configuration configuration */
     private $configuration;
 
-    /** @var \daos\Database database for optimization */
+    /** @var \daos\DatabaseInterface database for optimization */
     private $database;
 
     /** @var IconStore icon store */
@@ -48,7 +48,7 @@ class ContentLoader {
     /**
      * ctor
      */
-    public function __construct(Configuration $configuration, \daos\Database $database, IconStore $iconStore, Image $imageHelper, \daos\Items $itemsDao, Logger $logger, \daos\Sources $sourcesDao, SpoutLoader $spoutLoader, ThumbnailStore $thumbnailStore, WebClient $webClient) {
+    public function __construct(Configuration $configuration, \daos\DatabaseInterface $database, IconStore $iconStore, Image $imageHelper, \daos\Items $itemsDao, Logger $logger, \daos\Sources $sourcesDao, SpoutLoader $spoutLoader, ThumbnailStore $thumbnailStore, WebClient $webClient) {
         $this->configuration = $configuration;
         $this->database = $database;
         $this->iconStore = $iconStore;

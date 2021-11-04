@@ -19,10 +19,10 @@ class Sources implements \daos\SourcesInterface {
     /** @var Configuration configuration */
     private $configuration;
 
-    /** @var \daos\Database database connection */
+    /** @var DatabaseInterface database connection */
     protected $database;
 
-    public function __construct(Configuration $configuration, \daos\Database $database) {
+    public function __construct(Configuration $configuration, DatabaseInterface $database) {
         $this->configuration = $configuration;
         $this->database = $database;
     }

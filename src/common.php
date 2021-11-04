@@ -73,7 +73,6 @@ $shared = array_merge($substitutions, [
 $dice->addRule(helpers\Authentication::class, $shared);
 
 // Database bridges
-$dice->addRule(daos\Database::class, $shared);
 $dice->addRule(daos\Items::class, $shared);
 $dice->addRule(daos\Sources::class, $shared);
 $dice->addRule(daos\Tags::class, $shared);
