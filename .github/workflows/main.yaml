@@ -17,6 +17,9 @@ jobs:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
+        # Other backends run only for single PHP version to reduce the CI costs.
+        storage:
+          - 'sqlite'
         php:
           - '8.0'
           - '7.4'
@@ -29,7 +32,11 @@ jobs:
           - php: '7.0'
             cs_fixer: true
             lint_js: true
-    name: 'Check with PHP ${{ matrix.php }}'
+          - php: '8.0'
+            storage: mysql
+          - php: '8.0'
+            storage: postgresql
+    name: 'Check with PHP ${{ matrix.php }} and ${{ matrix.storage }} storage backend'
     steps:
       - uses: actions/checkout@v2
 
@@ -43,7 +50,9 @@ jobs:
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
 
       - name: Update flake.nix to match the current CI job from matrix
-        run: sed -i 's/matrix.phpPackage = "php";/matrix.phpPackage = builtins.replaceStrings ["."] [""] "php${{ matrix.php }}";/' flake.nix
+        run: |
+          sed -i 's/matrix.phpPackage = "php";/matrix.phpPackage = builtins.replaceStrings ["."] [""] "php${{ matrix.php }}";/' flake.nix
+          sed -i 's/matrix.storage = "all";/matrix.storage = "${{ matrix.storage }}";/' flake.nix
 
       - name: Cache Node modules
         uses: actions/cache@v2
@@ -87,7 +96,7 @@ jobs:
         run: nix-shell --run 'npm run test:server'
 
       - name: Run integration tests
-        run: nix-shell --run 'npm run test:integration'
+        run: SELFOSS_TEST_STORAGE_BACKEND=${{ matrix.storage }} nix-shell --run 'npm run test:integration'
 
   deploy:
     name: 'Upload artefacts'

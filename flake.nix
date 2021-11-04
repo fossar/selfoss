@@ -23,6 +23,9 @@
 
       # By default, we use the default PHP version from Nixpkgs.
       matrix.phpPackage = "php";
+
+      # We install all storage backends by default.
+      matrix.storage = "all";
     in
     # For each supported platform,
     utils.lib.eachDefaultSystem (system:
@@ -41,6 +44,14 @@
           bcrypt
           requests
         ]);
+
+        # Database servers for testing.
+        dbServers = {
+          mysql = [ pkgs.mariadb ];
+          postgresql = [ pkgs.postgresql ];
+          sqlite = [ ];
+          all = builtins.concatLists (builtins.attrValues (builtins.removeAttrs dbServers [ "all" ]));
+        };
       in
       {
         # Expose shell environment for development.
@@ -65,11 +76,7 @@
 
             # Website generator.
             pkgs.zola
-
-            # Database servers for testing.
-            pkgs.mariadb
-            pkgs.postgresql
-          ];
+          ] ++ dbServers.${matrix.storage};
 
           # node-gyp wants some locales, let’s make them available through an environment variable.
           LOCALE_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
