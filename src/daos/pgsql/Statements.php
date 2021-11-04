@@ -2,6 +2,8 @@
 
 namespace daos\pgsql;
 
+use daos\DatabaseInterface;
+
 /**
  * PostgreSQL specific statements
  *
@@ -89,14 +91,14 @@ class Statements extends \daos\mysql\Statements {
                 if (array_key_exists($columnIndex, $row)) {
                     switch ($type) {
                         // pgsql returns correct PHP types for INT and BOOL
-                        case \daos\PARAM_CSV:
+                        case DatabaseInterface::PARAM_CSV:
                             if ($row[$columnIndex] === '') {
                                 $value = [];
                             } else {
                                 $value = explode(',', $row[$columnIndex]);
                             }
                             break;
-                        case \daos\PARAM_DATETIME:
+                        case DatabaseInterface::PARAM_DATETIME:
                             if (empty($row[$columnIndex])) {
                                 $value = null;
                             } else {

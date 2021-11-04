@@ -2,6 +2,8 @@
 
 namespace daos\mysql;
 
+use daos\DatabaseInterface;
+
 /**
  * MySQL specific statements
  *
@@ -163,24 +165,24 @@ class Statements implements \daos\StatementsInterface {
             foreach ($expectedRowTypes as $columnIndex => $type) {
                 if (array_key_exists($columnIndex, $row)) {
                     switch ($type) {
-                        case \daos\PARAM_INT:
+                        case DatabaseInterface::PARAM_INT:
                             $value = (int) $row[$columnIndex];
                             break;
-                        case \daos\PARAM_BOOL:
+                        case DatabaseInterface::PARAM_BOOL:
                             if ($row[$columnIndex] === '1') {
                                 $value = true;
                             } else {
                                 $value = false;
                             }
                             break;
-                        case \daos\PARAM_CSV:
+                        case DatabaseInterface::PARAM_CSV:
                             if ($row[$columnIndex] === '') {
                                 $value = [];
                             } else {
                                 $value = explode(',', $row[$columnIndex]);
                             }
                             break;
-                        case \daos\PARAM_DATETIME:
+                        case DatabaseInterface::PARAM_DATETIME:
                             if (empty($row[$columnIndex])) {
                                 $value = null;
                             } else {

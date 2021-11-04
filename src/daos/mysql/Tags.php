@@ -2,6 +2,7 @@
 
 namespace daos\mysql;
 
+use daos\DatabaseInterface;
 use helpers\Configuration;
 
 /**
@@ -104,7 +105,7 @@ class Tags implements \daos\TagsInterface {
                    GROUP BY tags.tag, tags.color
                    ORDER BY LOWER(tags.tag);';
 
-        return $stmt::ensureRowTypes($this->database->exec($select), ['unread' => \daos\PARAM_INT]);
+        return $stmt::ensureRowTypes($this->database->exec($select), ['unread' => DatabaseInterface::PARAM_INT]);
     }
 
     /**

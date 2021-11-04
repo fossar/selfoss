@@ -2,6 +2,7 @@
 
 namespace daos\mysql;
 
+use daos\DatabaseInterface;
 use DateTime;
 use helpers\Configuration;
 use Monolog\Logger;
@@ -374,13 +375,13 @@ class Items implements \daos\ItemsInterface {
         }
 
         return $stmt::ensureRowTypes($this->database->exec($query, $params), [
-            'id' => \daos\PARAM_INT,
-            'datetime' => \daos\PARAM_DATETIME,
-            'unread' => \daos\PARAM_BOOL,
-            'starred' => \daos\PARAM_BOOL,
-            'source' => \daos\PARAM_INT,
-            'tags' => \daos\PARAM_CSV,
-            'updatetime' => \daos\PARAM_DATETIME,
+            'id' => DatabaseInterface::PARAM_INT,
+            'datetime' => DatabaseInterface::PARAM_DATETIME,
+            'unread' => DatabaseInterface::PARAM_BOOL,
+            'starred' => DatabaseInterface::PARAM_BOOL,
+            'source' => DatabaseInterface::PARAM_INT,
+            'tags' => DatabaseInterface::PARAM_CSV,
+            'updatetime' => DatabaseInterface::PARAM_DATETIME,
         ]);
     }
 
@@ -426,13 +427,13 @@ class Items implements \daos\ItemsInterface {
         ];
 
         return $stmt::ensureRowTypes($this->database->exec($query, $params), [
-            'id' => \daos\PARAM_INT,
-            'datetime' => \daos\PARAM_DATETIME,
-            'unread' => \daos\PARAM_BOOL,
-            'starred' => \daos\PARAM_BOOL,
-            'source' => \daos\PARAM_INT,
-            'tags' => \daos\PARAM_CSV,
-            'updatetime' => \daos\PARAM_DATETIME,
+            'id' => DatabaseInterface::PARAM_INT,
+            'datetime' => DatabaseInterface::PARAM_DATETIME,
+            'unread' => DatabaseInterface::PARAM_BOOL,
+            'starred' => DatabaseInterface::PARAM_BOOL,
+            'source' => DatabaseInterface::PARAM_INT,
+            'tags' => DatabaseInterface::PARAM_CSV,
+            'updatetime' => DatabaseInterface::PARAM_DATETIME,
         ]);
     }
 
@@ -449,7 +450,7 @@ class Items implements \daos\ItemsInterface {
                  WHERE ' . $stmt::isTrue('unread') .
                     ' OR ' . $stmt::isTrue('starred') .
                 ' ORDER BY id LIMIT 1'),
-            ['id' => \daos\PARAM_INT]
+            ['id' => DatabaseInterface::PARAM_INT]
         );
         if ($lowest) {
             return $lowest[0]['id'];
@@ -469,7 +470,7 @@ class Items implements \daos\ItemsInterface {
             $this->database->exec(
                 'SELECT id FROM ' . $this->configuration->dbPrefix . 'items AS items
                  ORDER BY id DESC LIMIT 1'),
-            ['id' => \daos\PARAM_INT]
+            ['id' => DatabaseInterface::PARAM_INT]
         );
         if ($lastId) {
             return $lastId[0]['id'];
@@ -605,9 +606,9 @@ class Items implements \daos\ItemsInterface {
             ' . $stmt::sumBool('starred') . ' AS starred
             FROM ' . $this->configuration->dbPrefix . 'items;');
         $res = $stmt::ensureRowTypes($res, [
-            'total' => \daos\PARAM_INT,
-            'unread' => \daos\PARAM_INT,
-            'starred' => \daos\PARAM_INT,
+            'total' => DatabaseInterface::PARAM_INT,
+            'unread' => DatabaseInterface::PARAM_INT,
+            'starred' => DatabaseInterface::PARAM_INT,
         ]);
 
         return $res[0];
@@ -640,9 +641,9 @@ class Items implements \daos\ItemsInterface {
             WHERE ' . $this->configuration->dbPrefix . 'items.updatetime > :since;',
                 [':since' => [$since->format('Y-m-d H:i:s'), \PDO::PARAM_STR]]);
         $res = $stmt::ensureRowTypes($res, [
-            'id' => \daos\PARAM_INT,
-            'unread' => \daos\PARAM_BOOL,
-            'starred' => \daos\PARAM_BOOL,
+            'id' => DatabaseInterface::PARAM_INT,
+            'unread' => DatabaseInterface::PARAM_BOOL,
+            'starred' => DatabaseInterface::PARAM_BOOL,
         ]);
 
         return $res;

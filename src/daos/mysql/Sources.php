@@ -2,6 +2,7 @@
 
 namespace daos\mysql;
 
+use daos\DatabaseInterface;
 use helpers\Configuration;
 
 /**
@@ -160,7 +161,7 @@ class Sources implements \daos\SourcesInterface {
         // select source by id if specified or return all sources
         if (isset($id)) {
             $ret = $this->database->exec('SELECT id, title, tags, spout, params, filter, error, lastupdate, lastentry FROM ' . $this->configuration->dbPrefix . 'sources WHERE id=:id', [':id' => $id]);
-            $ret = $stmt::ensureRowTypes($ret, ['id' => \daos\PARAM_INT]);
+            $ret = $stmt::ensureRowTypes($ret, ['id' => DatabaseInterface::PARAM_INT]);
             if (isset($ret[0])) {
                 $ret = $ret[0];
             } else {
@@ -169,8 +170,8 @@ class Sources implements \daos\SourcesInterface {
         } else {
             $ret = $this->database->exec('SELECT id, title, tags, spout, params, filter, error, lastupdate, lastentry FROM ' . $this->configuration->dbPrefix . 'sources ORDER BY error DESC, lower(title) ASC');
             $ret = $stmt::ensureRowTypes($ret, [
-                'id' => \daos\PARAM_INT,
-                'tags' => \daos\PARAM_CSV,
+                'id' => DatabaseInterface::PARAM_INT,
+                'tags' => DatabaseInterface::PARAM_CSV,
             ]);
         }
 
@@ -193,8 +194,8 @@ class Sources implements \daos\SourcesInterface {
             ORDER BY lower(sources.title) ASC');
 
         return $stmt::ensureRowTypes($ret, [
-            'id' => \daos\PARAM_INT,
-            'unread' => \daos\PARAM_INT,
+            'id' => DatabaseInterface::PARAM_INT,
+            'unread' => DatabaseInterface::PARAM_INT,
         ]);
     }
 
@@ -223,8 +224,8 @@ class Sources implements \daos\SourcesInterface {
             ORDER BY ' . $stmt::nullFirst('sources.error', 'DESC') . ', lower(sources.title)');
 
         return $stmt::ensureRowTypes($ret, [
-            'id' => \daos\PARAM_INT,
-            'tags' => \daos\PARAM_CSV,
+            'id' => DatabaseInterface::PARAM_INT,
+            'tags' => DatabaseInterface::PARAM_CSV,
         ]);
     }
 
