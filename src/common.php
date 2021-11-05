@@ -142,6 +142,8 @@ if ($configuration->dbType === 'sqlite') {
         $configuration->dbUsername,
         $configuration->dbPassword,
     ];
+} else {
+    throw new Exception('Unsupported value for db_type option: ' . $configuration->dbType);
 }
 
 $sqlParams = array_merge($shared, [
