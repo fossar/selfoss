@@ -44,14 +44,14 @@ export default function NavFilters({
             <Collapse isOpen={expanded} className="collapse-css-transition">
                 <ul id="nav-filter" aria-labelledby="nav-filter-title">
                     <li>
-                        <Link id="nav-filter-newest" to={makeEntriesLink(location, { filter: FilterType.NEWEST })} className={classNames({'nav-filter-newest': true, active: params.filter === FilterType.NEWEST})} onClick={collapseNav}>
+                        <Link id="nav-filter-newest" to={makeEntriesLink(location, { filter: FilterType.NEWEST, id: null })} className={classNames({'nav-filter-newest': true, active: params.filter === FilterType.NEWEST})} onClick={collapseNav}>
                             {_('newest')}
                             <span className={classNames({'offline-count': true, offline: offlineState, online: !offlineState, diff: allItemsCount !== allItemsOfflineCount && allItemsOfflineCount})} title={_('offline_count')}>{allItemsOfflineCount > 0 ? allItemsOfflineCount : ''}</span>
                             <span className="count" title={_('online_count')}>{allItemsCount > 0 ? allItemsCount : ''}</span>
                         </Link>
                     </li>
                     <li>
-                        <Link id="nav-filter-unread" to={makeEntriesLink(location, { filter: FilterType.UNREAD })} className={classNames({'nav-filter-unread': true, active: params.filter === FilterType.UNREAD})} onClick={collapseNav}>
+                        <Link id="nav-filter-unread" to={makeEntriesLink(location, { filter: FilterType.UNREAD, id: null })} className={classNames({'nav-filter-unread': true, active: params.filter === FilterType.UNREAD})} onClick={collapseNav}>
                             {_('unread')}
                             <span className={classNames({'unread-count': true, offline: offlineState, online: !offlineState, unread: unreadItemsCount > 0})}>
                                 <span className={classNames({'offline-count': true, offline: offlineState, online: !offlineState, diff: unreadItemsCount !== unreadItemsOfflineCount && unreadItemsOfflineCount})} title={_('offline_count')}>{unreadItemsOfflineCount > 0 ? unreadItemsOfflineCount : ''}</span>
@@ -60,7 +60,7 @@ export default function NavFilters({
                         </Link>
                     </li>
                     <li>
-                        <Link id="nav-filter-starred" to={makeEntriesLink(location, { filter: FilterType.STARRED })} className={classNames({'nav-filter-starred': true, active: params.filter === FilterType.STARRED})} onClick={collapseNav}>
+                        <Link id="nav-filter-starred" to={makeEntriesLink(location, { filter: FilterType.STARRED, id: null })} className={classNames({'nav-filter-starred': true, active: params.filter === FilterType.STARRED})} onClick={collapseNav}>
                             {_('starred')}
                             <span className={classNames({'offline-count': true, offline: offlineState, online: !offlineState, diff: starredItemsCount !== starredItemsOfflineCount && starredItemsOfflineCount})} title={_('offline_count')}>{starredItemsOfflineCount > 0 ? starredItemsOfflineCount : ''}</span>
                             <span className="count" title={_('online_count')}>{starredItemsCount > 0 ? starredItemsCount : ''}</span>
