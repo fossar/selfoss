@@ -846,16 +846,16 @@
         },
         {
             "name": "j0k3r/graby-site-config",
-            "version": "1.0.138",
+            "version": "1.0.139",
             "source": {
                 "type": "git",
                 "url": "https://github.com/j0k3r/graby-site-config.git",
-                "reference": "97c692d8ca2b96410fcbf37474f0c3bd329dca55"
+                "reference": "0cc5a06ec5e388e8c88dbfbeb399ce40ac2c6fe5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/j0k3r/graby-site-config/zipball/97c692d8ca2b96410fcbf37474f0c3bd329dca55",
-                "reference": "97c692d8ca2b96410fcbf37474f0c3bd329dca55",
+                "url": "https://api.github.com/repos/j0k3r/graby-site-config/zipball/0cc5a06ec5e388e8c88dbfbeb399ce40ac2c6fe5",
+                "reference": "0cc5a06ec5e388e8c88dbfbeb399ce40ac2c6fe5",
                 "shasum": ""
             },
             "require": {
@@ -884,9 +884,9 @@
             "description": "Graby site config files",
             "support": {
                 "issues": "https://github.com/j0k3r/graby-site-config/issues",
-                "source": "https://github.com/j0k3r/graby-site-config/tree/1.0.138"
+                "source": "https://github.com/j0k3r/graby-site-config/tree/1.0.139"
             },
-            "time": "2021-11-02T09:57:18+00:00"
+            "time": "2021-11-15T07:47:52+00:00"
         },
         {
             "name": "j0k3r/httplug-ssrf-plugin",
@@ -962,16 +962,16 @@
         },
         {
             "name": "j0k3r/php-readability",
-            "version": "1.2.7",
+            "version": "1.2.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/j0k3r/php-readability.git",
-                "reference": "9a490fac078b0f773c9848af1c6d76336a073a8d"
+                "reference": "8ce16632383c7792c442d837e2b4bc4fa82ac756"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/j0k3r/php-readability/zipball/9a490fac078b0f773c9848af1c6d76336a073a8d",
-                "reference": "9a490fac078b0f773c9848af1c6d76336a073a8d",
+                "url": "https://api.github.com/repos/j0k3r/php-readability/zipball/8ce16632383c7792c442d837e2b4bc4fa82ac756",
+                "reference": "8ce16632383c7792c442d837e2b4bc4fa82ac756",
                 "shasum": ""
             },
             "require": {
@@ -983,7 +983,7 @@
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^2.14",
                 "monolog/monolog": "^1.24|^2.1",
-                "symfony/phpunit-bridge": "^4.2.3"
+                "symfony/phpunit-bridge": "^4.4|^5.3"
             },
             "suggest": {
                 "ext-tidy": "Used to clean up given HTML and to avoid problems with bad HTML structure."
@@ -1033,7 +1033,7 @@
             ],
             "support": {
                 "issues": "https://github.com/j0k3r/php-readability/issues",
-                "source": "https://github.com/j0k3r/php-readability/tree/1.2.7"
+                "source": "https://github.com/j0k3r/php-readability/tree/1.2.8"
             },
             "funding": [
                 {
@@ -1041,7 +1041,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-03-09T10:14:29+00:00"
+            "time": "2021-10-29T14:24:41+00:00"
         },
         {
             "name": "level-2/dice",
@@ -3242,16 +3242,16 @@
         },
         {
             "name": "friendsofphp/php-cs-fixer",
-            "version": "v2.19.2",
+            "version": "v2.19.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfPHP/PHP-CS-Fixer.git",
-                "reference": "d5c737c2e18ba502b75b44832b31fe627f82e307"
+                "reference": "75ac86f33fab4714ea5a39a396784d83ae3b5ed8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/zipball/d5c737c2e18ba502b75b44832b31fe627f82e307",
-                "reference": "d5c737c2e18ba502b75b44832b31fe627f82e307",
+                "url": "https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/zipball/75ac86f33fab4714ea5a39a396784d83ae3b5ed8",
+                "reference": "75ac86f33fab4714ea5a39a396784d83ae3b5ed8",
                 "shasum": ""
             },
             "require": {
@@ -3339,7 +3339,7 @@
             "description": "A tool to automatically fix PHP code style",
             "support": {
                 "issues": "https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues",
-                "source": "https://github.com/FriendsOfPHP/PHP-CS-Fixer/tree/v2.19.2"
+                "source": "https://github.com/FriendsOfPHP/PHP-CS-Fixer/tree/v2.19.3"
             },
             "funding": [
                 {
@@ -3347,7 +3347,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-08-18T19:55:46+00:00"
+            "time": "2021-11-15T17:17:55+00:00"
         },
         {
             "name": "myclabs/deep-copy",
