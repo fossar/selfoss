@@ -16,7 +16,7 @@ use Monolog\Logger;
 class Database implements \daos\DatabaseInterface {
     use CommonSqlDatabase;
 
-    /** @var \DB\SQL database connection */
+    /** @var \Nette\Database\Connection database connection */
     private $connection;
 
     /** @var Logger */
@@ -27,14 +27,25 @@ class Database implements \daos\DatabaseInterface {
      *
      * @return  void
      */
-    public function __construct(\DB\SQL $connection, Logger $logger) {
+    public function __construct(\Nette\Database\Connection $connection, Logger $logger) {
         $this->connection = $connection;
+
+        // Define regexp function for SQLite
+        // https://www.sqlite.org/lang_expr.html#the_like_glob_regexp_and_match_operators
+        $this->connection->getPdo()->sqliteCreateFunction(
+            'regexp',
+            function($pattern, $text) {
+                return preg_match('/' . addcslashes($pattern, '/') . '/', $text);
+            },
+            2,
+        );
+
         $this->logger = $logger;
 
         $this->logger->debug('Established database connection');
 
         // create tables if necessary
-        $result = @$this->exec('SELECT name FROM sqlite_master WHERE type = "table"');
+        $result = @$this->query('SELECT name FROM sqlite_master WHERE type = "table"');
         $tables = [];
         foreach ($result as $table) {
             foreach ($table as $key => $value) {

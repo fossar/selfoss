@@ -20,7 +20,7 @@ class Database implements \daos\DatabaseInterface {
     /** @var Configuration configuration */
     private $configuration;
 
-    /** @var \DB\SQL database connection */
+    /** @var \Nette\Database\Connection database connection */
     private $connection;
 
     /** @var Logger */
@@ -32,7 +32,7 @@ class Database implements \daos\DatabaseInterface {
      *
      * @return void
      */
-    public function __construct(Configuration $configuration, \DB\SQL $connection, Logger $logger) {
+    public function __construct(Configuration $configuration, \Nette\Database\Connection $connection, Logger $logger) {
         $this->configuration = $configuration;
         $this->connection = $connection;
         $this->logger = $logger;
@@ -40,7 +40,7 @@ class Database implements \daos\DatabaseInterface {
         $this->logger->debug('Established database connection');
 
         // create tables if necessary
-        $result = @$this->exec('SHOW TABLES');
+        $result = $this->exec('SHOW TABLES');
         $tables = [];
         foreach ($result as $table) {
             foreach ($table as $key => $value) {

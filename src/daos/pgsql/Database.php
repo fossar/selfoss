@@ -23,7 +23,7 @@ use Monolog\Logger;
 class Database implements \daos\DatabaseInterface {
     use CommonSqlDatabase;
 
-    /** @var \DB\SQL database connection */
+    /** @var \Nette\Database\Connection database connection */
     private $connection;
 
     /** @var Logger */
@@ -34,7 +34,7 @@ class Database implements \daos\DatabaseInterface {
      *
      * @return  void
      */
-    public function __construct(\DB\SQL $connection, Logger $logger) {
+    public function __construct(\Nette\Database\Connection $connection, Logger $logger) {
         $this->connection = $connection;
         $this->logger = $logger;
 

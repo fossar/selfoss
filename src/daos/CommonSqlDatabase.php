@@ -2,9 +2,16 @@
 
 namespace daos;
 
+use Nette\Database\ResultSet;
+
 trait CommonSqlDatabase {
-    public function exec($cmds, $args = null) {
-        return $this->connection->exec($cmds, $args);
+    /**
+     * Generates and executes SQL query.
+     * @param  string
+     * @return ResultSet
+     */
+    public function query($sql, ...$params) {
+        return $this->connection->exec($sql, ...$params);
     }
 
     public function quote($value, $type = \PDO::PARAM_STR) {
@@ -17,9 +24,7 @@ trait CommonSqlDatabase {
      * @return void
      */
     public function beginTransaction() {
-        if (!$this->connection->begin()) {
-            throw new TransactionException('Failed to begin a transaction.');
-        }
+        $this->connection->begin();
     }
 
     /**
@@ -28,9 +33,7 @@ trait CommonSqlDatabase {
      * @return void
      */
     public function rollBack() {
-        if (!$this->connection->rollback()) {
-            throw new TransactionException('Failed to rollback a transaction.');
-        }
+        $this->connection->rollBack();
     }
 
     /**
@@ -39,9 +42,7 @@ trait CommonSqlDatabase {
      * @return void
      */
     public function commit() {
-        if (!$this->connection->commit()) {
-            throw new TransactionException('Failed to commit a transaction.');
-        }
+        $this->connection->commit();
     }
 
     public function getSchemaVersion() {
