@@ -14,28 +14,34 @@ trait CommonSqlDatabase {
     /**
      * Begin SQL transaction
      *
-     * @return bool
+     * @return void
      */
-    public function begin() {
-        return $this->connection->begin();
+    public function beginTransaction() {
+        if (!$this->connection->begin()) {
+            throw new \Exception('Failed to begin a transaction.');
+        }
     }
 
     /**
      * Rollback SQL transaction
      *
-     * @return bool
+     * @return void
      */
-    public function rollback() {
-        return $this->connection->rollback();
+    public function rollBack() {
+        if (!$this->connection->rollback()) {
+            throw new \Exception('Failed to rollback a transaction.');
+        }
     }
 
     /**
      * Commit SQL transaction
      *
-     * @return bool
+     * @return void
      */
     public function commit() {
-        return $this->connection->commit();
+        if (!$this->connection->commit()) {
+            throw new \Exception('Failed to commit a transaction.');
+        }
     }
 
     public function getSchemaVersion() {

@@ -715,7 +715,7 @@ class Items implements \daos\ItemsInterface {
         }
 
         if ($sql) {
-            $this->database->begin();
+            $this->database->beginTransaction();
             foreach ($sql as $id => $q) {
                 $params = [
                     ':id' => [$id, \PDO::PARAM_INT],
