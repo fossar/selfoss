@@ -7,6 +7,7 @@ namespace daos\mysql;
 use daos\DatabaseInterface;
 use Exception;
 use helpers\Configuration;
+use function helpers\Functions\map;
 use function json_encode;
 use const JSON_ERROR_NONE;
 use function json_last_error;
@@ -316,7 +317,7 @@ class Sources implements \daos\SourcesInterface {
         $stmt = static::$stmt;
         $sources = $this->database->exec('SELECT * FROM ' . $this->configuration->dbPrefix . 'sources');
 
-        return array_map(function($row) {
+        return map(function($row) {
             // Stored as UNIX timestamp, use ISO 8601 as export format.
             $row['lastentry'] = (new \DateTime('@' . $row['lastentry']))->format(\DateTimeInterface::ATOM);
             $row['lastupdate'] = (new \DateTime('@' . $row['lastupdate']))->format(\DateTimeInterface::ATOM);

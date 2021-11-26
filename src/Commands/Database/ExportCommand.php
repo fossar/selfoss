@@ -57,7 +57,9 @@ class ExportCommand extends Command {
             'items' => $this->items->getRaw(),
         ];
 
-        file_put_contents($input->getArgument('path'), json_encode($data));
+        $encoder = new \Violet\StreamingJsonEncoder\BufferJsonEncoder($data);
+        $stream = new \Violet\StreamingJsonEncoder\JsonStream($encoder);
+        file_put_contents($input->getArgument('path'), $stream);
 
         return self::SUCCESS;
     }

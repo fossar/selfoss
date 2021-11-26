@@ -9,6 +9,7 @@ use daos\ItemOptions;
 use DateTime;
 use DateTimeImmutable;
 use helpers\Configuration;
+use function helpers\functions\map;
 use helpers\HtmlString;
 use Monolog\Logger;
 
@@ -690,8 +691,8 @@ class Items implements \daos\ItemsInterface {
         $stmt = static::$stmt;
         $items = $this->database->exec('SELECT * FROM ' . $this->configuration->dbPrefix . 'items');
 
-        /** @var array<array{author: string, content: string, datetime: string, icon: string, id: int, lastseen: string, link: string, shared: int, source: int, starred: bool, thumbnail: ?string, title: string, uid: string, unread: bool, updatetime: string}> */
-        $items = array_map(function($row) {
+        /** @var iterable<array{author: string, content: string, datetime: string, icon: string, id: int, lastseen: string, link: string, shared: int, source: int, starred: bool, thumbnail: ?string, title: string, uid: string, unread: bool, updatetime: string}> */
+        $items = map(function($row) {
             // Use ISO 8601 as export format.
             $row['datetime'] = $row['datetime']->format(\DateTimeInterface::ATOM);
             $row['updatetime'] = $row['updatetime']->format(\DateTimeInterface::ATOM);

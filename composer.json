@@ -43,6 +43,9 @@
         }
     ],
     "autoload": {
+        "files": [
+            "src/helpers/Functions.php"
+        ],
         "psr-4": {
             "Commands\\": "src/Commands/",
             "controllers\\": "src/controllers/",
