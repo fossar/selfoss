@@ -18,7 +18,7 @@ trait CommonSqlDatabase {
      */
     public function beginTransaction() {
         if (!$this->connection->begin()) {
-            throw new \Exception('Failed to begin a transaction.');
+            throw new TransactionException('Failed to begin a transaction.');
         }
     }
 
@@ -29,7 +29,7 @@ trait CommonSqlDatabase {
      */
     public function rollBack() {
         if (!$this->connection->rollback()) {
-            throw new \Exception('Failed to rollback a transaction.');
+            throw new TransactionException('Failed to rollback a transaction.');
         }
     }
 
@@ -40,7 +40,7 @@ trait CommonSqlDatabase {
      */
     public function commit() {
         if (!$this->connection->commit()) {
-            throw new \Exception('Failed to commit a transaction.');
+            throw new TransactionException('Failed to commit a transaction.');
         }
     }
 

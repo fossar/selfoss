@@ -3,6 +3,7 @@
 namespace daos\mysql;
 
 use daos\CommonSqlDatabase;
+use daos\TransactionException;
 use helpers\Configuration;
 use Monolog\Logger;
 
@@ -50,6 +51,7 @@ class Database implements \daos\DatabaseInterface {
         if (!in_array($this->configuration->dbPrefix . 'items', $tables, true)) {
             $this->logger->debug('Creating items table');
 
+            $this->beginTransaction();
             $this->exec('
                 CREATE TABLE ' . $this->configuration->dbPrefix . 'items (
                     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
@@ -82,6 +84,11 @@ class Database implements \daos\DatabaseInterface {
                         SET NEW.updatetime = NOW();
                     END;
             ');
+            try {
+                $this->commit();
+            } catch (TransactionException $e){
+                // MySQL does not like mixing transactions and DDL.
+            }
         }
 
         $isNewestSourcesTable = false;
@@ -108,6 +115,7 @@ class Database implements \daos\DatabaseInterface {
         if (!in_array($this->configuration->dbPrefix . 'version', $tables, true)) {
             $this->logger->debug('Upgrading database schema to version 8 from initial state');
 
+            $this->beginTransaction();
             $this->exec('
                 CREATE TABLE ' . $this->configuration->dbPrefix . 'version (
                     version INT
@@ -130,6 +138,11 @@ class Database implements \daos\DatabaseInterface {
                     ALTER TABLE ' . $this->configuration->dbPrefix . 'sources ADD tags TEXT;
                 ');
             }
+            try {
+                $this->commit();
+            } catch (TransactionException $e){
+                // MySQL does not like mixing transactions and DDL.
+            }
         }
 
         $version = $this->getSchemaVersion();
@@ -137,16 +150,23 @@ class Database implements \daos\DatabaseInterface {
         if ($version < 3) {
             $this->logger->debug('Upgrading database schema to version 3');
 
+            $this->beginTransaction();
             $this->exec('
                 ALTER TABLE ' . $this->configuration->dbPrefix . 'sources ADD lastupdate INT;
             ');
             $this->exec('
                 INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (3);
             ');
+            try {
+                $this->commit();
+            } catch (TransactionException $e){
+                // MySQL does not like mixing transactions and DDL.
+            }
         }
         if ($version < 4) {
             $this->logger->debug('Upgrading database schema to version 4');
 
+            $this->beginTransaction();
             $this->exec('
                 ALTER TABLE ' . $this->configuration->dbPrefix . 'items ADD updatetime DATETIME;
             ');
@@ -167,26 +187,43 @@ class Database implements \daos\DatabaseInterface {
             $this->exec('
                 INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (4);
             ');
+            try {
+                $this->commit();
+            } catch (TransactionException $e){
+                // MySQL does not like mixing transactions and DDL.
+            }
         }
         if ($version < 5) {
             $this->logger->debug('Upgrading database schema to version 5');
 
+            $this->beginTransaction();
             $this->exec('
                 ALTER TABLE ' . $this->configuration->dbPrefix . 'items ADD author VARCHAR(255);
             ');
             $this->exec('
                 INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (5);
             ');
+            try {
+                $this->commit();
+            } catch (TransactionException $e){
+                // MySQL does not like mixing transactions and DDL.
+            }
         }
         if ($version < 6) {
             $this->logger->debug('Upgrading database schema to version 6');
 
+            $this->beginTransaction();
             $this->exec('
                 ALTER TABLE ' . $this->configuration->dbPrefix . 'sources ADD filter TEXT;
             ');
             $this->exec('
                 INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (6);
             ');
+            try {
+                $this->commit();
+            } catch (TransactionException $e){
+                // MySQL does not like mixing transactions and DDL.
+            }
         }
         // Jump straight from v6 to v8 due to bug in previous version of the code
         // in \daos\sqlite\Database which
@@ -194,53 +231,72 @@ class Database implements \daos\DatabaseInterface {
         if ($version < 8) {
             $this->logger->debug('Upgrading database schema to version 8');
 
+            $this->beginTransaction();
             $this->exec('
                 ALTER TABLE ' . $this->configuration->dbPrefix . 'sources ADD lastentry INT;
             ');
             $this->exec('
                 INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (8);
             ');
+            try {
+                $this->commit();
+            } catch (TransactionException $e){
+                // MySQL does not like mixing transactions and DDL.
+            }
         }
         if ($version < 9) {
             $this->logger->debug('Upgrading database schema to version 9');
 
+            $this->beginTransaction();
             $this->exec('
                 ALTER TABLE ' . $this->configuration->dbPrefix . 'items ADD shared BOOL;
             ');
             $this->exec('
                 INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (9);
             ');
+            try {
+                $this->commit();
+            } catch (TransactionException $e){
+                // MySQL does not like mixing transactions and DDL.
+            }
         }
         if ($version < 10) {
             $this->logger->debug('Upgrading database schema to version 10');
 
-            $this->exec([
-                'ALTER TABLE `' . $this->configuration->dbPrefix . 'items` CONVERT TO CHARACTER SET utf8mb4;',
-                'ALTER TABLE `' . $this->configuration->dbPrefix . 'sources` CONVERT TO CHARACTER SET utf8mb4;',
-                'ALTER TABLE `' . $this->configuration->dbPrefix . 'tags` CONVERT TO CHARACTER SET utf8mb4;',
-                'ALTER TABLE `' . $this->configuration->dbPrefix . 'version` CONVERT TO CHARACTER SET utf8mb4;',
-                'INSERT INTO `' . $this->configuration->dbPrefix . 'version` (version) VALUES (10);',
-            ]);
+            $this->beginTransaction();
+            $this->exec('ALTER TABLE `' . $this->configuration->dbPrefix . 'items` CONVERT TO CHARACTER SET utf8mb4;');
+            $this->exec('ALTER TABLE `' . $this->configuration->dbPrefix . 'sources` CONVERT TO CHARACTER SET utf8mb4;');
+            $this->exec('ALTER TABLE `' . $this->configuration->dbPrefix . 'tags` CONVERT TO CHARACTER SET utf8mb4;');
+            $this->exec('ALTER TABLE `' . $this->configuration->dbPrefix . 'version` CONVERT TO CHARACTER SET utf8mb4;');
+            $this->exec('INSERT INTO `' . $this->configuration->dbPrefix . 'version` (version) VALUES (10);');
+            try {
+                $this->commit();
+            } catch (TransactionException $e){
+                // MySQL does not like mixing transactions and DDL.
+            }
         }
         if ($version < 11) {
             $this->logger->debug('Upgrading database schema to version 11');
 
-            $this->exec([
-                'DROP TRIGGER insert_updatetime_trigger',
-                'DROP TRIGGER update_updatetime_trigger',
-                'ALTER TABLE ' . $this->configuration->dbPrefix . 'items ADD lastseen DATETIME',
-                'UPDATE ' . $this->configuration->dbPrefix . 'items SET lastseen = CURRENT_TIMESTAMP',
-                // Needs to be a trigger since MySQL before 5.6.5 does not support default value for DATETIME.
-                // https://dev.mysql.com/doc/relnotes/mysql/5.6/en/news-5-6-5.html#mysqld-5-6-5-data-types
-                // Needs to be a single trigger due to MySQL before 5.7.2 not supporting multiple triggers for the same event on the same table.
-                // https://dev.mysql.com/doc/relnotes/mysql/5.7/en/news-5-7-2.html#mysqld-5-7-2-triggers
-                'CREATE TRIGGER ' . $this->configuration->dbPrefix . 'items_insert_trigger
+            $this->beginTransaction();
+            $this->exec('DROP TRIGGER insert_updatetime_trigger');
+            $this->exec('DROP TRIGGER update_updatetime_trigger');
+            $this->exec('ALTER TABLE ' . $this->configuration->dbPrefix . 'items ADD lastseen DATETIME');
+            $this->exec('UPDATE ' . $this->configuration->dbPrefix . 'items SET lastseen = CURRENT_TIMESTAMP');
+            // Needs to be a trigger since MySQL before 5.6.5 does not support default value for DATETIME.
+            // https://dev.mysql.com/doc/relnotes/mysql/5.6/en/news-5-6-5.html#mysqld-5-6-5-data-types
+            // Needs to be a single trigger due to MySQL before 5.7.2 not supporting multiple triggers for the same event on the same table.
+            // https://dev.mysql.com/doc/relnotes/mysql/5.7/en/news-5-7-2.html#mysqld-5-7-2-triggers
+            $this->exec('
+                CREATE TRIGGER ' . $this->configuration->dbPrefix . 'items_insert_trigger
                     BEFORE INSERT ON ' . $this->configuration->dbPrefix . 'items FOR EACH ROW
                         BEGIN
                             SET NEW.updatetime = NOW();
                             SET NEW.lastseen = NOW();
-                        END;',
-                'CREATE TRIGGER ' . $this->configuration->dbPrefix . 'items_update_trigger
+                        END;
+            ');
+            $this->exec('
+                CREATE TRIGGER ' . $this->configuration->dbPrefix . 'items_update_trigger
                     BEFORE UPDATE ON ' . $this->configuration->dbPrefix . 'items FOR EACH ROW
                     BEGIN
                         IF (
@@ -249,27 +305,40 @@ class Database implements \daos\DatabaseInterface {
                         ) THEN
                             SET NEW.updatetime = NOW();
                         END IF;
-                    END;',
-                'INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (11)',
-            ]);
+                    END;
+            ');
+            $this->exec('INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (11)');
+            try {
+                $this->commit();
+            } catch (TransactionException $e){
+                // MySQL does not like mixing transactions and DDL.
+            }
         }
         if ($version < 12) {
             $this->logger->debug('Upgrading database schema to version 12');
 
-            $this->exec([
-                'UPDATE ' . $this->configuration->dbPrefix . 'items SET updatetime = datetime WHERE updatetime IS NULL',
-                'ALTER TABLE ' . $this->configuration->dbPrefix . 'items MODIFY updatetime DATETIME NOT NULL',
-                'ALTER TABLE ' . $this->configuration->dbPrefix . 'items MODIFY lastseen DATETIME NOT NULL',
-                'INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (12)',
-            ]);
+            $this->beginTransaction();
+            $this->exec('UPDATE ' . $this->configuration->dbPrefix . 'items SET updatetime = datetime WHERE updatetime IS NULL');
+            $this->exec('ALTER TABLE ' . $this->configuration->dbPrefix . 'items MODIFY updatetime DATETIME NOT NULL');
+            $this->exec('ALTER TABLE ' . $this->configuration->dbPrefix . 'items MODIFY lastseen DATETIME NOT NULL');
+            $this->exec('INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (12)');
+            try {
+                $this->commit();
+            } catch (TransactionException $e){
+                // MySQL does not like mixing transactions and DDL.
+            }
         }
         if ($version < 13) {
             $this->logger->debug('Upgrading database schema to version 13');
 
-            $this->exec([
-                'UPDATE ' . $this->configuration->dbPrefix . "sources SET spout = 'spouts\\\\rss\\\\fulltextrss' WHERE spout = 'spouts\\\\rss\\\\instapaper'",
-                'INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (13)',
-            ]);
+            $this->beginTransaction();
+            $this->exec('UPDATE ' . $this->configuration->dbPrefix . "sources SET spout = 'spouts\\\\rss\\\\fulltextrss' WHERE spout = 'spouts\\\\rss\\\\instapaper'");
+            $this->exec('INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (13)');
+            try {
+                $this->commit();
+            } catch (TransactionException $e){
+                // MySQL does not like mixing transactions and DDL.
+            }
         }
     }
 
