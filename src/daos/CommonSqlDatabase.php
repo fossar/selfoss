@@ -16,7 +16,7 @@ trait CommonSqlDatabase {
      *
      * @return bool
      */
-    public function begin() {
+    public function beginTransaction() {
         return $this->connection->begin();
     }
 
@@ -25,7 +25,7 @@ trait CommonSqlDatabase {
      *
      * @return bool
      */
-    public function rollback() {
+    public function rollBack() {
         return $this->connection->rollback();
     }
 

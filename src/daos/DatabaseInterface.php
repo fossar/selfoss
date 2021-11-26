@@ -46,14 +46,14 @@ interface DatabaseInterface {
      *
      * @return bool
      */
-    public function begin();
+    public function beginTransaction();
 
     /**
      * Rollback SQL transaction
      *
      * @return bool
      */
-    public function rollback();
+    public function rollBack();
 
     /**
      * Commit SQL transaction
