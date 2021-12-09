@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link, useHistory, useLocation } from 'react-router-dom';
-import { usePrevious } from 'rooks';
+import { usePreviousImmediate } from 'rooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
 import { createFocusTrap } from 'focus-trap';
@@ -325,7 +325,7 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
     );
     const shares = selfoss.shares.getAll();
 
-    const previouslyExpanded = usePrevious(expanded);
+    const previouslyExpanded = usePreviousImmediate(expanded);
 
     React.useEffect(() => {
         // Handle entry becoming/ceasing to be expanded.

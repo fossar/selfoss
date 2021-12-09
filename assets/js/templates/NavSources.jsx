@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link, useLocation, useRouteMatch } from 'react-router-dom';
-import { usePrevious } from 'rooks';
+import { usePreviousImmediate } from 'rooks';
 import classNames from 'classnames';
 import { unescape } from 'html-escaper';
 import { makeEntriesLink, ENTRIES_ROUTE_PATTERN } from '../helpers/uri';
@@ -79,7 +79,7 @@ export default function NavSources({
         [setNavExpanded]
     );
 
-    const previousSourcesState = usePrevious(sourcesState);
+    const previousSourcesState = usePreviousImmediate(sourcesState);
     React.useEffect(() => {
         if (previousSourcesState === LoadingState.INITIAL && sourcesState === LoadingState.SUCCESS) {
             setNavSourcesExpanded(true);
