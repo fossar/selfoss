@@ -3,14 +3,10 @@
     "extends": [
         "eslint:recommended",
         "plugin:react/recommended",
-        "plugin:react-hooks/recommended",
-        "plugin:react-perf/recommended"
+        "plugin:react-hooks/recommended"
     ],
-    "plugins": [
-        "react-perf"
-    ],
-    "parser": "@babel/eslint-parser",
     "parserOptions": {
+        "ecmaVersion": "latest",
         "sourceType": "module"
     },
     "rules": {
