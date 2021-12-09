@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useRouteMatch, useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { useStateWithDeps } from 'use-state-with-deps';
 import nullable from 'prop-types-nullable';
 import Item from './Item';
@@ -148,7 +148,7 @@ export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, f
         return queryString.get('search') ?? '';
     }, [location.search]);
 
-    const { params } = useRouteMatch();
+    const params = useParams();
     const currentTag = params.category?.startsWith('tag-') ? params.category.replace(/^tag-/, '') : null;
     const currentSource = params.category?.startsWith('source-') ? parseInt(params.category.replace(/^source-/, ''), 10) : null;
 
