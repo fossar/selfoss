@@ -381,6 +381,8 @@ export default class StateHolder extends React.Component {
 
         this.reload = this.reload.bind(this);
         this.setLoadingState = this.setLoadingState.bind(this);
+        this.activateEntry = this.activateEntry.bind(this);
+        this.deactivateEntry = this.deactivateEntry.bind(this);
         this.markVisibleRead = this.markVisibleRead.bind(this);
         this.markEntryRead = this.markEntryRead.bind(this);
         this.markEntryStarred = this.markEntryStarred.bind(this);
@@ -480,12 +482,20 @@ export default class StateHolder extends React.Component {
      * @param {number} id of entry
      */
     activateEntry(id) {
-        const entry = document.querySelector(`.entry[data-entry-id="${id}"]`);
+        if (selfoss.config.autoCollapse) {
+            this.collapseAllEntries();
+        }
 
         this.setSelectedEntry(id);
 
-        if (!this.isEntryExpanded(id)) {
-            entry.querySelector('.entry-title > .entry-title-link').click();
+        // show/hide (with toolbar)
+        this.setEntryExpanded(id, true);
+
+        // automark as read
+        const entry = this.state.entries.find((entry) => id === entry.id);
+        const autoMarkAsRead = selfoss.loggedin.value && selfoss.config.autoMarkAsRead && entry.unread == 1;
+        if (autoMarkAsRead) {
+            this.markEntryRead(id, true);
         }
     }
 
@@ -496,11 +506,7 @@ export default class StateHolder extends React.Component {
      * @param {number} id of entry
      */
     deactivateEntry(id) {
-        const entry = document.querySelector(`.entry[data-entry-id="${id}"]`);
-
-        if (this.isEntryExpanded(id)) {
-            entry.querySelector('.entry-title > .entry-title-link').click();
-        }
+        this.setEntryExpanded(id, false);
     }
 
 

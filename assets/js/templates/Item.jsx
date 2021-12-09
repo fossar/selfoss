@@ -61,39 +61,23 @@ function closeFullScreen({ event, history, location, entryId }) {
 }
 
 // show/hide entry
-function handleClick({ event, history, location, target, entry }) {
+function handleClick({ event, history, location, expanded, id, target }) {
     const expected = selfoss.isMobile() ? '.entry' : '.entry-title';
     if (target !== expected) {
         return;
     }
+
     event.preventDefault();
     event.stopPropagation();
 
-
-    const entryId = entry.id;
-
-    // show/hide (with toolbar)
-    selfoss.entriesPage.setEntryExpanded(entry.id, (expanded) => {
-        if (expanded) {
-            if (!selfoss.isSmartphone()) {
-                history.replace(makeEntriesLink(location, { id: null }));
-            }
-        } else {
-            if (selfoss.config.autoCollapse) {
-                selfoss.entriesPage.collapseAllEntries();
-            }
-            selfoss.entriesPage.setSelectedEntry(entry.id);
-            history.replace(makeEntriesLink(location, { id: entryId }));
-
-            // automark as read
-            const autoMarkAsRead = selfoss.loggedin.value && selfoss.config.autoMarkAsRead && entry.unread == 1;
-            if (autoMarkAsRead) {
-                selfoss.entriesPage.markEntryRead(entryId, true);
-            }
-        }
-
-        return !expanded;
-    });
+    if (expanded) {
+        selfoss.entriesPage.setSelectedEntry(id);
+        selfoss.entriesPage.deactivateEntry(id);
+        history.replace(makeEntriesLink(location, { id: null }));
+    } else {
+        selfoss.entriesPage.activateEntry(id);
+        history.replace(makeEntriesLink(location, { id }));
+    }
 }
 
 // load images
@@ -317,13 +301,13 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
     }, [expanded, item.id, item.unread, previouslyExpanded]);
 
     const entryOnClick = React.useCallback(
-        (event) => handleClick({ event, history, location, entry: item, target: '.entry', contentBlock, setFullScreenTrap, setImagesLoaded, setNavExpanded }),
-        [history, location, item, setNavExpanded]
+        (event) => handleClick({ event, history, location, expanded, id: item.id, target: '.entry' }),
+        [history, location, expanded, item.id]
     );
 
     const titleOnClick = React.useCallback(
-        (event) => handleClick({ event, history, location, entry: item, target: '.entry-title', contentBlock, setFullScreenTrap, setImagesLoaded }),
-        [history, location, item]
+        (event) => handleClick({ event, history, location, expanded, id: item.id, target: '.entry-title' }),
+        [history, location, expanded, item.id]
     );
 
     const starOnClick = React.useCallback(
