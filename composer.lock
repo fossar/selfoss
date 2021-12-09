@@ -846,16 +846,16 @@
         },
         {
             "name": "j0k3r/graby-site-config",
-            "version": "1.0.139",
+            "version": "1.0.140",
             "source": {
                 "type": "git",
                 "url": "https://github.com/j0k3r/graby-site-config.git",
-                "reference": "0cc5a06ec5e388e8c88dbfbeb399ce40ac2c6fe5"
+                "reference": "7de71a867e241992e21f91ee65e17dcfd25e01a6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/j0k3r/graby-site-config/zipball/0cc5a06ec5e388e8c88dbfbeb399ce40ac2c6fe5",
-                "reference": "0cc5a06ec5e388e8c88dbfbeb399ce40ac2c6fe5",
+                "url": "https://api.github.com/repos/j0k3r/graby-site-config/zipball/7de71a867e241992e21f91ee65e17dcfd25e01a6",
+                "reference": "7de71a867e241992e21f91ee65e17dcfd25e01a6",
                 "shasum": ""
             },
             "require": {
@@ -884,9 +884,9 @@
             "description": "Graby site config files",
             "support": {
                 "issues": "https://github.com/j0k3r/graby-site-config/issues",
-                "source": "https://github.com/j0k3r/graby-site-config/tree/1.0.139"
+                "source": "https://github.com/j0k3r/graby-site-config/tree/1.0.140"
             },
-            "time": "2021-11-15T07:47:52+00:00"
+            "time": "2021-12-07T08:49:53+00:00"
         },
         {
             "name": "j0k3r/httplug-ssrf-plugin",
@@ -962,16 +962,16 @@
         },
         {
             "name": "j0k3r/php-readability",
-            "version": "1.2.8",
+            "version": "1.2.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/j0k3r/php-readability.git",
-                "reference": "8ce16632383c7792c442d837e2b4bc4fa82ac756"
+                "reference": "c506b7ebd7afe77cd6e4e24c0871991fd430b646"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/j0k3r/php-readability/zipball/8ce16632383c7792c442d837e2b4bc4fa82ac756",
-                "reference": "8ce16632383c7792c442d837e2b4bc4fa82ac756",
+                "url": "https://api.github.com/repos/j0k3r/php-readability/zipball/c506b7ebd7afe77cd6e4e24c0871991fd430b646",
+                "reference": "c506b7ebd7afe77cd6e4e24c0871991fd430b646",
                 "shasum": ""
             },
             "require": {
@@ -1033,7 +1033,7 @@
             ],
             "support": {
                 "issues": "https://github.com/j0k3r/php-readability/issues",
-                "source": "https://github.com/j0k3r/php-readability/tree/1.2.8"
+                "source": "https://github.com/j0k3r/php-readability/tree/1.2.9"
             },
             "funding": [
                 {
@@ -1041,7 +1041,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-10-29T14:24:41+00:00"
+            "time": "2021-11-29T20:06:47+00:00"
         },
         {
             "name": "level-2/dice",
@@ -2902,6 +2902,77 @@
     ],
     "packages-dev": [
         {
+            "name": "composer/pcre",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/composer/pcre.git",
+                "reference": "3d322d715c43a1ac36c7fe215fa59336265500f2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/composer/pcre/zipball/3d322d715c43a1ac36c7fe215fa59336265500f2",
+                "reference": "3d322d715c43a1ac36c7fe215fa59336265500f2",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.3.2 || ^7.0 || ^8.0"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^1",
+                "phpstan/phpstan-strict-rules": "^1.1",
+                "symfony/phpunit-bridge": "^4.2 || ^5"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Composer\\Pcre\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jordi Boggiano",
+                    "email": "j.boggiano@seld.be",
+                    "homepage": "http://seld.be"
+                }
+            ],
+            "description": "PCRE wrapping library that offers type-safe preg_* replacements.",
+            "keywords": [
+                "PCRE",
+                "preg",
+                "regex",
+                "regular expression"
+            ],
+            "support": {
+                "issues": "https://github.com/composer/pcre/issues",
+                "source": "https://github.com/composer/pcre/tree/1.0.0"
+            },
+            "funding": [
+                {
+                    "url": "https://packagist.com",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/composer",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/composer/composer",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2021-12-06T15:17:27+00:00"
+        },
+        {
             "name": "composer/semver",
             "version": "3.2.6",
             "source": {
@@ -2984,25 +3055,27 @@
         },
         {
             "name": "composer/xdebug-handler",
-            "version": "2.0.2",
+            "version": "2.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/xdebug-handler.git",
-                "reference": "84674dd3a7575ba617f5a76d7e9e29a7d3891339"
+                "reference": "6555461e76962fd0379c444c46fd558a0fcfb65e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/xdebug-handler/zipball/84674dd3a7575ba617f5a76d7e9e29a7d3891339",
-                "reference": "84674dd3a7575ba617f5a76d7e9e29a7d3891339",
+                "url": "https://api.github.com/repos/composer/xdebug-handler/zipball/6555461e76962fd0379c444c46fd558a0fcfb65e",
+                "reference": "6555461e76962fd0379c444c46fd558a0fcfb65e",
                 "shasum": ""
             },
             "require": {
+                "composer/pcre": "^1",
                 "php": "^5.3.2 || ^7.0 || ^8.0",
                 "psr/log": "^1 || ^2 || ^3"
             },
             "require-dev": {
-                "phpstan/phpstan": "^0.12.55",
-                "symfony/phpunit-bridge": "^4.2 || ^5"
+                "phpstan/phpstan": "^1.0",
+                "phpstan/phpstan-strict-rules": "^1.1",
+                "symfony/phpunit-bridge": "^4.2 || ^5.0 || ^6.0"
             },
             "type": "library",
             "autoload": {
@@ -3028,7 +3101,7 @@
             "support": {
                 "irc": "irc://irc.freenode.org/composer",
                 "issues": "https://github.com/composer/xdebug-handler/issues",
-                "source": "https://github.com/composer/xdebug-handler/tree/2.0.2"
+                "source": "https://github.com/composer/xdebug-handler/tree/2.0.3"
             },
             "funding": [
                 {
@@ -3044,7 +3117,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-07-31T17:03:58+00:00"
+            "time": "2021-12-08T13:07:32+00:00"
         },
         {
             "name": "doctrine/annotations",
