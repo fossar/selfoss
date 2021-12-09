@@ -7,10 +7,8 @@ import classNames from 'classnames';
 import { createFocusTrap } from 'focus-trap';
 import { nextprev, Direction } from '../shortcuts';
 import { makeEntriesLink } from '../helpers/uri';
-import * as itemsRequests from '../requests/items';
 import * as icons from '../icons';
 import { LocalizationContext } from '../helpers/i18n';
-import { HttpError } from '../errors';
 
 function anonymize(url) {
     return (selfoss.config.anonymizer ?? '') + url;
@@ -76,7 +74,6 @@ function handleClick({ event, history, location, target, entry }) {
 
     // show/hide (with toolbar)
     selfoss.entriesPage.setEntryExpanded(entry.id, (expanded) => {
-        const parent = document.querySelector(`.entry[data-entry-id="${entry.id}"]`);
         if (expanded) {
             if (!selfoss.isSmartphone()) {
                 history.replace(makeEntriesLink(location, { id: null }));
@@ -91,7 +88,7 @@ function handleClick({ event, history, location, target, entry }) {
             // automark as read
             const autoMarkAsRead = selfoss.loggedin.value && selfoss.config.autoMarkAsRead && entry.unread == 1;
             if (autoMarkAsRead) {
-                parent.querySelector('.entry-unread').click();
+                selfoss.entriesPage.markEntryRead(entryId, true);
             }
         }
 
@@ -131,107 +128,6 @@ function share({ event, entry, name }) {
     });
 }
 
-// starr/unstarr
-function handleStarredToggle({ event, entry }) {
-    event.preventDefault();
-    event.stopPropagation();
-    // only loggedin users
-    if (!selfoss.loggedin.value) {
-        return;
-    }
-
-    const { id } = entry;
-    const starr = entry.starred != 1;
-
-    selfoss.entriesPage.starEntry(id, starr);
-
-    // update statistics in main menu
-    function updateStats(starr) {
-        selfoss.app.setStarredItemsCount((starred) => starred + (starr ? 1 : -1));
-    }
-    updateStats(starr);
-
-    if (selfoss.db.enableOffline.value) {
-        selfoss.dbOffline.entryStar(id, starr);
-    }
-
-    itemsRequests.starr(id, starr).then(() => {
-        selfoss.db.setOnline();
-    }).catch(function(error) {
-        selfoss.handleAjaxError(error).then(function() {
-            selfoss.dbOffline.enqueueStatus(id, 'starred', starr);
-        }).catch(function(error) {
-            if (error instanceof HttpError && error.response.status === 403) {
-                selfoss.history.push('/login');
-                // TODO: Use location state once we switch to BrowserRouter
-                selfoss.app.setLoginFormError(selfoss.app._('error_session_expired'));
-                return;
-            }
-
-            // rollback ui changes
-            selfoss.entriesPage.starEntry(id, !starr);
-            updateStats(!starr);
-            selfoss.app.showError(selfoss.app._('error_star_item') + ' ' + error.message);
-        });
-    });
-}
-
-// read/unread
-function handleReadToggle({ event, entry }) {
-    event.preventDefault();
-    event.stopPropagation();
-    // only loggedin users
-    if (!selfoss.loggedin.value) {
-        return;
-    }
-
-    const { id } = entry;
-    const unread = entry.unread == 1;
-
-    selfoss.entriesPage.markEntry(id, !unread);
-
-    // update statistics in main menue and the currently active tag
-    function updateStats(unread) {
-        // update all unread counters
-        const unreadstats = selfoss.app.state.unreadItemsCount;
-        const diff = unread ? -1 : 1;
-
-        selfoss.refreshUnread(unreadstats + diff);
-
-        // update unread on tags and sources
-        // Only a single instance of each tag per entry so we can just assign.
-        const entryTags = Object.fromEntries(Object.keys(entry.tags).map((tag) => [tag, diff]));
-        selfoss.app.refreshTagSourceUnread(
-            entryTags,
-            {[entry.source]: diff}
-        );
-    }
-    updateStats(unread);
-
-    if (selfoss.db.enableOffline.value) {
-        selfoss.dbOffline.entryMark(id, !unread);
-    }
-
-    itemsRequests.mark(id, !unread).then(() => {
-        selfoss.db.setOnline();
-    }).catch(function(error) {
-        selfoss.handleAjaxError(error).then(function() {
-            selfoss.dbOffline.enqueueStatus(id, 'unread', !unread);
-        }).catch(function(error) {
-            if (error instanceof HttpError && error.response.status === 403) {
-                selfoss.history.push('/login');
-                // TODO: Use location state once we switch to BrowserRouter
-                selfoss.app.setLoginFormError(selfoss.app._('error_session_expired'));
-                return;
-            }
-
-            // rollback ui changes
-            selfoss.entriesPage.markEntry(id, unread);
-            updateStats(!unread);
-            selfoss.app.showError(selfoss.app._('error_mark_item') + ' ' + error.message);
-        });
-    });
-}
 
 function ShareButton({ name, label, icon, item, showLabel = true }) {
     const shareOnClick = React.useCallback(
@@ -431,12 +327,20 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
     );
 
     const starOnClick = React.useCallback(
-        (event) => handleStarredToggle({ event, entry: item }),
+        (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            selfoss.entriesPage.markEntryStarred(item.id, item.starred != 1);
+        },
         [item]
     );
 
     const markReadOnClick = React.useCallback(
-        (event) => handleReadToggle({ event, entry: item }),
+        (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            selfoss.entriesPage.markEntryRead(item.id, item.unread == 1);
+        },
         [item]
     );
 

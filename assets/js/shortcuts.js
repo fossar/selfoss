@@ -214,7 +214,7 @@ export default function makeShortcuts() {
             var selected = selfoss.entriesPage.getSelectedEntry();
 
             if (selected !== null) {
-                document.querySelector(`.entry[data-entry-id="${selected}"] .entry-starr`).click();
+                selfoss.entriesPage.markEntryStarred(selected, 'toggle');
             }
 
             e.preventDefault();
@@ -226,7 +226,7 @@ export default function makeShortcuts() {
             var selected = selfoss.entriesPage.getSelectedEntry();
 
             if (selected !== null) {
-                document.querySelector(`.entry[data-entry-id="${selected}"] .entry-unread`).click();
+                selfoss.entriesPage.markEntryRead(selected, 'toggle');
             }
 
             e.preventDefault();
@@ -266,13 +266,10 @@ export default function makeShortcuts() {
             var selected = selfoss.entriesPage.getSelectedEntry();
 
             if (selected !== null) {
-                const elem = document.querySelector(`.entry[data-entry-id="${selected}"]`);
-                // mark item as read
-                if (elem.querySelector('.entry-unread').classList.contains('active')) {
-                    elem.querySelector('.entry-unread').click();
-                }
+                selfoss.entriesPage.markEntryRead(selected, true);
 
                 // open item in new window
+                const elem = document.querySelector(`.entry[data-entry-id="${selected}"]`);
                 elem.querySelector('.entry-datetime').click();
             }
         }),
@@ -300,11 +297,7 @@ export default function makeShortcuts() {
             let selected = selfoss.entriesPage.getSelectedEntry();
 
             if (selected !== null) {
-                const elem = document.querySelector(`.entry[data-entry-id="${selected}"]`);
-                // mark item as read if it is not already
-                if (elem.querySelector('.entry-unread').classList.contains('active')) {
-                    elem.querySelector('.entry-unread').click();
-                }
+                selfoss.entriesPage.markEntryRead(selected, true);
             }
 
             nextprev(Direction.NEXT, true);
@@ -316,11 +309,7 @@ export default function makeShortcuts() {
             let selected = selfoss.entriesPage.getSelectedEntry();
 
             if (selected !== null) {
-                const elem = document.querySelector(`.entry[data-entry-id="${selected}"]`);
-                // mark item as read if it is not already
-                if (elem.querySelector('.entry-unread').classList.contains('active')) {
-                    elem.querySelector('.entry-unread').click();
-                }
+                selfoss.entriesPage.markEntryRead(selected, true);
             }
 
             nextprev(Direction.PREV, true);

@@ -382,6 +382,8 @@ export default class StateHolder extends React.Component {
         this.reload = this.reload.bind(this);
         this.setLoadingState = this.setLoadingState.bind(this);
         this.markVisibleRead = this.markVisibleRead.bind(this);
+        this.markEntryRead = this.markEntryRead.bind(this);
+        this.markEntryStarred = this.markEntryStarred.bind(this);
     }
 
     setEntries(entries) {
@@ -502,7 +504,7 @@ export default class StateHolder extends React.Component {
     }
 
 
-    starEntry(id, starred) {
+    starEntryInView(id, starred) {
         this.setEntries((entries) =>
             entries.map((entry) => {
                 if (entry.id === id) {
@@ -518,7 +520,7 @@ export default class StateHolder extends React.Component {
     }
 
 
-    markEntry(id, unread) {
+    markEntryInView(id, unread) {
         this.setEntries((entries) =>
             entries.map((entry) => {
                 if (entry.id === id) {
@@ -545,8 +547,8 @@ export default class StateHolder extends React.Component {
                 return newStatus;
             });
             if (newStatus) {
-                this.starEntry(id, newStatus.starred);
-                this.markEntry(id, newStatus.unread);
+                this.starEntryInView(id, newStatus.starred);
+                this.markEntryInView(id, newStatus.unread);
             }
         });
     }
@@ -667,6 +669,116 @@ export default class StateHolder extends React.Component {
                 this.setEntries(oldEntries);
                 this.setHasMore(hadMore);
                 selfoss.app.showError(selfoss.app._('error_mark_items') + ' ' + error.message);
+            });
+        });
+    }
+
+    /**
+     * Requests for an entry to be marked read/unread in the model.
+     * @param {number} id of entry to mark
+     * @param {bool|'toggle'} true to mark read, false to mark unread
+     */
+    markEntryRead(id, markRead) {
+        // only loggedin users
+        if (!selfoss.loggedin.value) {
+            return;
+        }
+
+        const entry = this.state.entries.find((entry) => id === entry.id);
+        if (markRead === 'toggle') {
+            markRead = entry.unread;
+        }
+
+        this.markEntryInView(id, !markRead);
+
+        // update statistics in main menue and the currently active tag
+        function updateStats(markRead) {
+            // update all unread counters
+            const unreadstats = selfoss.app.state.unreadItemsCount;
+            const diff = markRead ? -1 : 1;
+
+            selfoss.refreshUnread(unreadstats + diff);
+
+            // update unread on tags and sources
+            // Only a single instance of each tag per entry so we can just assign.
+            const entryTags = Object.fromEntries(Object.keys(entry.tags).map((tag) => [tag, diff]));
+            selfoss.app.refreshTagSourceUnread(
+                entryTags,
+                {[entry.source]: diff}
+            );
+        }
+        updateStats(markRead);
+
+        if (selfoss.db.enableOffline.value) {
+            selfoss.dbOffline.entryMark(id, !markRead);
+        }
+
+        itemsRequests.mark(id, !markRead).then(() => {
+            selfoss.db.setOnline();
+        }).catch(function(error) {
+            selfoss.handleAjaxError(error).then(function() {
+                selfoss.dbOffline.enqueueStatus(id, 'unread', !markRead);
+            }).catch(function(error) {
+                if (error instanceof HttpError && error.response.status === 403) {
+                    selfoss.history.push('/login');
+                    // TODO: Use location state once we switch to BrowserRouter
+                    selfoss.app.setLoginFormError(selfoss.app._('error_session_expired'));
+                    return;
+                }
+
+                // rollback ui changes
+                this.markEntryInView(id, markRead);
+                updateStats(!markRead);
+                selfoss.app.showError(selfoss.app._('error_mark_item') + ' ' + error.message);
+            });
+        });
+    }
+
+    /**
+     * Requests for an entry to be marked (un)starred in the model.
+     * @param {number} id of entry to mark
+     * @param {bool|'toggle'} true to mark starred, false to mark unstarred
+     */
+    markEntryStarred(id, markStarred) {
+        // only loggedin users
+        if (!selfoss.loggedin.value) {
+            return;
+        }
+
+        if (markStarred === 'toggle') {
+            const entry = this.state.entries.find((entry) => id === entry.id);
+            markStarred = !entry.starred;
+        }
+
+        this.starEntryInView(id, markStarred);
+
+        // update statistics in main menu
+        function updateStats(markStarred) {
+            selfoss.app.setStarredItemsCount((starred) => starred + (markStarred ? 1 : -1));
+        }
+        updateStats(markStarred);
+
+        if (selfoss.db.enableOffline.value) {
+            selfoss.dbOffline.entryStar(id, markStarred);
+        }
+
+        itemsRequests.starr(id, markStarred).then(() => {
+            selfoss.db.setOnline();
+        }).catch(function(error) {
+            selfoss.handleAjaxError(error).then(function() {
+                selfoss.dbOffline.enqueueStatus(id, 'starred', markStarred);
+            }).catch(function(error) {
+                if (error instanceof HttpError && error.response.status === 403) {
+                    selfoss.history.push('/login');
+                    // TODO: Use location state once we switch to BrowserRouter
+                    selfoss.app.setLoginFormError(selfoss.app._('error_session_expired'));
+                    return;
+                }
+
+                // rollback ui changes
+                this.starEntryInView(id, !markStarred);
+                updateStats(!markStarred);
+                selfoss.app.showError(selfoss.app._('error_star_item') + ' ' + error.message);
             });
         });
     }
