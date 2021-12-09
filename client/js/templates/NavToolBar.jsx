@@ -10,7 +10,7 @@ import {
 } from '../helpers/authorizations';
 import { ConfigurationContext } from '../helpers/configuration';
 import { LocalizationContext } from '../helpers/i18n';
-import { forceReload } from '../helpers/uri';
+import { useForceReload } from '../helpers/uri';
 
 function handleReloadAll({ reloadAll, setReloading, setNavExpanded }) {
     setReloading(true);
@@ -33,6 +33,7 @@ function handleLogOut({ setNavExpanded }) {
 
 export default function NavToolBar({ reloadAll, setNavExpanded }) {
     const [reloading, setReloading] = useState(false);
+    const forceReload = useForceReload();
 
     const refreshOnClick = useCallback(
         () => handleReloadAll({ reloadAll, setReloading, setNavExpanded }),
@@ -42,15 +43,6 @@ export default function NavToolBar({ reloadAll, setNavExpanded }) {
     const settingsOnClick = useCallback(() => {
         setNavExpanded(false);
     }, [setNavExpanded]);
-
-    const settingsLink = useCallback(
-        (location) => ({
-            ...location,
-            pathname: '/manage/sources',
-            state: forceReload(location),
-        }),
-        [],
-    );
 
     const logoutOnClick = useCallback(
         () => handleLogOut({ setNavExpanded }),
@@ -89,8 +81,9 @@ export default function NavToolBar({ reloadAll, setNavExpanded }) {
                     title={_('settingsbutton')}
                     aria-label={_('settingsbutton')}
                     accessKey="t"
-                    to={settingsLink}
+                    to="/manage/sources"
                     onClick={settingsOnClick}
+                    state={forceReload}
                 >
                     <FontAwesomeIcon icon={icons.settings} fixedWidth />
                 </Link>

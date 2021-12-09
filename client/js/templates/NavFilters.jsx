@@ -1,13 +1,10 @@
-import React, { useCallback, useContext, useState } from 'react';
+import React, { useCallback, useContext, useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { Link, useRouteMatch } from 'react-router-dom';
+import { useEntriesParams } from '../helpers/uri';
+import { Link, useLocation } from 'react-router-dom';
 import classNames from 'classnames';
 import { FilterType } from '../Filter';
-import {
-    forceReload,
-    makeEntriesLinkLocation,
-    ENTRIES_ROUTE_PATTERN,
-} from '../helpers/uri';
+import { makeEntriesLinkLocation, useForceReload } from '../helpers/uri';
 import { Collapse } from '@kunukn/react-collapse';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as icons from '../icons';
@@ -25,9 +22,8 @@ export default function NavFilters({
 }) {
     const [expanded, setExpanded] = useState(true);
 
-    // useParams does not seem to work.
-    const match = useRouteMatch(ENTRIES_ROUTE_PATTERN);
-    const params = match !== null ? match.params : {};
+    const params = useEntriesParams();
+    const location = useLocation();
 
     const toggleExpanded = useCallback(
         () => setExpanded((expanded) => !expanded),
@@ -39,41 +35,34 @@ export default function NavFilters({
         [setNavExpanded],
     );
 
-    const newestLink = useCallback(
-        (location) => ({
-            ...location,
-            ...makeEntriesLinkLocation(location, {
+    const newestLink = useMemo(
+        () =>
+            makeEntriesLinkLocation(location, {
                 filter: FilterType.NEWEST,
                 id: null,
             }),
-            state: forceReload(location),
-        }),
-        [],
+        [location],
     );
 
-    const unreadLink = useCallback(
-        (location) => ({
-            ...location,
-            ...makeEntriesLinkLocation(location, {
+    const unreadLink = useMemo(
+        () =>
+            makeEntriesLinkLocation(location, {
                 filter: FilterType.UNREAD,
                 id: null,
             }),
-            state: forceReload(location),
-        }),
-        [],
+        [location],
     );
 
-    const starredLink = useCallback(
-        (location) => ({
-            ...location,
-            ...makeEntriesLinkLocation(location, {
+    const starredLink = useMemo(
+        () =>
+            makeEntriesLinkLocation(location, {
                 filter: FilterType.STARRED,
                 id: null,
             }),
-            state: forceReload(location),
-        }),
-        [],
+        [location],
     );
+
+    const forceReload = useForceReload();
 
     const _ = useContext(LocalizationContext);
 
@@ -109,9 +98,10 @@ export default function NavFilters({
                         <Link
                             id="nav-filter-newest"
                             to={newestLink}
+                            state={forceReload}
                             className={classNames({
                                 'nav-filter-newest': true,
-                                active: params.filter === FilterType.NEWEST,
+                                active: params?.filter === FilterType.NEWEST,
                             })}
                             onClick={collapseNav}
                         >
@@ -141,9 +131,10 @@ export default function NavFilters({
                         <Link
                             id="nav-filter-unread"
                             to={unreadLink}
+                            state={forceReload}
                             className={classNames({
                                 'nav-filter-unread': true,
-                                active: params.filter === FilterType.UNREAD,
+                                active: params?.filter === FilterType.UNREAD,
                             })}
                             onClick={collapseNav}
                         >
@@ -187,9 +178,10 @@ export default function NavFilters({
                         <Link
                             id="nav-filter-starred"
                             to={starredLink}
+                            state={forceReload}
                             className={classNames({
                                 'nav-filter-starred': true,
-                                active: params.filter === FilterType.STARRED,
+                                active: params?.filter === FilterType.STARRED,
                             })}
                             onClick={collapseNav}
                         >

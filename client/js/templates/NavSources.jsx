@@ -1,13 +1,13 @@
-import React, { useCallback, useContext, useEffect } from 'react';
+import React, { useCallback, useMemo, useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Link, useRouteMatch } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { usePreviousImmediate } from 'rooks';
 import classNames from 'classnames';
 import { unescape } from 'html-escaper';
 import {
-    forceReload,
+    useForceReload,
     makeEntriesLinkLocation,
-    ENTRIES_ROUTE_PATTERN,
+    useEntriesParams,
 } from '../helpers/uri';
 import { Collapse } from '@kunukn/react-collapse';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -50,17 +50,16 @@ function handleTitleClick({
 }
 
 function Source({ source, active, collapseNav }) {
-    const link = useCallback(
-        (location) => ({
-            ...location,
-            ...makeEntriesLinkLocation(location, {
+    const location = useLocation();
+    const link = useMemo(
+        () =>
+            makeEntriesLinkLocation(location, {
                 category: `source-${source.id}`,
                 id: null,
             }),
-            state: forceReload(location),
-        }),
-        [source.id],
+        [source.id, location],
     );
+    const forceReload = useForceReload();
 
     return (
         <li className={classNames({ read: source.unread === 0 })}>
@@ -68,6 +67,7 @@ function Source({ source, active, collapseNav }) {
                 to={link}
                 className={classNames({ active, unread: source.unread > 0 })}
                 onClick={collapseNav}
+                state={forceReload}
             >
                 <span className="nav-source">{unescape(source.title)}</span>
                 <span className="unread">
@@ -96,10 +96,8 @@ export default function NavSources({
     const reallyExpanded =
         navSourcesExpanded && sourcesState === LoadingState.SUCCESS;
 
-    // useParams does not seem to work.
-    const match = useRouteMatch(ENTRIES_ROUTE_PATTERN);
-    const params = match !== null ? match.params : {};
-    const currentSource = params.category?.startsWith('source-')
+    const params = useEntriesParams();
+    const currentSource = params?.category?.startsWith('source-')
         ? parseInt(params.category.replace(/^source-/, ''), 10)
         : null;
 

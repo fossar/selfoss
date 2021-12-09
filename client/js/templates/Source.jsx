@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useRef } from 'react';
 import { Menu, MenuButton, MenuItem } from '@szhsin/react-menu';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { fadeOut } from '@siteparts/show-hide-effects';
 import { makeEntriesLinkLocation } from '../helpers/uri';
 import PropTypes from 'prop-types';
@@ -606,7 +606,7 @@ export default function Source({
         [source.id, setDirtySources],
     );
 
-    const history = useHistory();
+    const navigate = useNavigate();
     const location = useLocation();
 
     const sourceElem = useRef(null);
@@ -622,14 +622,14 @@ export default function Source({
                     setDirty,
                 });
             } else if (value === 'browse') {
-                history.push(
+                navigate(
                     makeEntriesLinkLocation(location, {
                         category: `source-${source.id}`,
                     }),
                 );
             }
         },
-        [source, sourceElem, setSources, setDirty, location, history],
+        [source, sourceElem, setSources, setDirty, location, navigate],
     );
 
     const _ = useContext(LocalizationContext);

@@ -1,13 +1,13 @@
-import React, { useContext, useCallback, useState } from 'react';
+import React, { useContext, useMemo, useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 import nullable from 'prop-types-nullable';
-import { Link, useRouteMatch } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import classNames from 'classnames';
 import { unescape } from 'html-escaper';
 import {
-    forceReload,
+    useForceReload,
     makeEntriesLinkLocation,
-    ENTRIES_ROUTE_PATTERN,
+    useEntriesParams,
 } from '../helpers/uri';
 import ColorChooser from './ColorChooser';
 import { updateTag } from '../requests/tags';
@@ -38,17 +38,17 @@ function Tag({ tag, active, collapseNav }) {
     );
 
     const category = tag === null ? 'all' : `tag-${tag.tag}`;
-    const link = useCallback(
-        (location) => ({
-            ...location,
-            ...makeEntriesLinkLocation(location, {
+    const location = useLocation();
+    const link = useMemo(
+        () =>
+            makeEntriesLinkLocation(location, {
                 category,
                 id: null,
             }),
-            state: forceReload(location),
-        }),
-        [category],
+        [category, location],
     );
+
+    const forceReload = useForceReload();
 
     return (
         <li className={classNames({ read: tag !== null && tag.unread === 0 })}>
@@ -56,6 +56,7 @@ function Tag({ tag, active, collapseNav }) {
                 to={link}
                 className={classNames({ 'nav-tags-all': tag === null, active })}
                 onClick={collapseNav}
+                state={forceReload}
             >
                 {tag === null ? (
                     _('alltags')
@@ -82,12 +83,10 @@ Tag.propTypes = {
 export default function NavTags({ setNavExpanded, tags }) {
     const [expanded, setExpanded] = useState(true);
 
-    // useParams does not seem to work.
-    const match = useRouteMatch(ENTRIES_ROUTE_PATTERN);
-    const params = match !== null ? match.params : {};
+    const params = useEntriesParams();
 
-    const currentAllTags = params.category === 'all';
-    const currentTag = params.category?.startsWith('tag-')
+    const currentAllTags = params?.category === 'all';
+    const currentTag = params?.category?.startsWith('tag-')
         ? params.category.replace(/^tag-/, '')
         : null;
 

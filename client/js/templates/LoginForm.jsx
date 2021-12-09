@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { SpinnerBig } from './Spinner';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { HttpError, LoginError } from '../errors';
 import { ConfigurationContext } from '../helpers/configuration';
 import { LocalizationContext } from '../helpers/i18n';
@@ -10,7 +10,7 @@ import { LocalizationContext } from '../helpers/i18n';
 function handleLogIn({
     event,
     configuration,
-    history,
+    navigate,
     setLoading,
     username,
     password,
@@ -24,7 +24,7 @@ function handleLogIn({
     selfoss
         .login({ configuration, username, password, enableOffline })
         .then(() => {
-            history.push(returnLocation);
+            navigate(returnLocation);
         })
         .catch((err) => {
             const message =
@@ -36,8 +36,11 @@ function handleLogIn({
                                   ? `HTTP ${err.response.status} ${err.message}`
                                   : err.message,
                       });
-            history.replace('/sign/in', {
-                error: message,
+            navigate('/sign/in', {
+                replace: true,
+                state: {
+                    error: message,
+                },
             });
         })
         .finally(() => {
@@ -52,7 +55,7 @@ export default function LoginForm({ offlineEnabled }) {
     const [enableOffline, setEnableOffline] = useState(offlineEnabled);
 
     const configuration = useContext(ConfigurationContext);
-    const history = useHistory();
+    const navigate = useNavigate();
     const location = useLocation();
     const error = location?.state?.error;
     const returnLocation = location?.state?.returnLocation ?? '/';
@@ -62,7 +65,7 @@ export default function LoginForm({ offlineEnabled }) {
             handleLogIn({
                 event,
                 configuration,
-                history,
+                navigate,
                 setLoading,
                 username,
                 password,
@@ -71,7 +74,7 @@ export default function LoginForm({ offlineEnabled }) {
             }),
         [
             configuration,
-            history,
+            navigate,
             username,
             password,
             enableOffline,

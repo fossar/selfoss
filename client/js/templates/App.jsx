@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import nullable from 'prop-types-nullable';
 import {
     BrowserRouter as Router,
-    Switch,
+    Routes,
     Route,
     Link,
-    Redirect,
-    useHistory,
+    Navigate,
+    useNavigate,
     useLocation,
 } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -25,11 +25,11 @@ import * as icons from '../icons';
 import { useAllowedToRead, useAllowedToWrite } from '../helpers/authorizations';
 import { ConfigurationContext } from '../helpers/configuration';
 import { useIsSmartphone, useListenableValue } from '../helpers/hooks';
-import { ENTRIES_ROUTE_PATTERN } from '../helpers/uri';
 import { i18nFormat, LocalizationContext } from '../helpers/i18n';
 import { LoadingState } from '../requests/LoadingState';
 import * as sourceRequests from '../requests/sources';
 import locales from '../locales';
+import { useEntriesParams } from '../helpers/uri';
 
 function handleNavToggle({ event, setNavExpanded }) {
     event.preventDefault();
@@ -91,12 +91,12 @@ function NotFound() {
 }
 
 function CheckAuthorization({ isAllowed, returnLocation, _, children }) {
-    const history = useHistory();
+    const navigate = useNavigate();
     if (!isAllowed) {
         const [preLink, inLink, postLink] = _('error_unauthorized').split(
             /\{(?:link_begin|link_end)\}/,
         );
-        history.push('/sign/in', {
+        navigate('/sign/in', {
             returnLocation,
         });
 
@@ -153,10 +153,10 @@ function PureApp({
     }, []);
 
     // TODO: move stuff that depends on this to the App.
-    const history = useHistory();
+    const navigate = useNavigate();
     useEffect(() => {
-        selfoss.history = history;
-    }, [history]);
+        selfoss.navigate = navigate;
+    }, [navigate]);
 
     // Prepare path of the homepage for redirecting from /
     const homePagePath = configuration.homepage.split('/');
@@ -191,20 +191,20 @@ function PureApp({
         <React.StrictMode>
             <Message message={globalMessage} />
 
-            <Switch>
+            <Routes>
                 <Route
                     path="/sign/in"
-                    render={() => (
+                    element={
                         /* menu open for smartphone */
                         <div id="loginform" role="main">
                             <LoginForm {...{ offlineEnabled }} />
                         </div>
-                    )}
+                    }
                 />
 
                 <Route
                     path="/password"
-                    render={() => (
+                    element={
                         <CheckAuthorization
                             isAllowed={isAllowedToWrite}
                             returnLocation="/password"
@@ -214,12 +214,12 @@ function PureApp({
                                 <HashPassword setTitle={setTitle} />
                             </div>
                         </CheckAuthorization>
-                    )}
+                    }
                 />
 
                 <Route
                     path="/opml"
-                    render={() => (
+                    element={
                         <CheckAuthorization
                             isAllowed={isAllowedToWrite}
                             returnLocation="/opml"
@@ -229,12 +229,12 @@ function PureApp({
                                 <OpmlImport setTitle={setTitle} />
                             </main>
                         </CheckAuthorization>
-                    )}
+                    }
                 />
 
                 <Route
-                    path="/"
-                    render={() => (
+                    path="*"
+                    element={
                         <CheckAuthorization isAllowed={isAllowedToRead} _={_}>
                             <div id="nav-mobile" role="navigation">
                                 <div id="nav-mobile-logo">
@@ -322,21 +322,21 @@ function PureApp({
 
                             {/* content */}
                             <div id="content" role="main">
-                                <Switch>
+                                <Routes>
                                     <Route
-                                        exact
                                         path="/"
-                                        render={() => (
-                                            <Redirect
+                                        element={
+                                            <Navigate
                                                 to={`/${homePagePath.join('/')}`}
+                                                replace
                                             />
-                                        )}
+                                        }
                                     />
                                     <Route
-                                        path={ENTRIES_ROUTE_PATTERN}
-                                        render={() => (
-                                            <EntriesPage
-                                                ref={entriesRef}
+                                        path="/:filter/:category/:id?"
+                                        element={
+                                            <EntriesFilter
+                                                entriesRef={entriesRef}
                                                 setNavExpanded={setNavExpanded}
                                                 configuration={configuration}
                                                 navSourcesExpanded={
@@ -349,22 +349,19 @@ function PureApp({
                                                     setGlobalUnreadCount
                                                 }
                                             />
-                                        )}
+                                        }
                                     />
                                     <Route
-                                        path="/manage/sources"
-                                        render={() => <SourcesPage />}
+                                        path="/manage/sources/add?"
+                                        element={<SourcesPage />}
                                     />
-                                    <Route
-                                        path="*"
-                                        render={() => <NotFound />}
-                                    />
-                                </Switch>
+                                    <Route path="*" element={<NotFound />} />
+                                </Routes>
                             </div>
                         </CheckAuthorization>
-                    )}
+                    }
                 />
-            </Switch>
+            </Routes>
         </React.StrictMode>
     );
 }
@@ -386,6 +383,43 @@ PureApp.propTypes = {
     setSources: PropTypes.func.isRequired,
     tags: PropTypes.arrayOf(PropTypes.object).isRequired,
     reloadAll: PropTypes.func.isRequired,
+};
+
+// Work around for regex patterns not being supported
+// https://github.com/remix-run/react-router/issues/8254
+function EntriesFilter({
+    entriesRef,
+    setNavExpanded,
+    configuration,
+    navSourcesExpanded,
+    unreadItemsCount,
+    setGlobalUnreadCount,
+}) {
+    const params = useEntriesParams();
+
+    if (params === null) {
+        return <NotFound />;
+    }
+
+    return (
+        <EntriesPage
+            ref={entriesRef}
+            setNavExpanded={setNavExpanded}
+            configuration={configuration}
+            navSourcesExpanded={navSourcesExpanded}
+            unreadItemsCount={unreadItemsCount}
+            setGlobalUnreadCount={setGlobalUnreadCount}
+        />
+    );
+}
+
+EntriesFilter.propTypes = {
+    entriesRef: PropTypes.func.isRequired,
+    configuration: PropTypes.object.isRequired,
+    setNavExpanded: PropTypes.func.isRequired,
+    navSourcesExpanded: PropTypes.bool.isRequired,
+    setGlobalUnreadCount: PropTypes.func.isRequired,
+    unreadItemsCount: PropTypes.number.isRequired,
 };
 
 export default class App extends React.Component {
@@ -818,7 +852,15 @@ App.propTypes = {
  */
 export function createApp({ basePath, appRef, configuration }) {
     return (
-        <Router basename={basePath}>
+        <Router
+            basename={basePath}
+            future={{
+                // eslint-disable-next-line camelcase
+                v7_startTransition: true,
+                // eslint-disable-next-line camelcase
+                v7_relativeSplatPath: true,
+            }}
+        >
             <App ref={appRef} configuration={configuration} />
         </Router>
     );

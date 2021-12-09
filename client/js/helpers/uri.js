@@ -1,4 +1,4 @@
-import { generatePath } from 'react-router-dom';
+import { useLocation, useMatch } from 'react-router-dom';
 import { FilterType } from '../Filter';
 
 /**
@@ -36,9 +36,28 @@ export function filterTypeToString(type) {
         return 'starred';
     }
 }
+function generatePath({ filter, category, id }) {
+    return `/${filter}/${category}${id ? `/${id}` : ''}`;
+}
 
-export const ENTRIES_ROUTE_PATTERN =
-    '/:filter(newest|unread|starred)/:category(all|tag-[^/]+|source-[0-9]+)/:id?';
+export function useEntriesParams() {
+    const match = useMatch(':filter/:category/:id?');
+
+    if (match === null) {
+        return null;
+    }
+
+    const { params } = match;
+    const filterValid = /^(newest|unread|starred)$/.test(params.filter);
+    const categoryValid = /^(all|tag-.+|source-[0-9]+)$/.test(params.category);
+    const idValid = params.id === undefined || /^\d+$/.test(params.id);
+
+    if (!filterValid || !idValid || !categoryValid) {
+        return null;
+    }
+
+    return params;
+}
 
 export function makeEntriesLinkLocation(
     location,
@@ -50,13 +69,13 @@ export function makeEntriesLinkLocation(
     if (location.pathname.match(/^\/(newest|unread|starred)\//) !== null) {
         const [, ...segments] = location.pathname.split('/');
 
-        path = generatePath(ENTRIES_ROUTE_PATTERN, {
+        path = generatePath({
             filter: filter ?? segments[0],
             category: category ?? segments[1],
             id: typeof id !== 'undefined' ? id : segments[2],
         });
     } else {
-        path = generatePath(ENTRIES_ROUTE_PATTERN, {
+        path = generatePath({
             // TODO: change default from config
             filter: filter ?? 'unread',
             category: category ?? 'all',
@@ -91,4 +110,9 @@ export function forceReload(location) {
         ...state,
         forceReload: (state.forceReload ?? 0) + 1,
     };
+}
+
+export function useForceReload() {
+    const location = useLocation();
+    return forceReload(location);
 }

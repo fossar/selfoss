@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useInput } from 'rooks';
 import { LoadingState } from '../requests/LoadingState';
 import { HttpError } from '../errors';
@@ -12,7 +12,7 @@ export default function HashPassword({ setTitle }) {
     const [error, setError] = useState(null);
     const passwordEntry = useInput('');
 
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const submit = useCallback(
         (event) => {
@@ -29,7 +29,7 @@ export default function HashPassword({ setTitle }) {
                         error instanceof HttpError &&
                         error.response.status === 403
                     ) {
-                        history.push('/sign/in', {
+                        navigate('/sign/in', {
                             error: 'Generating a new password hash requires being logged in or not setting “password” in selfoss configuration.',
                             returnLocation: '/password',
                         });
@@ -39,7 +39,7 @@ export default function HashPassword({ setTitle }) {
                     setState(LoadingState.ERROR);
                 });
         },
-        [history, passwordEntry.value],
+        [navigate, passwordEntry.value],
     );
 
     useEffect(() => {

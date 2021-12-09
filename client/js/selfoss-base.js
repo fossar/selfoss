@@ -281,7 +281,7 @@ const selfoss = {
             await logout();
 
             if (!selfoss.config.publicMode) {
-                selfoss.history.push('/sign/in');
+                selfoss.navigate('/sign/in');
             }
         } catch (error) {
             selfoss.app.showError(

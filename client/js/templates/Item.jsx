@@ -7,14 +7,14 @@ import React, {
     useState,
 } from 'react';
 import PropTypes from 'prop-types';
-import { Link, useHistory, useLocation } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { usePreviousImmediate } from 'rooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
 import { createFocusTrap } from 'focus-trap';
 import { useAllowedToWrite } from '../helpers/authorizations';
 import {
-    forceReload,
+    useForceReload,
     makeEntriesLink,
     makeEntriesLinkLocation,
 } from '../helpers/uri';
@@ -109,15 +109,15 @@ function preventDefaultOnSmartphone(event) {
 }
 
 // Handle closing fullscreen on mobile
-function closeFullScreen({ event, history, location, entryId }) {
+function closeFullScreen({ event, navigate, location, entryId }) {
     event.preventDefault();
     event.stopPropagation();
     selfoss.entriesPage.setEntryExpanded(entryId, false);
-    history.replace(makeEntriesLink(location, { id: null }));
+    navigate(makeEntriesLink(location, { id: null }), { replace: true });
 }
 
 // show/hide entry
-function handleClick({ event, history, location, expanded, id, target }) {
+function handleClick({ event, navigate, location, expanded, id, target }) {
     const expected = selfoss.isMobile() ? '.entry' : '.entry-title';
     if (target !== expected) {
         return;
@@ -129,10 +129,10 @@ function handleClick({ event, history, location, expanded, id, target }) {
     if (expanded) {
         selfoss.entriesPage.setSelectedEntry(id);
         selfoss.entriesPage.deactivateEntry(id);
-        history.replace(makeEntriesLink(location, { id: null }));
+        navigate(makeEntriesLink(location, { id: null }), { replace: true });
     } else {
         selfoss.entriesPage.activateEntry(id);
-        history.replace(makeEntriesLink(location, { id }));
+        navigate(makeEntriesLink(location, { id }), { replace: true });
     }
 }
 
@@ -198,17 +198,16 @@ function ItemTag({ tag, color }) {
         [color],
     );
 
-    const link = useCallback(
-        (location) => ({
-            ...location,
-            ...makeEntriesLinkLocation(location, {
+    const location = useLocation();
+    const link = useMemo(
+        () =>
+            makeEntriesLinkLocation(location, {
                 category: `tag-${tag}`,
                 id: null,
             }),
-            state: forceReload(location),
-        }),
-        [tag],
+        [tag, location],
     );
+    const forceReload = useForceReload();
 
     return (
         <Link
@@ -216,6 +215,7 @@ function ItemTag({ tag, color }) {
             style={style}
             to={link}
             onClick={preventDefaultOnSmartphone}
+            state={forceReload}
         >
             {tag}
         </Link>
@@ -263,7 +263,7 @@ export default function Item({
     const contentBlock = useRef(null);
 
     const location = useLocation();
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const relDate = useMemo(
         () => datetimeRelative(currentTime, item.datetime),
@@ -395,26 +395,26 @@ export default function Item({
         (event) =>
             handleClick({
                 event,
-                history,
+                navigate,
                 location,
                 expanded,
                 id: item.id,
                 target: '.entry',
             }),
-        [history, location, expanded, item.id],
+        [navigate, location, expanded, item.id],
     );
 
     const titleOnClick = useCallback(
         (event) =>
             handleClick({
                 event,
-                history,
+                navigate,
                 location,
                 expanded,
                 id: item.id,
                 target: '.entry-title',
             }),
-        [history, location, expanded, item.id],
+        [navigate, location, expanded, item.id],
     );
 
     const starOnClick = useCallback(
@@ -442,8 +442,8 @@ export default function Item({
 
     const closeOnClick = useCallback(
         (event) =>
-            closeFullScreen({ event, history, location, entryId: item.id }),
-        [history, location, item.id],
+            closeFullScreen({ event, navigate, location, entryId: item.id }),
+        [navigate, location, item.id],
     );
 
     const titleHtml = useMemo(
@@ -451,17 +451,15 @@ export default function Item({
         [title],
     );
 
-    const sourceLink = useCallback(
-        (location) => ({
-            ...location,
-            ...makeEntriesLinkLocation(location, {
+    const sourceLink = useMemo(
+        () =>
+            makeEntriesLinkLocation(location, {
                 category: `source-${item.source}`,
                 id: null,
             }),
-            state: forceReload(location),
-        }),
-        [item.source],
+        [item.source, location],
     );
+    const forceReload = useForceReload();
 
     const canWrite = useAllowedToWrite();
 
@@ -528,6 +526,7 @@ export default function Item({
                 className="entry-source"
                 to={sourceLink}
                 onClick={preventDefaultOnSmartphone}
+                state={forceReload}
             >
                 {reHighlight(sourcetitle)}
             </Link>

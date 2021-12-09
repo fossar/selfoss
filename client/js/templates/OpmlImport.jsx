@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useOnline } from 'rooks';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { LoadingState } from '../requests/LoadingState';
 import { HttpError, UnexpectedStateError } from '../errors';
 import { importOpml } from '../requests/common';
@@ -11,7 +11,7 @@ export default function OpmlImport({ setTitle }) {
     const [message, setMessage] = useState(null);
     const fileEntry = useRef();
 
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const submit = useCallback(
         (event) => {
@@ -74,7 +74,7 @@ export default function OpmlImport({ setTitle }) {
                         error instanceof HttpError &&
                         error.response.status === 403
                     ) {
-                        history.push('/sign/in', {
+                        navigate('/sign/in', {
                             error: 'Importing OPML file requires being logged in or not setting “password” in selfoss configuration.',
                             returnLocation: '/opml',
                         });
@@ -92,7 +92,7 @@ export default function OpmlImport({ setTitle }) {
                     }
                 });
         },
-        [history],
+        [navigate],
     );
 
     useEffect(() => {

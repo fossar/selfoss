@@ -6,7 +6,7 @@ import React, {
     useState,
 } from 'react';
 import PropTypes from 'prop-types';
-import { useLocation, useHistory } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import classNames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { makeEntriesLink } from '../helpers/uri';
@@ -19,7 +19,7 @@ function handleSubmit({
     setActive,
     searchField,
     searchText,
-    history,
+    navigate,
     location,
     setNavExpanded,
 }) {
@@ -30,7 +30,7 @@ function handleSubmit({
         return;
     }
 
-    history.push(makeEntriesLink(location, { search: searchText, id: null }));
+    navigate(makeEntriesLink(location, { search: searchText, id: null }));
     setActive(false);
     searchField.current.blur();
 
@@ -48,7 +48,7 @@ function handleFieldKeyUp({ event, searchButton, searchRemoveButton }) {
 }
 
 // remove button of search
-function handleRemove({ setActive, searchField, history, location }) {
+function handleRemove({ setActive, searchField, navigate, location }) {
     const queryString = new URLSearchParams(location.search);
     const oldTerm = queryString.get('search');
 
@@ -59,7 +59,7 @@ function handleRemove({ setActive, searchField, history, location }) {
         return;
     }
 
-    history.push(makeEntriesLink(location, { search: '', id: null }));
+    navigate(makeEntriesLink(location, { search: '', id: null }));
 }
 
 export default function NavSearch({ setNavExpanded, offlineState }) {
@@ -70,7 +70,7 @@ export default function NavSearch({ setNavExpanded, offlineState }) {
     const searchRemoveButton = useRef(null);
 
     const location = useLocation();
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const queryString = new URLSearchParams(location.search);
     const oldTerm = queryString.get('search') ?? '';
@@ -96,9 +96,9 @@ export default function NavSearch({ setNavExpanded, offlineState }) {
         [],
     );
 
-    const removeOnClick = useCallback(
-        () => handleRemove({ setActive, searchField, history, location }),
-        [history, location],
+    const removeOnClick = React.useCallback(
+        () => handleRemove({ setActive, searchField, navigate, location }),
+        [navigate, location],
     );
 
     const searchOnClick = useCallback(
@@ -108,11 +108,11 @@ export default function NavSearch({ setNavExpanded, offlineState }) {
                 setActive,
                 searchField,
                 searchText,
-                history,
+                navigate,
                 location,
                 setNavExpanded,
             }),
-        [active, searchText, history, location, setNavExpanded],
+        [active, searchText, navigate, location, setNavExpanded],
     );
 
     const _ = useContext(LocalizationContext);

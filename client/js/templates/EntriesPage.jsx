@@ -7,13 +7,7 @@ import React, {
     forwardRef,
 } from 'react';
 import PropTypes from 'prop-types';
-import {
-    Link,
-    useHistory,
-    useLocation,
-    useParams,
-    useRouteMatch,
-} from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import { useOnline } from 'rooks';
 import { useStateWithDeps } from 'use-state-with-deps';
 import nullable from 'prop-types-nullable';
@@ -32,17 +26,14 @@ import { ConfigurationContext } from '../helpers/configuration';
 import { autoScroll, Direction } from '../helpers/navigation';
 import { LocalizationContext } from '../helpers/i18n';
 import { useShouldReload } from '../helpers/hooks';
-import {
-    ENTRIES_ROUTE_PATTERN,
-    forceReload,
-    makeEntriesLinkLocation,
-} from '../helpers/uri';
+import { forceReload, makeEntriesLinkLocation } from '../helpers/uri';
 import { HttpError } from '../errors';
+import { useNavigate } from 'react-router-dom';
 
 function reloadList({
     fetchParams,
     abortController,
-    history,
+    navigate,
     append = false,
     waitForSync = true,
     configuration,
@@ -146,7 +137,7 @@ function reloadList({
                     error instanceof HttpError &&
                     error.response.status === 403
                 ) {
-                    history.push('/sign/in', {
+                    navigate('/sign/in', {
                         error: selfoss.app._('error_session_expired'),
                     });
                     return;
@@ -238,8 +229,8 @@ export function EntriesPage({
     const allowedToWrite = useAllowedToWrite();
     const configuration = useContext(ConfigurationContext);
 
-    const history = useHistory();
     const location = useLocation();
+    const navigate = useNavigate();
     const forceReload = useShouldReload();
     const searchText = useMemo(() => {
         const queryString = new URLSearchParams(location.search);
@@ -306,7 +297,7 @@ export function EntriesPage({
                 fromId,
             },
             abortController,
-            history,
+            navigate,
             append,
             configuration,
             // We do not want to focus the entry on successive loads.
@@ -334,7 +325,7 @@ export function EntriesPage({
         };
     }, [
         configuration,
-        history,
+        navigate,
         params.filter,
         currentTag,
         currentSource,
@@ -769,30 +760,27 @@ class StateHolder extends React.Component {
     }
 
     getActiveTag() {
-        if (!this.props.match) {
+        const category = this.props.params?.category;
+        if (!category) {
             return null;
         }
-        const { params } = this.props.match;
-        return params.category?.startsWith('tag-')
-            ? params.category.replace(/^tag-/, '')
+        return category.startsWith('tag-')
+            ? category.replace(/^tag-/, '')
             : null;
     }
 
     getActiveSource() {
-        if (!this.props.match) {
+        const category = this.props.params?.category;
+        if (!category) {
             return null;
         }
-        const { params } = this.props.match;
-        return params.category?.startsWith('source-')
-            ? parseInt(params.category.replace(/^source-/, ''), 10)
+        return category.startsWith('source-')
+            ? parseInt(category.replace(/^source-/, ''), 10)
             : null;
     }
 
     getActiveFilter() {
-        if (!this.props.match) {
-            return null;
-        }
-        return this.props.match.params.filter;
+        return this.props.params?.filter;
     }
 
     /**
@@ -837,7 +825,7 @@ class StateHolder extends React.Component {
         this.setExpandedEntries({});
         this.props.setNavExpanded(false);
 
-        if (this.props.match.params.filter === FilterType.UNREAD) {
+        if (this.props.params.filter === FilterType.UNREAD) {
             markedEntries = [];
         }
 
@@ -902,8 +890,12 @@ class StateHolder extends React.Component {
                             error instanceof HttpError &&
                             error.response.status === 403
                         ) {
-                            this.props.history.push('/sign/in', {
-                                error: selfoss.app._('error_session_expired'),
+                            this.props.navigate('/sign/in', {
+                                state: {
+                                    error: selfoss.app._(
+                                        'error_session_expired',
+                                    ),
+                                },
                             });
                             return;
                         }
@@ -983,8 +975,12 @@ class StateHolder extends React.Component {
                             error instanceof HttpError &&
                             error.response.status === 403
                         ) {
-                            this.props.history.push('/sign/in', {
-                                error: selfoss.app._('error_session_expired'),
+                            this.props.navigate('/sign/in', {
+                                state: {
+                                    error: selfoss.app._(
+                                        'error_session_expired',
+                                    ),
+                                },
                             });
                             return;
                         }
@@ -1052,8 +1048,12 @@ class StateHolder extends React.Component {
                             error instanceof HttpError &&
                             error.response.status === 403
                         ) {
-                            this.props.history.push('/sign/in', {
-                                error: selfoss.app._('error_session_expired'),
+                            this.props.navigate('/sign/in', {
+                                state: {
+                                    error: selfoss.app._(
+                                        'error_session_expired',
+                                    ),
+                                },
                             });
                             return;
                         }
@@ -1074,11 +1074,14 @@ class StateHolder extends React.Component {
         /**
          * HACK: A counter that is increased every time reload action (r key) is triggered.
          */
-        this.props.history.replace({
-            ...this.props.location,
-            ...makeEntriesLinkLocation(this.props.location, { id: null }),
-            state: forceReload(this.props.location),
-        });
+        this.props.navigate(
+            {
+                ...this.props.location,
+                ...makeEntriesLinkLocation(this.props.location, { id: null }),
+                state: forceReload(this.props.location),
+            },
+            { replace: true },
+        );
     }
 
     /**
@@ -1243,9 +1246,9 @@ class StateHolder extends React.Component {
 
 StateHolder.propTypes = {
     configuration: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
-    match: PropTypes.object.isRequired,
+    navigate: PropTypes.func.isRequired,
+    params: PropTypes.object.isRequired,
     setNavExpanded: PropTypes.func.isRequired,
     navSourcesExpanded: PropTypes.bool.isRequired,
     setGlobalUnreadCount: PropTypes.func.isRequired,
@@ -1262,16 +1265,16 @@ const StateHolderOuter = forwardRef(function StateHolderOuter(
     },
     ref,
 ) {
-    const history = useHistory();
     const location = useLocation();
-    const match = useRouteMatch(ENTRIES_ROUTE_PATTERN);
+    const navigate = useNavigate();
+    const params = useParams();
 
     return (
         <StateHolder
             ref={ref}
-            history={history}
             location={location}
-            match={match}
+            navigate={navigate}
+            params={params}
             configuration={configuration}
             setNavExpanded={setNavExpanded}
             navSourcesExpanded={navSourcesExpanded}

@@ -1,7 +1,6 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useMemo } from 'react';
-import { Prompt } from 'react-router';
-import { Link, useHistory, useLocation, useRouteMatch } from 'react-router-dom';
+import { Link, useNavigate, useLocation, useMatch } from 'react-router-dom';
 import Source from './Source';
 import { SpinnerBig } from './Spinner';
 import { LoadingState } from '../requests/LoadingState';
@@ -49,8 +48,8 @@ function handleAddSource({
 // load sources
 function loadSources({
     abortController,
-    history,
     location,
+    navigate,
     setSpouts,
     setSources,
     setLoadingState,
@@ -96,8 +95,10 @@ function loadSources({
                     error instanceof HttpError &&
                     error.response.status === 403
                 ) {
-                    history.push('/sign/in', {
-                        error: selfoss.app._('error_session_expired'),
+                    navigate('/sign/in', {
+                        state: {
+                            error: selfoss.app._('error_session_expired'),
+                        },
                     });
                     return;
                 }
@@ -119,17 +120,17 @@ export default function SourcesPage() {
 
     const forceReload = useShouldReload();
 
-    const history = useHistory();
+    const navigate = useNavigate();
     const location = useLocation();
-    const isAdding = useRouteMatch('/manage/sources/add');
+    const isAdding = useMatch('/manage/sources/add');
 
     useEffect(() => {
         const abortController = new AbortController();
 
         loadSources({
             abortController,
-            history,
             location,
+            navigate,
             setSpouts,
             setSources,
             setLoadingState,
@@ -148,7 +149,7 @@ export default function SourcesPage() {
                 });
 
                 // Clear the value from the state so it does not bug us forever.
-                history.replace('/manage/sources');
+                navigate('/manage/sources');
             }
         });
 
@@ -157,7 +158,7 @@ export default function SourcesPage() {
         };
     }, [
         forceReload,
-        // location.search and history are intentionally omitted
+        // location.search and navigate are intentionally omitted
         // to prevent reloading when the presets are cleaned from the URL.
     ]);
 
@@ -169,10 +170,17 @@ export default function SourcesPage() {
     const _ = useContext(LocalizationContext);
 
     const [dirtySources, setDirtySources] = useState({});
+    // eslint-disable-next-line no-unused-vars
     const isDirty = useMemo(
         () => Object.values(dirtySources).includes(true),
         [dirtySources],
     );
+
+    // TODO: Error: useBlocker must be used within a data router.  See https://reactrouter.com/v6/routers/picking-a-router.
+    // usePrompt({
+    //     when: isDirty,
+    //     message: _('sources_leaving_unsaved_prompt'),
+    // });
 
     if (loadingState === LoadingState.LOADING) {
         return <SpinnerBig label={_('sources_loading')} />;
@@ -184,11 +192,6 @@ export default function SourcesPage() {
 
     return (
         <React.Fragment>
-            <Prompt
-                when={isDirty}
-                message={_('sources_leaving_unsaved_prompt')}
-            />
-
             <button className="source-add" onClick={addOnClick}>
                 {_('source_add')}
             </button>
