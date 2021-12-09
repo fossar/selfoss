@@ -167,7 +167,7 @@ export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, f
     // but do not re-fetch when the id in the URI changes later
     // since that happens when reading.
     const initialItemId = React.useMemo(() => {
-        return params.id;
+        return parseInt(params.id, 10);
     }, [params.filter, currentTag, currentSource, searchText, forceReload]);
     // Same for the state of navigation being expanded.
     // It is only passed to the API request as a part of optimization scheme
