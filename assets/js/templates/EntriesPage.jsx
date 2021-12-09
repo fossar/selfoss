@@ -480,6 +480,8 @@ export default class StateHolder extends React.Component {
     activateEntry(id) {
         const entry = document.querySelector(`.entry[data-entry-id="${id}"]`);
 
+        this.setSelectedEntry(id);
+
         if (!this.isEntryExpanded(id)) {
             entry.querySelector('.entry-title > .entry-title-link').click();
         }
