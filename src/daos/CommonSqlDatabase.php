@@ -11,7 +11,7 @@ trait CommonSqlDatabase {
      * @return ResultSet
      */
     public function query($sql, ...$params) {
-        return $this->connection->exec($sql, ...$params);
+        return $this->connection->query($sql, ...$params);
     }
 
     public function quote($value, $type = \PDO::PARAM_STR) {
@@ -24,7 +24,7 @@ trait CommonSqlDatabase {
      * @return void
      */
     public function beginTransaction() {
-        $this->connection->begin();
+        $this->connection->beginTransaction();
     }
 
     /**
@@ -46,8 +46,8 @@ trait CommonSqlDatabase {
     }
 
     public function getSchemaVersion() {
-        $version = @$this->exec('SELECT version FROM ' . $this->configuration->dbPrefix . 'version ORDER BY version DESC LIMIT 1');
+        $version = $this->query('SELECT version FROM ' . $this->configuration->dbPrefix . 'version ORDER BY version DESC LIMIT 1');
 
-        return (int) $version[0]['version'];
+        return $version->fetch()['version'];
     }
 }

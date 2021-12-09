@@ -3,6 +3,7 @@
 namespace daos\sqlite;
 
 use daos\CommonSqlDatabase;
+use helpers\Configuration;
 use Monolog\Logger;
 
 /**
@@ -16,6 +17,9 @@ use Monolog\Logger;
 class Database implements \daos\DatabaseInterface {
     use CommonSqlDatabase;
 
+    /** @var Configuration configuration */
+    private $configuration;
+
     /** @var \Nette\Database\Connection database connection */
     private $connection;
 
@@ -27,7 +31,8 @@ class Database implements \daos\DatabaseInterface {
      *
      * @return  void
      */
-    public function __construct(\Nette\Database\Connection $connection, Logger $logger) {
+    public function __construct(Configuration $configuration, \Nette\Database\Connection $connection, Logger $logger) {
+        $this->configuration = $configuration;
         $this->connection = $connection;
 
         // Define regexp function for SQLite
@@ -57,7 +62,7 @@ class Database implements \daos\DatabaseInterface {
             $this->logger->debug('Creating items table');
 
             $this->beginTransaction();
-            $this->exec('
+            $this->query('
                 CREATE TABLE items (
                     id          INTEGER PRIMARY KEY AUTOINCREMENT,
                     datetime    DATETIME NOT NULL,
@@ -75,12 +80,12 @@ class Database implements \daos\DatabaseInterface {
                 );
             ');
 
-            $this->exec('
+            $this->query('
                 CREATE INDEX source ON items (
                     source
                 );
             ');
-            $this->exec('
+            $this->query('
                 CREATE TRIGGER update_updatetime_trigger
                 AFTER UPDATE ON items FOR EACH ROW
                     BEGIN
@@ -96,7 +101,7 @@ class Database implements \daos\DatabaseInterface {
         if (!in_array('sources', $tables, true)) {
             $this->logger->debug('Creating sources table');
 
-            $this->exec('
+            $this->query('
                 CREATE TABLE sources (
                     id          INTEGER PRIMARY KEY AUTOINCREMENT,
                     title       TEXT NOT NULL,
@@ -117,17 +122,17 @@ class Database implements \daos\DatabaseInterface {
             $this->logger->debug('Upgrading database schema to version 8 from initial state');
 
             $this->beginTransaction();
-            $this->exec('
+            $this->query('
                 CREATE TABLE version (
                     version INT
                 );
             ');
 
-            $this->exec('
+            $this->query('
                 INSERT INTO version (version) VALUES (8);
             ');
 
-            $this->exec('
+            $this->query('
                 CREATE TABLE tags (
                     tag         TEXT NOT NULL,
                     color       TEXT NOT NULL
@@ -135,7 +140,7 @@ class Database implements \daos\DatabaseInterface {
             ');
 
             if ($isNewestSourcesTable === false) {
-                $this->exec('
+                $this->query('
                     ALTER TABLE sources ADD tags TEXT;
                 ');
             }
@@ -148,10 +153,10 @@ class Database implements \daos\DatabaseInterface {
             $this->logger->debug('Upgrading database schema to version 3');
 
             $this->beginTransaction();
-            $this->exec('
+            $this->query('
                 ALTER TABLE sources ADD lastupdate INT;
             ');
-            $this->exec('
+            $this->query('
                 INSERT INTO version (version) VALUES (3);
             ');
             $this->commit();
@@ -160,10 +165,10 @@ class Database implements \daos\DatabaseInterface {
             $this->logger->debug('Upgrading database schema to version 4');
 
             $this->beginTransaction();
-            $this->exec('
+            $this->query('
                 ALTER TABLE items ADD updatetime DATETIME;
             ');
-            $this->exec('
+            $this->query('
                 CREATE TRIGGER insert_updatetime_trigger
                 AFTER INSERT ON items FOR EACH ROW
                     BEGIN
@@ -172,7 +177,7 @@ class Database implements \daos\DatabaseInterface {
                         WHERE id = NEW.id;
                     END;
             ');
-            $this->exec('
+            $this->query('
                 CREATE TRIGGER update_updatetime_trigger
                 AFTER UPDATE ON items FOR EACH ROW
                     BEGIN
@@ -181,7 +186,7 @@ class Database implements \daos\DatabaseInterface {
                         WHERE id = NEW.id;
                     END;
             ');
-            $this->exec('
+            $this->query('
                 INSERT INTO version (version) VALUES (4);
             ');
             $this->commit();
@@ -190,10 +195,10 @@ class Database implements \daos\DatabaseInterface {
             $this->logger->debug('Upgrading database schema to version 5');
 
             $this->beginTransaction();
-            $this->exec('
+            $this->query('
                 ALTER TABLE items ADD author VARCHAR(255);
             ');
-            $this->exec('
+            $this->query('
                 INSERT INTO version (version) VALUES (5);
             ');
             $this->commit();
@@ -202,10 +207,10 @@ class Database implements \daos\DatabaseInterface {
             $this->logger->debug('Upgrading database schema to version 6');
 
             $this->beginTransaction();
-            $this->exec('
+            $this->query('
                 ALTER TABLE sources ADD filter TEXT;
             ');
-            $this->exec('
+            $this->query('
                 INSERT INTO version (version) VALUES (6);
             ');
             $this->commit();
@@ -217,10 +222,10 @@ class Database implements \daos\DatabaseInterface {
             $this->logger->debug('Upgrading database schema to version 8');
 
             $this->beginTransaction();
-            $this->exec('
+            $this->query('
                 ALTER TABLE sources ADD lastentry INT;
             ');
-            $this->exec('
+            $this->query('
                 INSERT INTO version (version) VALUES (8);
             ');
 
@@ -231,10 +236,10 @@ class Database implements \daos\DatabaseInterface {
             $this->logger->debug('Upgrading database schema to version 9');
 
             $this->beginTransaction();
-            $this->exec('
+            $this->query('
                 ALTER TABLE items ADD shared BOOL;
             ');
-            $this->exec('
+            $this->query('
                 INSERT INTO version (version) VALUES (9);
             ');
             $this->commit();
@@ -245,7 +250,7 @@ class Database implements \daos\DatabaseInterface {
             $this->beginTransaction();
             // Table needs to be re-created because ALTER TABLE is rather limited.
             // https://sqlite.org/lang_altertable.html#otheralter
-            $this->exec(
+            $this->query(
                 'CREATE TABLE new_items (
                     id          INTEGER PRIMARY KEY AUTOINCREMENT,
                     datetime    DATETIME NOT NULL,
@@ -264,12 +269,12 @@ class Database implements \daos\DatabaseInterface {
                     lastseen    DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
                 )'
             );
-            $this->exec('UPDATE items SET updatetime = datetime WHERE updatetime IS NULL');
-            $this->exec('INSERT INTO new_items SELECT *, CURRENT_TIMESTAMP FROM items');
-            $this->exec('DROP TABLE items');
-            $this->exec('ALTER TABLE new_items RENAME TO items');
-            $this->exec('CREATE INDEX source ON items (source)');
-            $this->exec('
+            $this->query('UPDATE items SET updatetime = datetime WHERE updatetime IS NULL');
+            $this->query('INSERT INTO new_items SELECT *, CURRENT_TIMESTAMP FROM items');
+            $this->query('DROP TABLE items');
+            $this->query('ALTER TABLE new_items RENAME TO items');
+            $this->query('CREATE INDEX source ON items (source)');
+            $this->query('
                 CREATE TRIGGER update_updatetime_trigger
                     AFTER UPDATE ON items FOR EACH ROW
                         WHEN (
@@ -282,15 +287,15 @@ class Database implements \daos\DatabaseInterface {
                             WHERE id = NEW.id;
                         END
             ');
-            $this->exec('INSERT INTO version (version) VALUES (11)');
+            $this->query('INSERT INTO version (version) VALUES (11)');
             $this->commit();
         }
         if ($version < 13) {
             $this->logger->debug('Upgrading database schema to version 13');
 
             $this->beginTransaction();
-            $this->exec("UPDATE sources SET spout = 'spouts\\rss\\fulltextrss' WHERE spout = 'spouts\\rss\\instapaper'");
-            $this->exec('INSERT INTO version (version) VALUES (13)');
+            $this->query("UPDATE sources SET spout = 'spouts\\rss\\fulltextrss' WHERE spout = 'spouts\\rss\\instapaper'");
+            $this->query('INSERT INTO version (version) VALUES (13)');
             $this->commit();
         }
     }
@@ -304,10 +309,11 @@ class Database implements \daos\DatabaseInterface {
      * @return int id after insert
      */
     public function insert($query, array $params) {
-        $this->exec($query, $params);
-        $res = $this->exec('SELECT last_insert_rowid() as lastid');
-
-        return (int) $res[0]['lastid'];
+        $this->query($query, $params);
+        $res = $this->query('SELECT last_insert_rowid() as lastid');
+        $lastid = $res->fetch()['lastid']
+        var_dump($lastid);
+        return $lastid;
     }
 
     /**
@@ -316,7 +322,7 @@ class Database implements \daos\DatabaseInterface {
      * @return  void
      */
     public function optimize() {
-        @$this->exec('
+        @$this->query('
             VACUUM;
         ');
     }
@@ -327,19 +333,19 @@ class Database implements \daos\DatabaseInterface {
      * @return void
      */
     private function initLastEntryFieldDuringUpgrade() {
-        $sources = @$this->exec('SELECT id FROM sources');
+        $sources = @$this->query('SELECT id FROM sources');
 
         // have a look at each entry in the source table
         foreach ($sources as $current_src) {
             // get the date of the newest entry found in the database
-            $latestEntryDate = @$this->exec(
+            $latestEntryDate = @$this->query(
                 'SELECT datetime FROM items WHERE source=? ORDER BY datetime DESC LIMIT 0, 1',
                 $current_src['id']
             );
 
             // if an entry for this source was found in the database, write the date of the newest one into the sources table
             if (isset($latestEntryDate[0]['datetime'])) {
-                @$this->exec(
+                @$this->query(
                     'UPDATE sources SET lastentry=? WHERE id=?',
                     strtotime($latestEntryDate[0]['datetime']),
                     $current_src['id']

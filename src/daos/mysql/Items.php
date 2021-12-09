@@ -54,7 +54,7 @@ class Items implements \daos\ItemsInterface {
         }
 
         // i used string concatenation after validating $id
-        $this->database->exec('UPDATE ' . $this->configuration->dbPrefix . "items SET unread=? WHERE id IN ($id)", false);
+        $this->database->query('UPDATE ' . $this->configuration->dbPrefix . "items SET unread=? WHERE id IN ($id)", false);
     }
 
     /**
@@ -70,7 +70,7 @@ class Items implements \daos\ItemsInterface {
         } elseif (!is_numeric($id)) {
             return;
         }
-        $this->database->exec('UPDATE ' . $this->configuration->dbPrefix . "items SET unread=? WHERE id IN ($id)", true);
+        $this->database->query('UPDATE ' . $this->configuration->dbPrefix . "items SET unread=? WHERE id IN ($id)", true);
     }
 
     /**
@@ -81,10 +81,16 @@ class Items implements \daos\ItemsInterface {
      * @return void
      */
     public function starr($id) {
-        $this->database->exec('UPDATE ' . $this->configuration->dbPrefix . 'items SET starred=:bool WHERE id=:id', [
-            ':bool' => true,
-            ':id' => $id,
-        ]);
+        $this->database->query(
+            'UPDATE ' . $this->configuration->dbPrefix . 'items SET',
+            [
+                'starred' => true,
+            ],
+            'WHERE',
+            [
+                'id' => $id,
+            ]
+        );
     }
 
     /**
@@ -95,10 +101,16 @@ class Items implements \daos\ItemsInterface {
      * @return void
      */
     public function unstarr($id) {
-        $this->database->exec('UPDATE ' . $this->configuration->dbPrefix . 'items SET starred=:bool WHERE id=:id', [
-            ':bool' => false,
-            ':id' => $id,
-        ]);
+        $this->database->query((
+            'UPDATE ' . $this->configuration->dbPrefix . 'items SET',
+            [
+                'starred' => false,
+            ],
+            'WHERE',
+            [
+                'id' => $id,
+            ]
+        );
     }
 
     /**
@@ -109,44 +121,19 @@ class Items implements \daos\ItemsInterface {
      * @return void
      */
     public function add($values) {
-        $this->database->exec('INSERT INTO ' . $this->configuration->dbPrefix . 'items (
-                    datetime,
-                    title,
-                    content,
-                    unread,
-                    starred,
-                    source,
-                    thumbnail,
-                    icon,
-                    uid,
-                    link,
-                    author
-                  ) VALUES (
-                    :datetime,
-                    :title,
-                    :content,
-                    :unread,
-                    :starred,
-                    :source,
-                    :thumbnail,
-                    :icon,
-                    :uid,
-                    :link,
-                    :author
-                  )',
-                 [
-                    ':datetime' => $values['datetime'],
-                    ':title' => $values['title'],
-                    ':content' => $values['content'],
-                    ':thumbnail' => $values['thumbnail'],
-                    ':icon' => $values['icon'],
-                    ':unread' => 1,
-                    ':starred' => 0,
-                    ':source' => $values['source'],
-                    ':uid' => $values['uid'],
-                    ':link' => $values['link'],
-                    ':author' => $values['author'],
-                 ]);
+        $this->database->query('INSERT INTO ' . $this->configuration->dbPrefix . 'items', [
+            'datetime' => $values['datetime'],
+            'title' => $values['title'],
+            'content' => $values['content'],
+            'thumbnail' => $values['thumbnail'],
+            'icon' => $values['icon'],
+            'unread' => true,
+            'starred' => false,
+            'source' => $values['source'],
+            'uid' => $values['uid'],
+            'link' => $values['link'],
+            'author' => $values['author'],
+         ]);
     }
 
     /**
@@ -158,10 +145,9 @@ class Items implements \daos\ItemsInterface {
      * @return bool
      */
     public function exists($uid) {
-        $res = $this->database->exec('SELECT COUNT(*) AS amount FROM ' . $this->configuration->dbPrefix . 'items WHERE uid=:uid',
-            [':uid' => [$uid, \PDO::PARAM_STR]]);
+        $res = $this->database->query('SELECT COUNT(*) AS amount FROM ' . $this->configuration->dbPrefix . 'items WHERE', ['uid' => $uid]);
 
-        return $res[0]['amount'] > 0;
+        return $res->fetch()['amount'] > 0;
     }
 
     /**
@@ -182,7 +168,7 @@ class Items implements \daos\ItemsInterface {
             $value = $this->database->quote($value);
         });
         $query = 'SELECT id, uid AS uid FROM ' . $this->configuration->dbPrefix . 'items WHERE source = ' . $this->database->quote($sourceId) . ' AND uid IN (' . implode(',', $itemsInFeed) . ')';
-        $res = $this->database->exec($query);
+        $res = $this->database->query($query);
         foreach ($res as $row) {
             $uid = $row['uid'];
             $itemsFound[$uid] = $row['id'];
@@ -200,7 +186,7 @@ class Items implements \daos\ItemsInterface {
      */
     public function updateLastSeen(array $itemIds) {
         $stmt = static::$stmt;
-        $this->database->exec('UPDATE ' . $this->configuration->dbPrefix . 'items SET lastseen = CURRENT_TIMESTAMP
+        $this->database->query('UPDATE ' . $this->configuration->dbPrefix . 'items SET lastseen = CURRENT_TIMESTAMP
             WHERE ' . $stmt::intRowMatches('id', $itemIds));
     }
 
@@ -213,13 +199,12 @@ class Items implements \daos\ItemsInterface {
      */
     public function cleanup(DateTime $date = null) {
         $stmt = static::$stmt;
-        $this->database->exec('DELETE FROM ' . $this->configuration->dbPrefix . 'items
+        $this->database->query('DELETE FROM ' . $this->configuration->dbPrefix . 'items
             WHERE source NOT IN (
                 SELECT id FROM ' . $this->configuration->dbPrefix . 'sources)');
         if ($date !== null) {
-            $this->database->exec('DELETE FROM ' . $this->configuration->dbPrefix . 'items
-                WHERE ' . $stmt::isFalse('starred') . ' AND lastseen<:date',
-                    [':date' => $date->format('Y-m-d') . ' 00:00:00']
+            $this->database->query('DELETE FROM ' . $this->configuration->dbPrefix . 'items
+                WHERE ' . $stmt::isFalse('starred') . ' AND lastseen < ?', $date->format('Y-m-d') . ' 00:00:00'
             );
         }
     }
@@ -233,6 +218,7 @@ class Items implements \daos\ItemsInterface {
      */
     public function get($options = []) {
         $stmt = static::$stmt;
+        $db = $this->database;
         $params = [];
         $where = [$stmt::bool(true)];
         $order = 'DESC';
@@ -254,11 +240,11 @@ class Items implements \daos\ItemsInterface {
         if (isset($options['search']) && strlen($options['search']) > 0) {
             if (preg_match('#^/(?P<regex>.+)/$#', $options['search'], $matches)) {
                 $params[':search'] = $params[':search2'] = $params[':search3'] = [$matches['regex'], \PDO::PARAM_STR];
-                $where[] = $stmt::exprOr($stmt::matchesRegex('items.title', ':search'), $stmt::matchesRegex('items.content', ':search2'), $stmt::matchesRegex('sources.title', ':search3'));
+                $where[] = $db::literal('?or', $db::literal($stmt::matchesRegex('items.title', '?')), $stmt::matchesRegex('items.content', '?'), $stmt::matchesRegex('sources.title', '?'));
             } else {
                 $search = implode('%', \helpers\Search::splitTerms($options['search']));
-                $params[':search'] = $params[':search2'] = $params[':search3'] = ['%' . $search . '%', \PDO::PARAM_STR];
-                $where[] = '(items.title LIKE :search OR items.content LIKE :search2 OR sources.title LIKE :search3) ';
+                $searchPattern = $db::literal('%' . $search . '%');
+                $where[] = $db::literal('(items.title LIKE ? OR items.content LIKE ? OR sources.title LIKE ?) ', $searchPattern, $searchPattern, $searchPattern);
             }
         }
 
@@ -342,11 +328,11 @@ class Items implements \daos\ItemsInterface {
         }
 
         // first check whether more items are available
-        $result = $this->database->exec('SELECT items.id
+        $result = $this->database->query('SELECT items.id
                    FROM ' . $this->configuration->dbPrefix . 'items AS items, ' . $this->configuration->dbPrefix . 'sources AS sources
                    WHERE items.source=sources.id AND ' . $where_sql . '
                    LIMIT 1 OFFSET ' . ($options['offset'] + $options['items']), $params);
-        $this->hasMore = count($result) > 0;
+        $this->hasMore = $result->getRowCount() > 0;
 
         // get items from database
         $select = 'SELECT
@@ -374,14 +360,14 @@ class Items implements \daos\ItemsInterface {
             $query = "$select $where_sql $order_sql LIMIT " . $options['items'] . ' OFFSET ' . $options['offset'];
         }
 
-        return $stmt::ensureRowTypes($this->database->exec($query, $params), [
-            'id' => DatabaseInterface::PARAM_INT,
-            'datetime' => DatabaseInterface::PARAM_DATETIME,
-            'unread' => DatabaseInterface::PARAM_BOOL,
-            'starred' => DatabaseInterface::PARAM_BOOL,
-            'source' => DatabaseInterface::PARAM_INT,
+        return $stmt::ensureRowTypes($this->database->query($query, $params), [
+            // 'id' => DatabaseInterface::PARAM_INT,
+            // 'datetime' => DatabaseInterface::PARAM_DATETIME,
+            // 'unread' => DatabaseInterface::PARAM_BOOL,
+            // 'starred' => DatabaseInterface::PARAM_BOOL,
+            // 'source' => DatabaseInterface::PARAM_INT,
             'tags' => DatabaseInterface::PARAM_CSV,
-            'updatetime' => DatabaseInterface::PARAM_DATETIME,
+            // 'updatetime' => DatabaseInterface::PARAM_DATETIME,
         ]);
     }
 
@@ -426,7 +412,7 @@ class Items implements \daos\ItemsInterface {
             'since' => [$since->format('Y-m-d H:i:s'), \PDO::PARAM_STR],
         ];
 
-        return $stmt::ensureRowTypes($this->database->exec($query, $params), [
+        return $stmt::ensureRowTypes($this->database->query($query, $params), [
             'id' => DatabaseInterface::PARAM_INT,
             'datetime' => DatabaseInterface::PARAM_DATETIME,
             'unread' => DatabaseInterface::PARAM_BOOL,
@@ -445,7 +431,7 @@ class Items implements \daos\ItemsInterface {
     public function lowestIdOfInterest() {
         $stmt = static::$stmt;
         $lowest = $stmt::ensureRowTypes(
-            $this->database->exec(
+            $this->database->query(
                 'SELECT id FROM ' . $this->configuration->dbPrefix . 'items AS items
                  WHERE ' . $stmt::isTrue('unread') .
                     ' OR ' . $stmt::isTrue('starred') .
@@ -467,7 +453,7 @@ class Items implements \daos\ItemsInterface {
     public function lastId() {
         $stmt = static::$stmt;
         $lastId = $stmt::ensureRowTypes(
-            $this->database->exec(
+            $this->database->query(
                 'SELECT id FROM ' . $this->configuration->dbPrefix . 'items AS items
                  ORDER BY id DESC LIMIT 1'),
             ['id' => DatabaseInterface::PARAM_INT]
@@ -486,7 +472,7 @@ class Items implements \daos\ItemsInterface {
      */
     public function getThumbnails() {
         $thumbnails = [];
-        $result = $this->database->exec('SELECT thumbnail
+        $result = $this->database->query('SELECT thumbnail
                    FROM ' . $this->configuration->dbPrefix . 'items
                    WHERE thumbnail!=""');
         foreach ($result as $thumb) {
@@ -503,7 +489,7 @@ class Items implements \daos\ItemsInterface {
      */
     public function getIcons() {
         $icons = [];
-        $result = $this->database->exec('SELECT icon
+        $result = $this->database->query('SELECT icon
                    FROM ' . $this->configuration->dbPrefix . 'items
                    WHERE icon!=""');
         foreach ($result as $icon) {
@@ -521,11 +507,11 @@ class Items implements \daos\ItemsInterface {
      * @return bool true if thumbnail is still in use
      */
     public function hasThumbnail($thumbnail) {
-        $res = $this->database->exec('SELECT count(*) AS amount
+        $res = $this->database->query('SELECT count(*) AS amount
                    FROM ' . $this->configuration->dbPrefix . 'items
                    WHERE thumbnail=:thumbnail',
                   [':thumbnail' => $thumbnail]);
-        $amount = $res[0]['amount'];
+        $amount = $res->fetch()['amount'];
         if ($amount == 0) {
             $this->logger->debug('thumbnail not found: ' . $thumbnail);
         }
@@ -541,12 +527,12 @@ class Items implements \daos\ItemsInterface {
      * @return bool true if icon is still in use
      */
     public function hasIcon($icon) {
-        $res = $this->database->exec('SELECT count(*) AS amount
+        $res = $this->database->query('SELECT count(*) AS amount
                    FROM ' . $this->configuration->dbPrefix . 'items
                    WHERE icon=:icon',
                   [':icon' => $icon]);
 
-        return $res[0]['amount'] > 0;
+        return $res->fetch()['amount'] > 0;
     }
 
     /**
@@ -586,11 +572,11 @@ class Items implements \daos\ItemsInterface {
      */
     public function numberOfUnread() {
         $stmt = static::$stmt;
-        $res = $this->database->exec('SELECT count(*) AS amount
+        $res = $this->database->query('SELECT count(*) AS amount
                    FROM ' . $this->configuration->dbPrefix . 'items
                    WHERE ' . $stmt::isTrue('unread'));
 
-        return $res[0]['amount'];
+        return $res->fetch()['amount'];
     }
 
     /**
@@ -600,7 +586,7 @@ class Items implements \daos\ItemsInterface {
      */
     public function stats() {
         $stmt = static::$stmt;
-        $res = $this->database->exec('SELECT
+        $res = $this->database->query('SELECT
             COUNT(*) AS total,
             ' . $stmt::sumBool('unread') . ' AS unread,
             ' . $stmt::sumBool('starred') . ' AS starred
@@ -611,7 +597,7 @@ class Items implements \daos\ItemsInterface {
             'starred' => DatabaseInterface::PARAM_INT,
         ]);
 
-        return $res[0];
+        return $res->fetch();
     }
 
     /**
@@ -620,11 +606,11 @@ class Items implements \daos\ItemsInterface {
      * @return string timestamp
      */
     public function lastUpdate() {
-        $res = $this->database->exec('SELECT
+        $res = $this->database->query('SELECT
             MAX(updatetime) AS last_update_time
             FROM ' . $this->configuration->dbPrefix . 'items;');
 
-        return $res[0]['last_update_time'];
+        return $res->fetch()['last_update_time'];
     }
 
     /**
@@ -636,7 +622,7 @@ class Items implements \daos\ItemsInterface {
      */
     public function statuses(DateTime $since) {
         $stmt = static::$stmt;
-        $res = $this->database->exec('SELECT id, unread, starred
+        $res = $this->database->query('SELECT id, unread, starred
             FROM ' . $this->configuration->dbPrefix . 'items
             WHERE ' . $this->configuration->dbPrefix . 'items.updatetime > :since;',
                 [':since' => [$since->format('Y-m-d H:i:s'), \PDO::PARAM_STR]]);
@@ -721,7 +707,7 @@ class Items implements \daos\ItemsInterface {
                     ':id' => [$id, \PDO::PARAM_INT],
                     ':statusUpdate' => [$q['datetime'], \PDO::PARAM_STR],
                 ];
-                $updated = $this->database->exec(
+                $updated = $this->database->query(
                     'UPDATE ' . $this->configuration->dbPrefix . 'items
                     SET ' . implode(', ', array_values($q['updates'])) . '
                     WHERE id = :id AND updatetime < :statusUpdate', $params);
@@ -729,7 +715,7 @@ class Items implements \daos\ItemsInterface {
                     // entry status was updated in between so updatetime must
                     // be updated to ensure client side consistency of
                     // statuses.
-                    $this->database->exec(
+                    $this->database->query(
                         'UPDATE ' . $this->configuration->dbPrefix . 'items
                          SET ' . $stmt::rowTouch('updatetime') . '
                          WHERE id = :id', [':id' => [$id, \PDO::PARAM_INT]]);

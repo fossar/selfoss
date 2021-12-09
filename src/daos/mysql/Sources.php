@@ -41,12 +41,12 @@ class Sources implements \daos\SourcesInterface {
     public function add($title, array $tags, $filter, $spout, array $params) {
         $stmt = static::$stmt;
 
-        return $this->database->insert('INSERT INTO ' . $this->configuration->dbPrefix . 'sources (title, tags, filter, spout, params) VALUES (:title, :tags, :filter, :spout, :params)', [
-            ':title' => trim($title),
-            ':tags' => $stmt::csvRow($tags),
-            ':filter' => $filter,
-            ':spout' => $spout,
-            ':params' => htmlentities(json_encode($params)),
+        return $this->database->insert('INSERT INTO ' . $this->configuration->dbPrefix . 'sources', [
+            'title' => trim($title),
+            'tags' => $stmt::csvRow($tags),
+            'filter' => $filter,
+            'spout' => $spout,
+            'params' => htmlentities(json_encode($params)),
         ]);
     }
 
@@ -64,14 +64,20 @@ class Sources implements \daos\SourcesInterface {
      */
     public function edit($id, $title, array $tags, $filter, $spout, array $params) {
         $stmt = static::$stmt;
-        $this->database->exec('UPDATE ' . $this->configuration->dbPrefix . 'sources SET title=:title, tags=:tags, filter=:filter, spout=:spout, params=:params WHERE id=:id', [
-            ':title' => trim($title),
-            ':tags' => $stmt::csvRow($tags),
-            ':filter' => $filter,
-            ':spout' => $spout,
-            ':params' => htmlentities(json_encode($params)),
-            ':id' => $id,
-        ]);
+        $this->database->query(
+            'UPDATE ' . $this->configuration->dbPrefix . 'sources SET',
+            [
+                'title' => trim($title),
+                'tags' => $stmt::csvRow($tags),
+                'filter' => $filter,
+                'spout' => $spout,
+                'params' => htmlentities(json_encode($params)),
+            ],
+            'WHERE',
+            [
+                'id' => $id,
+            ]
+        );
     }
 
     /**
@@ -82,10 +88,10 @@ class Sources implements \daos\SourcesInterface {
      * @return void
      */
     public function delete($id) {
-        $this->database->exec('DELETE FROM ' . $this->configuration->dbPrefix . 'sources WHERE id=:id', [':id' => $id]);
+        $this->database->query('DELETE FROM ' . $this->configuration->dbPrefix . 'sources WHERE', ['id' => $id]);
 
         // delete items of this source
-        $this->database->exec('DELETE FROM ' . $this->configuration->dbPrefix . 'items WHERE source=:id', [':id' => $id]);
+        $this->database->query('DELETE FROM ' . $this->configuration->dbPrefix . 'items WHERE', ['source' => $id]);
     }
 
     /**
@@ -97,20 +103,16 @@ class Sources implements \daos\SourcesInterface {
      * @return void
      */
     public function error($id, $error) {
-        if (strlen($error) === 0) {
-            $arr = [
-                ':id' => $id,
-                ];
-            $setarg = 'NULL';
-        } else {
-            $arr = [
-                ':id' => $id,
-                ':error' => $error,
-            ];
-            $setarg = ':error';
-        }
-
-        $this->database->exec('UPDATE ' . $this->configuration->dbPrefix . 'sources SET error=' . $setarg . ' WHERE id=:id', $arr);
+        $this->database->query(
+            'UPDATE ' . $this->configuration->dbPrefix . 'sources SET',
+            [
+                'error' => strlen($error) === 0 ? null : $error,
+            ],
+            'WHERE',
+            [
+                'id' => $id,
+            ]
+        );
     }
 
     /**
@@ -122,18 +124,28 @@ class Sources implements \daos\SourcesInterface {
      * @return void
      */
     public function saveLastUpdate($id, $lastEntry) {
-        $this->database->exec('UPDATE ' . $this->configuration->dbPrefix . 'sources SET lastupdate=:lastupdate WHERE id=:id',
+        $this->database->query(
+            'UPDATE ' . $this->configuration->dbPrefix . 'sources SET',
             [
-                ':id' => $id,
-                ':lastupdate' => time(),
-            ]);
+                'lastupdate' => time(),
+            ],
+            'WHERE',
+            [
+                'id' => $id,
+            ]
+        );
 
         if ($lastEntry !== null) {
-            $this->database->exec('UPDATE ' . $this->configuration->dbPrefix . 'sources SET lastentry=:lastentry WHERE id=:id',
+            $this->database->query(
+                'UPDATE ' . $this->configuration->dbPrefix . 'sources SET',
                 [
-                    ':id' => $id,
-                    ':lastentry' => $lastEntry,
-                ]);
+                    'lastentry' => $lastEntry,
+                ],
+                'WHERE',
+                [
+                    'id' => $id,
+                ]
+            );
         }
     }
 
@@ -143,7 +155,7 @@ class Sources implements \daos\SourcesInterface {
      * @return mixed all sources
      */
     public function getByLastUpdate() {
-        $ret = $this->database->exec('SELECT id, title, tags, spout, params, filter, error, lastupdate, lastentry FROM ' . $this->configuration->dbPrefix . 'sources ORDER BY lastupdate ASC');
+        $ret = $this->database->query('SELECT id, title, tags, spout, params, filter, error, lastupdate, lastentry FROM ' . $this->configuration->dbPrefix . 'sources ORDER BY lastupdate ASC');
 
         return $ret;
     }
@@ -160,17 +172,15 @@ class Sources implements \daos\SourcesInterface {
         $stmt = static::$stmt;
         // select source by id if specified or return all sources
         if (isset($id)) {
-            $ret = $this->database->exec('SELECT id, title, tags, spout, params, filter, error, lastupdate, lastentry FROM ' . $this->configuration->dbPrefix . 'sources WHERE id=:id', [':id' => $id]);
-            $ret = $stmt::ensureRowTypes($ret, ['id' => DatabaseInterface::PARAM_INT]);
-            if (isset($ret[0])) {
-                $ret = $ret[0];
+            $ret = $this->database->query('SELECT id, title, tags, spout, params, filter, error, lastupdate, lastentry FROM ' . $this->configuration->dbPrefix . 'sources WHERE', ['id' => $id]);
+            if ($ret->getRowCount() > 0) {
+                $ret = $ret->fetch();
             } else {
                 $ret = null;
             }
         } else {
-            $ret = $this->database->exec('SELECT id, title, tags, spout, params, filter, error, lastupdate, lastentry FROM ' . $this->configuration->dbPrefix . 'sources ORDER BY error DESC, lower(title) ASC');
+            $ret = $this->database->query('SELECT id, title, tags, spout, params, filter, error, lastupdate, lastentry FROM ' . $this->configuration->dbPrefix . 'sources ORDER BY error DESC, lower(title) ASC');
             $ret = $stmt::ensureRowTypes($ret, [
-                'id' => DatabaseInterface::PARAM_INT,
                 'tags' => DatabaseInterface::PARAM_CSV,
             ]);
         }
@@ -185,7 +195,7 @@ class Sources implements \daos\SourcesInterface {
      */
     public function getWithUnread() {
         $stmt = static::$stmt;
-        $ret = $this->database->exec('SELECT
+        $ret = $this->database->query('SELECT
             sources.id, sources.title, COUNT(items.id) AS unread
             FROM ' . $this->configuration->dbPrefix . 'sources AS sources
             LEFT OUTER JOIN ' . $this->configuration->dbPrefix . 'items AS items
@@ -206,7 +216,7 @@ class Sources implements \daos\SourcesInterface {
      */
     public function getWithIcon() {
         $stmt = static::$stmt;
-        $ret = $this->database->exec('SELECT
+        $ret = $this->database->query('SELECT
                 sources.id, sources.title, sources.tags, sources.spout,
                 sources.params, sources.filter, sources.error, sources.lastentry,
                 sourceicons.icon AS icon
@@ -255,7 +265,7 @@ class Sources implements \daos\SourcesInterface {
      * @return mixed all sources
      */
     public function getAllTags() {
-        $result = $this->database->exec('SELECT tags FROM ' . $this->configuration->dbPrefix . 'sources');
+        $result = $this->database->query('SELECT tags FROM ' . $this->configuration->dbPrefix . 'sources');
         $tags = [];
         foreach ($result as $res) {
             $tags = array_merge($tags, explode(',', $res['tags']));
@@ -273,9 +283,9 @@ class Sources implements \daos\SourcesInterface {
      * @return mixed tags of a source
      */
     public function getTags($id) {
-        $result = $this->database->exec('SELECT tags FROM ' . $this->configuration->dbPrefix . 'sources WHERE id=:id', [':id' => $id]);
+        $result = $this->database->query('SELECT tags FROM ' . $this->configuration->dbPrefix . 'sources WHERE', ['id' => $id]);
         $tags = [];
-        $tags = array_merge($tags, explode(',', $result[0]['tags']));
+        $tags = array_merge($tags, explode(',', $result->fetch()['tags']));
         $tags = array_unique($tags);
 
         return $tags;
@@ -293,13 +303,13 @@ class Sources implements \daos\SourcesInterface {
      */
     public function checkIfExists($title, $spout, array $params) {
         // Check if a entry exists with same title, spout and params
-        $result = $this->database->exec('SELECT id FROM ' . $this->configuration->dbPrefix . 'sources WHERE title=:title AND spout=:spout AND params=:params', [
-            ':title' => trim($title),
-            ':spout' => $spout,
-            ':params' => htmlentities(json_encode($params)),
+        $result = $this->database->query('SELECT id FROM ' . $this->configuration->dbPrefix . 'sources WHERE', [
+            'title' => trim($title),
+            'spout' => $spout,
+            'params' => htmlentities(json_encode($params)),
         ]);
         if ($result) {
-            return $result[0]['id'];
+            return $result->fetch()['id'];
         }
 
         return 0;

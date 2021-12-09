@@ -37,14 +37,19 @@ class Tags implements \daos\TagsInterface {
      */
     public function saveTagColor($tag, $color) {
         if ($this->hasTag($tag) === true) {
-            $this->database->exec('UPDATE ' . $this->configuration->dbPrefix . 'tags SET color=:color WHERE tag=:tag', [
-                ':tag' => $tag,
-                ':color' => $color,
-            ]);
+            $this->database->query(
+                'UPDATE ' . $this->configuration->dbPrefix . 'tags SET', [
+                    'color' => $color,
+                ],
+                'WHERE'
+                [
+                    'tag' => $tag,
+                ]
+            );
         } else {
-            $this->database->exec('INSERT INTO ' . $this->configuration->dbPrefix . 'tags (tag, color) VALUES (:tag, :color)', [
-                ':tag' => $tag,
-                ':color' => $color,
+            $this->database->query('INSERT INTO ' . $this->configuration->dbPrefix . 'tags', [
+                'tag' => $tag,
+                'color' => $color,
             ]);
         }
     }
@@ -83,10 +88,9 @@ class Tags implements \daos\TagsInterface {
      * @return array of all tags
      */
     public function get() {
-        return $this->database->exec('SELECT
-                    tag, color
-                   FROM ' . $this->configuration->dbPrefix . 'tags
-                   ORDER BY LOWER(tag);');
+        return $this->database->query('
+            SELECT tag, color FROM ' . $this->configuration->dbPrefix . 'tags ORDER BY LOWER(tag);
+        ');
     }
 
     /**
@@ -96,16 +100,16 @@ class Tags implements \daos\TagsInterface {
      */
     public function getWithUnread() {
         $stmt = static::$stmt;
-        $select = 'SELECT tag, color, COUNT(items.id) AS unread
+        return $this->database->query('
+            SELECT tag, color, COUNT(items.id) AS unread
                    FROM ' . $this->configuration->dbPrefix . 'tags AS tags,
                         ' . $this->configuration->dbPrefix . 'sources AS sources
                    LEFT OUTER JOIN ' . $this->configuration->dbPrefix . 'items AS items
                        ON (items.source=sources.id AND ' . $stmt::isTrue('items.unread') . ')
                    WHERE ' . $stmt::csvRowMatches('sources.tags', 'tags.tag') . '
                    GROUP BY tags.tag, tags.color
-                   ORDER BY LOWER(tags.tag);';
-
-        return $stmt::ensureRowTypes($this->database->exec($select), ['unread' => DatabaseInterface::PARAM_INT]);
+                   ORDER BY LOWER(tags.tag);
+        ');
     }
 
     /**
@@ -132,9 +136,9 @@ class Tags implements \daos\TagsInterface {
      * @return bool true if color is used by an tag
      */
     private function isColorUsed($color) {
-        $res = $this->database->exec('SELECT COUNT(*) AS amount FROM ' . $this->configuration->dbPrefix . 'tags WHERE color=:color', [':color' => $color]);
+        $res = $this->database->query('SELECT COUNT(*) AS amount FROM ' . $this->configuration->dbPrefix . 'tags WHERE', ['color' => $color]);
 
-        return $res[0]['amount'] > 0;
+        return $res->fetch()['amount'] > 0;
     }
 
     /**
@@ -146,13 +150,15 @@ class Tags implements \daos\TagsInterface {
      */
     public function hasTag($tag) {
         if ($this->configuration->dbType === 'mysql') {
-            $where = 'WHERE tag = _utf8mb4 :tag COLLATE utf8mb4_general_ci';
+            $tagCompared = $this->connection::literal('_utf8mb4 ? COLLATE utf8mb4_general_ci', $tag);
         } else {
-            $where = 'WHERE tag=:tag';
+            $tagCompared = $tag;
         }
-        $res = $this->database->exec('SELECT COUNT(*) AS amount FROM ' . $this->configuration->dbPrefix . 'tags ' . $where, [':tag' => $tag]);
+        $res = $this->database->query('SELECT COUNT(*) AS amount FROM ' . $this->configuration->dbPrefix . 'tags WHERE', [
+            'tag' => $tagCompared
+        ]);
 
-        return $res[0]['amount'] > 0;
+        return $res->fetch()['amount'] > 0;
     }
 
     /**
@@ -163,6 +169,6 @@ class Tags implements \daos\TagsInterface {
      * @return void
      */
     public function delete($tag) {
-        $this->database->exec('DELETE FROM ' . $this->configuration->dbPrefix . 'tags WHERE tag=:tag', [':tag' => $tag]);
+        $this->database->query('DELETE FROM ' . $this->configuration->dbPrefix . 'tags WHERE', ['tag' => $tag]);
     }
 }

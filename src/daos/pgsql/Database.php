@@ -3,6 +3,7 @@
 namespace daos\pgsql;
 
 use daos\CommonSqlDatabase;
+use helpers\Configuration;
 use Monolog\Logger;
 
 /**
@@ -23,6 +24,9 @@ use Monolog\Logger;
 class Database implements \daos\DatabaseInterface {
     use CommonSqlDatabase;
 
+    /** @var Configuration configuration */
+    private $configuration;
+
     /** @var \Nette\Database\Connection database connection */
     private $connection;
 
@@ -34,14 +38,15 @@ class Database implements \daos\DatabaseInterface {
      *
      * @return  void
      */
-    public function __construct(\Nette\Database\Connection $connection, Logger $logger) {
+    public function __construct(Configuration $configuration, \Nette\Database\Connection $connection, Logger $logger) {
+        $this->configuration = $configuration;
         $this->connection = $connection;
         $this->logger = $logger;
 
         $this->logger->debug('Established database connection');
 
         // create tables if necessary
-        $result = @$this->exec("SELECT table_name FROM information_schema.tables WHERE table_schema='public'");
+        $result = @$this->query("SELECT table_name FROM information_schema.tables WHERE table_schema='public'");
         $tables = [];
         foreach ($result as $table) {
             foreach ($table as $key => $value) {
@@ -53,7 +58,7 @@ class Database implements \daos\DatabaseInterface {
             $this->logger->debug('Creating items table');
 
             $this->beginTransaction();
-            $this->exec('
+            $this->query('
                 CREATE TABLE items (
                     id          SERIAL PRIMARY KEY,
                     datetime    TIMESTAMP WITH TIME ZONE NOT NULL,
@@ -70,12 +75,12 @@ class Database implements \daos\DatabaseInterface {
                     author      TEXT
                 );
             ');
-            $this->exec('
+            $this->query('
                 CREATE INDEX source ON items (
                     source
                 );
             ');
-            $this->exec('
+            $this->query('
                 CREATE OR REPLACE FUNCTION update_updatetime_procedure()
                 RETURNS TRIGGER AS $$
                     BEGIN
@@ -84,7 +89,7 @@ class Database implements \daos\DatabaseInterface {
                     END;
                 $$ LANGUAGE "plpgsql";
             ');
-            $this->exec('
+            $this->query('
                 CREATE TRIGGER update_updatetime_trigger
                 BEFORE UPDATE ON items FOR EACH ROW EXECUTE PROCEDURE
                 update_updatetime_procedure();
@@ -96,7 +101,7 @@ class Database implements \daos\DatabaseInterface {
         if (!in_array('sources', $tables, true)) {
             $this->logger->debug('Creating sources table');
 
-            $this->exec('
+            $this->query('
                 CREATE TABLE sources (
                     id          SERIAL PRIMARY KEY,
                     title       TEXT NOT NULL,
@@ -117,17 +122,17 @@ class Database implements \daos\DatabaseInterface {
             $this->logger->debug('Upgrading database schema to version 8 from initial state');
 
             $this->beginTransaction();
-            $this->exec('
+            $this->query('
                 CREATE TABLE version (
                     version INTEGER
                 );
             ');
 
-            $this->exec('
+            $this->query('
                 INSERT INTO version (version) VALUES (8);
             ');
 
-            $this->exec('
+            $this->query('
                 CREATE TABLE tags (
                     tag         TEXT NOT NULL,
                     color       TEXT NOT NULL
@@ -135,7 +140,7 @@ class Database implements \daos\DatabaseInterface {
             ');
 
             if ($isNewestSourcesTable === false) {
-                $this->exec('
+                $this->query('
                     ALTER TABLE sources ADD COLUMN tags TEXT;
                 ');
             }
@@ -148,10 +153,10 @@ class Database implements \daos\DatabaseInterface {
             $this->logger->debug('Upgrading database schema to version 3');
 
             $this->beginTransaction();
-            $this->exec('
+            $this->query('
                 ALTER TABLE sources ADD lastupdate INT;
             ');
-            $this->exec('
+            $this->query('
                 INSERT INTO version (version) VALUES (3);
             ');
             $this->commit();
@@ -160,13 +165,13 @@ class Database implements \daos\DatabaseInterface {
             $this->logger->debug('Upgrading database schema to version 4');
 
             $this->beginTransaction();
-            $this->exec('
+            $this->query('
                 ALTER TABLE items ADD updatetime TIMESTAMP WITH TIME ZONE;
             ');
-            $this->exec('
+            $this->query('
                 ALTER TABLE items ALTER COLUMN updatetime SET DEFAULT CURRENT_TIMESTAMP;
             ');
-            $this->exec('
+            $this->query('
                 CREATE OR REPLACE FUNCTION update_updatetime_procedure()
                 RETURNS TRIGGER AS $$
                     BEGIN
@@ -175,12 +180,12 @@ class Database implements \daos\DatabaseInterface {
                     END;
                 $$ LANGUAGE "plpgsql";
             ');
-            $this->exec('
+            $this->query('
                 CREATE TRIGGER update_updatetime_trigger
                 BEFORE UPDATE ON items FOR EACH ROW EXECUTE PROCEDURE
                 update_updatetime_procedure();
             ');
-            $this->exec('
+            $this->query('
                 INSERT INTO version (version) VALUES (4);
             ');
             $this->commit();
@@ -189,16 +194,16 @@ class Database implements \daos\DatabaseInterface {
             $this->logger->debug('Upgrading database schema to version 5');
 
             $this->beginTransaction();
-            $this->exec('ALTER TABLE items ADD author TEXT;');
-            $this->exec('INSERT INTO version (version) VALUES (5);');
+            $this->query('ALTER TABLE items ADD author TEXT;');
+            $this->query('INSERT INTO version (version) VALUES (5);');
             $this->commit();
         }
         if ($version < 6) {
             $this->logger->debug('Upgrading database schema to version 6');
 
             $this->beginTransaction();
-            $this->exec('ALTER TABLE sources ADD filter TEXT;');
-            $this->exec('INSERT INTO version (version) VALUES (6);');
+            $this->query('ALTER TABLE sources ADD filter TEXT;');
+            $this->query('INSERT INTO version (version) VALUES (6);');
             $this->commit();
         }
         // Jump straight from v6 to v8 due to bug in previous version of the code
@@ -208,34 +213,34 @@ class Database implements \daos\DatabaseInterface {
             $this->logger->debug('Upgrading database schema to version 8');
 
             $this->beginTransaction();
-            $this->exec('ALTER TABLE sources ADD lastentry INT;');
-            $this->exec('INSERT INTO version (version) VALUES (8);');
+            $this->query('ALTER TABLE sources ADD lastentry INT;');
+            $this->query('INSERT INTO version (version) VALUES (8);');
             $this->commit();
         }
         if ($version < 9) {
             $this->logger->debug('Upgrading database schema to version 9');
 
             $this->beginTransaction();
-            $this->exec('ALTER TABLE items ADD shared BOOLEAN;');
-            $this->exec('INSERT INTO version (version) VALUES (9);');
+            $this->query('ALTER TABLE items ADD shared BOOLEAN;');
+            $this->query('INSERT INTO version (version) VALUES (9);');
             $this->commit();
         }
         if ($version < 10) {
             $this->logger->debug('Upgrading database schema to version 10');
 
             $this->beginTransaction();
-            $this->exec('ALTER TABLE items ALTER COLUMN datetime SET DATA TYPE timestamp(0) with time zone;');
-            $this->exec('ALTER TABLE items ALTER COLUMN updatetime SET DATA TYPE timestamp(0) with time zone;');
-            $this->exec('INSERT INTO version (version) VALUES (10);');
+            $this->query('ALTER TABLE items ALTER COLUMN datetime SET DATA TYPE timestamp(0) with time zone;');
+            $this->query('ALTER TABLE items ALTER COLUMN updatetime SET DATA TYPE timestamp(0) with time zone;');
+            $this->query('INSERT INTO version (version) VALUES (10);');
             $this->commit();
         }
         if ($version < 11) {
             $this->logger->debug('Upgrading database schema to version 11');
 
             $this->beginTransaction();
-            $this->exec('DROP TRIGGER update_updatetime_trigger ON items');
-            $this->exec('ALTER TABLE items ADD lastseen TIMESTAMP(0) WITH TIME ZONE NOT NULL DEFAULT NOW()');
-            $this->exec(
+            $this->query('DROP TRIGGER update_updatetime_trigger ON items');
+            $this->query('ALTER TABLE items ADD lastseen TIMESTAMP(0) WITH TIME ZONE NOT NULL DEFAULT NOW()');
+            $this->query(
                 'CREATE TRIGGER update_updatetime_trigger
                     BEFORE UPDATE ON items FOR EACH ROW
                     WHEN (
@@ -244,24 +249,24 @@ class Database implements \daos\DatabaseInterface {
                     )
                     EXECUTE PROCEDURE update_updatetime_procedure();'
             );
-            $this->exec('INSERT INTO version (version) VALUES (11);');
+            $this->query('INSERT INTO version (version) VALUES (11);');
             $this->commit();
         }
         if ($version < 12) {
             $this->logger->debug('Upgrading database schema to version 12');
 
             $this->beginTransaction();
-            $this->exec('UPDATE items SET updatetime = datetime WHERE updatetime IS NULL');
-            $this->exec('ALTER TABLE items ALTER COLUMN updatetime SET NOT NULL');
-            $this->exec('INSERT INTO version (version) VALUES (12)');
+            $this->query('UPDATE items SET updatetime = datetime WHERE updatetime IS NULL');
+            $this->query('ALTER TABLE items ALTER COLUMN updatetime SET NOT NULL');
+            $this->query('INSERT INTO version (version) VALUES (12)');
             $this->commit();
         }
         if ($version < 13) {
             $this->logger->debug('Upgrading database schema to version 13');
 
             $this->beginTransaction();
-            $this->exec("UPDATE sources SET spout = 'spouts\\rss\\fulltextrss' WHERE spout = 'spouts\\rss\\instapaper'");
-            $this->exec('INSERT INTO version (version) VALUES (13)');
+            $this->query("UPDATE sources SET spout = 'spouts\\rss\\fulltextrss' WHERE spout = 'spouts\\rss\\instapaper'");
+            $this->query('INSERT INTO version (version) VALUES (13)');
             $this->commit();
         }
     }
@@ -275,9 +280,9 @@ class Database implements \daos\DatabaseInterface {
      * @return int id after insert
      */
     public function insert($query, array $params) {
-        $res = $this->exec("$query RETURNING id", $params);
+        $res = $this->query("$query RETURNING id", $params);
 
-        return $res[0]['id'];
+        return $res->fetch()['id'];
     }
 
     /**
