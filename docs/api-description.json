@@ -1,9 +1,9 @@
 {
-  "openapi": "4.0.0",
+  "openapi": "3.0.0",
   "servers": [],
   "info": {
     "description": "You can access selfoss by using the same backend as selfoss user interface: The RESTful HTTP JSON API. There are a few urls where you can get information from selfoss and some for updating data. Assume you want all tags for rendering this in your own app. You have to make an HTTP GET call on the url /tags:\n\n```\nGET http://yourselfossurl.com/tags\n```\nThe result is following JSON formatted response (in this example two tags “blog” and “deviantart” are available:\n\n```\n[{\"tag\":\"blog\",\"color\":\"#251f10\",\"unread\":\"1\"},\n{\"tag\":\"deviantart\",\"color\":\"#e78e5c\",\"unread\":\"0\"}]\n```\n\nFollowing docs shows you which calls are possible and which response you can expect.",
-    "version": "3.0.0",
+    "version": "4.0.0",
     "title": "selfoss"
   },
   "tags": [
