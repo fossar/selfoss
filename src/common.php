@@ -2,6 +2,7 @@
 
 use Dice\Dice;
 use helpers\Configuration;
+use helpers\DatabaseConnection;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\ErrorLogHandler;
 use Monolog\Handler\NullHandler;
@@ -175,7 +176,7 @@ if ($configuration->dbType === 'sqlite') {
     ]);
 }
 
-$dice->addRule(DB\SQL::class, $sqlParams);
+$dice->addRule(DatabaseConnection::class, $sqlParams);
 
 $dice->addRule('$iconStorageBackend', [
     'instanceOf' => helpers\Storage\FileStorage::class,

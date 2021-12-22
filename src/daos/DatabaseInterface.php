@@ -14,12 +14,12 @@ interface DatabaseInterface {
     /**
      * Execute SQL statement(s)
      *
-     * @param string|string[] $cmds
-     * @param string|array $args
+     * @param string $cmd
+     * @param array|scalar $args
      *
-     * @return array|int|false
+     * @return array|null
      */
-    public function exec($cmds, $args = null);
+    public function exec($cmd, $args = []);
 
     /**
      * wrap insert statement to return id

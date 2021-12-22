@@ -3,6 +3,7 @@
 namespace daos\sqlite;
 
 use daos\CommonSqlDatabase;
+use helpers\DatabaseConnection;
 use Monolog\Logger;
 
 /**
@@ -16,7 +17,7 @@ use Monolog\Logger;
 class Database implements \daos\DatabaseInterface {
     use CommonSqlDatabase;
 
-    /** @var \DB\SQL database connection */
+    /** @var DatabaseConnection database connection */
     private $connection;
 
     /** @var Logger */
@@ -27,7 +28,7 @@ class Database implements \daos\DatabaseInterface {
      *
      * @return  void
      */
-    public function __construct(\DB\SQL $connection, Logger $logger) {
+    public function __construct(DatabaseConnection $connection, Logger $logger) {
         $this->connection = $connection;
         $this->logger = $logger;
 

@@ -3,8 +3,8 @@
 namespace daos;
 
 trait CommonSqlDatabase {
-    public function exec($cmds, $args = null) {
-        return $this->connection->exec($cmds, $args);
+    public function exec($cmd, $args = []) {
+        return $this->connection->exec($cmd, $args);
     }
 
     public function quote($value, $type = \PDO::PARAM_STR) {
@@ -17,7 +17,7 @@ trait CommonSqlDatabase {
      * @return bool
      */
     public function beginTransaction() {
-        return $this->connection->begin();
+        return $this->connection->beginTransaction();
     }
 
     /**
@@ -26,7 +26,7 @@ trait CommonSqlDatabase {
      * @return bool
      */
     public function rollBack() {
-        return $this->connection->rollback();
+        return $this->connection->rollBack();
     }
 
     /**
