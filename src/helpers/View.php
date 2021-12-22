@@ -56,7 +56,10 @@ class View {
                 $subdir = '/' . preg_replace('/\/[^\/]+$/', '', $_SERVER['PHP_SELF']);
                 $host = $_SERVER['HTTP_X_FORWARDED_SERVER'];
             } else {
-                $subdir = \F3::get('BASE');
+                $subdir = '';
+                if (PHP_SAPI !== 'cli') {
+                    $subdir = rtrim(strtr(dirname($_SERVER['SCRIPT_NAME']), '\\', '/'), '/');
+                }
                 $host = $_SERVER['SERVER_NAME'];
             }
 
