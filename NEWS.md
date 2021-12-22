@@ -45,12 +45,14 @@
 - Authentication system has been rewritten to allow more methods in the future. ([#1491](https://github.com/fossar/selfoss/pull/1491))
 - Authentication will now also log user out when the credentials in the config change. ([#1491](https://github.com/fossar/selfoss/pull/1491))
 - Requests from loopback IP address now give full access to all operations, not just update. Additionally, IPv6 loopback address is recognized and proxies are ignored. ([#1491](https://github.com/fossar/selfoss/pull/1491))
+- [Tracy](https://tracy.nette.org/) is now used for error handling, resulting in much nicer error messages. ([#1298](https://github.com/fossar/selfoss/pull/1298))
 
 #### For developers
 - Back-end source code is now checked using [PHPStan](https://phpstan.org/). ([#1409](https://github.com/fossar/selfoss/pull/1409))
 - [Prettier](https://prettier.io/) is now used for code formatting. ([#1493](https://github.com/fossar/selfoss/pull/1493))
 - Several `npm run` scripts were renamed for consistency: `analyse:server` → `check:server:phpstan`, `cs:server` → `check:server:cs`, `lint:server` → `check:server:lint`. ([#1494](https://github.com/fossar/selfoss/pull/1494))
 - Front-end code was converted to TypeScript. ([#1457](https://github.com/fossar/selfoss/pull/1457))
+- Last use of [F3 framework](https://fatfreeframework.com) was removed. So long… ([#1298](https://github.com/fossar/selfoss/pull/1298))
 
 ### API changes
 

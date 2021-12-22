@@ -16,6 +16,7 @@ use Psr\SimpleCache\CacheInterface;
 use Slince\Di\Container;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Cache\Psr16Cache;
+use Tracy\Debugger;
 
 require __DIR__ . '/constants.php';
 
@@ -31,20 +32,10 @@ if ($autoloader === false) {
     boot_error('The PHP dependencies are missing. Did you run `composer install` in the selfoss directory?' . PHP_EOL);
 }
 
-$startup_error = error_get_last();
-
-// F3 crashes when there were PHP startups error even though
-// they might not affect the program (e.g. unable to load an extension).
-// It also sets its own error_reporting value and uses the previous one
-// as a signal to disable the initialization failure check.
-error_reporting(0);
-
-$f3 = Base::instance();
-
-error_reporting(E_ALL);
-
-$f3->set('AUTOLOAD', false);
-$f3->set('BASEDIR', BASEDIR);
+// Catch any errors and hopefully log them.
+Debugger::$errorTemplate = __DIR__ . '/error.500.phtml';
+Debugger::setSessionStorage(new Tracy\NativeSession());
+Debugger::enable(Debugger::Production);
 
 try {
     $configuration = new Configuration(__DIR__ . '/../config.ini', $_ENV);
@@ -52,8 +43,12 @@ try {
     boot_error('Invalid configuration: ' . $e->getMessage() . PHP_EOL);
 }
 
-$f3->set('DEBUG', $configuration->debug);
-$f3->set('cache', $configuration->cache);
+if ($configuration->debug !== 0) {
+    // Enable strict mode to loudly fail on any error or warning.
+    Debugger::$strictMode = true;
+    // Switch to development mode so that traces are displayed.
+    Debugger::enable(Debugger::Development);
+}
 
 $container = new Container();
 $container->setDefaults(['shared' => false]);
@@ -285,43 +280,23 @@ if ($configuration->loggerLevel === Configuration::LOGGER_LEVEL_NONE) {
 }
 $log->pushHandler($handler);
 
-if (isset($startup_error)) {
-    $log->warning('PHP likely encountered a startup error: ', [$startup_error]);
-}
+$container
+    ->register(Psr\Log\LoggerInterface::class, $log)
+    ->setShared(true)
+;
 
-// init error handling
-$f3->set(
-    'ONERROR',
-    function(Base $f3) use ($configuration, $log, $handler): void {
-        $exception = $f3->get('EXCEPTION');
-
-        try {
-            if ($exception) {
-                $log->error($exception->getMessage(), ['exception' => $exception]);
-            } else {
-                $log->error($f3->get('ERROR.text'));
-            }
-
-            if ($configuration->debug !== 0) {
-                echo 'An error occurred: ';
-                echo $f3->get('ERROR.text') . "\n";
-                echo $f3->get('ERROR.trace');
-            } else {
-                if ($handler instanceof StreamHandler) {
-                    echo 'An error occured, please check the log file “' . $handler->getUrl() . '”.' . PHP_EOL;
-                } elseif ($handler instanceof ErrorLogHandler) {
-                    echo 'An error occured, please check your system logs.' . PHP_EOL;
-                } else {
-                    echo 'An error occurred' . PHP_EOL;
-                }
-            }
-        } catch (Exception $e) {
-            echo 'Unable to write logs.' . PHP_EOL;
-            echo $e->getMessage() . PHP_EOL;
-        }
-    }
-);
-
+// Try to log errors encountered by error handler.
+Debugger::setLogger($container->get(Tracy\Bridges\Psr\PsrToTracyLoggerAdapter::class));
 if ($configuration->debug !== 0) {
-    ini_set('display_errors', '0');
+    // Tracy will not use logger in development mode, let’s do it ourselves.
+    Debugger::$onFatalError[] = function(Throwable $error) use ($log): void {
+        $log->error('Unhandled error occurred.', ['exception' => $error]);
+    };
+
+    if (!Tracy\Helpers::isCli()) {
+        // AJAX support requires session to be started before dispatch.
+        $session = $container->get(helpers\Session::class);
+        $session->start();
+    }
 }
+Debugger::dispatch();
