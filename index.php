@@ -2,50 +2,159 @@
 
 require __DIR__ . '/src/common.php';
 
+$router = new Bramus\Router\Router();
+
 // define routes
 
 // all users
-$f3->route('GET /', controllers\Index::class . '->home'); // json
-$f3->route('GET /api/about', controllers\About::class . '->about'); // json
-$f3->route('GET /password', controllers\Authentication::class . '->password'); // html
-$f3->route('GET /login', controllers\Authentication::class . '->login'); // json
-$f3->route('POST /login', controllers\Authentication::class . '->login'); // json
-$f3->route('GET /logout', controllers\Authentication::class . '->logout'); // json
-$f3->route('GET /update', controllers\Sources\Update::class . '->updateAll'); // text
+$router->get('/', function() use ($dice) {
+    // json
+    $dice->create(controllers\Index::class)->home();
+});
+$router->get('/api/about', function() use ($dice) {
+    // json
+    $dice->create(controllers\About::class)->about();
+});
+$router->get('/password', function() use ($dice) {
+    // html
+    $dice->create(controllers\Authentication::class)->password();
+});
+$router->get('/login', function() use ($dice) {
+    // json
+    $dice->create(controllers\Authentication::class)->login();
+});
+$router->post('/login', function() use ($dice) {
+    // json
+    $dice->create(controllers\Authentication::class)->login();
+});
+$router->get('/logout', function() use ($dice) {
+    // json
+    $dice->create(controllers\Authentication::class)->logout();
+});
+$router->get('/update', function() use ($dice) {
+    // text
+    $dice->create(controllers\Sources\Update::class)->updateAll();
+});
 
 // only for loggedin users or on public mode
-$f3->route('GET /rss', controllers\Rss::class . '->rss'); // rss
-$f3->route('GET /feed', controllers\Rss::class . '->rss'); // rss
-$f3->route('GET /items', controllers\Items::class . '->listItems'); // json
-$f3->route('GET /tags', controllers\Tags::class . '->listTags'); // json
-$f3->route('GET /stats', controllers\Items\Stats::class . '->stats'); // json
-$f3->route('GET /items/sync', controllers\Items\Sync::class . '->sync'); // json
-$f3->route('GET /sources/stats', controllers\Sources::class . '->stats'); // json
+$router->get('/rss', function() use ($dice) {
+    // rss
+    $dice->create(controllers\Rss::class)->rss();
+});
+$router->get('/feed', function() use ($dice) {
+    // rss
+    $dice->create(controllers\Rss::class)->rss();
+});
+$router->get('/items', function() use ($dice) {
+    // json
+    $dice->create(controllers\Items::class)->listItems();
+});
+$router->get('/tags', function() use ($dice) {
+    // json
+    $dice->create(controllers\Tags::class)->listTags();
+});
+$router->get('/stats', function() use ($dice) {
+    // json
+    $dice->create(controllers\Items\Stats::class)->stats();
+});
+$router->get('/items/sync', function() use ($dice) {
+    // json
+    $dice->create(controllers\Items\Sync::class)->sync();
+});
+$router->get('/sources/stats', function() use ($dice) {
+    // json
+    $dice->create(controllers\Sources::class)->stats();
+});
 
 // only loggedin users
-$f3->route('POST /mark/@item', controllers\Items::class . '->mark'); // json
-$f3->route('POST /mark', controllers\Items::class . '->mark'); // json
-$f3->route('POST /unmark/@item', controllers\Items::class . '->unmark'); // json
-$f3->route('POST /starr/@item', controllers\Items::class . '->starr'); // json
-$f3->route('POST /unstarr/@item', controllers\Items::class . '->unstarr'); // json
-$f3->route('POST /items/sync', controllers\Items\Sync::class . '->updateStatuses'); // json
+$router->post('/mark/{itemId}', function($itemId) use ($dice) {
+    // json
+    $dice->create(controllers\Items::class)->mark($itemId);
+});
+$router->post('/mark', function() use ($dice) {
+    // json
+    $dice->create(controllers\Items::class)->mark();
+});
+$router->post('/unmark/{itemId}', function($itemId) use ($dice) {
+    // json
+    $dice->create(controllers\Items::class)->unmark($itemId);
+});
+$router->post('/starr/{itemId}', function($itemId) use ($dice) {
+    // json
+    $dice->create(controllers\Items::class)->starr($itemId);
+});
+$router->post('/unstarr/{itemId}', function($itemId) use ($dice) {
+    // json
+    $dice->create(controllers\Items::class)->unstarr($itemId);
+});
+$router->post('/items/sync', function() use ($dice) {
+    // json
+    $dice->create(controllers\Items\Sync::class)->updateStatuses();
+});
 
-$f3->route('GET /source/params', controllers\Sources::class . '->params'); // json
-$f3->route('GET /sources', controllers\Sources::class . '->show'); // json
-$f3->route('GET /source', controllers\Sources::class . '->add'); // json
-$f3->route('GET /sources/list', controllers\Sources::class . '->listSources'); // json
-$f3->route('POST /source/@id', controllers\Sources\Write::class . '->write'); // json
-$f3->route('POST /source', controllers\Sources\Write::class . '->write'); // json
-$f3->route('DELETE /source/@id', controllers\Sources::class . '->remove'); // json
-$f3->route('POST /source/delete/@id', controllers\Sources::class . '->remove'); // json
-$f3->route('POST /source/@id/update', controllers\Sources\Update::class . '->update'); // json
-$f3->route('GET /sources/spouts', controllers\Sources::class . '->spouts'); // json
+$router->get('/source/params', function() use ($dice) {
+    // json
+    $dice->create(controllers\Sources::class)->params();
+});
+$router->get('/sources', function() use ($dice) {
+    // json
+    $dice->create(controllers\Sources::class)->show();
+});
+$router->get('/source', function() use ($dice) {
+    // json
+    $dice->create(controllers\Sources::class)->add();
+});
+$router->get('/sources/list', function() use ($dice) {
+    // json
+    $dice->create(controllers\Sources::class)->listSources();
+});
+$router->post('/source/{id}', function($id) use ($dice) {
+    // json
+    $dice->create(controllers\Sources\Write::class)->write($id);
+});
+$router->post('/source', function() use ($dice) {
+    // json
+    $dice->create(controllers\Sources\Write::class)->write();
+});
+$router->delete('/source/{id}', function($id) use ($dice) {
+    // json
+    $dice->create(controllers\Sources::class)->remove($id);
+});
+$router->post('/source/delete/{id}', function($id) use ($dice) {
+    // json
+    $dice->create(controllers\Sources::class)->remove($id);
+});
+$router->post('/source/{id}/update', function($id) use ($dice) {
+    // json
+    $dice->create(controllers\Sources\Update::class)->update($id);
+});
+$router->get('/sources/spouts', function() use ($dice) {
+    // json
+    $dice->create(controllers\Sources::class)->spouts();
+});
 
-$f3->route('POST /tags/color', controllers\Tags::class . '->color'); // json
+$router->post('/tags/color', function() use ($dice) {
+    // json
+    $dice->create(controllers\Tags::class)->color();
+});
 
-$f3->route('GET /opml', controllers\Opml\ImportPage::class . '->show'); // html
-$f3->route('POST /opml', controllers\Opml\Import::class . '->add'); // json
-$f3->route('GET /opmlexport', controllers\Opml\Export::class . '->export'); // xml
+$router->get('/opml', function() use ($dice) {
+    // html
+    $dice->create(controllers\Opml\ImportPage::class)->show();
+});
+$router->post('/opml', function() use ($dice) {
+    // json
+    $dice->create(controllers\Opml\Import::class)->add();
+});
+$router->get('/opmlexport', function() use ($dice) {
+    // xml
+    $dice->create(controllers\Opml\Export::class)->export();
+});
+
+$router->set404(function() {
+    header('HTTP/1.1 404 Not Found');
+    echo 'Page not found.';
+});
 
 // dispatch
-$f3->run();
+$router->run();

@@ -6,6 +6,7 @@
         "php": ">= 5.6",
         "ext-gd": "*",
         "bcosca/fatfree-core": "^3.7.0",
+        "bramus/router": "^1.6",
         "danielstjules/stringy": "^3.1",
         "fossar/guzzle-transcoder": "^0.2.0",
         "fossar/htmlawed": "^1.2.4.1",

@@ -2,7 +2,6 @@
 
 namespace controllers;
 
-use Base;
 use helpers\Authentication;
 use helpers\SpoutLoader;
 use helpers\View;
@@ -111,15 +110,12 @@ class Sources {
      * delete source
      * json
      *
-     * @param Base $f3 fatfree base instance
-     * @param array $params query string parameters
+     * @param int $id ID of source to remove
      *
      * @return void
      */
-    public function remove(Base $f3, array $params) {
+    public function remove($id) {
         $this->authentication->needsLoggedIn();
-
-        $id = $params['id'];
 
         if (!$this->sourcesDao->isValid('id', $id)) {
             $this->view->error('invalid id given');

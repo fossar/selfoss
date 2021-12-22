@@ -206,10 +206,6 @@ $dice->addRule(helpers\ThumbnailStore::class, array_merge($shared, [
 // Fallback rule
 $dice->addRule('*', $substitutions);
 
-$f3->set('CONTAINER', function($class) use ($dice) {
-    return $dice->create($class);
-});
-
 $dice->addRule(Logger::class, [
     'shared' => true,
     'constructParams' => ['selfoss'],

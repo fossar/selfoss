@@ -33,20 +33,19 @@ class Items {
      * mark items as read. Allows one id or an array of ids
      * json
      *
-     * @param Base $f3 fatfree base instance
-     * @param array $params query string parameters
+     * @param ?int $itemId ID of item to mark as read
      *
      * @return void
      */
-    public function mark(Base $f3, array $params) {
+    public function mark($itemId = null) {
         $this->authentication->needsLoggedIn();
 
-        if (isset($params['item'])) {
-            $lastid = $params['item'];
+        if ($itemId !== null) {
+            $lastid = $itemId;
         } else {
-            $headers = \F3::get('HEADERS');
-            if (isset($headers['Content-Type']) && strpos($headers['Content-Type'], 'application/json') === 0) {
-                $body = \F3::get('BODY');
+            $contentType = $_SERVER['CONTENT_TYPE'] ?: '';
+            if (strpos($contentType, 'application/json') === 0) {
+                $body = file_get_contents('php://input');
                 $lastid = json_decode($body, true);
             } elseif (isset($_POST['ids'])) {
                 $lastid = $_POST['ids'];
@@ -71,21 +70,18 @@ class Items {
      * mark item as unread
      * json
      *
-     * @param Base $f3 fatfree base instance
-     * @param array $params query string parameters
+     * @param int $itemId id of an item to mark as unread
      *
      * @return void
      */
-    public function unmark(Base $f3, array $params) {
+    public function unmark($itemId) {
         $this->authentication->needsLoggedIn();
 
-        $lastid = $params['item'];
-
-        if (!$this->itemsDao->isValid('id', $lastid)) {
+        if (!$this->itemsDao->isValid('id', $itemId)) {
             $this->view->error('invalid id');
         }
 
-        $this->itemsDao->unmark($lastid);
+        $this->itemsDao->unmark($itemId);
 
         $this->view->jsonSuccess([
             'success' => true,
@@ -96,21 +92,18 @@ class Items {
      * starr item
      * json
      *
-     * @param Base $f3 fatfree base instance
-     * @param array $params query string parameters
+     * @param int $itemId id of an item to starr
      *
      * @return void
      */
-    public function starr(Base $f3, array $params) {
+    public function starr($itemId) {
         $this->authentication->needsLoggedIn();
 
-        $id = $params['item'];
-
-        if (!$this->itemsDao->isValid('id', $id)) {
+        if (!$this->itemsDao->isValid('id', $itemId)) {
             $this->view->error('invalid id');
         }
 
-        $this->itemsDao->starr($id);
+        $this->itemsDao->starr($itemId);
         $this->view->jsonSuccess([
             'success' => true,
         ]);
@@ -120,21 +113,18 @@ class Items {
      * unstarr item
      * json
      *
-     * @param Base $f3 fatfree base instance
-     * @param array $params query string parameters
+     * @param int $itemId id of an item to unstarr
      *
      * @return void
      */
-    public function unstarr(Base $f3, array $params) {
+    public function unstarr($itemId) {
         $this->authentication->needsLoggedIn();
 
-        $id = $params['item'];
-
-        if (!$this->itemsDao->isValid('id', $id)) {
+        if (!$this->itemsDao->isValid('id', $itemId)) {
             $this->view->error('invalid id');
         }
 
-        $this->itemsDao->unstarr($id);
+        $this->itemsDao->unstarr($itemId);
         $this->view->jsonSuccess([
             'success' => true,
         ]);

@@ -2,7 +2,6 @@
 
 namespace controllers;
 
-use Base;
 use helpers\Authentication;
 use helpers\View;
 
@@ -66,19 +65,19 @@ class Tags {
      *
      * @return void
      */
-    public function color(Base $f3) {
+    public function color() {
         $this->authentication->needsLoggedIn();
 
         // read data
-        parse_str($f3->get('BODY'), $data);
+        parse_str(file_get_contents('php://input'), $data);
 
-        $tag = $data['tag'];
-        $color = $data['color'];
+        $tag = $data['tag'] ?: null;
+        $color = $data['color'] ?: null;
 
-        if (!isset($tag) || strlen(trim($tag)) === 0) {
+        if ($tag === null || strlen(trim($tag)) === 0) {
             $this->view->error('invalid or no tag given');
         }
-        if (!isset($color) || strlen(trim($color)) === 0) {
+        if ($color === null || strlen(trim($color)) === 0) {
             $this->view->error('invalid or no color given');
         }
 
