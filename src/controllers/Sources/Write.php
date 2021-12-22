@@ -137,7 +137,7 @@ class Write {
         ];
 
         // only for selfoss ui (update stats in navigation)
-        if ($f3->ajax()) {
+        if ($this->view->isAjax()) {
             // get new tag list with updated count values
             $return['tags'] = $this->tagsDao->getWithUnread();
 

@@ -78,6 +78,17 @@ class View {
     }
 
     /**
+     * Tests whether the current request was made using AJAX.
+     *
+     * (The JavaScript AJAX library needs to set the header.)
+     *
+     * @return bool
+     */
+    public function isAjax() {
+        return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
+    }
+
+    /**
      * send error message
      *
      * @param string $message

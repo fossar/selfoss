@@ -2,7 +2,6 @@
 
 namespace controllers;
 
-use Base;
 use helpers\Authentication;
 use helpers\View;
 use helpers\ViewHelper;
@@ -54,14 +53,12 @@ class Index {
      * home site
      * json
      *
-     * @param Base $f3 fatfree base instance
-     *
      * @return void
      */
-    public function home(Base $f3) {
+    public function home() {
         $options = $_GET;
 
-        if (!$f3->ajax()) {
+        if (!$this->view->isAjax()) {
             $home = BASEDIR . '/public/index.html';
             if (!file_exists($home)) {
                 http_response_code(500);
