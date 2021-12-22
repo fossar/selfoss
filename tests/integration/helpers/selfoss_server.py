@@ -58,7 +58,7 @@ class SelfossServerThread(threading.Thread):
                 # We need to enable reading environment variables.
                 '-d', 'variables_order=EGPCS',
                 '-S', f'{self.host_name}:{self.port}',
-                '-c', current_dir / 'php.ini',
+                '-c', current_dir.parent / 'php.ini',
                 self.selfoss_root / 'run.php',
             ]
 
