@@ -207,10 +207,7 @@ class ContentLoader {
             }
 
             // sanitize title
-            $title = $this->sanitizeField($item->getTitle());
-            if (strlen(trim($title)) === 0) {
-                $title = '[' . \F3::get('lang_no_title') . ']';
-            }
+            $title = trim($this->sanitizeField($item->getTitle()));
 
             // Check sanitized title against filter
             if ($this->filter($source, $title, $content) === false) {

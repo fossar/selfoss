@@ -20,8 +20,8 @@ function handleLogIn({
 
     selfoss.login({ username, password, offlineEnabled }).then(() => {
         history.push('/');
-    }).catch((error) => {
-        setError(error.message);
+    }).catch(() => {
+        setError(selfoss.app._('login_invalid_credentials'));
     }).finally(() => {
         setLoading(false);
     });

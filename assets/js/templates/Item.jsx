@@ -339,7 +339,7 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
     );
 
     const titleHtml = React.useMemo(
-        () => ({ __html: title }),
+        () => ({ __html: title ? title : selfoss.app._('no_title') }),
         [title]
     );
 

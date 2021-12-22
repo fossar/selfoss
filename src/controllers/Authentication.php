@@ -68,7 +68,7 @@ class Authentication {
 
         $this->view->jsonSuccess([
             'success' => false,
-            'error' => \F3::get('lang_login_invalid_credentials'),
+            'error' => 'Wrong username/password',
         ]);
     }
 

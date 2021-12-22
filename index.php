@@ -2,12 +2,6 @@
 
 require __DIR__ . '/src/common.php';
 
-// Load custom language
-$lang = $f3->get('language');
-if ($lang != '0' && $lang != '') {
-    $f3->set('LANGUAGE', $lang);
-}
-
 // define routes
 
 // all users

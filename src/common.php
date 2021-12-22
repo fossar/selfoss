@@ -33,13 +33,11 @@ error_reporting(E_ALL & ~E_DEPRECATED);
 
 $f3->set('AUTOLOAD', false);
 $f3->set('BASEDIR', BASEDIR);
-$f3->set('LOCALES', BASEDIR . '/assets/locale/');
 
 $configuration = new Configuration(__DIR__ . '/../config.ini', $_ENV);
 
 $f3->set('DEBUG', $configuration->debug);
 $f3->set('cache', $configuration->cache);
-$f3->set('language', $configuration->language);
 
 $dice = new Dice();
 
@@ -263,20 +261,20 @@ $f3->set('ONERROR',
             }
 
             if ($configuration->debug !== 0) {
-                echo $f3->get('lang_error') . ': ';
+                echo 'An error occurred' . ': ';
                 echo $f3->get('ERROR.text') . "\n";
                 echo $f3->get('ERROR.trace');
             } else {
                 if ($handler instanceof StreamHandler) {
-                    echo $f3->get('lang_error_check_log_file', $handler->getUrl()) . PHP_EOL;
+                    echo 'An error occured, please check the log file “' . $handler->getUrl() . '”.' . PHP_EOL;
                 } elseif ($handler instanceof ErrorLogHandler) {
-                    echo $f3->get('lang_error_check_system_logs') . PHP_EOL;
+                    echo 'An error occured, please check your system logs.' . PHP_EOL;
                 } else {
-                    echo $f3->get('lang_error') . PHP_EOL;
+                    echo 'An error occurred' . PHP_EOL;
                 }
             }
         } catch (Exception $e) {
-            echo $f3->get('lang_error_unwritable_logs') . PHP_EOL;
+            echo 'Unable to write logs.' . PHP_EOL;
             echo $e->getMessage() . PHP_EOL;
         }
     }
