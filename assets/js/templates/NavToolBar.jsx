@@ -15,7 +15,7 @@ function handleReloadAll({ setReloading, setNavExpanded }) {
 
 function handleSettings({ history, setNavExpanded }) {
     // only loggedin users
-    if (!selfoss.loggedin.value || !selfoss.db.online) {
+    if (selfoss.config.authEnabled && (!selfoss.loggedin.value || !selfoss.db.online)) {
         return;
     }
 

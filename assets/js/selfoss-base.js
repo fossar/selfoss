@@ -105,7 +105,6 @@ var selfoss = {
         document.body.classList.toggle('publicmode', configuration.publicMode);
         document.body.classList.toggle('authenabled', configuration.authEnabled);
         document.body.classList.toggle('loggedin', !configuration.authEnabled);
-        document.body.classList.toggle('auto_mark_as_read', configuration.autoMarkAsRead);
 
         if (configuration.language !== null) {
             document.documentElement.setAttribute('lang', configuration.language);
@@ -136,12 +135,13 @@ var selfoss = {
 
         selfoss.attachApp();
 
-        function loggedinChanged(event) {
-            document.body.classList.toggle('loggedin', event.value);
+        if (configuration.authEnabled) {
+            selfoss.loggedin.addEventListener('change', function loggedinChanged(event) {
+                document.body.classList.toggle('loggedin', event.value);
+            });
+
+            selfoss.loggedin.update(window.localStorage.getItem('onlineSession') == 'true');
         }
-        // It might happen that the value changes before event handler is attached.
-        loggedinChanged({ value: selfoss.loggedin.value });
-        selfoss.loggedin.addEventListener('change', loggedinChanged);
 
         if (selfoss.hasSession() || !configuration.authEnabled || configuration.publicMode) {
             selfoss.initUi();
@@ -208,7 +208,6 @@ var selfoss = {
 
 
     hasSession: function() {
-        selfoss.loggedin.update(window.localStorage.getItem('onlineSession') == 'true');
         return selfoss.loggedin.value;
     },
 
