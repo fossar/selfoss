@@ -2,6 +2,7 @@
 
 namespace controllers;
 
+use daos\ItemOptions;
 use helpers\Authentication;
 use helpers\View;
 use helpers\ViewHelper;
@@ -74,17 +75,11 @@ class Index {
 
         $this->authentication->needsLoggedInOrPublicMode();
 
-        // get search param
-        $search = null;
-        if (isset($options['search']) && strlen($options['search']) > 0) {
-            $search = $options['search'];
-        }
-
         // load tags
         $tags = $this->tagsDao->getWithUnread();
 
         // load items
-        $items = $this->loadItems($options, $tags, $search);
+        $items = $this->loadItems($options, $tags);
 
         // load stats
         $stats = $this->itemsDao->stats();
@@ -122,14 +117,14 @@ class Index {
      *
      * @param array $params request parameters
      * @param array $tags information about tags
-     * @param ?string $search optional search query
      *
      * @return array{entries: array, hasMore: bool} html with items
      */
-    private function loadItems(array $params, array $tags, $search = null) {
+    private function loadItems(array $params, array $tags) {
+        $options = ItemOptions::fromUser($params);
         $entries = [];
-        foreach ($this->itemsDao->get($params) as $item) {
-            $entries[] = $this->viewHelper->preprocessEntry($item, $this->tagsController, $tags, $search);
+        foreach ($this->itemsDao->get($options) as $item) {
+            $entries[] = $this->viewHelper->preprocessEntry($item, $this->tagsController, $tags, $options->search);
         }
 
         return [

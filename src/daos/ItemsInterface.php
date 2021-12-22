@@ -94,11 +94,11 @@ interface ItemsInterface {
     /**
      * returns items
      *
-     * @param mixed $options search, offset and filter params
+     * @param ItemOptions $options search, offset and filter params
      *
      * @return mixed items as array
      */
-    public function get($options = []);
+    public function get(ItemOptions $options);
 
     /**
      * returns whether more items for last given

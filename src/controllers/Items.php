@@ -2,7 +2,7 @@
 
 namespace controllers;
 
-use Base;
+use daos\ItemOptions;
 use helpers\Authentication;
 use helpers\View;
 
@@ -150,10 +150,7 @@ class Items {
         $this->authentication->needsLoggedInOrPublicMode();
 
         // parse params
-        $options = [];
-        if (count($_GET) > 0) {
-            $options = $_GET;
-        }
+        $options = ItemOptions::fromUser($_GET);
 
         // get items
         $items = $this->itemsDao->get($options);

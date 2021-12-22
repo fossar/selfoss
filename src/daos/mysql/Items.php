@@ -3,6 +3,7 @@
 namespace daos\mysql;
 
 use daos\DatabaseInterface;
+use daos\ItemOptions;
 use DateTime;
 use helpers\Configuration;
 use Monolog\Logger;
@@ -227,23 +228,24 @@ class Items implements \daos\ItemsInterface {
     /**
      * returns items
      *
-     * @param mixed $options search, offset and filter params
+     * @param ItemOptions $options search, offset and filter params
      *
      * @return mixed items as array
      */
-    public function get($options = []) {
+    public function get(ItemOptions $options) {
         $stmt = static::$stmt;
         $params = [];
         $where = [$stmt::bool(true)];
         $order = 'DESC';
+        $offset = $options->offset;
 
         // only starred
-        if (isset($options['type']) && $options['type'] === 'starred') {
+        if ($options->filter === 'starred') {
             $where[] = $stmt::isTrue('starred');
         }
 
         // only unread
-        elseif (isset($options['type']) && $options['type'] === 'unread') {
+        elseif ($options->filter === 'unread') {
             $where[] = $stmt::isTrue('unread');
             if ($this->configuration->unreadOrder === 'asc') {
                 $order = 'ASC';
@@ -251,46 +253,44 @@ class Items implements \daos\ItemsInterface {
         }
 
         // search
-        if (isset($options['search']) && strlen($options['search']) > 0) {
-            if (preg_match('#^/(?P<regex>.+)/$#', $options['search'], $matches)) {
+        if ($options->search !== null) {
+            if (preg_match('#^/(?P<regex>.+)/$#', $options->search, $matches)) {
                 $params[':search'] = $params[':search2'] = $params[':search3'] = [$matches['regex'], \PDO::PARAM_STR];
                 $where[] = $stmt::exprOr($stmt::matchesRegex('items.title', ':search'), $stmt::matchesRegex('items.content', ':search2'), $stmt::matchesRegex('sources.title', ':search3'));
             } else {
-                $search = implode('%', \helpers\Search::splitTerms($options['search']));
+                $search = implode('%', \helpers\Search::splitTerms($options->search));
                 $params[':search'] = $params[':search2'] = $params[':search3'] = ['%' . $search . '%', \PDO::PARAM_STR];
                 $where[] = '(items.title LIKE :search OR items.content LIKE :search2 OR sources.title LIKE :search3) ';
             }
         }
 
         // tag filter
-        if (isset($options['tag']) && strlen($options['tag']) > 0) {
-            $params[':tag'] = $options['tag'];
+        if ($options->tag !== null) {
+            $params[':tag'] = $options->tag;
             $where[] = 'items.source=sources.id';
             $where[] = $stmt::csvRowMatches('sources.tags', ':tag');
         }
         // source filter
-        elseif (isset($options['source']) && strlen($options['source']) > 0) {
-            $params[':source'] = [$options['source'], \PDO::PARAM_INT];
+        elseif ($options->source !== null) {
+            $params[':source'] = [$options->source, \PDO::PARAM_INT];
             $where[] = 'items.source=:source ';
         }
 
         // update time filter
-        if (isset($options['updatedsince'])) {
+        if ($options->updatedSince !== null) {
             $params[':updatedsince'] = [
-                $stmt::datetime($options['updatedsince']), \PDO::PARAM_STR,
+                $stmt::datetime($options->updatedSince), \PDO::PARAM_STR,
             ];
             $where[] = 'items.updatetime > :updatedsince ';
         }
 
         // seek pagination (alternative to offset)
-        if (isset($options['fromDatetime'])
-            && isset($options['fromId'])
-            && is_numeric($options['fromId'])) {
+        if ($options->fromDatetime !== null && $options->fromId !== null) {
             // discard offset as it makes no sense to mix offset pagination
             // with seek pagination.
-            $options['offset'] = 0;
+            $offset = 0;
 
-            $offset_from_datetime_sql = $stmt::datetime($options['fromDatetime']);
+            $offset_from_datetime_sql = $stmt::datetime($options->fromDatetime);
             $params[':offset_from_datetime'] = [
                 $offset_from_datetime_sql, \PDO::PARAM_STR,
             ];
@@ -298,7 +298,7 @@ class Items implements \daos\ItemsInterface {
                 $offset_from_datetime_sql, \PDO::PARAM_STR,
             ];
             $params[':offset_from_id'] = [
-                $options['fromId'], \PDO::PARAM_INT,
+                $options->fromId, \PDO::PARAM_INT,
             ];
             $ltgt = null;
             if ($order === 'ASC') {
@@ -315,37 +315,25 @@ class Items implements \daos\ItemsInterface {
                         )";
         }
 
-        $where_ids = '';
+        $where_ids = null;
         // extra ids to include in stream
-        if (isset($options['extraIds'])
-            && is_array($options['extraIds'])
-            && count($options['extraIds']) > 0
+        if (count($options->extraIds) > 0
             // limit the query to a sensible max
-            && count($options['extraIds']) <= $this->configuration->itemsPerpage) {
-            $extra_ids_stmt = $stmt::intRowMatches('items.id', $options['extraIds']);
-            if ($extra_ids_stmt !== null) {
-                $where_ids = $extra_ids_stmt;
-            }
+            && count($options->extraIds) <= $this->configuration->itemsPerpage) {
+            $where_ids = $stmt::intRowMatches('items.id', $options->extraIds);
         }
 
         // finalize items filter
         $where_sql = implode(' AND ', $where);
 
         // set limit
-        if (!isset($options['items']) || !is_numeric($options['items']) || $options['items'] > 200) {
-            $options['items'] = $this->configuration->itemsPerpage;
-        }
-
-        // set offset
-        if (!isset($options['offset']) || !is_numeric($options['offset'])) {
-            $options['offset'] = 0;
-        }
+        $pageSize = $options->pageSize === null ? $this->configuration->itemsPerpage : min($options->pageSize, max(200, $this->configuration->itemsPerpage));
 
         // first check whether more items are available
         $result = $this->database->exec('SELECT items.id
                    FROM ' . $this->configuration->dbPrefix . 'items AS items, ' . $this->configuration->dbPrefix . 'sources AS sources
                    WHERE items.source=sources.id AND ' . $where_sql . '
-                   LIMIT 1 OFFSET ' . ($options['offset'] + $options['items']), $params);
+                   LIMIT 1 OFFSET ' . ($offset + $pageSize), $params);
         $this->hasMore = count($result) > 0;
 
         // get items from database
@@ -355,7 +343,7 @@ class Items implements \daos\ItemsInterface {
             WHERE items.source=sources.id AND';
         $order_sql = 'ORDER BY items.datetime ' . $order . ', items.id ' . $order;
 
-        if ($where_ids !== '') {
+        if ($where_ids !== null) {
             // This UNION is required for the extra explicitely requested items
             // to be included whether or not they would have been excluded by
             // seek, filter, offset rules.
@@ -365,13 +353,13 @@ class Items implements \daos\ItemsInterface {
             // complaining about 'order by clause should come after union not
             // before'.
             $query = "SELECT * FROM (
-                        SELECT * FROM ($select $where_sql $order_sql LIMIT " . $options['items'] . ' OFFSET ' . $options['offset'] . ") AS entries
+                        SELECT * FROM ($select $where_sql $order_sql LIMIT " . $pageSize . ' OFFSET ' . $offset . ") AS entries
                       UNION
                         $select $where_ids
                       ) AS items
                       $order_sql";
         } else {
-            $query = "$select $where_sql $order_sql LIMIT " . $options['items'] . ' OFFSET ' . $options['offset'];
+            $query = "$select $where_sql $order_sql LIMIT " . $pageSize . ' OFFSET ' . $offset;
         }
 
         return $stmt::ensureRowTypes($this->database->exec($query, $params), [

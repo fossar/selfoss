@@ -2,7 +2,7 @@
 
 namespace controllers;
 
-use Base;
+use daos\ItemOptions;
 use FeedWriter\RSS2;
 use helpers\Authentication;
 use helpers\Configuration;
@@ -46,12 +46,9 @@ class Rss {
     /**
      * rss feed
      *
-     * @param Base $f3 fatfree base instance
-     * @param array $params query string parameters
-     *
      * @return void
      */
-    public function rss(Base $f3, array $params) {
+    public function rss() {
         $this->authentication->needsLoggedInOrPublicMode();
 
         $this->feedWriter->setTitle($this->configuration->rssTitle);
@@ -64,18 +61,7 @@ class Rss {
         $lastSourceId = 0;
         $lastSourceName = '';
 
-        // set options
-        $options = [];
-        if (count($_GET) > 0) {
-            $options = $_GET;
-        }
-        $options['items'] = $this->configuration->rssMaxItems;
-        if (isset($params['tag'])) {
-            $options['tag'] = $params['tag'];
-        }
-        if (isset($params['type'])) {
-            $options['type'] = $params['type'];
-        }
+        $options = ItemOptions::fromUser($_GET);
 
         // get items
         $newestEntryDate = null;
