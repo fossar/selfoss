@@ -150,7 +150,7 @@ class Authentication {
      */
     public function needsLoggedInOrPublicMode() {
         if ($this->isLoggedin() !== true && !$this->configuration->public) {
-            \F3::error(403);
+            $this->forbidden();
         }
     }
 
@@ -161,8 +161,19 @@ class Authentication {
      */
     public function needsLoggedIn() {
         if ($this->isLoggedin() !== true) {
-            \F3::error(403);
+            $this->forbidden();
         }
+    }
+
+    /**
+     * send 403 if not logged in
+     *
+     * @return void
+     */
+    public function forbidden() {
+        header('HTTP/1.0 403 Forbidden');
+        echo 'Access forbidden!';
+        exit;
     }
 
     /**
