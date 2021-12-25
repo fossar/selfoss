@@ -1,26 +1,36 @@
 <?php
 
-// Only run this if running from php 5.4 embedded server
+// Only run this if running from PHP 5.4+ embedded server.
 if (PHP_SAPI === 'cli-server') {
-    if (preg_match('/\.(?:js|ico|gif|jpg|png|css|asc|txt|svg)(?:\?.*)?$/', $_SERVER['REQUEST_URI'])) {
-        // serves fronted
-        if (preg_match('/^\/public/', $_SERVER['REQUEST_URI'])) {
+    $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+
+    if (preg_match('/\.(?:js|ico|gif|jpg|png|css|asc|txt|svg)$/', $path)) {
+        // Serves customization.
+        if (preg_match('/^\/user\.(js|css)$/', $path)) {
             return false;
         }
 
-        // serves favicons
-        if (preg_match('/^\/data/', $_SERVER['REQUEST_URI'])) {
+        // Serves frontend.
+        if (preg_match('/^\/public/', $path)) {
             return false;
         }
 
-        //redirects to proper location for favicons
-        if (preg_match('/(favicons|thumbnails)/', $_SERVER['REQUEST_URI'])) {
-            header('Location: /data' . $_SERVER['REQUEST_URI']);
+        // Serves favicons and thumbnails.
+        if (preg_match('/^\/data/', $path)) {
+            return false;
+        }
+
+        // The rewrite rules do not match real servers perfectly –
+        // Apache would use an internal redirect instead of HTTP one.
+
+        // Redirects to proper location for images.
+        if (preg_match('/\/(favicons|thumbnails)/', $path)) {
+            header('Location: /data' . $path);
             exit;
         }
 
-        //redirects to proper location for frontend
-        header('Location: /public' . $_SERVER['REQUEST_URI']);
+        // Redirects to proper location for frontend.
+        header('Location: /public' . $path);
         exit;
     } else {
         // taken from cli arg, hack for updater
