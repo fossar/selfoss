@@ -180,7 +180,7 @@ function PureApp({
             <Message message={globalMessage} />
 
             <Switch>
-                <Route path="/login">
+                <Route path="/sign/in">
                     {/* menu open for smartphone */}
                     <div id="loginform" role="main">
                         <LoginForm
@@ -253,7 +253,7 @@ function PureApp({
                                     />
                                 )}
                             </Route>
-                            <Route path="/sources">
+                            <Route path="/manage/sources">
                                 <SourcesPage />
                             </Route>
                             <Route path="*">

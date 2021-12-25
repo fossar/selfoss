@@ -20,13 +20,13 @@ function handleSettings({ history, setNavExpanded }) {
     }
 
     // show sources
-    history.push('/sources');
+    history.push('/manage/sources');
 
     setNavExpanded(false);
 }
 
 function handleLogIn({ history }) {
-    history.push('/login');
+    history.push('/sign/in');
 }
 
 function handleLogOut({ setNavExpanded }) {
