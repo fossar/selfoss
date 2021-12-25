@@ -36,9 +36,6 @@ class Configuration {
     /** @var string @internal */
     public $ftrssCustomDataDir = '%datadir%/fulltextrss';
 
-    /** @var ?string @internal */
-    public $timezone = @date_default_timezone_get(); // Will produce a warning on PHP 5.6 when date.timezone is not set.
-
     // Rest of the values.
 
     /** @var string */

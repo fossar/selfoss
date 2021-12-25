@@ -39,7 +39,6 @@ $configuration = new Configuration(__DIR__ . '/../config.ini', $_ENV);
 
 $f3->set('DEBUG', $configuration->debug);
 $f3->set('cache', $configuration->cache);
-date_default_timezone_set($configuration->timezone);
 
 $dice = new Dice();
 
