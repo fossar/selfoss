@@ -55,7 +55,7 @@
     "lint": "npm run lint:js && npm run lint:styles",
     "lint:js": "eslint --ext .jsx,.js .",
     "lint:styles": "stylelint styles/*.scss",
-    "dev": "parcel watch index.html opml.html hashpassword.html --dist-dir ../public/ --public-url ./ --no-hmr",
+    "dev": "parcel watch index.html opml.html hashpassword.html --dist-dir ../public/ --public-url ./",
     "build": "parcel build index.html opml.html hashpassword.html --dist-dir ../public/ --public-url ./"
   }
 }
