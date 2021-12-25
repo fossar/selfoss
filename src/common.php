@@ -69,6 +69,7 @@ $shared = array_merge($substitutions, [
     'shared' => true,
 ]);
 
+$dice->addRule(Bramus\Router\Router::class, $shared);
 $dice->addRule(helpers\Authentication::class, $shared);
 
 // Database bridges

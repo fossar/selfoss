@@ -2,6 +2,7 @@
 
 namespace controllers;
 
+use Bramus\Router\Router;
 use daos\ItemOptions;
 use helpers\Authentication;
 use helpers\View;
@@ -21,8 +22,8 @@ class Index {
     /** @var \daos\Items items */
     private $itemsDao;
 
-    /** @var \controllers\Sources sources controller */
-    private $sourcesController;
+    /** @var Router router */
+    private $router;
 
     /** @var \daos\Sources sources */
     private $sourcesDao;
@@ -39,10 +40,10 @@ class Index {
     /** @var ViewHelper */
     private $viewHelper;
 
-    public function __construct(Authentication $authentication, \daos\Items $itemsDao, Sources $sourcesController, \daos\Sources $sourcesDao, Tags $tagsController, \daos\Tags $tagsDao, View $view, ViewHelper $viewHelper) {
+    public function __construct(Authentication $authentication, \daos\Items $itemsDao, Router $router, \daos\Sources $sourcesDao, Tags $tagsController, \daos\Tags $tagsDao, View $view, ViewHelper $viewHelper) {
         $this->authentication = $authentication;
         $this->itemsDao = $itemsDao;
-        $this->sourcesController = $sourcesController;
+        $this->router = $router;
         $this->sourcesDao = $sourcesDao;
         $this->tagsController = $tagsController;
         $this->tagsDao = $tagsDao;
@@ -68,7 +69,7 @@ class Index {
             }
 
             // show as full html page
-            readfile($home);
+            echo str_replace('@basePath@', $this->router->getBasePath(), file_get_contents($home));
 
             return;
         }

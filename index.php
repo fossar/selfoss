@@ -2,7 +2,7 @@
 
 require __DIR__ . '/src/common.php';
 
-$router = new Bramus\Router\Router();
+$router = $dice->create(Bramus\Router\Router::class);
 
 // define routes
 
