@@ -151,6 +151,12 @@ $router->get('/opmlexport', function() use ($dice) {
     $dice->create(controllers\Opml\Export::class)->export();
 });
 
+// Client side routes need to be directed to index.html.
+$router->get('/sign/in|/manage/sources|/(newest|unread|starred)(/(all|tag-[^/]+|source-[0-9]+)(/[0-9]+)?)?', function() use ($dice) {
+    // html
+    $dice->create(controllers\Index::class)->home();
+});
+
 $router->set404(function() {
     header('HTTP/1.1 404 Not Found');
     echo 'Page not found.';

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import nullable from 'prop-types-nullable';
 import {
-    HashRouter as Router,
+    BrowserRouter as Router,
     Switch,
     Route,
     Redirect,
@@ -677,9 +677,9 @@ export default class App extends React.Component {
  * Creates the selfoss single-page application
  * with the required contexts.
  */
-export function createApp(appRef) {
+export function createApp(basePath, appRef) {
     return (
-        <Router hashType="noslash">
+        <Router basename={basePath}>
             <App ref={appRef} />
         </Router>
     );

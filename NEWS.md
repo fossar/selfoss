@@ -83,6 +83,7 @@
 
 ### Other changes
 - The front-end has been modernized using React framework, this will greatly simplify future development. ([#1216](https://github.com/fossar/selfoss/pull/1216))
+- The front-end routing no longer relies on hash fragment, resulting in nicer URLs. ([#1299](https://github.com/fossar/selfoss/pull/1299))
 - Removed broken instapaper scraping from Reddit spout ([#1033](https://github.com/fossar/selfoss/pull/1033))
 - RSS feed will be fetched more reliably ([#1052](https://github.com/fossar/selfoss/pull/1052))
 - Guzzle is now used for Twitter as well, allowing users to [install certificates](https://github.com/fossar/selfoss/issues/1099#issuecomment-477112598) on outdated hosts easily. ([#1102](https://github.com/SSilence/selfoss/pull/1102))

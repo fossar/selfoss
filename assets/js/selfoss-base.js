@@ -161,8 +161,11 @@ var selfoss = {
         document.body.appendChild(mainUi);
         mainUi.classList.add('app-toplevel');
 
+        // BrowserRouter expects no slash at the end.
+        const basePath = (new URL(document.baseURI)).pathname.replace(/\/$/, '');
+
         ReactDOM.render(
-            createApp((app) => {
+            createApp(basePath, (app) => {
                 selfoss.app = app;
             }),
             mainUi
