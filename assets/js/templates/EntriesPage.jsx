@@ -11,6 +11,8 @@ import { LoadingState } from '../requests/LoadingState';
 import { Spinner, SpinnerBig } from './Spinner';
 import classNames from 'classnames';
 import { LocalizationContext } from '../helpers/i18n';
+import { useShouldReload } from '../helpers/hooks';
+import { forceReload } from '../helpers/uri';
 import { HttpError } from '../errors';
 
 function reloadList({ fetchParams, abortController, append = false, waitForSync = true, entryId = null, setLoadingState }) {
@@ -138,10 +140,11 @@ function handleRefreshSource({ event, source, setLoadingState, setNavExpanded, r
     });
 }
 
-export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, forceReload, selectedEntry, expandedEntries, setNavExpanded, navSourcesExpanded, reload }) {
+export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, selectedEntry, expandedEntries, setNavExpanded, navSourcesExpanded, reload }) {
     const allowedToUpdate = !selfoss.config.authEnabled || selfoss.config.allowPublicUpdate || selfoss.loggedin.value;
 
     const location = useLocation();
+    const forceReload = useShouldReload();
     const searchText = React.useMemo(() => {
         const queryString = new URLSearchParams(location.search);
 
@@ -358,7 +361,6 @@ EntriesPage.propTypes = {
     hasMore: PropTypes.bool.isRequired,
     loadingState: PropTypes.oneOf(Object.values(LoadingState)).isRequired,
     setLoadingState: PropTypes.func.isRequired,
-    forceReload: PropTypes.number.isRequired,
     selectedEntry: nullable(PropTypes.number).isRequired,
     expandedEntries: PropTypes.objectOf(PropTypes.bool).isRequired,
     setNavExpanded: PropTypes.func.isRequired,
@@ -377,10 +379,6 @@ const initialState = {
     selectedEntry: null,
     expandedEntries: {},
     loadingState: LoadingState.INITIAL,
-    /**
-     * HACK: A counter that is increased every time reload action (r key) is triggered.
-     */
-    forceReload: 0,
 };
 
 export default class StateHolder extends React.Component {
@@ -799,9 +797,12 @@ export default class StateHolder extends React.Component {
     }
 
     reload() {
-        this.setState({
-            ...initialState,
-            forceReload: this.state.forceReload + 1,
+        /**
+         * HACK: A counter that is increased every time reload action (r key) is triggered.
+         */
+        selfoss.history.replace({
+            ...this.props.location,
+            state: forceReload(this.props.location),
         });
     }
 
@@ -814,7 +815,6 @@ export default class StateHolder extends React.Component {
                 hasMore={this.state.hasMore}
                 loadingState={this.state.loadingState}
                 setLoadingState={this.setLoadingState}
-                forceReload={this.state.forceReload}
                 setNavExpanded={this.props.setNavExpanded}
                 navSourcesExpanded={this.props.navSourcesExpanded}
                 reload={this.reload}
@@ -824,6 +824,7 @@ export default class StateHolder extends React.Component {
 }
 
 StateHolder.propTypes = {
+    location: PropTypes.object.isRequired,
     match: PropTypes.object.isRequired,
     setNavExpanded: PropTypes.func.isRequired,
     navSourcesExpanded: PropTypes.bool.isRequired,

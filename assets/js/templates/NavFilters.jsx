@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link, useLocation, useRouteMatch } from 'react-router-dom';
+import { Link, useRouteMatch } from 'react-router-dom';
 import classNames from 'classnames';
 import { FilterType } from '../Filter';
-import { makeEntriesLink, ENTRIES_ROUTE_PATTERN } from '../helpers/uri';
+import { forceReload, makeEntriesLink, ENTRIES_ROUTE_PATTERN } from '../helpers/uri';
 import Collapse from '@kunukn/react-collapse';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as icons from '../icons';
@@ -21,7 +21,6 @@ export default function NavFilters({
 }) {
     const [expanded, setExpanded] = React.useState(true);
 
-    const location = useLocation();
     // useParams does not seem to work.
     const match = useRouteMatch(ENTRIES_ROUTE_PATTERN);
     const params = match !== null ? match.params : {};
@@ -36,6 +35,33 @@ export default function NavFilters({
         [setNavExpanded]
     );
 
+    const newestLink = React.useCallback(
+        (location) => ({
+            ...location,
+            pathname: makeEntriesLink(location, { filter: FilterType.NEWEST, id: null }),
+            state: forceReload(location),
+        }),
+        []
+    );
+
+    const unreadLink = React.useCallback(
+        (location) => ({
+            ...location,
+            pathname: makeEntriesLink(location, { filter: FilterType.UNREAD, id: null }),
+            state: forceReload(location),
+        }),
+        []
+    );
+
+    const starredLink = React.useCallback(
+        (location) => ({
+            ...location,
+            pathname: makeEntriesLink(location, { filter: FilterType.STARRED, id: null }),
+            state: forceReload(location),
+        }),
+        []
+    );
+
     const _ = React.useContext(LocalizationContext);
 
     return (
@@ -44,14 +70,14 @@ export default function NavFilters({
             <Collapse isOpen={expanded} className="collapse-css-transition">
                 <ul id="nav-filter" aria-labelledby="nav-filter-title">
                     <li>
-                        <Link id="nav-filter-newest" to={makeEntriesLink(location, { filter: FilterType.NEWEST, id: null })} className={classNames({'nav-filter-newest': true, active: params.filter === FilterType.NEWEST})} onClick={collapseNav}>
+                        <Link id="nav-filter-newest" to={newestLink} className={classNames({'nav-filter-newest': true, active: params.filter === FilterType.NEWEST})} onClick={collapseNav}>
                             {_('newest')}
                             <span className={classNames({'offline-count': true, offline: offlineState, online: !offlineState, diff: allItemsCount !== allItemsOfflineCount && allItemsOfflineCount})} title={_('offline_count')}>{allItemsOfflineCount > 0 ? allItemsOfflineCount : ''}</span>
                             <span className="count" title={_('online_count')}>{allItemsCount > 0 ? allItemsCount : ''}</span>
                         </Link>
                     </li>
                     <li>
-                        <Link id="nav-filter-unread" to={makeEntriesLink(location, { filter: FilterType.UNREAD, id: null })} className={classNames({'nav-filter-unread': true, active: params.filter === FilterType.UNREAD})} onClick={collapseNav}>
+                        <Link id="nav-filter-unread" to={unreadLink} className={classNames({'nav-filter-unread': true, active: params.filter === FilterType.UNREAD})} onClick={collapseNav}>
                             {_('unread')}
                             <span className={classNames({'unread-count': true, offline: offlineState, online: !offlineState, unread: unreadItemsCount > 0})}>
                                 <span className={classNames({'offline-count': true, offline: offlineState, online: !offlineState, diff: unreadItemsCount !== unreadItemsOfflineCount && unreadItemsOfflineCount})} title={_('offline_count')}>{unreadItemsOfflineCount > 0 ? unreadItemsOfflineCount : ''}</span>
@@ -60,7 +86,7 @@ export default function NavFilters({
                         </Link>
                     </li>
                     <li>
-                        <Link id="nav-filter-starred" to={makeEntriesLink(location, { filter: FilterType.STARRED, id: null })} className={classNames({'nav-filter-starred': true, active: params.filter === FilterType.STARRED})} onClick={collapseNav}>
+                        <Link id="nav-filter-starred" to={starredLink} className={classNames({'nav-filter-starred': true, active: params.filter === FilterType.STARRED})} onClick={collapseNav}>
                             {_('starred')}
                             <span className={classNames({'offline-count': true, offline: offlineState, online: !offlineState, diff: starredItemsCount !== starredItemsOfflineCount && starredItemsOfflineCount})} title={_('offline_count')}>{starredItemsOfflineCount > 0 ? starredItemsOfflineCount : ''}</span>
                             <span className="count" title={_('online_count')}>{starredItemsCount > 0 ? starredItemsCount : ''}</span>

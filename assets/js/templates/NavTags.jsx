@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import nullable from 'prop-types-nullable';
-import { Link, useLocation, useRouteMatch } from 'react-router-dom';
+import { Link, useRouteMatch } from 'react-router-dom';
 import classNames from 'classnames';
 import { unescape } from 'html-escaper';
-import { makeEntriesLink, ENTRIES_ROUTE_PATTERN } from '../helpers/uri';
+import { forceReload, makeEntriesLink, ENTRIES_ROUTE_PATTERN } from '../helpers/uri';
 import ColorChooser from './ColorChooser';
 import { updateTag } from '../requests/tags';
 import Collapse from '@kunukn/react-collapse';
@@ -13,7 +13,6 @@ import * as icons from '../icons';
 import { LocalizationContext } from '../helpers/i18n';
 
 function Tag({ tag, active, collapseNav }) {
-    const location = useLocation();
     const _ = React.useContext(LocalizationContext);
     const tagName = tag !== null ? tag.tag : null;
 
@@ -31,15 +30,25 @@ function Tag({ tag, active, collapseNav }) {
         [tagName]
     );
 
+    const category = tag === null ? 'all' : `tag-${tag.tag}`;
+    const link = React.useCallback(
+        (location) => ({
+            ...location,
+            pathname: makeEntriesLink(location, {
+                category,
+                id: null
+            }),
+            state: forceReload(location),
+        }),
+        [category]
+    );
+
     return (
         <li
             className={classNames({ read: tag !== null && tag.unread === 0 })}
         >
             <Link
-                to={makeEntriesLink(location, {
-                    category: tag === null ? 'all' : `tag-${tag.tag}`,
-                    id: null
-                })}
+                to={link}
                 className={classNames({ 'nav-tags-all': tag === null, active })}
                 onClick={collapseNav}
             >

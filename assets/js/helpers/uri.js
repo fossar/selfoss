@@ -64,3 +64,12 @@ export function makeEntriesLink(location, { filter, category, id, search }) {
 
     return path + (searchParam ? `?search=${encodeURIComponent(searchParam)}` : '');
 }
+
+export function forceReload(location) {
+    const state = location.state ?? {};
+
+    return {
+        ...state,
+        forceReload: (state.forceReload ?? 0) + 1,
+    };
+}
