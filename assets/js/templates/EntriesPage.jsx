@@ -100,9 +100,9 @@ function reloadList({ fetchParams, abortController, append = false, waitForSync 
             }
 
             if (error instanceof HttpError && error.response.status === 403) {
-                selfoss.history.push('/sign/in');
-                // TODO: Use location state once we switch to BrowserRouter
-                selfoss.app.setLoginFormError(selfoss.app._('error_session_expired'));
+                selfoss.history.push('/sign/in', {
+                    error: selfoss.app._('error_session_expired')
+                });
                 return;
             }
 
@@ -665,9 +665,9 @@ export default class StateHolder extends React.Component {
                 selfoss.dbOffline.enqueueStatuses(statuses);
             }).catch((error) => {
                 if (error instanceof HttpError && error.response.status === 403) {
-                    selfoss.history.push('/sign/in');
-                    // TODO: Use location state once we switch to BrowserRouter
-                    selfoss.app.setLoginFormError(selfoss.app._('error_session_expired'));
+                    selfoss.history.push('/sign/in', {
+                        error: selfoss.app._('error_session_expired')
+                    });
                     return;
                 }
 
@@ -726,9 +726,9 @@ export default class StateHolder extends React.Component {
                 selfoss.dbOffline.enqueueStatus(id, 'unread', !markRead);
             }).catch(function(error) {
                 if (error instanceof HttpError && error.response.status === 403) {
-                    selfoss.history.push('/sign/in');
-                    // TODO: Use location state once we switch to BrowserRouter
-                    selfoss.app.setLoginFormError(selfoss.app._('error_session_expired'));
+                    selfoss.history.push('/sign/in', {
+                        error: selfoss.app._('error_session_expired')
+                    });
                     return;
                 }
 
@@ -775,9 +775,9 @@ export default class StateHolder extends React.Component {
                 selfoss.dbOffline.enqueueStatus(id, 'starred', markStarred);
             }).catch(function(error) {
                 if (error instanceof HttpError && error.response.status === 403) {
-                    selfoss.history.push('/sign/in');
-                    // TODO: Use location state once we switch to BrowserRouter
-                    selfoss.app.setLoginFormError(selfoss.app._('error_session_expired'));
+                    selfoss.history.push('/sign/in', {
+                        error: selfoss.app._('error_session_expired')
+                    });
                     return;
                 }
 

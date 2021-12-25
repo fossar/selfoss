@@ -54,9 +54,9 @@ function loadSources({ abortController, setSpouts, setSources, setLoadingState }
 
         selfoss.handleAjaxError(error, false).catch(function(error) {
             if (error instanceof HttpError && error.response.status === 403) {
-                selfoss.history.push('/sign/in');
-                // TODO: Use location state once we switch to BrowserRouter
-                selfoss.app.setLoginFormError(selfoss.app._('error_session_expired'));
+                selfoss.history.push('/sign/in', {
+                    error: selfoss.app._('error_session_expired'),
+                });
                 return;
             }
 

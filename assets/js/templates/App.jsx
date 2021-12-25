@@ -97,8 +97,6 @@ function PureApp({
     unreadItemsOfflineCount,
     starredItemsCount,
     starredItemsOfflineCount,
-    loginFormError,
-    setLoginFormError,
     globalMessage,
     sourcesState,
     setSourcesState,
@@ -184,8 +182,6 @@ function PureApp({
                     {/* menu open for smartphone */}
                     <div id="loginform" role="main">
                         <LoginForm
-                            error={loginFormError}
-                            setError={setLoginFormError}
                             {...{offlineEnabled, setOfflineEnabled}}
                         />
                     </div>
@@ -277,8 +273,6 @@ PureApp.propTypes = {
     unreadItemsOfflineCount: PropTypes.number.isRequired,
     starredItemsCount: PropTypes.number.isRequired,
     starredItemsOfflineCount: PropTypes.number.isRequired,
-    loginFormError: PropTypes.string.isRequired,
-    setLoginFormError: PropTypes.func.isRequired,
     globalMessage: nullable(PropTypes.object).isRequired,
     sourcesState: PropTypes.oneOf(Object.values(LoadingState)).isRequired,
     setSourcesState: PropTypes.func.isRequired,
@@ -345,11 +339,6 @@ export default class App extends React.Component {
             allItemsOfflineCount: 0,
 
             /**
-             * login form error
-             */
-            loginFormError: '',
-
-            /**
              * Global message popup.
              * @var ?Object.{message: string, actions: Array.<Object.{label: string, callback: function>}, isError: bool}
              */
@@ -368,7 +357,6 @@ export default class App extends React.Component {
         this.setStarredItemsOfflineCount = this.setStarredItemsOfflineCount.bind(this);
         this.setAllItemsCount = this.setAllItemsCount.bind(this);
         this.setAllItemsOfflineCount = this.setAllItemsOfflineCount.bind(this);
-        this.setLoginFormError = this.setLoginFormError.bind(this);
         this.setGlobalMessage = this.setGlobalMessage.bind(this);
     }
 
@@ -489,16 +477,6 @@ export default class App extends React.Component {
             });
         } else {
             this.setState({ allItemsOfflineCount });
-        }
-    }
-
-    setLoginFormError(loginFormError) {
-        if (typeof loginFormError === 'function') {
-            this.setState({
-                loginFormError: loginFormError(this.state.loginFormError)
-            });
-        } else {
-            this.setState({ loginFormError });
         }
     }
 
@@ -659,8 +637,6 @@ export default class App extends React.Component {
                     unreadItemsOfflineCount={this.state.unreadItemsOfflineCount}
                     starredItemsCount={this.state.starredItemsCount}
                     starredItemsOfflineCount={this.state.starredItemsOfflineCount}
-                    loginFormError={this.state.loginFormError}
-                    setLoginFormError={this.setLoginFormError}
                     globalMessage={this.state.globalMessage}
                     sourcesState={this.state.sourcesState}
                     setSourcesState={this.setSourcesState}

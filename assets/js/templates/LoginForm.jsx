@@ -2,14 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { SpinnerBig } from './Spinner';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { LocalizationContext } from '../helpers/i18n';
 
 function handleLogIn({
     event,
     history,
     setLoading,
-    setError,
     username,
     password,
     offlineEnabled
@@ -21,15 +20,15 @@ function handleLogIn({
     selfoss.login({ username, password, offlineEnabled }).then(() => {
         history.push('/');
     }).catch(() => {
-        setError(selfoss.app._('login_invalid_credentials'));
+        history.replace('/sign/in', {
+            error: selfoss.app._('login_invalid_credentials')
+        });
     }).finally(() => {
         setLoading(false);
     });
 }
 
 export default function LoginForm({
-    error,
-    setError,
     offlineEnabled,
     setOfflineEnabled,
 }) {
@@ -38,6 +37,8 @@ export default function LoginForm({
     const [loading, setLoading] = React.useState(false);
 
     const history = useHistory();
+    const location = useLocation();
+    const error = location?.state?.error;
 
     const formOnSubmit = React.useCallback(
         (event) =>
@@ -45,12 +46,11 @@ export default function LoginForm({
                 event,
                 history,
                 setLoading,
-                setError,
                 username,
                 password,
                 offlineEnabled
             }),
-        [history, setError, username, password, offlineEnabled]
+        [history, username, password, offlineEnabled]
     );
 
     const usernameOnChange = React.useCallback(
@@ -149,8 +149,6 @@ export default function LoginForm({
 }
 
 LoginForm.propTypes = {
-    error: PropTypes.string.isRequired,
-    setError: PropTypes.func.isRequired,
     offlineEnabled: PropTypes.bool.isRequired,
     setOfflineEnabled: PropTypes.func.isRequired,
 };
