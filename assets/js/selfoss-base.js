@@ -187,9 +187,6 @@ var selfoss = {
 
             // init FancyBox
             selfoss.initFancyBox();
-
-            // setup periodic server status sync
-            window.setInterval(selfoss.db.sync, 60 * 1000);
         }
     },
 

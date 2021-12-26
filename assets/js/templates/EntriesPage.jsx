@@ -241,6 +241,15 @@ export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, f
         }
     }, [hasMore, moreLoadingState]);
 
+    React.useEffect(() => {
+        // setup periodic server status sync
+        const interval = window.setInterval(selfoss.db.sync, 60 * 1000);
+
+        return () => {
+            window.clearInterval(interval);
+        };
+    }, []);
+
     // TODO: make this update when it changes
     const isOnline = selfoss.db.online;
 
