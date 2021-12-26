@@ -30,6 +30,7 @@ export default function Navigation({
     sources,
     setSources,
     tags,
+    reloadAll,
 }) {
     const _ = React.useContext(LocalizationContext);
 
@@ -79,7 +80,10 @@ export default function Navigation({
                 offlineState={offlineState}
             />
 
-            <NavToolBar setNavExpanded={setNavExpanded} />
+            <NavToolBar
+                reloadAll={reloadAll}
+                setNavExpanded={setNavExpanded}
+            />
         </React.Fragment>
     );
 }
@@ -101,4 +105,5 @@ Navigation.propTypes = {
     sources: PropTypes.arrayOf(PropTypes.object).isRequired,
     setSources: PropTypes.func.isRequired,
     tags: PropTypes.arrayOf(PropTypes.object).isRequired,
+    reloadAll: PropTypes.func.isRequired
 };

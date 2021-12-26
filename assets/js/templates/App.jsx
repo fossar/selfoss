@@ -23,6 +23,7 @@ import * as icons from '../icons';
 import { ENTRIES_ROUTE_PATTERN } from '../helpers/uri';
 import { i18nFormat, LocalizationContext } from '../helpers/i18n';
 import { LoadingState } from '../requests/LoadingState';
+import * as sourceRequests from '../requests/sources';
 import locales from '../locales';
 
 
@@ -103,6 +104,7 @@ function PureApp({
     sources,
     setSources,
     tags,
+    reloadAll,
 }) {
     const [navExpanded, setNavExpanded] = React.useState(false);
     const [smartphone, setSmartphone] = React.useState(false);
@@ -225,6 +227,7 @@ function PureApp({
                                 sources={sources}
                                 setSources={setSources}
                                 tags={tags}
+                                reloadAll={reloadAll}
                             />
                         </div>
                     </Collapse>
@@ -279,6 +282,7 @@ PureApp.propTypes = {
     sources: PropTypes.arrayOf(PropTypes.object).isRequired,
     setSources: PropTypes.func.isRequired,
     tags: PropTypes.arrayOf(PropTypes.object).isRequired,
+    reloadAll: PropTypes.func.isRequired,
 };
 
 export default class App extends React.Component {
@@ -358,6 +362,7 @@ export default class App extends React.Component {
         this.setAllItemsCount = this.setAllItemsCount.bind(this);
         this.setAllItemsOfflineCount = this.setAllItemsOfflineCount.bind(this);
         this.setGlobalMessage = this.setGlobalMessage.bind(this);
+        this.reloadAll = this.reloadAll.bind(this);
     }
 
     setTags(tags) {
@@ -490,6 +495,33 @@ export default class App extends React.Component {
         }
     }
 
+    /**
+     * Triggers fetching news from all sources.
+     * @return Promise<undefined>
+     */
+    reloadAll() {
+        if (!selfoss.db.online) {
+            return Promise.resolve();
+        }
+
+        return sourceRequests.refreshAll().then(() => {
+            // probe stats and prompt reload to the user
+            selfoss.dbOnline.sync().then(function() {
+                if (this.state.unreadItemsCount > 0) {
+                    this.showMessage(this._('sources_refreshed'), [
+                        {
+                            label: this._('reload_list'),
+                            callback() {
+                                document.querySelector('#nav-filter-unread').click();
+                            }
+                        }
+                    ]);
+                }
+            });
+        }).catch((error) => {
+            this.showError(this._('error_refreshing_source') + ' ' + error.message);
+        });
+    }
 
     /**
     * Obtain a localized message for given key, substituting placeholders for values, when given.
@@ -643,6 +675,7 @@ export default class App extends React.Component {
                     sources={this.state.sources}
                     setSources={this.setSources}
                     tags={this.state.tags}
+                    reloadAll={this.reloadAll}
                 />
             </LocalizationContext.Provider>
         );

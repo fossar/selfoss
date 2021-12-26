@@ -5,9 +5,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as icons from '../icons';
 import { LocalizationContext } from '../helpers/i18n';
 
-function handleReloadAll({ setReloading, setNavExpanded }) {
+function handleReloadAll({ reloadAll, setReloading, setNavExpanded }) {
     setReloading(true);
-    selfoss.reloadAll().finally(() => {
+    reloadAll().finally(() => {
         setNavExpanded(false);
         setReloading(false);
     });
@@ -40,14 +40,14 @@ function handleLogOut({ setNavExpanded }) {
     setNavExpanded(false);
 }
 
-export default function NavToolBar({ setNavExpanded }) {
+export default function NavToolBar({ reloadAll, setNavExpanded }) {
     const [reloading, setReloading] = React.useState(false);
 
     const history = useHistory();
 
     const refreshOnClick = React.useCallback(
-        () => handleReloadAll({ setReloading, setNavExpanded }),
-        [setNavExpanded]
+        () => handleReloadAll({ reloadAll, setReloading, setNavExpanded }),
+        [reloadAll, setNavExpanded]
     );
 
     const settingsOnClick = React.useCallback(
@@ -117,5 +117,6 @@ export default function NavToolBar({ setNavExpanded }) {
 }
 
 NavToolBar.propTypes = {
+    reloadAll: PropTypes.func.isRequired,
     setNavExpanded: PropTypes.func.isRequired,
 };

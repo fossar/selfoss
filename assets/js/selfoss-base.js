@@ -1,6 +1,5 @@
 import ReactDOM from 'react-dom';
 import { getInstanceInfo, login, logout } from './requests/common';
-import * as sourceRequests from './requests/sources';
 import { getAllTags } from './requests/tags';
 import * as ajax from './helpers/ajax';
 import { ValueListenable } from './helpers/ValueListenable';
@@ -387,35 +386,6 @@ var selfoss = {
      */
     initFancyBox: function() {
         $.fancybox.defaults.hash = false;
-    },
-
-
-    /**
-     * Triggers fetching news from all sources.
-     * @return Promise<undefined>
-     */
-    reloadAll: function() {
-        if (!selfoss.db.online) {
-            return Promise.resolve();
-        }
-
-        return sourceRequests.refreshAll().then(() => {
-            // probe stats and prompt reload to the user
-            selfoss.dbOnline.sync().then(function() {
-                if (selfoss.app.state.unreadItemsCount > 0) {
-                    selfoss.app.showMessage(selfoss.app._('sources_refreshed'), [
-                        {
-                            label: selfoss.app._('reload_list'),
-                            callback() {
-                                document.querySelector('#nav-filter-unread').click();
-                            }
-                        }
-                    ]);
-                }
-            });
-        }).catch((error) => {
-            selfoss.app.showError(selfoss.app._('error_refreshing_source') + ' ' + error.message);
-        });
     },
 
 
