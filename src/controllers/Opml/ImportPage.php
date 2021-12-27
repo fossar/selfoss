@@ -25,6 +25,7 @@ class ImportPage {
      */
     public function show() {
         $this->authentication->needsLoggedIn();
+        header('Content-type: text/html');
         readfile(BASEDIR . '/public/opml.html');
     }
 }

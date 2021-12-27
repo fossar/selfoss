@@ -24,7 +24,7 @@ class Configuration {
 
     // Internal but overridable values.
 
-    /** @var int debugging level @internal */
+    /** @var int debugging level */
     public $debug = 0;
 
     /** @var string @internal */

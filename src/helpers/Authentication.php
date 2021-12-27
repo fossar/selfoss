@@ -172,6 +172,7 @@ class Authentication {
      */
     public function forbidden() {
         header('HTTP/1.0 403 Forbidden');
+        header('Content-type: text/plain');
         echo 'Access forbidden!';
         exit;
     }

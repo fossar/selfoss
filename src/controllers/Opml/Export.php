@@ -94,6 +94,11 @@ class Export {
     public function export() {
         $this->authentication->needsLoggedIn();
 
+        // save content as file and suggest file name
+        $exportName = 'selfoss-subscriptions-' . date('YmdHis') . '.xml';
+        header('Content-Disposition: attachment; filename="' . $exportName . '"');
+        header('Content-Type: text/xml; charset=UTF-8');
+
         $this->logger->debug('start OPML export');
         $this->writer->openMemory();
         $this->writer->setIndent(true);
@@ -166,10 +171,6 @@ class Export {
         $this->writer->endDocument();
         $this->logger->debug('finished OPML export');
 
-        // save content as file and suggest file name
-        $exportName = 'selfoss-subscriptions-' . date('YmdHis') . '.xml';
-        header('Content-Disposition: attachment; filename="' . $exportName . '"');
-        header('Content-Type: text/xml; charset=UTF-8');
         echo $this->writer->outputMemory();
     }
 }

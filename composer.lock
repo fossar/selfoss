@@ -4,43 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c6028fdec0e065363013d1461e6009bd",
+    "content-hash": "5ae67f7bd862e293545823d8a36fb58f",
     "packages": [
-        {
-            "name": "bcosca/fatfree-core",
-            "version": "3.7.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/bcosca/fatfree-core.git",
-                "reference": "3e23ae05384b2f830e99c5888b94118819ed948b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/bcosca/fatfree-core/zipball/3e23ae05384b2f830e99c5888b94118819ed948b",
-                "reference": "3e23ae05384b2f830e99c5888b94118819ed948b",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4"
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "."
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-3.0"
-            ],
-            "description": "A powerful yet easy-to-use PHP micro-framework designed to help you build dynamic and robust Web applications - fast!",
-            "homepage": "http://fatfreeframework.com/",
-            "support": {
-                "issues": "https://github.com/bcosca/fatfree-core/issues",
-                "source": "https://github.com/bcosca/fatfree-core/tree/3.7.3"
-            },
-            "time": "2020-12-13T12:49:39+00:00"
-        },
         {
             "name": "bramus/router",
             "version": "1.6.1",
@@ -2794,6 +2759,76 @@
                 }
             ],
             "time": "2020-10-23T09:01:57+00:00"
+        },
+        {
+            "name": "tracy/tracy",
+            "version": "v2.5.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nette/tracy.git",
+                "reference": "cd9b889371cfbffe17e5b1a19e0a11de1ad31c8f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nette/tracy/zipball/cd9b889371cfbffe17e5b1a19e0a11de1ad31c8f",
+                "reference": "cd9b889371cfbffe17e5b1a19e0a11de1ad31c8f",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-session": "*",
+                "php": ">=5.4.4"
+            },
+            "require-dev": {
+                "nette/di": "~2.3 || ~3.0.0",
+                "nette/tester": "~1.7 || ~2.0",
+                "nette/utils": "~2.3"
+            },
+            "suggest": {
+                "https://nette.org/donate": "Please support Tracy via a donation"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.5-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src"
+                ],
+                "files": [
+                    "src/shortcuts.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "David Grudl",
+                    "homepage": "https://davidgrudl.com"
+                },
+                {
+                    "name": "Nette Community",
+                    "homepage": "https://nette.org/contributors"
+                }
+            ],
+            "description": "😎 Tracy: the addictive tool to ease debugging PHP code for cool developers. Friendly design, logging, profiler, advanced features like debugging AJAX calls or CLI support. You will love it.",
+            "homepage": "https://tracy.nette.org",
+            "keywords": [
+                "Xdebug",
+                "debug",
+                "debugger",
+                "nette",
+                "profiler"
+            ],
+            "support": {
+                "issues": "https://github.com/nette/tracy/issues",
+                "source": "https://github.com/nette/tracy/tree/v2.5.9"
+            },
+            "time": "2020-05-17T09:25:46+00:00"
         },
         {
             "name": "true/punycode",

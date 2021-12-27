@@ -109,7 +109,7 @@ class Write {
 
         $validation = $this->sourcesDao->validate($title, $spout, $data);
         if ($validation !== true) {
-            $this->view->error(json_encode($validation));
+            $this->view->jsonError($validation);
         }
 
         // add/edit source

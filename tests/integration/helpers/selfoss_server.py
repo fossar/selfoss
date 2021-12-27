@@ -45,6 +45,7 @@ class SelfossServerThread(threading.Thread):
                 'SELFOSS_PASSWORD': bcrypt.hashpw(self.password.encode('utf-8'), bcrypt.gensalt()),
                 'SELFOSS_DB_TYPE': 'sqlite',
                 'SELFOSS_PUBLIC': '1',
+                'SELFOSS_DEBUG': '1',
                 'SELFOSS_LOGGER_LEVEL': 'DEBUG',
             }
 

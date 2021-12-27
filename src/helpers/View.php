@@ -99,8 +99,7 @@ class View {
      * @return void
      */
     public function error($message) {
-        header('HTTP/1.0 400 Bad Request');
-        exit($message);
+        sendError($message);
     }
 
     /**
@@ -111,8 +110,9 @@ class View {
      * @return void
      */
     public function jsonError($data) {
+        header('HTTP/1.0 400 Bad Request');
         header('Content-type: application/json');
-        $this->error(json_encode($data));
+        exit(json_encode($data));
     }
 
     /**

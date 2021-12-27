@@ -98,14 +98,15 @@
 - RSS spout now prefers the feed logo to website favicon. ([#1152](https://github.com/fossar/selfoss/pull/1152))
 - RSS spout now tries to use favicon from the feed domain when there is no logo or home page favicon. ([#1152](https://github.com/fossar/selfoss/pull/1152))
 - Setting `DEBUG` to `1` in `src/common.php` no longer logs HTTP bodies, only headers. Set it to `2` if you need the bodies as well. ([#1152](https://github.com/fossar/selfoss/pull/1152))
-- PHP startup errors are now logged, instead of having F3 crash with Error 500 ([#1195](https://github.com/fossar/selfoss/pull/1195))
+- The debugging level (previously set by modifying `src/common.php`) can be changed in the `config.ini` using `debug` key. ([#1261](https://github.com/fossar/selfoss/pull/1261))
 - In order to support offline mode, we moved much of the UI to the browser. ([#1150](https://github.com/fossar/selfoss/pull/1150), [#1184](https://github.com/fossar/selfoss/pull/1184), [#1215](https://github.com/fossar/selfoss/pull/1215), [#1216](https://github.com/fossar/selfoss/pull/1216))
 - We carried out a significant internal refactoring ([#1164](https://github.com/fossar/selfoss/pull/1164), [#1190](https://github.com/fossar/selfoss/pull/1190))
 - Removed Instapaper spout since it has been broken since its acquisition. Sources using it were migrated to “RSS Feed (with content extraction)”. ([#1245](https://github.com/fossar/selfoss/pull/1245))
 - Placeholders are now used for images before they are loaded to avoid content jumping around ([#1204](https://github.com/fossar/selfoss/pull/1204))
 - Search button is now always on the screen, avoiding the need to scroll to top to be able to use it. ([#1231](https://github.com/fossar/selfoss/issues/1231))
 - Button for opening articles, tags, sources and filters in the sidebar, as well as the source and tag links in articles are now real links, allowing to open them in a new tab by middle-clicking them. ([#1216](https://github.com/fossar/selfoss/issues/1216), [#695](https://github.com/fossar/selfoss/issues/695))
-- Configuration is no longer managed by F3 framework. ([#1261](https://github.com/fossar/selfoss/pull/1261))
+- [F3 framework](https://fatfreeframework.com) is no longer used. So long… ([#1261](https://github.com/fossar/selfoss/pull/1261), [#1295](https://github.com/fossar/selfoss/pull/1295), [#1296](https://github.com/fossar/selfoss/pull/1296))
+- [Tracy](https://tracy.nette.org/) is now used for error handling, resulting in much nicer error messages. ([#1296](https://github.com/fossar/selfoss/pull/1296))
 
 
 ## 2.18 – 2018-03-05

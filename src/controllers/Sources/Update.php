@@ -27,6 +27,8 @@ class Update {
      * @return void
      */
     public function updateAll() {
+        header('Content-type: text/plain');
+
         // only allow access for localhost and loggedin users
         if (!$this->authentication->allowedToUpdate()) {
             exit('unallowed access');
@@ -47,6 +49,8 @@ class Update {
      * @return void
      */
     public function update($id) {
+        header('Content-type: text/plain');
+
         // only allow access for localhost and authenticated users
         if (!$this->authentication->allowedToUpdate()) {
             exit('unallowed access');

@@ -3,42 +3,40 @@
 use Dice\Dice;
 use helpers\Configuration;
 use helpers\DatabaseConnection;
+use function helpers\sendError;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\ErrorLogHandler;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
+use Tracy\Debugger;
 
 require __DIR__ . '/constants.php';
+require_once __DIR__ . '/helpers/responses.php';
 
 $autoloader = @include BASEDIR . '/vendor/autoload.php'; // we will show custom error
 if ($autoloader === false) {
+    header('Content-type: text/plain');
     echo 'The PHP dependencies are missing. Did you run `composer install` in the selfoss directory?';
     exit;
 }
 
-$startup_error = error_get_last();
-
-// F3 crashes when there were PHP startups error even though
-// they might not affect the program (e.g. unable to load an extension).
-// It also sets its own error_reporting value and uses the previous one
-// as a signal to disable the initialization failure check.
-error_reporting(0);
-
-$f3 = Base::instance();
-
-// Disable deprecation warnings.
-// Dice uses ReflectionParameter::getClass(), which is deprecated in PHP 8
-// but we have not set an error handler yet because it needs a Logger instantiated by Dice.
-error_reporting(E_ALL & ~E_DEPRECATED);
-
-$f3->set('AUTOLOAD', false);
-$f3->set('BASEDIR', BASEDIR);
+// Catch any errors and hopefully log them.
+Debugger::$errorTemplate = __DIR__ . '/error.500.phtml';
+Debugger::enable(Debugger::PRODUCTION);
 
 $configuration = new Configuration(__DIR__ . '/../config.ini', $_ENV);
 
-$f3->set('DEBUG', $configuration->debug);
-$f3->set('cache', $configuration->cache);
+if ($configuration->debug !== 0) {
+    // Enable strict mode to loudly fail on any error or warning.
+    // We ignore deprecation warnings because Dice uses deprecated
+    // ReflectionParameter::getClass(), which we cannot do anything about.
+    Debugger::$strictMode = E_ALL & ~E_DEPRECATED;
+    // Switch to development mode so that traces are displayed.
+    Debugger::enable(Debugger::DEVELOPMENT);
+    // Dispatch will not run in production mode preventing bar from loading.
+    Debugger::dispatch();
+}
 
 $dice = new Dice();
 
@@ -83,8 +81,7 @@ $dice->addRule(daos\SourcesInterface::class, $shared);
 $dice->addRule(daos\TagsInterface::class, $shared);
 
 if ($configuration->isChanged('dbSocket') && $configuration->isChanged('dbHost')) {
-    echo 'You cannot set both `db_socket` and `db_host` options.' . PHP_EOL;
-    exit;
+    sendError('You cannot set both `db_socket` and `db_host` options.' . PHP_EOL);
 }
 
 // Database connection
@@ -231,8 +228,7 @@ if ($configuration->loggerLevel === 'NONE') {
     } elseif ($logger_destination === 'error_log') {
         $handler = new ErrorLogHandler(ErrorLogHandler::OPERATING_SYSTEM, $configuration->loggerLevel);
     } else {
-        echo 'The `logger_destination` option needs to be either `error_log` or a file path prefixed by `file:`.';
-        exit;
+        sendError('The `logger_destination` option needs to be either `error_log` or a file path prefixed by `file:`.');
     }
 
     $formatter = new LineFormatter(null, null, true, true);
@@ -241,42 +237,5 @@ if ($configuration->loggerLevel === 'NONE') {
 }
 $log->pushHandler($handler);
 
-if (isset($startup_error)) {
-    $log->warn('PHP likely encountered a startup error: ', [$startup_error]);
-}
-
-// init error handling
-$f3->set('ONERROR',
-    function(Base $f3) use ($configuration, $log, $handler) {
-        $exception = $f3->get('EXCEPTION');
-
-        try {
-            if ($exception) {
-                $log->error($exception->getMessage(), ['exception' => $exception]);
-            } else {
-                $log->error($f3->get('ERROR.text'));
-            }
-
-            if ($configuration->debug !== 0) {
-                echo 'An error occurred' . ': ';
-                echo $f3->get('ERROR.text') . "\n";
-                echo $f3->get('ERROR.trace');
-            } else {
-                if ($handler instanceof StreamHandler) {
-                    echo 'An error occured, please check the log file “' . $handler->getUrl() . '”.' . PHP_EOL;
-                } elseif ($handler instanceof ErrorLogHandler) {
-                    echo 'An error occured, please check your system logs.' . PHP_EOL;
-                } else {
-                    echo 'An error occurred' . PHP_EOL;
-                }
-            }
-        } catch (Exception $e) {
-            echo 'Unable to write logs.' . PHP_EOL;
-            echo $e->getMessage() . PHP_EOL;
-        }
-    }
-);
-
-if ($configuration->debug !== 0) {
-    ini_set('display_errors', '0');
-}
+// Try to log errors encountered by error handler.
+Debugger::setLogger($dice->create(helpers\TracyLogger::class));

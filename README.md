@@ -89,7 +89,6 @@ Very special thanks to all contributors of pull requests here on [GitHub](https:
 
 Special thanks to the great programmers of these libraries used by selfoss:
 
-* [FatFree PHP Framework](https://fatfreeframework.com/)
 * [SimplePie](http://simplepie.org/)
 * [jQuery](https://jquery.com/)
 * [WideImage](http://wideimage.sourceforge.net/)
@@ -100,6 +99,7 @@ Special thanks to the great programmers of these libraries used by selfoss:
 * [Spectrum Colorpicker](https://github.com/bgrins/spectrum)
 * [Graby](https://github.com/j0k3r/graby)
 * [FullTextRSS filters](http://help.fivefilters.org/customer/portal/articles/223153-site-patterns)
+* [Tracy](https://tracy.nette.org/)
 
 Icon made by http://blackbooze.com/
 

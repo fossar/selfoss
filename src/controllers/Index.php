@@ -63,11 +63,13 @@ class Index {
             $home = BASEDIR . '/public/index.html';
             if (!file_exists($home)) {
                 http_response_code(500);
+                header('Content-type: text/plain');
                 echo 'Please build the assets using `npm run build` or obtain a pre-built packages from https://selfoss.aditu.de.';
                 exit;
             }
 
             // show as full html page
+            header('Content-type: text/html');
             readfile($home);
 
             return;

@@ -59,6 +59,16 @@ Port for database connections. By default `3306` will be used for MySQL and `543
 A UNIX domain socket used for connecting to the MySQL database server. Usually, you want to use `db_host=localhost`, which should use the default socket path (typically `/run/mysqld/mysqld.sock` for MySQL or `/run/postgresql` for PostgreSQL) but if you need to specify a different location, you can. This is orthogonal to `db_host` option.
 </div>
 
+### `debug`
+<div class="config-option">
+
+Level of detail for diagnostics. Enable this for debug traces if you encounter selfoss internal errors or are developing selfoss.
+
+* `0` (default) – Debugging is disabled, warnings will only be [logged](#logger-level).
+* `1` – Debugging is enabled, any error or warning will terminate the application and cause debugging information to be printed into the web browser.
+* `2` – Same as `1` but additional information (HTTP requests) will be logged when fetching feed content.
+</div>
+
 ### `logger_destination`
 <div class="config-option">
 
