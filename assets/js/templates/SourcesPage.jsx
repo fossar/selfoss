@@ -1,4 +1,6 @@
 import React from 'react';
+import { useMemo } from 'react';
+import { Prompt } from 'react-router';
 import Source from './Source';
 import { SpinnerBig } from './Spinner';
 import { LoadingState } from '../requests/LoadingState';
@@ -90,6 +92,12 @@ export default function SourcesPage() {
 
     const _ = React.useContext(LocalizationContext);
 
+    const [dirtySources, setDirtySources] = React.useState({});
+    const isDirty = useMemo(
+        () => Object.values(dirtySources).includes(true),
+        [dirtySources]
+    );
+
     if (loadingState === LoadingState.LOADING) {
         return (
             <SpinnerBig />
@@ -102,6 +110,11 @@ export default function SourcesPage() {
 
     return (
         <React.Fragment>
+            <Prompt
+                when={isDirty}
+                message={_('sources_leaving_unsaved_prompt')}
+            />
+
             <button
                 className="source-add"
                 onClick={addOnClick}
@@ -117,7 +130,8 @@ export default function SourcesPage() {
             {sources.map((source) => (
                 <Source
                     key={source.id}
-                    {...{ source, setSources, spouts, setSpouts }}
+                    dirty={dirtySources[source.id] ?? false}
+                    {...{ source, setSources, spouts, setSpouts, setDirtySources }}
                 />
             ))}
         </React.Fragment>

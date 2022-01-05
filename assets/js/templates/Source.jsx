@@ -11,8 +11,6 @@ import { LocalizationContext } from '../helpers/i18n';
 
 // cancel source editing
 function handleCancel({ event, source, setSources, setEditedSource }) {
-    event.preventDefault();
-
     const id = source.id;
 
     if (id.toString().startsWith('new-')) {
@@ -123,7 +121,8 @@ function handleDelete({
     event,
     source,
     setSources,
-    setSourceEditDeleteLoading
+    setSourceEditDeleteLoading,
+    setDirty,
 }) {
     event.preventDefault();
 
@@ -134,6 +133,8 @@ function handleDelete({
 
     // get id
     const id = source.id;
+
+    setDirty(false);
 
     // show loading
     setSourceEditDeleteLoading(true);
@@ -256,17 +257,20 @@ function SourceEditForm({
     setJustSavedTimeout,
     sourceErrors,
     setSourceErrors,
+    dirty,
+    setDirty,
 }) {
     const sourceId = source.id;
     const updateEditedSource = React.useCallback(
         (changes) => {
+            setDirty(true);
             if (typeof changes === 'function') {
                 setEditedSource((source) => ({ ...source, ...changes(source) }));
             } else {
                 setEditedSource((source) => ({ ...source, ...changes }));
             }
         },
-        [setEditedSource]
+        [setEditedSource, setDirty]
     );
 
     const titleOnChange = React.useCallback(
@@ -297,7 +301,8 @@ function SourceEditForm({
     );
 
     const saveOnClick = React.useCallback(
-        (event) =>
+        (event) => {
+            setDirty(false);
             handleSave({
                 event,
                 setSources,
@@ -306,20 +311,29 @@ function SourceEditForm({
                 setSourceActionLoading,
                 setJustSavedTimeout,
                 setSourceErrors
-            }),
-        [setSources, source, setEditedSource, setSourceActionLoading, setJustSavedTimeout, setSourceErrors]
+            });
+        },
+        [setSources, source, setEditedSource, setSourceActionLoading, setJustSavedTimeout, setSourceErrors, setDirty]
     );
 
     const cancelOnClick = React.useCallback(
-        (event) =>
+        (event) => {
+            event.preventDefault();
+
+            const answer = confirm(selfoss.app._('source_warn_cancel_dirty'));
+            if (answer === false) {
+                return;
+            }
+
+            setDirty(false);
             handleCancel({
                 event,
                 source,
                 setSources,
                 setEditedSource
-            })
-        ,
-        [source, setSources, setEditedSource]
+            });
+        },
+        [source, setSources, setEditedSource, dirty, setDirty]
     );
 
     const _ = React.useContext(LocalizationContext);
@@ -496,9 +510,11 @@ SourceEditForm.propTypes = {
     setJustSavedTimeout: PropTypes.func.isRequired,
     sourceErrors: PropTypes.objectOf(PropTypes.string).isRequired,
     setSourceErrors: PropTypes.func.isRequired,
+    dirty: PropTypes.bool.isRequired,
+    setDirty: PropTypes.func.isRequired,
 };
 
-export default function Source({ source, setSources, spouts, setSpouts }) {
+export default function Source({ source, setSources, spouts, setSpouts, dirty, setDirtySources }) {
     const isNew = !source.title;
     let classes = {
         source: true,
@@ -534,15 +550,26 @@ export default function Source({ source, setSources, spouts, setSpouts }) {
         [source]
     );
 
+    const setDirty = React.useCallback(
+        (dirty) => {
+            setDirtySources((dirtySources) => ({
+                ...dirtySources,
+                [source.id]: dirty,
+            }));
+        },
+        [source.id, setDirtySources]
+    );
+
     const deleteOnClick = React.useCallback(
         (event) =>
             handleDelete({
                 event,
                 source,
                 setSources,
-                setSourceEditDeleteLoading
+                setSourceEditDeleteLoading,
+                setDirty,
             }),
-        [source, setSources]
+        [source, setSources, setDirty]
     );
 
     const _ = React.useContext(LocalizationContext);
@@ -617,7 +644,9 @@ export default function Source({ source, setSources, spouts, setSpouts }) {
                         setSourceParamsError,
                         setJustSavedTimeout,
                         sourceErrors,
-                        setSourceErrors
+                        setSourceErrors,
+                        dirty,
+                        setDirty,
                     }}
                     sourceError={source.error}
                     source={editedSource}
@@ -632,4 +661,6 @@ Source.propTypes = {
     setSources: PropTypes.func.isRequired,
     spouts: PropTypes.object.isRequired,
     setSpouts: PropTypes.func.isRequired,
+    dirty: PropTypes.bool.isRequired,
+    setDirtySources: PropTypes.func.isRequired,
 };
