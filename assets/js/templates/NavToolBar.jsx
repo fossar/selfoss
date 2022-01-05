@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as icons from '../icons';
 import { LocalizationContext } from '../helpers/i18n';
+import { forceReload } from '../helpers/uri';
 
 function handleReloadAll({ reloadAll, setReloading, setNavExpanded }) {
     setReloading(true);
@@ -39,6 +40,15 @@ export default function NavToolBar({ reloadAll, setNavExpanded }) {
         [setNavExpanded]
     );
 
+    const settingsLink = React.useCallback(
+        (location) => ({
+            ...location,
+            pathname: '/manage/sources',
+            state: forceReload(location),
+        }),
+        []
+    );
+
     const logoutOnClick = React.useCallback(
         () => handleLogOut({ setNavExpanded }),
         [setNavExpanded]
@@ -66,7 +76,7 @@ export default function NavToolBar({ reloadAll, setNavExpanded }) {
                 title={_('settingsbutton')}
                 aria-label={_('settingsbutton')}
                 accessKey="t"
-                to="/manage/sources"
+                to={settingsLink}
                 onClick={settingsOnClick}
             >
                 <FontAwesomeIcon

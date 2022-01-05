@@ -6,6 +6,7 @@ import { SpinnerBig } from './Spinner';
 import { LoadingState } from '../requests/LoadingState';
 import * as sourceRequests from '../requests/sources';
 import { getAllSources } from '../requests/sources';
+import { useShouldReload } from '../helpers/hooks';
 import { LocalizationContext } from '../helpers/i18n';
 import { HttpError } from '../errors';
 
@@ -75,6 +76,8 @@ export default function SourcesPage() {
 
     const [loadingState, setLoadingState] = React.useState(LoadingState.INITIAL);
 
+    const forceReload = useShouldReload();
+
     React.useEffect(() => {
         const abortController = new AbortController();
 
@@ -83,7 +86,7 @@ export default function SourcesPage() {
         return () => {
             abortController.abort();
         };
-    }, []);
+    }, [forceReload]);
 
     const addOnClick = React.useCallback(
         (event) => handleAddSource({ event, setSources, setSpouts }),
