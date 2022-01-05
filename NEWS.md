@@ -17,6 +17,7 @@
 - Search query is now part of URL. ([#1216](https://github.com/fossar/selfoss/pull/1216))
 - Search will be carried out using regular expressions when the search query is wrapped in forward slashes, e.g. `/regex/`. The expression syntax is database specific. ([#1205](https://github.com/fossar/selfoss/pull/1205))
 - YouTube spout now supports following playlists. ([#1260](https://github.com/fossar/selfoss/pull/1260))
+- Confirmation is now required when leaving the setting page with unsaved source changes. ([#1300](https://github.com/fossar/selfoss/pull/1300))
 - Translations into several new languages were added:
   - English (United Kingdom): `en-GB`
   - French (Canada): `fr-CA`
@@ -26,7 +27,7 @@
 
 ### Bug fixes
 - Reddit spout allows wider range of URLs, including absolute URLs and searches ([#1033](https://github.com/fossar/selfoss/pull/1033))
-- Improved compatibility with PHP 7.2 ([#1049](https://github.com/fossar/selfoss/issues/1049))
+- Improved compatibility with newer versions of PHP ([#1049](https://github.com/fossar/selfoss/issues/1049), [#1157](https://github.com/fossar/selfoss/issues/1157), [#1236](https://github.com/fossar/selfoss/issues/1236), [#1294](https://github.com/fossar/selfoss/issues/1294))
 - `logger_level=NONE` is now handled correctly ([#1077](https://github.com/fossar/selfoss/issues/1077))
 - URLs containing special characters like commas in query string are now handled correctly ([#1082](https://github.com/fossar/selfoss/pull/1082))
 - Set 60 second timeout to spout HTTP requests to prevent a single feed blocking other updates ([#1104](https://github.com/fossar/selfoss/issues/1104))
