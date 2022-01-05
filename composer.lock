@@ -897,16 +897,16 @@
         },
         {
             "name": "j0k3r/graby-site-config",
-            "version": "1.0.141",
+            "version": "1.0.142",
             "source": {
                 "type": "git",
                 "url": "https://github.com/j0k3r/graby-site-config.git",
-                "reference": "21f358fd0afbccd183cd2c39fae4d803fd21a67e"
+                "reference": "adf8cd8202b0f0c5242e61d894c8c2f61ba6550b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/j0k3r/graby-site-config/zipball/21f358fd0afbccd183cd2c39fae4d803fd21a67e",
-                "reference": "21f358fd0afbccd183cd2c39fae4d803fd21a67e",
+                "url": "https://api.github.com/repos/j0k3r/graby-site-config/zipball/adf8cd8202b0f0c5242e61d894c8c2f61ba6550b",
+                "reference": "adf8cd8202b0f0c5242e61d894c8c2f61ba6550b",
                 "shasum": ""
             },
             "require": {
@@ -935,9 +935,9 @@
             "description": "Graby site config files",
             "support": {
                 "issues": "https://github.com/j0k3r/graby-site-config/issues",
-                "source": "https://github.com/j0k3r/graby-site-config/tree/1.0.141"
+                "source": "https://github.com/j0k3r/graby-site-config/tree/1.0.142"
             },
-            "time": "2021-12-13T07:30:03+00:00"
+            "time": "2022-01-03T09:24:11+00:00"
         },
         {
             "name": "j0k3r/httplug-ssrf-plugin",
@@ -2847,24 +2847,21 @@
         },
         {
             "name": "violet/streaming-json-encoder",
-            "version": "v1.1.3",
+            "version": "v1.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/violet-php/streaming-json-encoder.git",
-                "reference": "df34475b2960445f7fbf1c36bd3af82cbef48d4c"
+                "reference": "a347f5c242a5249ffcfed79ad222598a2f8f29d2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/violet-php/streaming-json-encoder/zipball/df34475b2960445f7fbf1c36bd3af82cbef48d4c",
-                "reference": "df34475b2960445f7fbf1c36bd3af82cbef48d4c",
+                "url": "https://api.github.com/repos/violet-php/streaming-json-encoder/zipball/a347f5c242a5249ffcfed79ad222598a2f8f29d2",
+                "reference": "a347f5c242a5249ffcfed79ad222598a2f8f29d2",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.6.0",
                 "psr/http-message": "^1.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^5.7 || ^6.5 || ^9.4"
             },
             "type": "library",
             "autoload": {
@@ -2893,9 +2890,9 @@
             ],
             "support": {
                 "issues": "https://github.com/violet-php/streaming-json-encoder/issues",
-                "source": "https://github.com/violet-php/streaming-json-encoder/tree/v1.1.3"
+                "source": "https://github.com/violet-php/streaming-json-encoder/tree/v1.1.4"
             },
-            "time": "2021-12-27T19:15:43+00:00"
+            "time": "2022-01-02T22:00:47+00:00"
         },
         {
             "name": "willwashburn/phpamo",
@@ -3025,16 +3022,16 @@
         },
         {
             "name": "composer/semver",
-            "version": "3.2.6",
+            "version": "3.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/semver.git",
-                "reference": "83e511e247de329283478496f7a1e114c9517506"
+                "reference": "deac27056b57e46faf136fae7b449eeaa71661ee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/semver/zipball/83e511e247de329283478496f7a1e114c9517506",
-                "reference": "83e511e247de329283478496f7a1e114c9517506",
+                "url": "https://api.github.com/repos/composer/semver/zipball/deac27056b57e46faf136fae7b449eeaa71661ee",
+                "reference": "deac27056b57e46faf136fae7b449eeaa71661ee",
                 "shasum": ""
             },
             "require": {
@@ -3086,7 +3083,7 @@
             "support": {
                 "irc": "irc://irc.freenode.org/composer",
                 "issues": "https://github.com/composer/semver/issues",
-                "source": "https://github.com/composer/semver/tree/3.2.6"
+                "source": "https://github.com/composer/semver/tree/3.2.7"
             },
             "funding": [
                 {
@@ -3102,20 +3099,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-10-25T11:34:17+00:00"
+            "time": "2022-01-04T09:57:54+00:00"
         },
         {
             "name": "composer/xdebug-handler",
-            "version": "2.0.3",
+            "version": "2.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/xdebug-handler.git",
-                "reference": "6555461e76962fd0379c444c46fd558a0fcfb65e"
+                "reference": "0c1a3925ec58a4ec98e992b9c7d171e9e184be0a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/xdebug-handler/zipball/6555461e76962fd0379c444c46fd558a0fcfb65e",
-                "reference": "6555461e76962fd0379c444c46fd558a0fcfb65e",
+                "url": "https://api.github.com/repos/composer/xdebug-handler/zipball/0c1a3925ec58a4ec98e992b9c7d171e9e184be0a",
+                "reference": "0c1a3925ec58a4ec98e992b9c7d171e9e184be0a",
                 "shasum": ""
             },
             "require": {
@@ -3152,7 +3149,7 @@
             "support": {
                 "irc": "irc://irc.freenode.org/composer",
                 "issues": "https://github.com/composer/xdebug-handler/issues",
-                "source": "https://github.com/composer/xdebug-handler/tree/2.0.3"
+                "source": "https://github.com/composer/xdebug-handler/tree/2.0.4"
             },
             "funding": [
                 {
@@ -3168,7 +3165,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-12-08T13:07:32+00:00"
+            "time": "2022-01-04T17:06:45+00:00"
         },
         {
             "name": "doctrine/annotations",
