@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
 import { createFocusTrap } from 'focus-trap';
 import { nextprev, Direction } from '../shortcuts';
-import { makeEntriesLink } from '../helpers/uri';
+import { forceReload, makeEntriesLink } from '../helpers/uri';
 import * as icons from '../icons';
 import { LocalizationContext } from '../helpers/i18n';
 
@@ -148,13 +148,21 @@ function ItemTag({tag, color}) {
         () => ({ color: color.foreColor, backgroundColor: color.backColor }),
         [color]
     );
-    const location = useLocation();
+
+    const link = React.useCallback(
+        (location) => ({
+            ...location,
+            pathname: makeEntriesLink(location, { category: `tag-${tag}`, id: null }),
+            state: forceReload(location),
+        }),
+        [tag]
+    );
 
     return (
         <Link
             className="entry-tags-tag"
             style={style}
-            to={makeEntriesLink(location, { category: `tag-${tag}`, id: null })}
+            to={link}
             onClick={preventDefaultOnSmartphone}
         >
             {tag}
@@ -343,6 +351,15 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
         [title]
     );
 
+    const sourceLink = React.useCallback(
+        (location) => ({
+            ...location,
+            pathname: makeEntriesLink(location, { category: `source-${item.source}`, id: null }),
+            state: forceReload(location),
+        }),
+        [item.source]
+    );
+
     const _ = React.useContext(LocalizationContext);
 
     return (
@@ -398,7 +415,7 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
             {/* source */}
             <Link
                 className="entry-source"
-                to={makeEntriesLink(location, { category: `source-${item.source}`, id: null })}
+                to={sourceLink}
                 onClick={preventDefaultOnSmartphone}
             >
                 {sourcetitle}
