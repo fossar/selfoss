@@ -326,7 +326,7 @@ class usertimeline extends \spouts\spout {
             if ($skipUntilCp <= $cpi) {
                 if (isset($entities[$cpi])) {
                     $entity = $entities[$cpi];
-                    $appended = '<a href="' . $entity['url'] . '" target="_blank" rel="noopener noreferrer">' . $entity['text'] . '</a>';
+                    $appended = '<a href="' . $entity['url'] . '" target="_blank" rel="noreferrer">' . $entity['text'] . '</a>';
                     $skipUntilCp = $entity['end'];
                 } else {
                     $appended = $c;

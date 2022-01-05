@@ -377,7 +377,7 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
                 href={anonymize(item.link)}
                 className="entry-icon"
                 tabIndex="-1"
-                rel="noopener noreferrer"
+                rel="noreferrer"
                 aria-hidden="true"
                 onClick={preventDefaultOnSmartphone}
             >
@@ -436,7 +436,7 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
                 href={anonymize(item.link)}
                 className={classNames({'entry-datetime': true, timestamped: relDate === null})}
                 target="_blank"
-                rel="noopener noreferrer"
+                rel="noreferrer"
                 onClick={preventDefaultOnSmartphone}
             >
                 {relDate !== null ? relDate : item.datetime.toLocaleString()}
@@ -453,7 +453,7 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
             {/* thumbnail */}
             {item.thumbnail && item.thumbnail.trim().length > 0 ?
                 <div className={classNames({'entry-thumbnail': true, 'entry-thumbnail-always-visible': selfoss.config.showThumbnails})}>
-                    <a href={anonymize(item.link)} target="_blank" rel="noopener noreferrer">
+                    <a href={anonymize(item.link)} target="_blank" rel="noreferrer">
                         <img src={`thumbnails/${item.thumbnail}`} alt={item.strippedTitle} />
                     </a>
                 </div>
@@ -470,7 +470,7 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
                                 href={anonymize(item.link)}
                                 className="entry-newwindow"
                                 target="_blank"
-                                rel="noopener noreferrer"
+                                rel="noreferrer"
                                 accessKey="o"
                                 onClick={stopPropagation}
                             >
@@ -521,7 +521,7 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
                         href={anonymize(item.link)}
                         className="entry-newwindow"
                         target="_blank"
-                        rel="noopener noreferrer"
+                        rel="noreferrer"
                         accessKey="o"
                         onClick={stopPropagation}
                     >
