@@ -35,6 +35,14 @@ function fixLinkBubbling(content) {
     });
 }
 
+// Prevent passing referrer info when opening a link.
+function sanitizeContent(content) {
+    content.querySelectorAll('a').forEach((a) => {
+        const oldRel = a.getAttribute('rel');
+        a.setAttribute('rel', 'noreferrer' + (oldRel ? ' ' + oldRel : ''));
+    });
+}
+
 function handleKeyUp(event) {
     // emulate clicking when using keyboard
     if (event.keyCode === 13) { // ENTER key
@@ -222,6 +230,8 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
             const firstExpansion = contentBlock.current.childElementCount === 0;
             if (firstExpansion) {
                 contentBlock.current.innerHTML = item.content;
+
+                sanitizeContent(contentBlock.current);
 
                 // load images not on mobile devices
                 if (selfoss.isMobile() == false || selfoss.config.loadImagesOnMobile) {

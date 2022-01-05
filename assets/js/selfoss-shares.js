@@ -34,31 +34,31 @@ selfoss.shares = {
         }
 
         this.register('diaspora', selfoss.app._('share_diaspora_label'), 'd', <FontAwesomeIcon icon={icons.diaspora} />, ({url, title}) => {
-            window.open('https://share.diasporafoundation.org/?url=' + encodeURIComponent(url) + '&title=' + encodeURIComponent(title));
+            window.open('https://share.diasporafoundation.org/?url=' + encodeURIComponent(url) + '&title=' + encodeURIComponent(title), undefined, 'noreferrer');
         });
         this.register('twitter', selfoss.app._('share_twitter_label'), 't', <FontAwesomeIcon icon={icons.twitter} />, ({url, title}) => {
-            window.open('https://twitter.com/intent/tweet?source=webclient&text=' + encodeURIComponent(title) + ' ' + encodeURIComponent(url));
+            window.open('https://twitter.com/intent/tweet?source=webclient&text=' + encodeURIComponent(title) + ' ' + encodeURIComponent(url), undefined, 'noreferrer');
         });
         this.register('facebook', selfoss.app._('share_facebook_label'), 'f', <FontAwesomeIcon icon={icons.facebook} />, ({url, title}) => {
-            window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url) + '&t=' + encodeURIComponent(title));
+            window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url) + '&t=' + encodeURIComponent(title), undefined, 'noreferrer');
         });
         this.register('pocket', selfoss.app._('share_pocket_label'), 'p', <FontAwesomeIcon icon={icons.pocket} />, ({url, title}) => {
-            window.open('https://getpocket.com/save?url=' + encodeURIComponent(url) + '&title=' + encodeURIComponent(title));
+            window.open('https://getpocket.com/save?url=' + encodeURIComponent(url) + '&title=' + encodeURIComponent(title), undefined, 'noreferrer');
         });
 
         if (selfoss.config.wallabag !== null) {
             this.register('wallabag', selfoss.app._('share_wallabag_label'), 'w', <FontAwesomeIcon icon={icons.wallabag} />, ({url}) => {
                 if (selfoss.config.wallabag.version === 2) {
-                    window.open(selfoss.config.wallabag.url + '/bookmarklet?url=' + encodeURIComponent(url));
+                    window.open(selfoss.config.wallabag.url + '/bookmarklet?url=' + encodeURIComponent(url), undefined, 'noreferrer');
                 } else {
-                    window.open(selfoss.config.wallabag.url + '/?action=add&url=' + btoa(url));
+                    window.open(selfoss.config.wallabag.url + '/?action=add&url=' + btoa(url), undefined, 'noreferrer');
                 }
             });
         }
 
         if (selfoss.config.wordpress !== null) {
             this.register('wordpress', selfoss.app._('share_wordpress_label'), 's', <FontAwesomeIcon icon={icons.wordpress} />, ({url, title}) => {
-                window.open(selfoss.config.wordpress + '/wp-admin/press-this.php?u=' + encodeURIComponent(url) + '&t=' + encodeURIComponent(title));
+                window.open(selfoss.config.wordpress + '/wp-admin/press-this.php?u=' + encodeURIComponent(url) + '&t=' + encodeURIComponent(title), undefined, 'noreferrer');
             });
         }
 

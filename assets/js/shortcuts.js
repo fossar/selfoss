@@ -252,7 +252,7 @@ export default function makeShortcuts() {
 
             if (selected !== null) {
                 const elem = document.querySelector(`.entry[data-entry-id="${selected}"]`);
-                window.open(elem.querySelector('.entry-datetime').getAttribute('href'));
+                window.open(elem.querySelector('.entry-datetime').getAttribute('href'), undefined, 'noreferrer');
             }
 
             e.preventDefault();
