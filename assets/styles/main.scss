@@ -332,14 +332,17 @@ span.offline-count.diff {
     margin-top: auto;
 }
 
-.nav-toolbar button {
+.nav-toolbar button,
+.nav-toolbar a {
     font-size: 1.2rem;
     background: #272325;
     border-radius: 2px;
     border: none;
     color: #484447;
     cursor: pointer;
-    display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     flex-grow: 1;
     height: 3em;
     margin: 0.25em;
@@ -953,7 +956,7 @@ body:not(.loggedin) .entry-unread {
 
     body.publicmode.authenabled #nav-login,
     body.authenabled.loggedin #nav-logout {
-        display: inline-block;
+        display: flex;
     }
 
     /* search */
@@ -1209,7 +1212,7 @@ body:not(.loggedin) .entry-unread {
 
     body.publicmode.authenabled #nav-login,
     body.authenabled.loggedin #nav-logout {
-        display: inline-block;
+        display: flex;
     }
 
     #search-list {

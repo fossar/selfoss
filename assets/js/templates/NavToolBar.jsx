@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as icons from '../icons';
 import { LocalizationContext } from '../helpers/i18n';
@@ -11,22 +11,6 @@ function handleReloadAll({ reloadAll, setReloading, setNavExpanded }) {
         setNavExpanded(false);
         setReloading(false);
     });
-}
-
-function handleSettings({ history, setNavExpanded }) {
-    // only loggedin users
-    if (selfoss.config.authEnabled && (!selfoss.loggedin.value || !selfoss.db.online)) {
-        return;
-    }
-
-    // show sources
-    history.push('/manage/sources');
-
-    setNavExpanded(false);
-}
-
-function handleLogIn({ history }) {
-    history.push('/sign/in');
 }
 
 function handleLogOut({ setNavExpanded }) {
@@ -43,26 +27,21 @@ function handleLogOut({ setNavExpanded }) {
 export default function NavToolBar({ reloadAll, setNavExpanded }) {
     const [reloading, setReloading] = React.useState(false);
 
-    const history = useHistory();
-
     const refreshOnClick = React.useCallback(
         () => handleReloadAll({ reloadAll, setReloading, setNavExpanded }),
         [reloadAll, setNavExpanded]
     );
 
     const settingsOnClick = React.useCallback(
-        () => handleSettings({ history, setNavExpanded }),
-        [history, setNavExpanded]
+        () => {
+            setNavExpanded(false);
+        },
+        [setNavExpanded]
     );
 
     const logoutOnClick = React.useCallback(
         () => handleLogOut({ setNavExpanded }),
         [setNavExpanded]
-    );
-
-    const loginOnClick = React.useCallback(
-        () => handleLogIn({ history }),
-        [history]
     );
 
     const _ = React.useContext(LocalizationContext);
@@ -82,18 +61,19 @@ export default function NavToolBar({ reloadAll, setNavExpanded }) {
                     spin={reloading}
                 />
             </button>
-            <button
+            <Link
                 id="nav-settings"
                 title={_('settingsbutton')}
                 aria-label={_('settingsbutton')}
                 accessKey="t"
+                to="/manage/sources"
                 onClick={settingsOnClick}
             >
                 <FontAwesomeIcon
                     icon={icons.settings}
                     fixedWidth
                 />
-            </button>
+            </Link>
             <button
                 id="nav-logout"
                 title={_('logoutbutton')}
@@ -103,15 +83,15 @@ export default function NavToolBar({ reloadAll, setNavExpanded }) {
             >
                 <FontAwesomeIcon icon={icons.signOut} fixedWidth />
             </button>
-            <button
+            <Link
                 id="nav-login"
                 title={_('loginbutton')}
                 aria-label={_('loginbutton')}
                 accessKey="l"
-                onClick={loginOnClick}
+                to="/sign/in"
             >
                 <FontAwesomeIcon icon={icons.logIn} fixedWidth />
-            </button>
+            </Link>
         </div>
     );
 }
