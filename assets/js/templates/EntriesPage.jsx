@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { useStateWithDeps } from 'use-state-with-deps';
 import nullable from 'prop-types-nullable';
@@ -14,6 +15,7 @@ import { LocalizationContext } from '../helpers/i18n';
 import { useShouldReload } from '../helpers/hooks';
 import { forceReload } from '../helpers/uri';
 import { HttpError } from '../errors';
+import { useEntriesReducer, setEntries, appendEntries, starEntryInView, markEntryInView, refreshEntryStatuses } from '../entriesActions';
 
 function reloadList({ fetchParams, abortController, append = false, waitForSync = true, entryId = null, setLoadingState }) {
     if (abortController.signal.aborted) {
@@ -140,8 +142,13 @@ function handleRefreshSource({ event, source, setLoadingState, setNavExpanded, r
     });
 }
 
-export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, selectedEntry, expandedEntries, setNavExpanded, navSourcesExpanded, reload }) {
+export function EntriesPage({ hasMore, loadingState, setLoadingState, selectedEntry, expandedEntries, setNavExpanded, navSourcesExpanded, reload, setEntriesReducerDispatch }) {
     const allowedToUpdate = !selfoss.config.authEnabled || selfoss.config.allowPublicUpdate || selfoss.loggedin.value;
+    const [{ entries }, dispatchEntriesReducer] = useEntriesReducer();
+
+    useEffect(() => {
+        setEntriesReducerDispatch(dispatchEntriesReducer);
+    }, [setEntriesReducerDispatch, dispatchEntriesReducer]);
 
     const location = useLocation();
     const forceReload = useShouldReload();
@@ -357,7 +364,7 @@ export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, s
 }
 
 EntriesPage.propTypes = {
-    entries: PropTypes.array.isRequired,
+    setEntriesReducerDispatch: PropTypes.func.isRequired,
     hasMore: PropTypes.bool.isRequired,
     loadingState: PropTypes.oneOf(Object.values(LoadingState)).isRequired,
     setLoadingState: PropTypes.func.isRequired,
@@ -368,25 +375,12 @@ EntriesPage.propTypes = {
     reload: PropTypes.func.isRequired,
 };
 
-const initialState = {
-    entries: [],
-    hasMore: false,
-    /**
-     * Currently selected entry.
-     * The id in the location.hash should imply the selected entry.
-     * It will also be used for keyboard navigation (for finding previous/next).
-     */
-    selectedEntry: null,
-    expandedEntries: {},
-    loadingState: LoadingState.INITIAL,
-};
-
 export default class StateHolder extends React.Component {
     constructor(props) {
         super(props);
-        this.state = initialState;
 
         this.reload = this.reload.bind(this);
+        this.setEntriesReducerDispatch = this.setEntriesReducerDispatch.bind(this);
         this.setLoadingState = this.setLoadingState.bind(this);
         this.activateEntry = this.activateEntry.bind(this);
         this.deactivateEntry = this.deactivateEntry.bind(this);
@@ -395,16 +389,26 @@ export default class StateHolder extends React.Component {
         this.markEntryStarred = this.markEntryStarred.bind(this);
     }
 
+    setEntriesReducerDispatch(dispatch) {
+        this.entriesReducerDispatch = dispatch;
+    }
+
     setEntries(entries) {
-        if (typeof entries === 'function') {
-            this.setState({ entries: entries(this.state.entries) });
-        } else {
-            this.setState({ entries });
+        if (this.entriesReducerDispatch === null) {
+            return;
         }
+        this.entriesReducerDispatch(
+            setEntries(entries)
+        );
     }
 
     appendEntries(extraEntries) {
-        this.setEntries((entries) => [...entries, ...extraEntries]);
+        if (this.entriesReducerDispatch === null) {
+            return;
+        }
+        this.entriesReducerDispatch(
+            appendEntries(extraEntries)
+        );
     }
 
     /**
@@ -424,7 +428,7 @@ export default class StateHolder extends React.Component {
      * @return {number}
      */
     getSelectedEntry() {
-        return this.state.selectedEntry;
+        return this.selectedEntry;
     }
 
     setExpandedEntries(expandedEntries) {
@@ -518,52 +522,32 @@ export default class StateHolder extends React.Component {
 
 
     starEntryInView(id, starred) {
-        this.setEntries((entries) =>
-            entries.map((entry) => {
-                if (entry.id === id) {
-                    return {
-                        ...entry,
-                        starred
-                    };
-                } else {
-                    return entry;
-                }
-            })
+        if (this.entriesReducerDispatch === null) {
+            return;
+        }
+        this.entriesReducerDispatch(
+            starEntryInView(id, starred)
         );
     }
 
 
     markEntryInView(id, unread) {
-        this.setEntries((entries) =>
-            entries.map((entry) => {
-                if (entry.id === id) {
-                    return {
-                        ...entry,
-                        unread
-                    };
-                } else {
-                    return entry;
-                }
-            })
+        if (this.entriesReducerDispatch === null) {
+            return;
+        }
+        this.entriesReducerDispatch(
+            markEntryInView(id, unread)
         );
     }
 
 
     refreshEntryStatuses(entryStatuses) {
-        this.state.entries.forEach((entry) => {
-            const { id } = entry;
-            var newStatus = false;
-            entryStatuses.some(function(entryStatus) {
-                if (entryStatus.id == id) {
-                    newStatus = entryStatus;
-                }
-                return newStatus;
-            });
-            if (newStatus) {
-                this.starEntryInView(id, newStatus.starred);
-                this.markEntryInView(id, newStatus.unread);
-            }
-        });
+        if (this.entriesReducerDispatch === null) {
+            return;
+        }
+        this.entriesReducerDispatch(
+            refreshEntryStatuses(entryStatuses)
+        );
     }
 
     setHasMore(hasMore) {
@@ -809,7 +793,6 @@ export default class StateHolder extends React.Component {
     render() {
         return (
             <EntriesPage
-                entries={this.state.entries}
                 selectedEntry={this.state.selectedEntry}
                 expandedEntries={this.state.expandedEntries}
                 hasMore={this.state.hasMore}
@@ -817,6 +800,7 @@ export default class StateHolder extends React.Component {
                 setLoadingState={this.setLoadingState}
                 setNavExpanded={this.props.setNavExpanded}
                 navSourcesExpanded={this.props.navSourcesExpanded}
+                setEntriesReducerDispatch={this.setEntriesReducerDispatch}
                 reload={this.reload}
             />
         );
