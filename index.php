@@ -67,7 +67,7 @@ $router->get('/sources/stats', function() use ($dice) {
 });
 
 // only loggedin users
-$router->post('/mark/{itemId}', function($itemId) use ($dice) {
+$router->post('/mark/([0-9]+)', function($itemId) use ($dice) {
     // json
     $dice->create(controllers\Items::class)->mark($itemId);
 });
@@ -75,15 +75,15 @@ $router->post('/mark', function() use ($dice) {
     // json
     $dice->create(controllers\Items::class)->mark();
 });
-$router->post('/unmark/{itemId}', function($itemId) use ($dice) {
+$router->post('/unmark/([0-9]+)', function($itemId) use ($dice) {
     // json
     $dice->create(controllers\Items::class)->unmark($itemId);
 });
-$router->post('/starr/{itemId}', function($itemId) use ($dice) {
+$router->post('/starr/([0-9]+)', function($itemId) use ($dice) {
     // json
     $dice->create(controllers\Items::class)->starr($itemId);
 });
-$router->post('/unstarr/{itemId}', function($itemId) use ($dice) {
+$router->post('/unstarr/([0-9]+)', function($itemId) use ($dice) {
     // json
     $dice->create(controllers\Items::class)->unstarr($itemId);
 });
@@ -108,7 +108,7 @@ $router->get('/sources/list', function() use ($dice) {
     // json
     $dice->create(controllers\Sources::class)->listSources();
 });
-$router->post('/source/{id}', function($id) use ($dice) {
+$router->post('/source/([0-9]+)', function($id) use ($dice) {
     // json
     $dice->create(controllers\Sources\Write::class)->write($id);
 });
@@ -116,15 +116,15 @@ $router->post('/source', function() use ($dice) {
     // json
     $dice->create(controllers\Sources\Write::class)->write();
 });
-$router->delete('/source/{id}', function($id) use ($dice) {
+$router->delete('/source/([0-9]+)', function($id) use ($dice) {
     // json
     $dice->create(controllers\Sources::class)->remove($id);
 });
-$router->post('/source/delete/{id}', function($id) use ($dice) {
+$router->post('/source/delete/([0-9]+)', function($id) use ($dice) {
     // json
     $dice->create(controllers\Sources::class)->remove($id);
 });
-$router->post('/source/{id}/update', function($id) use ($dice) {
+$router->post('/source/([0-9]+)/update', function($id) use ($dice) {
     // json
     $dice->create(controllers\Sources\Update::class)->update($id);
 });
