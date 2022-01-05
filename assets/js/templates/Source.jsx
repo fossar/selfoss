@@ -596,20 +596,25 @@ export default function Source({ source, setSources, spouts, setSpouts, dirty, s
                     loading: sourceEditDeleteLoading
                 })}
             >
-                <button
-                    type="button"
-                    accessKey="e"
-                    className={classNames({
-                        'source-showparams': true,
-                        saved: justSavedTimeout !== null
-                    })}
-                    onClick={editOnClick}
-                >
-                    {_(
-                        justSavedTimeout !== null ? 'source_saved' : 'source_edit'
-                    )}
-                </button>
-                {' • '}
+
+                {!editedSource &&
+                    <React.Fragment>
+                        <button
+                            type="button"
+                            accessKey="e"
+                            className={classNames({
+                                'source-showparams': true,
+                                saved: justSavedTimeout !== null
+                            })}
+                            onClick={editOnClick}
+                        >
+                            {_(
+                                justSavedTimeout !== null ? 'source_saved' : 'source_edit'
+                            )}
+                        </button>
+                        {' • '}
+                    </React.Fragment>
+                }
                 <button
                     type="button"
                     accessKey="d"
