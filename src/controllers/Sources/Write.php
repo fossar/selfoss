@@ -51,7 +51,7 @@ class Write {
 
         // read data
         $body = file_get_contents('php://input');
-        $contentType = $_SERVER['CONTENT_TYPE'] ?: '';
+        $contentType = isset($_SERVER['CONTENT_TYPE']) ? $_SERVER['CONTENT_TYPE'] : '';
         if (strpos($contentType, 'application/json') === 0) {
             $data = json_decode($body, true);
         } else {

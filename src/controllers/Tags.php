@@ -71,13 +71,13 @@ class Tags {
         // read data
         parse_str(file_get_contents('php://input'), $data);
 
-        $tag = $data['tag'] ?: null;
-        $color = $data['color'] ?: null;
+        $tag = isset($data['tag']) && ($trimmed = trim($data['tag'])) !== '' ? $trimmed : null;
+        $color = isset($data['color']) && ($trimmed = trim($data['color'])) !== '' ? $trimmed : null;
 
-        if ($tag === null || strlen(trim($tag)) === 0) {
+        if ($tag === null) {
             $this->view->error('invalid or no tag given');
         }
-        if ($color === null || strlen(trim($color)) === 0) {
+        if ($color === null) {
             $this->view->error('invalid or no color given');
         }
 
