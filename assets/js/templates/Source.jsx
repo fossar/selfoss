@@ -320,9 +320,11 @@ function SourceEditForm({
         (event) => {
             event.preventDefault();
 
-            const answer = confirm(selfoss.app._('source_warn_cancel_dirty'));
-            if (answer === false) {
-                return;
+            if (dirty) {
+                const answer = confirm(selfoss.app._('source_warn_cancel_dirty'));
+                if (answer === false) {
+                    return;
+                }
             }
 
             setDirty(false);
