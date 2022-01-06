@@ -108,7 +108,7 @@ $router->get('/sources/list', function() use ($dice) {
     // json
     $dice->create(controllers\Sources::class)->listSources();
 });
-$router->post('/source/([0-9]+)', function($id) use ($dice) {
+$router->post('/source/((?:new-)?[0-9]+)', function($id) use ($dice) {
     // json
     $dice->create(controllers\Sources\Write::class)->write($id);
 });
