@@ -1,3 +1,5 @@
+@use 'sass:color';
+
 @import 'npm:@fancyapps/fancybox/dist/jquery.fancybox.css';
 @import 'npm:spectrum-colorpicker/spectrum.css';
 @import 'npm:reset-css/sass/reset';
@@ -247,7 +249,7 @@ span.offline-count.diff {
     }
 
     &::-webkit-scrollbar-thumb:active {
-        background: lighten(#3d6d69, 15%);
+        background: color.adjust(#3d6d69, $lightness: 15%);
     }
 }
 
