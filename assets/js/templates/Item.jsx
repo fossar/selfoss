@@ -40,6 +40,9 @@ function sanitizeContent(content) {
     content.querySelectorAll('a').forEach((a) => {
         const oldRel = a.getAttribute('rel');
         a.setAttribute('rel', 'noreferrer' + (oldRel ? ' ' + oldRel : ''));
+
+        // Ensure links inside item content are opened in new tab/window.
+        a.setAttribute('target', '_blank');
     });
 }
 
