@@ -232,6 +232,23 @@ span.offline-count.diff {
     scrollbar-width: thin;
     scrollbar-color: dark;
     flex-grow: 1;
+
+    &::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: #727173;
+        border-radius: 5px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background: #5f5e60;
+    }
+
+    &::-webkit-scrollbar-thumb:active {
+        background: lighten(#3d6d69, 15%);
+    }
 }
 
 .nav-ts-wrapper.offline {
