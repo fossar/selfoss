@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
 import { createFocusTrap } from 'focus-trap';
 import { nextprev, Direction } from '../shortcuts';
-import { forceReload, makeEntriesLink } from '../helpers/uri';
+import { forceReload, makeEntriesLink, makeEntriesLinkLocation } from '../helpers/uri';
 import * as icons from '../icons';
 import { LocalizationContext } from '../helpers/i18n';
 
@@ -163,7 +163,7 @@ function ItemTag({tag, color}) {
     const link = React.useCallback(
         (location) => ({
             ...location,
-            pathname: makeEntriesLink(location, { category: `tag-${tag}`, id: null }),
+            ...makeEntriesLinkLocation(location, { category: `tag-${tag}`, id: null }),
             state: forceReload(location),
         }),
         [tag]
@@ -367,7 +367,7 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
     const sourceLink = React.useCallback(
         (location) => ({
             ...location,
-            pathname: makeEntriesLink(location, { category: `source-${item.source}`, id: null }),
+            ...makeEntriesLinkLocation(location, { category: `source-${item.source}`, id: null }),
             state: forceReload(location),
         }),
         [item.source]

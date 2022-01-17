@@ -4,7 +4,7 @@ import { Link, useRouteMatch } from 'react-router-dom';
 import { usePreviousImmediate } from 'rooks';
 import classNames from 'classnames';
 import { unescape } from 'html-escaper';
-import { forceReload, makeEntriesLink, ENTRIES_ROUTE_PATTERN } from '../helpers/uri';
+import { forceReload, makeEntriesLinkLocation, ENTRIES_ROUTE_PATTERN } from '../helpers/uri';
 import Collapse from '@kunukn/react-collapse';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { LoadingState } from '../requests/LoadingState';
@@ -36,7 +36,7 @@ function Source({ source, active, collapseNav }) {
     const link = React.useCallback(
         (location) => ({
             ...location,
-            pathname: makeEntriesLink(location, { category: `source-${source.id}`, id: null }),
+            ...makeEntriesLinkLocation(location, { category: `source-${source.id}`, id: null }),
             state: forceReload(location),
         }),
         [source.id]

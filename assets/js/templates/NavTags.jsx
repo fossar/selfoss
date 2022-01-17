@@ -4,7 +4,7 @@ import nullable from 'prop-types-nullable';
 import { Link, useRouteMatch } from 'react-router-dom';
 import classNames from 'classnames';
 import { unescape } from 'html-escaper';
-import { forceReload, makeEntriesLink, ENTRIES_ROUTE_PATTERN } from '../helpers/uri';
+import { forceReload, makeEntriesLinkLocation, ENTRIES_ROUTE_PATTERN } from '../helpers/uri';
 import ColorChooser from './ColorChooser';
 import { updateTag } from '../requests/tags';
 import Collapse from '@kunukn/react-collapse';
@@ -34,7 +34,7 @@ function Tag({ tag, active, collapseNav }) {
     const link = React.useCallback(
         (location) => ({
             ...location,
-            pathname: makeEntriesLink(location, {
+            ...makeEntriesLinkLocation(location, {
                 category,
                 id: null
             }),

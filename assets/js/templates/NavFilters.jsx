@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link, useRouteMatch } from 'react-router-dom';
 import classNames from 'classnames';
 import { FilterType } from '../Filter';
-import { forceReload, makeEntriesLink, ENTRIES_ROUTE_PATTERN } from '../helpers/uri';
+import { forceReload, makeEntriesLinkLocation, ENTRIES_ROUTE_PATTERN } from '../helpers/uri';
 import Collapse from '@kunukn/react-collapse';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as icons from '../icons';
@@ -38,7 +38,7 @@ export default function NavFilters({
     const newestLink = React.useCallback(
         (location) => ({
             ...location,
-            pathname: makeEntriesLink(location, { filter: FilterType.NEWEST, id: null }),
+            ...makeEntriesLinkLocation(location, { filter: FilterType.NEWEST, id: null }),
             state: forceReload(location),
         }),
         []
@@ -47,7 +47,7 @@ export default function NavFilters({
     const unreadLink = React.useCallback(
         (location) => ({
             ...location,
-            pathname: makeEntriesLink(location, { filter: FilterType.UNREAD, id: null }),
+            ...makeEntriesLinkLocation(location, { filter: FilterType.UNREAD, id: null }),
             state: forceReload(location),
         }),
         []
@@ -56,7 +56,7 @@ export default function NavFilters({
     const starredLink = React.useCallback(
         (location) => ({
             ...location,
-            pathname: makeEntriesLink(location, { filter: FilterType.STARRED, id: null }),
+            ...makeEntriesLinkLocation(location, { filter: FilterType.STARRED, id: null }),
             state: forceReload(location),
         }),
         []

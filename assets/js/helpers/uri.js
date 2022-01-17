@@ -39,7 +39,7 @@ export function filterTypeToString(type) {
 
 export const ENTRIES_ROUTE_PATTERN = '/:filter(newest|unread|starred)/:category(all|tag-[^/]+|source-[0-9]+)/:id?';
 
-export function makeEntriesLink(location, { filter, category, id, search }) {
+export function makeEntriesLinkLocation(location, { filter, category, id, search }) {
     const queryString = new URLSearchParams(location.search);
 
     let path;
@@ -60,9 +60,24 @@ export function makeEntriesLink(location, { filter, category, id, search }) {
         });
     }
 
-    const searchParam = typeof search !== 'undefined' ? search : queryString?.get('search');
+    if (typeof search !== 'undefined') {
+        if (search) {
+            queryString.set('search', search);
+        } else {
+            queryString.delete('search');
+        }
+    }
 
-    return path + (searchParam ? `?search=${encodeURIComponent(searchParam)}` : '');
+    return {
+        pathname: path,
+        search: queryString.toString(),
+    };
+}
+
+export function makeEntriesLink(location, params) {
+    const { pathname, search } = makeEntriesLinkLocation(location, params);
+
+    return pathname + (search !== '' ? `?${search}` : '');
 }
 
 export function forceReload(location) {
