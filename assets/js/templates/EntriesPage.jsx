@@ -11,6 +11,7 @@ import * as sourceRequests from '../requests/sources';
 import { LoadingState } from '../requests/LoadingState';
 import { Spinner, SpinnerBig } from './Spinner';
 import classNames from 'classnames';
+import { useAllowedToUpdate } from '../helpers/authorizations';
 import { LocalizationContext } from '../helpers/i18n';
 import { useShouldReload } from '../helpers/hooks';
 import { forceReload } from '../helpers/uri';
@@ -142,7 +143,7 @@ function handleRefreshSource({ event, source, setLoadingState, setNavExpanded, r
 }
 
 export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, selectedEntry, expandedEntries, setNavExpanded, navSourcesExpanded, reload }) {
-    const allowedToUpdate = selfoss.isAllowedToUpdate();
+    const allowedToUpdate = useAllowedToUpdate();
 
     const location = useLocation();
     const forceReload = useShouldReload();

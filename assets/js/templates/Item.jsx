@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
 import { createFocusTrap } from 'focus-trap';
 import { nextprev, Direction } from '../shortcuts';
+import { useAllowedToWrite } from '../helpers/authorizations';
 import { forceReload, makeEntriesLink, makeEntriesLinkLocation } from '../helpers/uri';
 import * as icons from '../icons';
 import { LocalizationContext } from '../helpers/i18n';
@@ -373,6 +374,8 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
         [item.source]
     );
 
+    const canWrite = useAllowedToWrite();
+
     const _ = React.useContext(LocalizationContext);
 
     return (
@@ -511,24 +514,28 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
 
             {/* toolbar */}
             <ul aria-label={_('article_actions')} className="entry-toolbar">
-                <li>
-                    <button
-                        accessKey="a"
-                        className={classNames({'entry-starr': true, active: item.starred == 1})}
-                        onClick={starOnClick}
-                    >
-                        <FontAwesomeIcon icon={item.starred == 1 ? icons.unstar : icons.star} /> {item.starred == 1 ? _('unstar') : _('star')}
-                    </button>
-                </li>
-                <li>
-                    <button
-                        accessKey="u"
-                        className={classNames({'entry-unread': true, active: item.unread == 1})}
-                        onClick={markReadOnClick}
-                    >
-                        <FontAwesomeIcon icon={item.unread == 1 ? icons.markRead : icons.markUnread} /> {item.unread == 1 ? _('mark') : _('unmark')}
-                    </button>
-                </li>
+                {canWrite &&
+                    <li>
+                        <button
+                            accessKey="a"
+                            className={classNames({'entry-starr': true, active: item.starred == 1})}
+                            onClick={starOnClick}
+                        >
+                            <FontAwesomeIcon icon={item.starred == 1 ? icons.unstar : icons.star} /> {item.starred == 1 ? _('unstar') : _('star')}
+                        </button>
+                    </li>
+                }
+                {canWrite &&
+                    <li>
+                        <button
+                            accessKey="u"
+                            className={classNames({'entry-unread': true, active: item.unread == 1})}
+                            onClick={markReadOnClick}
+                        >
+                            <FontAwesomeIcon icon={item.unread == 1 ? icons.markRead : icons.markUnread} /> {item.unread == 1 ? _('mark') : _('unmark')}
+                        </button>
+                    </li>
+                }
                 <li>
                     <a
                         href={anonymize(item.link)}

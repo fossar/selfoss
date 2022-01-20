@@ -919,17 +919,6 @@ span.offline-count.diff {
 
 /* public mode */
 
-#nav-login,
-body.publicmode.authenabled.loggedin #nav-login,
-#nav-logout,
-body:not(.loggedin) #nav-mark,
-body:not(.loggedin) #nav-settings,
-body:not(.loggedin) .entry-starr,
-body:not(.loggedin):not(.publicupdate) #nav-refresh,
-body:not(.loggedin) .entry-unread {
-    display: none;
-}
-
 #search.offline {
     display: none;
 }
@@ -938,10 +927,6 @@ body:not(.loggedin) .entry-unread {
 
 /* only desktop */
 @media screen and (min-width: 1024px) {
-    body.publicmode:not(.loggedin) .entry-toolbar {
-        display: none;
-    }
-
     #search {
         left: calc(108px - 20rem + 0.5em + 30px);
         top: 25px;
@@ -971,11 +956,6 @@ body:not(.loggedin) .entry-unread {
 
     .mark-these-read {
         display: none;
-    }
-
-    body.publicmode.authenabled #nav-login,
-    body.authenabled.loggedin #nav-logout {
-        display: flex;
     }
 
     /* search */
@@ -1227,11 +1207,6 @@ body:not(.loggedin) .entry-unread {
 
     .nav-toolbar button {
         margin: 0.25em 0.5em;
-    }
-
-    body.publicmode.authenabled #nav-login,
-    body.authenabled.loggedin #nav-logout {
-        display: flex;
     }
 
     #search-list {

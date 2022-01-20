@@ -100,11 +100,6 @@ var selfoss = {
             );
         }
 
-        document.body.classList.toggle('publicupdate', configuration.allowPublicUpdate);
-        document.body.classList.toggle('publicmode', configuration.publicMode);
-        document.body.classList.toggle('authenabled', configuration.authEnabled);
-        document.body.classList.toggle('loggedin', !configuration.authEnabled);
-
         if (configuration.language !== null) {
             document.documentElement.setAttribute('lang', configuration.language);
         }
@@ -135,10 +130,6 @@ var selfoss = {
         selfoss.attachApp();
 
         if (configuration.authEnabled) {
-            selfoss.loggedin.addEventListener('change', function loggedinChanged(event) {
-                document.body.classList.toggle('loggedin', event.value);
-            });
-
             selfoss.loggedin.update(window.localStorage.getItem('onlineSession') == 'true');
         }
 
