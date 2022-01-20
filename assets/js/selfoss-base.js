@@ -142,7 +142,7 @@ var selfoss = {
             selfoss.loggedin.update(window.localStorage.getItem('onlineSession') == 'true');
         }
 
-        if (selfoss.hasSession() || !configuration.authEnabled || configuration.publicMode) {
+        if (selfoss.isAllowedToRead()) {
             selfoss.initUi();
         } else {
             selfoss.history.push('/sign/in');
@@ -246,13 +246,49 @@ var selfoss = {
 
     logout: function() {
         selfoss.clearSession();
-        if (!document.body.classList.contains('publicmode')) {
+        if (!selfoss.config.publicMode) {
             selfoss.history.push('/sign/in');
         }
 
         logout().catch((error) => {
             selfoss.app.showError(selfoss.app._('error_logout') + ' ' + error.message);
         });
+    },
+
+    /**
+     * Checks whether the current user is allowed to perform read operations.
+     *
+     * @returns {boolean}
+     */
+    isAllowedToRead() {
+        return selfoss.hasSession() || !selfoss.config.authEnabled || selfoss.config.publicMode;
+    },
+
+    /**
+     * Checks whether the current user is allowed to perform update-tier operations.
+     *
+     * @returns {boolean}
+     */
+    isAllowedToUpdate() {
+        return selfoss.hasSession() || !selfoss.config.authEnabled || selfoss.config.allowPublicUpdate;
+    },
+
+    /**
+     * Checks whether the current user is allowed to perform write operations.
+     *
+     * @returns {boolean}
+     */
+    isAllowedToWrite() {
+        return selfoss.hasSession() || !selfoss.config.authEnabled;
+    },
+
+    /**
+     * Checks whether the current user is allowed to perform write operations.
+     *
+     * @returns {boolean}
+     */
+    isOnline() {
+        return selfoss.db.online;
     },
 
 

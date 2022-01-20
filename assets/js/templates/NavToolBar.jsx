@@ -16,7 +16,7 @@ function handleReloadAll({ reloadAll, setReloading, setNavExpanded }) {
 
 function handleLogOut({ setNavExpanded }) {
     // only loggedin users
-    if (!selfoss.loggedin.value || !selfoss.db.online) {
+    if (!selfoss.hasSession() || !selfoss.isOnline()) {
         return;
     }
 

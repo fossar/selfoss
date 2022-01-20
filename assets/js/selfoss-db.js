@@ -88,7 +88,7 @@ selfoss.db = {
     sync: function(force = false) {
         var lastUpdateIsOld = selfoss.db.lastUpdate === null || selfoss.db.lastSync === null || Date.now() - selfoss.db.lastSync > 5 * 60 * 1000;
         var shouldSync = force || selfoss.dbOffline.needsSync || lastUpdateIsOld;
-        if (selfoss.loggedin.value && shouldSync) {
+        if (selfoss.isAllowedToRead() && selfoss.isOnline() && shouldSync) {
             if (selfoss.db.enableOffline.value) {
                 return selfoss.dbOffline.sendNewStatuses();
             } else {

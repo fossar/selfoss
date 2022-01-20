@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useLocation, useParams } from 'react-router-dom';
+import { useOnline } from 'rooks';
 import { useStateWithDeps } from 'use-state-with-deps';
 import nullable from 'prop-types-nullable';
 import Item from './Item';
@@ -46,7 +47,7 @@ function reloadList({ fetchParams, abortController, append = false, waitForSync 
         }
 
         var forceLoadOnline = selfoss.dbOffline.olderEntriesOnline || selfoss.dbOffline.shouldLoadEntriesOnline;
-        if (!selfoss.db.enableOffline.value || (selfoss.db.online && forceLoadOnline)) {
+        if (!selfoss.db.enableOffline.value || (selfoss.isOnline() && forceLoadOnline)) {
             reloader = selfoss.dbOnline.getEntries;
         }
 
@@ -141,7 +142,7 @@ function handleRefreshSource({ event, source, setLoadingState, setNavExpanded, r
 }
 
 export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, selectedEntry, expandedEntries, setNavExpanded, navSourcesExpanded, reload }) {
-    const allowedToUpdate = !selfoss.config.authEnabled || selfoss.config.allowPublicUpdate || selfoss.loggedin.value;
+    const allowedToUpdate = selfoss.isAllowedToUpdate();
 
     const location = useLocation();
     const forceReload = useShouldReload();
@@ -253,8 +254,7 @@ export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, s
         };
     }, []);
 
-    // TODO: make this update when it changes
-    const isOnline = selfoss.db.online;
+    const isOnline = useOnline();
 
     const refreshOnClick = React.useCallback(
         (event) => handleRefreshSource({ event, source: currentSource, setLoadingState, setNavExpanded, reload }),
@@ -500,7 +500,7 @@ export default class StateHolder extends React.Component {
 
         // automark as read
         const entry = this.state.entries.find((entry) => id === entry.id);
-        const autoMarkAsRead = selfoss.loggedin.value && selfoss.config.autoMarkAsRead && entry.unread == 1;
+        const autoMarkAsRead = selfoss.isAllowedToWrite() && selfoss.config.autoMarkAsRead && entry.unread == 1;
         if (autoMarkAsRead) {
             this.markEntryRead(id, true);
         }
@@ -693,7 +693,7 @@ export default class StateHolder extends React.Component {
      */
     markEntryRead(id, markRead) {
         // only loggedin users
-        if (!selfoss.loggedin.value) {
+        if (!selfoss.isAllowedToWrite()) {
             return;
         }
 
@@ -754,7 +754,7 @@ export default class StateHolder extends React.Component {
      */
     markEntryStarred(id, markStarred) {
         // only loggedin users
-        if (!selfoss.loggedin.value) {
+        if (!selfoss.isAllowedToWrite()) {
             return;
         }
 

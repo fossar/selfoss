@@ -13,7 +13,7 @@ import * as icons from '../icons';
 import { LocalizationContext } from '../helpers/i18n';
 
 function handleTitleClick({ setExpanded, sourcesState, setSourcesState, setSources }) {
-    if (!selfoss.db.online) {
+    if (!selfoss.isOnline()) {
         return;
     }
 

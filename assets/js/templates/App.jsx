@@ -500,7 +500,7 @@ export default class App extends React.Component {
      * @return Promise<undefined>
      */
     reloadAll() {
-        if (!selfoss.db.online) {
+        if (!selfoss.isOnline()) {
             return Promise.resolve();
         }
 
