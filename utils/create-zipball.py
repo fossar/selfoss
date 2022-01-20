@@ -121,9 +121,6 @@ def main():
         with ZipFile(source_dir / filename, 'w', zipfile.ZIP_DEFLATED) as archive:
             archive.prefix = Path('selfoss')
 
-            # we only care for locale assets now, since those are still used by backend code
-            archive.directory('assets/locale/')
-
             archive.directory('src/')
             archive.directory('vendor/', is_not_unimportant)
 
