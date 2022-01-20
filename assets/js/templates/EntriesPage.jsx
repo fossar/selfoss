@@ -695,6 +695,7 @@ export default class StateHolder extends React.Component {
     markEntryRead(id, markRead) {
         // only loggedin users
         if (!selfoss.isAllowedToWrite()) {
+            console.log('User not allowed to mark an entry (un)read.');
             return;
         }
 
@@ -756,6 +757,7 @@ export default class StateHolder extends React.Component {
     markEntryStarred(id, markStarred) {
         // only loggedin users
         if (!selfoss.isAllowedToWrite()) {
+            console.log('User not allowed to (un)star an entry.');
             return;
         }
 

@@ -14,6 +14,7 @@ import { LocalizationContext } from '../helpers/i18n';
 
 function handleTitleClick({ setExpanded, sourcesState, setSourcesState, setSources }) {
     if (!selfoss.isOnline()) {
+        console.log('Cannot toggle, not online.');
         return;
     }
 
