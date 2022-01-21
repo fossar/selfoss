@@ -26,19 +26,18 @@ function handleAddSource({
         event.preventDefault();
     }
 
-    // add new source
+    // Add new empty source.
+    setSources((sources) => [{ id: 'new-' + rand(), ...extraInitialData }, ...sources]);
+
+    // Refresh the spout datea
     sourceRequests
         .getSpouts()
         .then(({ spouts }) => {
             // Update spout data.
             setSpouts(spouts);
-            // Add new empty source.
-            setSources((sources) => [{ id: 'new-' + rand(), ...extraInitialData }, ...sources]);
         })
-        .catch((error) => {
-            selfoss.app.showError(
-                selfoss.app._('error_add_source') + ' ' + error.message
-            );
+        .catch(() => {
+            console.error('Unable to update spouts, falling back to previously fetched list.');
         });
 }
 
