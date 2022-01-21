@@ -15,6 +15,7 @@ $primary-highlight: color.adjust($primary, $lightness: 15%);
     --primary: #{$primary};
     --primary-highlight: #{$primary-highlight};
     --text-color: black;
+    --background-color: white;
 }
 
 html,
@@ -1041,10 +1042,8 @@ span.offline-count.diff {
         margin: 0;
         padding: 7px;
         border-radius: 0;
-
-        /* border-top:1px solid #ccc; */
         border: 0;
-        background: url('../images/entry-bg.png') bottom repeat-x #ffffff;
+        border-bottom: 1px solid #e0e3e5;
     }
 
     .source-showparams,
@@ -1286,7 +1285,7 @@ span.offline-count.diff {
         width: 100%;
         height: 100%;
         overflow: auto;
-        background: #ffffff;
+        background: var(--background-color);
         z-index: 200;
     }
 
