@@ -8,13 +8,16 @@
 
 $primary: #3d6d69;
 $primary-highlight: color.adjust($primary, $lightness: 15%);
+$primary-highlight-shadow: rgba($primary-highlight, $alpha: 0.4);
+$text-color: black;
 
 :root {
     // Sass does not interportate code in CSS variable definitions unless explicitly unescaped.
     // https://github.com/sass/libsass/issues/2621
     --primary: #{$primary};
     --primary-highlight: #{$primary-highlight};
-    --text-color: black;
+    --primary-highlight-shadow: #{$primary-highlight-shadow};
+    --text-color: #{$text-color};
     --background-color: white;
 }
 
@@ -32,8 +35,19 @@ body {
 select,
 input {
     border: solid 1px #cccccc;
+    background: var(--background-color);
+    color: var(--text-color);
     border-radius: 2px;
     padding: 6px;
+    margin: 0.2rem;
+}
+
+select:focus,
+input:focus {
+    color: color.mix($text-color, $primary, 50%);
+    border-color: var(--primary);
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem var(--primary-highlight-shadow);
 }
 
 button:focus {
@@ -934,13 +948,13 @@ span.offline-count.diff {
 /* only desktop */
 @media screen and (min-width: 1024px) {
     #search {
-        left: calc(108px - 20rem + 0.5em + 30px);
+        left: calc(100px - 20rem + 0.5rem + 0.2rem + 30px);
         top: 25px;
-        clip-path: inset(0 0 0 357px);
+        clip-path: inset(0 0 0 364px);
     }
 
     #search.active {
-        left: 185px;
+        left: 180px;
         clip-path: inset(0);
     }
 }
@@ -995,7 +1009,6 @@ span.offline-count.diff {
 
     #search-term {
         width: 20rem;
-        margin-left: 0.5em;
     }
 
     #search hr {
@@ -1006,7 +1019,7 @@ span.offline-count.diff {
 /* ipad */
 @media screen and (min-width: 641px) and (max-width: 1024px) {
     #search {
-        width: calc(20rem + 0.5em + 30px);
+        width: calc(20rem + 0.5rem + 0.2rem + 30px);
         top: -46px;
         right: 65px;
         transition: top 0.5s ease-in-out;
@@ -1022,7 +1035,7 @@ span.offline-count.diff {
         position: absolute;
         bottom: -30px;
         left: 100%;
-        margin-left: -50px;
+        margin-left: -2.4rem;
         background-color: rgb(61 109 105 / 40%);
         border-bottom-left-radius: 4px;
         border-bottom-right-radius: 4px;
