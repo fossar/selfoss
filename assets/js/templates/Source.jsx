@@ -451,7 +451,8 @@ function SourceEditForm({
                                                 spoutParam,
                                                 sourceErrors,
                                                 sourceId,
-                                                setEditedSource
+                                                setEditedSource,
+                                                setDirty,
                                             }}
                                         />
                                     )

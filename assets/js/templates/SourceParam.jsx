@@ -8,10 +8,12 @@ export default function SourceParam({
     params = {},
     sourceErrors,
     sourceId,
-    setEditedSource
+    setEditedSource,
+    setDirty,
 }) {
     const updateSourceParam = React.useCallback(
         (event) => {
+            setDirty(true);
             setEditedSource(({ params, ...restSource }) => ({
                 ...restSource,
                 params: {
@@ -20,7 +22,7 @@ export default function SourceParam({
                 }
             }));
         },
-        [setEditedSource, spoutParamName]
+        [setEditedSource, setDirty, spoutParamName]
     );
 
     const updateSourceParamBool = React.useCallback(
@@ -117,4 +119,5 @@ SourceParam.propTypes = {
     sourceErrors: PropTypes.objectOf(PropTypes.string).isRequired,
     sourceId: PropTypes.number.isRequired,
     setEditedSource: PropTypes.func.isRequired,
+    setDirty: PropTypes.func.isRequired,
 };
