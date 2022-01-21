@@ -272,6 +272,22 @@ function daysAgo(date) {
 }
 
 
+function ColorBox({ color }) {
+    return (
+        <span
+            className="color"
+            style={{
+                backgroundColor: color,
+            }}
+        />
+    );
+}
+
+ColorBox.propTypes = {
+    color: nullable(PropTypes.string).isRequired,
+};
+
+
 function Tag({ classNames, tag, ...tagProps }) {
     return (
         <button
@@ -279,12 +295,7 @@ function Tag({ classNames, tag, ...tagProps }) {
             className={classNames.tag}
             {...tagProps}
         >
-            <span
-                className="color"
-                style={{
-                    backgroundColor: tag.color,
-                }}
-            />
+            <ColorBox color={tag.color ?? null} />
             {' '}
             <span className={classNames.tagName}>{tag.label}</span>
         </button>
@@ -298,6 +309,30 @@ Tag.propTypes = {
     'aria-disabled': PropTypes.bool.isRequired,
     title: PropTypes.string.isRequired,
     onClick: PropTypes.func.isRequired,
+};
+
+
+function TagOption({ children, classNames, option, ...optionProps }) {
+    const classes = [
+        classNames.option,
+        option.active ? 'is-active' : '',
+        option.selected ? 'is-selected' : '',
+    ];
+
+    return (
+        <div className={classes.join(' ')} {...optionProps}>
+            <ColorBox color={option.color ?? null} />
+            {' '}
+            {children}
+        </div>
+    );
+}
+
+TagOption.propTypes = {
+    classNames: PropTypes.object.isRequired,
+    tag: PropTypes.object.isRequired,
+    children: PropTypes.any.isRequired,
+    // TODO: Add extra proptypes.
 };
 
 
@@ -452,7 +487,7 @@ function SourceEditForm({
     );
 
     const tagSuggestions = useMemo(
-        () => Object.entries(tagInfo).map(([label, { id }]) => ({ value: id, label })),
+        () => Object.entries(tagInfo).map(([label, { id, color }]) => ({ value: id, label, color })),
         [tagInfo]
     );
 
@@ -541,6 +576,7 @@ function SourceEditForm({
                         // classNames={reactTagsClassNames}
                         delimiterKeys={['Enter', 'Tab', ',']}
                         renderTag={Tag}
+                        renderOption={TagOption}
                     />
                     {sourceErrors['tags'] ? (
                         <span className="error">{sourceErrors['tags']}</span>
