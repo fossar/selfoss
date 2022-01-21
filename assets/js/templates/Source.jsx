@@ -5,6 +5,7 @@ import { unescape } from 'html-escaper';
 import classNames from 'classnames';
 import pick from 'lodash.pick';
 import SourceParam from './SourceParam';
+import { Spinner } from './Spinner';
 import * as sourceRequests from '../requests/sources';
 import { LoadingState } from '../requests/LoadingState';
 import { LocalizationContext } from '../helpers/i18n';
@@ -121,7 +122,7 @@ function handleDelete({
     event,
     source,
     setSources,
-    setSourceEditDeleteLoading,
+    setSourceBeingDeleted,
     setDirty,
 }) {
     event.preventDefault();
@@ -137,7 +138,7 @@ function handleDelete({
     setDirty(false);
 
     // show loading
-    setSourceEditDeleteLoading(true);
+    setSourceBeingDeleted(true);
 
     // delete on server
     sourceRequests
@@ -158,7 +159,7 @@ function handleDelete({
             );
         })
         .catch((error) => {
-            setSourceEditDeleteLoading(false);
+            setSourceBeingDeleted(false);
             selfoss.app.showError(
                 selfoss.app._('error_delete_source') + ' ' + error.message
             );
@@ -431,12 +432,11 @@ function SourceEditForm({
             </li>
 
             {/* settings */}
-            <li
-                className={classNames({
-                    'source-params': true,
-                    loading: sourceParamsLoading
-                })}
-            >
+            <li className="source-params">
+                {sourceParamsLoading &&
+                    <Spinner size="3x" />
+                }
+
                 {sourceParamsError ??
                     (Object.keys(spouts).includes(source.spout) &&
                     Object.keys(spouts[source.spout].params).length > 0 ? (
@@ -469,12 +469,7 @@ function SourceEditForm({
             ) : null}
 
             {/* save/delete */}
-            <li
-                className={classNames({
-                    'source-action': true,
-                    loading: sourceActionLoading
-                })}
-            >
+            <li className="source-action">
                 <button
                     type="submit"
                     className="source-save"
@@ -482,6 +477,13 @@ function SourceEditForm({
                     onClick={saveOnClick}
                 >
                     {_('source_save')}
+
+                    {sourceActionLoading &&
+                        <React.Fragment>
+                            {' '}
+                            <Spinner />
+                        </React.Fragment>
+                    }
                 </button>
                 {' • '}
                 <button
@@ -529,10 +531,7 @@ export default function Source({ source, setSources, spouts, setSpouts, dirty, s
         isNew ? { ...source } : null
     );
     const [sourceActionLoading, setSourceActionLoading] = React.useState(false);
-    const [
-        sourceEditDeleteLoading,
-        setSourceEditDeleteLoading
-    ] = React.useState(false);
+    const [sourceBeingDeleted, setSourceBeingDeleted] = React.useState(false);
     const [sourceParamsLoading, setSourceParamsLoading] = React.useState(false);
     const [justSavedTimeout, setJustSavedTimeout] = React.useState(null);
     const [sourceParamsError, setSourceParamsError] = React.useState(null);
@@ -569,7 +568,7 @@ export default function Source({ source, setSources, spouts, setSpouts, dirty, s
                 event,
                 source,
                 setSources,
-                setSourceEditDeleteLoading,
+                setSourceBeingDeleted,
                 setDirty,
             }),
         [source, setSources, setDirty]
@@ -593,12 +592,7 @@ export default function Source({ source, setSources, spouts, setSpouts, dirty, s
                     ? unescape(source.title)
                     : _('source_new')}
             </div>{' '}
-            <div
-                className={classNames({
-                    'source-edit-delete': true,
-                    loading: sourceEditDeleteLoading
-                })}
-            >
+            <div className="source-edit-delete">
 
                 {!editedSource &&
                     <React.Fragment>
@@ -625,6 +619,13 @@ export default function Source({ source, setSources, spouts, setSpouts, dirty, s
                     onClick={deleteOnClick}
                 >
                     {_('source_delete')}
+
+                    {sourceBeingDeleted &&
+                        <React.Fragment>
+                            {' '}
+                            <Spinner />
+                        </React.Fragment>
+                    }
                 </button>
             </div>
             <div className="source-days">
