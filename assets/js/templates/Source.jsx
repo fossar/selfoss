@@ -1,7 +1,8 @@
 import React from 'react';
-import { useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import { Button as MenuButton, Wrapper as MenuWrapper, Menu, MenuItem } from 'react-aria-menubutton';
 import { useHistory, useLocation } from 'react-router-dom';
+import ReactTags from 'react-tag-autocomplete';
 import { fadeOut } from '@siteparts/show-hide-effects';
 import { makeEntriesLinkLocation } from '../helpers/uri';
 import PropTypes from 'prop-types';
@@ -67,10 +68,7 @@ function handleSave({
 
     // Make tags into a list.
     const tagsList = tags
-        ? tags
-            .split(',')
-            .map((tag) => tag.trim())
-            .filter((tag) => tag !== '')
+        ? tags.map((tag) => tag.name)
         : [];
 
     const values = {
@@ -192,7 +190,7 @@ function handleDelete({
 }
 
 // start editing
-function handleEdit({ event, source, setEditedSource }) {
+function handleEdit({ event, source, tagInfo, setEditedSource }) {
     event.preventDefault();
 
     const { id, title, tags, filter, spout, params } = source;
@@ -200,7 +198,7 @@ function handleEdit({ event, source, setEditedSource }) {
     setEditedSource({
         id,
         title: title ? unescape(title) : '',
-        tags: tags ? tags.map(unescape).join(',') : '',
+        tags: tags ? tags.map(unescape).map((name) => ({ id: tagInfo[name]?.id, name })) : [],
         filter,
         spout,
         params
@@ -267,6 +265,21 @@ function daysAgo(date) {
     return Math.floor((today - old) / MS_PER_DAY);
 }
 
+const reactTagsClassNames = {
+    root: 'react-tags',
+    rootFocused: 'is-focused',
+    selected: 'react-tags-selected',
+    selectedTag: 'react-tags-selected-tag',
+    selectedTagName: 'react-tags-selected-tag-name',
+    search: 'react-tags-search',
+    searchWrapper: 'react-tags-search-wrapper',
+    searchInput: 'react-tags-search-input',
+    suggestions: 'react-tags-suggestions',
+    suggestionActive: 'is-active',
+    suggestionDisabled: 'is-disabled',
+    suggestionPrefix: 'react-tags-suggestion-prefix'
+};
+
 function SourceEditForm({
     source,
     sourceElem,
@@ -274,6 +287,7 @@ function SourceEditForm({
     setSources,
     spouts,
     setSpouts,
+    tagInfo,
     setEditedSource,
     sourceActionLoading,
     setSourceActionLoading,
@@ -305,8 +319,39 @@ function SourceEditForm({
         [updateEditedSource]
     );
 
-    const tagsOnChange = React.useCallback(
-        (event) => updateEditedSource({ tags: event.target.value }),
+    const tagsOnAddition = React.useCallback(
+        (input) => {
+            // We need to handle pasting as well.
+            const tagsToAdd =
+                typeof input.id !== 'undefined'
+                    ? [input]
+                    : input.name
+                        .split(',')
+                        .map((tag) => tag.trim())
+                        .filter((tag) => tag !== '')
+                        .map((tag) => ({ name: tag, id: undefined }));
+            updateEditedSource(({ tags }) => {
+                const usedTagNames = tags.map(({ name }) => name);
+                const freshTagsToAdd = tagsToAdd.filter((tag) => !usedTagNames.includes(tag.name));
+                if (freshTagsToAdd.length === 0) {
+                    // All tags already included, no change.
+                    return {};
+                }
+
+                return { tags: [...tags, ...freshTagsToAdd] };
+            });
+        },
+        [updateEditedSource]
+    );
+
+    const tagsOnDelete = React.useCallback(
+        (index) => {
+            updateEditedSource(({ tags }) => {
+                let newTags = tags.slice(0);
+                newTags.splice(index, 1);
+                return { tags: newTags};
+            });
+        },
         [updateEditedSource]
     );
 
@@ -366,6 +411,11 @@ function SourceEditForm({
         [source, sourceElem, setSources, setEditedSource, dirty, setDirty]
     );
 
+    const tagSuggestions = useMemo(
+        () => Object.entries(tagInfo).map(([name, { id }]) => ({ id, name })),
+        [tagInfo]
+    );
+
     const _ = React.useContext(LocalizationContext);
 
     const sourceParamsContent = (
@@ -403,6 +453,8 @@ function SourceEditForm({
 
     );
 
+    const reactTags = useRef();
+
     return (
         <form>
             <ul className="source-edit-form">
@@ -431,18 +483,23 @@ function SourceEditForm({
                     <label htmlFor={`tags-${sourceId}`}>
                         {_('source_tags')}
                     </label>
-                    <input
-                        id={`tags-${sourceId}`}
-                        type="text"
-                        name="tags"
-                        accessKey="g"
-                        value={source.tags ?? ''}
-                        onChange={tagsOnChange}
+                    <ReactTags
+                        ref={reactTags}
+                        tags={source.tags}
+                        inputAttributes={{
+                            id: `tags-${sourceId}`,
+                            accessKey: 'g',
+                        }}
+                        suggestions={tagSuggestions}
+                        onDelete={tagsOnDelete}
+                        onAddition={tagsOnAddition}
+                        allowNew={true}
+                        minQueryLength={1}
+                        placeholderText={_('source_tags_placeholder')}
+                        removeButtonText={_('source_tag_remove_button_label')}
+                        classNames={reactTagsClassNames}
+                        delimiters={['Enter', 'Tab', ',']}
                     />
-                    <span className="source-edit-form-help">
-                        {' '}
-                        {_('source_comma')}
-                    </span>
                     {sourceErrors['tags'] ? (
                         <span className="error">{sourceErrors['tags']}</span>
                     ) : null}
@@ -548,6 +605,7 @@ SourceEditForm.propTypes = {
     setSources: PropTypes.func.isRequired,
     spouts: PropTypes.object.isRequired,
     setSpouts: PropTypes.func.isRequired,
+    tagInfo: PropTypes.object.isRequired,
     setEditedSource: PropTypes.func.isRequired,
     sourceActionLoading: PropTypes.bool.isRequired,
     setSourceActionLoading: PropTypes.func.isRequired,
@@ -562,7 +620,15 @@ SourceEditForm.propTypes = {
     setDirty: PropTypes.func.isRequired,
 };
 
-export default function Source({ source, setSources, spouts, setSpouts, dirty, setDirtySources }) {
+export default function Source({
+    source,
+    setSources,
+    spouts,
+    setSpouts,
+    tagInfo,
+    dirty,
+    setDirtySources,
+}) {
     const isNew = !source.title;
     let classes = {
         source: true,
@@ -591,8 +657,8 @@ export default function Source({ source, setSources, spouts, setSpouts, dirty, s
     }, [justSavedTimeout]);
 
     const editOnClick = React.useCallback(
-        (event) => handleEdit({ event, source, setEditedSource }),
-        [source]
+        (event) => handleEdit({ event, source, tagInfo, setEditedSource }),
+        [source, tagInfo]
     );
 
     const setDirty = React.useCallback(
@@ -723,6 +789,7 @@ export default function Source({ source, setSources, spouts, setSpouts, dirty, s
                         setSources,
                         spouts,
                         setSpouts,
+                        tagInfo,
                         setEditedSource,
                         sourceActionLoading,
                         setSourceActionLoading,
@@ -750,6 +817,7 @@ Source.propTypes = {
     setSources: PropTypes.func.isRequired,
     spouts: PropTypes.object.isRequired,
     setSpouts: PropTypes.func.isRequired,
+    tagInfo: PropTypes.object.isRequired,
     dirty: PropTypes.bool.isRequired,
     setDirtySources: PropTypes.func.isRequired,
 };

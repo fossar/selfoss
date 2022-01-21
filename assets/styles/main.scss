@@ -16,6 +16,7 @@ $text-color: black;
     // https://github.com/sass/libsass/issues/2621
     --primary: #{$primary};
     --primary-contrast: #ffffff;
+    --text-color-for-primary: #eeeeec;
     --primary-highlight: #{$primary-highlight};
     --primary-highlight-shadow: #{$primary-highlight-shadow};
     --text-color: #{$text-color};
@@ -30,6 +31,7 @@ $search-entry-width: 20rem;
 $search-button-width: 30px;
 
 @import 'color-chooser';
+@import 'tags';
 
 html,
 body {
@@ -47,7 +49,8 @@ button {
 }
 
 select,
-input {
+input,
+.react-tags {
     border: solid 1px #cccccc;
     background: var(--background-color);
     color: var(--text-color);
@@ -57,7 +60,8 @@ input {
 }
 
 select:focus,
-input:focus {
+input:not(.react-tags-search-input):focus,
+.react-tags.is-focused {
     color: color.mix($text-color, $primary, 50%);
     border-color: var(--primary);
     outline: 0;
@@ -719,8 +723,10 @@ span.offline-count.diff {
 
 /* sources */
 
-.source input {
+.source input,
+.react-tags {
     width: 60%;
+    box-sizing: border-box;
 }
 
 .source-title {

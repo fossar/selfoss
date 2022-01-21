@@ -1,6 +1,9 @@
 # selfoss news
 ## 2.20 – unreleased
 
+### New features
+- Tags are now autocompleted when editing a new source. ([#1311](https://github.com/fossar/selfoss/pull/1311), [#669](https://github.com/fossar/selfoss/issues/669))
+
 ### Bug fixes
 - Configuration parser was changed to *raw* method, which relaxes the requirement to quote option values containing special characters in `config.ini`. ([#1371](https://github.com/fossar/selfoss/issues/1371))
 

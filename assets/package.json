@@ -24,6 +24,7 @@
     "react-aria-menubutton": "^7.0.3",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
+    "react-tag-autocomplete": "^6.3.0",
     "reset-css": "^5.0.1",
     "rooks": "^7.1.1",
     "tinykeys": "^1.1.1",
