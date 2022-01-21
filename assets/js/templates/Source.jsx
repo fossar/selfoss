@@ -195,10 +195,20 @@ function handleEdit({ event, source, tagInfo, setEditedSource }) {
 
     const { id, title, tags, filter, spout, params } = source;
 
+    const newTags =
+        tags
+            ? tags.map(unescape).map((name) => ({
+                id: tagInfo[name]?.id,
+                name,
+                color: tagInfo[name]?.color,
+                foregroundColor: tagInfo[name]?.foregroundColor
+            }))
+            : [];
+
     setEditedSource({
         id,
         title: title ? unescape(title) : '',
-        tags: tags ? tags.map(unescape).map((name) => ({ id: tagInfo[name]?.id, name })) : [],
+        tags: newTags,
         filter,
         spout,
         params
@@ -264,6 +274,32 @@ function daysAgo(date) {
 
     return Math.floor((today - old) / MS_PER_DAY);
 }
+
+
+function Tag({ classNames, removeButtonText, onDelete, tag }) {
+    return (
+        <button
+            type="button"
+            className={classNames.selectedTag}
+            title={removeButtonText}
+            onClick={onDelete}
+            style={{
+                backgroundColor: tag.color,
+                color: tag.foregroundColor,
+            }}
+        >
+            <span className={classNames.selectedTagName}>{tag.name}</span>
+        </button>
+    );
+}
+
+Tag.propTypes = {
+    classNames: PropTypes.object.isRequired,
+    removeButtonText: PropTypes.string.isRequired,
+    onDelete: PropTypes.func.isRequired,
+    tag: PropTypes.object.isRequired,
+};
+
 
 const reactTagsClassNames = {
     root: 'react-tags',
@@ -499,6 +535,7 @@ function SourceEditForm({
                         removeButtonText={_('source_tag_remove_button_label')}
                         classNames={reactTagsClassNames}
                         delimiters={['Enter', 'Tab', ',']}
+                        tagComponent={Tag}
                     />
                     {sourceErrors['tags'] ? (
                         <span className="error">{sourceErrors['tags']}</span>
