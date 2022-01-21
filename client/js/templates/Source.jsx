@@ -198,7 +198,6 @@ function handleEdit({ event, source, tagInfo, setEditedSource }) {
                 value: tagInfo[label]?.id,
                 label,
                 color: tagInfo[label]?.color,
-                foregroundColor: tagInfo[label]?.foregroundColor
             }))
             : [];
 
@@ -278,12 +277,15 @@ function Tag({ classNames, tag, ...tagProps }) {
         <button
             type="button"
             className={classNames.tag}
-            style={{
-                backgroundColor: tag.color,
-                color: tag.foregroundColor,
-            }}
             {...tagProps}
         >
+            <span
+                className="color"
+                style={{
+                    backgroundColor: tag.color,
+                }}
+            />
+            {' '}
             <span className={classNames.tagName}>{tag.label}</span>
         </button>
     );
