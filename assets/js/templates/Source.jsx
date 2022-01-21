@@ -275,6 +275,22 @@ function daysAgo(date) {
 }
 
 
+function ColorBox({ color }) {
+    return (
+        <span
+            className="color"
+            style={{
+                backgroundColor: color,
+            }}
+        />
+    );
+}
+
+ColorBox.propTypes = {
+    color: nullable(PropTypes.string).isRequired,
+};
+
+
 function Tag({ classNames, removeButtonText, onDelete, tag }) {
     return (
         <button
@@ -283,12 +299,7 @@ function Tag({ classNames, removeButtonText, onDelete, tag }) {
             title={removeButtonText}
             onClick={onDelete}
         >
-            <span
-                className="color"
-                style={{
-                    backgroundColor: tag.color,
-                }}
-            />
+            <ColorBox color={tag.color ?? null} />
             {' '}
             <span className={classNames.selectedTagName}>{tag.name}</span>
         </button>
@@ -450,7 +461,11 @@ function SourceEditForm({
     );
 
     const tagSuggestions = useMemo(
-        () => Object.entries(tagInfo).map(([name, { id }]) => ({ id, name })),
+        () => Object.entries(tagInfo).map(([name, { id, color }]) => ({
+            id,
+            name,
+            prefix: <ColorBox color={color ?? null} />
+        })),
         [tagInfo]
     );
 
