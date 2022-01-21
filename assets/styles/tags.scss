@@ -46,6 +46,13 @@
     display: inline;
 }
 
+.react-tags .color {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+}
+
 .react-tags-selected-tag {
     display: inline-block;
     box-sizing: border-box;
