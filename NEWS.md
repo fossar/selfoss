@@ -15,6 +15,7 @@
 - Added option `reading_speed_wpm` for showing estimated reading time. ([#1232](https://github.com/fossar/selfoss/pull/1232))
 - Added option `db_socket` for connecting to MySQL database through UNIX domain. ([#1284](https://github.com/fossar/selfoss/pull/1284))
 - Search query is now part of URL. ([#1216](https://github.com/fossar/selfoss/pull/1216))
+- A page that will pre-fill a form for adding a source with URL has been added. You can find it on `https://yourselfossurl.com/manage/sources/add?url=some-feed-url`. ([#1310](https://github.com/fossar/selfoss/pull/1310), [#254](https://github.com/fossar/selfoss/issues/254))
 - Search will be carried out using regular expressions when the search query is wrapped in forward slashes, e.g. `/regex/`. The expression syntax is database specific. ([#1205](https://github.com/fossar/selfoss/pull/1205))
 - YouTube spout now supports following playlists. ([#1260](https://github.com/fossar/selfoss/pull/1260))
 - Confirmation is now required when leaving the setting page with unsaved source changes. ([#1300](https://github.com/fossar/selfoss/pull/1300))

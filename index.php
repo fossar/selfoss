@@ -152,7 +152,7 @@ $router->get('/opmlexport', function() use ($dice) {
 });
 
 // Client side routes need to be directed to index.html.
-$router->get('/sign/in|/manage/sources|/(newest|unread|starred)(/(all|tag-[^/]+|source-[0-9]+)(/[0-9]+)?)?', function() use ($dice) {
+$router->get('/sign/in|/manage/sources(/add)?|/(newest|unread|starred)(/(all|tag-[^/]+|source-[0-9]+)(/[0-9]+)?)?', function() use ($dice) {
     // html
     $dice->create(controllers\Index::class)->home();
 });

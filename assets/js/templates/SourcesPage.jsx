@@ -1,6 +1,7 @@
 import React from 'react';
 import { useMemo } from 'react';
 import { Prompt } from 'react-router';
+import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 import Source from './Source';
 import { SpinnerBig } from './Spinner';
 import { LoadingState } from '../requests/LoadingState';
@@ -15,8 +16,15 @@ function rand() {
     return Math.floor(Math.random() * 2147483647);
 }
 
-function handleAddSource({ event, setSources, setSpouts }) {
-    event.preventDefault();
+function handleAddSource({
+    event = null,
+    setSources,
+    setSpouts,
+    extraInitialData = {},
+}) {
+    if (event) {
+        event.preventDefault();
+    }
 
     // add new source
     sourceRequests
@@ -25,7 +33,7 @@ function handleAddSource({ event, setSources, setSpouts }) {
             // Update spout data.
             setSpouts(spouts);
             // Add new empty source.
-            setSources((sources) => [{ id: 'new-' + rand() }, ...sources]);
+            setSources((sources) => [{ id: 'new-' + rand(), ...extraInitialData }, ...sources]);
         })
         .catch((error) => {
             selfoss.app.showError(
@@ -78,15 +86,41 @@ export default function SourcesPage() {
 
     const forceReload = useShouldReload();
 
+    const history = useHistory();
+    const location = useLocation();
+    const isAdding = useRouteMatch('/manage/sources/add');
+
     React.useEffect(() => {
         const abortController = new AbortController();
 
-        loadSources({ abortController, setSpouts, setSources, setLoadingState });
+        loadSources({ abortController, setSpouts, setSources, setLoadingState })
+            .then(() => {
+                if (isAdding) {
+                    const params = new URLSearchParams(location.search);
+                    handleAddSource({
+                        setSources,
+                        setSpouts,
+                        extraInitialData: {
+                            spout: 'spouts\\rss\\feed',
+                            params: {
+                                url: params.get('url') ?? '',
+                            }
+                        },
+                    });
+
+                    // Clear the value from the state so it does not bug us forever.
+                    history.replace('/manage/sources');
+                }
+            });
 
         return () => {
             abortController.abort();
         };
-    }, [forceReload]);
+    }, [
+        forceReload,
+        // location.search and history are intentionally omitted
+        // to prevent reloading when the presets are cleaned from the URL.
+    ]);
 
     const addOnClick = React.useCallback(
         (event) => handleAddSource({ event, setSources, setSpouts }),
