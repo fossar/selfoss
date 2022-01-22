@@ -287,53 +287,60 @@ ColorBox.propTypes = {
     color: nullable(PropTypes.string).isRequired,
 };
 
+function mkTag(tagInfo) {
+    function Tag({ classNames, tag, ...tagProps }) {
+        return (
+            <button
+                type="button"
+                className={classNames.tag}
+                {...tagProps}
+            >
+                <ColorBox color={tagInfo[tag.label]?.color ?? null} />
+                {' '}
+                <span className={classNames.tagName}>{tag.label}</span>
+            </button>
+        );
+    }
 
-function Tag({ classNames, tag, ...tagProps }) {
-    return (
-        <button
-            type="button"
-            className={classNames.tag}
-            {...tagProps}
-        >
-            <ColorBox color={tag.color ?? null} />
-            {' '}
-            <span className={classNames.tagName}>{tag.label}</span>
-        </button>
-    );
+    Tag.propTypes = {
+        classNames: PropTypes.object.isRequired,
+        tag: PropTypes.object.isRequired,
+        tagProps: PropTypes.object.isRequired,
+        'aria-disabled': PropTypes.bool.isRequired,
+        title: PropTypes.string.isRequired,
+        onClick: PropTypes.func.isRequired,
+    };
+
+    return Tag;
 }
 
-Tag.propTypes = {
-    classNames: PropTypes.object.isRequired,
-    tag: PropTypes.object.isRequired,
-    tagProps: PropTypes.object.isRequired,
-    'aria-disabled': PropTypes.bool.isRequired,
-    title: PropTypes.string.isRequired,
-    onClick: PropTypes.func.isRequired,
-};
 
+function mkTagOption(tagInfo) {
+    function TagOption({ children, classNames, option, ...optionProps }) {
+        const classes = [
+            classNames.option,
+            option.active ? 'is-active' : '',
+            option.selected ? 'is-selected' : '',
+        ];
 
-function TagOption({ children, classNames, option, ...optionProps }) {
-    const classes = [
-        classNames.option,
-        option.active ? 'is-active' : '',
-        option.selected ? 'is-selected' : '',
-    ];
+        return (
+            <div className={classes.join(' ')} {...optionProps}>
+                <ColorBox color={tagInfo[option.label]?.color ?? null} />
+                {' '}
+                {children}
+            </div>
+        );
+    }
 
-    return (
-        <div className={classes.join(' ')} {...optionProps}>
-            <ColorBox color={option.color ?? null} />
-            {' '}
-            {children}
-        </div>
-    );
+    TagOption.propTypes = {
+        classNames: PropTypes.object.isRequired,
+        tag: PropTypes.object.isRequired,
+        children: PropTypes.any.isRequired,
+        // TODO: Add extra proptypes.
+    };
+
+    return TagOption;
 }
-
-TagOption.propTypes = {
-    classNames: PropTypes.object.isRequired,
-    tag: PropTypes.object.isRequired,
-    children: PropTypes.any.isRequired,
-    // TODO: Add extra proptypes.
-};
 
 
 const reactTagsClassNames = {
@@ -487,7 +494,7 @@ function SourceEditForm({
     );
 
     const tagSuggestions = useMemo(
-        () => Object.entries(tagInfo).map(([label, { id, color }]) => ({ value: id, label, color })),
+        () => Object.entries(tagInfo).map(([label, { id }]) => ({ value: id, label })),
         [tagInfo]
     );
 
@@ -529,6 +536,17 @@ function SourceEditForm({
     );
 
     const reactTags = useRef();
+
+    const {
+        tagComponent,
+        tagOptionComponent,
+    } = useMemo(
+        () => ({
+            tagComponent: mkTag(tagInfo),
+            tagOptionComponent: mkTagOption(tagInfo),
+        }),
+        [tagInfo]
+    );
 
     return (
         <form>
@@ -575,8 +593,8 @@ function SourceEditForm({
                         deleteButtonText={_('source_tag_remove_button_label')}
                         // classNames={reactTagsClassNames}
                         delimiterKeys={['Enter', 'Tab', ',']}
-                        renderTag={Tag}
-                        renderOption={TagOption}
+                        renderTag={tagComponent}
+                        renderOption={tagOptionComponent}
                     />
                     {sourceErrors['tags'] ? (
                         <span className="error">{sourceErrors['tags']}</span>
