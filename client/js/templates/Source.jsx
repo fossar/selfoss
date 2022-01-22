@@ -588,6 +588,7 @@ function SourceEditForm({
                         onAdd={tagsOnAdd}
                         allowNew={true}
                         // minQueryLength={1}
+                        // addOnBlur={true}
                         placeholderText={_('source_tags_placeholder')}
                         newOptionText={_('source_tags_create_new').replace('{0}', '%value%')}
                         deleteButtonText={_('source_tag_remove_button_label')}
