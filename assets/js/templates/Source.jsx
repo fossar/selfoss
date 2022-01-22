@@ -290,28 +290,31 @@ ColorBox.propTypes = {
     color: nullable(PropTypes.string).isRequired,
 };
 
+function mkTag(tagInfo) {
+    function Tag({ classNames, removeButtonText, onDelete, tag }) {
+        return (
+            <button
+                type="button"
+                className={classNames.selectedTag}
+                title={removeButtonText}
+                onClick={onDelete}
+            >
+                <ColorBox color={tagInfo[tag.name]?.color ?? null} />
+                {' '}
+                <span className={classNames.selectedTagName}>{tag.name}</span>
+            </button>
+        );
+    }
 
-function Tag({ classNames, removeButtonText, onDelete, tag }) {
-    return (
-        <button
-            type="button"
-            className={classNames.selectedTag}
-            title={removeButtonText}
-            onClick={onDelete}
-        >
-            <ColorBox color={tag.color ?? null} />
-            {' '}
-            <span className={classNames.selectedTagName}>{tag.name}</span>
-        </button>
-    );
+    Tag.propTypes = {
+        classNames: PropTypes.object.isRequired,
+        removeButtonText: PropTypes.string.isRequired,
+        onDelete: PropTypes.func.isRequired,
+        tag: PropTypes.object.isRequired,
+    };
+
+    return Tag;
 }
-
-Tag.propTypes = {
-    classNames: PropTypes.object.isRequired,
-    removeButtonText: PropTypes.string.isRequired,
-    onDelete: PropTypes.func.isRequired,
-    tag: PropTypes.object.isRequired,
-};
 
 
 const reactTagsClassNames = {
@@ -508,6 +511,8 @@ function SourceEditForm({
 
     const reactTags = useRef();
 
+    const tagComponent = useMemo(() => mkTag(tagInfo), [tagInfo]);
+
     return (
         <form>
             <ul className="source-edit-form">
@@ -552,7 +557,7 @@ function SourceEditForm({
                         removeButtonText={_('source_tag_remove_button_label')}
                         classNames={reactTagsClassNames}
                         delimiters={['Enter', 'Tab', ',']}
-                        tagComponent={Tag}
+                        tagComponent={tagComponent}
                     />
                     {sourceErrors['tags'] ? (
                         <span className="error">{sourceErrors['tags']}</span>
