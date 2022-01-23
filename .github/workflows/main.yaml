@@ -21,6 +21,7 @@ jobs:
         storage:
           - 'sqlite'
         php:
+          - '8.1'
           - '8.0'
           - '7.4'
           - '7.3'
@@ -32,9 +33,9 @@ jobs:
           - php: '7.0'
             cs_fixer: true
             lint_js: true
-          - php: '8.0'
+          - php: '8.1'
             storage: mysql
-          - php: '8.0'
+          - php: '8.1'
             storage: postgresql
     name: 'Check with PHP ${{ matrix.php }} and ${{ matrix.storage }} storage backend'
     steps:
