@@ -8,6 +8,7 @@ use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use helpers\WebClient;
+use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
 use spouts\youtube\youtube;
 
@@ -22,10 +23,6 @@ final class YouTubeTest extends TestCase {
     public function testBasic($url, $feedTitle, $firstItemTitle) {
         $cachedFeedPath = __DIR__ . '/resources/YouTube/' . str_replace([':', '/', '?', '='], '_', $url) . '.xml';
 
-        // Disable deprecation warnings.
-        // Dice uses ReflectionParameter::getClass(), which is deprecated in PHP 8.
-        error_reporting(E_ALL & ~E_DEPRECATED);
-
         $mock = new MockHandler([
             new Response(200, ['Content-Type' => 'application/rss+xml'], file_get_contents($cachedFeedPath)),
         ]);
@@ -33,10 +30,14 @@ final class YouTubeTest extends TestCase {
         $httpClient = new Client(['handler' => $stack]);
 
         $dice = new Dice();
-        $dice->addRule('*', [
+        $dice = $dice->addRule(Logger::class, [
+            'shared' => true,
+            'constructParams' => ['selfoss'],
+        ]);
+        $dice = $dice->addRule('*', [
             'substitutions' => [
                 WebClient::class => [
-                    'instance' => function() use ($httpClient) {
+                    Dice::INSTANCE => function() use ($httpClient) {
                         $stub = $this->createMock(WebClient::class);
                         $stub->method('getHttpClient')->willReturn($httpClient);
 

@@ -7,7 +7,7 @@ use helpers\Configuration;
 use helpers\FeedReader;
 use helpers\Image;
 use helpers\WebClient;
-use Http\Adapter\Guzzle6\Client as GuzzleAdapter;
+use Http\Adapter\Guzzle7\Client as GuzzleAdapter;
 use Monolog\Logger;
 
 /**

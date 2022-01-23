@@ -36,6 +36,7 @@
         # Create a PHP package from the selected PHP package, with some extra extensions enabled.
         php = phps.packages.${system}.${matrix.phpPackage}.withExtensions ({ enabled, all }: with all; enabled ++ [
           imagick
+          tidy
         ]);
 
         # Create a Python package with some extra packages installed.
