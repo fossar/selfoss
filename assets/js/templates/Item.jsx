@@ -237,6 +237,8 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
 
                 sanitizeContent(contentBlock.current);
 
+                selfoss.extensionPoints.processItemContents(contentBlock.current);
+
                 // load images not on mobile devices
                 if (selfoss.isMobile() == false || selfoss.config.loadImagesOnMobile) {
                     setImagesLoaded(true);

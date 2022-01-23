@@ -326,6 +326,17 @@ var selfoss = {
 
 
     /**
+     * Override these functions to customize selfoss behaviour.
+     */
+    extensionPoints: {
+        /**
+         * Called when an article is first expanded.
+         * @param {HTMLElement} HTML element containing the article contents
+         */
+        processItemContents() {},
+    },
+
+    /**
      * refresh stats.
      *
      * @return void
