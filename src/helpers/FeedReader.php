@@ -61,7 +61,7 @@ class FeedReader {
         return [
             // save fetched items
             'items' => $this->simplepie->get_items(),
-            'htmlUrl' => htmlspecialchars_decode($this->simplepie->get_link(), ENT_COMPAT), // SimplePie sanitizes URLs
+            'htmlUrl' => htmlspecialchars_decode((string) $this->simplepie->get_link(), ENT_COMPAT), // SimplePie sanitizes URLs
             'spoutTitle' => $this->simplepie->get_title(),
         ];
     }

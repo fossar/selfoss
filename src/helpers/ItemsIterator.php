@@ -9,6 +9,7 @@ trait ItemsIterator {
     /** @var ?array current fetched items */
     protected $items = null;
 
+    #[\ReturnTypeWillChange]
     public function rewind() {
         if ($this->items !== null) {
             reset($this->items);
@@ -20,6 +21,7 @@ trait ItemsIterator {
      *
      * @return self|false current item
      */
+    #[\ReturnTypeWillChange]
     public function current() {
         if ($this->items !== null) {
             return $this;
@@ -33,6 +35,7 @@ trait ItemsIterator {
      *
      * @return mixed key of current item
      */
+    #[\ReturnTypeWillChange]
     public function key() {
         if ($this->items !== null) {
             return key($this->items);
@@ -46,6 +49,7 @@ trait ItemsIterator {
      *
      * @return self next item
      */
+    #[\ReturnTypeWillChange]
     public function next() {
         if ($this->items !== null) {
             next($this->items);
@@ -59,6 +63,7 @@ trait ItemsIterator {
      *
      * @return bool false if end reached
      */
+    #[\ReturnTypeWillChange]
     public function valid() {
         if ($this->items !== null) {
             return current($this->items) !== false;
