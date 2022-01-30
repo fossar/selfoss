@@ -27,9 +27,9 @@
         "willwashburn/phpamo": "^1.0"
     },
     "require-dev": {
-        "php-parallel-lint/php-parallel-lint": "^1.0",
         "friendsofphp/php-cs-fixer": "^2.15",
-        "phpunit/phpunit": "^5.7"
+        "php-parallel-lint/php-parallel-lint": "^1.0",
+        "symfony/phpunit-bridge": "^5.2"
     },
     "license": "GPL-3.0",
     "authors": [
@@ -57,6 +57,6 @@
         "cs": "php-cs-fixer fix --verbose --dry-run --diff",
         "fix": "php-cs-fixer fix --verbose --diff",
         "lint": "parallel-lint src tests",
-        "test": "phpunit --bootstrap tests/bootstrap.php tests"
+        "test": "simple-phpunit --bootstrap tests/bootstrap.php tests"
     }
 }
