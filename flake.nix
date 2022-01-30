@@ -80,6 +80,10 @@
 
           # node-gyp wants some locales, let’s make them available through an environment variable.
           LOCALE_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
+
+          # This has not been backported to the phpunit-bridge version we use:
+          # https://github.com/symfony/phpunit-bridge/commit/d3bc23e3471d978218121175516045981fcef411
+          SYMFONY_PHPUNIT_VERSION = pkgs.lib.optionalString (matrix.phpPackage == "php81") "9.5";
         };
       }
     );
