@@ -4,25 +4,26 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4fc9c5fbc9496ebba5f2ef3bb901af34",
+    "content-hash": "5addc97e807051c8f5a92ecd019c86bd",
     "packages": [
         {
             "name": "bcosca/fatfree-core",
-            "version": "3.7.3",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bcosca/fatfree-core.git",
-                "reference": "3e23ae05384b2f830e99c5888b94118819ed948b"
+                "reference": "aa07384bd91ac11463f9a7e5d6409188a8496cc0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bcosca/fatfree-core/zipball/3e23ae05384b2f830e99c5888b94118819ed948b",
-                "reference": "3e23ae05384b2f830e99c5888b94118819ed948b",
+                "url": "https://api.github.com/repos/bcosca/fatfree-core/zipball/aa07384bd91ac11463f9a7e5d6409188a8496cc0",
+                "reference": "aa07384bd91ac11463f9a7e5d6409188a8496cc0",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.4"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "classmap": [
@@ -37,9 +38,9 @@
             "homepage": "http://fatfreeframework.com/",
             "support": {
                 "issues": "https://github.com/bcosca/fatfree-core/issues",
-                "source": "https://github.com/bcosca/fatfree-core/tree/3.7.3"
+                "source": "https://github.com/bcosca/fatfree-core/tree/master"
             },
-            "time": "2020-12-13T12:49:39+00:00"
+            "time": "2022-01-30T16:22:24+00:00"
         },
         {
             "name": "bramus/router",
@@ -4102,6 +4103,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "bcosca/fatfree-core": 20,
         "j0k3r/graby": 15
     },
     "prefer-stable": false,
