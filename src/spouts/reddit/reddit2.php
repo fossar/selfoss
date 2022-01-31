@@ -2,6 +2,7 @@
 
 namespace spouts\reddit;
 
+use ArrayIterator;
 use GuzzleHttp;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Uri;
@@ -90,13 +91,13 @@ class reddit2 extends \spouts\spout {
         }
 
         if (isset($json['data']) && isset($json['data']['children'])) {
-            $this->items = $json['data']['children'];
+            $this->items = new ArrayIterator($json['data']['children']);
         }
     }
 
     public function getId() {
-        if ($this->items !== null && $this->valid()) {
-            $id = @current($this->items)['data']['id'];
+        if ($this->valid()) {
+            $id = $this->items->current()['data']['id'];
             if (strlen($id) > 255) {
                 $id = md5($id);
             }
@@ -108,25 +109,25 @@ class reddit2 extends \spouts\spout {
     }
 
     public function getTitle() {
-        if ($this->items !== null && $this->valid()) {
-            return @current($this->items)['data']['title'];
+        if ($this->valid()) {
+            return $this->items->current()['data']['title'];
         }
 
         return null;
     }
 
     public function getHtmlUrl() {
-        if ($this->items !== null && $this->valid()) {
+        if ($this->valid()) {
             // Reddit escapes HTML, we can get away with just ampersands, since quotes and angle brackets are excluded from URLs.
-            return htmlspecialchars_decode(current($this->items)['data']['url'], ENT_NOQUOTES);
+            return htmlspecialchars_decode($this->items->current()['data']['url'], ENT_NOQUOTES);
         }
 
         return null;
     }
 
     public function getContent() {
-        if ($this->items !== null && $this->valid()) {
-            $data = @current($this->items)['data'];
+        if ($this->valid()) {
+            $data = $this->items->current()['data'];
             $text = $data['selftext_html'];
             if (!empty($text)) {
                 return htmlspecialchars_decode($text);
@@ -165,16 +166,16 @@ class reddit2 extends \spouts\spout {
     }
 
     public function getLink() {
-        if ($this->items !== null && $this->valid()) {
-            return 'https://www.reddit.com' . @current($this->items)['data']['permalink'];
+        if ($this->valid()) {
+            return 'https://www.reddit.com' . $this->items->current()['data']['permalink'];
         }
 
         return null;
     }
 
     public function getThumbnail() {
-        if ($this->items !== null && $this->valid()) {
-            $thumbnail = @current($this->items)['data']['thumbnail'];
+        if ($this->valid()) {
+            $thumbnail = $this->items->current()['data']['thumbnail'];
 
             if (!in_array($thumbnail, ['default', 'self'], true)) {
                 return $thumbnail;
@@ -185,8 +186,8 @@ class reddit2 extends \spouts\spout {
     }
 
     public function getdate() {
-        if ($this->items !== null && $this->valid()) {
-            $date = date('Y-m-d H:i:s', @current($this->items)['data']['created_utc']);
+        if ($this->valid()) {
+            $date = date('Y-m-d H:i:s', $this->items->current()['data']['created_utc']);
         }
 
         return $date;

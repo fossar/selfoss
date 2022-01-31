@@ -2,6 +2,7 @@
 
 namespace spouts\twitter;
 
+use ArrayIterator;
 use GuzzleHttp;
 use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Subscriber\Oauth\Oauth1;
@@ -117,7 +118,7 @@ class usertimeline extends \spouts\spout {
      * @throws \Exception when API request fails
      * @throws GuzzleHttp\Exception\RequestException when HTTP request fails for API-unrelated reasons
      *
-     * @return stdClass[]
+     * @return ArrayIterator<stdClass>
      */
     protected function fetchTwitterTimeline($endpoint, array $params = []) {
         if (!isset($this->client)) {
@@ -143,7 +144,7 @@ class usertimeline extends \spouts\spout {
                 throw new \Exception('Invalid twitter response');
             }
 
-            return $timeline;
+            return new ArrayIterator($timeline);
         } catch (BadResponseException $e) {
             if ($e->hasResponse()) {
                 $body = json_decode((string) $e->getResponse()->getBody());
@@ -187,7 +188,7 @@ class usertimeline extends \spouts\spout {
 
     public function getId() {
         if ($this->items !== null) {
-            return @current($this->items)->id_str;
+            return $this->items->current()->id_str;
         }
 
         return null;
@@ -195,7 +196,7 @@ class usertimeline extends \spouts\spout {
 
     public function getTitle() {
         if ($this->items !== null) {
-            $item = @current($this->items);
+            $item = $this->items->current();
             $rt = '';
             if (isset($item->retweeted_status)) {
                 $rt = ' (RT ' . $item->user->name . ')';
@@ -242,7 +243,7 @@ class usertimeline extends \spouts\spout {
 
     public function getIcon() {
         if ($this->items !== null) {
-            $item = @current($this->items);
+            $item = $this->items->current();
             if (isset($item->retweeted_status)) {
                 $item = $item->retweeted_status;
             }
@@ -255,7 +256,7 @@ class usertimeline extends \spouts\spout {
 
     public function getLink() {
         if ($this->items !== null) {
-            $item = @current($this->items);
+            $item = $this->items->current();
 
             return 'https://twitter.com/' . $item->user->screen_name . '/status/' . $item->id_str;
         }
@@ -279,7 +280,7 @@ class usertimeline extends \spouts\spout {
 
     public function getDate() {
         if ($this->items !== null) {
-            $date = date('Y-m-d H:i:s', strtotime(@current($this->items)->created_at));
+            $date = date('Y-m-d H:i:s', strtotime($this->items->current()->created_at));
         }
         if (strlen($date) === 0) {
             $date = date('Y-m-d H:i:s');

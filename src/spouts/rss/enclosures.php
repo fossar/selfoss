@@ -17,9 +17,9 @@ class enclosures extends feed {
     public $description = 'Get posts from RSS feed, including media enclosures.';
 
     public function getContent() {
-        if ($this->items !== null && $this->valid()) {
+        if ($this->valid()) {
             $content = parent::getContent();
-            foreach (@current($this->items)->get_enclosures() as $enclosure) {
+            foreach ($this->items->current()->get_enclosures() as $enclosure) {
                 if ($enclosure->get_medium() === 'image') {
                     $title = htmlspecialchars(strip_tags($enclosure->get_title()));
                     $content .= '<img src="' . $enclosure->get_link() . '" alt="' . $title . '" title="' . $title . '" />';

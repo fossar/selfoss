@@ -2,6 +2,7 @@
 
 namespace spouts\facebook;
 
+use ArrayIterator;
 use GuzzleHttp\Psr7\Uri;
 use helpers\WebClient;
 
@@ -74,7 +75,7 @@ class page extends \spouts\spout {
         $this->spoutTitle = $data['name'];
         $this->pagePicture = $data['picture']['data']['url'];
         $this->pageLink = $data['picture']['link'];
-        $this->items = $data['feed']['data'];
+        $this->items = new ArrayIterator($data['feed']['data']);
     }
 
     public function getHtmlUrl() {
@@ -82,8 +83,8 @@ class page extends \spouts\spout {
     }
 
     public function getId() {
-        if ($this->items !== null) {
-            $item = current($this->items);
+        if ($this->valid()) {
+            $item = $this->items->current();
 
             return $item['id'];
         }
@@ -92,8 +93,8 @@ class page extends \spouts\spout {
     }
 
     public function getTitle() {
-        if ($this->items !== null) {
-            $item = current($this->items);
+        if ($this->valid()) {
+            $item = $this->items->current();
 
             if (mb_strlen($item['message']) > 80) {
                 return mb_substr($item['message'], 0, 100) . '…';
@@ -106,8 +107,8 @@ class page extends \spouts\spout {
     }
 
     public function getContent() {
-        if ($this->items !== null) {
-            $item = current($this->items);
+        if ($this->valid()) {
+            $item = $this->items->current();
             $message = $item['message'];
 
             if (isset($item['attachments']) && count($item['attachments']['data']) > 0) {
@@ -137,8 +138,8 @@ class page extends \spouts\spout {
     }
 
     public function getLink() {
-        if ($this->items !== null) {
-            $item = current($this->items);
+        if ($this->valid()) {
+            $item = $this->items->current();
 
             return $item['permalink_url'];
         }
@@ -147,8 +148,8 @@ class page extends \spouts\spout {
     }
 
     public function getDate() {
-        if ($this->items !== null) {
-            $item = current($this->items);
+        if ($this->valid()) {
+            $item = $this->items->current();
 
             return $item['created_time'];
         }

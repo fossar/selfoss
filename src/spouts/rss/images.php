@@ -17,11 +17,11 @@ class images extends feed {
     public $description = 'Fetch images from given rss feed.';
 
     public function getThumbnail() {
-        if ($this->items === null || $this->valid() === false) {
+        if (!$this->valid()) {
             return '';
         }
 
-        $item = current($this->items);
+        $item = $this->items->current();
 
         // search enclosures (media tags)
         if (count(@$item->get_enclosures()) > 0) {

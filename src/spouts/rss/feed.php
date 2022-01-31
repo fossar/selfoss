@@ -2,6 +2,7 @@
 
 namespace spouts\rss;
 
+use ArrayIterator;
 use helpers\FeedReader;
 use helpers\Image;
 use Monolog\Logger;
@@ -57,7 +58,7 @@ class feed extends \spouts\spout {
 
     public function load(array $params) {
         $feedData = $this->feed->load(htmlspecialchars_decode($params['url']));
-        $this->items = $feedData['items'];
+        $this->items = new ArrayIterator($feedData['items']);
         $this->htmlUrl = $feedData['htmlUrl'];
         $this->spoutTitle = $feedData['spoutTitle'];
     }
@@ -71,8 +72,8 @@ class feed extends \spouts\spout {
     }
 
     public function getId() {
-        if ($this->items !== null && $this->valid()) {
-            $id = @current($this->items)->get_id();
+        if ($this->valid()) {
+            $id = $this->items->current()->get_id();
             if (strlen($id) > 255) {
                 $id = md5($id);
             }
@@ -84,16 +85,16 @@ class feed extends \spouts\spout {
     }
 
     public function getTitle() {
-        if ($this->items !== null && $this->valid()) {
-            return htmlspecialchars_decode(@current($this->items)->get_title());
+        if ($this->valid()) {
+            return htmlspecialchars_decode($this->items->current()->get_title());
         }
 
         return null;
     }
 
     public function getContent() {
-        if ($this->items !== null && $this->valid()) {
-            return @current($this->items)->get_content();
+        if ($this->valid()) {
+            return $this->items->current()->get_content();
         }
 
         return null;
@@ -142,8 +143,8 @@ class feed extends \spouts\spout {
     }
 
     public function getLink() {
-        if ($this->items !== null && $this->valid()) {
-            $link = @current($this->items)->get_link();
+        if ($this->valid()) {
+            $link = $this->items->current()->get_link();
 
             return htmlspecialchars_decode($link, ENT_COMPAT); // SimplePie sanitizes URLs
         }
@@ -152,8 +153,8 @@ class feed extends \spouts\spout {
     }
 
     public function getDate() {
-        if ($this->items !== null && $this->valid()) {
-            $date = @current($this->items)->get_date('Y-m-d H:i:s');
+        if ($this->valid()) {
+            $date = $this->items->current()->get_date('Y-m-d H:i:s');
         }
         if (strlen($date) === 0) {
             $date = date('Y-m-d H:i:s');
@@ -163,8 +164,8 @@ class feed extends \spouts\spout {
     }
 
     public function getAuthor() {
-        if ($this->items !== null && $this->valid()) {
-            $author = @current($this->items)->get_author();
+        if ($this->valid()) {
+            $author = $this->items->current()->get_author();
             if (isset($author)) {
                 $name = $author->get_name();
                 if (isset($name)) {

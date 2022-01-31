@@ -2,6 +2,7 @@
 
 namespace spouts\github;
 
+use ArrayIterator;
 use helpers\WebClient;
 
 /**
@@ -70,7 +71,8 @@ class commits extends \spouts\spout {
 
         $http = $this->webClient->getHttpClient();
         $response = $http->get($jsonUrl);
-        $this->items = json_decode((string) $response->getBody(), true);
+        $items = json_decode((string) $response->getBody(), true);
+        $this->items = new ArrayIterator($items);
 
         $this->spoutTitle = "Recent Commits to {$params['repo']}:{$params['branch']}";
     }
@@ -80,16 +82,16 @@ class commits extends \spouts\spout {
     }
 
     public function getId() {
-        if ($this->items !== null && $this->valid()) {
-            return @current($this->items)['sha'];
+        if ($this->valid()) {
+            return $this->items->current()['sha'];
         }
 
         return null;
     }
 
     public function getTitle() {
-        if ($this->items !== null && $this->valid()) {
-            $message = @current($this->items)['commit']['message'];
+        if ($this->valid()) {
+            $message = $this->items->current()['commit']['message'];
 
             return htmlspecialchars(self::cutTitle($message));
         }
@@ -98,8 +100,8 @@ class commits extends \spouts\spout {
     }
 
     public function getContent() {
-        if ($this->items !== null && $this->valid()) {
-            $message = @current($this->items)['commit']['message'];
+        if ($this->valid()) {
+            $message = $this->items->current()['commit']['message'];
 
             return nl2br(htmlspecialchars($message), false);
         }
@@ -112,16 +114,16 @@ class commits extends \spouts\spout {
     }
 
     public function getLink() {
-        if ($this->items !== null && $this->valid()) {
-            return @current($this->items)['html_url'];
+        if ($this->valid()) {
+            return $this->items->current()['html_url'];
         }
 
         return null;
     }
 
     public function getDate() {
-        if ($this->items !== null && $this->valid()) {
-            $date = date('Y-m-d H:i:s', strtotime(@current($this->items)['commit']['author']['date']));
+        if ($this->valid()) {
+            $date = date('Y-m-d H:i:s', strtotime($this->items->current()['commit']['author']['date']));
         }
         if (strlen($date) === 0) {
             $date = date('Y-m-d H:i:s');
