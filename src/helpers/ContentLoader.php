@@ -132,6 +132,155 @@ class ContentLoader {
             $spout->load(
                 json_decode(html_entity_decode($source['params']), true)
             );
+
+            // current date
+            $minDate = new \DateTime();
+            $minDate->sub(new \DateInterval('P' . $this->configuration->itemsLifetime . 'D'));
+            $this->logger->debug('minimum date: ' . $minDate->format('Y-m-d H:i:s'));
+
+            // insert new items in database
+            $this->logger->debug('start item fetching');
+
+            $itemsInFeed = [];
+            foreach ($spout as $item) {
+                $itemsInFeed[] = $item->getId();
+            }
+            $itemsFound = $this->itemsDao->findAll($itemsInFeed, $source['id']);
+
+            $iconCache = [];
+            $sourceIconUrl = null;
+            $itemsSeen = [];
+            foreach ($spout as $item) {
+                // item already in database?
+                if (isset($itemsFound[$item->getId()])) {
+                    $this->logger->debug('item "' . $item->getTitle() . '" already in database.');
+                    $itemsSeen[] = $itemsFound[$item->getId()];
+                    continue;
+                }
+
+                // test date: continue with next if item too old
+                $itemDate = new \DateTime($item->getDate());
+                // if date cannot be parsed it will default to epoch. Change to current time.
+                if ($itemDate->getTimestamp() == 0) {
+                    $itemDate = new \DateTime();
+                }
+                if ($itemDate < $minDate) {
+                    $this->logger->debug('item "' . $item->getTitle() . '" (' . $item->getDate() . ') older than ' . $this->configuration->itemsLifetime . ' days');
+                    continue;
+                }
+
+                // date in future? Set current date
+                $now = new \DateTime();
+                if ($itemDate > $now) {
+                    $itemDate = $now;
+                }
+
+                // insert new item
+                $this->logger->debug('start insertion of new item "' . $item->getTitle() . '"');
+
+                $content = '';
+                try {
+                    // fetch content
+                    $content = $item->getContent();
+
+                    // sanitize content html
+                    $content = $this->sanitizeContent($content);
+                } catch (\Throwable $e) {
+                    $content = 'Error: Content not fetched. Reason: ' . $e->getMessage();
+                    $this->logger->error('Can not fetch "' . $item->getTitle() . '"', ['exception' => $e]);
+                } catch (\Exception $e) {
+                    // For PHP 5
+                    $content = 'Error: Content not fetched. Reason: ' . $e->getMessage();
+                    $this->logger->error('Can not fetch "' . $item->getTitle() . '"', ['exception' => $e]);
+                }
+
+                // sanitize title
+                $title = trim($this->sanitizeField($item->getTitle()));
+
+                // Check sanitized title against filter
+                if ($this->filter($source, $title, $content) === false) {
+                    continue;
+                }
+
+                // sanitize author
+                $author = $this->sanitizeField($item->getAuthor());
+
+                $this->logger->debug('item content sanitized');
+
+                $newItem = [
+                    'title' => $title,
+                    'content' => $content,
+                    'source' => $source['id'],
+                    'datetime' => $itemDate->format('Y-m-d H:i:s'),
+                    'uid' => $item->getId(),
+                    'link' => htmLawed($item->getLink(), ['deny_attribute' => '*', 'elements' => '-*']),
+                    'author' => $author,
+                    'thumbnail' => null,
+                    'icon' => null,
+                ];
+
+                $thumbnailUrl = $item->getThumbnail();
+                if (strlen(trim($thumbnailUrl)) > 0) {
+                    // save thumbnail
+                    $newItem['thumbnail'] = $this->fetchThumbnail($thumbnailUrl) ?: '';
+                }
+
+                try {
+                    $iconUrl = $item->getIcon();
+                    if (strlen(trim($iconUrl)) > 0) {
+                        if (isset($iconCache[$iconUrl])) {
+                            $this->logger->debug('reusing recently used icon: ' . $iconUrl);
+                        } else {
+                            // save icon
+                            $iconCache[$iconUrl] = $this->fetchIcon($iconUrl) ?: '';
+                        }
+                        $newItem['icon'] = $iconCache[$iconUrl];
+                    } elseif ($sourceIconUrl !== null) {
+                        $this->logger->debug('using the source icon');
+                        $newItem['icon'] = $sourceIconUrl;
+                    } else {
+                        try {
+                            // we do not want to run this more than once
+                            $sourceIconUrl = $item->getSourceIcon() ?: '';
+
+                            if (strlen(trim($sourceIconUrl)) > 0) {
+                                // save source icon
+                                $sourceIconUrl = $this->fetchIcon($sourceIconUrl) ?: '';
+                                $newItem['icon'] = $sourceIconUrl;
+                            } else {
+                                $this->logger->debug('no icon for this item or source');
+                            }
+                        } catch (\Throwable $e) {
+                            // cache failure
+                            $sourceIconUrl = '';
+                            $this->logger->error('feed icon: error', ['exception' => $e]);
+                        } catch (\Exception $e) {
+                            // For PHP 5
+                            // cache failure
+                            $sourceIconUrl = '';
+                            $this->logger->error('feed icon: error', ['exception' => $e]);
+                        }
+                    }
+                } catch (\Throwable $e) {
+                    // cache failure
+                    $iconCache[$iconUrl] = '';
+                    $this->logger->error('icon: error', ['exception' => $e]);
+                } catch (\Exception $e) {
+                    // For PHP 5
+                    // cache failure
+                    $iconCache[$iconUrl] = '';
+                    $this->logger->error('icon: error', ['exception' => $e]);
+                }
+
+                // insert new item
+                $this->itemsDao->add($newItem);
+                $this->logger->debug('item inserted');
+
+                $this->logger->debug('Memory usage: ' . memory_get_usage());
+                $this->logger->debug('Memory peak usage: ' . memory_get_peak_usage());
+
+                $lastEntry = max($lastEntry, $itemDate->getTimestamp());
+            }
         } catch (\Throwable $e) {
             $this->logger->error('error loading feed content for ' . $source['title'], ['exception' => $e]);
             $this->sourcesDao->error($source['id'], date('Y-m-d H:i:s') . 'error loading feed content: ' . $e->getMessage());
@@ -143,155 +292,6 @@ class ContentLoader {
             $this->sourcesDao->error($source['id'], date('Y-m-d H:i:s') . 'error loading feed content: ' . $e->getMessage());
 
             return;
-        }
-
-        // current date
-        $minDate = new \DateTime();
-        $minDate->sub(new \DateInterval('P' . $this->configuration->itemsLifetime . 'D'));
-        $this->logger->debug('minimum date: ' . $minDate->format('Y-m-d H:i:s'));
-
-        // insert new items in database
-        $this->logger->debug('start item fetching');
-
-        $itemsInFeed = [];
-        foreach ($spout as $item) {
-            $itemsInFeed[] = $item->getId();
-        }
-        $itemsFound = $this->itemsDao->findAll($itemsInFeed, $source['id']);
-
-        $iconCache = [];
-        $sourceIconUrl = null;
-        $itemsSeen = [];
-        foreach ($spout as $item) {
-            // item already in database?
-            if (isset($itemsFound[$item->getId()])) {
-                $this->logger->debug('item "' . $item->getTitle() . '" already in database.');
-                $itemsSeen[] = $itemsFound[$item->getId()];
-                continue;
-            }
-
-            // test date: continue with next if item too old
-            $itemDate = new \DateTime($item->getDate());
-            // if date cannot be parsed it will default to epoch. Change to current time.
-            if ($itemDate->getTimestamp() == 0) {
-                $itemDate = new \DateTime();
-            }
-            if ($itemDate < $minDate) {
-                $this->logger->debug('item "' . $item->getTitle() . '" (' . $item->getDate() . ') older than ' . $this->configuration->itemsLifetime . ' days');
-                continue;
-            }
-
-            // date in future? Set current date
-            $now = new \DateTime();
-            if ($itemDate > $now) {
-                $itemDate = $now;
-            }
-
-            // insert new item
-            $this->logger->debug('start insertion of new item "' . $item->getTitle() . '"');
-
-            $content = '';
-            try {
-                // fetch content
-                $content = $item->getContent();
-
-                // sanitize content html
-                $content = $this->sanitizeContent($content);
-            } catch (\Throwable $e) {
-                $content = 'Error: Content not fetched. Reason: ' . $e->getMessage();
-                $this->logger->error('Can not fetch "' . $item->getTitle() . '"', ['exception' => $e]);
-            } catch (\Exception $e) {
-                // For PHP 5
-                $content = 'Error: Content not fetched. Reason: ' . $e->getMessage();
-                $this->logger->error('Can not fetch "' . $item->getTitle() . '"', ['exception' => $e]);
-            }
-
-            // sanitize title
-            $title = trim($this->sanitizeField($item->getTitle()));
-
-            // Check sanitized title against filter
-            if ($this->filter($source, $title, $content) === false) {
-                continue;
-            }
-
-            // sanitize author
-            $author = $this->sanitizeField($item->getAuthor());
-
-            $this->logger->debug('item content sanitized');
-
-            $newItem = [
-                'title' => $title,
-                'content' => $content,
-                'source' => $source['id'],
-                'datetime' => $itemDate->format('Y-m-d H:i:s'),
-                'uid' => $item->getId(),
-                'link' => htmLawed($item->getLink(), ['deny_attribute' => '*', 'elements' => '-*']),
-                'author' => $author,
-                'thumbnail' => null,
-                'icon' => null,
-            ];
-
-            $thumbnailUrl = $item->getThumbnail();
-            if (strlen(trim($thumbnailUrl)) > 0) {
-                // save thumbnail
-                $newItem['thumbnail'] = $this->fetchThumbnail($thumbnailUrl) ?: '';
-            }
-
-            try {
-                $iconUrl = $item->getIcon();
-                if (strlen(trim($iconUrl)) > 0) {
-                    if (isset($iconCache[$iconUrl])) {
-                        $this->logger->debug('reusing recently used icon: ' . $iconUrl);
-                    } else {
-                        // save icon
-                        $iconCache[$iconUrl] = $this->fetchIcon($iconUrl) ?: '';
-                    }
-                    $newItem['icon'] = $iconCache[$iconUrl];
-                } elseif ($sourceIconUrl !== null) {
-                    $this->logger->debug('using the source icon');
-                    $newItem['icon'] = $sourceIconUrl;
-                } else {
-                    try {
-                        // we do not want to run this more than once
-                        $sourceIconUrl = $item->getSourceIcon() ?: '';
-
-                        if (strlen(trim($sourceIconUrl)) > 0) {
-                            // save source icon
-                            $sourceIconUrl = $this->fetchIcon($sourceIconUrl) ?: '';
-                            $newItem['icon'] = $sourceIconUrl;
-                        } else {
-                            $this->logger->debug('no icon for this item or source');
-                        }
-                    } catch (\Throwable $e) {
-                        // cache failure
-                        $sourceIconUrl = '';
-                        $this->logger->error('feed icon: error', ['exception' => $e]);
-                    } catch (\Exception $e) {
-                        // For PHP 5
-                        // cache failure
-                        $sourceIconUrl = '';
-                        $this->logger->error('feed icon: error', ['exception' => $e]);
-                    }
-                }
-            } catch (\Throwable $e) {
-                // cache failure
-                $iconCache[$iconUrl] = '';
-                $this->logger->error('icon: error', ['exception' => $e]);
-            } catch (\Exception $e) {
-                // For PHP 5
-                // cache failure
-                $iconCache[$iconUrl] = '';
-                $this->logger->error('icon: error', ['exception' => $e]);
-            }
-
-            // insert new item
-            $this->itemsDao->add($newItem);
-            $this->logger->debug('item inserted');
-
-            $this->logger->debug('Memory usage: ' . memory_get_usage());
-            $this->logger->debug('Memory peak usage: ' . memory_get_peak_usage());
-
-            $lastEntry = max($lastEntry, $itemDate->getTimestamp());
         }
 
         // destroy feed object (prevent memory issues)
