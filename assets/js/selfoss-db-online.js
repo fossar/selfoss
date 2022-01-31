@@ -248,7 +248,7 @@ selfoss.dbOnline = {
             selfoss.app.setTags(data.tags);
             selfoss.app.setTagsState(LoadingState.SUCCESS);
 
-            if (selfoss.app.state.navSourcesExpanded) {
+            if (typeof data.sources !== 'undefined' && selfoss.app.state.navSourcesExpanded) {
                 selfoss.app.setSources(data.sources);
                 selfoss.app.setSourcesState(LoadingState.SUCCESS);
             }
