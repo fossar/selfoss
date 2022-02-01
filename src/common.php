@@ -122,6 +122,7 @@ if ($configuration->dbType === 'sqlite') {
         $configuration->dbUsername,
         $configuration->dbPassword,
         [PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8mb4;'],
+        $configuration->dbPrefix,
     ];
 } elseif ($configuration->dbType === 'pgsql') {
     $socket = $configuration->dbSocket;

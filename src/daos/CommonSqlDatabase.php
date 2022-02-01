@@ -39,7 +39,7 @@ trait CommonSqlDatabase {
     }
 
     public function getSchemaVersion() {
-        $version = @$this->exec('SELECT version FROM ' . $this->configuration->dbPrefix . 'version ORDER BY version DESC LIMIT 1');
+        $version = @$this->exec('SELECT version FROM ' . $this->connection->getTableNamePrefix() . 'version ORDER BY version DESC LIMIT 1');
 
         return (int) $version[0]['version'];
     }

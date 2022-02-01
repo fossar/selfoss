@@ -15,6 +15,9 @@ class DatabaseConnection {
     /** @var PDO Original PDO connection */
     private $pdo;
 
+    /** @var string */
+    private $tableNamePrefix;
+
     /** @var bool whether a transaction is currently in progress */
     private $isInTransaction = false;
 
@@ -24,10 +27,12 @@ class DatabaseConnection {
      * @param string $dsn
      * @param string $user
      * @param string $pw
+     * @param string $tableNamePrefix
      **/
-    public function __construct($dsn, $user = null, $pw = null, array $options = []) {
+    public function __construct($dsn, $user = null, $pw = null, array $options = [], $tableNamePrefix = '') {
         $this->pdo = new PDO($dsn, $user, $pw, $options);
         $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $this->tableNamePrefix = $tableNamePrefix;
     }
 
     /**
@@ -70,6 +75,13 @@ class DatabaseConnection {
         $this->isInTransaction = false;
 
         return $out;
+    }
+
+    /**
+     * @return string
+     **/
+    public function getTableNamePrefix() {
+        return $this->tableNamePrefix;
     }
 
     /**

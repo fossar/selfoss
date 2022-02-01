@@ -3,7 +3,6 @@
 namespace daos\mysql;
 
 use daos\CommonSqlDatabase;
-use helpers\Configuration;
 use helpers\DatabaseConnection;
 use Monolog\Logger;
 
@@ -17,9 +16,6 @@ use Monolog\Logger;
 class Database implements \daos\DatabaseInterface {
     use CommonSqlDatabase;
 
-    /** @var Configuration configuration */
-    private $configuration;
-
     /** @var DatabaseConnection database connection */
     private $connection;
 
@@ -32,8 +28,7 @@ class Database implements \daos\DatabaseInterface {
      *
      * @return void
      */
-    public function __construct(Configuration $configuration, DatabaseConnection $connection, Logger $logger) {
-        $this->configuration = $configuration;
+    public function __construct(DatabaseConnection $connection, Logger $logger) {
         $this->connection = $connection;
         $this->logger = $logger;
 
@@ -48,12 +43,12 @@ class Database implements \daos\DatabaseInterface {
             }
         }
 
-        if (!in_array($this->configuration->dbPrefix . 'items', $tables, true)) {
+        if (!in_array($this->connection->getTableNamePrefix() . 'items', $tables, true)) {
             $this->logger->debug('Creating items table');
 
             $this->beginTransaction();
             $this->exec('
-                CREATE TABLE ' . $this->configuration->dbPrefix . 'items (
+                CREATE TABLE ' . $this->connection->getTableNamePrefix() . 'items (
                     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
                     datetime DATETIME NOT NULL ,
                     title TEXT NOT NULL ,
@@ -72,14 +67,14 @@ class Database implements \daos\DatabaseInterface {
             ');
             $this->exec('
                 CREATE TRIGGER insert_updatetime_trigger
-                BEFORE INSERT ON ' . $this->configuration->dbPrefix . 'items FOR EACH ROW
+                BEFORE INSERT ON ' . $this->connection->getTableNamePrefix() . 'items FOR EACH ROW
                     BEGIN
                         SET NEW.updatetime = NOW();
                     END;
             ');
             $this->exec('
                 CREATE TRIGGER update_updatetime_trigger
-                BEFORE UPDATE ON ' . $this->configuration->dbPrefix . 'items FOR EACH ROW
+                BEFORE UPDATE ON ' . $this->connection->getTableNamePrefix() . 'items FOR EACH ROW
                     BEGIN
                         SET NEW.updatetime = NOW();
                     END;
@@ -88,11 +83,11 @@ class Database implements \daos\DatabaseInterface {
         }
 
         $isNewestSourcesTable = false;
-        if (!in_array($this->configuration->dbPrefix . 'sources', $tables, true)) {
+        if (!in_array($this->connection->getTableNamePrefix() . 'sources', $tables, true)) {
             $this->logger->debug('Creating sources table');
 
             $this->exec('
-                CREATE TABLE ' . $this->configuration->dbPrefix . 'sources (
+                CREATE TABLE ' . $this->connection->getTableNamePrefix() . 'sources (
                     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
                     title TEXT NOT NULL ,
                     tags TEXT,
@@ -108,22 +103,22 @@ class Database implements \daos\DatabaseInterface {
         }
 
         // version 1 or new
-        if (!in_array($this->configuration->dbPrefix . 'version', $tables, true)) {
+        if (!in_array($this->connection->getTableNamePrefix() . 'version', $tables, true)) {
             $this->logger->debug('Upgrading database schema to version 8 from initial state');
 
             $this->beginTransaction();
             $this->exec('
-                CREATE TABLE ' . $this->configuration->dbPrefix . 'version (
+                CREATE TABLE ' . $this->connection->getTableNamePrefix() . 'version (
                     version INT
                 ) ENGINE = InnoDB DEFAULT CHARSET=utf8mb4;
             ');
 
             $this->exec('
-                INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (8);
+                INSERT INTO ' . $this->connection->getTableNamePrefix() . 'version (version) VALUES (8);
             ');
 
             $this->exec('
-                CREATE TABLE ' . $this->configuration->dbPrefix . 'tags (
+                CREATE TABLE ' . $this->connection->getTableNamePrefix() . 'tags (
                     tag         TEXT NOT NULL,
                     color       VARCHAR(7) NOT NULL
                 ) ENGINE = InnoDB DEFAULT CHARSET=utf8mb4;
@@ -131,7 +126,7 @@ class Database implements \daos\DatabaseInterface {
 
             if ($isNewestSourcesTable === false) {
                 $this->exec('
-                    ALTER TABLE ' . $this->configuration->dbPrefix . 'sources ADD tags TEXT;
+                    ALTER TABLE ' . $this->connection->getTableNamePrefix() . 'sources ADD tags TEXT;
                 ');
             }
             $this->commit();
@@ -144,10 +139,10 @@ class Database implements \daos\DatabaseInterface {
 
             $this->beginTransaction();
             $this->exec('
-                ALTER TABLE ' . $this->configuration->dbPrefix . 'sources ADD lastupdate INT;
+                ALTER TABLE ' . $this->connection->getTableNamePrefix() . 'sources ADD lastupdate INT;
             ');
             $this->exec('
-                INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (3);
+                INSERT INTO ' . $this->connection->getTableNamePrefix() . 'version (version) VALUES (3);
             ');
             $this->commit();
         }
@@ -156,24 +151,24 @@ class Database implements \daos\DatabaseInterface {
 
             $this->beginTransaction();
             $this->exec('
-                ALTER TABLE ' . $this->configuration->dbPrefix . 'items ADD updatetime DATETIME;
+                ALTER TABLE ' . $this->connection->getTableNamePrefix() . 'items ADD updatetime DATETIME;
             ');
             $this->exec('
                 CREATE TRIGGER insert_updatetime_trigger
-                BEFORE INSERT ON ' . $this->configuration->dbPrefix . 'items FOR EACH ROW
+                BEFORE INSERT ON ' . $this->connection->getTableNamePrefix() . 'items FOR EACH ROW
                     BEGIN
                         SET NEW.updatetime = NOW();
                     END;
             ');
             $this->exec('
                 CREATE TRIGGER update_updatetime_trigger
-                BEFORE UPDATE ON ' . $this->configuration->dbPrefix . 'items FOR EACH ROW
+                BEFORE UPDATE ON ' . $this->connection->getTableNamePrefix() . 'items FOR EACH ROW
                     BEGIN
                         SET NEW.updatetime = NOW();
                     END;
             ');
             $this->exec('
-                INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (4);
+                INSERT INTO ' . $this->connection->getTableNamePrefix() . 'version (version) VALUES (4);
             ');
             $this->commit();
         }
@@ -182,10 +177,10 @@ class Database implements \daos\DatabaseInterface {
 
             $this->beginTransaction();
             $this->exec('
-                ALTER TABLE ' . $this->configuration->dbPrefix . 'items ADD author VARCHAR(255);
+                ALTER TABLE ' . $this->connection->getTableNamePrefix() . 'items ADD author VARCHAR(255);
             ');
             $this->exec('
-                INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (5);
+                INSERT INTO ' . $this->connection->getTableNamePrefix() . 'version (version) VALUES (5);
             ');
             $this->commit();
         }
@@ -194,10 +189,10 @@ class Database implements \daos\DatabaseInterface {
 
             $this->beginTransaction();
             $this->exec('
-                ALTER TABLE ' . $this->configuration->dbPrefix . 'sources ADD filter TEXT;
+                ALTER TABLE ' . $this->connection->getTableNamePrefix() . 'sources ADD filter TEXT;
             ');
             $this->exec('
-                INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (6);
+                INSERT INTO ' . $this->connection->getTableNamePrefix() . 'version (version) VALUES (6);
             ');
             $this->commit();
         }
@@ -209,10 +204,10 @@ class Database implements \daos\DatabaseInterface {
 
             $this->beginTransaction();
             $this->exec('
-                ALTER TABLE ' . $this->configuration->dbPrefix . 'sources ADD lastentry INT;
+                ALTER TABLE ' . $this->connection->getTableNamePrefix() . 'sources ADD lastentry INT;
             ');
             $this->exec('
-                INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (8);
+                INSERT INTO ' . $this->connection->getTableNamePrefix() . 'version (version) VALUES (8);
             ');
             $this->commit();
         }
@@ -221,10 +216,10 @@ class Database implements \daos\DatabaseInterface {
 
             $this->beginTransaction();
             $this->exec('
-                ALTER TABLE ' . $this->configuration->dbPrefix . 'items ADD shared BOOL;
+                ALTER TABLE ' . $this->connection->getTableNamePrefix() . 'items ADD shared BOOL;
             ');
             $this->exec('
-                INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (9);
+                INSERT INTO ' . $this->connection->getTableNamePrefix() . 'version (version) VALUES (9);
             ');
             $this->commit();
         }
@@ -232,11 +227,11 @@ class Database implements \daos\DatabaseInterface {
             $this->logger->debug('Upgrading database schema to version 10');
 
             $this->beginTransaction();
-            $this->exec('ALTER TABLE `' . $this->configuration->dbPrefix . 'items` CONVERT TO CHARACTER SET utf8mb4;');
-            $this->exec('ALTER TABLE `' . $this->configuration->dbPrefix . 'sources` CONVERT TO CHARACTER SET utf8mb4;');
-            $this->exec('ALTER TABLE `' . $this->configuration->dbPrefix . 'tags` CONVERT TO CHARACTER SET utf8mb4;');
-            $this->exec('ALTER TABLE `' . $this->configuration->dbPrefix . 'version` CONVERT TO CHARACTER SET utf8mb4;');
-            $this->exec('INSERT INTO `' . $this->configuration->dbPrefix . 'version` (version) VALUES (10);');
+            $this->exec('ALTER TABLE `' . $this->connection->getTableNamePrefix() . 'items` CONVERT TO CHARACTER SET utf8mb4;');
+            $this->exec('ALTER TABLE `' . $this->connection->getTableNamePrefix() . 'sources` CONVERT TO CHARACTER SET utf8mb4;');
+            $this->exec('ALTER TABLE `' . $this->connection->getTableNamePrefix() . 'tags` CONVERT TO CHARACTER SET utf8mb4;');
+            $this->exec('ALTER TABLE `' . $this->connection->getTableNamePrefix() . 'version` CONVERT TO CHARACTER SET utf8mb4;');
+            $this->exec('INSERT INTO `' . $this->connection->getTableNamePrefix() . 'version` (version) VALUES (10);');
             $this->commit();
         }
         if ($version < 11) {
@@ -245,23 +240,23 @@ class Database implements \daos\DatabaseInterface {
             $this->beginTransaction();
             $this->exec('DROP TRIGGER insert_updatetime_trigger');
             $this->exec('DROP TRIGGER update_updatetime_trigger');
-            $this->exec('ALTER TABLE ' . $this->configuration->dbPrefix . 'items ADD lastseen DATETIME');
-            $this->exec('UPDATE ' . $this->configuration->dbPrefix . 'items SET lastseen = CURRENT_TIMESTAMP');
+            $this->exec('ALTER TABLE ' . $this->connection->getTableNamePrefix() . 'items ADD lastseen DATETIME');
+            $this->exec('UPDATE ' . $this->connection->getTableNamePrefix() . 'items SET lastseen = CURRENT_TIMESTAMP');
             // Needs to be a trigger since MySQL before 5.6.5 does not support default value for DATETIME.
             // https://dev.mysql.com/doc/relnotes/mysql/5.6/en/news-5-6-5.html#mysqld-5-6-5-data-types
             // Needs to be a single trigger due to MySQL before 5.7.2 not supporting multiple triggers for the same event on the same table.
             // https://dev.mysql.com/doc/relnotes/mysql/5.7/en/news-5-7-2.html#mysqld-5-7-2-triggers
             $this->exec('
-                CREATE TRIGGER ' . $this->configuration->dbPrefix . 'items_insert_trigger
-                    BEFORE INSERT ON ' . $this->configuration->dbPrefix . 'items FOR EACH ROW
+                CREATE TRIGGER ' . $this->connection->getTableNamePrefix() . 'items_insert_trigger
+                    BEFORE INSERT ON ' . $this->connection->getTableNamePrefix() . 'items FOR EACH ROW
                         BEGIN
                             SET NEW.updatetime = NOW();
                             SET NEW.lastseen = NOW();
                         END;
             ');
             $this->exec('
-                CREATE TRIGGER ' . $this->configuration->dbPrefix . 'items_update_trigger
-                    BEFORE UPDATE ON ' . $this->configuration->dbPrefix . 'items FOR EACH ROW
+                CREATE TRIGGER ' . $this->connection->getTableNamePrefix() . 'items_update_trigger
+                    BEFORE UPDATE ON ' . $this->connection->getTableNamePrefix() . 'items FOR EACH ROW
                     BEGIN
                         IF (
                             OLD.unread <> NEW.unread OR
@@ -271,25 +266,25 @@ class Database implements \daos\DatabaseInterface {
                         END IF;
                     END;
             ');
-            $this->exec('INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (11)');
+            $this->exec('INSERT INTO ' . $this->connection->getTableNamePrefix() . 'version (version) VALUES (11)');
             $this->commit();
         }
         if ($version < 12) {
             $this->logger->debug('Upgrading database schema to version 12');
 
             $this->beginTransaction();
-            $this->exec('UPDATE ' . $this->configuration->dbPrefix . 'items SET updatetime = datetime WHERE updatetime IS NULL');
-            $this->exec('ALTER TABLE ' . $this->configuration->dbPrefix . 'items MODIFY updatetime DATETIME NOT NULL');
-            $this->exec('ALTER TABLE ' . $this->configuration->dbPrefix . 'items MODIFY lastseen DATETIME NOT NULL');
-            $this->exec('INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (12)');
+            $this->exec('UPDATE ' . $this->connection->getTableNamePrefix() . 'items SET updatetime = datetime WHERE updatetime IS NULL');
+            $this->exec('ALTER TABLE ' . $this->connection->getTableNamePrefix() . 'items MODIFY updatetime DATETIME NOT NULL');
+            $this->exec('ALTER TABLE ' . $this->connection->getTableNamePrefix() . 'items MODIFY lastseen DATETIME NOT NULL');
+            $this->exec('INSERT INTO ' . $this->connection->getTableNamePrefix() . 'version (version) VALUES (12)');
             $this->commit();
         }
         if ($version < 13) {
             $this->logger->debug('Upgrading database schema to version 13');
 
             $this->beginTransaction();
-            $this->exec('UPDATE ' . $this->configuration->dbPrefix . "sources SET spout = 'spouts\\\\rss\\\\fulltextrss' WHERE spout = 'spouts\\\\rss\\\\instapaper'");
-            $this->exec('INSERT INTO ' . $this->configuration->dbPrefix . 'version (version) VALUES (13)');
+            $this->exec('UPDATE ' . $this->connection->getTableNamePrefix() . "sources SET spout = 'spouts\\\\rss\\\\fulltextrss' WHERE spout = 'spouts\\\\rss\\\\instapaper'");
+            $this->exec('INSERT INTO ' . $this->connection->getTableNamePrefix() . 'version (version) VALUES (13)');
             $this->commit();
         }
     }
@@ -316,6 +311,6 @@ class Database implements \daos\DatabaseInterface {
      * @return void
      */
     public function optimize() {
-        @$this->exec('OPTIMIZE TABLE `' . $this->configuration->dbPrefix . 'sources`, `' . $this->configuration->dbPrefix . 'items`');
+        @$this->exec('OPTIMIZE TABLE `' . $this->connection->getTableNamePrefix() . 'sources`, `' . $this->connection->getTableNamePrefix() . 'items`');
     }
 }
