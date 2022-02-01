@@ -331,8 +331,10 @@ class Database implements \daos\DatabaseInterface {
             if (isset($latestEntryDate[0]['datetime'])) {
                 @$this->exec(
                     'UPDATE sources SET lastentry=? WHERE id=?',
-                    strtotime($latestEntryDate[0]['datetime']),
-                    $current_src['id']
+                    [
+                        strtotime($latestEntryDate[0]['datetime']),
+                        $current_src['id'],
+                    ]
                 );
             }
         }

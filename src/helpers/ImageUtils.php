@@ -45,7 +45,7 @@ class ImageUtils {
      *
      * @param string $html
      *
-     * @return array
+     * @return string[]
      */
     public static function parseShortcutIcons($html) {
         $end = strripos($html, '</head>');
@@ -122,10 +122,7 @@ class ImageUtils {
     public static function findFirstImageSource($html) {
         if (stripos($html, '<img') !== false) {
             $imgsrc_regex = '#<\s*img [^\>]*src\s*=\s*(["\'])(.*?)\1#im';
-            preg_match($imgsrc_regex, $html, $matches);
-            unset($imgsrc_regex);
-            unset($html);
-            if (is_array($matches) && !empty($matches)) {
+            if (preg_match($imgsrc_regex, $html, $matches)) {
                 return $matches[2];
             } else {
                 return null;

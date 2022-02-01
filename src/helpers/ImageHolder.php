@@ -15,6 +15,12 @@ class ImageHolder {
     /** @var int */
     private $height;
 
+    /**
+     * @param string $data
+     * @param Image::FORMAT_JPEG|Image::FORMAT_PNG $format
+     * @param int $width
+     * @param int $height
+     */
     public function __construct($data, $format, $width, $height) {
         $this->data = $data;
         $this->format = $format;
@@ -22,18 +28,30 @@ class ImageHolder {
         $this->height = $height;
     }
 
+    /**
+     * @return string
+     */
     public function getData() {
         return $this->data;
     }
 
+    /**
+     * @return Image::FORMAT_JPEG|Image::FORMAT_PNG
+     */
     public function getFormat() {
         return $this->format;
     }
 
+    /**
+     * @return int
+     */
     public function getWidth() {
         return $this->width;
     }
 
+    /**
+     * @return int
+     */
     public function getHeight() {
         return $this->height;
     }

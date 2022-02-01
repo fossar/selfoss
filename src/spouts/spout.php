@@ -72,7 +72,7 @@ abstract class spout implements \Iterator {
     /**
      * returns the global html url for the source
      *
-     * @return string url as html
+     * @return ?string url as html
      */
     abstract public function getHtmlUrl();
 

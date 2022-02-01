@@ -80,7 +80,7 @@ class Tags implements \daos\TagsInterface {
     /**
      * returns all tags with color
      *
-     * @return array of all tags
+     * @return array{tag: string, color: string}[]
      */
     public function get() {
         return $this->database->exec('SELECT
@@ -92,7 +92,7 @@ class Tags implements \daos\TagsInterface {
     /**
      * returns all tags with color and unread count
      *
-     * @return array of all tags
+     * @return array{tag: string, color: string, unread: int}[]
      */
     public function getWithUnread() {
         $stmt = static::$stmt;

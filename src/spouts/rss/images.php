@@ -24,18 +24,18 @@ class images extends feed {
         $item = $this->items->current();
 
         // search enclosures (media tags)
-        if (count(@$item->get_enclosures()) > 0) {
+        if (($firstEnclosure = $item->get_enclosure(0)) !== null) {
             // thumbnail given?
-            if (@$item->get_enclosure(0)->get_thumbnail()) {
-                return @$item->get_enclosure(0)->get_thumbnail();
+            if ($firstEnclosure->get_thumbnail()) {
+                return $firstEnclosure->get_thumbnail();
             }
 
             // link given?
-            elseif (@$item->get_enclosure(0)->get_link()) {
-                return @$item->get_enclosure(0)->get_link();
+            elseif ($firstEnclosure->get_link()) {
+                return $firstEnclosure->get_link();
             }
         } else { // no enclosures: search image link in content
-            $image = \helpers\ImageUtils::findFirstImageSource(@$item->get_content());
+            $image = \helpers\ImageUtils::findFirstImageSource((string) $item->get_content());
             if ($image !== null) {
                 return $image;
             }

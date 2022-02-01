@@ -19,8 +19,8 @@ class WebClient {
     /** @var Configuration configuration */
     private $configuration;
 
-    /** @var GuzzleHttp\Client */
-    private $httpClient;
+    /** @var ?GuzzleHttp\Client */
+    private $httpClient = null;
 
     /** @var Logger */
     private $logger;
@@ -36,7 +36,7 @@ class WebClient {
      * @return GuzzleHttp\Client
      */
     public function getHttpClient() {
-        if (!isset($this->httpClient)) {
+        if ($this->httpClient === null) {
             $stack = HandlerStack::create();
             $stack->push(new GuzzleTranscoder());
 

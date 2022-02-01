@@ -61,6 +61,9 @@ class Sources {
         }
     }
 
+    /**
+     * @param int|null $id
+     */
     public function get($id = null) {
         $sources = $this->backend->get($id);
         if ($id === null) {
@@ -88,7 +91,7 @@ class Sources {
      * @param string $spout class path for the spout
      * @param array $params parameters supplied to the spout
      *
-     * @return true|array true on success or array of errors on failure
+     * @return array<string,string>|true true on success or array of errors on failure
      *
      * @author Tobias Zeising
      */

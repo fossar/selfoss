@@ -40,6 +40,7 @@ class Items {
     public function mark($itemId = null) {
         $this->authentication->needsLoggedIn();
 
+        $lastid = null;
         if ($itemId !== null) {
             $lastid = $itemId;
         } else {
@@ -145,7 +146,7 @@ class Items {
         // get items
         $items = $this->itemsDao->get($options);
 
-        $items = array_map(function($item) {
+        $items = array_map(function(array $item) {
             $stringifiedDates = [
                 'datetime' => $item['datetime']->format(\DateTime::ATOM),
             ];

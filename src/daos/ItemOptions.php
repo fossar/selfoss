@@ -7,7 +7,7 @@ use DateTime;
 /**
  * Object holding parameters for querying items.
  */
-class ItemOptions {
+final class ItemOptions {
     /** @var ?int @readonly */
     public $offset = 0;
 
@@ -52,15 +52,15 @@ class ItemOptions {
             $options->offset = (int) $data['offset'];
         }
 
-        if (isset($data['search']) && strlen(trim($data['search'])) > 0) {
-            $options->search = trim($data['search']);
+        if (isset($data['search']) && is_string($data['search']) && strlen($search = trim($data['search'])) > 0) {
+            $options->search = $search;
         }
 
         if (isset($data['items']) && is_numeric($data['items'])) {
             $options->pageSize = (int) $data['items'];
         }
 
-        if (isset($data['fromDatetime']) && strlen($data['fromDatetime']) > 0) {
+        if (isset($data['fromDatetime']) && is_string($data['fromDatetime']) && strlen($data['fromDatetime']) > 0) {
             $options->fromDatetime = new \DateTime($data['fromDatetime']);
         }
 
@@ -68,16 +68,16 @@ class ItemOptions {
             $options->fromId = (int) $data['fromId'];
         }
 
-        if (isset($data['updatedsince']) && strlen($data['updatedsince']) > 0) {
+        if (isset($data['updatedsince']) && is_string($data['updatedsince']) && strlen($data['updatedsince']) > 0) {
             $options->updatedSince = new \DateTime($data['updatedsince']);
         }
 
-        if (isset($data['tag']) && strlen(trim($data['tag'])) > 0) {
-            $options->tag = trim($data['tag']);
+        if (isset($data['tag']) && is_string($data['tag']) && strlen($tag = trim($data['tag'])) > 0) {
+            $options->tag = $tag;
         }
 
-        if (isset($data['type']) && in_array(trim($data['type']), ['starred', 'unread'], true)) {
-            $options->filter = trim($data['type']);
+        if (isset($data['type']) && is_string($data['type']) && in_array($filter = trim($data['type']), ['starred', 'unread'], true)) {
+            $options->filter = $filter;
         }
 
         if (isset($data['source']) && is_numeric($data['source'])) {
@@ -85,7 +85,9 @@ class ItemOptions {
         }
 
         if (isset($data['extraIds']) && is_array($data['extraIds'])) {
-            $options->extraIds = $data['extraIds'];
+            $options->extraIds = array_map(function($val) {
+                return (int) $val;
+            }, $data['extraIds']);
         }
 
         return $options;

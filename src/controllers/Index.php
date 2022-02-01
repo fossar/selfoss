@@ -84,24 +84,24 @@ class Index {
 
         // load stats
         $stats = $this->itemsDao->stats();
-        $this->view->statsAll = $stats['total'];
-        $this->view->statsUnread = $stats['unread'];
-        $this->view->statsStarred = $stats['starred'];
+        $statsAll = $stats['total'];
+        $statsUnread = $stats['unread'];
+        $statsStarred = $stats['starred'];
 
         foreach ($tags as $tag) {
             if (strpos($tag['tag'], '#') !== 0) {
                 continue;
             }
-            $this->view->statsUnread -= $tag['unread'];
+            $statsUnread -= $tag['unread'];
         }
 
         $result = [
             'lastUpdate' => \helpers\ViewHelper::date_iso8601($this->itemsDao->lastUpdate()),
             'hasMore' => $items['hasMore'],
             'entries' => $items['entries'],
-            'all' => $this->view->statsAll,
-            'unread' => $this->view->statsUnread,
-            'starred' => $this->view->statsStarred,
+            'all' => $statsAll,
+            'unread' => $statsUnread,
+            'starred' => $statsStarred,
             'tags' => $tags,
         ];
 

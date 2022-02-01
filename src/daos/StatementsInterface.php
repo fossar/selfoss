@@ -10,7 +10,7 @@ interface StatementsInterface {
      * null first for order by clause
      *
      * @param string $column column to concat
-     * @param string $order
+     * @param 'DESC'|'ASC' $order
      *
      * @return string full statement
      */

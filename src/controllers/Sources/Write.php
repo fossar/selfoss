@@ -92,13 +92,13 @@ class Write {
         $sourceExists = $id !== null && $this->sourcesDao->isValid('id', $id);
 
         // load password value if not changed for spouts containing passwords
+        $oldParams = null;
         if ($sourceExists) {
             $spoutInstance = $this->spoutLoader->get($spout);
 
             foreach ($spoutInstance->params as $spoutParamName => $spoutParam) {
-                if ($spoutParam['type'] === 'password'
-                    && empty($data[$spoutParamName])) {
-                    if (!isset($oldSource)) {
+                if ($spoutParam['type'] === 'password' && empty($data[$spoutParamName])) {
+                    if ($oldParams === null) {
                         $oldSource = $this->sourcesDao->get($id);
                         $oldParams = json_decode(html_entity_decode($oldSource['params']), true);
                     }

@@ -24,7 +24,7 @@ class Image {
         self::FORMAT_PNG => 'png',
     ];
 
-    private static $imageTypes = [
+    const IMAGE_TYPES = [
         // IANA assigned type
         'image/bmp' => 'bmp',
         'image/gif' => 'gif',
@@ -41,13 +41,6 @@ class Image {
         'image/icon' => 'ico',
         'text/ico' => 'ico',
         'application/ico' => 'ico',
-    ];
-
-    private static $iconRelWeights = [
-        'apple-touch-icon-precomposed' => 3,
-        'apple-touch-icon' => 2,
-        'shortcut icon' => 1,
-        'icon' => 1,
     ];
 
     /** @var Logger */
@@ -190,8 +183,8 @@ class Image {
         }
 
         $mimeType = isset($imgInfo['mime']) ? strtolower($imgInfo['mime']) : null;
-        if ($mimeType !== null && isset(self::$imageTypes[$mimeType])) {
-            $type = self::$imageTypes[$mimeType];
+        if ($mimeType !== null && isset(self::IMAGE_TYPES[$mimeType])) {
+            $type = self::IMAGE_TYPES[$mimeType];
         } else {
             return null;
         }

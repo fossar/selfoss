@@ -41,8 +41,8 @@ class fulltextrss extends feed {
     /** @var Configuration configuration */
     private $configuration;
 
-    /** @var Graby */
-    private $graby;
+    /** @var ?Graby */
+    private $graby = null;
 
     /** @var Logger */
     private $logger;
@@ -61,7 +61,7 @@ class fulltextrss extends feed {
     public function getContent() {
         $url = $this->getLink();
 
-        if (!isset($this->graby)) {
+        if ($this->graby === null) {
             $this->graby = new Graby([
                 'extractor' => [
                     'config_builder' => [

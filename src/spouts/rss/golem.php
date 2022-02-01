@@ -52,7 +52,7 @@ class golem extends fulltextrss {
     /**
      * addresses of feeds for the sections
      */
-    private $feedUrls = [
+    const FEED_URLS = [
         'main' => 'https://rss.golem.de/rss.php?feed=RSS2.0',
         'audiovideo' => 'https://rss.golem.de/rss.php?tp=av&feed=RSS2.0',
         'foto' => 'https://rss.golem.de/rss.php?tp=foto&feed=RSS2.0',
@@ -79,7 +79,10 @@ class golem extends fulltextrss {
         parent::load(['url' => $this->getXmlUrl($params)]);
     }
 
+    /**
+     * @return string
+     */
     public function getXmlUrl(array $params) {
-        return $this->feedUrls[$params['section']];
+        return self::FEED_URLS[$params['section']];
     }
 }

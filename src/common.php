@@ -11,7 +11,7 @@ use Monolog\Logger;
 
 require __DIR__ . '/constants.php';
 
-$autoloader = @include BASEDIR . '/vendor/autoload.php'; // we will show custom error
+$autoloader = @include __DIR__ . '/../vendor/autoload.php'; // we will show custom error
 if ($autoloader === false) {
     echo 'The PHP dependencies are missing. Did you run `composer install` in the selfoss directory?';
     exit;
@@ -125,7 +125,6 @@ if ($configuration->dbType === 'sqlite') {
         $configuration->dbPrefix,
     ];
 } elseif ($configuration->dbType === 'pgsql') {
-    $socket = $configuration->dbSocket;
     // PostgreSQL uses host key for socket.
     $host = $configuration->dbSocket !== null ? $configuration->dbSocket : $configuration->dbHost;
     $port = $configuration->dbPort;

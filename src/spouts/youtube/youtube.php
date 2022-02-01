@@ -33,6 +33,9 @@ class youtube extends \spouts\rss\feed {
         parent::load(['url' => $url]);
     }
 
+    /**
+     * @return string
+     */
     public function getXmlUrl(array $params) {
         $urlOrUsername = $params['channel'];
         if (preg_match('(^https?://www.youtube.com/channel/([a-zA-Z0-9_-]+)$)', $urlOrUsername, $matched)) {
@@ -63,16 +66,16 @@ class youtube extends \spouts\rss\feed {
         $item = $this->items->current();
 
         // search enclosures (media tags)
-        if (count(@$item->get_enclosures()) > 0) {
-            if (@$item->get_enclosure(0)->get_thumbnail()) {
+        if (($firstEnclosure = $item->get_enclosure(0)) !== null) {
+            if ($firstEnclosure->get_thumbnail()) {
                 // thumbnail given
-                return @$item->get_enclosure(0)->get_thumbnail();
-            } elseif (@$item->get_enclosure(0)->get_link()) {
+                return $firstEnclosure->get_thumbnail();
+            } elseif ($firstEnclosure->get_link()) {
                 // link given
-                return @$item->get_enclosure(0)->get_link();
+                return $firstEnclosure->get_link();
             }
         } else { // no enclosures: search image link in content
-            $image = \helpers\ImageUtils::findFirstImageSource(@$item->get_content());
+            $image = \helpers\ImageUtils::findFirstImageSource((string) $item->get_content());
             if ($image !== null) {
                 return $image;
             }

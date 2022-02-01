@@ -22,7 +22,7 @@ class ViewHelper {
      * for later highlighing with CSS
      *
      * @param string $content which contains words
-     * @param array|string $searchWords words for highlighting
+     * @param string $searchWords words for highlighting
      *
      * @return string with highlited words
      */
@@ -31,13 +31,11 @@ class ViewHelper {
             return $content;
         }
 
-        if (is_string($searchWords)) {
-            if (preg_match('#^/(?P<regex>.+)/$#', $searchWords, $matches)) {
-                return preg_replace('/(?!<[^<>])(' . $matches[1] . ')(?![^<>]*>)/', '<span class="found">$0</span>', $content);
-            }
-
-            $searchWords = \helpers\Search::splitTerms($searchWords);
+        if (preg_match('#^/(?P<regex>.+)/$#', $searchWords, $matches)) {
+            return preg_replace('/(?!<[^<>])(' . $matches[1] . ')(?![^<>]*>)/', '<span class="found">$0</span>', $content);
         }
+
+        $searchWords = \helpers\Search::splitTerms($searchWords);
 
         foreach ($searchWords as $word) {
             $content = preg_replace('/(?!<[^<>])(' . preg_quote($word, '/') . ')(?![^<>]*>)/i', '<span class="found">$0</span>', $content);
@@ -55,16 +53,16 @@ class ViewHelper {
      * @return string with replaced img tags
      */
     public static function lazyimg($content) {
-        return preg_replace_callback("/<img(?P<pre>[^<]+)src=(?:['\"])(?P<src>[^\"']*)(?:['\"])(?P<post>[^<]*)>/i", function($matches) {
+        return preg_replace_callback("/<img(?P<pre>[^<]+)src=(?:['\"])(?P<src>[^\"']*)(?:['\"])(?P<post>[^<]*)>/i", function(array $matches) {
             $width = null;
             $height = null;
 
             $attrs = "{$matches['pre']} {$matches['post']}";
-            if (preg_match('/\bwidth=([\'"]?)(?P<width>\d+)\1/i', $attrs, $widthAttr)) {
-                $width = $widthAttr['width'];
+            if (preg_match('/\bwidth=([\'"]?)(?P<width>[0-9]+)\1/i', $attrs, $widthAttr)) {
+                $width = (int) $widthAttr['width'];
             }
-            if (preg_match('/\bheight=([\'"]?)(?P<height>\d+)\1/i', $attrs, $heightAttr)) {
-                $height = $heightAttr['height'];
+            if (preg_match('/\bheight=([\'"]?)(?P<height>[0-9]+)\1/i', $attrs, $heightAttr)) {
+                $height = (int) $heightAttr['height'];
             }
 
             if ($width === null && $height === null) {
@@ -110,7 +108,7 @@ class ViewHelper {
 
         $camo = new \WillWashburn\Phpamo\Phpamo($this->configuration->camoKey, $this->configuration->camoDomain);
 
-        return preg_replace_callback("/<img([^<]+)src=(['\"])([^\"']*)(['\"])([^<]*)>/i", function($matches) use ($camo) {
+        return preg_replace_callback("/<img([^<]+)src=(['\"])([^\"']*)(['\"])([^<]*)>/i", function(array $matches) use ($camo) {
             return '<img' . $matches[1] . 'src=' . $matches[2] . $camo->camoHttpOnly($matches[3]) . $matches[4] . $matches[5] . '>';
         }, $content);
     }

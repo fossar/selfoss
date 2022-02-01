@@ -9,6 +9,15 @@ class SimplePieFileGuzzle extends \SimplePie_File {
     /** @var WebClient */
     private $webClient;
 
+    /**
+     * @param string $url
+     * @param int $timeout
+     * @param int $redirects
+     * @param ?array<string,string> $headers
+     * @param ?string $useragent
+     * @param bool $force_fsockopen
+     * @param array $curl_options
+     */
     public function __construct($url, $timeout = 10, $redirects = 5, $headers = null, $useragent = null, $force_fsockopen = false, $curl_options = []) {
         $this->webClient = $curl_options[WebClient::class];
         $this->url = $url;

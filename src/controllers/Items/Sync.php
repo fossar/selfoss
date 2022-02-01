@@ -56,7 +56,6 @@ class Sync {
     public function sync() {
         $this->authentication->needsLoggedInOrPublicMode();
 
-        $params = null;
         if (isset($_GET['since'])) {
             $params = $_GET;
         } elseif (isset($_POST['since'])) {
@@ -74,7 +73,6 @@ class Sync {
             'lastUpdate' => $last_update->format(\DateTime::ATOM),
         ];
 
-        $sinceId = 0;
         if (array_key_exists('itemsSinceId', $params)) {
             $sinceId = (int) $params['itemsSinceId'];
             if ($sinceId >= 0) {

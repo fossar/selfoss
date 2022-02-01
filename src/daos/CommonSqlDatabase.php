@@ -3,10 +3,26 @@
 namespace daos;
 
 trait CommonSqlDatabase {
+    /**
+     * Execute SQL statement
+     *
+     * @param string $cmd
+     * @param array|scalar $args
+     *
+     * @return ?array
+     **/
     public function exec($cmd, $args = []) {
         return $this->connection->exec($cmd, $args);
     }
 
+    /**
+     * Quote string
+     *
+     * @param mixed $value
+     * @param int $type
+     *
+     * @return string
+     **/
     public function quote($value, $type = \PDO::PARAM_STR) {
         return $this->connection->quote($value, $type);
     }

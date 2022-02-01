@@ -178,7 +178,6 @@ class ContentLoader {
                 // insert new item
                 $this->logger->debug('start insertion of new item "' . $item->getTitle() . '"');
 
-                $content = '';
                 try {
                     // fetch content
                     $content = $item->getContent();
@@ -203,7 +202,7 @@ class ContentLoader {
                 }
 
                 // sanitize author
-                $author = $this->sanitizeField($item->getAuthor());
+                $author = $this->sanitizeField($item->getAuthor() ?: '');
 
                 $this->logger->debug('item content sanitized');
 
@@ -441,6 +440,8 @@ class ContentLoader {
      * Obtain title for given data
      *
      * @param array $data
+     *
+     * @return ?string
      */
     public function fetchTitle($data) {
         $this->logger->debug('Start fetching spout title');
@@ -513,6 +514,8 @@ class ContentLoader {
      *
      * @param mixed $source source object
      * @param ?int $lastEntry timestamp of the newest item or NULL when no items were added
+     *
+     * @return void
      */
     protected function updateSource($source, $lastEntry) {
         // remove previous error

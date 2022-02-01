@@ -18,10 +18,15 @@ class enclosures extends feed {
 
     public function getContent() {
         if ($this->valid()) {
+            $enclosures = $this->items->current()->get_enclosures();
             $content = parent::getContent();
-            foreach ($this->items->current()->get_enclosures() as $enclosure) {
+            if ($enclosures === null) {
+                return $content;
+            }
+
+            foreach ($enclosures as $enclosure) {
                 if ($enclosure->get_medium() === 'image') {
-                    $title = htmlspecialchars(strip_tags($enclosure->get_title()));
+                    $title = htmlspecialchars(strip_tags((string) $enclosure->get_title()));
                     $content .= '<img src="' . $enclosure->get_link() . '" alt="' . $title . '" title="' . $title . '" />';
                 }
             }

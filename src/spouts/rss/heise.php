@@ -48,7 +48,7 @@ class heise extends fulltextrss {
     /**
      * addresses of feeds for the sections
      */
-    private $feedUrls = [
+    const FEED_URLS = [
         'main' => 'https://www.heise.de/newsticker/heise-atom.xml',
         'ct' => 'https://www.heise.de/ct/rss/artikel-atom.xml',
         'ix' => 'https://www.heise.de/ix/news/news-atom.xml',
@@ -70,7 +70,10 @@ class heise extends fulltextrss {
         parent::load(['url' => $this->getXmlUrl($params)]);
     }
 
+    /**
+     * @return string
+     */
     public function getXmlUrl(array $params) {
-        return $this->feedUrls[$params['section']];
+        return self::FEED_URLS[$params['section']];
     }
 }

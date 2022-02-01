@@ -65,7 +65,6 @@ class Rss {
 
         // get items
         $newestEntryDate = null;
-        $lastid = null;
         foreach ($this->itemsDao->get($options) as $item) {
             if ($newestEntryDate === null) {
                 $newestEntryDate = $item['datetime'];

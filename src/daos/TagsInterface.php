@@ -28,14 +28,14 @@ interface TagsInterface {
     /**
      * returns all tags with color
      *
-     * @return array of all tags
+     * @return array{tag: string, color: string}[]
      */
     public function get();
 
     /**
      * returns all tags with color and unread count
      *
-     * @return array of all tags
+     * @return array{tag: string, color: string, unread: int}[]
      */
     public function getWithUnread();
 

@@ -96,7 +96,7 @@ class DatabaseConnection {
     /**
      * Map data type of argument to a PDO constant
      *
-     * @param $val scalar
+     * @param scalar $val
      *
      * @return int
      **/
@@ -118,13 +118,12 @@ class DatabaseConnection {
     /**
      * Execute SQL statement
      *
-     * @param $cmd string
-     * @param $args array|scalar
+     * @param string $cmd
+     * @param array|scalar $args
      *
      * @return ?array
      **/
     public function exec($cmd, $args = []) {
-        $tag = '';
         $result = null;
 
         if (is_scalar($args)) {
@@ -152,7 +151,7 @@ class DatabaseConnection {
             if (is_array($val)) {
                 // User-specified data type
                 if (count($val) !== 2) {
-                    throw new InvalidArgumentException('Expected [$value, $type] for binding.');
+                    throw new \InvalidArgumentException('Expected [$value, $type] for binding.');
                 }
 
                 list($value, $type) = $val;
@@ -188,8 +187,8 @@ class DatabaseConnection {
     /**
      * Quote string
      *
-     * @param $val mixed
-     * @param $type int
+     * @param mixed $val
+     * @param int $type
      *
      * @return string
      **/
@@ -200,8 +199,7 @@ class DatabaseConnection {
     /**
      * Redirect call to PDO object
      *
-     * @param $func string
-     * @param $args array
+     * @param string $func
      *
      * @return mixed
      **/

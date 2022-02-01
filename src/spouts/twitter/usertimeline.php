@@ -82,8 +82,8 @@ class usertimeline extends \spouts\spout {
      *
      * @param string $consumerKey
      * @param string $consumerSecret
-     * @param string $accessToken
-     * @param string $accessTokenSecret
+     * @param ?string $accessToken
+     * @param ?string $accessTokenSecret
      *
      * @return GuzzleHttp\Client
      */
@@ -345,7 +345,7 @@ class usertimeline extends \spouts\spout {
      *
      * @param stdClass $groupedEntities entities returned by Twitter API
      *
-     * @return array flattened and ordered array of entities
+     * @return array{text: string, url: string, end: int}[] flattened and ordered array of entities
      */
     public static function formatEntities(stdClass $groupedEntities) {
         $result = [];

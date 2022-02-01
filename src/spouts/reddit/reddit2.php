@@ -69,7 +69,7 @@ class reddit2 extends \spouts\spout {
     public function load(array $params) {
         if (!empty($params['password']) && !empty($params['username'])) {
             if (function_exists('apc_fetch')) {
-                $this->reddit_session = apc_fetch("{$params['username']}_selfoss_reddit_session");
+                $this->reddit_session = apc_fetch("{$params['username']}_selfoss_reddit_session") ?: '';
                 if (empty($this->reddit_session)) {
                     $this->login($params);
                 }
@@ -83,7 +83,7 @@ class reddit2 extends \spouts\spout {
         // and that the path ends with .json (Reddit does not seem to recogize Accept header)
         $url = $url->withPath((string) S::create($url->getPath())->ensureRight('.json'));
 
-        $response = $this->sendRequest($url);
+        $response = $this->sendRequest((string) $url);
         $json = json_decode((string) $response->getBody(), true);
 
         if (isset($json['error'])) {
@@ -211,6 +211,8 @@ class reddit2 extends \spouts\spout {
      * @throws GuzzleHttp\Exception\RequestException When an error is encountered
      * @throws \RuntimeException if the response body is not in JSON format
      * @throws \Exception if the credentials are invalid
+     *
+     * @return void
      */
     private function login(array $params) {
         $http = $this->webClient->getHttpClient();
@@ -249,7 +251,7 @@ class reddit2 extends \spouts\spout {
     private function sendRequest($url, $method = 'GET') {
         $http = $this->webClient->getHttpClient();
 
-        if (isset($this->reddit_session)) {
+        if (!empty($this->reddit_session)) {
             $request = new Request($method, $url, [
                 'cookies' => ['reddit_session' => $this->reddit_session],
             ]);

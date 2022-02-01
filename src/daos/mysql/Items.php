@@ -300,12 +300,7 @@ class Items implements \daos\ItemsInterface {
             $params[':offset_from_id'] = [
                 $options->fromId, \PDO::PARAM_INT,
             ];
-            $ltgt = null;
-            if ($order === 'ASC') {
-                $ltgt = '>';
-            } else {
-                $ltgt = '<';
-            }
+            $ltgt = $order === 'ASC' ? '>' : '<';
 
             // Because of sqlite lack of tuple comparison support, we use a
             // more complicated condition.

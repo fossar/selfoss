@@ -63,10 +63,16 @@ class feed extends \spouts\spout {
         $this->spoutTitle = $feedData['spoutTitle'];
     }
 
+    /**
+     * @return ?string
+     */
     public function getXmlUrl(array $params) {
         return isset($params['url']) ? html_entity_decode($params['url']) : null;
     }
 
+    /**
+     * @return ?string
+     */
     public function getHtmlUrl() {
         return $this->htmlUrl;
     }
@@ -171,7 +177,7 @@ class feed extends \spouts\spout {
                 if (isset($name)) {
                     return htmlspecialchars_decode($name);
                 } else {
-                    return htmlspecialchars_decode($author->get_email());
+                    return htmlspecialchars_decode((string) $author->get_email());
                 }
             }
         }

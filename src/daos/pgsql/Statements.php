@@ -16,16 +16,12 @@ class Statements extends \daos\mysql\Statements {
      * null first for order by clause
      *
      * @param string $column column to concat
-     * @param string $order
+     * @param 'DESC'|'ASC' $order
      *
      * @return string full statement
      */
     public static function nullFirst($column, $order) {
-        if ($order === 'DESC') {
-            $nulls = 'LAST';
-        } elseif ($order === 'ASC') {
-            $nulls = 'FIRST';
-        }
+        $nulls = $order === 'DESC' ? 'LAST' : 'FIRST';
 
         return "$column $order NULLS $nulls";
     }

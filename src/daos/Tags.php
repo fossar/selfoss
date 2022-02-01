@@ -28,8 +28,6 @@ class Tags {
 
     /**
      * Constructor.
-     *
-     * @return void
      */
     public function __construct(Authentication $authentication, Configuration $configuration, Logger $logger, TagsInterface $backend) {
         $this->authentication = $authentication;
@@ -38,6 +36,11 @@ class Tags {
         $this->logger = $logger;
     }
 
+    /**
+     * Returns all tags user has access to.
+     *
+     * @return array{tag: string, color: string}[]
+     */
     public function get() {
         $tags = $this->backend->get();
         // remove items with private tags
