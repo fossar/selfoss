@@ -2,6 +2,9 @@
 
 namespace spouts\youtube;
 
+use SimplePie_Item;
+use spouts\Item;
+
 /**
  * Spout for fetching a YouTube rss feed
  *
@@ -60,13 +63,20 @@ class youtube extends \spouts\rss\feed {
         return 'https://www.youtube.com/feeds/videos.xml?' . $feed_type . '=' . $id;
     }
 
-    public function getThumbnail() {
-        if (!$this->valid()) {
-            return '';
+    /**
+     * @return \Generator<Item<SimplePie_Item>>
+     */
+    public function getItems() {
+        foreach (parent::getItems() as $item) {
+            $thumbnail = $this->getThumbnail($item->getExtraData());
+            yield $item->withThumbnail($thumbnail);
         }
+    }
 
-        $item = $this->items->current();
-
+    /**
+     * @return ?string
+     */
+    private function getThumbnail(SimplePie_Item $item) {
         // search enclosures (media tags)
         if (($firstEnclosure = $item->get_enclosure(0)) !== null) {
             if ($firstEnclosure->get_thumbnail()) {

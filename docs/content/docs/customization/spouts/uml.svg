@@ -1,0 +1,152 @@
+<svg version="1.1" baseProfile="full" width="911.0" height="547.0" viewbox="0 0 911 547" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events">
+	<desc >[&lt;abstract&gt;spouts\spout
+	|+$name: string
+	;+$description: string
+	;+$params: array
+	|+load(array $params): void
+	;+getXmlUrl(array $params): string\|null
+	;+getHtmlUrl() string\|null
+	;+getTitle(): string\|null
+	;+getIcon(): string\|null
+	;+getItems(): Iterator&lt;spouts\Item&lt;mixed&gt;&gt;
+	]
+
+	[spouts\rss\feed]
+	[spouts\rss\images]
+	[spouts\twitter\Search]
+	[spouts\github\commits]
+
+	[spouts\spout] &lt;:- [spouts\rss\feed]
+	[spouts\rss\feed] &lt;:- [spouts\rss\images]
+	[spouts\spout] &lt;:- [spouts\github\commits]
+	[spouts\spout] &lt;:-  [spouts\twitter\Search]
+
+	[spouts\Item&lt;T&gt;
+	|-$id: string
+	;-$title: string
+	;-$content: string
+	;-$thumbnail: string\|null
+	;-$icon: string\|null
+	;-$link: string
+	;-$date: DateTimeInterface\|null
+	;-$author: string\|null
+	;-$extraData: T
+	]
+
+	[spouts\spout] -&gt; [spouts\Item&lt;T&gt;]
+	</desc>
+	<g stroke-width="1.0" text-align="left" font="12pt Helvetica, Arial, sans-serif" font-size="12pt" font-family="Helvetica" font-weight="bold" font-style="normal">
+		<g transform="translate(0.5, 0.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" stroke-width="3.0" stroke-linejoin="round" stroke-linecap="round" stroke="#33322E">
+			<g stroke="transparent" fill="transparent">
+				<rect x="0.0" y="0.0" height="547.0" width="911.0" stroke="none"></rect>
+			</g>
+			<g transform="translate(8, 8)" fill="#33322E">
+				<g transform="translate(20, 20)" fill="#33322E" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal">
+					<path d="M345.0 208.3 L337 218 L337 313.5 L337.0 313.5 " fill="none"></path>
+					<path d="M349.1 211.7 L345.0 208.3 L340.9 204.9 L353.5 198.0 Z"></path>
+					<path d="M337.0 357.8 L337 440 L337 460 L337.0 460.0 " fill="none"></path>
+					<path d="M342.3 357.8 L337.0 357.8 L331.7 357.8 L337.0 344.5 Z"></path>
+					<path d="M606.8 162.0 L759 218 L759 313.5 L759.0 313.5 " fill="none"></path>
+					<path d="M608.6 157.0 L606.8 162.0 L604.9 167.0 L594.3 157.4 Z"></path>
+					<path d="M525.5 208.3 L533.5 218 L533.5 313.5 L533.5 313.5 " fill="none"></path>
+					<path d="M529.6 204.9 L525.5 208.3 L521.4 211.7 L517.0 198.0 Z"></path>
+					<path d="M276.3 158.1 L115 218 L115 231.33333333333334 L115.0 231.3 " fill="none"></path>
+					<path d="M109.7 224.7 L115.0 231.3 L120.3 224.7 L115.0 238.0 Z"></path>
+					<g data-name="spouts\spout">
+						<g fill="#eee8d5" stroke="#33322E" data-name="spouts\spout">
+							<rect x="276.0" y="0.0" height="198.0" width="318.0" data-name="spouts\spout"></rect>
+							<path d="M276.0 31.0 L594.0 31.0" fill="none" data-name="spouts\spout"></path>
+							<path d="M276.0 92.0 L594.0 92.0" fill="none" data-name="spouts\spout"></path>
+						</g>
+						<g transform="translate(276, 0)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="italic" data-name="spouts\spout">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="spouts\spout">
+								<text x="151.0" y="13.5" stroke="none" text-anchor="middle" data-name="spouts\spout">spouts\spout</text>
+							</g>
+						</g>
+						<g transform="translate(276, 31)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="spouts\spout">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="spouts\spout">
+								<text x="0.0" y="13.5" stroke="none" data-name="spouts\spout">+$name: string</text>
+								<text x="0.0" y="28.5" stroke="none" data-name="spouts\spout">+$description: string</text>
+								<text x="0.0" y="43.5" stroke="none" data-name="spouts\spout">+$params: array</text>
+							</g>
+						</g>
+						<g transform="translate(276, 92)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="spouts\spout">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="spouts\spout">
+								<text x="0.0" y="13.5" stroke="none" data-name="spouts\spout">+load(array $params): void</text>
+								<text x="0.0" y="28.5" stroke="none" data-name="spouts\spout">+getXmlUrl(array $params): string|null</text>
+								<text x="0.0" y="43.5" stroke="none" data-name="spouts\spout">+getHtmlUrl() string|null</text>
+								<text x="0.0" y="58.5" stroke="none" data-name="spouts\spout">+getTitle(): string|null</text>
+								<text x="0.0" y="73.5" stroke="none" data-name="spouts\spout">+getIcon(): string|null</text>
+								<text x="0.0" y="88.5" stroke="none" data-name="spouts\spout">+getItems(): Iterator&lt;spouts\Item&lt;mixed&gt;&gt;</text>
+							</g>
+						</g>
+					</g>
+					<g data-name="spouts\Item&lt;T&gt;">
+						<g fill="#eee8d5" stroke="#33322E" data-name="spouts\Item&lt;T&gt;">
+							<rect x="0.0" y="238.0" height="182.0" width="230.0" data-name="spouts\Item&lt;T&gt;"></rect>
+							<path d="M0.0 269.0 L230.0 269.0" fill="none" data-name="spouts\Item&lt;T&gt;"></path>
+						</g>
+						<g transform="translate(0, 238)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="spouts\Item&lt;T&gt;">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="spouts\Item&lt;T&gt;">
+								<text x="107.0" y="13.5" stroke="none" text-anchor="middle" data-name="spouts\Item&lt;T&gt;">spouts\Item&lt;T&gt;</text>
+							</g>
+						</g>
+						<g transform="translate(0, 269)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="spouts\Item&lt;T&gt;">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="spouts\Item&lt;T&gt;">
+								<text x="0.0" y="13.5" stroke="none" data-name="spouts\Item&lt;T&gt;">-$id: string</text>
+								<text x="0.0" y="28.5" stroke="none" data-name="spouts\Item&lt;T&gt;">-$title: string</text>
+								<text x="0.0" y="43.5" stroke="none" data-name="spouts\Item&lt;T&gt;">-$content: string</text>
+								<text x="0.0" y="58.5" stroke="none" data-name="spouts\Item&lt;T&gt;">-$thumbnail: string|null</text>
+								<text x="0.0" y="73.5" stroke="none" data-name="spouts\Item&lt;T&gt;">-$icon: string|null</text>
+								<text x="0.0" y="88.5" stroke="none" data-name="spouts\Item&lt;T&gt;">-$link: string</text>
+								<text x="0.0" y="103.5" stroke="none" data-name="spouts\Item&lt;T&gt;">-$date: DateTimeInterface|null</text>
+								<text x="0.0" y="118.5" stroke="none" data-name="spouts\Item&lt;T&gt;">-$author: string|null</text>
+								<text x="0.0" y="133.5" stroke="none" data-name="spouts\Item&lt;T&gt;">-$extraData: T</text>
+							</g>
+						</g>
+					</g>
+					<g data-name="spouts\rss\feed">
+						<g fill="#eee8d5" stroke="#33322E" data-name="spouts\rss\feed">
+							<rect x="270.0" y="314.0" height="31.0" width="134.0" data-name="spouts\rss\feed"></rect>
+						</g>
+						<g transform="translate(270, 314)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="spouts\rss\feed">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="spouts\rss\feed">
+								<text x="59.0" y="13.5" stroke="none" text-anchor="middle" data-name="spouts\rss\feed">spouts\rss\feed</text>
+							</g>
+						</g>
+					</g>
+					<g data-name="spouts\rss\images">
+						<g fill="#eee8d5" stroke="#33322E" data-name="spouts\rss\images">
+							<rect x="259.0" y="460.0" height="31.0" width="157.0" data-name="spouts\rss\images"></rect>
+						</g>
+						<g transform="translate(259, 460)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="spouts\rss\images">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="spouts\rss\images">
+								<text x="70.5" y="13.5" stroke="none" text-anchor="middle" data-name="spouts\rss\images">spouts\rss\images</text>
+							</g>
+						</g>
+					</g>
+					<g data-name="spouts\twitter\Search">
+						<g fill="#eee8d5" stroke="#33322E" data-name="spouts\twitter\Search">
+							<rect x="444.0" y="314.0" height="31.0" width="179.0" data-name="spouts\twitter\Search"></rect>
+						</g>
+						<g transform="translate(444, 314)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="spouts\twitter\Search">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="spouts\twitter\Search">
+								<text x="81.5" y="13.5" stroke="none" text-anchor="middle" data-name="spouts\twitter\Search">spouts\twitter\Search</text>
+							</g>
+						</g>
+					</g>
+					<g data-name="spouts\github\commits">
+						<g fill="#eee8d5" stroke="#33322E" data-name="spouts\github\commits">
+							<rect x="663.0" y="314.0" height="31.0" width="192.0" data-name="spouts\github\commits"></rect>
+						</g>
+						<g transform="translate(663, 314)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="spouts\github\commits">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="spouts\github\commits">
+								<text x="88.0" y="13.5" stroke="none" text-anchor="middle" data-name="spouts\github\commits">spouts\github\commits</text>
+							</g>
+						</g>
+					</g>
+				</g>
+			</g>
+		</g>
+	</g>
+</svg>

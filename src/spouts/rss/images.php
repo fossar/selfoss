@@ -2,6 +2,9 @@
 
 namespace spouts\rss;
 
+use SimplePie_Item;
+use spouts\Item;
+
 /**
  * Spout for fetching images from given rss feed
  *
@@ -16,13 +19,24 @@ class images extends feed {
     /** @var string description of this source type */
     public $description = 'Fetch images from given rss feed.';
 
-    public function getThumbnail() {
-        if (!$this->valid()) {
-            return '';
+    /**
+     * @return \Generator<Item<SimplePie_Item>> list of items
+     */
+    public function getItems() {
+        foreach (parent::getItems() as $item) {
+            $thumbnail = $this->findThumbnail($item->getExtraData());
+            if ($thumbnail !== null) {
+                yield $item->withThumbnail($thumbnail);
+            } else {
+                yield $item;
+            }
         }
+    }
 
-        $item = $this->items->current();
-
+    /**
+     * @return ?string
+     */
+    private function findThumbnail(SimplePie_Item $item) {
         // search enclosures (media tags)
         if (($firstEnclosure = $item->get_enclosure(0)) !== null) {
             // thumbnail given?
@@ -41,6 +55,6 @@ class images extends feed {
             }
         }
 
-        return '';
+        return null;
     }
 }

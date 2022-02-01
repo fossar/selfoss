@@ -64,8 +64,8 @@ final class YouTubeTest extends TestCase {
             // Uncomment the following line to refresh the resources:
             // file_put_contents($cachedFeedPath, file_get_contents($yt->getXmlUrl($params)));
 
-            $this->assertEquals($feedTitle, $yt->getSpoutTitle());
-            $this->assertEquals($firstItemTitle, $yt->getTitle());
+            $this->assertEquals($feedTitle, $yt->getTitle());
+            $this->assertEquals($firstItemTitle, $yt->getItems()->current()->getTitle());
         } finally {
             restore_error_handler();
         }

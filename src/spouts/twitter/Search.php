@@ -65,6 +65,6 @@ class Search extends \spouts\twitter\usertimeline {
 
         $this->htmlUrl = 'https://twitter.com/search?q=' . urlencode($params['query']);
 
-        $this->spoutTitle = "Search twitter for {$params['query']}";
+        $this->title = "Search twitter for {$params['query']}";
     }
 }

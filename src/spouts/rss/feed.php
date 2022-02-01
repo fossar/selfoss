@@ -2,10 +2,11 @@
 
 namespace spouts\rss;
 
-use ArrayIterator;
 use helpers\FeedReader;
 use helpers\Image;
 use Monolog\Logger;
+use SimplePie_Item;
+use spouts\Item;
 
 /**
  * Spout for fetching an rss feed
@@ -15,8 +16,6 @@ use Monolog\Logger;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class feed extends \spouts\spout {
-    use \helpers\ItemsIterator;
-
     /** @var string name of source */
     public $name = 'RSS Feed';
 
@@ -46,6 +45,12 @@ class feed extends \spouts\spout {
     /** @var Image image helper */
     private $imageHelper;
 
+    /** @var ?string title of the source */
+    protected $title = null;
+
+    /** @var SimplePie_Item[] current fetched items */
+    private $items = [];
+
     public function __construct(FeedReader $feed, Image $imageHelper, Logger $logger) {
         $this->imageHelper = $imageHelper;
         $this->logger = $logger;
@@ -58,9 +63,16 @@ class feed extends \spouts\spout {
 
     public function load(array $params) {
         $feedData = $this->feed->load(htmlspecialchars_decode($params['url']));
-        $this->items = new ArrayIterator($feedData['items']);
+        $this->items = $feedData['items'];
         $this->htmlUrl = $feedData['htmlUrl'];
-        $this->spoutTitle = $feedData['spoutTitle'];
+        $this->title = $feedData['title'];
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getTitle() {
+        return $this->title;
     }
 
     /**
@@ -77,40 +89,56 @@ class feed extends \spouts\spout {
         return $this->htmlUrl;
     }
 
-    public function getId() {
-        if ($this->valid()) {
-            $id = $this->items->current()->get_id();
+    /**
+     * @return \Generator<Item<SimplePie_Item>> list of items
+     */
+    public function getItems() {
+        foreach ($this->items as $item) {
+            $id = (string) $item->get_id();
             if (strlen($id) > 255) {
                 $id = md5($id);
             }
+            $title = htmlspecialchars_decode((string) $item->get_title());
+            $content = (string) $item->get_content();
+            $thumbnail = null;
+            $icon = null;
+            $link = htmlspecialchars_decode((string) $item->get_link(), ENT_COMPAT); // SimplePie sanitizes URLs
+            $unixDate = $item->get_date('U');
+            $date = $unixDate !== null ? new \DateTimeImmutable('@' . $unixDate) : new \DateTimeImmutable();
+            $author = $this->getAuthorString($item);
 
-            return $id;
+            yield new Item(
+                $id,
+                $title,
+                $content,
+                $thumbnail,
+                $icon,
+                $link,
+                $date,
+                $author,
+                $item
+            );
         }
-
-        return null;
     }
 
-    public function getTitle() {
-        if ($this->valid()) {
-            return htmlspecialchars_decode($this->items->current()->get_title());
-        }
-
-        return null;
-    }
-
-    public function getContent() {
-        if ($this->valid()) {
-            return $this->items->current()->get_content();
+    /**
+     * @return ?string
+     */
+    private function getAuthorString(SimplePie_Item $item) {
+        $author = $item->get_author();
+        if (isset($author)) {
+            $name = $author->get_name();
+            if (isset($name)) {
+                return htmlspecialchars_decode($name);
+            } else {
+                return htmlspecialchars_decode((string) $author->get_email());
+            }
         }
 
         return null;
     }
 
     public function getIcon() {
-        return null;
-    }
-
-    public function getSourceIcon() {
         // Try to use feed logo first
         $feedLogoUrl = $this->feed->getImageUrl();
         if ($feedLogoUrl && ($iconData = $this->imageHelper->fetchFavicon($feedLogoUrl)) !== null) {
@@ -148,45 +176,9 @@ class feed extends \spouts\spout {
         return null;
     }
 
-    public function getLink() {
-        if ($this->valid()) {
-            $link = $this->items->current()->get_link();
-
-            return htmlspecialchars_decode($link, ENT_COMPAT); // SimplePie sanitizes URLs
-        }
-
-        return null;
-    }
-
-    public function getDate() {
-        if ($this->valid()) {
-            $timestamp = (string) $this->items->current()->get_date('U');
-
-            return new \DateTimeImmutable('@' . $timestamp);
-        }
-
-        return new \DateTimeImmutable();
-    }
-
-    public function getAuthor() {
-        if ($this->valid()) {
-            $author = $this->items->current()->get_author();
-            if (isset($author)) {
-                $name = $author->get_name();
-                if (isset($name)) {
-                    return htmlspecialchars_decode($name);
-                } else {
-                    return htmlspecialchars_decode((string) $author->get_email());
-                }
-            }
-        }
-
-        return null;
-    }
-
     public function destroy() {
         $this->feed->__destruct();
         unset($this->items);
-        $this->items = null;
+        $this->items = [];
     }
 }

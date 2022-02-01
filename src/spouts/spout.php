@@ -10,7 +10,7 @@ namespace spouts;
  * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
-abstract class spout implements \Iterator {
+abstract class spout {
     /** @var string name of source */
     public $name = '';
 
@@ -44,9 +44,6 @@ abstract class spout implements \Iterator {
      */
     public $params = [];
 
-    /** @var ?string title of the spout */
-    protected $spoutTitle = null;
-
     /**
      * loads content for given source
      *
@@ -63,10 +60,10 @@ abstract class spout implements \Iterator {
      *
      * @param array $params params for the source
      *
-     * @return string url as xml
+     * @return ?string url as xml
      */
     public function getXmlUrl(array $params) {
-        return false;
+        return null;
     }
 
     /**
@@ -81,8 +78,8 @@ abstract class spout implements \Iterator {
      *
      * @return ?string title as loaded by the spout
      */
-    public function getSpoutTitle() {
-        return $this->spoutTitle;
+    public function getTitle() {
+        return null;
     }
 
     /**
@@ -90,78 +87,16 @@ abstract class spout implements \Iterator {
      *
      * @return ?string icon as URL
      */
-    public function getSourceIcon() {
-        return null;
-    }
-
-    /**
-     * returns an unique id for this item
-     *
-     * @return string id as hash
-     */
-    abstract public function getId();
-
-    /**
-     * returns the current title as string. If the spout allows HTML in the
-     * title, HTML special chars are expected to be decoded by the spout (for
-     * instance when the spout feed is XML).
-     *
-     * @return string title
-     */
-    abstract public function getTitle();
-
-    /**
-     * returns the content of this item as string. HTML special chars are
-     * expected to be decoded by the spout (for instance when the spout
-     * feed is XML).
-     *
-     * @return string content
-     */
-    public function getContent() {
-        return '';
-    }
-
-    /**
-     * returns the thumbnail of this item (for multimedia feeds)
-     *
-     * @return string thumbnail url
-     */
-    public function getThumbnail() {
-        return '';
-    }
-
-    /**
-     * Returns the icon of this item.
-     *
-     * @return ?string icon as url
-     */
     public function getIcon() {
         return null;
     }
 
     /**
-     * returns the link of this item
+     * Returns list of items.
      *
-     * @return string link
+     * @return \Iterator<Item<mixed>> list of items
      */
-    abstract public function getLink();
-
-    /**
-     * returns the date of this item
-     *
-     * @return \DateTimeInterface date
-     */
-    abstract public function getDate();
-
-    /**
-     * returns the author of this item with html special chars decoded if
-     * applicable.
-     *
-     * @return ?string author
-     */
-    public function getAuthor() {
-        return null;
-    }
+    abstract public function getItems();
 
     /**
      * destroy the plugin (prevent memory issues)

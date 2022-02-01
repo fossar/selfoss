@@ -141,8 +141,11 @@ class ContentLoader {
             // insert new items in database
             $this->logger->debug('start item fetching');
 
+            // Spout iterator can be a generator so we cannot iterate it twice.
+            $items = iterator_to_array($spout->getItems());
+
             $itemsInFeed = [];
-            foreach ($spout as $item) {
+            foreach ($items as $item) {
                 $itemsInFeed[] = $item->getId();
             }
             $itemsFound = $this->itemsDao->findAll($itemsInFeed, $source['id']);
@@ -150,7 +153,7 @@ class ContentLoader {
             $iconCache = [];
             $sourceIconUrl = null;
             $itemsSeen = [];
-            foreach ($spout as $item) {
+            foreach ($items as $item) {
                 // item already in database?
                 if (isset($itemsFound[$item->getId()])) {
                     $this->logger->debug('item "' . $item->getTitle() . '" already in database.');
@@ -160,8 +163,11 @@ class ContentLoader {
 
                 // test date: continue with next if item too old
                 $itemDate = $item->getDate();
+                if ($itemDate === null) {
+                    $itemDate = new \DateTimeImmutable();
+                }
                 if ($itemDate < $minDate) {
-                    $this->logger->debug('item "' . $item->getTitle() . '" (' . $item->getDate() . ') older than ' . $this->configuration->itemsLifetime . ' days');
+                    $this->logger->debug('item "' . $item->getTitle() . '" (' . $itemDate->format(\DateTimeInterface::ATOM) . ') older than ' . $this->configuration->itemsLifetime . ' days');
                     continue;
                 }
 
@@ -215,7 +221,7 @@ class ContentLoader {
                 ];
 
                 $thumbnailUrl = $item->getThumbnail();
-                if (strlen(trim($thumbnailUrl)) > 0) {
+                if ($thumbnailUrl !== null) {
                     // save thumbnail
                     $newItem['thumbnail'] = $this->fetchThumbnail($thumbnailUrl) ?: '';
                 }
@@ -224,7 +230,7 @@ class ContentLoader {
                     // Clear the value in case we need it in catch clause.
                     $iconUrl = null;
                     $iconUrl = $item->getIcon();
-                    if (strlen(trim($iconUrl)) > 0) {
+                    if ($iconUrl !== null) {
                         if (isset($iconCache[$iconUrl])) {
                             $this->logger->debug('reusing recently used icon: ' . $iconUrl);
                         } else {
@@ -238,7 +244,7 @@ class ContentLoader {
                     } else {
                         try {
                             // we do not want to run this more than once
-                            $sourceIconUrl = $item->getSourceIcon() ?: '';
+                            $sourceIconUrl = $spout->getIcon() ?: '';
 
                             if (strlen(trim($sourceIconUrl)) > 0) {
                                 // save source icon
@@ -474,7 +480,7 @@ class ContentLoader {
             return null;
         }
 
-        $title = $spout->getSpoutTitle();
+        $title = $spout->getTitle();
         $spout->destroy();
 
         return $title;

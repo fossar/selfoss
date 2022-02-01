@@ -2,11 +2,11 @@
 
 namespace spouts\twitter;
 
-use ArrayIterator;
 use GuzzleHttp;
 use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Subscriber\Oauth\Oauth1;
 use helpers\WebClient;
+use spouts\Item;
 use stdClass;
 
 /**
@@ -17,8 +17,6 @@ use stdClass;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class usertimeline extends \spouts\spout {
-    use \helpers\ItemsIterator;
-
     /** @var string name of source */
     public $name = 'Twitter: user timeline';
 
@@ -73,6 +71,12 @@ class usertimeline extends \spouts\spout {
     /** @var WebClient */
     private $webClient;
 
+    /** @var ?string title of the source */
+    protected $title = null;
+
+    /** @var stdClass[] current fetched items */
+    protected $items = [];
+
     public function __construct(WebClient $webClient) {
         $this->webClient = $webClient;
     }
@@ -118,7 +122,7 @@ class usertimeline extends \spouts\spout {
      * @throws \Exception when API request fails
      * @throws GuzzleHttp\Exception\RequestException when HTTP request fails for API-unrelated reasons
      *
-     * @return ArrayIterator<stdClass>
+     * @return stdClass[]
      */
     protected function fetchTwitterTimeline($endpoint, array $params = []) {
         if (!isset($this->client)) {
@@ -144,7 +148,7 @@ class usertimeline extends \spouts\spout {
                 throw new \Exception('Invalid twitter response');
             }
 
-            return new ArrayIterator($timeline);
+            return $timeline;
         } catch (BadResponseException $e) {
             if ($e->hasResponse()) {
                 $body = json_decode((string) $e->getResponse()->getBody());
@@ -175,122 +179,119 @@ class usertimeline extends \spouts\spout {
 
         $this->htmlUrl = 'https://twitter.com/' . urlencode($params['username']);
 
-        $this->spoutTitle = "@{$params['username']}";
-    }
-
-    public function getHtmlUrl() {
-        if (isset($this->htmlUrl)) {
-            return $this->htmlUrl;
-        }
-
-        return null;
-    }
-
-    public function getId() {
-        if ($this->items !== null) {
-            return $this->items->current()->id_str;
-        }
-
-        return null;
+        $this->title = "@{$params['username']}";
     }
 
     public function getTitle() {
-        if ($this->items !== null) {
-            $item = $this->items->current();
-            $rt = '';
-            if (isset($item->retweeted_status)) {
-                $rt = ' (RT ' . $item->user->name . ')';
-                $item = $item->retweeted_status;
-            }
-
-            $entities = self::formatEntities($item->entities);
-            $tweet = $item->user->name . $rt . ':<br>' . self::replaceEntities($item->full_text, $entities);
-
-            return $tweet;
-        }
-
-        return null;
+        return $this->title;
     }
 
-    public function getContent() {
+    public function getHtmlUrl() {
+        return $this->htmlUrl;
+    }
+
+    /**
+     * @return \Generator<Item<null>> list of items
+     */
+    public function getItems() {
+        foreach ($this->items as $item) {
+            $id = $item->id_str;
+            $title = $this->getTweetTitle($item);
+            $content = $this->getContent($item);
+            $thumbnail = $this->getThumbnail($item);
+            $icon = $this->getTweetIcon($item);
+            $link = 'https://twitter.com/' . $item->user->screen_name . '/status/' . $item->id_str;
+            // Format of `created_at` field not specified, looks US-centric.
+            // https://developer.twitter.com/en/docs/twitter-api/v1/data-dictionary/object-model/tweet
+            $date = new \DateTimeImmutable($item->created_at);
+            $author = null;
+
+            yield new Item(
+                $id,
+                $title,
+                $content,
+                $thumbnail,
+                $icon,
+                $link,
+                $date,
+                $author
+            );
+        }
+    }
+
+    /**
+     * @return string
+     */
+    private function getTweetTitle(stdClass $item) {
+        $rt = '';
+        if (isset($item->retweeted_status)) {
+            $rt = ' (RT ' . $item->user->name . ')';
+            $item = $item->retweeted_status;
+        }
+
+        $entities = self::formatEntities($item->entities);
+        $tweet = $item->user->name . $rt . ':<br>' . self::replaceEntities($item->full_text, $entities);
+
+        return $tweet;
+    }
+
+    /**
+     * @return string
+     */
+    private function getContent(stdClass $item) {
         $result = '';
 
-        if ($this->items !== false) {
-            $item = current($this->items);
-            if (isset($item->retweeted_status)) {
-                $item = $item->retweeted_status;
-            }
+        if (isset($item->retweeted_status)) {
+            $item = $item->retweeted_status;
+        }
 
-            if (isset($item->extended_entities) && isset($item->extended_entities->media) && count($item->extended_entities->media) > 0) {
-                foreach ($item->extended_entities->media as $media) {
-                    if ($media->type === 'photo') {
-                        $result .= '<p><a href="' . $media->media_url_https . ':large"><img src="' . $media->media_url_https . ':small" alt=""></a></p>' . PHP_EOL;
-                    }
+        if (isset($item->extended_entities) && isset($item->extended_entities->media) && count($item->extended_entities->media) > 0) {
+            foreach ($item->extended_entities->media as $media) {
+                if ($media->type === 'photo') {
+                    $result .= '<p><a href="' . $media->media_url_https . ':large"><img src="' . $media->media_url_https . ':small" alt=""></a></p>' . PHP_EOL;
                 }
             }
+        }
 
-            if (isset($item->quoted_status)) {
-                $quoted = $item->quoted_status;
-                $entities = self::formatEntities($quoted->entities);
+        if (isset($item->quoted_status)) {
+            $quoted = $item->quoted_status;
+            $entities = self::formatEntities($quoted->entities);
 
-                $result .= '<a href="https://twitter.com/' . $quoted->user->screen_name . '">@' . $quoted->user->screen_name . '</a>:';
-                $result .= '<blockquote>' . self::replaceEntities($quoted->full_text, $entities) . '</blockquote>';
-            }
+            $result .= '<a href="https://twitter.com/' . $quoted->user->screen_name . '">@' . $quoted->user->screen_name . '</a>:';
+            $result .= '<blockquote>' . self::replaceEntities($quoted->full_text, $entities) . '</blockquote>';
         }
 
         return $result;
     }
 
-    public function getIcon() {
-        if ($this->items !== null) {
-            $item = $this->items->current();
-            if (isset($item->retweeted_status)) {
-                $item = $item->retweeted_status;
-            }
+    /**
+     * @return string
+     */
+    private function getTweetIcon(stdClass $item) {
+        if (isset($item->retweeted_status)) {
+            $item = $item->retweeted_status;
+        }
 
-            return $item->user->profile_image_url_https;
+        return $item->user->profile_image_url_https;
+    }
+
+    /**
+     * @return ?string
+     */
+    private function getThumbnail(stdClass $item) {
+        if (isset($item->retweeted_status)) {
+            $item = $item->retweeted_status;
+        }
+        if (isset($item->entities->media) && $item->entities->media[0]->type === 'photo') {
+            return $item->entities->media[0]->media_url_https;
         }
 
         return null;
-    }
-
-    public function getLink() {
-        if ($this->items !== null) {
-            $item = $this->items->current();
-
-            return 'https://twitter.com/' . $item->user->screen_name . '/status/' . $item->id_str;
-        }
-
-        return null;
-    }
-
-    public function getThumbnail() {
-        if ($this->items !== null) {
-            $item = current($this->items);
-            if (isset($item->retweeted_status)) {
-                $item = $item->retweeted_status;
-            }
-            if (isset($item->entities->media) && $item->entities->media[0]->type === 'photo') {
-                return $item->entities->media[0]->media_url_https;
-            }
-        }
-
-        return '';
-    }
-
-    public function getDate() {
-        if ($this->items !== null) {
-            // Format of `created_at` field not specified, looks US-centric.
-            // https://developer.twitter.com/en/docs/twitter-api/v1/data-dictionary/object-model/tweet
-            return new \DateTimeImmutable($this->items->current()->created_at);
-        }
-
-        return new \DateTimeImmutable();
     }
 
     public function destroy() {
         unset($this->items);
-        $this->items = null;
+        $this->items = [];
     }
 
     /**

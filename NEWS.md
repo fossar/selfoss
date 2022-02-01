@@ -85,7 +85,7 @@
   * Swedish `sv`
 - Wallabag sharer now targets Wallabag 2 by default. This is potentially breaking change but hopefully, no one uses Wallabag 1 any more. ([#1261](https://github.com/fossar/selfoss/pull/1261))
 - `defaults.ini` file is no longer used, it is only provided for convenience under a new name `config-example.ini` ([#1261](https://github.com/fossar/selfoss/pull/1261), [#1267](https://github.com/fossar/selfoss/pull/1267))
-- `spout::getDate()` method now returns `DateTimeInterface` instead of a string. ([#1341](https://github.com/fossar/selfoss/pull/1341))
+- `spout` classes no longer need to implement `Iterator`, instead they should return `Iterator` of newly introduced `Item` objects from `getItems()` method. The types of properties of items have also been revisited. ([#1341](https://github.com/fossar/selfoss/pull/1341), [#1342](https://github.com/fossar/selfoss/pull/1342))
 
 ### Other changes
 - The front-end has been modernized using React framework, this will greatly simplify future development. ([#1216](https://github.com/fossar/selfoss/pull/1216))

@@ -9,6 +9,8 @@ use helpers\Image;
 use helpers\WebClient;
 use Http\Adapter\Guzzle6\Client as GuzzleAdapter;
 use Monolog\Logger;
+use SimplePie_Item;
+use spouts\Item;
 
 /**
  * Plugin for fetching the news with fivefilters Full-Text RSS
@@ -58,9 +60,24 @@ class fulltextrss extends feed {
         $this->webClient = $webClient;
     }
 
-    public function getContent() {
-        $url = $this->getLink();
+    /**
+     * @return \Generator<Item<SimplePie_Item>> list of items
+     */
+    public function getItems() {
+        foreach (parent::getItems() as $item) {
+            $url = self::removeTrackersFromUrl($item->getLink());
+            $newContent = $this->getFullContent($url, $item);
+            yield $item->withLink($url)->withContent($newContent);
+        }
+    }
 
+    /**
+     * @param string $url
+     * @param Item<SimplePie_Item> $item
+     *
+     * @return string
+     */
+    public function getFullContent($url, Item $item) {
         if ($this->graby === null) {
             $this->graby = new Graby([
                 'extractor' => [
@@ -80,18 +97,12 @@ class fulltextrss extends feed {
         if ($response['status'] !== 200) {
             $this->logger->error('Failed loading page');
 
-            return '<p><strong>Failed to get web page</strong></p>' . parent::getContent();
+            return '<p><strong>Failed to get web page</strong></p>' . $item->getContent();
         }
 
         $content = $response['html'];
 
         return $content;
-    }
-
-    public function getLink() {
-        $url = parent::getLink();
-
-        return self::removeTrackersFromUrl($url);
     }
 
     /**

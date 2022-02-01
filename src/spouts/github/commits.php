@@ -2,8 +2,8 @@
 
 namespace spouts\github;
 
-use ArrayIterator;
 use helpers\WebClient;
+use spouts\Item;
 
 /**
  * Spout for fetching from GitHub
@@ -14,8 +14,6 @@ use helpers\WebClient;
  * @author     Tim Gerundt <tim@gerundt.de>
  */
 class commits extends \spouts\spout {
-    use \helpers\ItemsIterator;
-
     /** @var string name of source */
     public $name = 'GitHub: commits';
 
@@ -47,6 +45,9 @@ class commits extends \spouts\spout {
         ],
     ];
 
+    /** @var ?string title of the source */
+    protected $title = null;
+
     /** @var string global html url for the source */
     protected $htmlUrl = '';
 
@@ -55,6 +56,9 @@ class commits extends \spouts\spout {
 
     /** @var WebClient */
     private $webClient;
+
+    /** @var array[] current fetched items */
+    private $items = [];
 
     public function __construct(WebClient $webClient) {
         $this->webClient = $webClient;
@@ -73,67 +77,56 @@ class commits extends \spouts\spout {
         $http = $this->webClient->getHttpClient();
         $response = $http->get($jsonUrl);
         $items = json_decode((string) $response->getBody(), true);
-        $this->items = new ArrayIterator($items);
+        $this->items = $items === null ? [] : $items;
 
-        $this->spoutTitle = "Recent Commits to {$params['repo']}:{$params['branch']}";
+        $this->title = "Recent Commits to {$params['repo']}:{$params['branch']}";
+    }
+
+    public function getTitle() {
+        return $this->title;
     }
 
     public function getHtmlUrl() {
         return $this->htmlUrl;
     }
 
-    public function getId() {
-        if ($this->valid()) {
-            return $this->items->current()['sha'];
-        }
-
-        return null;
-    }
-
-    public function getTitle() {
-        if ($this->valid()) {
-            $message = $this->items->current()['commit']['message'];
-
-            return htmlspecialchars(self::cutTitle($message));
-        }
-
-        return null;
-    }
-
-    public function getContent() {
-        if ($this->valid()) {
-            $message = $this->items->current()['commit']['message'];
-
-            return nl2br(htmlspecialchars($message), false);
-        }
-
-        return null;
-    }
-
     public function getIcon() {
         return $this->faviconUrl;
     }
 
-    public function getLink() {
-        if ($this->valid()) {
-            return $this->items->current()['html_url'];
-        }
+    /**
+     * @return \Generator<Item<null>> list of items
+     */
+    public function getItems() {
+        foreach ($this->items as $item) {
+            $message = $item['commit']['message'];
 
-        return null;
-    }
-
-    public function getDate() {
-        if ($this->valid()) {
+            $id = $item['sha'];
+            $title = htmlspecialchars(self::cutTitle($message));
+            $content = nl2br(htmlspecialchars($message), false);
+            $thumbnail = null;
+            $icon = null;
+            $link = $item['html_url'];
             // Appears to be ISO 8601.
-            return new \DateTimeImmutable($this->items->current()['commit']['author']['date']);
-        }
+            $date = new \DateTimeImmutable($item['commit']['author']['date']);
+            $author = null;
 
-        return new \DateTimeImmutable();
+            yield new Item(
+                $id,
+                $title,
+                $content,
+                $thumbnail,
+                $icon,
+                $link,
+                $date,
+                $author
+            );
+        }
     }
 
     public function destroy() {
         unset($this->items);
-        $this->items = null;
+        $this->items = [];
     }
 
     /**

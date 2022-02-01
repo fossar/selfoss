@@ -39,7 +39,7 @@ class FeedReader {
      *
      * @param string $url URL of the feed
      *
-     * @return array{items: \SimplePie_Item[], htmlUrl: string, spoutTitle: ?string}
+     * @return array{items: \SimplePie_Item[], htmlUrl: string, title: ?string}
      */
     public function load($url) {
         @$this->simplepie->set_feed_url($url);
@@ -62,7 +62,7 @@ class FeedReader {
             // save fetched items
             'items' => $this->simplepie->get_items(),
             'htmlUrl' => htmlspecialchars_decode((string) $this->simplepie->get_link(), ENT_COMPAT), // SimplePie sanitizes URLs
-            'spoutTitle' => $this->simplepie->get_title(),
+            'title' => $this->simplepie->get_title(),
         ];
     }
 
