@@ -183,7 +183,9 @@ class Image {
         }
 
         $mimeType = isset($imgInfo['mime']) ? strtolower($imgInfo['mime']) : null;
-        if ($mimeType !== null && isset(self::IMAGE_TYPES[$mimeType])) {
+        // Workaround for PHP 5.6, which does not allow isset on array access to array constants.
+        $types = self::IMAGE_TYPES;
+        if ($mimeType !== null && isset($types[$mimeType])) {
             $type = self::IMAGE_TYPES[$mimeType];
         } else {
             return null;
