@@ -1,0 +1,21 @@
+{
+  "name": "selfoss-docs",
+  "description": "Open source web based RSS reader and multi-source mashup aggregator",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Tobias Zeising <tobias.zeising@aditu.de>",
+  "license": "GPL-3.0-or-later",
+  "dependencies": {
+     "autoprefixer": "^9.8.4",
+    "postcss-color-function": "^4.1.0",
+    "postcss-import": "^12.0.1",
+    "postcss-math": "^0.0.10",
+    "postcss-mixins": "^6.2.3",
+    "postcss-nested": "^4.2.2",
+    "postcss-simple-vars": "^5.0.2",
+    "react": "^16.14.0",
+    "shayu": "^2.0.0-beta.5"
+  }
+}
