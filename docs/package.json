@@ -3,7 +3,8 @@
   "description": "Open source web based RSS reader and multi-source mashup aggregator",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "node .",
+    "watch": "NODE_ENV=development node ."
   },
   "author": "Tobias Zeising <tobias.zeising@aditu.de>",
   "license": "GPL-3.0-or-later",
