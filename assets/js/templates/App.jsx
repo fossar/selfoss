@@ -506,7 +506,7 @@ export default class App extends React.Component {
 
         return sourceRequests.refreshAll().then(() => {
             // probe stats and prompt reload to the user
-            selfoss.dbOnline.sync().then(function() {
+            selfoss.dbOnline.sync().then(() => {
                 if (this.state.unreadItemsCount > 0) {
                     this.showMessage(this._('sources_refreshed'), [
                         {
