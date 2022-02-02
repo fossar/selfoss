@@ -1,3 +1,5 @@
+import DocSection from "./components/blocks";
+
 export const meta = {
     title: "selfoss – the open source web based rss reader and multi source mashup aggregator",
 }
@@ -6,7 +8,7 @@ export const meta = {
 # Documentation
 
 ## Requirements {#requirements}
-<div class="documentation-entry">
+<DocSection>
 
 selfoss is not a hosted service. It has to be installed on your own web server. This web server must fulfil the following requirements (which are available from most providers)
 
@@ -17,10 +19,10 @@ selfoss is not a hosted service. It has to be installed on your own web server. 
 With Apache, ensure that you have `mod_authz_core`, `mod_rewrite` and `mod_headers` enabled and that `.htaccess` files are [allowed](http://httpd.apache.org/docs/current/mod/core.html#allowoverride) to set rewrite rules.
 
 selfoss supports all modern browsers, including Mozilla Firefox, Safari, Google Chrome, Opera and Internet Explorer. selfoss also supports mobile browsers on iPad, iPhone, Android and other devices.
-</div>
+</DocSection>
 
 ## Installing selfoss {#installation}
-<div class="documentation-entry">
+<DocSection>
 
 selfoss is a lightweight php based application. Just follow the simple installation instructions:
 
@@ -31,10 +33,10 @@ selfoss is a lightweight php based application. Just follow the simple installat
 5. Create cron job for updating feeds and point it to https://yoururl.com/update via `wget` or `curl`. You can also execute the `cliupdate.php` from command line.
 
 For further questions or any problems, use our [support forum](forum). For a more detailed step-by-step example installation, please visit the [wiki](https://github.com/fossar/selfoss/wiki/).
-</div>
+</DocSection>
 
 ## Configuring selfoss {#configuration}
-<div class="documentation-entry">
+<DocSection>
 
 All [configuration options](@/docs/administration/options.md) are optional. Any settings in `config.ini` will override the settings in `src/helpers/Configuration.php`. For convenience, the archive includes `config-example.ini` file containing the default configuration exported in INI format. To customize settings follow these instructions:
 
@@ -57,11 +59,11 @@ db_database=selfoss
 db_username=secretagent
 db_password=life0fD4ng3r
 ```
-</div>
+</DocSection>
 
 ## Importing feeds from a different RSS reader {#importing}
-<div class="documentation-entry">
+<DocSection>
 
 selfoss supports importing OPML files. Find the OPML export in the old application, it is usually located somewhere in settings.
 Then visit the page `https://your-selfoss-url.com/opml` and upload it there.
-</div>
+</DocSection>

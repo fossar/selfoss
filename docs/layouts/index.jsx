@@ -2,11 +2,12 @@
 
 const React = require('react');
 const Layout = require('./default.jsx');
+const { getUrl } = require('../helpers/url');
 
 function IndexLayout({ mdxContent, meta, section, pageContext }) {
     const postHeader = (
         <React.Fragment>
-            <div class="wrapper-light">
+            <div className="wrapper-light">
                 <div id="header-logo"></div>
 
                 <div id="header-just-updated"></div>
@@ -16,7 +17,7 @@ function IndexLayout({ mdxContent, meta, section, pageContext }) {
                 <a id="header-donate" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=LR67F3T9DMSC8"><span>donate</span></a>
 
                 <div id="header-appstores">
-                    <a href="https://f-droid.org/packages/apps.amine.bou.readerforselfoss"><img alt="Android app on F-Droid" src="{{ get_url(path='images/f-droid.svg') }}" width="141" height="42"></a>
+                    <a href="https://f-droid.org/packages/apps.amine.bou.readerforselfoss"><img alt="Android app on F-Droid" src={getUrl('images/f-droid.svg')} width="141" height="42"></a>
                 </div>
 
                 <div id="header-donate-tooltipp"><span>selfoss is completely free!<br>But if you like selfoss then feel free to donate the programmer a beer</span></div>
@@ -44,14 +45,14 @@ function IndexLayout({ mdxContent, meta, section, pageContext }) {
             </div>
 
             {/* Screenshots */}
-            <div class="wrapper-dark">
+            <div className="wrapper-dark">
                 <div id="screenshots">
                     <h1>Screenshots</h1>
 
                     <ul>
-                        <li><a href="{{ get_url(path='images/screenshot1.png') }}" title="selfoss on desktop" data-fancybox="screenshots"><img src="{{ get_url(path='images/screenshot1_thumb.png') }}" alt="selfoss on desktop"></a></li>
-                        <li><a href="{{ get_url(path='images/screenshot2.png') }}" title="selfoss on ipad" data-fancybox="screenshots"><img src="{{ get_url(path='images/screenshot2_thumb.png') }}" alt="selfoss on ipad"></a></li>
-                        <li><a href="{{ get_url(path='images/screenshot3.png') }}" title="selfoss on smartphone" data-fancybox="screenshots"><img src="{{ get_url(path='images/screenshot3_thumb.png') }}" alt="selfoss on smartphone"></a></li>
+                        <li><a href={getUrl('images/screenshot1.png')} title="selfoss on desktop" data-fancybox="screenshots"><img src={getUrl('images/screenshot1_thumb.png')} alt="selfoss on desktop"></a></li>
+                        <li><a href={getUrl('images/screenshot2.png')} title="selfoss on ipad" data-fancybox="screenshots"><img src={getUrl('images/screenshot2_thumb.png')} alt="selfoss on ipad"></a></li>
+                        <li><a href={getUrl('images/screenshot3.png')} title="selfoss on smartphone" data-fancybox="screenshots"><img src={getUrl('images/screenshot3_thumb.png')} alt="selfoss on smartphone"></a></li>
                     </ul>
 
                 </div>
@@ -60,16 +61,18 @@ function IndexLayout({ mdxContent, meta, section, pageContext }) {
     );
 
     const scripts = (
-        current_path === '/' ? (
+        meta.url === '/' ? (
             <script>
+            {`
             switch (document.location.hash) {
             case '#configuration_params':
-                document.location.href = '{safe(get_url(path="@/docs/administration/options.md"))}';
+                document.location.href = '${safe(getUrl("@/docs/administration/options.md"))}';
                 break;
             case '#about':
-                document.location.href = '{safe(get_url(path="@/docs/project/credits.md"))}';
+                document.location.href = '${safe(getUrl("@/docs/project/credits.md"))}';
                 break;
             }
+            `}
             </script>
         ) : undefined
     );
@@ -79,6 +82,9 @@ function IndexLayout({ mdxContent, meta, section, pageContext }) {
             title={section.title}
             postHeader={postHeader}
             scripts={scripts}
+            mdxContent={mdxContent}
+            meta={meta}
+            pageContext={pageContext}
         >
             {mdxContent}
         </Layout>

@@ -402,7 +402,7 @@ kbd {
     }
 }
 
-// Footnotes from pulldown-cmark
+/* Footnotes from pulldown-cmark */
 .footnote-definition {
     display: flex;
     font-size: 0.95em;
