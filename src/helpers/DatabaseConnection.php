@@ -116,16 +116,14 @@ class DatabaseConnection {
     }
 
     /**
-     * Execute SQL statement
+     * Execute SQL statement.
      *
      * @param string $cmd
      * @param array|scalar $args
      *
-     * @return ?array
+     * @return \PDOStatement
      **/
-    public function exec($cmd, $args = []) {
-        $result = null;
-
+    public function execute($cmd, $args = []) {
         if (is_scalar($args)) {
             $args = [1 => $args];
         }
@@ -174,12 +172,27 @@ class DatabaseConnection {
             throw $e;
         }
 
-        if ($query->columnCount() !== 0) {
-            $result = $query->fetchAll(PDO::FETCH_ASSOC);
+        return $query;
+    }
+
+    /**
+     * Execute SQL statement and fetch the result as an associative array (when applicable).
+     *
+     * @param string $cmd
+     * @param array|scalar $args
+     *
+     * @return ?array
+     **/
+    public function exec($cmd, $args = []) {
+        $statement = $this->execute($cmd, $args);
+
+        $result = null;
+        if ($statement->columnCount() !== 0) {
+            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         }
 
-        $query->closeCursor();
-        unset($query);
+        $statement->closeCursor();
+        unset($statement);
 
         return $result;
     }

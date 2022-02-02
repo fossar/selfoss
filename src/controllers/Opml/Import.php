@@ -121,7 +121,7 @@ class Import {
         $xml->registerXPathNamespace('selfoss', 'https://selfoss.aditu.de/');
 
         // tags are the words of the outline parent
-        $title = (string) $xml->attributes(null)->title;
+        $title = (string) $xml->attributes()->title;
         if ($title !== '' && $title !== '/') {
             $tags[] = $title;
             // for new tags, try to import tag color, otherwise use random color
@@ -165,7 +165,7 @@ class Import {
         // Optional attributes: title, htmlUrl, language, title, version
         // Selfoss namespaced attributes: spout, params
 
-        $attrs = $xml->attributes(null);
+        $attrs = $xml->attributes();
         $nsattrs = $xml->attributes('selfoss', true);
 
         // description

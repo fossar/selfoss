@@ -18,20 +18,16 @@ class Stats {
     /** @var \daos\Sources sources */
     private $sourcesDao;
 
-    /** @var \controllers\Tags tags controller */
-    private $tagsController;
-
     /** @var \daos\Tags tags */
     private $tagsDao;
 
     /** @var View view helper */
     private $view;
 
-    public function __construct(Authentication $authentication, \daos\Items $itemsDao, \daos\Sources $sourcesDao, \controllers\Tags $tagsController, \daos\Tags $tagsDao, View $view) {
+    public function __construct(Authentication $authentication, \daos\Items $itemsDao, \daos\Sources $sourcesDao, \daos\Tags $tagsDao, View $view) {
         $this->authentication = $authentication;
         $this->itemsDao = $itemsDao;
         $this->sourcesDao = $sourcesDao;
-        $this->tagsController = $tagsController;
         $this->tagsDao = $tagsDao;
         $this->view = $view;
     }

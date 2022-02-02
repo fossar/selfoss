@@ -12,13 +12,23 @@ interface DatabaseInterface {
     const PARAM_DATETIME = 4;
 
     /**
-     * Execute SQL statement(s)
+     * Execute SQL statement.
      *
      * @param string $cmd
      * @param array|scalar $args
      *
-     * @return array|null
+     * @return \PDOStatement
      */
+    public function execute($cmd, $args = []);
+
+    /**
+     * Execute SQL statement and fetch the result as an associative array (when applicable).
+     *
+     * @param string $cmd
+     * @param array|scalar $args
+     *
+     * @return ?array
+     **/
     public function exec($cmd, $args = []);
 
     /**

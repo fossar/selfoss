@@ -204,7 +204,7 @@ class Image {
             } else {
                 $image->setImageFormat('png24');
                 $image->setImageCompression(\Imagick::COMPRESSION_UNDEFINED);
-                $image->setOption('png:compression-level', 9);
+                $image->setOption('png:compression-level', '9');
             }
 
             return new ImageHolder((string) $image, $format, $image->getImageWidth(), $image->getImageHeight());

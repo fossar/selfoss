@@ -225,6 +225,8 @@ class ContentLoader {
                 }
 
                 try {
+                    // Clear the value in case we need it in catch clause.
+                    $iconUrl = null;
                     $iconUrl = $item->getIcon();
                     if (strlen(trim($iconUrl)) > 0) {
                         if (isset($iconCache[$iconUrl])) {
@@ -262,12 +264,16 @@ class ContentLoader {
                     }
                 } catch (\Throwable $e) {
                     // cache failure
-                    $iconCache[$iconUrl] = '';
+                    if ($iconUrl !== null) {
+                        $iconCache[$iconUrl] = '';
+                    }
                     $this->logger->error('icon: error', ['exception' => $e]);
                 } catch (\Exception $e) {
                     // For PHP 5
                     // cache failure
-                    $iconCache[$iconUrl] = '';
+                    if ($iconUrl !== null) {
+                        $iconCache[$iconUrl] = '';
+                    }
                     $this->logger->error('icon: error', ['exception' => $e]);
                 }
 

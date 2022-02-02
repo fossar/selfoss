@@ -108,8 +108,8 @@ class fulltextrss extends feed {
 
         // Next, rebuild URL
         $real_url = $url['scheme'] . '://';
-        if (isset($url['user']) && isset($url['password'])) {
-            $real_url .= $url['user'] . ':' . $url['password'] . '@';
+        if (isset($url['user']) && isset($url['pass'])) {
+            $real_url .= $url['user'] . ':' . $url['pass'] . '@';
         }
         $real_url .= $url['host'] . $url['path'];
 

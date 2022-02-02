@@ -704,11 +704,11 @@ class Items implements \daos\ItemsInterface {
                     ':id' => [$id, \PDO::PARAM_INT],
                     ':statusUpdate' => [$q['datetime'], \PDO::PARAM_STR],
                 ];
-                $updated = $this->database->exec(
+                $updated = $this->database->execute(
                     'UPDATE ' . $this->configuration->dbPrefix . 'items
                     SET ' . implode(', ', array_values($q['updates'])) . '
                     WHERE id = :id AND updatetime < :statusUpdate', $params);
-                if ($updated == 0) {
+                if ($updated->rowCount() === 0) {
                     // entry status was updated in between so updatetime must
                     // be updated to ensure client side consistency of
                     // statuses.

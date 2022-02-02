@@ -15,6 +15,8 @@ use Monolog\Logger;
  * @author     Harald Lapp <harald.lapp@gmail.com>
  * @author     Daniel Seither <post@tiwoc.de>
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
+ *
+ * @mixin SourcesInterface
  */
 class Sources {
     /** @var SourcesInterface Instance of backend specific sources class */
@@ -138,15 +140,15 @@ class Sources {
                 }
 
                 foreach ($validation as $validate) {
-                    if ($validate === 'alpha' && !preg_match("[A-Za-Z._\b]+", $value)) {
+                    if ($validate === 'alpha' && !preg_match("([A-Za-z._\b]+)", $value)) {
                         $result[$id] = 'only alphabetic characters allowed for ' . $spout->params[$id]['title'];
-                    } elseif ($validate === 'email' && !preg_match('/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/', $value)) {
+                    } elseif ($validate === 'email' && !preg_match('(^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$)', $value)) {
                         $result[$id] = $spout->params[$id]['title'] . ' is not a valid email address';
                     } elseif ($validate === 'numeric' && !is_numeric($value)) {
                         $result[$id] = 'only numeric values allowed for ' . $spout->params[$id]['title'];
                     } elseif ($validate === 'int' && (int) $value != $value) {
                         $result[$id] = 'only integer values allowed for ' . $spout->params[$id]['title'];
-                    } elseif ($validate === 'alnum' && !preg_match("[A-Za-Z0-9._\b]+", $value)) {
+                    } elseif ($validate === 'alnum' && !preg_match("([A-Za-z0-9._\b]+)", $value)) {
                         $result[$id] = 'only alphanumeric values allowed for ' . $spout->params[$id]['title'];
                     } elseif ($validate === 'notempty' && strlen(trim($value)) === 0) {
                         $result[$id] = 'empty value for ' . $spout->params[$id]['title'] . ' not allowed';

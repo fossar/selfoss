@@ -4,7 +4,19 @@ namespace daos;
 
 trait CommonSqlDatabase {
     /**
-     * Execute SQL statement
+     * Execute SQL statement.
+     *
+     * @param string $cmd
+     * @param array|scalar $args
+     *
+     * @return \PDOStatement
+     */
+    public function execute($cmd, $args = []) {
+        return $this->connection->execute($cmd, $args);
+    }
+
+    /**
+     * Execute SQL statement and fetch the result as an associative array (when applicable).
      *
      * @param string $cmd
      * @param array|scalar $args

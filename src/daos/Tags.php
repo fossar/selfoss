@@ -12,6 +12,8 @@ use Monolog\Logger;
  * @copyright  Copyright (c) Tobias Zeising (http://www.aditu.de)
  * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
+ *
+ * @mixin TagsInterface
  */
 class Tags {
     /** @var TagsInterface Instance of backend specific sources class */
