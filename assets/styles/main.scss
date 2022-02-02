@@ -51,7 +51,7 @@ input:focus {
 }
 
 button:focus {
-    outline: 1px dotted currentColor;
+    outline: 1px dotted currentcolor;
 }
 
 button::-moz-focus-inner {
@@ -87,7 +87,7 @@ button::-moz-focus-inner {
     cursor: pointer;
     background: #cccccc;
     border: 0;
-    color: currentColor;
+    color: currentcolor;
     padding: 0;
 }
 
