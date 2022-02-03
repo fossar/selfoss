@@ -3,7 +3,7 @@
 const shayu = require('shayu');
 
 const config = {
-    basePath: __dirname, // easy way to get the path where this index.js is in, all directories will be based from here
+    basePath: __dirname,
     defaultMeta: {
         title: 'selfoss',
         description: 'Open source web based RSS reader and multi-source mashup aggregator.',
@@ -12,20 +12,20 @@ const config = {
         authorAddress: 'tobias.zeising@aditu.de',
         currentVersion: '2.19-SNAPSHOT',
 
-        layout: './default',
+        layout: './page',
     },
     assets: {
         postcssModules: [
-            require('postcss-import')(),
-            require('postcss-mixins')(),
-            require('postcss-nested')(),
-            require('postcss-simple-vars')(),
-            require('postcss-color-function')(),
-            require('autoprefixer')(),
-            require('postcss-math')()
-        ]
+            require('postcss-nested'),
+            require('autoprefixer'),
+        ],
     },
-    livereload: 'env'
+    livereload: 'env',
+    HTMLcomponents: {
+        a: './components/a',
+        // TODO: allow sharing single component for multiple headings
+        h2: './components/h2',
+    },
 };
 
 shayu(config);

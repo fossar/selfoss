@@ -7,160 +7,134 @@ export const meta = {
 
 selfoss offers the following configuration parameters. You can set the config parameters in the `config.ini` file.
 
-### `db_type`
-<Option>
+<Option name="db_type">
 
 database type (`sqlite`, `mysql` or `pgsql`)
 </Option>
 
-### `db_file`
-<Option>
+<Option name="db_file">
 
 location of database file for SQLite
 </Option>
 
-### `db_host`
-<Option>
+<Option name="db_host">
 
 address/hostname of the database server for MySQL/PostgreSQL
 </Option>
 
-### `db_database`
-<Option>
+<Option name="db_database">
 
 name of the database
 </Option>
 
-### `db_username`
-<Option>
+<Option name="db_username">
 
 database username
 </Option>
 
-### `db_password`
-<Option>
+<Option name="db_password">
 
 database password
 </Option>
 
-### `db_prefix`
-<Option>
+<Option name="db_prefix">
 
 Table prefix for MySQL/SQLite databases. This is useful to avoid conflicts when you are sharing a database with another application.
 </Option>
 
-### `db_port`
-<Option>
+<Option name="db_port">
 
 Port for database connections. By default `3306` will be used for MySQL and `5432` for PostgreSQL.
 </Option>
 
-### `db_socket`
-<Option>
+<Option name="db_socket">
 
 A UNIX domain socket used for connecting to the MySQL database server. Usually, you want to use `db_host=localhost`, which should use the default socket path (typically `/run/mysqld/mysqld.sock` for MySQL or `/run/postgresql` for PostgreSQL) but if you need to specify a different location, you can. This is orthogonal to `db_host` option.
 </Option>
 
-### `logger_destination`
-<Option>
+<Option name="logger_destination">
 
 By default, the logs are saved to `data/logs/default.log` but you can choose a different file by specifying a file path prefixed by `file:`. Setting `file:php://stderr` is especially useful when running selfoss on a PaaS or inside Docker. Alternately, you can set the option to `error_log` to redirect the messages to [SAPI error log](https://secure.php.net/manual/en/function.error-log.php) – handy for PHP-FPM, which [discards stderr](https://secure.php.net/manual/en/install.fpm.configuration.php#catch-workers-output) by default.
 </Option>
 
-### `logger_level`
-<Option>
+<Option name="logger_level">
 
 set logging level – following logging levels are available: `EMERGENCY`, `ALERT`, `CRITICAL`, `ERROR`, `WARNING`, `NOTICE`, `INFO`, `DEBUG`. Additionally, you can use `NONE` pseudo-level to turn the logging off completely.
 
 Use this for troubleshooting on updating feeds (but be aware that the log file can become very large.)
 </Option>
 
-### `items_perpage`
-<Option>
+<Option name="items_perpage">
 
 number of entries per page on your stream
 </Option>
 
-### `items_lifetime`
-<Option>
+<Option name="items_lifetime">
 
 days until items will be deleted (starred items will never be deleted)
 </Option>
 
-### `base_url`
-<Option>
+<Option name="base_url">
 
 base URL of the selfoss page; use this option if you use a ssl proxy which changes the `$_SERVER` globals, most notably the URL path in which the app is installed.
 </Option>
 
-### `username`
-<Option>
+<Option name="username">
 
 username for optional login. Just set username and password for enabling login.
 </Option>
 
-### `password`
-<Option>
+<Option name="password">
 
 password hash for optional login. You can generate a password hash by using following page of your selfoss installation. https://your_selfoss_url.com/password
 </Option>
 
-### <del>`salt`</del> (deprecated)
-<Option>
+<Option name="salt" deprecated>
 
 salt for hashing the password (see [Wikipedia](https://en.wikipedia.org/wiki/Salt_(cryptography))). Not used for passwords generated using selfoss 2.19 or newer.
 </Option>
 
-### `public`
-<Option>
+<Option name="public">
 
 if you use login (`username` and `password` are set), you can allow guests to see your stream. Enter `1` for enabling this write-protected mode.
 </Option>
 
-### `rss_title`
-<Option>
+<Option name="rss_title">
 
 title of the generated rss feed
 </Option>
 
-### `rss_max_items`
-<Option>
+<Option name="rss_max_items">
 
 maximum amount of items in the generated rss feed
 </Option>
 
-### `rss_mark_as_read`
-<Option>
+<Option name="rss_mark_as_read">
 
 set this to `1` to automatically mark items as read after they appeared in selfoss’s RSS.
 </Option>
 
-### `homepage`
-<Option>
+<Option name="homepage">
 
 set here your preferred homepage. Choose between `newest`, `unread` and `starred`. It is also possible to configure a tag (e.g. `unread/tag-yourtag`) or a source (e.g. `newest/source-123`). Default = `newest`.
 </Option>
 
-### `auto_mark_as_read`
-<Option>
+<Option name="auto_mark_as_read">
 
 set this to `1` to automatically mark an item as read on opening it.
 </Option>
 
-### `auto_collapse`
-<Option>
+<Option name="auto_collapse">
 
 set this to `1` to automatically collapse an item when another one is opened.
 </Option>
 
-### `auto_stream_more`
-<Option>
+<Option name="auto_stream_more">
 
 set this to `0` to disable automatic loading of more items when you scroll down. With `1`, a click on a button is required instead.
 </Option>
 
-### `language`
-<Option>
+<Option name="language">
 
 set `0` or leave empty for auto detection (browser language) or use one of the following language codes:
 
@@ -196,20 +170,17 @@ set `0` or leave empty for auto detection (browser language) or use one of the f
 
 </Option>
 
-### `anonymizer`
-<Option>
+<Option name="anonymizer">
 
 Set here your anonymizer service url. e.g.: `anonymizer=https://anonym.to/?`
 </Option>
 
-### `allow_public_update_access`
-<Option>
+<Option name="allow_public_update_access">
 
 Set to `1` to allow public access for `/update` (anybody can access and start the update job).
 </Option>
 
-### `share`
-<Option>
+<Option name="share">
 
 `share` defines which sharing buttons beneath the entry are visible. The following methods are supported:
 
@@ -230,80 +201,67 @@ Include the letters for methods you want to use. For example, if you would like 
 Defaults to `share=atfpde`.
 </Option>
 
-### `wallabag`
-<Option>
+<Option name="wallabag">
 
 URL of your [Wallabag](https://www.wallabag.org/) instance.
 </Option>
 
-### `wallabag_version`
-<Option>
+<Option name="wallabag_version">
 
 Set to `2` or `1` depending on your wallabag version (`2` for version 2.x or `1` for version 1.x).
 </Option>
 
-### `wordpress`
-<Option>
+<Option name="wordpress">
 
 URL of your WordPress blog for sharing links.
 </Option>
 
-### `unread_order`
-<Option>
+<Option name="unread_order">
 
 Set to `asc` to read your unread items from the oldest to the newest, leave it empty or to `desc` to read from the newest to the oldest.
 </Option>
 
-### `load_images_on_mobile`
-<Option>
+<Option name="load_images_on_mobile">
 
 Set to `1` to allow image lazy loading on mobile devices.
 </Option>
 
-### `auto_hide_read_on_mobile`
-<Option>
+<Option name="auto_hide_read_on_mobile">
 
 Hide read articles on mobile devices.
 </Option>
 
-### `scroll_to_article_header`
-<Option>
+<Option name="scroll_to_article_header">
 
 Set to `0` to stop the interface from scrolling to the article header when an article is opened.
 </Option>
 
-### `env_prefix`
-<Option>
+<Option name="env_prefix">
 
 selfoss can use environment variables that start with this prefix as additional configuration options. This is useful for tools like Docker, where creating a config file is impractical. Defaults to `SELFOSS_`.
 </Option>
 
-### `camo_domain`
-<Option>
+<Option name="camo_domain">
 
 Camo domain used to proxy images (optional). See [atmos/camo](https://github.com/atmos/camo) for more details.
 </Option>
 
-### `camo_key`
-<Option>
+<Option name="camo_key">
 
 Camo domain used to proxy images (optional). See [atmos/camo](https://github.com/atmos/camo) for more details.
 </Option>
 
-### `show_thumbnails`
-<Option>
+<Option name="show_thumbnails">
 
 If set to `0`, thumbnails are not shown in the collapsed view. Defaults to `1`.
 </Option>
 
-### `datadir` {#datadir}
-<Option>
+<Option name="datadir">
 
 Location of the data directory; especially useful when selfoss is installed to write-protected file system. `.htaccess` file (or equivalent configuration file for non-Apache web servers) will need to be adjusted accordingly.
 </Option>
 
-### `reading_speed_wpm`
-<Option>
+<Option name="reading_speed_wpm">
 
 Reading speed in words per minute used to calculate the estimated reading time of each article. On average, adults can read between 200 and 300 wpm and you can find many tools that can help you determine your reading speed on-line. If set to `0` (the default value), the estimated reading time is not shown.
 </Option>

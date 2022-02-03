@@ -17,7 +17,7 @@ const sources = [
     'package.json',
     'README.md',
     'src/constants.php',
-    'docs/config.toml'
+    'docs/index.js'
 ];
 
 const replacements = [
@@ -39,10 +39,10 @@ const replacements = [
         to: "SELFOSS_VERSION = '" + newVersion + "'"
     },
 
-    // rule for docs/config.toml
+    // rule for docs/index.js
     {
-        from: /current_version = "\d+\.\d+(\-SNAPSHOT|\-[0-9a-f]+)?"/g,
-        to: `current_version = "${newVersion}"`
+        from: /currentVersion: '\d+\.\d+(\-SNAPSHOT|\-[0-9a-f]+)?'/g,
+        to: `currentVersion: '${newVersion}'`
     },
 ];
 

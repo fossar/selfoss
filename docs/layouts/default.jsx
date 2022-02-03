@@ -25,10 +25,10 @@ function Layout({
 
             <link rel="alternate" type="application/atom+xml" title="RSS Feed" href="https://github.com/fossar/selfoss/releases.atom" />
 
-            <link rel="shortcut icon" href={getUrl('favicon.ico')} type="image/x-icon" />
+            <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 
-            <link rel="stylesheet" type="text/css" media="screen" href={getUrl('style.css')} />
-            <link rel="stylesheet" type="text/css" media="screen" href={getUrl('javascript/jquery.fancybox.min.css')} />
+            <link rel="stylesheet" type="text/css" media="screen" href="/assets/bundle.css" />
+            <link rel="stylesheet" type="text/css" media="screen" href="/javascript/jquery.fancybox.min.css" />
         </head>
         <body className={meta.url == '/' ? 'homepage' : ''}>
 
@@ -37,9 +37,9 @@ function Layout({
                 <h1 id="header-name"><a href="/"><span>selfoss</span></a></h1>
 
                 <ul id="header-navigation">
-                    <li><a href={getUrl('@/_index.md#screenshots')}>screenshots</a></li>
-                    <li><a href={getUrl('@/_index.md#documentation')}>documentation</a></li>
-                    <li><a href={getUrl('@/docs/project/credits.md')}>about</a></li>
+                    <li><a href={getUrl('@/index.mdx#screenshots')}>screenshots</a></li>
+                    <li><a href={getUrl('@/index.mdx#documentation')}>documentation</a></li>
+                    <li><a href={getUrl('@/docs/project/credits.mdx')}>about</a></li>
                     <li><a href="/forum">forum</a></li>
                     <li><a href={`https://github.com/fossar/selfoss/releases/download/${meta.currentVersion}/selfoss-${meta.currentVersion}.zip`}>download</a></li>
                 </ul>
@@ -79,9 +79,9 @@ function Layout({
             </div>
 
             {scripts}
-            <script type="text/javascript" src={getUrl('javascript/jquery-3.2.1.min.js')}></script>
-            <script type="text/javascript" src={getUrl('javascript/jquery.fancybox.min.js')}></script>
-            <script type="text/javascript" src={getUrl('javascript/base.js')}></script>
+            <script type="text/javascript" src="/javascript/jquery-3.2.1.min.js"></script>
+            <script type="text/javascript" src="/javascript/jquery.fancybox.min.js"></script>
+            <script type="text/javascript" src="/javascript/base.js"></script>
 
 
             {/* Piwik */}

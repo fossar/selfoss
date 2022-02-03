@@ -1,5 +1,5 @@
 body {
-    background: url("images/bg.gif");
+    background: url("/images/bg.gif");
     font-family: Verdana, Arial, Helvetica, sans-serif;
     color: #3e3e3e;
     margin: 0;
@@ -74,7 +74,7 @@ aside {
 }
 
 .wrapper-dark {
-    background: url("images/bgdark.png");
+    background: url("/images/bgdark.png");
     color: #ffffff;
 }
 
@@ -129,7 +129,7 @@ nav .active {
 }
 #header-name {
     display: inline-block;
-    background: url("images/name.png");
+    background: url("/images/name.png");
     background-size: contain;
     margin-left: 1em;
     width: 84px;
@@ -185,7 +185,7 @@ nav .active {
     left: 100%;
     margin-left: -149px;
     top: 0;
-    background: url("images/git.png");
+    background: url("/images/git.png");
     width: 149px;
     height: 149px;
 }
@@ -193,7 +193,7 @@ nav .active {
 #header-logo {
     position: absolute;
     display: block;
-    background: url("images/logo.png");
+    background: url("/images/logo.png");
     width: 177px;
     height: 209px;
     left: 50%;
@@ -203,7 +203,7 @@ nav .active {
 
 #header-just-updated {
     position: absolute;
-    background: url("images/justupdated.png");
+    background: url("/images/justupdated.png");
     width: 138px;
     height: 52px;
     left: 50%;
@@ -215,7 +215,7 @@ nav .active {
 #header-donate, #header-download {
     position: absolute;
     display: block;
-    background: url("images/button-download.png");
+    background: url("/images/button-download.png");
     width: 211px;
     height: 42px;
     left: 50%;
@@ -235,14 +235,14 @@ nav .active {
 }
 
 #header-donate {
-    background: url("images/button-donate.png");
+    background: url("/images/button-donate.png");
     top: 500px;
 }
 
 #header-donate-tooltipp {
     position: absolute;
     display: none;
-    background: url("images/tooltipp-donate.png");
+    background: url("/images/tooltipp-donate.png");
     width: 271px;
     height: 81px;
     top: 485px;

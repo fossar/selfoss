@@ -2,6 +2,7 @@ import { DocSection } from "./components/blocks";
 
 export const meta = {
     title: "selfoss – the open source web based rss reader and multi source mashup aggregator",
+    layout: "./index",
 }
 
 
@@ -28,7 +29,7 @@ selfoss is a lightweight php based application. Just follow the simple installat
 
 1. Upload all files in the selfoss directory (IMPORTANT: also upload the hidden `.htaccess` files)
 2. Make the directories `data/cache`, `data/favicons`, `data/logs`, `data/thumbnails` and `data/sqlite` writeable
-3. Insert database access data in `config.ini` (see [database options](@/docs/administration/options.md#db-type) – you do not have to change anything if you would like to use SQLite.)
+3. Insert database access data in `config.ini` (see [database options](@/docs/administration/options.mdx#db-type) – you do not have to change anything if you would like to use SQLite.)
 4. You do not need to create database tables, they will be created automatically.
 5. Create cron job for updating feeds and point it to https://yoururl.com/update via `wget` or `curl`. You can also execute the `cliupdate.php` from command line.
 
@@ -38,7 +39,7 @@ For further questions or any problems, use our [support forum](forum). For a mor
 ## Configuring selfoss {#configuration}
 <DocSection>
 
-All [configuration options](@/docs/administration/options.md) are optional. Any settings in `config.ini` will override the settings in `src/helpers/Configuration.php`. For convenience, the archive includes `config-example.ini` file containing the default configuration exported in INI format. To customize settings follow these instructions:
+All [configuration options](@/docs/administration/options.mdx) are optional. Any settings in `config.ini` will override the settings in `src/helpers/Configuration.php`. For convenience, the archive includes `config-example.ini` file containing the default configuration exported in INI format. To customize settings follow these instructions:
 
 1. Rename `config-example.ini` to `config.ini`.
 2. Edit `config.ini` and delete any lines you do not wish to override.

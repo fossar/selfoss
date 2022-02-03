@@ -3,20 +3,62 @@
 const React = require('react');
 const Layout = require('./default.jsx');
 
+function buildTree(otherPageMetas) {
+    let sections = {
+        pages: {},
+        subsections: {},
+    };
+    otherPageMetas.forEach(({ url, title, weight = 0 }) => {
+        let path = url.replace(/^\/|\/$/g, '').split('/');
+        const page = path.pop();
+        let currentSection = sections;
+        path.forEach((segment) => {
+            if (!(segment in currentSection.subsections)) {
+                currentSection.subsections[segment] = {
+                    pages: {},
+                    subsections: {},
+                };
+            }
+            currentSection = currentSection.subsections[segment];
+        })
+
+        currentSection.pages[page] = {
+            title,
+            weight,
+            /* TODO: ensure trailing slash */
+            url: url + '/',
+        };
+
+        if (!(page in currentSection.subsections)) {
+            currentSection.subsections[page] = {
+                pages: {},
+                subsections: {},
+            };
+        }
+        // TODO: Cannot distinguish between pages and sections
+        currentSection.subsections[page].title = title;
+        currentSection.subsections[page].weight = weight;
+    });
+
+    return sections;
+}
+
+const weightComparator = (a, b) => a.weight - b.weight;
+
 function PageLayout({ mdxContent, meta, pageContext }) {
-    const docSection = getSection('docs/_index.md');
+    const docSection = buildTree(pageContext.otherPageMetas).subsections.docs;
 
     const side = (
         <nav>
-        {docSection.subsections.map((sec_path) => {
-            const sec = getSection(sec_path);
+        {Object.values(docSection.subsections).sort(weightComparator).map((sec) => {
             return (
                 <React.Fragment>
                     <h3>{sec.title}</h3>
                     <ul>
-                        {sec.pages.map((page) => (
-                            <li className={meta.url === page.path ? 'active' : ''}>
-                                <a href={page.permalink}>{page.title}</a>
+                        {/* TODO: ensure trailing slash */}
+                        {Object.values(sec.pages).sort(weightComparator).map((page) => (
+                            <li className={meta.url + '/' === page.url ? 'active' : ''}>
+                                <a href={page.url}>{page.title}</a>
                             </li>
                         ))}
                     </ul>
@@ -29,15 +71,16 @@ function PageLayout({ mdxContent, meta, pageContext }) {
     return (
         <Layout
             title={meta.title}
-            postHeader={postHeader}
-            scripts={scripts}
-            mdxContent={mdxContent}
             meta={meta}
+            side={side}
             pageContext={pageContext}
-        >
-            <h1>{meta.title}</h1>
-            {mdxContent}
-        </Layout>
+            mdxContent={
+                <React.Fragment>
+                    <h1>{meta.title}</h1>
+                    {mdxContent}
+                </React.Fragment>
+            }
+        />
     );
 }
 
