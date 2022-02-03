@@ -10,9 +10,9 @@ function Layout({
 }) {
     return (
         <html>
-        <meta charset="utf-8" />
+        <meta charSet="utf-8" />
         <link rel="canonical" href={getUrl(meta.redirectTo)} />
-        <meta http-equiv="refresh" content={`0; url=${getUrl(meta.redirectTo)}`} />
+        <meta httpEquiv="refresh" content={`0; url=${getUrl(meta.redirectTo)}`} />
         <title>Redirecting to {meta.title}</title>
         <p><a href={getUrl(meta.redirectTo)}>Click here</a> to be redirected.</p>
         </html>

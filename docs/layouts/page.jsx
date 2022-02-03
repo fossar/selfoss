@@ -50,14 +50,14 @@ function PageLayout({ mdxContent, meta, pageContext }) {
 
     const side = (
         <nav>
-        {Object.values(docSection.subsections).sort(weightComparator).map((sec) => {
+        {Object.entries(docSection.subsections).sort(weightComparator).map(([key, sec]) => {
             return (
-                <React.Fragment>
+                <React.Fragment key={key}>
                     <h3>{sec.title}</h3>
                     <ul>
                         {/* TODO: ensure trailing slash */}
-                        {Object.values(sec.pages).sort(weightComparator).map((page) => (
-                            <li className={meta.url + '/' === page.url ? 'active' : ''}>
+                        {Object.entries(sec.pages).sort(weightComparator).map(([key, page]) => (
+                            <li key={key} className={meta.url + '/' === page.url ? 'active' : ''}>
                                 <a href={page.url}>{page.title}</a>
                             </li>
                         ))}
