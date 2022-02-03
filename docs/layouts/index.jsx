@@ -62,8 +62,7 @@ function IndexLayout({ mdxContent, meta, section, pageContext }) {
 
     const scripts = (
         meta.url === '/' ? (
-            <script>
-            {`
+            <script dangerouslySetInnerHTML={{__html: `
             switch (document.location.hash) {
             case '#configuration_params':
                 document.location.href = '${getUrl("@/docs/administration/options.mdx")}';
@@ -72,8 +71,7 @@ function IndexLayout({ mdxContent, meta, section, pageContext }) {
                 document.location.href = '${getUrl("@/docs/project/credits.mdx")}';
                 break;
             }
-            `}
-            </script>
+            `}} />
         ) : undefined
     );
 

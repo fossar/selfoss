@@ -1,3 +1,5 @@
+@import 'siteRoot/javascript/jquery.fancybox.min.css';
+
 body {
     background: url("/images/bg.gif");
     font-family: Verdana, Arial, Helvetica, sans-serif;

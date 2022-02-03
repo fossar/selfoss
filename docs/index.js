@@ -16,8 +16,8 @@ const config = {
     },
     assets: {
         postcssModules: [
-            require('postcss-nested'),
-            require('autoprefixer'),
+            require('postcss-import')(),
+            require('autoprefixer')(),
         ],
     },
     livereload: 'env',

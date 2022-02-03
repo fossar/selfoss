@@ -28,7 +28,6 @@ function Layout({
             <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 
             <link rel="stylesheet" type="text/css" media="screen" href="/assets/bundle.css" />
-            <link rel="stylesheet" type="text/css" media="screen" href="/javascript/jquery.fancybox.min.css" />
         </head>
         <body className={meta.url == '/' ? 'homepage' : ''}>
 
@@ -66,15 +65,15 @@ function Layout({
             <div id="footer">
                 <p>
                     <a href="https://github.com/fossar/selfoss">Github</a>
-                    |
+                    {' | '}
                     <a href="/forum">Forum</a>
-                    |
+                    {' | '}
                     <a href="https://www.aditu.de">About me</a>
-                    |
+                    {' | '}
                     logo by <a href="http://blackbooze.com/">Artcore</a>
                 </p>
                 <p>
-                    &copy; by {meta.author} &sdot; <a href={`mailto:${meta.author_address}`}>{meta.author_address}</a> &sdot; <a href="https://www.aditu.de">www.aditu.de</a>
+                    &copy; by {meta.author} &sdot; <a href={`mailto:${meta.authorAddress}`}>{meta.authorAddress}</a> &sdot; <a href="https://www.aditu.de">www.aditu.de</a>
                 </p>
             </div>
 
@@ -85,20 +84,16 @@ function Layout({
 
 
             {/* Piwik */}
-            <script type="text/javascript">
-            {`
+            <script type="text/javascript" dangerouslySetInnerHTML={{ __html: `
             var pkBaseURL = (("https:" == document.location.protocol) ? "https://piwik.aditu.de/" : "http://piwik.aditu.de/");
             document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
-            `}
-            </script><script type="text/javascript">
-            {`
+            `}} /><script type="text/javascript" dangerouslySetInnerHTML={{ __html: `
             try {
             var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 7);
             piwikTracker.trackPageView();
             piwikTracker.enableLinkTracking();
             } catch( err ) {}
-            `}
-            </script><noscript><p><img src="http://piwik.aditu.de/piwik.php?idsite=7" style={{border: 0}} alt="" /></p></noscript>
+            `}} /><noscript><p><img src="http://piwik.aditu.de/piwik.php?idsite=7" style={{border: 0}} alt="" /></p></noscript>
             {/* End Piwik Tracking Code */}
         </body>
         </html>
