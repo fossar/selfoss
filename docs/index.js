@@ -1,9 +1,14 @@
 'use strict';
 
-const shayu = require('shayu');
+import shayu from 'shayu';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+import postcssImport from 'postcss-import';
+import autoprefixer from 'postcss-import';
 
 const config = {
-    basePath: __dirname,
+    basePath: path.dirname(fileURLToPath(import.meta.url)),
     defaultMeta: {
         title: 'selfoss',
         description: 'Open source web based RSS reader and multi-source mashup aggregator.',
@@ -16,8 +21,8 @@ const config = {
     },
     assets: {
         postcssModules: [
-            require('postcss-import')(),
-            require('autoprefixer')(),
+            postcssImport(),
+            autoprefixer(),
         ],
     },
     livereload: 'env',

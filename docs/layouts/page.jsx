@@ -1,7 +1,7 @@
 'use strict';
 
-const React = require('react');
-const Layout = require('./default.jsx');
+import React from 'react';
+import Layout from './default.jsx';
 
 function buildTree(otherPageMetas) {
     let sections = {

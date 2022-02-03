@@ -1,4 +1,4 @@
-const React = require('react');
+import React from 'react';
 
 function Heading(props) {
     let { name, children, id, ...remainingProps } = props;

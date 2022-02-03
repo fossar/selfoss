@@ -1,5 +1,5 @@
-const React = require('react');
-const { getUrl } = require('../helpers/url');
+import React from 'react';
+import { getUrl } from '../helpers/url';
 
 function a(props) {
     return (

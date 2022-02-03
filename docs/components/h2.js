@@ -1,5 +1,5 @@
-const React = require('react');
-const Heading = require('./heading');
+import React from 'react';
+import Heading from './heading';
 
 function h2(props) {
     return (

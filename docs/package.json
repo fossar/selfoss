@@ -2,6 +2,7 @@
   "name": "selfoss-docs",
   "description": "Open source web based RSS reader and multi-source mashup aggregator",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "build": "node .",
     "watch": "NODE_ENV=development node ."

@@ -1,8 +1,8 @@
 'use strict';
 
-const React = require('react');
-const Layout = require('./default.jsx');
-const { getUrl } = require('../helpers/url');
+import React from 'react';
+import Layout from './default.jsx';
+import { getUrl } from '../helpers/url';
 
 function IndexLayout({ mdxContent, meta, pageContext }) {
     const postHeader = (

@@ -1,9 +1,9 @@
 'use strict';
 
-const React = require('react');
-const { getUrl } = require('../helpers/url');
+import React from 'react';
+import { getUrl } from '../helpers/url';
 
-function Layout({ meta, pageContext }) {
+function Layout({ meta }) {
     return (
         <html>
             <meta charSet="utf-8" />
