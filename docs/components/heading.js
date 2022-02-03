@@ -1,5 +1,4 @@
 const React = require('react');
-const { getUrl } = require('../helpers/url');
 
 function Heading(props) {
     let { name, children, id, ...remainingProps } = props;
@@ -11,11 +10,14 @@ function Heading(props) {
         }
     }
 
-    return React.createElement(name, {
-        ...remainingProps,
+    return React.createElement(
+        name,
+        {
+            ...remainingProps,
+            id,
+        },
         children,
-        id,
-    });
+    );
 }
 
 module.exports = Heading;

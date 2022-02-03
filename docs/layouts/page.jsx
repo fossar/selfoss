@@ -20,7 +20,7 @@ function buildTree(otherPageMetas) {
                 };
             }
             currentSection = currentSection.subsections[segment];
-        })
+        });
 
         currentSection.pages[page] = {
             title,
@@ -50,21 +50,21 @@ function PageLayout({ mdxContent, meta, pageContext }) {
 
     const side = (
         <nav>
-        {Object.entries(docSection.subsections).sort(weightComparator).map(([key, sec]) => {
-            return (
-                <React.Fragment key={key}>
-                    <h3>{sec.title}</h3>
-                    <ul>
-                        {/* TODO: ensure trailing slash */}
-                        {Object.entries(sec.pages).sort(weightComparator).map(([key, page]) => (
-                            <li key={key} className={meta.url + '/' === page.url ? 'active' : ''}>
-                                <a href={page.url}>{page.title}</a>
-                            </li>
-                        ))}
-                    </ul>
-                </React.Fragment>
-            );
-        })}
+            {Object.entries(docSection.subsections).sort(weightComparator).map(([key, sec]) => {
+                return (
+                    <React.Fragment key={key}>
+                        <h3>{sec.title}</h3>
+                        <ul>
+                            {/* TODO: ensure trailing slash */}
+                            {Object.entries(sec.pages).sort(weightComparator).map(([key, page]) => (
+                                <li key={key} className={meta.url + '/' === page.url ? 'active' : ''}>
+                                    <a href={page.url}>{page.title}</a>
+                                </li>
+                            ))}
+                        </ul>
+                    </React.Fragment>
+                );
+            })}
         </nav>
     );
 

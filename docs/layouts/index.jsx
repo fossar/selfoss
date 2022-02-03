@@ -4,7 +4,7 @@ const React = require('react');
 const Layout = require('./default.jsx');
 const { getUrl } = require('../helpers/url');
 
-function IndexLayout({ mdxContent, meta, section, pageContext }) {
+function IndexLayout({ mdxContent, meta, pageContext }) {
     const postHeader = (
         <React.Fragment>
             <div className="wrapper-light">
@@ -62,16 +62,18 @@ function IndexLayout({ mdxContent, meta, section, pageContext }) {
 
     const scripts = (
         meta.url === '/' ? (
-            <script dangerouslySetInnerHTML={{__html: `
-            switch (document.location.hash) {
-            case '#configuration_params':
-                document.location.href = '${getUrl("@/docs/administration/options.mdx")}';
-                break;
-            case '#about':
-                document.location.href = '${getUrl("@/docs/project/credits.mdx")}';
-                break;
-            }
-            `}} />
+            <script dangerouslySetInnerHTML={{
+                __html: `
+switch (document.location.hash) {
+case '#configuration_params':
+document.location.href = '${getUrl('@/docs/administration/options.mdx')}';
+break;
+case '#about':
+document.location.href = '${getUrl('@/docs/project/credits.mdx')}';
+break;
+}
+`
+            }} />
         ) : undefined
     );
 
