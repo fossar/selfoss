@@ -102,6 +102,6 @@
   "lang_filter": "Filtrele",
   "lang_article_reading_time": "{0} dakika okuma",
   "lang_experimental": "Deneysel",
-  "lang_source_warn_cancel_dirty": "Kaydedilmemiş değişiklikleri gerçekten atmak istiyor musunuz?",
-  "lang_sources_leaving_unsaved_prompt": "Kaydedilmemiş bazı kaynak değişiklikleri var. Ayarlardan çıkmak istediğinizden emin misiniz?"
+  "lang_source_warn_cancel_dirty": "Kaydedilmemiş değişiklikler atılsın mı?",
+  "lang_sources_leaving_unsaved_prompt": "Kaydedilmemiş kaynak değişiklikleri olmasına rağmen ayarlardan çıkılsın mı?"
 }
