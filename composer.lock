@@ -4,26 +4,25 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5addc97e807051c8f5a92ecd019c86bd",
+    "content-hash": "a308ab35511579e837187d5bad2c9151",
     "packages": [
         {
             "name": "bcosca/fatfree-core",
-            "version": "dev-master",
+            "version": "3.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bcosca/fatfree-core.git",
-                "reference": "aa07384bd91ac11463f9a7e5d6409188a8496cc0"
+                "reference": "cdd878db018280369b643fce62f70e55044f9ac4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bcosca/fatfree-core/zipball/aa07384bd91ac11463f9a7e5d6409188a8496cc0",
-                "reference": "aa07384bd91ac11463f9a7e5d6409188a8496cc0",
+                "url": "https://api.github.com/repos/bcosca/fatfree-core/zipball/cdd878db018280369b643fce62f70e55044f9ac4",
+                "reference": "cdd878db018280369b643fce62f70e55044f9ac4",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.4"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "classmap": [
@@ -38,9 +37,9 @@
             "homepage": "http://fatfreeframework.com/",
             "support": {
                 "issues": "https://github.com/bcosca/fatfree-core/issues",
-                "source": "https://github.com/bcosca/fatfree-core/tree/master"
+                "source": "https://github.com/bcosca/fatfree-core/tree/3.8.0"
             },
-            "time": "2022-01-30T16:22:24+00:00"
+            "time": "2022-02-15T16:59:01+00:00"
         },
         {
             "name": "bramus/router",
@@ -115,12 +114,12 @@
             },
             "type": "library",
             "autoload": {
-                "psr-4": {
-                    "Clue\\StreamFilter\\": "src/"
-                },
                 "files": [
                     "src/functions_include.php"
-                ]
+                ],
+                "psr-4": {
+                    "Clue\\StreamFilter\\": "src/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -182,12 +181,12 @@
             },
             "type": "library",
             "autoload": {
-                "psr-4": {
-                    "Stringy\\": "src/"
-                },
                 "files": [
                     "src/Create.php"
-                ]
+                ],
+                "psr-4": {
+                    "Stringy\\": "src/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -221,22 +220,22 @@
         },
         {
             "name": "fossar/guzzle-transcoder",
-            "version": "0.2.1",
+            "version": "0.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fossar/guzzle-transcoder.git",
-                "reference": "96313b695c25c8f817d89516610e99efefd81dc4"
+                "reference": "01cc94e70a9b2ac390093dc1160d8a90fe10b440"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fossar/guzzle-transcoder/zipball/96313b695c25c8f817d89516610e99efefd81dc4",
-                "reference": "96313b695c25c8f817d89516610e99efefd81dc4",
+                "url": "https://api.github.com/repos/fossar/guzzle-transcoder/zipball/01cc94e70a9b2ac390093dc1160d8a90fe10b440",
+                "reference": "01cc94e70a9b2ac390093dc1160d8a90fe10b440",
                 "shasum": ""
             },
             "require": {
                 "fossar/transcoder": "^1.0",
-                "guzzlehttp/guzzle": "^6.3",
-                "guzzlehttp/psr7": "^1.5"
+                "guzzlehttp/guzzle": "^6.3 || ^7.0",
+                "guzzlehttp/psr7": "^1.7 || ^2.0"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^2.14",
@@ -262,9 +261,9 @@
             "description": "Guzzle plugin that converts responses to UTF-8",
             "support": {
                 "issues": "https://github.com/fossar/guzzle-transcoder/issues",
-                "source": "https://github.com/fossar/guzzle-transcoder/tree/0.2.1"
+                "source": "https://github.com/fossar/guzzle-transcoder/tree/0.2.3"
             },
-            "time": "2021-05-23T06:34:04+00:00"
+            "time": "2022-01-23T17:03:26+00:00"
         },
         {
             "name": "fossar/htmlawed",
@@ -486,12 +485,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "GuzzleHttp\\": "src/"
-                },
                 "files": [
                     "src/functions_include.php"
-                ]
+                ],
+                "psr-4": {
+                    "GuzzleHttp\\": "src/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -700,12 +699,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "GuzzleHttp\\Psr7\\": "src/"
-                },
                 "files": [
                     "src/functions_include.php"
-                ]
+                ],
+                "psr-4": {
+                    "GuzzleHttp\\Psr7\\": "src/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -898,16 +897,16 @@
         },
         {
             "name": "j0k3r/graby-site-config",
-            "version": "1.0.143",
+            "version": "1.0.146",
             "source": {
                 "type": "git",
                 "url": "https://github.com/j0k3r/graby-site-config.git",
-                "reference": "3541eb43a4ad1a609175dee309e0431e35fe9934"
+                "reference": "7bdbd5d5cf983a59e3c07b4ac446cb5bfa1c924d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/j0k3r/graby-site-config/zipball/3541eb43a4ad1a609175dee309e0431e35fe9934",
-                "reference": "3541eb43a4ad1a609175dee309e0431e35fe9934",
+                "url": "https://api.github.com/repos/j0k3r/graby-site-config/zipball/7bdbd5d5cf983a59e3c07b4ac446cb5bfa1c924d",
+                "reference": "7bdbd5d5cf983a59e3c07b4ac446cb5bfa1c924d",
                 "shasum": ""
             },
             "require": {
@@ -936,9 +935,9 @@
             "description": "Graby site config files",
             "support": {
                 "issues": "https://github.com/j0k3r/graby-site-config/issues",
-                "source": "https://github.com/j0k3r/graby-site-config/tree/1.0.143"
+                "source": "https://github.com/j0k3r/graby-site-config/tree/1.0.146"
             },
-            "time": "2022-01-07T15:05:39+00:00"
+            "time": "2022-02-14T15:07:54+00:00"
         },
         {
             "name": "j0k3r/httplug-ssrf-plugin",
@@ -1812,12 +1811,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Http\\Message\\": "src/"
-                },
                 "files": [
                     "src/filters.php"
-                ]
+                ],
+                "psr-4": {
+                    "Http\\Message\\": "src/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -2422,12 +2421,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Symfony\\Polyfill\\Intl\\Idn\\": ""
-                },
                 "files": [
                     "bootstrap.php"
-                ]
+                ],
+                "psr-4": {
+                    "Symfony\\Polyfill\\Intl\\Idn\\": ""
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -2507,12 +2506,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Symfony\\Polyfill\\Intl\\Normalizer\\": ""
-                },
                 "files": [
                     "bootstrap.php"
                 ],
+                "psr-4": {
+                    "Symfony\\Polyfill\\Intl\\Normalizer\\": ""
+                },
                 "classmap": [
                     "Resources/stubs"
                 ]
@@ -2591,12 +2590,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Symfony\\Polyfill\\Mbstring\\": ""
-                },
                 "files": [
                     "bootstrap.php"
-                ]
+                ],
+                "psr-4": {
+                    "Symfony\\Polyfill\\Mbstring\\": ""
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -2748,12 +2747,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Symfony\\Polyfill\\Php72\\": ""
-                },
                 "files": [
                     "bootstrap.php"
-                ]
+                ],
+                "psr-4": {
+                    "Symfony\\Polyfill\\Php72\\": ""
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -3023,23 +3022,23 @@
         },
         {
             "name": "composer/semver",
-            "version": "3.2.7",
+            "version": "3.2.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/semver.git",
-                "reference": "deac27056b57e46faf136fae7b449eeaa71661ee"
+                "reference": "a951f614bd64dcd26137bc9b7b2637ddcfc57649"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/semver/zipball/deac27056b57e46faf136fae7b449eeaa71661ee",
-                "reference": "deac27056b57e46faf136fae7b449eeaa71661ee",
+                "url": "https://api.github.com/repos/composer/semver/zipball/a951f614bd64dcd26137bc9b7b2637ddcfc57649",
+                "reference": "a951f614bd64dcd26137bc9b7b2637ddcfc57649",
                 "shasum": ""
             },
             "require": {
                 "php": "^5.3.2 || ^7.0 || ^8.0"
             },
             "require-dev": {
-                "phpstan/phpstan": "^0.12.54",
+                "phpstan/phpstan": "^1.4",
                 "symfony/phpunit-bridge": "^4.2 || ^5"
             },
             "type": "library",
@@ -3084,7 +3083,7 @@
             "support": {
                 "irc": "irc://irc.freenode.org/composer",
                 "issues": "https://github.com/composer/semver/issues",
-                "source": "https://github.com/composer/semver/tree/3.2.7"
+                "source": "https://github.com/composer/semver/tree/3.2.9"
             },
             "funding": [
                 {
@@ -3100,7 +3099,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-01-04T09:57:54+00:00"
+            "time": "2022-02-04T13:58:43+00:00"
         },
         {
             "name": "composer/xdebug-handler",
@@ -4103,7 +4102,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "bcosca/fatfree-core": 20,
         "j0k3r/graby": 15
     },
     "prefer-stable": false,

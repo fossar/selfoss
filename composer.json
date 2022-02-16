@@ -5,7 +5,7 @@
     "require": {
         "php": ">= 5.6",
         "ext-gd": "*",
-        "bcosca/fatfree-core": "dev-master#aa07384bd91ac11463f9a7e5d6409188a8496cc0",
+        "bcosca/fatfree-core": "^3.8",
         "bramus/router": "^1.6",
         "danielstjules/stringy": "^3.1",
         "fossar/guzzle-transcoder": "^0.2.0",
