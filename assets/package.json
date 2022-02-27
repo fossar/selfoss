@@ -9,7 +9,6 @@
     "@kunukn/react-collapse": "^2.2.9",
     "bcryptjs": "^2.4.3",
     "classnames": "^2.2.6",
-    "clipboard-polyfill": "^3.0.0",
     "core-js": "^3.2.1",
     "dexie": "^3.0.0",
     "focus-trap": "^6.2.0",

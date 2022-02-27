@@ -1,7 +1,6 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import selfoss from './selfoss-base';
-import * as clipboard from 'clipboard-polyfill';
 import * as icons from './icons';
 
 selfoss.shares = {
@@ -67,7 +66,7 @@ selfoss.shares = {
         });
 
         this.register('copy', selfoss.app._('share_copy_label'), 'c', <FontAwesomeIcon icon={icons.copy} />, ({url}) => {
-            clipboard.writeText(url).then(() => {
+            navigator.clipboard.writeText(url).then(() => {
                 selfoss.app.showMessage(selfoss.app._('info_url_copied'));
             });
         });
