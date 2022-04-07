@@ -103,5 +103,7 @@
   "lang_article_reading_time": "{0} dakika okuma",
   "lang_experimental": "Deneysel",
   "lang_source_warn_cancel_dirty": "Kaydedilmemiş değişiklikler atılsın mı?",
-  "lang_sources_leaving_unsaved_prompt": "Kaydedilmemiş kaynak değişiklikleri olmasına rağmen ayarlardan çıkılsın mı?"
+  "lang_sources_leaving_unsaved_prompt": "Kaydedilmemiş kaynak değişiklikleri olmasına rağmen ayarlardan çıkılsın mı?",
+  "lang_source_browse": "Göz at",
+  "lang_source_menu": "Daha fazla eylem"
 }
