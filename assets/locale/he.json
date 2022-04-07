@@ -103,5 +103,7 @@
   "lang_article_reading_time": "{0} דקות קריאה",
   "lang_experimental": "ניסיוני",
   "lang_source_warn_cancel_dirty": "להשליך את השינויים שלא נשמרו?",
-  "lang_sources_leaving_unsaved_prompt": "יש שינויים במקור שלא נשמרו. לצאת מההגדרות?"
+  "lang_sources_leaving_unsaved_prompt": "לצאת מההגדרות עם שינויים במקור שלא נשמרו?",
+  "lang_source_browse": "עיון",
+  "lang_source_menu": "פעולות נוספות"
 }
