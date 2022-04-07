@@ -43,6 +43,8 @@
   "lang_source_export": "Export sources",
   "lang_source_edit": "Edit",
   "lang_source_filter": "Filter",
+  "lang_source_menu": "More actions",
+  "lang_source_browse": "Browse",
   "lang_source_delete": "Delete",
   "lang_source_warn": "Really delete this source?",
   "lang_source_warn_cancel_dirty": "Discard unsaved changes?",

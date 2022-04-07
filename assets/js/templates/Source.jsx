@@ -1,4 +1,7 @@
 import React from 'react';
+import { Button as MenuButton, Wrapper as MenuWrapper, Menu, MenuItem } from 'react-aria-menubutton';
+import { useHistory, useLocation } from 'react-router-dom';
+import { makeEntriesLinkLocation } from '../helpers/uri';
 import PropTypes from 'prop-types';
 import nullable from 'prop-types-nullable';
 import { unescape } from 'html-escaper';
@@ -562,16 +565,24 @@ export default function Source({ source, setSources, spouts, setSpouts, dirty, s
         [source.id, setDirtySources]
     );
 
-    const deleteOnClick = React.useCallback(
-        (event) =>
-            handleDelete({
-                event,
-                source,
-                setSources,
-                setSourceBeingDeleted,
-                setDirty,
-            }),
-        [source, setSources, setDirty]
+    const history  = useHistory();
+    const location  = useLocation();
+
+    const extraMenuOnSelection = React.useCallback(
+        (value, event) => {
+            if (value === 'delete') {
+                handleDelete({
+                    event,
+                    source,
+                    setSources,
+                    setSourceBeingDeleted,
+                    setDirty,
+                });
+            } else if (value === 'browse') {
+                history.push(makeEntriesLinkLocation(location, { category: `source-${source.id}` }));
+            }
+        },
+        [source, setSources, setDirty, location, history]
     );
 
     const _ = React.useContext(LocalizationContext);
@@ -612,21 +623,41 @@ export default function Source({ source, setSources, spouts, setSpouts, dirty, s
                         {' • '}
                     </React.Fragment>
                 }
-                <button
-                    type="button"
-                    accessKey="d"
-                    className="source-delete"
-                    onClick={deleteOnClick}
+                <MenuWrapper
+                    className="popup-menu-wrapper"
+                    onSelection={extraMenuOnSelection}
                 >
-                    {_('source_delete')}
+                    <MenuButton
+                        className="source-menu-button"
+                    >
+                        {_('source_menu')}
+                    </MenuButton>
+                    <Menu
+                        className="popup-menu"
+                    >
+                        <MenuItem
+                            accessKey="d"
+                            className="popup-menu-item source-browse"
+                            value="browse"
+                        >
+                            {_('source_browse')}
+                        </MenuItem>
+                        <MenuItem
+                            accessKey="d"
+                            className="popup-menu-item source-delete"
+                            value="delete"
+                        >
+                            {_('source_delete')}
 
-                    {sourceBeingDeleted &&
-                        <React.Fragment>
-                            {' '}
-                            <Spinner />
-                        </React.Fragment>
-                    }
-                </button>
+                            {sourceBeingDeleted &&
+                                <React.Fragment>
+                                    {' '}
+                                    <Spinner />
+                                </React.Fragment>
+                            }
+                        </MenuItem>
+                    </Menu>
+                </MenuWrapper>
             </div>
             <div className="source-days">
                 {source.lastentry

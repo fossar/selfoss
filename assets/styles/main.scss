@@ -15,6 +15,7 @@ $text-color: black;
     // Sass does not interportate code in CSS variable definitions unless explicitly unescaped.
     // https://github.com/sass/libsass/issues/2621
     --primary: #{$primary};
+    --primary-contrast: #ffffff;
     --primary-highlight: #{$primary-highlight};
     --primary-highlight-shadow: #{$primary-highlight-shadow};
     --text-color: #{$text-color};
@@ -57,6 +58,8 @@ button:focus {
 button::-moz-focus-inner {
     border: 0;
 }
+
+@import 'popup-menu';
 
 #js-loading-message {
     margin: 1em;
@@ -715,7 +718,7 @@ span.offline-count.diff {
 }
 
 .source-showparams,
-.source-delete,
+.source-menu-button,
 .source-save,
 .source-cancel {
     padding: 0;

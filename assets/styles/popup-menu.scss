@@ -1,0 +1,27 @@
+.popup-menu-wrapper {
+    display: inline-block;
+    position: relative;
+}
+
+.popup-menu {
+    background: var(--background-color);
+    color: var(--text-color);
+    border: 1px solid rgb(200 200 200 / 40%);
+    position: absolute;
+    top: 100%;
+    left: -1em;
+    z-index: 100;
+    margin: 0.25em 0 0;
+    box-shadow: 0 0.2em 1em rgb(0 0 0 / 15%);
+}
+
+.popup-menu-item {
+    cursor: pointer;
+    padding: 0.3em 1em;
+}
+
+.popup-menu-item:hover,
+.popup-menu-item:focus {
+    background-color: var(--primary);
+    color: var(--primary-contrast);
+}

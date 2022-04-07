@@ -31,6 +31,8 @@
   "lang_source_export": "Export zdrojů",
   "lang_source_edit": "Upravit",
   "lang_source_filter": "Filtr",
+  "lang_source_menu": "Více akcí",
+  "lang_source_browse": "Prohlížet",
   "lang_source_delete": "Smazat",
   "lang_source_warn": "Opravdu chcete tento zdroj smazat?",
   "lang_source_warn_cancel_dirty": "Opravdu chcete zahodit neuložené změny?",

@@ -20,6 +20,7 @@
     "prop-types-nullable": "^1.0.1",
     "ramda": "^0.28.0",
     "react": "^17.0.1",
+    "react-aria-menubutton": "^7.0.3",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
     "reset-css": "^5.0.1",
