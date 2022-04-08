@@ -33,6 +33,14 @@ class BasicWorkflowTest(SelfossIntegration):
 
         items = selfoss_api.get_items()
         assert len(items) == FIBONACCI_FEED_LENGTH, 'After updating sources, there should be all items from the sources.'
+        assert items[0]['unread'], 'Items should start as unread'
+        assert not items[0]['starred'], 'Items should start as not starred'
+
+        assert selfoss_api.mark_read(items[0]['id']), 'Unable to mark item as read'
+        assert selfoss_api.mark_starred(items[0]['id']), 'Unable to starr item'
+        items = selfoss_api.get_items()
+        assert not items[0]['unread'], 'First item should now be marked as read'
+        assert items[0]['starred'], 'First item should now be starred'
 
 if __name__ == '__main__':
     unittest.main()

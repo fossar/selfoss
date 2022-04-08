@@ -158,7 +158,8 @@ class Statements implements \daos\StatementsInterface {
                             $value = (int) $row[$columnIndex];
                             break;
                         case DatabaseInterface::PARAM_BOOL:
-                            if ($row[$columnIndex] === '1') {
+                            // PDO returns integer in PHP ≥ 8.1.
+                            if ($row[$columnIndex] === 1 || $row[$columnIndex] === '1') {
                                 $value = true;
                             } else {
                                 $value = false;

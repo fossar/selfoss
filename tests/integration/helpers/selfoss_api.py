@@ -35,6 +35,24 @@ class SelfossApi:
 
         return r.json()
 
+    def mark_read(self, id: int, target: bool = True) -> bool:
+        endpoint = 'mark' if target else 'unmark'
+        r = self.session.post(
+            f'{self.base_uri}/{endpoint}/{id}',
+        )
+        r.raise_for_status()
+        response = r.json()
+        return 'success' in response and response['success'] == True
+
+    def mark_starred(self, id: int, target: bool = True) -> bool:
+        endpoint = 'starr' if target else 'unstarr'
+        r = self.session.post(
+            f'{self.base_uri}/{endpoint}/{id}',
+        )
+        r.raise_for_status()
+        response = r.json()
+        return 'success' in response and response['success'] == True
+
     def add_source(self, spout: str, **params):
         r = self.session.post(
             f'{self.base_uri}/source',
