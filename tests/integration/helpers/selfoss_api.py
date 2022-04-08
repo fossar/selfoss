@@ -39,6 +39,10 @@ class SelfossApi:
         endpoint = 'mark' if target else 'unmark'
         r = self.session.post(
             f'{self.base_uri}/{endpoint}/{id}',
+            headers={
+                # PHP 5.6 crashes on empty POST requests without this.
+                'Content-type': 'application/x-www-form-urlencoded',
+            },
         )
         r.raise_for_status()
         response = r.json()
@@ -48,6 +52,10 @@ class SelfossApi:
         endpoint = 'starr' if target else 'unstarr'
         r = self.session.post(
             f'{self.base_uri}/{endpoint}/{id}',
+            headers={
+                # PHP 5.6 crashes on empty POST requests without this.
+                'Content-type': 'application/x-www-form-urlencoded',
+            },
         )
         r.raise_for_status()
         response = r.json()
