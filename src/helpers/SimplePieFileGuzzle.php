@@ -5,7 +5,7 @@ namespace helpers;
 /**
  * Bridge to make SimplePie fetch resources using Guzzle library
  */
-class SimplePieFileGuzzle extends \SimplePie_File {
+class SimplePieFileGuzzle extends \SimplePie\File {
     /** @var WebClient */
     private $webClient;
 

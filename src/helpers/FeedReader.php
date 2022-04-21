@@ -2,7 +2,7 @@
 
 namespace helpers;
 
-use SimplePie;
+use SimplePie\SimplePie;
 
 /**
  * Helper class for obtaining feeds
