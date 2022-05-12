@@ -160,7 +160,7 @@ jobs:
           file: ${{ steps.zipball.outputs.file_name }}
           name: selfoss.zip
           version: ${{ steps.zipball.outputs.version }}
-          extra: '--tags version:latest --debug'
+          extra: '--tags version:latest'
 
       - name: Prepare a changelog
         run: |
