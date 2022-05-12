@@ -149,7 +149,7 @@ jobs:
           path: ${{ steps.zipball.outputs.file_name }}
 
       - name: Upload the zipball to Cloudsmith
-        uses: cloudsmith-io/action@v0.5.2
+        uses: jtojnar/action@feature-tags
         if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         with:
           api-key: ${{ secrets.CLOUDSMITH_API_KEY }}
@@ -160,7 +160,7 @@ jobs:
           file: ${{ steps.zipball.outputs.file_name }}
           name: selfoss.zip
           version: ${{ steps.zipball.outputs.version }}
-          extra: '--tags version:latest'
+          tags: version:latest
 
       - name: Prepare a changelog
         run: |
