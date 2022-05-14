@@ -100,16 +100,15 @@ interface StatementsInterface {
     public static function datetime(\DateTime $date): string;
 
     /**
-     * Ensure row values have the appropriate PHP type. This assumes we are
-     * using buffered queries (sql results are in PHP memory);.
+     * Ensure row values have the appropriate PHP type.
      *
-     * @param array<array<mixed>> $rows array of associative array representing row results
+     * @param iterable<array<mixed>> $rows array of associative array representing row results
      * @param array<string, DatabaseInterface::PARAM_*> $expectedRowTypes associative array mapping columns to PDO types
      *
-     * @return array<array<mixed>> of associative array representing row results having
+     * @return iterable<int, array<mixed>> of associative array representing row results having
      *         expected types
      */
-    public static function ensureRowTypes(array $rows, array $expectedRowTypes): array;
+    public static function ensureRowTypes(iterable $rows, array $expectedRowTypes): iterable;
 
     /**
      * convert string array to string for storage in table row

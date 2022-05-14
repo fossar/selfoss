@@ -119,9 +119,9 @@ interface SourcesInterface {
     /**
      * returns raw sources table contents
      *
-     * @return array<array{error: ?string, filter: string, id: int, lastentry: string, lastupdate: string, params: string, spout: string, tags: string[], title: string}> of all sources
+     * @return iterable<int, array{error: ?string, filter: string, id: int, lastentry: string, lastupdate: string, params: string, spout: string, tags: string[], title: string}> of all sources
      */
-    public function getRaw(): array;
+    public function getRaw(): iterable;
 
     /**
      * inserts raw data into sources table

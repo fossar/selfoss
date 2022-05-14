@@ -313,7 +313,7 @@ class Sources implements \daos\SourcesInterface {
         return 0;
     }
 
-    public function getRaw(): array {
+    public function getRaw(): iterable {
         $stmt = static::$stmt;
         $sources = $this->database->exec('SELECT * FROM ' . $this->configuration->dbPrefix . 'sources');
 

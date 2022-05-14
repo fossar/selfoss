@@ -418,7 +418,7 @@ class Items implements \daos\ItemsInterface {
      * @return int lowest id of interest
      */
     public function lowestIdOfInterest(): int {
-        $lowest = static::$stmt::ensureRowTypes(
+        $lowests = static::$stmt::ensureRowTypes(
             $this->database->exec(
                 'SELECT id FROM ' . $this->configuration->dbPrefix . 'items AS items
                  WHERE ' . static::$stmt::isTrue('unread') .
@@ -427,8 +427,8 @@ class Items implements \daos\ItemsInterface {
             ),
             ['id' => DatabaseInterface::PARAM_INT]
         );
-        if ($lowest) {
-            return $lowest[0]['id'];
+        foreach ($lowests as $lowest) {
+            return $lowest['id'];
         }
 
         return 0;
@@ -687,7 +687,7 @@ class Items implements \daos\ItemsInterface {
         }
     }
 
-    public function getRaw(): array {
+    public function getRaw(): iterable {
         $stmt = static::$stmt;
         $items = $this->database->exec('SELECT * FROM ' . $this->configuration->dbPrefix . 'items');
 

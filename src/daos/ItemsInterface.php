@@ -187,9 +187,9 @@ interface ItemsInterface {
     /**
      * returns raw items table contents
      *
-     * @return array<array{author: string, content: string, datetime: string, icon: string, id: int, lastseen: string, link: string, shared: int, source: int, starred: bool, thumbnail: ?string, title: string, uid: string, unread: bool, updatetime: string}> of all items
+     * @return iterable<int, array{author: string, content: string, datetime: string, icon: string, id: int, lastseen: string, link: string, shared: int, source: int, starred: bool, thumbnail: ?string, title: string, uid: string, unread: bool, updatetime: string}> of all items
      */
-    public function getRaw(): array;
+    public function getRaw(): iterable;
 
     /**
      * inserts raw data into items table

@@ -201,8 +201,8 @@ class Sources implements SourcesInterface {
         return true;
     }
 
-    public function getRaw(): array {
-        /** @var array<array{error: ?string, filter: string, id: int, lastentry: string, lastupdate: string, params: string, spout: string, tags: string[], title: string}> */
+    public function getRaw(): iterable {
+        /** @var iterable<array{error: ?string, filter: string, id: int, lastentry: string, lastupdate: string, params: string, spout: string, tags: string[], title: string}> */
         $sources = $this->backend->getRaw();
 
         return $sources;

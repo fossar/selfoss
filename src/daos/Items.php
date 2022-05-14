@@ -155,7 +155,7 @@ class Items implements ItemsInterface {
         $this->backend->bulkStatusUpdate($statuses);
     }
 
-    public function getRaw(): array {
+    public function getRaw(): iterable {
         return $this->backend->getRaw();
     }
 
