@@ -1,0 +1,48 @@
+.color-chooser-button {
+    display: block;
+
+    /* Span the whole wrapper */
+    height: 100%;
+    width: 100%;
+}
+
+.color {
+    .popup-menu {
+        width: 15em;
+        display: flex;
+        flex-flow: wrap;
+
+        /* Popper does not like margins */
+        margin: 0;
+    }
+
+    .popup-menu-item {
+        width: 1.3em;
+        height: 1.3em;
+        display: flex;
+        margin: 0.2em;
+        border: 1px solid black;
+        padding: 0;
+        border-radius: 0.2em;
+        flex-shrink: 0; /* preserve aspect ratio */
+
+        svg {
+            margin: auto;
+            display: block;
+        }
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .color {
+        .popup-menu {
+            max-width: 26em;
+            width: 100%;
+        }
+
+        .popup-menu-item {
+            width: 2em;
+            height: 2em;
+        }
+    }
+}

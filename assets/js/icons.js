@@ -11,6 +11,7 @@ import { faStar as faStarRegular } from '@fortawesome/free-regular-svg-icons/faS
 import { faTimesCircle } from '@fortawesome/free-regular-svg-icons/faTimesCircle';
 import { faArrowAltCircleDown } from '@fortawesome/free-solid-svg-icons/faArrowAltCircleDown';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons/faArrowRight';
+import { faCheck } from '@fortawesome/free-solid-svg-icons/faCheck';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons/faCheckCircle';
 import { faCaretDown } from '@fortawesome/free-solid-svg-icons/faCaretDown';
 import { faCaretRight } from '@fortawesome/free-solid-svg-icons/faCaretRight';
@@ -54,6 +55,7 @@ export {
     faArrowRight as next,
     faCaretDown as arrowExpanded,
     faCaretRight as arrowCollapsed,
+    faCheck as check,
     faCheckCircle as markRead,
     faCloudUploadAlt as settings,
     faCog as menu,

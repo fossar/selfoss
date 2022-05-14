@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@fancyapps/fancybox": "^3.1.20",
+    "@floating-ui/react-dom": "^0.7.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
     "@fortawesome/free-brands-svg-icons": "^6.0.0",
     "@fortawesome/free-regular-svg-icons": "^6.0.0",
@@ -25,7 +26,6 @@
     "react-router-dom": "^5.2.0",
     "reset-css": "^5.0.1",
     "rooks": "^5.0.2",
-    "spectrum-colorpicker": "^1.8.1",
     "tinykeys": "^1.1.1",
     "unreset-css": "^1.0.1",
     "use-state-with-deps": "^1.1.1"

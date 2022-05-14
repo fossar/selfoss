@@ -1,6 +1,5 @@
 import 'regenerator-runtime/runtime';
 import './jquery';
-import 'spectrum-colorpicker';
 import selfoss from './selfoss-base';
 import './selfoss-shares';
 import './selfoss-db-online';

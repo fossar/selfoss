@@ -97,7 +97,6 @@ Special thanks to the great programmers of these libraries used by selfoss:
 * [PHP Universal Feed Generator](https://github.com/ajaxray/FeedWriter)
 * [Elphin IcoFileLoader](https://github.com/lordelph/icofileloader)
 * [jQuery hotkeys](https://github.com/tzuryby/jquery.hotkeys)
-* [Spectrum Colorpicker](https://github.com/bgrins/spectrum)
 * [Graby](https://github.com/j0k3r/graby)
 * [FullTextRSS filters](http://help.fivefilters.org/customer/portal/articles/223153-site-patterns)
 

@@ -1,8 +1,8 @@
 @use 'sass:color';
 
 @import 'npm:@fancyapps/fancybox/dist/jquery.fancybox.css';
-@import 'npm:spectrum-colorpicker/spectrum.css';
 @import 'npm:reset-css/sass/reset';
+@import 'mixins/visually-hidden';
 
 /* base */
 
@@ -21,6 +21,8 @@ $text-color: black;
     --text-color: #{$text-color};
     --background-color: white;
 }
+
+@import 'color-chooser';
 
 html,
 body {
@@ -60,6 +62,10 @@ button::-moz-focus-inner {
 }
 
 @import 'popup-menu';
+
+.visually-hidden {
+    @include visually-hidden;
+}
 
 #js-loading-message {
     margin: 1em;

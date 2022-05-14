@@ -20,6 +20,7 @@
 - YouTube spout now supports following playlists. ([#1260](https://github.com/fossar/selfoss/pull/1260))
 - Confirmation is now required when leaving the setting page with unsaved source changes. ([#1300](https://github.com/fossar/selfoss/pull/1300))
 - Add link from settings page to individual sources. ([#1329](https://github.com/fossar/selfoss/pull/1329))
+- Tag colour can be now changed using keyboard. ([#1335](https://github.com/fossar/selfoss/pull/1335))
 - Translations into several new languages were added:
   - English (United Kingdom): `en-GB`
   - French (Canada): `fr-CA`

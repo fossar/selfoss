@@ -20,7 +20,7 @@ function Tag({ tag, active, collapseNav }) {
         (color) => {
             updateTag(
                 tagName,
-                color.toHexString()
+                color
             ).then(() => {
                 selfoss.entriesPage?.reload();
             }).catch((error) => {
