@@ -105,5 +105,6 @@
   "lang_source_warn_cancel_dirty": "להשליך את השינויים שלא נשמרו?",
   "lang_sources_leaving_unsaved_prompt": "לצאת מההגדרות עם שינויים במקור שלא נשמרו?",
   "lang_source_browse": "עיון",
-  "lang_source_menu": "פעולות נוספות"
+  "lang_source_menu": "פעולות נוספות",
+  "lang_tag_change_color_button_title": "החלפת צבע"
 }
