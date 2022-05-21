@@ -1,34 +1,31 @@
 /* eslint-env worker, serviceworker */
 
-// parcel-config-precache-manifest injects a list of {url: String, revision: String}
-const disallowedEntries = [
-    './hashpassword.html',
-    './opml.html'
-];
-const cachedEntries = self.__precacheManifest.filter((entry) => !disallowedEntries.includes(entry.url));
+import { manifest, version } from '@parcel/service-worker';
+
+async function install() {
+    const cache = await caches.open(version);
+
+    const entriesToCache =
+        manifest
+            // These make no sense offline.
+            .filter((entry) => !entry.match(/^(hashpassword|opml)\b/))
+            // We need to pass index.html through PHP to perform templating.
+            .map((entry) => entry === 'index.html' ? './' : entry);
+
+    await cache.addAll(entriesToCache);
+}
+self.addEventListener('install', (event) => event.waitUntil(install()));
 
 
-self.addEventListener('install', function(event) {
-    event.waitUntil(Promise.all(cachedEntries.map(entry =>
-        // We will cache each file in a separate cache denoted by its revision.
-        caches.open(entry.revision).then(cache => cache.add(entry.url))
-    )));
-});
-
-
-self.addEventListener('activate', function(event) {
-    const validCacheNames = cachedEntries.map(entry => entry.revision) + ['userCss', 'userJs'];
-
-    event.waitUntil(
-        caches.keys().then(function(cacheNames) {
-            return Promise.all(cacheNames.filter(function(cacheName) {
-                return !validCacheNames.includes(cacheName);
-            }).map(function(cacheName) {
-                return caches.delete(cacheName);
-            }));
-        })
+async function activate() {
+    const keys = await caches.keys();
+    await Promise.all(
+        keys
+            .filter((key) => !(key === version || key === 'userCss' || key === 'userJs'))
+            .map((key) => caches.delete(key))
     );
-});
+}
+self.addEventListener('activate', (event) => event.waitUntil(activate()));
 
 
 self.addEventListener('fetch', function(event) {
