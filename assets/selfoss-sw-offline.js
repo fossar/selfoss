@@ -32,9 +32,15 @@ self.addEventListener('activate', function(event) {
 
 
 self.addEventListener('fetch', function(event) {
-    event.respondWith(caches.match(event.request).then(function(resp) {
-        return resp || fetch(event.request);
-    }));
+    if (event.request.method !== 'GET' || event.request.headers.get('X-Requested-With') === 'XMLHttpRequest') {
+        return;
+    }
+
+    event.respondWith(
+        caches.match(event.request)
+            .then((cachedResponse) => cachedResponse || fetch(event.request))
+            .catch(() => caches.match('./'))
+    );
 });
 
 
