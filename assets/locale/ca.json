@@ -101,5 +101,10 @@
   "lang_error_offline_storage_not_available": "Emmagatzematge fora de línia no disponible. Assegureu-vos que el navegador {0}suporta IndexedDB API{1}. Si utilitzeu un navegador basat en Google Chrome, que no estigueu utilitzant selfoss en mode incògnit.",
   "lang_error_edit_source": "No es pot desar els canvis a les fonts:",
   "lang_article_reading_time": "{0} min lectura",
-  "lang_experimental": "Experimental"
+  "lang_experimental": "Experimental",
+  "lang_source_menu": "Més accions",
+  "lang_source_browse": "Navega",
+  "lang_sources_leaving_unsaved_prompt": "Voleu deixar la configuració amb els canvis de font no desats?",
+  "lang_source_warn_cancel_dirty": "Vols descartar els canvis no desats?",
+  "lang_tag_change_color_button_title": "Canvia el color"
 }
