@@ -1,5 +1,6 @@
 import React, { useContext, useMemo } from 'react';
 import { useFloating, autoUpdate, flip, offset, shift } from '@floating-ui/react-dom';
+import { FloatingPortal } from '@floating-ui/react-dom-interactions';
 import PropTypes from 'prop-types';
 import { Button as MenuButton, Wrapper as MenuWrapper, Menu, MenuItem } from 'react-aria-menubutton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -61,7 +62,7 @@ export default function ColorChooser({tag, onChange}) {
         placement: 'right-start',
         strategy: 'fixed',
         middleware: [
-            offset({ mainAxis: 16 }),
+            offset({ mainAxis: 10 }),
             shift(),
             flip(),
         ],
@@ -86,30 +87,32 @@ export default function ColorChooser({tag, onChange}) {
                     {_('tag_change_color_button_title')}
                 </span>
             </MenuButton>
-            <Menu
-                className="popup-menu"
-                ref={floatingRef}
-                style={{
-                    position: positionStrategy,
-                    top: menuY ?? '',
-                    left: menuX ?? '',
-                }}
-            >
-                {palette.map((color) => (
-                    <ColorButton
-                        key={color}
-                        color={color}
-                        tag={tag}
-                    />
-                ))}
-                {!palette.includes(tag.color) && (
-                    <ColorButton
-                        key="custom"
-                        color={tag.color}
-                        tag={tag}
-                    />
-                )}
-            </Menu>
+            <FloatingPortal>
+                <Menu
+                    className="color-chooser popup-menu"
+                    ref={floatingRef}
+                    style={{
+                        position: positionStrategy,
+                        top: menuY ?? '',
+                        left: menuX ?? '',
+                    }}
+                >
+                    {palette.map((color) => (
+                        <ColorButton
+                            key={color}
+                            color={color}
+                            tag={tag}
+                        />
+                    ))}
+                    {!palette.includes(tag.color) && (
+                        <ColorButton
+                            key="custom"
+                            color={tag.color}
+                            tag={tag}
+                        />
+                    )}
+                </Menu>
+            </FloatingPortal>
         </MenuWrapper>
     );
 }

@@ -6,15 +6,13 @@
     width: 100%;
 }
 
-.color {
-    .popup-menu {
-        width: 15em;
-        display: flex;
-        flex-flow: wrap;
+.color-chooser {
+    width: 15em;
+    display: flex;
+    flex-flow: wrap;
 
-        /* Popper does not like margins */
-        margin: 0;
-    }
+    /* Popper does not like margins */
+    margin: 0;
 
     .popup-menu-item {
         width: 1.3em;
@@ -34,11 +32,9 @@
 }
 
 @media screen and (max-width: 1024px) {
-    .color {
-        .popup-menu {
-            max-width: 26em;
-            width: 100%;
-        }
+    .color-chooser {
+        max-width: 26em;
+        width: 100%;
 
         .popup-menu-item {
             width: 2em;
