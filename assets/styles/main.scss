@@ -329,11 +329,18 @@ span.offline-count.diff {
 }
 
 #nav-tags .color {
-    width: 10px;
-    height: 10px;
-    border-radius: 2px;
+    width: 2em;
+    height: 2em;
     margin-left: auto;
     flex-shrink: 0; /* preserve aspect ratio */
+}
+
+.color-box {
+    width: 1em;
+    height: 1em;
+    border-radius: 2px;
+    margin: auto;
+    display: block;
 }
 
 #nav-sources li a,
@@ -1083,9 +1090,9 @@ span.offline-count.diff {
         padding-right: 15px;
     }
 
-    #nav-tags .color {
-        width: 25px;
-        height: 25px;
+    .color-box {
+        width: 2em;
+        height: 2em;
     }
 
     #search-list {

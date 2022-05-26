@@ -75,7 +75,6 @@ export default function ColorChooser({tag, onChange}) {
         <MenuWrapper
             className="popup-menu-wrapper color"
             onSelection={onChange}
-            style={style}
             onClick={preventDefault}
         >
             <MenuButton
@@ -83,6 +82,10 @@ export default function ColorChooser({tag, onChange}) {
                 ref={buttonRef}
                 title={_('tag_change_color_button_title')}
             >
+                <span
+                    className="color-box"
+                    style={style}
+                />
                 <span className="visually-hidden">
                     {_('tag_change_color_button_title')}
                 </span>
