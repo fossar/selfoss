@@ -451,16 +451,16 @@
         },
         {
             "name": "guzzlehttp/guzzle",
-            "version": "6.5.6",
+            "version": "6.5.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "f092dd734083473658de3ee4bef093ed77d2689c"
+                "reference": "724562fa861e21a4071c652c8a159934e4f05592"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/f092dd734083473658de3ee4bef093ed77d2689c",
-                "reference": "f092dd734083473658de3ee4bef093ed77d2689c",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/724562fa861e21a4071c652c8a159934e4f05592",
+                "reference": "724562fa861e21a4071c652c8a159934e4f05592",
                 "shasum": ""
             },
             "require": {
@@ -546,7 +546,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/guzzle/issues",
-                "source": "https://github.com/guzzle/guzzle/tree/6.5.6"
+                "source": "https://github.com/guzzle/guzzle/tree/6.5.7"
             },
             "funding": [
                 {
@@ -562,7 +562,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-05-25T13:19:12+00:00"
+            "time": "2022-06-09T21:36:50+00:00"
         },
         {
             "name": "guzzlehttp/oauth-subscriber",
@@ -941,16 +941,16 @@
         },
         {
             "name": "j0k3r/graby-site-config",
-            "version": "1.0.149",
+            "version": "1.0.153",
             "source": {
                 "type": "git",
                 "url": "https://github.com/j0k3r/graby-site-config.git",
-                "reference": "17cecb831cfac16e3082d77ec14ec50911dc2012"
+                "reference": "eee81c160c0fbb570756f3e4992898057f47e614"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/j0k3r/graby-site-config/zipball/17cecb831cfac16e3082d77ec14ec50911dc2012",
-                "reference": "17cecb831cfac16e3082d77ec14ec50911dc2012",
+                "url": "https://api.github.com/repos/j0k3r/graby-site-config/zipball/eee81c160c0fbb570756f3e4992898057f47e614",
+                "reference": "eee81c160c0fbb570756f3e4992898057f47e614",
                 "shasum": ""
             },
             "require": {
@@ -979,9 +979,9 @@
             "description": "Graby site config files",
             "support": {
                 "issues": "https://github.com/j0k3r/graby-site-config/issues",
-                "source": "https://github.com/j0k3r/graby-site-config/tree/1.0.149"
+                "source": "https://github.com/j0k3r/graby-site-config/tree/1.0.153"
             },
-            "time": "2022-04-04T19:40:40+00:00"
+            "time": "2022-06-08T04:55:59+00:00"
         },
         {
             "name": "j0k3r/httplug-ssrf-plugin",
@@ -1414,16 +1414,16 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "1.27.0",
+            "version": "1.27.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "52ebd235c1f7e0d5e1b16464b695a28335f8e44a"
+                "reference": "904713c5929655dc9b97288b69cfeedad610c9a1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/52ebd235c1f7e0d5e1b16464b695a28335f8e44a",
-                "reference": "52ebd235c1f7e0d5e1b16464b695a28335f8e44a",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/904713c5929655dc9b97288b69cfeedad610c9a1",
+                "reference": "904713c5929655dc9b97288b69cfeedad610c9a1",
                 "shasum": ""
             },
             "require": {
@@ -1484,7 +1484,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Seldaek/monolog/issues",
-                "source": "https://github.com/Seldaek/monolog/tree/1.27.0"
+                "source": "https://github.com/Seldaek/monolog/tree/1.27.1"
             },
             "funding": [
                 {
@@ -1496,7 +1496,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-03-13T20:29:46+00:00"
+            "time": "2022-06-09T08:53:42+00:00"
         },
         {
             "name": "paragonie/random_compat",
@@ -3721,6 +3721,7 @@
                     "type": "tidelift"
                 }
             ],
+            "abandoned": "symfony/error-handler",
             "time": "2020-10-24T10:57:07+00:00"
         },
         {
