@@ -98,5 +98,6 @@
   "lang_error_unwritable_logs": "Det gick inte att skriva loggar.",
   "lang_error_check_system_logs": "Ett fel uppstod. Kontrollera dina systemloggar.",
   "lang_error_check_log_file": "Ett fel uppstod. Kontrollera loggfilen “{0}”.",
-  "lang_source_browse": "Bläddra"
+  "lang_source_browse": "Bläddra",
+  "lang_tag_change_color_button_title": "Ändra färg"
 }
