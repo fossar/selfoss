@@ -2,6 +2,7 @@
 
 namespace helpers;
 
+use Monolog\Logger;
 use PDO;
 use PDOException;
 
@@ -21,6 +22,9 @@ class DatabaseConnection {
     /** @var bool whether a transaction is currently in progress */
     private $isInTransaction = false;
 
+    /** @var Logger */
+    private $logger;
+
     /**
      * Instantiate class
      *
@@ -29,7 +33,9 @@ class DatabaseConnection {
      * @param string $pw
      * @param string $tableNamePrefix
      **/
-    public function __construct($dsn, $user = null, $pw = null, array $options = [], $tableNamePrefix = '') {
+    public function __construct(Logger $logger, $dsn, $user = null, $pw = null, array $options = [], $tableNamePrefix = '') {
+        $this->logger = $logger;
+        $this->logger->debug('Creating database connection', ['dsn' => $dsn]);
         $this->pdo = new PDO($dsn, $user, $pw, $options);
         $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $this->tableNamePrefix = $tableNamePrefix;
