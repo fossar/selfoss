@@ -100,6 +100,9 @@ if ($configuration->isChanged('dbSocket') && $configuration->isChanged('dbHost')
 
 // Database connection
 if ($configuration->dbType === 'sqlite') {
+    if (!extension_loaded('pdo_sqlite')) {
+        boot_error('Using SQLite database requires pdo_sqlite PHP extension. Please make sure you have it installed and enabled.');
+    }
     $db_file = $configuration->dbFile;
 
     // create empty database file if it does not exist
@@ -113,6 +116,9 @@ if ($configuration->dbType === 'sqlite') {
         $dsn,
     ];
 } elseif ($configuration->dbType === 'mysql') {
+    if (!extension_loaded('pdo_mysql')) {
+        boot_error('Using MySQL database requires pdo_mysql PHP extension. Please make sure you have it installed and enabled.');
+    }
     $socket = $configuration->dbSocket;
     $host = $configuration->dbHost;
     $port = $configuration->dbPort;
@@ -135,6 +141,9 @@ if ($configuration->dbType === 'sqlite') {
         $configuration->dbPrefix,
     ];
 } elseif ($configuration->dbType === 'pgsql') {
+    if (!extension_loaded('pdo_pgsql')) {
+        boot_error('Using PostgreSQL database requires pdo_pgsql PHP extension. Please make sure you have it installed and enabled.');
+    }
     // PostgreSQL uses host key for socket.
     $host = $configuration->dbSocket !== null ? $configuration->dbSocket : $configuration->dbHost;
     $port = $configuration->dbPort;
