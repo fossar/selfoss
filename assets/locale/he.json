@@ -106,5 +106,6 @@
   "lang_sources_leaving_unsaved_prompt": "לצאת מההגדרות עם שינויים במקור שלא נשמרו?",
   "lang_source_browse": "עיון",
   "lang_source_menu": "פעולות נוספות",
-  "lang_tag_change_color_button_title": "החלפת צבע"
+  "lang_tag_change_color_button_title": "החלפת צבע",
+  "lang_source_go_to_settings": "פתיחה בהגדרות"
 }
