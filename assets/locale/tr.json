@@ -106,5 +106,6 @@
   "lang_sources_leaving_unsaved_prompt": "Kaydedilmemiş kaynak değişiklikleri olmasına rağmen ayarlardan çıkılsın mı?",
   "lang_source_browse": "Göz at",
   "lang_source_menu": "Daha fazla eylem",
-  "lang_tag_change_color_button_title": "Rengi değiştir"
+  "lang_tag_change_color_button_title": "Rengi değiştir",
+  "lang_source_go_to_settings": "Ayarlarda aç"
 }
