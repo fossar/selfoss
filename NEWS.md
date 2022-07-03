@@ -19,7 +19,7 @@
 - Search will be carried out using regular expressions when the search query is wrapped in forward slashes, e.g. `/regex/`. The expression syntax is database specific. ([#1205](https://github.com/fossar/selfoss/pull/1205))
 - YouTube spout now supports following playlists. ([#1260](https://github.com/fossar/selfoss/pull/1260))
 - Confirmation is now required when leaving the setting page with unsaved source changes. ([#1300](https://github.com/fossar/selfoss/pull/1300))
-- Add link from settings page to individual sources. ([#1329](https://github.com/fossar/selfoss/pull/1329))
+- Add link from settings page to individual sources and vice versa. ([#1329](https://github.com/fossar/selfoss/pull/1329), [#1340](https://github.com/fossar/selfoss/pull/1340))
 - Tag colour can be now changed using keyboard. ([#1335](https://github.com/fossar/selfoss/pull/1335))
 - YouTube spout now supports all YouTube URLs that provide feeds. ([#1273](https://github.com/fossar/selfoss/issues/1273))
 - Translations into several new languages were added:

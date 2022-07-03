@@ -35,6 +35,10 @@ body {
     background: url('../images/bg.gif') repeat;
 }
 
+button {
+    font-family: 'Open Sans', Arial, sans-serif;
+}
+
 select,
 input {
     border: solid 1px #cccccc;
@@ -779,9 +783,11 @@ span.offline-count.diff {
 
 .source-add,
 .source-export,
-.refresh-source {
+.refresh-source,
+.entries-go-to-settings {
     font-size: 0.85em;
     line-height: 2;
+    text-decoration: none;
 }
 
 .source-add {
@@ -794,13 +800,15 @@ span.offline-count.diff {
     float: left;
 }
 
-.refresh-source {
+.refresh-source,
+.entries-go-to-settings {
     background: transparent;
     border: none;
     color: var(--text-color);
     padding: 0;
     cursor: pointer;
     margin-left: 20px;
+    font-weight: normal;
 }
 
 .source-export {

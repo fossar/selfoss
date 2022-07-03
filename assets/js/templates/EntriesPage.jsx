@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useLocation, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import { useOnline } from 'rooks';
 import { useStateWithDeps } from 'use-state-with-deps';
 import nullable from 'prop-types-nullable';
@@ -11,7 +11,7 @@ import * as sourceRequests from '../requests/sources';
 import { LoadingState } from '../requests/LoadingState';
 import { Spinner, SpinnerBig } from './Spinner';
 import classNames from 'classnames';
-import { useAllowedToUpdate } from '../helpers/authorizations';
+import { useAllowedToUpdate, useAllowedToWrite } from '../helpers/authorizations';
 import { LocalizationContext } from '../helpers/i18n';
 import { useShouldReload } from '../helpers/hooks';
 import { forceReload } from '../helpers/uri';
@@ -144,6 +144,7 @@ function handleRefreshSource({ event, source, setLoadingState, setNavExpanded, r
 
 export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, selectedEntry, expandedEntries, setNavExpanded, navSourcesExpanded, reload }) {
     const allowedToUpdate = useAllowedToUpdate();
+    const allowedToWrite = useAllowedToWrite();
 
     const location = useLocation();
     const forceReload = useShouldReload();
@@ -306,6 +307,18 @@ export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, s
                 >
                     {_('source_refresh')}
                 </button>
+                : null
+            }
+            {currentSource !== null && allowedToWrite && isOnline ?
+                <Link
+                    to={{
+                        pathname: '/manage/sources',
+                        hash: `#source-${currentSource}`
+                    }}
+                    className="entries-go-to-settings"
+                >
+                    {_('source_go_to_settings')}
+                </Link>
                 : null
             }
             {entries.map((entry) => (

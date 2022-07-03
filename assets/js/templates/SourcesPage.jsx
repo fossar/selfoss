@@ -42,7 +42,7 @@ function handleAddSource({
 }
 
 // load sources
-function loadSources({ abortController, setSpouts, setSources, setLoadingState }) {
+function loadSources({ abortController, location, setSpouts, setSources, setLoadingState }) {
     if (abortController.signal.aborted) {
         return Promise.resolve();
     }
@@ -57,6 +57,19 @@ function loadSources({ abortController, setSpouts, setSources, setLoadingState }
         setSpouts(spouts);
         setSources(sources);
         setLoadingState(LoadingState.SUCCESS);
+
+        if (location.hash.startsWith('#source-')) {
+            const source = document.querySelector(`.source[data-id="${location.hash.replace(/^#source-/, '')}"]`);
+
+            if (!source) {
+                return;
+            }
+
+            // needs to be delayed for some reason
+            requestAnimationFrame(() => {
+                source.scrollIntoView();
+            });
+        }
     }).catch((error) => {
         if (error.name === 'AbortError' || abortController.signal.aborted) {
             return;
@@ -92,7 +105,7 @@ export default function SourcesPage() {
     React.useEffect(() => {
         const abortController = new AbortController();
 
-        loadSources({ abortController, setSpouts, setSources, setLoadingState })
+        loadSources({ abortController, location, setSpouts, setSources, setLoadingState })
             .then(() => {
                 if (isAdding) {
                     const params = new URLSearchParams(location.search);

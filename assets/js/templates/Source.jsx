@@ -588,7 +588,7 @@ export default function Source({ source, setSources, spouts, setSpouts, dirty, s
     const _ = React.useContext(LocalizationContext);
 
     return (
-        <form className={classNames(classes)} data-id={source.id}>
+        <form className={classNames(classes)} data-id={source.id} id={`source-${source.id}`}>
             <div className="source-icon">
                 {source.icon && source.icon != '0' ? (
                     <img
