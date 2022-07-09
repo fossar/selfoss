@@ -67,6 +67,7 @@ class commits extends \spouts\spout {
     public function load(array $params) {
         $this->htmlUrl = 'https://github.com/' . urlencode($params['owner']) . '/' . urlencode($params['repo']) . '/' . urlencode($params['branch']);
 
+        // https://docs.github.com/en/rest/commits/commits#list-commits
         $jsonUrl = 'https://api.github.com/repos/' . urlencode($params['owner']) . '/' . urlencode($params['repo']) . '/commits?sha=' . urlencode($params['branch']);
 
         $http = $this->webClient->getHttpClient();
@@ -123,13 +124,11 @@ class commits extends \spouts\spout {
 
     public function getDate() {
         if ($this->valid()) {
-            $date = date('Y-m-d H:i:s', strtotime($this->items->current()['commit']['author']['date']));
-        }
-        if (strlen($date) === 0) {
-            $date = date('Y-m-d H:i:s');
+            // Appears to be ISO 8601.
+            return new \DateTimeImmutable($this->items->current()['commit']['author']['date']);
         }
 
-        return $date;
+        return new \DateTimeImmutable();
     }
 
     public function destroy() {

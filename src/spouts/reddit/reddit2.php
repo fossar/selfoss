@@ -187,10 +187,14 @@ class reddit2 extends \spouts\spout {
 
     public function getdate() {
         if ($this->valid()) {
-            $date = date('Y-m-d H:i:s', $this->items->current()['data']['created_utc']);
+            // UNIX timestamp
+            // https://www.reddit.com/r/redditdev/comments/3qsv97/whats_the_time_unit_for_created_utc_and_what_time/
+            $timestamp = (string) $this->items->current()['data']['created_utc'];
+
+            return new \DateTimeImmutable('@' . $timestamp);
         }
 
-        return $date;
+        return new \DateTimeImmutable();
     }
 
     public function destroy() {

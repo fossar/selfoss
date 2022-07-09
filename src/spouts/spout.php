@@ -149,7 +149,7 @@ abstract class spout implements \Iterator {
     /**
      * returns the date of this item
      *
-     * @return string date
+     * @return \DateTimeInterface date
      */
     abstract public function getDate();
 

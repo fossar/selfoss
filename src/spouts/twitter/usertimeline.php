@@ -280,13 +280,12 @@ class usertimeline extends \spouts\spout {
 
     public function getDate() {
         if ($this->items !== null) {
-            $date = date('Y-m-d H:i:s', strtotime($this->items->current()->created_at));
-        }
-        if (strlen($date) === 0) {
-            $date = date('Y-m-d H:i:s');
+            // Format of `created_at` field not specified, looks US-centric.
+            // https://developer.twitter.com/en/docs/twitter-api/v1/data-dictionary/object-model/tweet
+            return new \DateTimeImmutable($this->items->current()->created_at);
         }
 
-        return $date;
+        return new \DateTimeImmutable();
     }
 
     public function destroy() {

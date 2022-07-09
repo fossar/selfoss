@@ -64,6 +64,7 @@ class page extends \spouts\spout {
     }
 
     public function load(array $params) {
+        // https://developers.facebook.com/docs/graph-api/reference/user
         $http = $this->webClient->getHttpClient();
         $url = new Uri('https://graph.facebook.com/' . urlencode($params['user']));
         $url = $url->withQueryValues($url, [
@@ -75,6 +76,7 @@ class page extends \spouts\spout {
         $this->spoutTitle = $data['name'];
         $this->pagePicture = $data['picture']['data']['url'];
         $this->pageLink = $data['picture']['link'];
+        // https://developers.facebook.com/docs/graph-api/reference/user/feed/
         $this->items = new ArrayIterator($data['feed']['data']);
     }
 
@@ -150,10 +152,12 @@ class page extends \spouts\spout {
     public function getDate() {
         if ($this->valid()) {
             $item = $this->items->current();
-
-            return $item['created_time'];
+            // The docs say UNIX timestamp but appears to be ISO 8601.
+            // https://developers.facebook.com/docs/graph-api/reference/post/
+            // https://stackoverflow.com/questions/14516792/what-is-the-time-format-used-in-facebook-created-date
+            return new \DateTimeImmutable($item['created_time']);
         }
 
-        return false;
+        return new \DateTimeImmutable();
     }
 }

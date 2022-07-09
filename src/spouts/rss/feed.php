@@ -160,13 +160,12 @@ class feed extends \spouts\spout {
 
     public function getDate() {
         if ($this->valid()) {
-            $date = $this->items->current()->get_date('Y-m-d H:i:s');
-        }
-        if (strlen($date) === 0) {
-            $date = date('Y-m-d H:i:s');
+            $timestamp = (string) $this->items->current()->get_date('U');
+
+            return new \DateTimeImmutable('@' . $timestamp);
         }
 
-        return $date;
+        return new \DateTimeImmutable();
     }
 
     public function getAuthor() {
