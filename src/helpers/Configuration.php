@@ -19,6 +19,9 @@ class Configuration {
         'ftrssCustomDataDir',
     ];
 
+    const CACHE_TYPE_FILE = 'file';
+    const CACHE_TYPE_MEMCACHED = 'memcached';
+
     /** @var array<string, bool> Keeps track of options that have been changed. */
     private $modifiedOptions = [];
 
@@ -37,6 +40,18 @@ class Configuration {
     public $ftrssCustomDataDir = '%datadir%/fulltextrss';
 
     // Rest of the values.
+
+    /** @var string */
+    public $cacheType = self::CACHE_TYPE_FILE;
+
+    /** @var string */
+    public $cacheHost = 'localhost';
+
+    /** @var int */
+    public $cachePort = 11211;
+
+    /** @var string */
+    public $cachePrefix = '';
 
     /** @var string */
     public $dbType = 'sqlite';

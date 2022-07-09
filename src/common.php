@@ -224,6 +224,38 @@ $dice->addRule(helpers\ThumbnailStore::class, array_merge($shared, [
     ],
 ]));
 
+if ($configuration->cacheType === Configuration::CACHE_TYPE_MEMCACHED) {
+    if (!extension_loaded('memcached')) {
+        // https://www.php.net/manual/en/book.memcached.php
+        boot_error('Using memcached for caching requires memcached PHP extension. Please make sure you have it installed and enabled.');
+    }
+
+    $cacheClass = Nette\Caching\Storages\MemcachedStorage::class;
+    $cacheParams = [
+        'host' => $configuration->cacheHost,
+        'port' => $configuration->cachePort,
+        'prefix' => $configuration->cachePrefix,
+    ];
+} elseif ($configuration->cacheType === Configuration::CACHE_TYPE_FILE) {
+    $cacheClass = Nette\Caching\Storages\FileStorage::class;
+    $cacheParams = [
+        'dir' => $configuration->cache,
+    ];
+} else {
+    throw new Exception('Unsupported value for db_type option: ' . $configuration->dbType);
+}
+
+$dice->addRule(Nette\Caching\Storage::class, [
+    'shared' => true,
+    'instanceOf' => $cacheClass,
+    'constructParams' => $cacheParams,
+]);
+
+$dice->addRule(RssBridge\CacheInterface::class, [
+    'shared' => true,
+    'instanceOf' => helpers\RssBridge\CacheAdapter::class,
+]);
+
 // Fallback rule
 $dice->addRule('*', $substitutions);
 
