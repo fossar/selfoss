@@ -650,6 +650,12 @@ export default function Source({ source, setSources, spouts, setSpouts, dirty, s
                         className="source-menu-button"
                     >
                         {_('source_menu')}
+                        {sourceBeingDeleted &&
+                            <React.Fragment>
+                                {' '}
+                                <Spinner />
+                            </React.Fragment>
+                        }
                     </MenuButton>
                     <Menu
                         className="popup-menu"
@@ -667,13 +673,6 @@ export default function Source({ source, setSources, spouts, setSpouts, dirty, s
                             value="delete"
                         >
                             {_('source_delete')}
-
-                            {sourceBeingDeleted &&
-                                <React.Fragment>
-                                    {' '}
-                                    <Spinner />
-                                </React.Fragment>
-                            }
                         </MenuItem>
                     </Menu>
                 </MenuWrapper>
