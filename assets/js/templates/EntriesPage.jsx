@@ -293,7 +293,7 @@ export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, s
 
     if (loadingState === LoadingState.LOADING) {
         return (
-            <SpinnerBig />
+            <SpinnerBig label={_('entries_loading')} />
         );
     }
 
@@ -342,7 +342,7 @@ export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, s
                         aria-label={_('more')}
                         onClick={moreLoadingState !== LoadingState.LOADING ? moreOnClick : null}
                     >
-                        {moreLoadingState !== LoadingState.LOADING ? <span>{_('more')}</span> : <Spinner size="3x" />}
+                        {moreLoadingState !== LoadingState.LOADING ? <span>{_('more')}</span> : <Spinner size="3x" label={_('entries_loading')} />}
                     </button>
                     : null}
                 {entries.length > 0 ?

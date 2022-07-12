@@ -149,7 +149,7 @@ export default function SourcesPage() {
 
     if (loadingState === LoadingState.LOADING) {
         return (
-            <SpinnerBig />
+            <SpinnerBig label={_('sources_loading')} />
         );
     }
 

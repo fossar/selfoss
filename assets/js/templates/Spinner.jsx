@@ -4,20 +4,34 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as icons from '../icons';
 
 
-export function Spinner({ size }) {
+export function Spinner({ label, size }) {
     return (
-        <FontAwesomeIcon icon={icons.spinner} size={size} spin />
+        <React.Fragment>
+            <FontAwesomeIcon
+                icon={icons.spinner}
+                size={size}
+                spin
+                aria-hidden="true"
+                title={label}
+            />
+            <span className="visually-hidden" role="alert">{label}</span>
+        </React.Fragment>
     );
 }
 
 Spinner.propTypes = {
+    label: PropTypes.string.isRequired,
     size: PropTypes.string,
 };
 
-export function SpinnerBig() {
+export function SpinnerBig({ label }) {
     return (
         <div className="spinner-big">
-            <Spinner size="10x" />
+            <Spinner size="10x" label={label} />
         </div>
     );
 }
+
+SpinnerBig.propTypes = {
+    label: PropTypes.string.isRequired,
+};

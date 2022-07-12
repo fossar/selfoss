@@ -346,7 +346,7 @@ function SourceEditForm({
 
     const sourceParamsContent = (
         sourceParamsLoading ? (
-            <Spinner size="3x" />
+            <Spinner size="3x" label={_('source_params_loading')} />
         ) : (
             sourceParamsError ?? (
                 (
@@ -497,7 +497,7 @@ function SourceEditForm({
                         {sourceActionLoading &&
                             <React.Fragment>
                                 {' '}
-                                <Spinner />
+                                <Spinner label={_('source_saving')} />
                             </React.Fragment>
                         }
                     </button>
@@ -653,7 +653,7 @@ export default function Source({ source, setSources, spouts, setSpouts, dirty, s
                         {sourceBeingDeleted &&
                             <React.Fragment>
                                 {' '}
-                                <Spinner />
+                                <Spinner label={_('source_deleting')} />
                             </React.Fragment>
                         }
                     </MenuButton>

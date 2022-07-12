@@ -72,7 +72,7 @@ export default function LoginForm({
 
     return (
         <React.Fragment>
-            {loading ? <SpinnerBig /> : null}
+            {loading ? <SpinnerBig label={_('login_in_progress')} /> : null}
             <form
                 action=""
                 className={classNames({ loading: loading })}
