@@ -11,7 +11,7 @@ export function Spinner({ size }) {
 }
 
 Spinner.propTypes = {
-    size: PropTypes.string.isRequired,
+    size: PropTypes.string,
 };
 
 export function SpinnerBig() {
