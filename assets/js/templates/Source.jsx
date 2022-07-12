@@ -344,6 +344,41 @@ function SourceEditForm({
 
     const _ = React.useContext(LocalizationContext);
 
+    const sourceParamsContent = (
+        sourceParamsLoading ? (
+            <Spinner size="3x" />
+        ) : (
+            sourceParamsError ?? (
+                (
+                    Object.keys(spouts).includes(source.spout)
+                    && Object.keys(spouts[source.spout].params).length > 0
+                )
+                    ? (
+                        <ul>
+                            {Object.entries(spouts[source.spout].params).map(
+                                ([spoutParamName, spoutParam]) => (
+                                    <SourceParam
+                                        key={spoutParamName}
+                                        params={source.params}
+                                        {...{
+                                            spoutParamName,
+                                            spoutParam,
+                                            sourceErrors,
+                                            sourceId,
+                                            setEditedSource,
+                                            setDirty,
+                                        }}
+                                    />
+                                )
+                            )}
+                        </ul>
+                    )
+                    : null
+            )
+        )
+
+    );
+
     return (
         <form>
             <ul className="source-edit-form">
@@ -436,34 +471,11 @@ function SourceEditForm({
                 </li>
 
                 {/* settings */}
-                <li className="source-params">
-                    {sourceParamsLoading &&
-                        <Spinner size="3x" />
-                    }
-
-                    {sourceParamsError ??
-                        (Object.keys(spouts).includes(source.spout) &&
-                        Object.keys(spouts[source.spout].params).length > 0 ? (
-                                <ul>
-                                    {Object.entries(spouts[source.spout].params).map(
-                                        ([spoutParamName, spoutParam]) => (
-                                            <SourceParam
-                                                key={spoutParamName}
-                                                params={source.params}
-                                                {...{
-                                                    spoutParamName,
-                                                    spoutParam,
-                                                    sourceErrors,
-                                                    sourceId,
-                                                    setEditedSource,
-                                                    setDirty,
-                                                }}
-                                            />
-                                        )
-                                    )}
-                                </ul>
-                            ) : null)}
-                </li>
+                {sourceParamsContent ? (
+                    <li className="source-params">
+                        {sourceParamsContent}
+                    </li>
+                ) : null}
 
                 {/* error messages */}
                 {sourceError ? (
