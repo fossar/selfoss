@@ -26,6 +26,7 @@
   "lang_logoutbutton": "Odhlásit se",
   "lang_loginbutton": "Přihlásit se",
   "lang_sources": "Zdroje",
+  "lang_no_sources": "Nejsou nastaveny žádné zdroje.",
   "lang_source_add": "Přidat zdroj",
   "lang_source_opml": "nebo nahrát opml soubor",
   "lang_source_export": "Export zdrojů",

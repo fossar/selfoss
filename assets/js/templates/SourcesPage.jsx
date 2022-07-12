@@ -176,13 +176,24 @@ export default function SourcesPage() {
             <a className="source-opml" href="opml">
                 {_('source_opml')}
             </a>
-            {sources.map((source) => (
-                <Source
-                    key={source.id}
-                    dirty={dirtySources[source.id] ?? false}
-                    {...{ source, setSources, spouts, setSpouts, setDirtySources }}
-                />
-            ))}
+            {sources
+                ? (
+                    <ul>
+                        {sources.map((source) => (
+                            <Source
+                                key={source.id}
+                                dirty={dirtySources[source.id] ?? false}
+                                {...{ source, setSources, spouts, setSpouts, setDirtySources }}
+                            />
+                        ))}
+                    </ul>
+                )
+                : (
+                    <p>
+                        {_('no_sources')}
+                    </p>
+                )
+            }
         </React.Fragment>
     );
 }

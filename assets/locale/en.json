@@ -38,6 +38,7 @@
   "lang_logoutbutton": "Log out",
   "lang_loginbutton": "Log in",
   "lang_sources": "Sources",
+  "lang_no_sources": "No sources configured.",
   "lang_source_add": "Add source",
   "lang_source_opml": "or import an OPML file",
   "lang_source_export": "Export sources",
