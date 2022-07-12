@@ -1,4 +1,5 @@
 import React from 'react';
+import { useRef } from 'react';
 import { Button as MenuButton, Wrapper as MenuWrapper, Menu, MenuItem } from 'react-aria-menubutton';
 import { useHistory, useLocation } from 'react-router-dom';
 import { makeEntriesLinkLocation } from '../helpers/uri';
@@ -14,12 +15,16 @@ import { LoadingState } from '../requests/LoadingState';
 import { LocalizationContext } from '../helpers/i18n';
 
 // cancel source editing
-function handleCancel({ event, source, setSources, setEditedSource }) {
+function handleCancel({
+    source,
+    sourceElem,
+    setSources,
+    setEditedSource
+}) {
     const id = source.id;
 
     if (id.toString().startsWith('new-')) {
-        const parent = $(event.target).parents('.source');
-        parent.fadeOut('fast', () => {
+        $(sourceElem.current).fadeOut('fast', () => {
             // Remove the source from this page’s model.
             setSources((sources) =>
                 sources.filter((source) => source.id !== id)
@@ -124,6 +129,7 @@ function handleSave({
 function handleDelete({
     event,
     source,
+    sourceElem,
     setSources,
     setSourceBeingDeleted,
     setDirty,
@@ -147,8 +153,7 @@ function handleDelete({
     sourceRequests
         .remove(id)
         .then(() => {
-            const parent = $(event.target).parents('.source');
-            parent.fadeOut('fast', () => {
+            $(sourceElem.current).fadeOut('fast', () => {
                 // Remove the source from this page’s model.
                 setSources((sources) =>
                     sources.filter((source) => source.id !== id)
@@ -247,6 +252,7 @@ function daysAgo(date) {
 
 function SourceEditForm({
     source,
+    sourceElem,
     sourceError,
     setSources,
     spouts,
@@ -335,11 +341,12 @@ function SourceEditForm({
             handleCancel({
                 event,
                 source,
+                sourceElem,
                 setSources,
                 setEditedSource
             });
         },
-        [source, setSources, setEditedSource, dirty, setDirty]
+        [source, sourceElem, setSources, setEditedSource, dirty, setDirty]
     );
 
     const _ = React.useContext(LocalizationContext);
@@ -518,6 +525,7 @@ function SourceEditForm({
 
 SourceEditForm.propTypes = {
     source: PropTypes.object.isRequired,
+    sourceElem: PropTypes.object.isRequired,
     sourceError: PropTypes.string,
     setSources: PropTypes.func.isRequired,
     spouts: PropTypes.object.isRequired,
@@ -582,12 +590,15 @@ export default function Source({ source, setSources, spouts, setSpouts, dirty, s
     const history  = useHistory();
     const location  = useLocation();
 
+    const sourceElem = useRef(null);
+
     const extraMenuOnSelection = React.useCallback(
         (value, event) => {
             if (value === 'delete') {
                 handleDelete({
                     event,
                     source,
+                    sourceElem,
                     setSources,
                     setSourceBeingDeleted,
                     setDirty,
@@ -596,7 +607,7 @@ export default function Source({ source, setSources, spouts, setSpouts, dirty, s
                 history.push(makeEntriesLinkLocation(location, { category: `source-${source.id}` }));
             }
         },
-        [source, setSources, setDirty, location, history]
+        [source, sourceElem, setSources, setDirty, location, history]
     );
 
     const _ = React.useContext(LocalizationContext);
@@ -606,6 +617,7 @@ export default function Source({ source, setSources, spouts, setSpouts, dirty, s
             className={classNames(classes)}
             data-id={source.id}
             id={`source-${source.id}`}
+            ref={sourceElem}
         >
             <div className="source-icon">
                 {source.icon && source.icon != '0' ? (
@@ -705,6 +717,7 @@ export default function Source({ source, setSources, spouts, setSpouts, dirty, s
                         setSourceErrors,
                         dirty,
                         setDirty,
+                        sourceElem,
                     }}
                     sourceError={source.error}
                     source={editedSource}
