@@ -402,6 +402,7 @@ function SourceEditForm({
                         value={source.title ?? ''}
                         placeholder={_('source_autotitle_hint')}
                         onChange={titleOnChange}
+                        autoFocus
                     />
                     {sourceErrors['title'] ? (
                         <span className="error">{sourceErrors['title']}</span>
