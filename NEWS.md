@@ -35,7 +35,7 @@
 - `logger_level=NONE` is now handled correctly ([#1077](https://github.com/fossar/selfoss/issues/1077))
 - URLs containing special characters like commas in query string are now handled correctly ([#1082](https://github.com/fossar/selfoss/pull/1082))
 - Set 60 second timeout to spout HTTP requests to prevent a single feed blocking other updates ([#1104](https://github.com/fossar/selfoss/issues/1104))
-- Significantly improved accessibility ([#1133](https://github.com/fossar/selfoss/pull/1133), [#1134](https://github.com/SSilence/selfoss/pull/1134) and [#1141](https://github.com/SSilence/selfoss/pull/1141))
+- Significantly improved accessibility ([#1133](https://github.com/fossar/selfoss/pull/1133), [#1134](https://github.com/SSilence/selfoss/pull/1134), [#1141](https://github.com/SSilence/selfoss/pull/1141) and [#1345](https://github.com/SSilence/selfoss/pull/1345))
 - Fixed marking more than 1000 items as read at the same time ([#1182](https://github.com/fossar/selfoss/issues/1182))
 - Fixed loading full text on pages containing ampersands in URLs ([#1188](https://github.com/fossar/selfoss/pull/1188))
 - Fixed missing styling in article contents ([#1221](https://github.com/fossar/selfoss/pull/1221))
