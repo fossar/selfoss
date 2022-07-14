@@ -57,8 +57,8 @@ input:focus {
     box-shadow: 0 0 0 0.2rem var(--primary-highlight-shadow);
 }
 
-button:focus {
-    outline: 1px dotted currentcolor;
+:focus-visible {
+    outline: var(--primary) solid 2px;
 }
 
 button::-moz-focus-inner {
@@ -152,6 +152,10 @@ button::-moz-focus-inner {
     text-align: center;
     border-radius: 2px;
     cursor: pointer;
+}
+
+#nav-mark:focus-visible {
+    outline-color: var(--primary-contrast);
 }
 
 #nav-mark[disabled],
@@ -527,6 +531,10 @@ span.offline-count.diff {
     font-size: 0.8em;
     white-space: nowrap;
     text-decoration: none;
+}
+
+.entry-tags-tag:focus-visible {
+    outline-offset: 1px;
 }
 
 .entry-thumbnail img {
