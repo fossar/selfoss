@@ -89,7 +89,7 @@
   "lang_seconds": "לפני {0,plural,one {שנייה},other {# שניות}}",
   "lang_minutes": "לפני {0,plural,one {דקה},other {# דקות}}",
   "lang_hours": "לפני {0,plural,one {שעה},two {שעתיים},other {# שעות}}",
-  "lang_timestamp": "{0,date} {0,time}",
+  "lang_timestamp": "‎{0,date} {0,time}",
   "lang_alltags": "כל התגיות",
   "lang_tags": "תגיות",
   "lang_offline_navigation_unavailable": "החלפת תגיות ומקורות אינה זמינה כרגע במצב בלתי מקוון.",
@@ -107,5 +107,12 @@
   "lang_source_browse": "עיון",
   "lang_source_menu": "פעולות נוספות",
   "lang_tag_change_color_button_title": "החלפת צבע",
-  "lang_source_go_to_settings": "פתיחה בהגדרות"
+  "lang_source_go_to_settings": "פתיחה בהגדרות",
+  "lang_sources_loading": "המקורות נטענים…",
+  "lang_no_sources": "לא הוגדרו מקורות.",
+  "lang_source_deleting": "המקור נמחק…",
+  "lang_source_params_loading": "המשתנים נטענים…",
+  "lang_source_saving": "השינויים למקור נשמרים…",
+  "lang_entries_loading": "הרשומות נטענות…",
+  "lang_login_in_progress": "מתבצע ניסיון כניסה…"
 }
