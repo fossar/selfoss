@@ -106,5 +106,13 @@
   "lang_source_browse": "Navega",
   "lang_sources_leaving_unsaved_prompt": "Voleu deixar la configuració amb els canvis de font no desats?",
   "lang_source_warn_cancel_dirty": "Vols descartar els canvis no desats?",
-  "lang_tag_change_color_button_title": "Canvia el color"
+  "lang_tag_change_color_button_title": "Canvia el color",
+  "lang_sources_loading": "S'estan carregant les fonts…",
+  "lang_source_deleting": "S'està suprimint la font…",
+  "lang_source_params_loading": "S'estan carregant els paràmetres…",
+  "lang_no_sources": "No hi ha fonts configurades.",
+  "lang_source_saving": "S'estan desant els canvis a la font…",
+  "lang_source_go_to_settings": "Obre a la configuració",
+  "lang_entries_loading": "S'estan carregant les entrades…",
+  "lang_login_in_progress": "S'està intentant iniciar sessió…"
 }
