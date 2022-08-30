@@ -173,6 +173,7 @@ set `0` or leave empty for auto detection (browser language) or use one of the f
 * Finnish: `fi`
 * French: `fr`
 * French (Canada): `fr-CA`
+* Galician: `gl`
 * German: `de`
 * Hebrew: `he`
 * Hungarian: `hu`

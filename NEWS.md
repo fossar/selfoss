@@ -25,6 +25,7 @@
 - Translations into several new languages were added:
   - English (United Kingdom): `en-GB`
   - French (Canada): `fr-CA`
+  - Galician: `gl`
   - Hebrew: `he`
   - Indonesian: `id`
   - Portuguese (European): `pt`
