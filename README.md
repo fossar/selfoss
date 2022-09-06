@@ -62,7 +62,7 @@ Selfoss supports importing OPML files. Find the OPML export in the old applicati
 
 ## Third-party Apps
 
-We recommend [Reader For Selfoss](https://github.com/aminecmi/readerforselfoss) for Android devices.
+We recommend [Reader For Selfoss](https://f-droid.org/packages/bou.amine.apps.readerforselfossv2.android) for Android devices.
 
 
 ## Development

@@ -93,6 +93,7 @@
 - `spout` classes no longer need to implement `Iterator`, instead they should return `Iterator` of newly introduced `Item` objects from `getItems()` method. The types of properties of items have also been revisited. ([#1341](https://github.com/fossar/selfoss/pull/1341), [#1342](https://github.com/fossar/selfoss/pull/1342))
 
 ### Other changes
+- Amine and others have rewritten the **Android app** from scratch, you will want to install the [new one from F-Droid](https://f-droid.org/packages/bou.amine.apps.readerforselfossv2.android) to keep receiving updates.
 - The front-end has been modernized using React framework, this will greatly simplify future development. ([#1216](https://github.com/fossar/selfoss/pull/1216))
 - The front-end routing no longer relies on hash fragment, resulting in nicer URLs. ([#1299](https://github.com/fossar/selfoss/pull/1299))
 - Prevent sending referrer headers when opening links and sharing for improved privacy. ([#1301](https://github.com/fossar/selfoss/pull/1301))
