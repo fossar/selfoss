@@ -14,7 +14,7 @@ import classNames from 'classnames';
 import { useAllowedToUpdate, useAllowedToWrite } from '../helpers/authorizations';
 import { LocalizationContext } from '../helpers/i18n';
 import { useShouldReload } from '../helpers/hooks';
-import { forceReload } from '../helpers/uri';
+import { forceReload, makeEntriesLinkLocation } from '../helpers/uri';
 import { HttpError } from '../errors';
 
 function reloadList({ fetchParams, abortController, append = false, waitForSync = true, entryId = null, setLoadingState }) {
@@ -818,6 +818,7 @@ export default class StateHolder extends React.Component {
          */
         selfoss.history.replace({
             ...this.props.location,
+            ...makeEntriesLinkLocation(this.props.location, { id: null }),
             state: forceReload(this.props.location),
         });
     }
