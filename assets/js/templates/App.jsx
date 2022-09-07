@@ -176,7 +176,7 @@ function PureApp({
     const _ = React.useContext(LocalizationContext);
 
     return (
-        <React.Fragment>
+        <React.StrictMode>
             <Message message={globalMessage} />
 
             <Switch>
@@ -262,7 +262,7 @@ function PureApp({
                     </div>
                 </Route>
             </Switch>
-        </React.Fragment>
+        </React.StrictMode>
     );
 }
 
