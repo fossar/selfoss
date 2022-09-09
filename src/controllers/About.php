@@ -49,6 +49,7 @@ class About {
                 'autoMarkAsRead' => $this->configuration->autoMarkAsRead, // bool
                 'autoCollapse' => $this->configuration->autoCollapse, // bool
                 'autoStreamMore' => $this->configuration->autoStreamMore, // bool
+                'openInBackgroundTab' => $this->configuration->openInBackgroundTab, // bool
                 'loadImagesOnMobile' => $this->configuration->loadImagesOnMobile, // bool
                 'itemsPerPage' => $this->configuration->itemsPerpage, // int
                 'unreadOrder' => $this->configuration->unreadOrder, // string

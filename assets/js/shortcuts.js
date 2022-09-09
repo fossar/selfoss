@@ -144,6 +144,30 @@ function ignoreWhenInteracting(handler) {
 }
 
 /**
+ * Try to open the selected article using the preferred method.
+ * @param {number} selected
+ */
+function openSelectedArticle(selected) {
+    const link = document.querySelector(`.entry[data-entry-id="${selected}"] .entry-datetime`);
+    if (selfoss.config.openInBackgroundTab) {
+        // In Chromium, this will just cause the tab to open in the foreground.
+        // Appears to be disallowed by the pop-under prevention:
+        // https://crbug.com/431335
+        // https://crbug.com/487919
+        const event = new MouseEvent(
+            'click',
+            {
+                ctrlKey: true,
+            }
+        );
+        link.dispatchEvent(event);
+    } else {
+        // open item in new window
+        link.click();
+    }
+}
+
+/**
  * Set up shortcuts on document.
  */
 export default function makeShortcuts() {
@@ -251,8 +275,7 @@ export default function makeShortcuts() {
             var selected = selfoss.entriesPage.getSelectedEntry();
 
             if (selected !== null) {
-                const elem = document.querySelector(`.entry[data-entry-id="${selected}"]`);
-                window.open(elem.querySelector('.entry-datetime').getAttribute('href'), undefined, 'noreferrer');
+                openSelectedArticle(selected);
             }
 
             e.preventDefault();
@@ -268,9 +291,7 @@ export default function makeShortcuts() {
             if (selected !== null) {
                 selfoss.entriesPage.markEntryRead(selected, true);
 
-                // open item in new window
-                const elem = document.querySelector(`.entry[data-entry-id="${selected}"]`);
-                elem.querySelector('.entry-datetime').click();
+                openSelectedArticle(selected);
             }
         }),
 

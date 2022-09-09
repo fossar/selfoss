@@ -119,6 +119,9 @@ class Configuration {
     /** @var bool */
     public $autoStreamMore = true;
 
+    /** @var bool */
+    public $openInBackgroundTab = false;
+
     /** @var ?string */
     public $anonymizer = null;
 

@@ -157,6 +157,12 @@ set this to `1` to automatically collapse an item when another one is opened.
 set this to `0` to disable automatic loading of more items when you scroll down. With `1`, a click on a button is required instead.
 </div>
 
+### `open_in_background_tab`
+<div class="config-option">
+
+set this to `1` to try to make <kbd>v</kbd> shortcut open articles in new background tab. This [does not work in Chromium based browsers](https://crbug.com/431335).
+</div>
+
 ### `language`
 <div class="config-option">
 
