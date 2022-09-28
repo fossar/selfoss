@@ -34,7 +34,7 @@ export function refreshAll() {
  * Removes source with given ID.
  */
 export function remove(id) {
-    return ajax.post(`source/delete/${id}`).promise;
+    return ajax.delete_(`source/${id}`).promise;
 }
 
 /**

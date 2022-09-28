@@ -125,7 +125,7 @@ $router->delete('/source/([0-9]+)', function($id) use ($dice) {
     $dice->create(controllers\Sources::class)->remove($id);
 });
 $router->post('/source/delete/([0-9]+)', function($id) use ($dice) {
-    // json
+    // json, deprecated
     $dice->create(controllers\Sources::class)->remove($id);
 });
 $router->post('/source/([0-9]+)/update', function($id) use ($dice) {
