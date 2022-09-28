@@ -28,6 +28,10 @@ $router->post('/login', function() use ($dice) {
     $dice->create(controllers\Authentication::class)->login();
 });
 $router->get('/logout', function() use ($dice) {
+    // json, deprecated
+    $dice->create(controllers\Authentication::class)->logout();
+});
+$router->delete('/api/session/current', function() use ($dice) {
     // json
     $dice->create(controllers\Authentication::class)->logout();
 });

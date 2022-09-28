@@ -23,5 +23,5 @@ export function login(credentials) {
  * Terminates the active user session.
  */
 export function logout() {
-    return ajax.get('logout').promise;
+    return ajax.delete_('api/session/current').promise;
 }

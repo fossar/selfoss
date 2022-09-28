@@ -176,6 +176,9 @@ export const get = liftToPromiseField(option('method', 'GET'))(fetch);
 export const post = liftToPromiseField(option('method', 'POST'))(fetch);
 
 
+export const delete_ = liftToPromiseField(option('method', 'DELETE'))(fetch);
+
+
 /**
  * Using URLSearchParams directly handles dictionaries inconveniently.
  * For example, it joins arrays with commas or includes undefined keys.
