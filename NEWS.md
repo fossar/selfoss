@@ -49,6 +49,9 @@
 - API is now versioned separately from selfoss and follows [semantic versioning](https://semver.org/) ([#1137](https://github.com/fossar/selfoss/pull/1137))
 - *API 2.21.0*: `/mark` now accepts list of item IDs encoded as JSON. Requests using `application/x-www-form-urlencoded` are deprecated. ([#1182](https://github.com/fossar/selfoss/pull/1182))
 - Dates returned as part of items now strictly follow ISO8601 format. ([#1246](https://github.com/fossar/selfoss/pull/1246))
+- The following are deprecated and will be removed in next selfoss version:
+  - Passing credentials in query string, use cookies instead. ([#1360](https://github.com/fossar/selfoss/pull/1360))
+  - `GET /login` endpoint, use `POST /login`. ([#1360](https://github.com/fossar/selfoss/pull/1360))
 
 ### Customization changes
 - `selfoss.shares.register` was removed. Instead you should set `selfoss.customSharers` to an object of *sharer* objects. The `action` callback is now expected to open a window on its own, instead of returning a URL. A label and a HTML code of an icon (you can use a `<img>` tag, inline `<svg>`, emoji, etc.) are now expected.

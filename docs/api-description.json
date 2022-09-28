@@ -3,13 +3,13 @@
   "servers": [],
   "info": {
     "description": "You can access selfoss by using the same backend as selfoss user interface: The RESTful HTTP JSON API. There are a few urls where you can get information from selfoss and some for updating data. Assume you want all tags for rendering this in your own app. You have to make an HTTP GET call on the url /tags:\n\n```\nGET http://yourselfossurl.com/tags\n```\nThe result is following JSON formatted response (in this example two tags “blog” and “deviantart” are available:\n\n```\n[{\"tag\":\"blog\",\"color\":\"#251f10\",\"unread\":\"1\"},\n{\"tag\":\"deviantart\",\"color\":\"#e78e5c\",\"unread\":\"0\"}]\n```\n\nFollowing docs shows you which calls are possible and which response you can expect.",
-    "version": "4.0.0",
+    "version": "4.0.1",
     "title": "selfoss"
   },
   "tags": [
     {
       "name": "Authentication",
-      "description": "When you are using a login protected page, you have to add the parameter `username` and `password` in every request (as GET or POST parameter). The logical consequence is that you have to use https.\n\nFo0r an initial login functionality in your app you can validate a username password combination using `GET /login`.\n\nAlternately, you can use session cookie on subsequent requests."
+      "description": "To access endpoints that require authentication, you need to pass a session [cookie](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies) with the request. To obtain it, sign in using `POST /login` API call – the HTTP response will contain a `Set-Cookie` header for `PHPSESSID` cookie, whose value you should store and pass it to the server on all subsequent API requests, using the `Cookie` header. Those requests can also generate a new session id and pass it to you again using `Set-Cookie` header in the response, in which case you should replace the stored value. The HTTP library you use will probably have a cookie jar support to handle this for you."
     }
   ],
   "paths": {

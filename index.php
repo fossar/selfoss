@@ -20,7 +20,7 @@ $router->get('/password', function() use ($dice) {
     $dice->create(controllers\Authentication::class)->password();
 });
 $router->get('/login', function() use ($dice) {
-    // json
+    // json, deprecated
     $dice->create(controllers\Authentication::class)->login();
 });
 $router->post('/login', function() use ($dice) {
