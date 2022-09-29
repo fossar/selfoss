@@ -122,9 +122,6 @@ class Configuration {
     /** @var bool */
     public $openInBackgroundTab = false;
 
-    /** @var ?string */
-    public $anonymizer = null;
-
     /** @var string */
     public $share = 'atfpde';
 

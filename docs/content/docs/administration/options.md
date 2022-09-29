@@ -200,12 +200,6 @@ set `0` or leave empty for auto detection (browser language) or use one of the f
 * Ukrainian: `uk`
 </div>
 
-### `anonymizer`
-<div class="config-option">
-
-Set here your anonymizer service url. e.g.: `anonymizer=https://anonym.to/?`
-</div>
-
 ### `allow_public_update_access`
 <div class="config-option">
 

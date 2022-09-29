@@ -11,10 +11,6 @@ import { forceReload, makeEntriesLink, makeEntriesLinkLocation } from '../helper
 import * as icons from '../icons';
 import { LocalizationContext } from '../helpers/i18n';
 
-function anonymize(url) {
-    return (selfoss.config.anonymizer ?? '') + url;
-}
-
 function stopPropagation(event) {
     event.stopPropagation();
 }
@@ -294,11 +290,6 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
                     });
                 }
             }
-
-            if (firstExpansion) {
-                // anonymize
-                selfoss.anonymize(contentBlock.current);
-            }
         } else {
             // No longer expanded.
 
@@ -392,7 +383,7 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
 
             {/* icon */}
             <a
-                href={anonymize(item.link)}
+                href={item.link}
                 className="entry-icon"
                 tabIndex="-1"
                 rel="noreferrer"
@@ -451,7 +442,7 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
 
             {/* datetime */}
             <a
-                href={anonymize(item.link)}
+                href={item.link}
                 className={classNames({'entry-datetime': true, timestamped: relDate === null})}
                 target="_blank"
                 rel="noreferrer"
@@ -471,7 +462,7 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
             {/* thumbnail */}
             {item.thumbnail && item.thumbnail.trim().length > 0 ?
                 <div className={classNames({'entry-thumbnail': true, 'entry-thumbnail-always-visible': selfoss.config.showThumbnails})}>
-                    <a href={anonymize(item.link)} target="_blank" rel="noreferrer">
+                    <a href={item.link} target="_blank" rel="noreferrer">
                         <img src={`thumbnails/${item.thumbnail}`} alt={item.strippedTitle} />
                     </a>
                 </div>
@@ -485,7 +476,7 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
                     <ul aria-label={_('article_actions')}>
                         <li>
                             <a
-                                href={anonymize(item.link)}
+                                href={item.link}
                                 className="entry-newwindow"
                                 target="_blank"
                                 rel="noreferrer"
@@ -540,7 +531,7 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
                 }
                 <li>
                     <a
-                        href={anonymize(item.link)}
+                        href={item.link}
                         className="entry-newwindow"
                         target="_blank"
                         rel="noreferrer"

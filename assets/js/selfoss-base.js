@@ -382,24 +382,6 @@ var selfoss = {
 
 
     /**
-     * anonymize links
-     *
-     * @return void
-     * @param parent element
-     */
-    anonymize: function(parent) {
-        var anonymizer = selfoss.config.anonymizer;
-        if (anonymizer !== null) {
-            parent.querySelectorAll('a').forEach((link) => {
-                if (typeof link.getAttribute('href') !== 'undefined' && !link.getAttribute('href').startsWith(anonymizer)) {
-                    link.setAttribute('href', anonymizer + link.getAttribute('href'));
-                }
-            });
-        }
-    },
-
-
-    /**
      * Setup fancyBox image viewer
      * @param content element
      * @param int

@@ -42,7 +42,6 @@ class About {
             'apiversion' => SELFOSS_API_VERSION,
             'configuration' => [
                 'homepage' => $this->configuration->homepage ? $this->configuration->homepage : 'newest', // string
-                'anonymizer' => $this->configuration->anonymizer, // ?string
                 'share' => $this->configuration->share, // string
                 'wallabag' => $wallabag, // ?array
                 'wordpress' => $this->configuration->wordpress, // ?string

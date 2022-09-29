@@ -116,6 +116,7 @@
 - Search button is now always on the screen, avoiding the need to scroll to top to be able to use it. ([#1231](https://github.com/fossar/selfoss/issues/1231))
 - Button for opening articles, tags, sources and filters in the sidebar, as well as the source and tag links in articles are now real links, allowing to open them in a new tab by middle-clicking them. ([#1216](https://github.com/fossar/selfoss/issues/1216), [#695](https://github.com/fossar/selfoss/issues/695))
 - Configuration is no longer managed by F3 framework. ([#1261](https://github.com/fossar/selfoss/pull/1261))
+- Removed `anonymizer` configuration option. ([#1358](https://github.com/fossar/selfoss/pull/1358))
 
 
 ## 2.18 – 2018-03-05
