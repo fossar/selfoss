@@ -11,6 +11,7 @@ import { forceReload, makeEntriesLink, makeEntriesLinkLocation } from '../helper
 import * as icons from '../icons';
 import { ConfigurationContext } from '../helpers/configuration';
 import { LocalizationContext } from '../helpers/i18n';
+import { useSharers } from '../sharers';
 
 function stopPropagation(event) {
     event.stopPropagation();
@@ -108,30 +109,32 @@ function openNext(event) {
     });
 }
 
-// hookup the share icon click events
-function share({ event, entry, name }) {
-    event.preventDefault();
-    event.stopPropagation();
-
-    selfoss.shares.share(name, {
-        id: entry.id,
-        url: entry.link,
-        // TODO: remove HTML
-        title: entry.title
-    });
-}
-
-
-function ShareButton({ name, label, icon, item, showLabel = true }) {
+function ShareButton({
+    label,
+    icon,
+    item,
+    action,
+    showLabel = true,
+}) {
     const shareOnClick = React.useCallback(
-        (event) => share({ event, entry: item, name }),
-        [item, name]
+        (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+
+            action({
+                id: item.id,
+                url: item.link,
+                // TODO: remove HTML
+                title: item.title
+            });
+        },
+        [item, action]
     );
 
     return (
         <button
             type="button"
-            className={`entry-share entry-share${name}`}
+            className="entry-share"
             title={label}
             aria-label={label}
             onClick={shareOnClick}
@@ -142,13 +145,13 @@ function ShareButton({ name, label, icon, item, showLabel = true }) {
 }
 
 ShareButton.propTypes = {
-    name: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
     icon: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.element,
     ]).isRequired,
     item: PropTypes.object.isRequired,
+    action: PropTypes.func.isRequired,
     showLabel: PropTypes.bool,
 };
 
@@ -220,7 +223,6 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
         () => datetimeRelative(currentTime, item.datetime),
         [currentTime, item.datetime]
     );
-    const shares = selfoss.shares.getAll();
 
     const previouslyExpanded = usePreviousImmediate(expanded);
     const configuration = React.useContext(ConfigurationContext);
@@ -373,6 +375,8 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
 
     const _ = React.useContext(LocalizationContext);
 
+    const sharers = useSharers({ configuration, _ });
+
     return (
         <div data-entry-id={item.id}
             data-entry-source={item.source}
@@ -488,13 +492,13 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
                                 <FontAwesomeIcon icon={icons.openWindow} /> {_('open_window')}
                             </a>
                         </li>
-                        {shares.map(({ name, label, icon }) => (
-                            <li key={name}>
+                        {sharers.map(({ key, label, icon, action }) => (
+                            <li key={key}>
                                 <ShareButton
-                                    name={name}
                                     label={label}
                                     icon={icon}
                                     item={item}
+                                    action={action}
                                 />
                             </li>
                         ))}
@@ -556,13 +560,13 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
                         <FontAwesomeIcon icon={icons.next} /> {_('next')}
                     </button>
                 </li>
-                {shares.map(({ name, label, icon }) => (
-                    <li key={name}>
+                {sharers.map(({ key, label, icon, action }) => (
+                    <li key={key}>
                         <ShareButton
-                            name={name}
                             label={label}
                             icon={icon}
                             item={item}
+                            action={action}
                             showLabel={false}
                         />
                     </li>

@@ -1,7 +1,6 @@
 import 'regenerator-runtime/runtime';
 import './jquery';
 import selfoss from './selfoss-base';
-import './selfoss-shares';
 import './selfoss-db-online';
 import './selfoss-db-offline';
 import './selfoss-db';

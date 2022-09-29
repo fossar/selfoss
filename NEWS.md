@@ -51,7 +51,7 @@
 - Dates returned as part of items now strictly follow ISO8601 format. ([#1246](https://github.com/fossar/selfoss/pull/1246))
 
 ### Customization changes
-- `selfoss.shares.register` changed its signature: it no longer takes a boolean argument, and the callback is expected to open a window itself, instead of returning a URL. The `register` method now also expects a label and a HTML code of an icon (you can use a `<img>` tag, inline `<svg>`, emoji, etc.).
+- `selfoss.shares.register` was removed. Instead you should set `selfoss.customSharers` to an object of *sharer* objects. The `action` callback is now expected to open a window on its own, instead of returning a URL. A label and a HTML code of an icon (you can use a `<img>` tag, inline `<svg>`, emoji, etc.) are now expected.
 
   To demonstrate, if you previously had
 
@@ -64,20 +64,18 @@
   in your `user.js` file, you will need to change it to
 
   ```javascript
-  selfoss.shares.register('moo', 'Share using Moo', 'm', '🚛', function(data) {
-      window.open('http://moo.foobar/share?u=' + encodeURIComponent(data.url) + '&t=' + encodeURIComponent(data.title));
-  });
+  selfoss.customSharers = {
+      'm': {
+          label: 'Share using Moo',
+          icon: '🚛',
+          action: ({url, title}) => {
+              window.open(`http://moo.foobar/share?u=${encodeURIComponent(url)}&t=${encodeURIComponent(title)}`);
+          },
+      },
+  };
   ```
 
-  or if your browser supports it, simply
-
-  ```javascript
-  selfoss.shares.register('moo', 'Share using Moo', 'm', '🚛', ({url, title}) => {
-      window.open(`http://moo.foobar/share?u=${encodeURIComponent(url)}&t=${encodeURIComponent(title)}`);
-  });
-  ```
-
-  ([#1017](https://github.com/fossar/selfoss/pull/1017), [#1035](https://github.com/SSilence/selfoss/pull/1035))
+  ([#1017](https://github.com/fossar/selfoss/pull/1017), [#1035](https://github.com/SSilence/selfoss/pull/1035), [#1359](https://github.com/SSilence/selfoss/pull/1359))
 - Custom FullTextRss filter were moved to `fulltextrss` directory in data directory ([#1043](https://github.com/fossar/selfoss/pull/1043))
 - Spouts can now implement `getSourceIcon()` instead of `getIcon()` when icon is associated with the feed, not individual icons. ([#1190](https://github.com/fossar/selfoss/pull/1190))
 - Some language files have been renamed to use correct [IETF language tag](https://en.wikipedia.org/wiki/IETF_language_tag) and you might need to change the `language` key in your `config.ini`:

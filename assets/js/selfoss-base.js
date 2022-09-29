@@ -177,9 +177,6 @@ var selfoss = {
             // read the html title configured
             selfoss.htmlTitle = selfoss.config.htmlTitle;
 
-            // init shares
-            selfoss.shares.init(selfoss.config.share);
-
             // init FancyBox
             selfoss.initFancyBox();
         }
