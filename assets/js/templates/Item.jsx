@@ -9,6 +9,7 @@ import { nextprev, Direction } from '../shortcuts';
 import { useAllowedToWrite } from '../helpers/authorizations';
 import { forceReload, makeEntriesLink, makeEntriesLinkLocation } from '../helpers/uri';
 import * as icons from '../icons';
+import { ConfigurationContext } from '../helpers/configuration';
 import { LocalizationContext } from '../helpers/i18n';
 
 function stopPropagation(event) {
@@ -222,6 +223,7 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
     const shares = selfoss.shares.getAll();
 
     const previouslyExpanded = usePreviousImmediate(expanded);
+    const configuration = React.useContext(ConfigurationContext);
 
     React.useEffect(() => {
         // Handle entry becoming/ceasing to be expanded.
@@ -236,7 +238,7 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
                 selfoss.extensionPoints.processItemContents(contentBlock.current);
 
                 // load images not on mobile devices
-                if (selfoss.isMobile() == false || selfoss.config.loadImagesOnMobile) {
+                if (selfoss.isMobile() == false || configuration.loadImagesOnMobile) {
                     setImagesLoaded(true);
                     lazyLoadImages(contentBlock.current);
                 }
@@ -276,7 +278,7 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
                 }
 
                 // scroll to article header
-                if (selfoss.config.scrollToArticleHeader) {
+                if (configuration.scrollToArticleHeader) {
                     parent.scrollIntoView();
                 }
 
@@ -303,17 +305,17 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
 
             document.body.classList.remove('fullscreen-mode');
         }
-    }, [expanded, item.content, item.id, setNavExpanded]);
+    }, [configuration, expanded, item.content, item.id, setNavExpanded]);
 
     React.useEffect(() => {
         // Handle autoHideReadOnMobile setting.
         if (selfoss.isSmartphone() && !expanded && previouslyExpanded) {
-            const autoHideReadOnMobile = selfoss.config.autoHideReadOnMobile && item.unread == 1;
+            const autoHideReadOnMobile = configuration.autoHideReadOnMobile && item.unread == 1;
             if (autoHideReadOnMobile && item.unread != 1) {
                 selfoss.entriesPage.setEntries((entries) => entries.filter(({ id }) => id !== item.id));
             }
         }
-    }, [expanded, item.id, item.unread, previouslyExpanded]);
+    }, [configuration, expanded, item.id, item.unread, previouslyExpanded]);
 
     const entryOnClick = React.useCallback(
         (event) => handleClick({ event, history, location, expanded, id: item.id, target: '.entry' }),
@@ -452,16 +454,16 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
             </a>
 
             {/* read time */}
-            {selfoss.config.readingSpeed !== null ?
+            {configuration.readingSpeed !== null ?
                 <React.Fragment>
                     <span className="entry-separator">•</span>
-                    <span className="entry-readtime">{_('article_reading_time', [Math.round(item.wordCount / selfoss.config.readingSpeed)])}</span>
+                    <span className="entry-readtime">{_('article_reading_time', [Math.round(item.wordCount / configuration.readingSpeed)])}</span>
                 </React.Fragment>
                 : null}
 
             {/* thumbnail */}
             {item.thumbnail && item.thumbnail.trim().length > 0 ?
-                <div className={classNames({'entry-thumbnail': true, 'entry-thumbnail-always-visible': selfoss.config.showThumbnails})}>
+                <div className={classNames({'entry-thumbnail': true, 'entry-thumbnail-always-visible': configuration.showThumbnails})}>
                     <a href={item.link} target="_blank" rel="noreferrer">
                         <img src={`thumbnails/${item.thumbnail}`} alt={item.strippedTitle} />
                     </a>

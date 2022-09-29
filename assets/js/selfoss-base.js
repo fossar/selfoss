@@ -127,7 +127,7 @@ var selfoss = {
         // init offline if supported
         selfoss.dbOffline.init();
 
-        selfoss.attachApp();
+        selfoss.attachApp(configuration);
 
         if (configuration.authEnabled) {
             selfoss.loggedin.update(window.localStorage.getItem('onlineSession') == 'true');
@@ -144,7 +144,7 @@ var selfoss = {
     /**
      * Create basic DOM structure of the page.
      */
-    attachApp: function() {
+    attachApp: function(configuration) {
         document.getElementById('js-loading-message')?.remove();
 
         const mainUi = document.createElement('div');
@@ -155,8 +155,12 @@ var selfoss = {
         const basePath = (new URL(document.baseURI)).pathname.replace(/\/$/, '');
 
         ReactDOM.render(
-            createApp(basePath, (app) => {
-                selfoss.app = app;
+            createApp({
+                basePath,
+                appRef: (app) => {
+                    selfoss.app = app;
+                },
+                configuration,
             }),
             mainUi
         );

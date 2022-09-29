@@ -20,6 +20,7 @@ import Navigation from './Navigation';
 import SearchList from './SearchList';
 import makeShortcuts from '../shortcuts';
 import * as icons from '../icons';
+import { ConfigurationContext } from '../helpers/configuration';
 import { ENTRIES_ROUTE_PATTERN } from '../helpers/uri';
 import { i18nFormat, LocalizationContext } from '../helpers/i18n';
 import { LoadingState } from '../requests/LoadingState';
@@ -110,6 +111,7 @@ function PureApp({
     const [smartphone, setSmartphone] = React.useState(false);
     const [offlineEnabled, setOfflineEnabled] = React.useState(selfoss.db.enableOffline.value);
     const [entriesPage, setEntriesPage] = React.useState(null);
+    const configuration = React.useContext(ConfigurationContext);
 
     React.useEffect(() => {
         // init shortcut handler
@@ -146,7 +148,7 @@ function PureApp({
     }, [history]);
 
     // Prepare path of the homepage for redirecting from /
-    let homePagePath = selfoss.config.homepage.split('/');
+    let homePagePath = configuration.homepage.split('/');
     if (!homePagePath[1]) {
         homePagePath.push('all');
     }
@@ -248,6 +250,7 @@ function PureApp({
                                         {...routeProps}
                                         ref={entriesRef}
                                         setNavExpanded={setNavExpanded}
+                                        configuration={configuration}
                                         navSourcesExpanded={navSourcesExpanded}
                                     />
                                 )}
@@ -349,6 +352,7 @@ export default class App extends React.Component {
             globalMessage: null,
         };
 
+        this._ = this._.bind(this);
         this.setTags = this.setTags.bind(this);
         this.setTagsState = this.setTagsState.bind(this);
         this.setSources = this.setSources.bind(this);
@@ -533,7 +537,7 @@ export default class App extends React.Component {
         const fallbackLanguage = 'en';
         const langKey = `lang_${identifier}`;
 
-        let preferredLanguage = selfoss.config.language;
+        let preferredLanguage = this.props.configuration.language;
 
         // locale auto-detection
         if (preferredLanguage === null) {
@@ -658,38 +662,51 @@ export default class App extends React.Component {
 
     render() {
         return (
-            <LocalizationContext.Provider value={this._}>
-                <PureApp
-                    navSourcesExpanded={this.state.navSourcesExpanded}
-                    setNavSourcesExpanded={this.setNavSourcesExpanded}
-                    offlineState={this.state.offlineState}
-                    allItemsCount={this.state.allItemsCount}
-                    allItemsOfflineCount={this.state.allItemsOfflineCount}
-                    unreadItemsCount={this.state.unreadItemsCount}
-                    unreadItemsOfflineCount={this.state.unreadItemsOfflineCount}
-                    starredItemsCount={this.state.starredItemsCount}
-                    starredItemsOfflineCount={this.state.starredItemsOfflineCount}
-                    globalMessage={this.state.globalMessage}
-                    sourcesState={this.state.sourcesState}
-                    setSourcesState={this.setSourcesState}
-                    sources={this.state.sources}
-                    setSources={this.setSources}
-                    tags={this.state.tags}
-                    reloadAll={this.reloadAll}
-                />
-            </LocalizationContext.Provider>
+            <ConfigurationContext.Provider value={this.props.configuration}>
+                <LocalizationContext.Provider value={this._}>
+                    <PureApp
+                        navSourcesExpanded={this.state.navSourcesExpanded}
+                        setNavSourcesExpanded={this.setNavSourcesExpanded}
+                        offlineState={this.state.offlineState}
+                        allItemsCount={this.state.allItemsCount}
+                        allItemsOfflineCount={this.state.allItemsOfflineCount}
+                        unreadItemsCount={this.state.unreadItemsCount}
+                        unreadItemsOfflineCount={this.state.unreadItemsOfflineCount}
+                        starredItemsCount={this.state.starredItemsCount}
+                        starredItemsOfflineCount={this.state.starredItemsOfflineCount}
+                        globalMessage={this.state.globalMessage}
+                        sourcesState={this.state.sourcesState}
+                        setSourcesState={this.setSourcesState}
+                        sources={this.state.sources}
+                        setSources={this.setSources}
+                        tags={this.state.tags}
+                        reloadAll={this.reloadAll}
+                    />
+                </LocalizationContext.Provider>
+            </ConfigurationContext.Provider>
         );
     }
 }
+
+App.propTypes = {
+    configuration: PropTypes.object.isRequired,
+};
 
 /**
  * Creates the selfoss single-page application
  * with the required contexts.
  */
-export function createApp(basePath, appRef) {
+export function createApp({
+    basePath,
+    appRef,
+    configuration,
+}) {
     return (
         <Router basename={basePath}>
-            <App ref={appRef} />
+            <App
+                ref={appRef}
+                configuration={configuration}
+            />
         </Router>
     );
 }

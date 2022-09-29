@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as icons from '../icons';
 import { useAllowedToUpdate, useAllowedToWrite, useLoggedIn } from '../helpers/authorizations';
+import { ConfigurationContext } from '../helpers/configuration';
 import { LocalizationContext } from '../helpers/i18n';
 import { forceReload } from '../helpers/uri';
 
@@ -59,7 +60,8 @@ export default function NavToolBar({ reloadAll, setNavExpanded }) {
     const canRefreshAll = useAllowedToUpdate();
     const canVisitSettings = useAllowedToWrite();
     const canLogOut = isLoggedIn;
-    const canLogIn = !isLoggedIn && selfoss.config.authEnabled;
+    const configuration = React.useContext(ConfigurationContext);
+    const canLogIn = !isLoggedIn && configuration.authEnabled;
 
     const _ = React.useContext(LocalizationContext);
 

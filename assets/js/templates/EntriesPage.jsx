@@ -12,12 +12,21 @@ import { LoadingState } from '../requests/LoadingState';
 import { Spinner, SpinnerBig } from './Spinner';
 import classNames from 'classnames';
 import { useAllowedToUpdate, useAllowedToWrite } from '../helpers/authorizations';
+import { ConfigurationContext } from '../helpers/configuration';
 import { LocalizationContext } from '../helpers/i18n';
 import { useShouldReload } from '../helpers/hooks';
 import { forceReload, makeEntriesLinkLocation } from '../helpers/uri';
 import { HttpError } from '../errors';
 
-function reloadList({ fetchParams, abortController, append = false, waitForSync = true, entryId = null, setLoadingState }) {
+function reloadList({
+    fetchParams,
+    abortController,
+    append = false,
+    waitForSync = true,
+    configuration,
+    entryId = null,
+    setLoadingState,
+}) {
     if (abortController.signal.aborted) {
         return Promise.resolve();
     }
@@ -87,7 +96,7 @@ function reloadList({ fetchParams, abortController, append = false, waitForSync 
                     selfoss.entriesPage.activateEntry(entryId);
                     // ensure scrolling to requested entry even if scrolling to article
                     // header is disabled
-                    if (!selfoss.config.scrollToArticleHeader) {
+                    if (!configuration.scrollToArticleHeader) {
                         // needs to be delayed for some reason
                         requestAnimationFrame(() => {
                             entry.scrollIntoView();
@@ -145,6 +154,7 @@ function handleRefreshSource({ event, source, setLoadingState, setNavExpanded, r
 export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, selectedEntry, expandedEntries, setNavExpanded, navSourcesExpanded, reload }) {
     const allowedToUpdate = useAllowedToUpdate();
     const allowedToWrite = useAllowedToWrite();
+    const configuration = React.useContext(ConfigurationContext);
 
     const location = useLocation();
     const forceReload = useShouldReload();
@@ -204,6 +214,7 @@ export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, s
             },
             abortController,
             append,
+            configuration,
             // We do not want to focus the entry on successive loads.
             entryId: append ? undefined : initialItemId,
             setLoadingState: append ? setMoreLoadingState : setLoadingState,
@@ -220,7 +231,7 @@ export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, s
         return () => {
             abortController.abort();
         };
-    }, [params.filter, currentTag, currentSource, initialNavSourcesExpanded, searchText, fromDatetime, fromId, initialItemId, setLoadingState, forceReload]);
+    }, [configuration, params.filter, currentTag, currentSource, initialNavSourcesExpanded, searchText, fromDatetime, fromId, initialItemId, setLoadingState, forceReload]);
 
     React.useEffect(() => {
         // scroll load more
@@ -238,14 +249,14 @@ export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, s
             }
         }
 
-        if (hasMore && moreLoadingState !== LoadingState.LOADING && selfoss.config.autoStreamMore) {
+        if (hasMore && moreLoadingState !== LoadingState.LOADING && configuration.autoStreamMore) {
             window.addEventListener('scroll', onScroll);
 
             return () => {
                 window.removeEventListener('scroll', onScroll);
             };
         }
-    }, [hasMore, moreLoadingState]);
+    }, [configuration, hasMore, moreLoadingState]);
 
     React.useEffect(() => {
         // setup periodic server status sync
@@ -503,7 +514,7 @@ export default class StateHolder extends React.Component {
      * @param {number} id of entry
      */
     activateEntry(id) {
-        if (selfoss.config.autoCollapse) {
+        if (this.props.configuration.autoCollapse) {
             this.collapseAllEntries();
         }
 
@@ -514,7 +525,7 @@ export default class StateHolder extends React.Component {
 
         // automark as read
         const entry = this.state.entries.find((entry) => id === entry.id);
-        const autoMarkAsRead = selfoss.isAllowedToWrite() && selfoss.config.autoMarkAsRead && entry.unread == 1;
+        const autoMarkAsRead = selfoss.isAllowedToWrite() && this.props.configuration.autoMarkAsRead && entry.unread == 1;
         if (autoMarkAsRead) {
             this.markEntryRead(id, true);
         }
@@ -841,6 +852,7 @@ export default class StateHolder extends React.Component {
 }
 
 StateHolder.propTypes = {
+    configuration: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
     match: PropTypes.object.isRequired,
     setNavExpanded: PropTypes.func.isRequired,

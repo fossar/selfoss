@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { SpinnerBig } from './Spinner';
 import { useHistory, useLocation } from 'react-router-dom';
+import { ConfigurationContext } from '../helpers/configuration';
 import { LocalizationContext } from '../helpers/i18n';
 
 function handleLogIn({
@@ -69,6 +70,7 @@ export default function LoginForm({
     );
 
     const _ = React.useContext(LocalizationContext);
+    const configuration = React.useContext(ConfigurationContext);
 
     return (
         <React.Fragment>
@@ -81,7 +83,7 @@ export default function LoginForm({
             >
                 <ul id="login">
                     <li>
-                        <h1>{selfoss.config.htmlTitle} login</h1>
+                        <h1>{configuration.htmlTitle} login</h1>
                     </li>
                     <li>
                         <label htmlFor="username">
