@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import { usePreviousImmediate } from 'rooks';
@@ -12,30 +12,26 @@ import * as icons from '../icons';
 import { ConfigurationContext } from '../helpers/configuration';
 import { LocalizationContext } from '../helpers/i18n';
 import { useSharers } from '../sharers';
-import SimpleLightbox from 'simplelightbox/dist/simple-lightbox.esm';
+import Lightbox from 'yet-another-react-lightbox';
 
-function setupLightbox(element) {
+function setupLightbox({
+    element,
+    setSlides,
+    setSelectedPhotoIndex,
+}) {
     let images = element.querySelectorAll('a[href$=".jpg"], a[href$=".jpeg"], a[href$=".png"], a[href$=".gif"], a[href$=".jpg:large"], a[href$=".jpeg:large"], a[href$=".png:large"], a[href$=".gif:large"]');
 
-    if (images.length === 0) {
-        return;
-    }
-    const gallery = new SimpleLightbox(
-        images,
-        {
-            loop: false,
-            // react-router already handles this.
-            history: false,
-        },
-    );
+    setSlides(Array.from(images).map((link, index) => {
+        link.addEventListener('click', (event) => {
+            event.preventDefault();
 
-    gallery.on('show.simplelightbox', function() {
-        selfoss.lightboxActive.update(true);
-    });
+            setSelectedPhotoIndex(index);
+        });
 
-    gallery.on('close.simplelightbox', function() {
-        selfoss.lightboxActive.update(false);
-    });
+        return {
+            src: link.getAttribute('href'),
+        };
+    }));
 }
 
 function stopPropagation(event) {
@@ -252,6 +248,9 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
     const previouslyExpanded = usePreviousImmediate(expanded);
     const configuration = React.useContext(ConfigurationContext);
 
+    const [slides, setSlides] = useState([]);
+    const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(null);
+
     React.useEffect(() => {
         // Handle entry becoming/ceasing to be expanded.
         const parent = document.querySelector(`.entry[data-entry-id="${item.id}"]`);
@@ -301,7 +300,11 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
             } else {
                 if (firstExpansion) {
                     // setup fancyBox image viewer
-                    setupLightbox(contentBlock.current);
+                    setupLightbox({
+                        element: contentBlock.current,
+                        setSlides,
+                        setSelectedPhotoIndex,
+                    });
                 }
 
                 // scroll to article header
@@ -501,6 +504,23 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
 
             {/* content */}
             <div className={classNames({'entry-content': true, 'entry-content-nocolumns': item.lengthWithoutTags < 500})}>
+                <Lightbox
+                    open={selectedPhotoIndex !== null}
+                    index={selectedPhotoIndex}
+                    close={() => setSelectedPhotoIndex(null)}
+                    carousel={{
+                        finite: true,
+                    }}
+                    controller={{
+                        closeOnBackdropClick: true,
+                    }}
+                    on={{
+                        entered: () => selfoss.lightboxActive.update(true),
+                        exited: () => selfoss.lightboxActive.update(false),
+                    }}
+                    slides={slides}
+                />
+
                 <div ref={contentBlock} />
 
                 <div className="entry-smartphone-share">

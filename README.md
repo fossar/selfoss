@@ -97,7 +97,7 @@ Special thanks to the great programmers of these libraries used by selfoss:
 * [Elphin IcoFileLoader](https://github.com/lordelph/icofileloader)
 * [Graby](https://github.com/j0k3r/graby)
 * [FullTextRSS filters](http://help.fivefilters.org/customer/portal/articles/223153-site-patterns)
-* [simplelightbox](https://github.com/andreknieriem/simplelightbox)
+* [yet-another-react-lightbox](https://github.com/igordanchenko/yet-another-react-lightbox)
 
 Icon made by http://blackbooze.com/
 

@@ -26,10 +26,10 @@
     "react-router-dom": "^5.2.0",
     "reset-css": "^5.0.1",
     "rooks": "^7.1.1",
-    "simplelightbox": "^2.10.3",
     "tinykeys": "^1.1.1",
     "unreset-css": "^1.0.1",
-    "use-state-with-deps": "^1.1.1"
+    "use-state-with-deps": "^1.1.1",
+    "yet-another-react-lightbox": "^2.1.1"
   },
   "devDependencies": {
     "@parcel/packager-raw-url": "^2.0.0",
