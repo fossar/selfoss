@@ -67,6 +67,7 @@
   "lang_login_invalid_credentials": "Špatné jméno nebo heslo",
   "lang_no_title": "Bez titulku",
   "lang_error": "Nastala chyba",
+  "lang_error_unauthorized": "Pro pokračování se prosím {link_begin}přihlaste{link_end}.",
   "lang_error_check_log_file": "Nastala chyba, zkontrolujte prosím záznamy v souboru „{0}“.",
   "lang_error_check_system_logs": "Nastala chyba, zkontrolujte prosím záznamy v operačním systému.",
   "lang_error_unwritable_logs": "Nebylo možné zaznamenat chybu.",

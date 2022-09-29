@@ -127,15 +127,11 @@ var selfoss = {
         // init offline if supported
         selfoss.dbOffline.init();
 
-        selfoss.attachApp(configuration);
-
         if (configuration.authEnabled) {
             selfoss.loggedin.update(window.localStorage.getItem('onlineSession') == 'true');
         }
 
-        if (!selfoss.isAllowedToRead()) {
-            selfoss.history.push('/sign/in');
-        }
+        selfoss.attachApp(configuration);
     },
 
 

@@ -81,6 +81,7 @@
   "lang_no_title": "No title",
   "lang_experimental": "Experimental",
   "lang_error": "An error occurred",
+  "lang_error_unauthorized": "Please {link_begin}sign in{link_end} to continue.",
   "lang_error_check_log_file": "An error occured, please check the log file “{0}”.",
   "lang_error_check_system_logs": "An error occured, please check your system logs.",
   "lang_error_unwritable_logs": "Unable to write logs.",

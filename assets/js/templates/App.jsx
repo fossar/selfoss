@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import nullable from 'prop-types-nullable';
 import {
     BrowserRouter as Router,
     Switch,
     Route,
+    Link,
     Redirect,
     useHistory,
     useLocation,
@@ -88,6 +89,28 @@ function NotFound() {
         </p>
     );
 }
+
+function CheckAuthorization({ isAllowed, _, children }) {
+    const history = useHistory();
+    if (!isAllowed) {
+        const [preLink, inLink, postLink] = _('error_unauthorized').split(/\{(?:link_begin|link_end)\}/);
+        history.push('/sign/in');
+
+        return (
+            <p>
+                {preLink}<Link to="/sign/in">{inLink}</Link>{postLink}
+            </p>
+        );
+    } else {
+        return children;
+    }
+}
+
+CheckAuthorization.propTypes = {
+    isAllowed: PropTypes.bool.isRequired,
+    _: PropTypes.func.isRequired,
+    children: PropTypes.any,
+};
 
 function PureApp({
     navSourcesExpanded,
@@ -197,77 +220,82 @@ function PureApp({
                 </Route>
 
                 <Route path="/">
-                    <div id="nav-mobile" role="navigation">
-                        <div id="nav-mobile-logo">
-                            <div id="nav-mobile-count" className={classNames({'unread-count': true, offline: offlineState, online: !offlineState, unread: unreadItemsCount > 0})}>
-                                <span className={classNames({'offline-count': true, offline: offlineState, online: !offlineState, diff: unreadItemsCount !== unreadItemsOfflineCount && unreadItemsOfflineCount})}>{unreadItemsOfflineCount > 0 ? unreadItemsOfflineCount : ''}</span>
-                                <span className="count">{unreadItemsCount}</span>
+                    <CheckAuthorization
+                        isAllowed={selfoss.isAllowedToRead()}
+                        _={_}
+                    >
+                        <div id="nav-mobile" role="navigation">
+                            <div id="nav-mobile-logo">
+                                <div id="nav-mobile-count" className={classNames({'unread-count': true, offline: offlineState, online: !offlineState, unread: unreadItemsCount > 0})}>
+                                    <span className={classNames({'offline-count': true, offline: offlineState, online: !offlineState, diff: unreadItemsCount !== unreadItemsOfflineCount && unreadItemsOfflineCount})}>{unreadItemsOfflineCount > 0 ? unreadItemsOfflineCount : ''}</span>
+                                    <span className="count">{unreadItemsCount}</span>
+                                </div>
                             </div>
+                            <button
+                                id="nav-mobile-settings"
+                                accessKey="t"
+                                aria-label={_('settingsbutton')}
+                                onClick={menuButtonOnClick}
+                            >
+                                <FontAwesomeIcon icon={icons.menu} size="2x" />
+                            </button>
                         </div>
-                        <button
-                            id="nav-mobile-settings"
-                            accessKey="t"
-                            aria-label={_('settingsbutton')}
-                            onClick={menuButtonOnClick}
-                        >
-                            <FontAwesomeIcon icon={icons.menu} size="2x" />
-                        </button>
-                    </div>
 
-                    {/* navigation */}
-                    <Collapse isOpen={!smartphone || navExpanded} className="collapse-css-transition">
-                        <div id="nav" role="navigation">
-                            <Navigation
-                                entriesPage={entriesPage}
-                                setNavExpanded={setNavExpanded}
-                                navSourcesExpanded={navSourcesExpanded}
-                                setNavSourcesExpanded={setNavSourcesExpanded}
-                                offlineState={offlineState}
-                                allItemsCount={allItemsCount}
-                                allItemsOfflineCount={allItemsOfflineCount}
-                                unreadItemsCount={unreadItemsCount}
-                                unreadItemsOfflineCount={unreadItemsOfflineCount}
-                                starredItemsCount={starredItemsCount}
-                                starredItemsOfflineCount={starredItemsOfflineCount}
-                                sourcesState={sourcesState}
-                                setSourcesState={setSourcesState}
-                                sources={sources}
-                                setSources={setSources}
-                                tags={tags}
-                                reloadAll={reloadAll}
-                            />
+                        {/* navigation */}
+                        <Collapse isOpen={!smartphone || navExpanded} className="collapse-css-transition">
+                            <div id="nav" role="navigation">
+                                <Navigation
+                                    entriesPage={entriesPage}
+                                    setNavExpanded={setNavExpanded}
+                                    navSourcesExpanded={navSourcesExpanded}
+                                    setNavSourcesExpanded={setNavSourcesExpanded}
+                                    offlineState={offlineState}
+                                    allItemsCount={allItemsCount}
+                                    allItemsOfflineCount={allItemsOfflineCount}
+                                    unreadItemsCount={unreadItemsCount}
+                                    unreadItemsOfflineCount={unreadItemsOfflineCount}
+                                    starredItemsCount={starredItemsCount}
+                                    starredItemsOfflineCount={starredItemsOfflineCount}
+                                    sourcesState={sourcesState}
+                                    setSourcesState={setSourcesState}
+                                    sources={sources}
+                                    setSources={setSources}
+                                    tags={tags}
+                                    reloadAll={reloadAll}
+                                />
+                            </div>
+                        </Collapse>
+
+                        <ul id="search-list">
+                            <SearchList />
+                        </ul>
+
+                        {/* content */}
+                        <div id="content" role="main">
+                            <Switch>
+                                <Route exact path="/">
+                                    <Redirect to={`/${homePagePath.join('/')}`} />
+                                </Route>
+                                <Route path={ENTRIES_ROUTE_PATTERN}>
+                                    {(routeProps) => (
+                                        <EntriesPage
+                                            {...routeProps}
+                                            ref={entriesRef}
+                                            setNavExpanded={setNavExpanded}
+                                            configuration={configuration}
+                                            navSourcesExpanded={navSourcesExpanded}
+                                        />
+                                    )}
+                                </Route>
+                                <Route path="/manage/sources">
+                                    <SourcesPage />
+                                </Route>
+                                <Route path="*">
+                                    <NotFound />
+                                </Route>
+                            </Switch>
                         </div>
-                    </Collapse>
-
-                    <ul id="search-list">
-                        <SearchList />
-                    </ul>
-
-                    {/* content */}
-                    <div id="content" role="main">
-                        <Switch>
-                            <Route exact path="/">
-                                <Redirect to={`/${homePagePath.join('/')}`} />
-                            </Route>
-                            <Route path={ENTRIES_ROUTE_PATTERN}>
-                                {(routeProps) => (
-                                    <EntriesPage
-                                        {...routeProps}
-                                        ref={entriesRef}
-                                        setNavExpanded={setNavExpanded}
-                                        configuration={configuration}
-                                        navSourcesExpanded={navSourcesExpanded}
-                                    />
-                                )}
-                            </Route>
-                            <Route path="/manage/sources">
-                                <SourcesPage />
-                            </Route>
-                            <Route path="*">
-                                <NotFound />
-                            </Route>
-                        </Switch>
-                    </div>
+                    </CheckAuthorization>
                 </Route>
             </Switch>
         </React.StrictMode>
