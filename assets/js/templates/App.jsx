@@ -169,13 +169,18 @@ function PureApp({
     const isEntriesRoute = useRouteMatch(ENTRIES_ROUTE_PATTERN) !== null;
     React.useEffect(() => {
         if (isEntriesRoute && unreadItemsCount > 0) {
-            document.title = selfoss.htmlTitle + ' (' + unreadItemsCount + ')';
+            document.title = configuration.htmlTitle + ' (' + unreadItemsCount + ')';
         } else {
-            document.title = selfoss.htmlTitle;
+            document.title = configuration.htmlTitle;
         }
-    }, [unreadItemsCount, isEntriesRoute]);
+    }, [configuration, unreadItemsCount, isEntriesRoute]);
 
     const _ = React.useContext(LocalizationContext);
+
+    useEffect(() => {
+        // Initialize FancyBox globally
+        $.fancybox.defaults.hash = false;
+    }, []);
 
     return (
         <React.StrictMode>

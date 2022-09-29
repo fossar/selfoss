@@ -133,9 +133,7 @@ var selfoss = {
             selfoss.loggedin.update(window.localStorage.getItem('onlineSession') == 'true');
         }
 
-        if (selfoss.isAllowedToRead()) {
-            selfoss.initUi();
-        } else {
+        if (!selfoss.isAllowedToRead()) {
             selfoss.history.push('/sign/in');
         }
     },
@@ -165,23 +163,6 @@ var selfoss = {
             mainUi
         );
     },
-
-
-    initUiDone: false,
-
-
-    initUi: function() {
-        if (!selfoss.initUiDone) {
-            selfoss.initUiDone = true;
-
-            // read the html title configured
-            selfoss.htmlTitle = selfoss.config.htmlTitle;
-
-            // init FancyBox
-            selfoss.initFancyBox();
-        }
-    },
-
 
     loggedin: new ValueListenable(false),
 
@@ -223,7 +204,6 @@ var selfoss = {
                 selfoss.history.push('/');
                 // init offline if supported and not inited yet
                 selfoss.dbOffline.init();
-                selfoss.initUi();
                 if ((!selfoss.db.storage || selfoss.db.broken) && selfoss.db.enableOffline.value) {
                     // Initialize database in offline mode when it has not been initialized yet or it got broken.
                     selfoss.dbOffline.init();
@@ -396,14 +376,6 @@ var selfoss = {
             $(el).off('click');
         });
         images.forEach((el) => el.setAttribute('data-type', 'image'));
-    },
-
-
-    /**
-     * Initialize FancyBox globally
-     */
-    initFancyBox: function() {
-        $.fancybox.defaults.hash = false;
     },
 
 
