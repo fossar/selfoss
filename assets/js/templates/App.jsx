@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import nullable from 'prop-types-nullable';
 import {
@@ -199,11 +199,6 @@ function PureApp({
     }, [configuration, unreadItemsCount, isEntriesRoute]);
 
     const _ = React.useContext(LocalizationContext);
-
-    useEffect(() => {
-        // Initialize FancyBox globally
-        $.fancybox.defaults.hash = false;
-    }, []);
 
     return (
         <React.StrictMode>

@@ -12,6 +12,31 @@ import * as icons from '../icons';
 import { ConfigurationContext } from '../helpers/configuration';
 import { LocalizationContext } from '../helpers/i18n';
 import { useSharers } from '../sharers';
+import SimpleLightbox from 'simplelightbox/dist/simple-lightbox.esm';
+
+function setupLightbox(element) {
+    let images = element.querySelectorAll('a[href$=".jpg"], a[href$=".jpeg"], a[href$=".png"], a[href$=".gif"], a[href$=".jpg:large"], a[href$=".jpeg:large"], a[href$=".png:large"], a[href$=".gif:large"]');
+
+    if (images.length === 0) {
+        return;
+    }
+    const gallery = new SimpleLightbox(
+        images,
+        {
+            loop: false,
+            // react-router already handles this.
+            history: false,
+        },
+    );
+
+    gallery.on('show.simplelightbox', function() {
+        selfoss.lightboxActive.update(true);
+    });
+
+    gallery.on('close.simplelightbox', function() {
+        selfoss.lightboxActive.update(false);
+    });
+}
 
 function stopPropagation(event) {
     event.stopPropagation();
@@ -276,7 +301,7 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
             } else {
                 if (firstExpansion) {
                     // setup fancyBox image viewer
-                    selfoss.setupFancyBox(contentBlock.current, item.id);
+                    setupLightbox(contentBlock.current);
                 }
 
                 // scroll to article header

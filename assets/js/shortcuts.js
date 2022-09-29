@@ -115,21 +115,12 @@ function entrynav(direction) {
 }
 
 /**
- * Check whether keyboard shortcuts should be active
- */
-function lightboxActive() {
-    var fancyboxInactive = !$.fancybox.getInstance();
-
-    return fancyboxInactive;
-}
-
-/**
  * Decorates an event handler so that it only runs
  * when not interacting with an input field or lightbox.
  */
 function ignoreWhenInteracting(handler) {
     return (event) => {
-        if (!lightboxActive()) {
+        if (selfoss.lightboxActive.value) {
             return;
         }
 

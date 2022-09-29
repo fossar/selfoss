@@ -31,6 +31,11 @@ var selfoss = {
      */
     entriesPage: null,
 
+    /**
+     * Whether lightbox is open.
+     */
+    lightboxActive: new ValueListenable(false),
+
     windowLoaded: new Promise((resolve) => {
         window.addEventListener('load', () => resolve());
     }),
@@ -355,23 +360,6 @@ var selfoss = {
             selfoss.app.setTagsState(LoadingState.FAILURE);
             selfoss.app.showError(selfoss.app._('error_load_tags') + ' ' + error.message);
         });
-    },
-
-
-    /**
-     * Setup fancyBox image viewer
-     * @param content element
-     * @param int
-     */
-    setupFancyBox: function(content, id) {
-        // Close existing fancyBoxes
-        $.fancybox.close();
-        let images = content.querySelectorAll('a[href$=".jpg"], a[href$=".jpeg"], a[href$=".png"], a[href$=".gif"], a[href$=".jpg:large"], a[href$=".jpeg:large"], a[href$=".png:large"], a[href$=".gif:large"]');
-        images.forEach((el) => {
-            el.setAttribute('data-fancybox', 'gallery-' + id);
-            $(el).off('click');
-        });
-        images.forEach((el) => el.setAttribute('data-type', 'image'));
     },
 
 

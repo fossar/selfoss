@@ -91,14 +91,13 @@ Special thanks to the great programmers of these libraries used by selfoss:
 
 * [FatFree PHP Framework](https://fatfreeframework.com/)
 * [SimplePie](http://simplepie.org/)
-* [jQuery](https://jquery.com/)
 * [WideImage](http://wideimage.sourceforge.net/)
 * [htmLawed](http://www.bioinformatics.org/phplabware/internal_utilities/htmLawed/)
 * [PHP Universal Feed Generator](https://github.com/ajaxray/FeedWriter)
 * [Elphin IcoFileLoader](https://github.com/lordelph/icofileloader)
-* [jQuery hotkeys](https://github.com/tzuryby/jquery.hotkeys)
 * [Graby](https://github.com/j0k3r/graby)
 * [FullTextRSS filters](http://help.fivefilters.org/customer/portal/articles/223153-site-patterns)
+* [simplelightbox](https://github.com/andreknieriem/simplelightbox)
 
 Icon made by http://blackbooze.com/
 

@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "@fancyapps/fancybox": "^3.1.20",
     "@floating-ui/react-dom": "^1.0.0",
     "@floating-ui/react-dom-interactions": "^0.9.3",
     "@fortawesome/free-brands-svg-icons": "^6.2.0",
@@ -17,7 +16,6 @@
     "focus-trap": "^7.0.0",
     "form-urlencoded": "^6.0.0",
     "html-escaper": "^3.0.0",
-    "jquery": "^3.5.1",
     "lodash.pick": "^4.4.0",
     "prop-types": "^15.7.2",
     "prop-types-nullable": "^1.0.1",
@@ -28,6 +26,7 @@
     "react-router-dom": "^5.2.0",
     "reset-css": "^5.0.1",
     "rooks": "^7.1.1",
+    "simplelightbox": "^2.10.3",
     "tinykeys": "^1.1.1",
     "unreset-css": "^1.0.1",
     "use-state-with-deps": "^1.1.1"
