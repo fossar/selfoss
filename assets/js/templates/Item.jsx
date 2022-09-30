@@ -504,7 +504,7 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
 
             {/* content */}
             <div className={classNames({'entry-content': true, 'entry-content-nocolumns': item.lengthWithoutTags < 500})}>
-                <Lightbox
+                {slides.length !== 0 && <Lightbox
                     open={selectedPhotoIndex !== null}
                     index={selectedPhotoIndex}
                     close={() => setSelectedPhotoIndex(null)}
@@ -519,7 +519,7 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
                         exited: () => selfoss.lightboxActive.update(false),
                     }}
                     slides={slides}
-                />
+                />}
 
                 <div ref={contentBlock} />
 
