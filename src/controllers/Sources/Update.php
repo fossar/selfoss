@@ -29,6 +29,7 @@ class Update {
     public function updateAll() {
         // only allow access for localhost and loggedin users
         if (!$this->authentication->allowedToUpdate()) {
+            header('HTTP/1.0 403 Forbidden');
             exit('unallowed access');
         }
 
@@ -49,6 +50,7 @@ class Update {
     public function update($id) {
         // only allow access for localhost and authenticated users
         if (!$this->authentication->allowedToUpdate()) {
+            header('HTTP/1.0 403 Forbidden');
             exit('unallowed access');
         }
 
