@@ -31,6 +31,8 @@ var selfoss = {
      */
     entriesPage: null,
 
+    serviceWorkerInitialized: false,
+
     /**
      * Whether lightbox is open.
      */
@@ -43,66 +45,50 @@ var selfoss = {
     /**
      * initialize application
      */
-    init: function() {
-        var storedConfig = localStorage.getItem('configuration');
-        var oldConfiguration = null;
+    init: async function() {
+        // Load off-line mode enabledness.
+        selfoss.db.enableOffline.update(window.localStorage.getItem('enableOffline') === 'true');
+
+        // Ignore stored config when off-line mode is disabled, since it is likely stale.
+        const storedConfig = selfoss.db.enableOffline.value ? localStorage.getItem('configuration') : null;
+        let oldConfiguration = null;
         try {
-            oldConfiguration = JSON.parse(storedConfig);
-        } catch (e) {
-            // We will try to obtain a new configuration anyway
+            oldConfiguration = storedConfig !== null ? JSON.parse(storedConfig) : null;
+        } catch {
+            // We will try to obtain a new configuration anyway.
         }
 
-        getInstanceInfo().then(({configuration}) => {
-            localStorage.setItem('configuration', JSON.stringify(configuration));
+        // Fall back to the last cached config on failure.
+        let configurationToUse = oldConfiguration;
+        try {
+            const { configuration } = await getInstanceInfo();
+            configurationToUse = configuration;
 
-            if (oldConfiguration && 'caches' in window) {
-                if (oldConfiguration.userCss !== configuration.userCss) {
-                    caches.delete('userCss').then(() =>
-                        caches.open('userCss').then(cache => cache.add(`user.css?v=${configuration.userCss}`))
-                    );
+            // We are on-line, prune the user files when changed.
+            if ('caches' in window) {
+                if (oldConfiguration === null || oldConfiguration.userCss !== configuration.userCss) {
+                    await caches.delete('userCss');
                 }
-                if (oldConfiguration.userJs !== configuration.userJs) {
-                    caches.delete('userJs').then(() =>
-                        caches.open('userJs').then(cache => cache.add(`user.js?v=${configuration.userJs}`))
-                    );
+                if (oldConfiguration === null || oldConfiguration.userJs !== configuration.userJs) {
+                    await caches.delete('userJs');
                 }
             }
-
-            selfoss.initMain(configuration);
-        }).catch(() => {
-            // on failure, we will try to use the last cached config
-            if (oldConfiguration) {
-                selfoss.initMain(oldConfiguration);
+        } finally {
+            if (configurationToUse) {
+                await selfoss.initMain(configurationToUse);
             } else {
                 // TODO: Add a more proper error page
                 document.body.innerHTML = selfoss.app._('error_configuration');
             }
-        });
+        }
     },
 
 
-    initMain: function(configuration) {
+    initMain: async function(configuration) {
         selfoss.config = configuration;
 
-        if ('serviceWorker' in navigator) {
-            selfoss.windowLoaded.then(function() {
-                navigator.serviceWorker.register(new URL('../selfoss-sw-offline.js', import.meta.url), { type: 'module' })
-                    .then(function(reg) {
-                        selfoss.listenWaitingSW(reg, function(reg) {
-                            selfoss.app.notifyNewVersion(function() {
-                                if (reg.waiting) {
-                                    reg.waiting.postMessage('skipWaiting');
-                                }
-                            });
-                        });
-                    });
-            });
-
-            navigator.serviceWorker.addEventListener('controllerchange',
-                function() {
-                    window.location.reload();
-                }
-            );
+        if (selfoss.db.enableOffline.value) {
+            selfoss.setupServiceWorker();
         }
 
         if (configuration.language !== null) {
@@ -188,7 +174,7 @@ var selfoss = {
      * Try to log in using given credentials
      * @return Promise<undefined>
      */
-    login: function({ username, password, enableOffline }) {
+    login: function({ configuration, username, password, enableOffline }) {
         selfoss.db.enableOffline.update(enableOffline);
         window.localStorage.setItem('enableOffline', selfoss.db.enableOffline.value);
         if (!selfoss.db.enableOffline.value) {
@@ -206,10 +192,46 @@ var selfoss = {
             if ((!selfoss.db.storage || selfoss.db.broken) && selfoss.db.enableOffline.value) {
                 // Initialize database in offline mode when it has not been initialized yet or it got broken.
                 selfoss.dbOffline.init();
+
+                // Store config for off-line use.
+                localStorage.setItem('configuration', JSON.stringify(configuration));
+
+                // Cache user files manually since service worker is not aware of them.
+                if ('caches' in window) {
+                    caches.open('userCss').then((cache) => cache.add(`user.css?v=${configuration.userCss}`));
+                    caches.open('userJs').then((cache) => cache.add(`user.js?v=${configuration.userJs}`));
+                }
+
+                selfoss.setupServiceWorker();
             }
         });
     },
 
+    setupServiceWorker: function() {
+        if (!('serviceWorker' in navigator) || selfoss.serviceWorkerInitialized) {
+            return;
+        }
+
+        selfoss.serviceWorkerInitialized = true;
+
+        navigator.serviceWorker.addEventListener(
+            'controllerchange',
+            function() {
+                window.location.reload();
+            },
+        );
+
+        navigator.serviceWorker.register(new URL('../selfoss-sw-offline.js', import.meta.url), { type: 'module' })
+            .then(function(reg) {
+                selfoss.listenWaitingSW(reg, function(reg) {
+                    selfoss.app.notifyNewVersion(function() {
+                        if (reg.waiting) {
+                            reg.waiting.postMessage('skipWaiting');
+                        }
+                    });
+                });
+            });
+    },
 
     logout: function() {
         selfoss.clearSession();

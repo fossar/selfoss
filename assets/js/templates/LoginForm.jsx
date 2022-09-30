@@ -9,6 +9,7 @@ import { LocalizationContext } from '../helpers/i18n';
 
 function handleLogIn({
     event,
+    configuration,
     history,
     setLoading,
     username,
@@ -19,7 +20,7 @@ function handleLogIn({
 
     setLoading(true);
 
-    selfoss.login({ username, password, enableOffline }).then(() => {
+    selfoss.login({ configuration, username, password, enableOffline }).then(() => {
         history.push('/');
     }).catch((err) => {
         const message =
@@ -47,6 +48,7 @@ export default function LoginForm({
     const [loading, setLoading] = React.useState(false);
     const [enableOffline, setEnableOffline] = React.useState(offlineEnabled);
 
+    const configuration = React.useContext(ConfigurationContext);
     const history = useHistory();
     const location = useLocation();
     const error = location?.state?.error;
@@ -55,13 +57,14 @@ export default function LoginForm({
         (event) =>
             handleLogIn({
                 event,
+                configuration,
                 history,
                 setLoading,
                 username,
                 password,
                 enableOffline
             }),
-        [history, username, password, enableOffline]
+        [configuration, history, username, password, enableOffline]
     );
 
     const usernameOnChange = React.useCallback(
@@ -80,7 +83,6 @@ export default function LoginForm({
     );
 
     const _ = React.useContext(LocalizationContext);
-    const configuration = React.useContext(ConfigurationContext);
 
     return (
         <React.Fragment>
