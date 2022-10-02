@@ -13,6 +13,7 @@ import { Spinner, SpinnerBig } from './Spinner';
 import classNames from 'classnames';
 import { useAllowedToUpdate, useAllowedToWrite } from '../helpers/authorizations';
 import { ConfigurationContext } from '../helpers/configuration';
+import { autoScroll, Direction } from '../helpers/navigation';
 import { LocalizationContext } from '../helpers/i18n';
 import { useShouldReload } from '../helpers/hooks';
 import { forceReload, makeEntriesLinkLocation } from '../helpers/uri';
@@ -129,6 +130,30 @@ function reloadList({
         return selfoss.dbOnline.syncing.promise.finally(reload);
     } else {
         return reload();
+    }
+}
+
+/**
+ * Try to open the selected article using the preferred method.
+ * @param {number} selected
+ */
+function openSelectedArticle(selected) {
+    const link = document.querySelector(`.entry[data-entry-id="${selected}"] .entry-datetime`);
+    if (selfoss.config.openInBackgroundTab) {
+        // In Chromium, this will just cause the tab to open in the foreground.
+        // Appears to be disallowed by the pop-under prevention:
+        // https://crbug.com/431335
+        // https://crbug.com/487919
+        const event = new MouseEvent(
+            'click',
+            {
+                ctrlKey: true,
+            }
+        );
+        link.dispatchEvent(event);
+    } else {
+        // open item in new window
+        link.click();
     }
 }
 
@@ -418,6 +443,15 @@ export default class StateHolder extends React.Component {
         this.markVisibleRead = this.markVisibleRead.bind(this);
         this.markEntryRead = this.markEntryRead.bind(this);
         this.markEntryStarred = this.markEntryStarred.bind(this);
+        this.nextPrev = this.nextPrev.bind(this);
+        this.entryNav = this.entryNav.bind(this);
+        this.jumpToNext = this.jumpToNext.bind(this);
+        this.toggleSelectedStarred = this.toggleSelectedStarred.bind(this);
+        this.toggleSelectedRead = this.toggleSelectedRead.bind(this);
+        this.toggleSelectedExpanded = this.toggleSelectedExpanded.bind(this);
+        this.openSelectedTarget = this.openSelectedTarget.bind(this);
+        this.openSelectedTargetAndMarkRead = this.openSelectedTargetAndMarkRead.bind(this);
+        this.throw = this.throw.bind(this);
     }
 
     setEntries(entries) {
@@ -832,6 +866,143 @@ export default class StateHolder extends React.Component {
             ...makeEntriesLinkLocation(this.props.location, { id: null }),
             state: forceReload(this.props.location),
         });
+    }
+
+    /**
+     * get next/prev item
+     * @param direction
+     */
+    nextPrev(direction, open = true) {
+        if (direction != Direction.NEXT && direction != Direction.PREV) {
+            throw new Error('direction must be one of Direction.{PREV,NEXT}');
+        }
+
+        // when there are no entries
+        if (this.state.entries.length == 0) {
+            return;
+        }
+
+        // select current
+        const old = this.getSelectedEntry();
+        const oldIndex = old !== null ? this.state.entries.findIndex(({ id }) => id === old) : null;
+        let current = null;
+
+        // select next/prev entry and save it to "current"
+        // if we would overflow, we stay on the old one
+        if (direction == Direction.NEXT) {
+            if (old === null) {
+                current = this.state.entries[0].id;
+            } else {
+                const nextIndex = oldIndex + 1;
+                if (nextIndex >= this.state.entries.length) {
+                    current = old;
+
+                    // attempt to load more
+                    document.querySelector('.stream-more').click();
+                } else {
+                    current = this.state.entries[nextIndex].id;
+                }
+            }
+        } else {
+            if (old === null) {
+                return;
+            } else {
+                if (oldIndex <= 0) {
+                    current = old;
+                } else {
+                    current = this.state.entries[oldIndex - 1].id;
+                }
+            }
+        }
+
+        if (old !== current) {
+            // remove active
+            this.deactivateEntry(old);
+
+            if (open) {
+                this.activateEntry(current);
+            } else {
+                this.setSelectedEntry(current);
+            }
+
+            const currentElement = document.querySelector(`.entry[data-entry-id="${current}"]`);
+
+            // scroll to element
+            autoScroll(currentElement);
+
+            // focus the title link for better keyboard navigation
+            currentElement.querySelector('.entry-title-link').focus();
+        }
+    }
+
+    /**
+     * entry navigation (next/prev) with keys
+     * @param direction
+     */
+    entryNav(direction) {
+        if (direction != Direction.NEXT && direction != Direction.PREV) {
+            throw new Error('direction must be one of Direction.{PREV,NEXT}');
+        }
+
+        const open = this.isEntryExpanded(this.getSelectedEntry());
+        this.nextPrev(direction, open);
+    }
+
+    jumpToNext() {
+        const selected = this.getSelectedEntry();
+        if (selected !== null && !this.isEntryExpanded(selected)) {
+            this.activateEntry(selected);
+        } else {
+            this.nextPrev(Direction.NEXT, true);
+        }
+    }
+
+    toggleSelectedStarred() {
+        const selected = this.getSelectedEntry();
+
+        if (selected !== null) {
+            this.markEntryStarred(selected, 'toggle');
+        }
+    }
+
+    toggleSelectedRead() {
+        const selected = this.getSelectedEntry();
+
+        if (selected !== null) {
+            this.markEntryRead(selected, 'toggle');
+        }
+
+    }
+
+    toggleSelectedExpanded() {
+        this.toggleEntryExpanded(this.getSelectedEntry());
+    }
+
+    openSelectedTarget() {
+        const selected = this.getSelectedEntry();
+
+        if (selected !== null) {
+            openSelectedArticle(selected);
+        }
+    }
+
+    openSelectedTargetAndMarkRead() {
+        const selected = this.getSelectedEntry();
+
+        if (selected !== null) {
+            this.markEntryRead(selected, true);
+            openSelectedArticle(selected);
+        }
+    }
+
+    throw(direction) {
+        let selected = this.getSelectedEntry();
+
+        if (selected !== null) {
+            this.markEntryRead(selected, true);
+        }
+
+        this.nextPrev(direction, true);
     }
 
     render() {

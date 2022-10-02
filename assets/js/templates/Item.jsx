@@ -5,7 +5,7 @@ import { usePreviousImmediate } from 'rooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
 import { createFocusTrap } from 'focus-trap';
-import { nextprev, Direction } from '../shortcuts';
+import { Direction } from './EntriesPage';
 import { useAllowedToWrite } from '../helpers/authorizations';
 import { forceReload, makeEntriesLink, makeEntriesLinkLocation } from '../helpers/uri';
 import * as icons from '../icons';
@@ -126,7 +126,7 @@ function openNext(event) {
 
     // TODO: Figure out why it does not work when run immediately.
     requestAnimationFrame(() => {
-        nextprev(Direction.NEXT, true);
+        selfoss.entriesPage?.nextPrev(Direction.NEXT, true);
     });
 }
 
