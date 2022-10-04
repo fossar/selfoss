@@ -42,7 +42,9 @@ export function i18nFormat(translated, params) {
         case ',':
             if (placeholder) {
                 if (state == 'index') {
-                    placeholder.index = parseInt(buffer.trim());
+                    const index = buffer.trim();
+                    const intIndex = parseInt(index);
+                    placeholder.index = Number.isNaN(intIndex) ? index : intIndex;
                     placeholder.value = params[placeholder.index];
                     buffer = '';
                 } else if (state == 'type') {
