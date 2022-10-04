@@ -55,35 +55,37 @@
       in
       {
         # Expose shell environment for development.
-        devShell = pkgs.mkShell {
-          nativeBuildInputs = [
-            # Composer and PHP for back-end.
-            php
-            php.packages.composer
+        devShells = {
+          default = pkgs.mkShell {
+            nativeBuildInputs = [
+              # Composer and PHP for back-end.
+              php
+              php.packages.composer
 
-            # Back-end code validation.
-            php.packages.psalm
-            php.packages.phpstan
+              # Back-end code validation.
+              php.packages.psalm
+              php.packages.phpstan
 
-            # npm for front-end.
-            pkgs.nodejs_latest
+              # npm for front-end.
+              pkgs.nodejs_latest
 
-            # For building zip archive.
-            pkgs.jq
+              # For building zip archive.
+              pkgs.jq
 
-            # For building zip archive and integration tests.
-            python
+              # For building zip archive and integration tests.
+              python
 
-            # Website generator.
-            pkgs.zola
-          ] ++ dbServers.${matrix.storage};
+              # Website generator.
+              pkgs.zola
+            ] ++ dbServers.${matrix.storage};
 
-          # node-gyp wants some locales, let’s make them available through an environment variable.
-          LOCALE_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
+            # node-gyp wants some locales, let’s make them available through an environment variable.
+            LOCALE_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
 
-          # This has not been backported to the phpunit-bridge version we use:
-          # https://github.com/symfony/phpunit-bridge/commit/d3bc23e3471d978218121175516045981fcef411
-          SYMFONY_PHPUNIT_VERSION = pkgs.lib.optionalString (matrix.phpPackage == "php81") "9.5";
+            # This has not been backported to the phpunit-bridge version we use:
+            # https://github.com/symfony/phpunit-bridge/commit/d3bc23e3471d978218121175516045981fcef411
+            SYMFONY_PHPUNIT_VERSION = pkgs.lib.optionalString (matrix.phpPackage == "php81") "9.5";
+          };
         };
       }
     );
