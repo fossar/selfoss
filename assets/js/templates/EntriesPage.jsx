@@ -172,6 +172,7 @@ function handleRefreshSource({ event, source, setLoadingState, setNavExpanded, r
         // Will also clear the loading status.
         reload();
     }).catch((error) => {
+        setLoadingState(LoadingState.FAILURE);
         alert(selfoss.app._('error_refreshing_source') + ' ' + error.message);
     });
 }
