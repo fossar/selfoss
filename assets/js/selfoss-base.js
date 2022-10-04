@@ -233,15 +233,30 @@ var selfoss = {
             });
     },
 
-    logout: function() {
+    logout: async function() {
         selfoss.clearSession();
-        if (!selfoss.config.publicMode) {
-            selfoss.history.push('/sign/in');
-        }
 
-        logout().catch((error) => {
-            selfoss.app.showError(selfoss.app._('error_logout') + ' ' + error.message);
+        selfoss.db.clear(); // will not work after a failure, since storage is nulled
+        window.localStorage.clear();
+        if ('caches' in window) {
+            caches.keys().then(keys => keys.forEach(key => caches.delete(key)));
+        }
+        navigator.serviceWorker.getRegistrations().then(function(registrations) {
+            registrations.forEach(function(reg) {
+                reg.unregister();
+            });
         });
+        selfoss.serviceWorkerInitialized = false;
+
+        try {
+            await logout();
+
+            if (!selfoss.config.publicMode) {
+                selfoss.history.push('/sign/in');
+            }
+        } catch (error) {
+            selfoss.app.showError(selfoss.app._('error_logout') + ' ' + error.message);
+        }
     },
 
     /**
@@ -412,25 +427,6 @@ var selfoss = {
             reg.addEventListener('updatefound', awaitStateChange);
         }
     },
-
-
-    /*
-     * Handy function that can be used for debugging purposes.
-     */
-    nukeLocalData: function() {
-        selfoss.db.clear(); // will not work after a failure, since storage is nulled
-        window.localStorage.clear();
-        if ('caches' in window) {
-            caches.keys().then(keys => keys.forEach(key => caches.delete(key)));
-        }
-        navigator.serviceWorker.getRegistrations().then(function(registrations) {
-            registrations.forEach(function(reg) {
-                reg.unregister();
-            });
-        });
-        selfoss.logout();
-    },
-
 
     // Include helpers for user scripts.
     ajax
