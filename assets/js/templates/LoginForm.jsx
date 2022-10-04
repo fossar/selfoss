@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { SpinnerBig } from './Spinner';
 import { useHistory, useLocation } from 'react-router-dom';
+import { HttpError, LoginError } from '../errors';
 import { ConfigurationContext } from '../helpers/configuration';
 import { LocalizationContext } from '../helpers/i18n';
 
@@ -20,9 +21,18 @@ function handleLogIn({
 
     selfoss.login({ username, password, offlineEnabled }).then(() => {
         history.push('/');
-    }).catch(() => {
+    }).catch((err) => {
+        const message =
+            err instanceof LoginError
+                ? selfoss.app._('login_invalid_credentials')
+                : selfoss.app._('login_error_generic', {
+                    errorMessage:
+                        err instanceof HttpError
+                            ? `HTTP ${err.response.status} ${err.message}`
+                            : err.message,
+                });
         history.replace('/sign/in', {
-            error: selfoss.app._('login_invalid_credentials')
+            error: message,
         });
     }).finally(() => {
         setLoading(false);

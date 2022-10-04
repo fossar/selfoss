@@ -199,19 +199,13 @@ var selfoss = {
             username,
             password
         };
-        return login(credentials).then((data) => {
-            if (data.success) {
-                selfoss.setSession();
-                selfoss.history.push('/');
-                // init offline if supported and not inited yet
+        return login(credentials).then(() => {
+            selfoss.setSession();
+            // init offline if supported and not inited yet
+            selfoss.dbOffline.init();
+            if ((!selfoss.db.storage || selfoss.db.broken) && selfoss.db.enableOffline.value) {
+                // Initialize database in offline mode when it has not been initialized yet or it got broken.
                 selfoss.dbOffline.init();
-                if ((!selfoss.db.storage || selfoss.db.broken) && selfoss.db.enableOffline.value) {
-                    // Initialize database in offline mode when it has not been initialized yet or it got broken.
-                    selfoss.dbOffline.init();
-                }
-                return Promise.resolve();
-            } else {
-                return Promise.reject(new Error(data.error));
             }
         });
     },

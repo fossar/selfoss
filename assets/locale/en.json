@@ -77,6 +77,7 @@
   "lang_login_username": "Username",
   "lang_login_password": "Password",
   "lang_login_invalid_credentials": "Wrong username/password",
+  "lang_login_error_generic": "Could not log in: {errorMessage}",
   "lang_login_offline": "Offline storage",
   "lang_no_title": "No title",
   "lang_experimental": "Experimental",

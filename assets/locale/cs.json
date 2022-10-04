@@ -65,6 +65,7 @@
   "lang_login_username": "Jméno",
   "lang_login_password": "Heslo",
   "lang_login_invalid_credentials": "Špatné jméno nebo heslo",
+  "lang_login_error_generic": "Pokus o přihlášení selhal: {errorMessage}",
   "lang_no_title": "Bez titulku",
   "lang_error": "Nastala chyba",
   "lang_error_unauthorized": "Pro pokračování se prosím {link_begin}přihlaste{link_end}.",

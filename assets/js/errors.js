@@ -18,3 +18,10 @@ export class HttpError extends Error {
         this.name = 'HttpError';
     }
 }
+
+export class LoginError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = 'LoginError';
+    }
+}

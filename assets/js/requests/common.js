@@ -1,3 +1,4 @@
+import { LoginError } from '../errors';
 import * as ajax from '../helpers/ajax';
 
 /**
@@ -16,7 +17,15 @@ export function getInstanceInfo() {
 export function login(credentials) {
     return ajax.post('login', {
         body: new URLSearchParams(credentials)
-    }).promise.then(response => response.json());
+    }).promise.then(
+        response => response.json()
+    ).then((data) => {
+        if (data.success) {
+            return Promise.resolve();
+        } else {
+            return Promise.reject(new LoginError(data.error));
+        }
+    });
 }
 
 /**
