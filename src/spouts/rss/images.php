@@ -2,7 +2,7 @@
 
 namespace spouts\rss;
 
-use SimplePie_Item;
+use SimplePie;
 use spouts\Item;
 
 /**
@@ -20,7 +20,7 @@ class images extends feed {
     public $description = 'Fetch images from given rss feed.';
 
     /**
-     * @return \Generator<Item<SimplePie_Item>> list of items
+     * @return \Generator<Item<SimplePie\Item>> list of items
      */
     public function getItems() {
         foreach (parent::getItems() as $item) {
@@ -36,7 +36,7 @@ class images extends feed {
     /**
      * @return ?string
      */
-    private function findThumbnail(SimplePie_Item $item) {
+    private function findThumbnail(SimplePie\Item $item) {
         // search enclosures (media tags)
         if (($firstEnclosure = $item->get_enclosure(0)) !== null) {
             // thumbnail given?

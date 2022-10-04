@@ -5,7 +5,7 @@ namespace spouts\rss;
 use helpers\FeedReader;
 use helpers\Image;
 use Monolog\Logger;
-use SimplePie_Item;
+use SimplePie;
 use spouts\Item;
 
 /**
@@ -48,7 +48,7 @@ class feed extends \spouts\spout {
     /** @var ?string title of the source */
     protected $title = null;
 
-    /** @var SimplePie_Item[] current fetched items */
+    /** @var SimplePie\Item[] current fetched items */
     private $items = [];
 
     public function __construct(FeedReader $feed, Image $imageHelper, Logger $logger) {
@@ -90,7 +90,7 @@ class feed extends \spouts\spout {
     }
 
     /**
-     * @return \Generator<Item<SimplePie_Item>> list of items
+     * @return \Generator<Item<SimplePie\Item>> list of items
      */
     public function getItems() {
         foreach ($this->items as $item) {
@@ -124,7 +124,7 @@ class feed extends \spouts\spout {
     /**
      * @return ?string
      */
-    private function getAuthorString(SimplePie_Item $item) {
+    private function getAuthorString(SimplePie\Item $item) {
         $author = $item->get_author();
         if (isset($author)) {
             $name = $author->get_name();

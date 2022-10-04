@@ -2,7 +2,7 @@
 
 namespace spouts\youtube;
 
-use SimplePie_Item;
+use SimplePie;
 use spouts\Item;
 
 /**
@@ -64,7 +64,7 @@ class youtube extends \spouts\rss\feed {
     }
 
     /**
-     * @return \Generator<Item<SimplePie_Item>>
+     * @return \Generator<Item<SimplePie\Item>>
      */
     public function getItems() {
         foreach (parent::getItems() as $item) {
@@ -76,7 +76,7 @@ class youtube extends \spouts\rss\feed {
     /**
      * @return ?string
      */
-    private function getThumbnail(SimplePie_Item $item) {
+    private function getThumbnail(SimplePie\Item $item) {
         // search enclosures (media tags)
         if (($firstEnclosure = $item->get_enclosure(0)) !== null) {
             if ($firstEnclosure->get_thumbnail()) {

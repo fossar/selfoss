@@ -2,10 +2,13 @@
 
 namespace helpers;
 
+use SimplePie\File;
+use SimplePie\SimplePie;
+
 /**
  * Bridge to make SimplePie fetch resources using Guzzle library
  */
-class SimplePieFileGuzzle extends \SimplePie\File {
+class SimplePieFileGuzzle extends File {
     /** @var WebClient */
     private $webClient;
 
@@ -28,7 +31,7 @@ class SimplePieFileGuzzle extends \SimplePie\File {
         }
 
         if (preg_match('/^https?:\/\//i', $url)) {
-            $this->method = SIMPLEPIE_FILE_SOURCE_REMOTE | SIMPLEPIE_FILE_SOURCE_CURL;
+            $this->method = SimplePie::FILE_SOURCE_REMOTE | SimplePie::FILE_SOURCE_CURL;
 
             $client = $this->webClient->getHttpClient();
             try {
@@ -69,7 +72,7 @@ class SimplePieFileGuzzle extends \SimplePie\File {
                 $this->success = false;
             }
         } else {
-            $this->method = SIMPLEPIE_FILE_SOURCE_LOCAL | SIMPLEPIE_FILE_SOURCE_FILE_GET_CONTENTS;
+            $this->method = SimplePie::FILE_SOURCE_LOCAL | SimplePie::FILE_SOURCE_FILE_GET_CONTENTS;
             if (empty($url) || !($this->body = trim(file_get_contents($url)))) {
                 $this->error = 'file_get_contents could not read the file';
                 $this->success = false;

@@ -30,7 +30,7 @@ class FeedReader {
         ]);
 
         $this->simplepie->set_file_class(SimplePieFileGuzzle::class);
-        $this->simplepie->set_autodiscovery_level(SIMPLEPIE_LOCATOR_AUTODISCOVERY | SIMPLEPIE_LOCATOR_LOCAL_EXTENSION | SIMPLEPIE_LOCATOR_LOCAL_BODY);
+        $this->simplepie->set_autodiscovery_level(SimplePie::LOCATOR_AUTODISCOVERY | SimplePie::LOCATOR_LOCAL_EXTENSION | SimplePie::LOCATOR_LOCAL_BODY);
         $this->simplepie->set_useragent($webClient->getUserAgent());
     }
 
@@ -39,7 +39,7 @@ class FeedReader {
      *
      * @param string $url URL of the feed
      *
-     * @return array{items: \SimplePie_Item[], htmlUrl: string, title: ?string}
+     * @return array{items: \SimplePie\Item[], htmlUrl: string, title: ?string}
      */
     public function load($url) {
         @$this->simplepie->set_feed_url($url);
@@ -48,7 +48,7 @@ class FeedReader {
 
         // on error retry with force_feed
         if (@$this->simplepie->error()) {
-            @$this->simplepie->set_autodiscovery_level(SIMPLEPIE_LOCATOR_NONE);
+            @$this->simplepie->set_autodiscovery_level(SimplePie::LOCATOR_NONE);
             @$this->simplepie->force_feed(true);
             @$this->simplepie->init();
         }

@@ -2,7 +2,7 @@
 
 namespace spouts\rss;
 
-use SimplePie_Item;
+use SimplePie;
 use spouts\Item;
 
 /**
@@ -20,7 +20,7 @@ class enclosures extends feed {
     public $description = 'Get posts from RSS feed, including media enclosures.';
 
     /**
-     * @return \Generator<Item<SimplePie_Item>> list of items
+     * @return \Generator<Item<SimplePie\Item>> list of items
      */
     public function getItems() {
         foreach (parent::getItems() as $item) {
@@ -34,7 +34,7 @@ class enclosures extends feed {
      *
      * @return string
      */
-    private function getContentWithEnclosures($content, SimplePie_Item $item) {
+    private function getContentWithEnclosures($content, SimplePie\Item $item) {
         $enclosures = $item->get_enclosures();
         if ($enclosures === null) {
             return $content;

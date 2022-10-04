@@ -9,7 +9,7 @@ use helpers\Image;
 use helpers\WebClient;
 use Http\Adapter\Guzzle6\Client as GuzzleAdapter;
 use Monolog\Logger;
-use SimplePie_Item;
+use SimplePie;
 use spouts\Item;
 
 /**
@@ -61,7 +61,7 @@ class fulltextrss extends feed {
     }
 
     /**
-     * @return \Generator<Item<SimplePie_Item>> list of items
+     * @return \Generator<Item<SimplePie\Item>> list of items
      */
     public function getItems() {
         foreach (parent::getItems() as $item) {
@@ -73,7 +73,7 @@ class fulltextrss extends feed {
 
     /**
      * @param string $url
-     * @param Item<SimplePie_Item> $item
+     * @param Item<SimplePie\Item> $item
      *
      * @return string
      */
