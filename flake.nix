@@ -86,6 +86,12 @@
             # https://github.com/symfony/phpunit-bridge/commit/d3bc23e3471d978218121175516045981fcef411
             SYMFONY_PHPUNIT_VERSION = pkgs.lib.optionalString (matrix.phpPackage == "php81") "9.5";
           };
+
+          website = pkgs.mkShell {
+            nativeBuildInputs = [
+              pkgs.zola
+            ];
+          };
         };
       }
     );
