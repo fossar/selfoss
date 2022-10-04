@@ -7,6 +7,7 @@ if (process.argv.length <= 2) {
 }
 
 const newVersion = process.argv[2];
+const isRelease = newVersion.match(/(\-SNAPSHOT|\-[0-9a-f]+)$/) === null;
 
 if (newVersion.search(/^\d+\.\d+(\-SNAPSHOT|\-[0-9a-f]+)?$/) === -1) {
     console.error('newVersion argument must have the format n.m or n.m-SNAPSHOT or n.m-hash (n and m are whole numbers, hash is hex number)');
@@ -39,11 +40,14 @@ const replacements = [
         to: "SELFOSS_VERSION = '" + newVersion + "'"
     },
 
-    // rule for docs/config.toml
-    {
-        from: /current_version = "\d+\.\d+(\-SNAPSHOT|\-[0-9a-f]+)?"/g,
-        to: `current_version = "${newVersion}"`
-    },
+    // Not applied for development snapshots.
+    ...(isRelease ? [
+        // rule for docs/config.toml
+        {
+            from: /current_stable_version = "\d+\.\d+(\-SNAPSHOT|\-[0-9a-f]+)?"/g,
+            to: `current_stable_version = "${newVersion}"`,
+        }
+    ] : []),
 ];
 
 console.log(`Replacing version with ${newVersion}.`);

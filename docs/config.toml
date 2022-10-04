@@ -9,4 +9,4 @@ sort_by = "weight"
 [extra]
 author = "Tobias Zeising"
 author_address = "tobias.zeising@aditu.de"
-current_version = "2.19-SNAPSHOT"
+current_stable_version = "2.18"
