@@ -7,7 +7,8 @@
 /data/logs/*.log
 /data/sqlite/*.db
 /public
-docs/public
+docs/public/
+docs/static/processed_images/
 user.css
 user.js
 *.ini

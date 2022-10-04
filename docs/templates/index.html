@@ -46,9 +46,12 @@
             <h1>Screenshots</h1>
 
             <ul>
-                <li><a href="{{ get_url(path='images/screenshot1.png') }}" title="selfoss on desktop" data-fancybox="screenshots"><img src="{{ get_url(path='images/screenshot1_thumb.png') }}" alt="selfoss on desktop"></a></li>
-                <li><a href="{{ get_url(path='images/screenshot2.png') }}" title="selfoss on ipad" data-fancybox="screenshots"><img src="{{ get_url(path='images/screenshot2_thumb.png') }}" alt="selfoss on ipad"></a></li>
-                <li><a href="{{ get_url(path='images/screenshot3.png') }}" title="selfoss on smartphone" data-fancybox="screenshots"><img src="{{ get_url(path='images/screenshot3_thumb.png') }}" alt="selfoss on smartphone"></a></li>
+                {% set thumb = resize_image(path='images/screenshot-desktop.png', height=240, op="fit_height") %}
+                <li><a href="{{ get_url(path='images/screenshot-desktop.png') }}" title="selfoss on desktop" data-fancybox="screenshots"><img src="{{ thumb.url }}" width="{{ thumb.width }}" height="{{ thumb.height }}" alt="selfoss on desktop"></a></li>
+                {% set thumb = resize_image(path='images/screenshot-tablet.png', height=240, op="fit_height") %}
+                <li><a href="{{ get_url(path='images/screenshot-tablet.png') }}" title="selfoss on ipad" data-fancybox="screenshots"><img src="{{ thumb.url }}" width="{{ thumb.width }}" height="{{ thumb.height }}" alt="selfoss on ipad"></a></li>
+                {% set thumb = resize_image(path='images/screenshot-mobile.png', height=240, op="fit_height") %}
+                <li><a href="{{ get_url(path='images/screenshot-mobile.png') }}" title="selfoss on smartphone" data-fancybox="screenshots"><img src="{{ thumb.url }}" width="{{ thumb.width }}" height="{{ thumb.height }}" alt="selfoss on smartphone"></a></li>
             </ul>
 
         </div>
