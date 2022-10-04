@@ -22,7 +22,7 @@ import SearchList from './SearchList';
 import makeShortcuts from '../shortcuts';
 import * as icons from '../icons';
 import { ConfigurationContext } from '../helpers/configuration';
-import { useListenableValue } from '../helpers/hooks';
+import { useIsSmartphone, useListenableValue } from '../helpers/hooks';
 import { ENTRIES_ROUTE_PATTERN } from '../helpers/uri';
 import { i18nFormat, LocalizationContext } from '../helpers/i18n';
 import { LoadingState } from '../requests/LoadingState';
@@ -132,7 +132,7 @@ function PureApp({
     reloadAll,
 }) {
     const [navExpanded, setNavExpanded] = React.useState(false);
-    const [smartphone, setSmartphone] = React.useState(false);
+    const smartphone = useIsSmartphone();
     const offlineEnabled = useListenableValue(selfoss.db.enableOffline);
     const [entriesPage, setEntriesPage] = React.useState(null);
     const configuration = React.useContext(ConfigurationContext);
@@ -141,20 +141,8 @@ function PureApp({
         // init shortcut handler
         const destroyShortcuts = makeShortcuts();
 
-        const smartphoneListener = (event) => {
-            setSmartphone(event.matches);
-        };
-
-        const smartphoneMediaQuery = window.matchMedia('(max-width: 641px)');
-
-        // It might happen that values change between creating the component and setting up the event handlers.
-        smartphoneListener({ matches: smartphoneMediaQuery.matches });
-
-        smartphoneMediaQuery.addEventListener('change', smartphoneListener);
-
         return () => {
             destroyShortcuts();
-            smartphoneMediaQuery.removeEventListener('change', smartphoneListener);
         };
     }, []);
 

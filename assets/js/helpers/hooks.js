@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useMediaMatch } from 'rooks';
 
 /**
  * Changes its return value whenever the value of forceReload field
@@ -27,6 +28,10 @@ export function useShouldReload() {
     }
 
     return reloadCounter;
+}
+
+export function useIsSmartphone() {
+    return useMediaMatch('(max-width: 641px)');
 }
 
 /**
