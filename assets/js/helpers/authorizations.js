@@ -1,22 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useListenableValue } from './hooks';
 
 
 export function useLoggedIn() {
-    const [value, setValue] = useState(selfoss.loggedin.value);
-
-    useEffect(() => {
-        function loggedinChanged(event) {
-            setValue(event.value);
-        }
-
-        selfoss.loggedin.addEventListener('change', loggedinChanged);
-
-        return () => {
-            selfoss.loggedin.removeEventListener('change', loggedinChanged);
-        };
-    }, []);
-
-    return value;
+    return useListenableValue(selfoss.loggedin);
 }
 
 export function useAllowedToRead() {

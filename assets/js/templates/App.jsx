@@ -22,6 +22,7 @@ import SearchList from './SearchList';
 import makeShortcuts from '../shortcuts';
 import * as icons from '../icons';
 import { ConfigurationContext } from '../helpers/configuration';
+import { useListenableValue } from '../helpers/hooks';
 import { ENTRIES_ROUTE_PATTERN } from '../helpers/uri';
 import { i18nFormat, LocalizationContext } from '../helpers/i18n';
 import { LoadingState } from '../requests/LoadingState';
@@ -132,7 +133,7 @@ function PureApp({
 }) {
     const [navExpanded, setNavExpanded] = React.useState(false);
     const [smartphone, setSmartphone] = React.useState(false);
-    const [offlineEnabled, setOfflineEnabled] = React.useState(selfoss.db.enableOffline.value);
+    const offlineEnabled = useListenableValue(selfoss.db.enableOffline);
     const [entriesPage, setEntriesPage] = React.useState(null);
     const configuration = React.useContext(ConfigurationContext);
 
@@ -144,23 +145,16 @@ function PureApp({
             setSmartphone(event.matches);
         };
 
-        const offlineEnabledListener = (event) => {
-            setOfflineEnabled(event.value);
-        };
-
         const smartphoneMediaQuery = window.matchMedia('(max-width: 641px)');
 
         // It might happen that values change between creating the component and setting up the event handlers.
         smartphoneListener({ matches: smartphoneMediaQuery.matches });
-        offlineEnabledListener({ value: selfoss.db.enableOffline.value });
 
         smartphoneMediaQuery.addEventListener('change', smartphoneListener);
-        selfoss.db.enableOffline.addEventListener('change', offlineEnabledListener);
 
         return () => {
             destroyShortcuts();
             smartphoneMediaQuery.removeEventListener('change', smartphoneListener);
-            selfoss.db.enableOffline.removeEventListener('change', offlineEnabledListener);
         };
     }, []);
 

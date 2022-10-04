@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 /**
@@ -27,4 +27,28 @@ export function useShouldReload() {
     }
 
     return reloadCounter;
+}
+
+/**
+ * @param {ValueListenable}
+ */
+export function useListenableValue(valueListenable) {
+    const [value, setValue] = useState(valueListenable.value);
+
+    useEffect(() => {
+        const listener = (event) => {
+            setValue(event.value);
+        };
+
+        // It might happen that values change between creating the component and setting up the event handlers.
+        listener({ value: valueListenable.value });
+
+        valueListenable.addEventListener('change', listener);
+
+        return () => {
+            valueListenable.removeEventListener('change', listener);
+        };
+    }, [valueListenable]);
+
+    return value;
 }
