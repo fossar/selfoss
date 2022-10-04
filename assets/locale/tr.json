@@ -115,5 +115,6 @@
   "lang_login_in_progress": "Oturum açmaya çalışılıyor…",
   "lang_source_params_loading": "Parametreler yükleniyor…",
   "lang_source_saving": "Kaynak değişiklikleri kaydediliyor…",
-  "lang_error_unauthorized": "Devam etmek için lütfen {link_begin}oturum açın{link_end}."
+  "lang_error_unauthorized": "Devam etmek için lütfen {link_begin}oturum açın{link_end}.",
+  "lang_login_error_generic": "Oturum açılamadı: {errorMessage}"
 }
