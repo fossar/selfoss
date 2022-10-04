@@ -5,12 +5,12 @@ import { usePreviousImmediate } from 'rooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
 import { createFocusTrap } from 'focus-trap';
-import { Direction } from './EntriesPage';
 import { useAllowedToWrite } from '../helpers/authorizations';
 import { forceReload, makeEntriesLink, makeEntriesLinkLocation } from '../helpers/uri';
 import * as icons from '../icons';
 import { ConfigurationContext } from '../helpers/configuration';
 import { LocalizationContext } from '../helpers/i18n';
+import { Direction } from '../helpers/navigation';
 import { useSharers } from '../sharers';
 import Lightbox from 'yet-another-react-lightbox';
 
