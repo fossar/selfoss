@@ -188,8 +188,8 @@ var selfoss = {
      * Try to log in using given credentials
      * @return Promise<undefined>
      */
-    login: function({username, password, offlineEnabled}) {
-        selfoss.db.enableOffline.update(offlineEnabled);
+    login: function({ username, password, enableOffline }) {
+        selfoss.db.enableOffline.update(enableOffline);
         window.localStorage.setItem('enableOffline', selfoss.db.enableOffline.value);
         if (!selfoss.db.enableOffline.value) {
             selfoss.db.clear();

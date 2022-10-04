@@ -13,13 +13,13 @@ function handleLogIn({
     setLoading,
     username,
     password,
-    offlineEnabled
+    enableOffline
 }) {
     event.preventDefault();
 
     setLoading(true);
 
-    selfoss.login({ username, password, offlineEnabled }).then(() => {
+    selfoss.login({ username, password, enableOffline }).then(() => {
         history.push('/');
     }).catch((err) => {
         const message =
@@ -41,11 +41,11 @@ function handleLogIn({
 
 export default function LoginForm({
     offlineEnabled,
-    setOfflineEnabled,
 }) {
     const [username, setUsername] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [loading, setLoading] = React.useState(false);
+    const [enableOffline, setEnableOffline] = React.useState(offlineEnabled);
 
     const history = useHistory();
     const location = useLocation();
@@ -59,9 +59,9 @@ export default function LoginForm({
                 setLoading,
                 username,
                 password,
-                offlineEnabled
+                enableOffline
             }),
-        [history, username, password, offlineEnabled]
+        [history, username, password, enableOffline]
     );
 
     const usernameOnChange = React.useCallback(
@@ -75,8 +75,8 @@ export default function LoginForm({
     );
 
     const offlineOnChange = React.useCallback(
-        (event) => setOfflineEnabled(event.target.checked),
-        [setOfflineEnabled]
+        (event) => setEnableOffline(event.target.checked),
+        [setEnableOffline]
     );
 
     const _ = React.useContext(LocalizationContext);
@@ -136,7 +136,7 @@ export default function LoginForm({
                                 id="enableoffline"
                                 accessKey="o"
                                 onChange={offlineOnChange}
-                                checked={offlineEnabled}
+                                checked={enableOffline}
                             />{' '}
                             <span className="badge-experimental">
                                 {_('experimental')}
@@ -162,5 +162,4 @@ export default function LoginForm({
 
 LoginForm.propTypes = {
     offlineEnabled: PropTypes.bool.isRequired,
-    setOfflineEnabled: PropTypes.func.isRequired,
 };

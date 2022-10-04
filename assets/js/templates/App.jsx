@@ -209,7 +209,7 @@ function PureApp({
                     {/* menu open for smartphone */}
                     <div id="loginform" role="main">
                         <LoginForm
-                            {...{offlineEnabled, setOfflineEnabled}}
+                            {...{offlineEnabled}}
                         />
                     </div>
                 </Route>
