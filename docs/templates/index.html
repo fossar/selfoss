@@ -60,7 +60,26 @@
 {% endblock post_header %}
 
 {% block content %}
-{{ section.content | safe }}
+<h1 id="documentation">Documentation</h1>
+
+<div class="doc-block-container">
+{% set doc_section = get_section(path="docs/_index.md") %}
+{% for sec_path in doc_section.subsections %}
+{% set sec = get_section(path=sec_path) %}
+{% if sec.extra.show_home %}
+<div class="doc-block">
+<h2>{{ sec.title }}</h2>
+<ul>
+{% for page in sec.pages %}
+  <li>
+      <a href="{{page.permalink}}">{{page.title}}</a>
+  </li>
+{% endfor %}
+</ul>
+{% endif %}
+</div>
+{% endfor %}
+</div>
 {% endblock content %}
 
 {% block scripts %}

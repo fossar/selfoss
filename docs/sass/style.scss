@@ -431,6 +431,23 @@ kbd {
     }
 }
 
+.doc-block-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.doc-block {
+    background: #d4d4d244;
+    padding: 1rem;
+    border-radius: 0.3rem;
+    width: 5em;
+    flex-grow: 1;
+}
+
+.doc-block h2 {
+    margin: 0;
+}
+
 // Footnotes from pulldown-cmark
 .footnote-definition {
     display: flex;
