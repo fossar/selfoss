@@ -6,11 +6,11 @@ $(document).ready(function() {
         },
     });
 
-    $('#header-donate').mouseenter(function() {
-        $('#header-donate-tooltipp').fadeIn();
+    $('.intro-donate').mouseenter(function() {
+        $('.intro-donate-tooltip').fadeIn();
     });
 
-    $('#header-donate').mouseleave(function() {
-        $('#header-donate-tooltipp').fadeOut();
+    $('.intro-donate').mouseleave(function() {
+        $('.intro-donate-tooltip').fadeOut();
     });
 });

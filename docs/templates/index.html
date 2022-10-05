@@ -3,22 +3,8 @@
 {% block title %}{{ section.title }}{% endblock title %}
 
 {% block post_header %}
-    <div class="wrapper-light">
-        <div id="header-logo"></div>
-
-        <div id="header-just-updated"></div>
-
-        <a id="header-download" href="https://github.com/fossar/selfoss/releases/download/{{ config.extra.current_stable_version }}/selfoss-{{ config.extra.current_stable_version }}.zip"><span>download selfoss {{ config.extra.current_stable_version }}</span></a>
-
-        <a id="header-donate" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=LR67F3T9DMSC8"><span>donate</span></a>
-
-        <div id="header-appstores">
-            <a href="https://f-droid.org/packages/bou.amine.apps.readerforselfossv2.android"><img alt="Android app on F-Droid" src="{{ get_url(path='images/f-droid.svg') }}" width="141" height="42"></a>
-        </div>
-
-        <div id="header-donate-tooltipp"><span>selfoss is completely free!<br>But if you like selfoss then feel free to donate the programmer a beer</span></div>
-
-        <div id="header-teaser">
+    <div class="wrapper-light intro">
+        <div class="intro-teaser">
             <h1>The ultimate multi-purpose RSS reader, data stream, mash-up, aggregation web application</h1>
 
             <h2>Features</h2>
@@ -36,6 +22,22 @@
                 <li><a href="{{ get_url(path='@/docs/customization/api.md') }}">RESTful JSON API</a> for developers</li>
                 <li>Third party <a href="https://f-droid.org/packages/apps.amine.bou.readerforselfoss">app for Android</a> available</li>
             </ul>
+        </div>
+
+        <div class="intro-side">
+            <img class="intro-logo" src="{{ get_url(path='images/logo.png') }}" width="177" height="209">
+
+            <a class="intro-download" href="https://github.com/fossar/selfoss/releases/download/{{ config.extra.current_stable_version }}/selfoss-{{ config.extra.current_stable_version }}.zip"><span>Download selfoss {{ config.extra.current_stable_version }}</span></a>
+
+            <a class="intro-donate" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=LR67F3T9DMSC8">
+                <span>Donate</span>
+                <div class="intro-donate-tooltip"><span>selfoss is completely free!<br>But if you like selfoss then feel free to donate the programmer a beer</span></div>
+            </a>
+
+            <div class="intro-appstores">
+                <a href="https://f-droid.org/packages/bou.amine.apps.readerforselfossv2.android"><img alt="Android app on F-Droid" src="{{ get_url(path='images/f-droid.svg') }}" width="141" height="42"></a>
+            </div>
+
         </div>
     </div>
 
