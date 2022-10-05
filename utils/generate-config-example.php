@@ -4,6 +4,13 @@ use helpers\Configuration;
 
 require __DIR__ . '/../vendor/autoload.php';
 
+// Fail loudly on warnings.
+set_error_handler(function($severity, $message, $file, $line) {
+    if (error_reporting() & $severity) {
+        throw new ErrorException($message, 0, $severity, $file, $line);
+   }
+});
+
 $reflection = new ReflectionClass(Configuration::class);
 
 $example = '; see https://selfoss.aditu.de/docs/administration/options/' . PHP_EOL;
