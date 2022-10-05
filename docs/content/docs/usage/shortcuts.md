@@ -1,6 +1,6 @@
 +++
 title = "Shortcuts"
-weight = 30
+weight = 70
 +++
 
 selfoss offers some keyboard shortcuts. They are very similar to what Google Reader used:
