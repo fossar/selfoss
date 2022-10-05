@@ -70,6 +70,7 @@ const redirects = {
     '#about': '{{ get_url(path="@/docs/project/credits.md") | safe }}',
     '#configuration_params': '{{ get_url(path="@/docs/administration/options.md") | safe }}',
     '#importing': '{{ get_url(path="@/docs/usage/data.md#import") | safe }}',
+    '#installation': '{{ get_url(path="@/docs/administration/installation/basic.md") | safe }}',
     '#requirements': '{{ get_url(path="@/docs/administration/requirements.md") | safe }}',
 };
 if (document.location.hash in redirects) {
