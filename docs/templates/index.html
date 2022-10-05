@@ -66,13 +66,13 @@
 {% block scripts %}
 {% if current_path == '/' %}
 <script>
-switch (document.location.hash) {
-case '#configuration_params':
-    document.location.href = '{{ get_url(path="@/docs/administration/options.md") | safe }}';
-    break;
-case '#about':
-    document.location.href = '{{ get_url(path="@/docs/project/credits.md") | safe }}';
-    break;
+const redirects = {
+    '#about': '{{ get_url(path="@/docs/project/credits.md") | safe }}',
+    '#configuration_params': '{{ get_url(path="@/docs/administration/options.md") | safe }}',
+    '#importing': '{{ get_url(path="@/docs/usage/data.md#import") | safe }}',
+};
+if (document.location.hash in redirects) {
+    document.location.href = redirects[document.location.hash];
 }
 </script>
 {% endif %}

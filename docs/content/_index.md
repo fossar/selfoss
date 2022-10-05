@@ -58,10 +58,3 @@ db_username=secretagent
 db_password=life0fD4ng3r
 ```
 </div>
-
-## Importing feeds from a different RSS reader {#importing}
-<div class="documentation-entry">
-
-selfoss supports importing OPML files. Find the OPML export in the old application, it is usually located somewhere in settings.
-Then visit the page `https://your-selfoss-url.com/opml` and upload it there.
-</div>
