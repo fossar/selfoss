@@ -235,13 +235,14 @@ li.nav-forge {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
 }
 
 .intro-logo {
     display: block;
 }
 
-.intro-donate, .intro-download {
+.intro-download {
     display: block;
     background: #84b025;
     border-radius: 0.5rem;
@@ -251,11 +252,11 @@ li.nav-forge {
     vertical-align: middle;
 }
 
-.intro-donate, .intro-download, .intro-appstores {
+.intro-download, .intro-appstores {
     margin-top: 0.5rem;
 }
 
-.intro-donate span, .intro-download span {
+.intro-download span {
     display: block;
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     color: #ffffff;
@@ -263,32 +264,6 @@ li.nav-forge {
     margin-top: 0.625rem;
     text-align: center;
     width: 100%;
-}
-
-.intro-donate {
-    position: relative;
-    background: #135097;
-}
-
-.intro-donate-tooltip {
-    position: absolute;
-    display: none;
-    background: url("images/tooltipp-donate.png");
-    width: 271px;
-    height: 81px;
-    top: -50%;
-    left: 0;
-    margin-left: -271px;
-    z-index: 10;
-}
-
-.intro-donate-tooltip span {
-    display: block;
-    color: #eeeeee;
-    font-size: 0.875rem;
-    margin: 0.625rem;
-    width: 230px;
-    margin-top: 0.3125rem;
 }
 
 /************ Screenshots **************/
