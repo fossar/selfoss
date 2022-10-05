@@ -115,5 +115,6 @@
   "lang_source_saving": "השינויים למקור נשמרים…",
   "lang_entries_loading": "הרשומות נטענות…",
   "lang_login_in_progress": "מתבצע ניסיון כניסה…",
-  "lang_error_unauthorized": "נא {link_begin}להיכנס{link_end} כדי להמשיך."
+  "lang_error_unauthorized": "נא {link_begin}להיכנס{link_end} כדי להמשיך.",
+  "lang_login_error_generic": "לא ניתן להיכנס: {errorMessage}"
 }
