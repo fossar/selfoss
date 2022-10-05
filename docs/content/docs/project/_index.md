@@ -1,4 +1,5 @@
 +++
 title = "Project"
-weight = 50
+weight = 60
+sort_by = "weight"
 +++
