@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>{% block title %}{{ config.title }}{% endblock title %}</title>
+    <title>{% block title %}{% endblock title %}{% if current_path != '/' %} – {{ config.title }}{% endif %}</title>
 
     <meta charset="utf-8">
     <meta name="copyright" content="{{ config.extra.author }}">
