@@ -1,1 +1,2 @@
+/feed.php https://github.com/SSilence/selfoss/releases.atom
 /forum/* https://forum.selfoss.aditu.de/:splat 301
