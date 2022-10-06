@@ -1,6 +1,6 @@
 # selfoss news
 ## 2.19 – unreleased
-**This version requires PHP 5.6 or newer.**
+**This version requires PHP 5.6 or newer. It is also the last version to support PHP 7.**
 
 ### New features
 - Thumbnails can be disabled ([#897](https://github.com/fossar/selfoss/pull/897))
