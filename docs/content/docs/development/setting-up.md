@@ -3,7 +3,7 @@ title = "Setting up development environment"
 weight = 10
 +++
 
-Selfoss makes use of many libraries to make our job as developers easier. To install them, you will need appropriate package managers. The server side uses [composer](https://getcomposer.org/) for PHP libraries and the client side uses [npm](https://www.npmjs.com/get-npm) for the JavaScript world.
+selfoss makes use of many libraries to make our job as developers easier. To install them, you will need appropriate package managers. The server side uses [composer](https://getcomposer.org/) for PHP libraries and the client side uses [npm](https://www.npmjs.com/get-npm) for the JavaScript world.
 
 Then you will be able to run `npm run install-dependencies` to install the libraries, and `npm run dev` to start a program that will rebuild client-side assets when needed.
 

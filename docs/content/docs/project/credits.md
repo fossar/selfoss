@@ -9,6 +9,6 @@ Its source code is distributed under the terms of [GNU General Public License, v
 
 The icon was created by [Nadja (Artcore)](http://blackbooze.com/), thanks for licensing it as CC.
 
-Selfoss is named by the wonderful waterfall in Iceland (see [Wikipedia](https://en.wikipedia.org/wiki/Selfoss_(waterfall))). Many single waterfalls converge to produce one big fall. This seems to be a good metaphor for the many sources from the web which will be shown in one stream.
+selfoss is named by the wonderful waterfall in Iceland (see [Wikipedia](https://en.wikipedia.org/wiki/Selfoss_(waterfall))). Many single waterfalls converge to produce one big fall. This seems to be a good metaphor for the many sources from the web which will be shown in one stream.
 
 FancyBox on the front page is from [fancyapps.com](https://fancyapps.com/fancybox/3/).
