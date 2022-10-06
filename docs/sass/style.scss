@@ -423,6 +423,17 @@ kbd {
     margin: 0;
 }
 
+.nav-link a {
+    display: inline-block;
+    padding: 0.5rem;
+    background: #d4d4d244;
+    border-radius: 0.3rem;
+}
+
+.nav-link.next {
+    text-align: right;
+}
+
 // Footnotes from pulldown-cmark
 .footnote-definition {
     display: flex;

@@ -22,4 +22,9 @@
 {% block content %}
 <h1>{{ page.title }}</h1>
 {{ page.content | safe }}
+{% if page.extra.show_next %}
+<div class="nav-link next">
+<a href="{{ page.higher.permalink }}" rel="next">Next ›</a>
+</div>
+{% endif %}
 {% endblock content %}

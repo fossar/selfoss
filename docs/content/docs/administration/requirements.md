@@ -1,6 +1,7 @@
 +++
 title = "Requirements"
 weight = 10
+extra.show_next = true
 +++
 
 selfoss is not a hosted service. It has to be installed on your own web server. This web server must fulfil the following requirements (which are available from most providers)

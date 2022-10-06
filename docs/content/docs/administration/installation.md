@@ -1,6 +1,7 @@
 +++
 title = "Installation"
 weight = 20
+extra.show_next = true
 +++
 
 There are several options for installing selfoss:
