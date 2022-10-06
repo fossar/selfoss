@@ -154,7 +154,7 @@ set this to `1` to automatically collapse an item when another one is opened.
 ### `auto_stream_more`
 <div class="config-option">
 
-set this to `0` to disable automatic loading of more items when you scroll down. With `1`, a click on a button is required instead.
+set this to `0` to disable automatic loading of more items when you scroll down. Click a button at the bottom of the page will be required instead.
 </div>
 
 ### `open_in_background_tab`
