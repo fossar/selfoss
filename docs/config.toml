@@ -7,4 +7,4 @@ compile_sass = true
 [extra]
 author = "Tobias Zeising"
 author_address = "tobias.zeising@aditu.de"
-current_stable_version = "2.18"
+current_stable_version = "2.19"

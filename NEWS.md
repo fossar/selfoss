@@ -1,5 +1,5 @@
 # selfoss news
-## 2.19 – unreleased
+## 2.19 – 2022-10-12
 **This version requires PHP 5.6 or newer. It is also the last version to support PHP 7.**
 
 ### New features

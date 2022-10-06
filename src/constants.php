@@ -2,7 +2,7 @@
 
 const BASEDIR = __DIR__ . '/..';
 
-const SELFOSS_VERSION = '2.19-SNAPSHOT';
+const SELFOSS_VERSION = '2.19';
 
 // independent of selfoss version
 // needs to be bumped each time public API is changed (follows semver)
