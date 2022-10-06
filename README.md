@@ -21,7 +21,7 @@ For more information visit our [web site](https://selfoss.aditu.de).
 
 If you obtained selfoss using Git, some more steps will be required. See the [development](#development) section.
 
-For further questions or on any problem use our support forum: https://selfoss.aditu.de/forum/
+For further questions or on any problem use our support forum: https://forum.selfoss.aditu.de/
 
 
 ## Configuration
@@ -51,7 +51,7 @@ For further questions or on any problem use our support forum: https://selfoss.a
 ## Support
 
 * [Issue tracker](https://github.com/fossar/selfoss/issues) for reporting problems and requesting new features
-* [Forum](https://selfoss.aditu.de/forum/) for general questions about usage
+* [Forum](https://forum.selfoss.aditu.de/) for general questions about usage
 * [Chat on Gitter](https://gitter.im/fossar/selfoss) (or [`#selfoss:matrix.org` mirror](https://matrix.to/#/#selfoss:matrix.org)) for discussing selfoss development or just about anything
 
 

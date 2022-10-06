@@ -12,4 +12,4 @@ Read carefully following instructions before you update your selfoss installatio
 5. If upgrading from 2.17 or earlier, delete the files <code>/public/all-v<var>*</var>.css</code> and <code>/public/all-v<var>*</var>.js</code>. Additionally, when using Lighttpd, please check [the wiki](https://github.com/fossar/selfoss/wiki/Lighttpd-configuration#upgrading-from-selfoss-217-or-lower).
 6. Clean your browser cache.
 
-For further questions or on any problem use our [support forum](forum).
+For further questions or on any problem use our [support forum](https://forum.selfoss.aditu.de/).

@@ -12,4 +12,4 @@ selfoss is a lightweight PHP-based application. If you have a web server with PH
 
 Next, you can [configure selfoss](@/docs/administration/configuring.md), for example, to require a password to access, or to better suit your preferences.
 
-For further questions or any problems, use our [support forum](forum). For a more detailed step-by-step example installation, please visit the [community wiki](https://github.com/fossar/selfoss/wiki/).
+For further questions or any problems, use our [support forum](https://forum.selfoss.aditu.de/). For a more detailed step-by-step example installation, please visit the [community wiki](https://github.com/fossar/selfoss/wiki/).
