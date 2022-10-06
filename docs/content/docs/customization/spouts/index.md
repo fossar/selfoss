@@ -17,7 +17,7 @@ You can easily add your own data sources. Spouts (aka plug-ins) fetch the conten
 
 If you want to get the newest entries from your own source (e.g. an IMAP e-mail Account, Log Files or any data from your own application), you can include a new spout in your selfoss stream by writing just one PHP class (saved in a single PHP file).
 
-Create a new PHP file under `src/spouts/your_spouts/your_spout.php` (choose a name for `your_spouts` and `your_spout`). The easiest way is to copy the [`src/spouts/rss/feed.php`](https://github.com/fossar/selfoss/blob/mastersrc/spouts/rss/feed.php) and to modify this file.
+Create a new PHP file under `src/spouts/your_spouts/your_spout.php` (choose a name for `your_spouts` and `your_spout`). The easiest way is to copy the [`src/spouts/rss/feed.php`](https://github.com/fossar/selfoss/blob/master/src/spouts/rss/feed.php) and to modify this file.
 
 ### Member Variables
 Set the `$name` and `$description` variable with the name and description of your spout. The `$params` contain the definition of the input fields which a user will have to fill to add a new source of your spout (e.g. `username` and `password` for accessing the source data).
