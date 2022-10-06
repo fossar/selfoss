@@ -1,6 +1,6 @@
 +++
 title = "Configuration options"
-weight = 100
+weight = 31
 +++
 
 selfoss offers the following configuration parameters. You can set the config parameters in the `config.ini` file.
