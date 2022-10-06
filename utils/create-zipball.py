@@ -135,6 +135,7 @@ def main():
             archive.directory('data/fulltextrss')
 
             archive.file('.htaccess')
+            archive.file('.nginx.conf')
             archive.file('README.md')
             archive.file('config-example.ini')
             archive.file('index.php')
