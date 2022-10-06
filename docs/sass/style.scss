@@ -118,6 +118,10 @@ nav ul {
     list-style: none;
 }
 
+nav ul ul {
+    margin: 0.1rem 0;
+}
+
 nav .active {
     font-weight: bold;
 }

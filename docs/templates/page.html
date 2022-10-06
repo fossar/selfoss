@@ -9,9 +9,16 @@
 {% set sec = get_section(path=sec_path) %}
 <h3>{{ sec.title }}</h3>
 <ul>
-{% for page in sec.pages %}
-  <li class="{% if current_path == page.path %}active{% endif %}">
-      <a href="{{page.permalink}}">{{page.title}}</a>
+{% for sec_page in sec.pages %}
+  <li class="{% if current_path == sec_page.path %}active{% endif %}">
+      <a href="{{sec_page.permalink}}">{{sec_page.title}}</a>
+{% if current_path != sec_page.path and current_path is starting_with(sec_page.path) %}
+      <ul>
+        <li>
+          <a href="{{current_path}}" class="active">{{page.title}}</a>
+        </li>
+      </ul>
+{% endif %}
   </li>
 {% endfor %}
 </ul>
