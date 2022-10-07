@@ -120,8 +120,13 @@ class Import {
 
         $xml->registerXPathNamespace('selfoss', 'https://selfoss.aditu.de/');
 
-        // tags are the words of the outline parent
+        // In Google Reader (and now Feedly), folders/tags/labels were just the text of the outline parent.
+        // Now, it is not valid for an <outline> element with the default “text” type to use the “title” attribute
+        // but both Google Reader and Feedly duplicate the “text” attribute as “title” so it seems to be common.
+        // Feedly seems to prefer “title” for both category names and feed names.
+        // We will do the same in case someone mistakenly exports the “title” and forgets about “text”.
         $title = (string) $xml->attributes()->title;
+        $title = $title ?: (string) $xml->attributes()->text;
         if ($title !== '' && $title !== '/') {
             $tags[] = $title;
             // for new tags, try to import tag color, otherwise use random color
