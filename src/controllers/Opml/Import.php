@@ -63,9 +63,6 @@ class Import {
             if ($opml['error'] === UPLOAD_ERR_NO_FILE) {
                 throw new \Exception('No file uploaded!');
             }
-            if (!in_array($opml['type'], ['application/xml', 'text/xml', 'text/x-opml+xml', 'text/x-opml'], true)) {
-                throw new \Exception('Unsupported file type: ' . $opml['type']);
-            }
 
             $this->logger->debug('start OPML import ');
 
@@ -73,7 +70,27 @@ class Import {
                 throw new \Exception('Missing SimpleXML PHP extension. Please install/enable it as described on https://www.php.net/manual/en/simplexml.installation.php');
             }
 
-            $subs = simplexml_load_file($opml['tmp_name']);
+            $subs = false;
+            try {
+                $previousUseErrors = libxml_use_internal_errors(true);
+
+                $subs = simplexml_load_file($opml['tmp_name']);
+
+                if ($subs === false) {
+                    // When parsing fails, check MIME type supplied by browser since it is possible user supplied file of a wrong type.
+                    if (!in_array($opml['type'], ['application/xml', 'text/xml', 'text/x-opml+xml', 'text/x-opml'], true)) {
+                        throw new \Exception('Unsupported file type: ' . $opml['type']);
+                    }
+
+                    // If type is correct, check the error reported by parser.
+                    $error = libxml_get_last_error();
+                    $errorDetail = $error !== false ? ': ' . $error->message : '';
+
+                    throw new \Exception('Unable to parse OPML file' . $errorDetail);
+                }
+            } finally {
+                libxml_use_internal_errors($previousUseErrors);
+            }
             $errors = $this->processGroup($subs->body);
 
             // cleanup tags
