@@ -44,6 +44,7 @@
 - Golem, Lightreading and Heise spouts now use Graby for extracting article contents instead of our own defunct extraction rules. ([#1245](https://github.com/fossar/selfoss/pull/1245))
 - The tag colour picker now pre-selects the current colour instead of a placeholder colour. ([#1269](https://github.com/fossar/selfoss/pull/1269))
 - OPML import now correctly handles valid files. ([#1366](https://github.com/fossar/selfoss/pull/1366))
+- OPML import will prefer `title` attribute over text for feed names. ([#1366](https://github.com/fossar/selfoss/pull/1366))
 
 ### API changes
 - `tags` attribute is now consistently array of strings, numbers are numbers and booleans are booleans. **This might break third-party clients that have not updated yet.** ([#948](https://github.com/fossar/selfoss/pull/948))

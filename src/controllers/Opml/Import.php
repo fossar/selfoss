@@ -174,9 +174,11 @@ class Import {
         $nsattrs = $xml->attributes('selfoss', true);
 
         // description
-        $title = (string) $attrs->text;
+        // Google Reader (and now Feedly) duplicate the feed title in “title” and “text” attributes.
+        // Prefer “title” as it is optional and it might contain more detailed label.
+        $title = (string) $attrs->title;
         if ($title === '') {
-            $title = (string) $attrs->title;
+            $title = (string) $attrs->text;
         }
 
         // RSS URL
