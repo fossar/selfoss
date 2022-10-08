@@ -14,6 +14,11 @@ import { Direction } from '../helpers/navigation';
 import { useSharers } from '../sharers';
 import Lightbox from 'yet-another-react-lightbox';
 
+// TODO: do the search highlights client-side
+function reHighlight(text) {
+    return text.split(/<span class="found">(.+?)<\/span>/).map((n, i) => i % 2 == 0 ? n : <span className="found">{n}</span>);
+}
+
 function setupLightbox({
     element,
     setSlides,
@@ -461,7 +466,7 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
                 to={sourceLink}
                 onClick={preventDefaultOnSmartphone}
             >
-                {sourcetitle}
+                {reHighlight(sourcetitle)}
             </Link>
 
             <span className="entry-separator">•</span>
