@@ -62,7 +62,8 @@ class FeedReader {
             // save fetched items
             'items' => $this->simplepie->get_items(),
             'htmlUrl' => htmlspecialchars_decode((string) $this->simplepie->get_link(), ENT_COMPAT), // SimplePie sanitizes URLs
-            'title' => $this->simplepie->get_title(),
+            // Atom feeds can contain HTML in titles, strip tags and convert to text.
+            'title' => htmlspecialchars_decode(strip_tags($this->simplepie->get_title())),
         ];
     }
 
