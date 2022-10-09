@@ -150,9 +150,10 @@ class ContentLoader {
             $sourceIconUrl = null;
             $itemsSeen = [];
             foreach ($items as $item) {
+                $titlePlainText = $item->getTitle()->getPlainText();
                 // item already in database?
                 if (isset($itemsFound[$item->getId()])) {
-                    $this->logger->debug('item "' . $item->getTitle() . '" already in database.');
+                    $this->logger->debug('item "' . $titlePlainText . '" already in database.');
                     $itemsSeen[] = $itemsFound[$item->getId()];
                     continue;
                 }
@@ -163,7 +164,7 @@ class ContentLoader {
                     $itemDate = new \DateTimeImmutable();
                 }
                 if ($itemDate < $minDate) {
-                    $this->logger->debug('item "' . $item->getTitle() . '" (' . $itemDate->format(\DateTime::ATOM) . ') older than ' . $this->configuration->itemsLifetime . ' days');
+                    $this->logger->debug('item "' . $titlePlainText . '" (' . $itemDate->format(\DateTime::ATOM) . ') older than ' . $this->configuration->itemsLifetime . ' days');
                     continue;
                 }
 
@@ -174,7 +175,7 @@ class ContentLoader {
                 }
 
                 // insert new item
-                $this->logger->debug('start insertion of new item "' . $item->getTitle() . '"');
+                $this->logger->debug('start insertion of new item "' . $titlePlainText . '"');
 
                 try {
                     // fetch content
@@ -184,14 +185,14 @@ class ContentLoader {
                     $content = $this->sanitizeContent($content);
                 } catch (\Throwable $e) {
                     $content = 'Error: Content not fetched. Reason: ' . $e->getMessage();
-                    $this->logger->error('Can not fetch "' . $item->getTitle() . '"', ['exception' => $e]);
+                    $this->logger->error('Can not fetch "' . $titlePlainText . '"', ['exception' => $e]);
                 }
 
                 // sanitize title
-                $title = trim($this->sanitizeField($item->getTitle()));
+                $title = HtmlString::fromRaw(trim($this->sanitizeField($item->getTitle())->getRaw()));
 
                 // Check sanitized title against filter
-                if ($this->filter($source, $title, $content) === false) {
+                if ($this->filter($source, $title->getRaw(), $content->getRaw()) === false) {
                     continue;
                 }
 
@@ -201,7 +202,7 @@ class ContentLoader {
                     'title' => $title,
                     'content' => $content,
                     'source' => $source['id'],
-                    'datetime' => $itemDate->format('Y-m-d H:i:s'),
+                    'datetime' => $itemDate,
                     'uid' => $item->getId(),
                     'link' => htmLawed($item->getLink(), ['deny_attribute' => '*', 'elements' => '-*']),
                     'author' => $item->getAuthor(),
@@ -313,13 +314,13 @@ class ContentLoader {
     /**
      * Sanitize content for preventing XSS attacks.
      *
-     * @param string $content content of the given feed
+     * @param HtmlString $content content of the given feed
      *
-     * @return mixed|string sanitized content
+     * @return HtmlString sanitized content
      */
-    protected function sanitizeContent(string $content) {
-        return htmLawed(
-            $content,
+    protected function sanitizeContent(HtmlString $content): HtmlString {
+        return HtmlString::fromRaw(htmLawed(
+            $content->getRaw(),
             [
                 'safe' => 1,
                 'deny_attribute' => '* -alt -title -src -href -target',
@@ -329,24 +330,24 @@ class ContentLoader {
                 'elements' => 'div,p,ul,li,a,img,dl,dt,dd,h1,h2,h3,h4,h5,h6,ol,br,table,tr,td,blockquote,pre,ins,del,th,thead,tbody,b,i,strong,em,tt,sub,sup,s,strike,code',
             ],
             'img=width, height'
-        );
+        ));
     }
 
     /**
      * Sanitize a simple field
      *
-     * @param string $value content of the given field
+     * @param HtmlString $value content of the given field
      *
-     * @return mixed|string sanitized content
+     * @return HtmlString sanitized content
      */
-    protected function sanitizeField(string $value) {
-        return htmLawed(
-            $value,
+    protected function sanitizeField(HtmlString $value): HtmlString {
+        return HtmlString::fromRaw(htmLawed(
+            $value->getRaw(),
             [
                 'deny_attribute' => '* -href -title -target',
                 'elements' => 'a,br,ins,del,b,i,strong,em,tt,sub,sup,s,code',
             ]
-        );
+        ));
     }
 
     /**

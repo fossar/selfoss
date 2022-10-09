@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace spouts;
 
 use DateTimeInterface;
+use helpers\HtmlString;
 
 /**
  * Value object representing a source item (e.g. an article).
@@ -15,10 +16,10 @@ class Item {
     /** @var string an unique id for this item */
     private $id;
 
-    /** @var string title */
+    /** @var HtmlString title */
     private $title;
 
-    /** @var string content */
+    /** @var HtmlString content */
     private $content;
 
     /** @var ?string thumbnail */
@@ -44,8 +45,8 @@ class Item {
      */
     public function __construct(
         string $id,
-        string $title,
-        string $content,
+        HtmlString $title,
+        HtmlString $content,
         ?string $thumbnail,
         ?string $icon,
         string $link,
@@ -89,14 +90,14 @@ class Item {
      * If the spout allows HTML in the title, HTML special chars are expected to be decoded by the spout
      * (for instance when the spout feed is XML).
      */
-    public function getTitle(): string {
+    public function getTitle(): HtmlString {
         return $this->title;
     }
 
     /**
      * @return static
      */
-    public function withTitle(string $title): self {
+    public function withTitle(HtmlString $title): self {
         $modified = clone $this;
         $modified->title = $title;
 
@@ -109,14 +110,14 @@ class Item {
      * HTML special chars are expected to be decoded by the spout
      * (for instance when the spout feed is XML).
      */
-    public function getContent(): string {
+    public function getContent(): HtmlString {
         return $this->content;
     }
 
     /**
      * @return static
      */
-    public function withContent(string $content): self {
+    public function withContent(HtmlString $content): self {
         $modified = clone $this;
         $modified->content = $content;
 

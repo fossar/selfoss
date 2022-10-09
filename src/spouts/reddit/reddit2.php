@@ -8,6 +8,7 @@ use GuzzleHttp;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Uri;
 use GuzzleHttp\Psr7\UriResolver;
+use helpers\HtmlString;
 use helpers\Image;
 use helpers\WebClient;
 use Psr\Http\Message\ResponseInterface;
@@ -126,7 +127,7 @@ class reddit2 extends \spouts\spout {
             if (strlen($id) > 255) {
                 $id = md5($id);
             }
-            $title = $item['data']['title'];
+            $title = HtmlString::fromPlainText($item['data']['title']);
             $content = $this->getContent($url, $item);
             $thumbnail = $this->getThumbnail($item);
             $icon = $this->findSiteIcon($url);
@@ -149,31 +150,34 @@ class reddit2 extends \spouts\spout {
         }
     }
 
-    private function getContent(string $url, array $item): string {
+    private function getContent(string $url, array $item): HtmlString {
         $data = $item['data'];
+        // Contains escaped HTML or null.
         $text = $data['selftext_html'];
         if (!empty($text)) {
-            return htmlspecialchars_decode($text);
+            return HtmlString::fromRaw(htmlspecialchars_decode($text));
         }
 
         if (isset($data['preview']) && isset($data['preview']['images'])) {
             $text = '';
             foreach ($data['preview']['images'] as $image) {
                 if (isset($image['source']) && isset($image['source']['url'])) {
+                    // url is already HTML-escaped.
                     $text .= '<img src="' . $image['source']['url'] . '">';
                 }
             }
 
             if ($text !== '') {
-                return $text;
+                return HtmlString::fromRaw($text);
             }
         }
 
         if (preg_match('/\.(?:gif|jpg|png|svg)$/i', (new Uri($url))->getPath())) {
-            return '<img src="' . $url . '" />';
+            return HtmlString::fromRaw('<img src="' . htmlspecialchars($url, ENT_QUOTES) . '" />');
         }
 
-        return $data['url'];
+        // Already HTML escaped.
+        return HtmlString::fromRaw($data['url']);
     }
 
     private function findSiteIcon(string $url): ?string {

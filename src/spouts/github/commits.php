@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace spouts\github;
 
+use helpers\HtmlString;
 use helpers\WebClient;
 use spouts\Item;
 use spouts\Parameter;
@@ -107,8 +108,8 @@ class commits extends \spouts\spout {
             $message = $item['commit']['message'];
 
             $id = $item['sha'];
-            $title = htmlspecialchars(self::cutTitle($message));
-            $content = nl2br(htmlspecialchars($message), false);
+            $title = HtmlString::fromPlainText(self::cutTitle($message));
+            $content = HtmlString::fromRaw(nl2br(htmlspecialchars($message), false));
             $thumbnail = null;
             $icon = null;
             $link = $item['html_url'];

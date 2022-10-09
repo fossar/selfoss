@@ -951,12 +951,12 @@
             "example": "2013-04-07T13:43:00+01:00"
           },
           "title": {
-            "description": "the title of the article",
+            "description": "The title of the article, can contain HTML tags",
             "type": "string",
             "example": "FTTH: Google Fiber für eine neue Großstadt"
           },
           "content": {
-            "description": "the full content of the article",
+            "description": "The full content of the article as a HTML fragment.",
             "type": "string",
             "example": "\n<p>Das 1-GBit/s-Angebot Google Fiber kommt nach Austin, die Hauptstadt des US-Bundesstaates Texas..."
           },

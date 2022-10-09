@@ -117,7 +117,7 @@ class ImageUtils {
         if (stripos($html, '<img') !== false) {
             $imgsrc_regex = '#<\s*img [^\>]*src\s*=\s*(["\'])(.*?)\1#im';
             if (preg_match($imgsrc_regex, $html, $matches)) {
-                return $matches[2];
+                return htmlspecialchars_decode($matches[2]);
             } else {
                 return null;
             }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace spouts\rss;
 
+use helpers\HtmlString;
 use SimplePie;
 use spouts\Item;
 
@@ -31,21 +32,22 @@ class enclosures extends feed {
         }
     }
 
-    private function getContentWithEnclosures(string $content, SimplePie\Item $item): string {
+    private function getContentWithEnclosures(HtmlString $content, SimplePie\Item $item): HtmlString {
         $enclosures = $item->get_enclosures();
         if ($enclosures === null) {
             return $content;
         }
 
-        $newContent = $content;
+        $newContent = $content->getRaw();
 
         foreach ($enclosures as $enclosure) {
             if ($enclosure->get_medium() === 'image') {
-                $title = htmlspecialchars(strip_tags((string) $enclosure->get_title()));
-                $newContent .= '<img src="' . $enclosure->get_link() . '" alt="' . $title . '" title="' . $title . '" />';
+                $title = htmlspecialchars(strip_tags((string) $enclosure->get_title()), ENT_QUOTES);
+                $url = htmlspecialchars_decode($enclosure->get_link(), ENT_COMPAT); // SimplePie sanitizes URLs
+                $newContent .= '<img src="' . htmlspecialchars($url, ENT_QUOTES) . '" alt="' . $title . '" title="' . $title . '" />';
             }
         }
 
-        return $newContent;
+        return HtmlString::fromRaw($newContent);
     }
 }

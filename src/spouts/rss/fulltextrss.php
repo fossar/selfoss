@@ -7,6 +7,7 @@ namespace spouts\rss;
 use Graby\Graby;
 use helpers\Configuration;
 use helpers\FeedReader;
+use helpers\HtmlString;
 use helpers\Image;
 use helpers\WebClient;
 use Http\Adapter\Guzzle7\Client as GuzzleAdapter;
@@ -77,7 +78,7 @@ class fulltextrss extends feed {
     /**
      * @param Item<SimplePie\Item> $item
      */
-    public function getFullContent(string $url, Item $item): string {
+    public function getFullContent(string $url, Item $item): HtmlString {
         if ($this->graby === null) {
             $this->graby = new Graby([
                 'extractor' => [
@@ -97,10 +98,10 @@ class fulltextrss extends feed {
         if ($response['status'] !== 200) {
             $this->logger->error('Failed loading page');
 
-            return '<p><strong>Failed to get web page</strong></p>' . $item->getContent();
+            return HtmlString::fromRaw('<p><strong>Failed to get web page</strong></p>' . $item->getContent()->getRaw());
         }
 
-        $content = $response['html'];
+        $content = HtmlString::fromRaw($response['html']);
 
         return $content;
     }

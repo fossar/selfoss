@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace spouts\facebook;
 
 use GuzzleHttp\Psr7\Uri;
+use helpers\HtmlString;
 use helpers\WebClient;
 use spouts\Item;
 use spouts\Parameter;
@@ -107,7 +108,7 @@ class page extends \spouts\spout {
     public function getItems(): iterable {
         foreach ($this->items as $item) {
             $id = $item['id'];
-            $title = mb_strlen($item['message']) > 80 ? mb_substr($item['message'], 0, 100) . '…' : $item['message'];
+            $title = HtmlString::fromPlainText((mb_strlen($item['message']) > 80 ? mb_substr($item['message'], 0, 100) . '…' : $item['message']));
             $content = $this->getPostContent($item);
             $thumbnail = null;
             $icon = null;
@@ -131,18 +132,18 @@ class page extends \spouts\spout {
         }
     }
 
-    private function getPostContent(array $item): string {
-        $message = $item['message'];
+    private function getPostContent(array $item): HtmlString {
+        $message = htmlspecialchars($item['message']);
 
         if (isset($item['attachments']) && count($item['attachments']['data']) > 0) {
             foreach ($item['attachments']['data'] as $media) {
                 if ($media['type'] === 'photo') {
                     $message .= '<figure>' . PHP_EOL;
-                    $message .= '<a href="' . $media['target']['url'] . '"><img src="' . $media['media']['image']['src'] . '" alt=""></a>' . PHP_EOL;
+                    $message .= '<a href="' . htmlspecialchars($media['target']['url'], ENT_QUOTES) . '"><img src="' . htmlspecialchars($media['media']['image']['src'], ENT_QUOTES) . '" alt=""></a>' . PHP_EOL;
 
                     // Some photos will have the same description, no need to display it twice
                     if ($media['description'] !== $item['message']) {
-                        $message .= '<figcaption>' . $media['description'] . '</figcaption>' . PHP_EOL;
+                        $message .= '<figcaption>' . htmlspecialchars($media['description']) . '</figcaption>' . PHP_EOL;
                     }
 
                     $message .= '</figure>' . PHP_EOL;
@@ -150,6 +151,6 @@ class page extends \spouts\spout {
             }
         }
 
-        return $message;
+        return HtmlString::fromRaw($message);
     }
 }

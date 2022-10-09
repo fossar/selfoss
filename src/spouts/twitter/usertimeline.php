@@ -7,6 +7,7 @@ namespace spouts\twitter;
 use GuzzleHttp;
 use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Subscriber\Oauth\Oauth1;
+use helpers\HtmlString;
 use helpers\WebClient;
 use spouts\Item;
 use spouts\Parameter;
@@ -236,20 +237,21 @@ class usertimeline extends \spouts\spout {
         }
     }
 
-    private function getTweetTitle(stdClass $item): string {
+    private function getTweetTitle(stdClass $item): HtmlString {
         $entities = self::formatEntities($item->entities);
         $tweet = self::replaceEntities($item->full_text, $entities);
 
         return $tweet;
     }
 
-    private function getContent(stdClass $item): string {
+    private function getContent(stdClass $item): HtmlString {
         $result = '';
 
         if (isset($item->extended_entities) && isset($item->extended_entities->media) && count($item->extended_entities->media) > 0) {
             foreach ($item->extended_entities->media as $media) {
                 if ($media->type === 'photo') {
-                    $result .= '<p><a href="' . $media->media_url_https . ':large"><img src="' . $media->media_url_https . ':small" alt=""></a></p>' . PHP_EOL;
+                    $urlEscaped = htmlspecialchars($media->media_url_https, ENT_QUOTES);
+                    $result .= '<p><a href="' . $urlEscaped . ':large"><img src="' . $urlEscaped . ':small" alt=""></a></p>' . PHP_EOL;
                 }
             }
         }
@@ -258,11 +260,11 @@ class usertimeline extends \spouts\spout {
             $quoted = $item->quoted_status;
             $entities = self::formatEntities($quoted->entities);
 
-            $result .= '<a href="https://twitter.com/' . $quoted->user->screen_name . '">@' . $quoted->user->screen_name . '</a>:';
-            $result .= '<blockquote>' . self::replaceEntities($quoted->full_text, $entities) . '</blockquote>';
+            $result .= '<a href="https://twitter.com/' . htmlspecialchars($quoted->user->screen_name, ENT_QUOTES) . '">@' . htmlspecialchars($quoted->user->screen_name) . '</a>:';
+            $result .= '<blockquote>' . self::replaceEntities($quoted->full_text, $entities)->getRaw() . '</blockquote>';
         }
 
-        return $result;
+        return HtmlString::fromRaw($result);
     }
 
     private function getTweetIcon(stdClass $item): string {
@@ -288,9 +290,9 @@ class usertimeline extends \spouts\spout {
      * @param string $text unformated text
      * @param array $entities ordered entities
      *
-     * @return string formated text
+     * @return HtmlString formated text
      */
-    public static function replaceEntities(string $text, array $entities): string {
+    public static function replaceEntities(string $text, array $entities): HtmlString {
         /** @var string built text */
         $result = '';
         /** @var int number of bytes in text */
@@ -315,17 +317,17 @@ class usertimeline extends \spouts\spout {
             if ($skipUntilCp <= $cpi) {
                 if (isset($entities[$cpi])) {
                     $entity = $entities[$cpi];
-                    $appended = '<a href="' . $entity['url'] . '" target="_blank" rel="noreferrer">' . $entity['text'] . '</a>';
+                    $appended = '<a href="' . htmlspecialchars($entity['url'], ENT_QUOTES) . '" target="_blank" rel="noreferrer">' . htmlspecialchars($entity['text']) . '</a>';
                     $skipUntilCp = $entity['end'];
                 } else {
-                    $appended = $c;
+                    $appended = htmlspecialchars($c);
                 }
 
                 $result .= $appended;
             }
         }
 
-        return $result;
+        return HtmlString::fromRaw($result);
     }
 
     /**

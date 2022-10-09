@@ -9,6 +9,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
+use helpers\HtmlString;
 use helpers\WebClient;
 use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
@@ -18,7 +19,7 @@ final class YouTubeTest extends TestCase {
     /**
      * @dataProvider dataProvider
      */
-    public function testBasic(string $url, string $feedTitle, string $firstItemTitle): void {
+    public function testBasic(string $url, string $feedTitle, HtmlString $firstItemTitle): void {
         $cachedFeedPath = __DIR__ . '/resources/YouTube/' . str_replace([':', '/', '?', '='], '_', $url) . '.xml';
 
         $mock = new MockHandler([
@@ -61,34 +62,34 @@ final class YouTubeTest extends TestCase {
     }
 
     /**
-     * @return array<array{url: string, feedTitle: string, firstItemTitle: string}>
+     * @return array<array{url: string, feedTitle: string, firstItemTitle: HtmlString}>
      */
     public function dataProvider(): array {
         return [
             [
                 'url' => 'https://www.youtube.com/user/ZoggFromBetelgeuse',
                 'feedTitle' => 'Zogg from Betelgeuse',
-                'firstItemTitle' => 'Earthlings 101 - Channel Ad',
+                'firstItemTitle' => HtmlString::fromPlainText('Earthlings 101 - Channel Ad'),
             ],
             [
                 'url' => 'https://www.youtube.com/channel/UCKY00CSQo1MoC27bdGd-w_g',
                 'feedTitle' => 'Zogg from Betelgeuse',
-                'firstItemTitle' => 'Earthlings 101 - Channel Ad',
+                'firstItemTitle' => HtmlString::fromPlainText('Earthlings 101 - Channel Ad'),
             ],
             [
                 'url' => 'https://www.youtube.com/ZoggFromBetelgeuse',
                 'feedTitle' => 'Zogg from Betelgeuse',
-                'firstItemTitle' => 'Earthlings 101 - Channel Ad',
+                'firstItemTitle' => HtmlString::fromPlainText('Earthlings 101 - Channel Ad'),
             ],
             [
                 'url' => 'ZoggFromBetelgeuse',
                 'feedTitle' => 'Zogg from Betelgeuse',
-                'firstItemTitle' => 'Earthlings 101 - Channel Ad',
+                'firstItemTitle' => HtmlString::fromPlainText('Earthlings 101 - Channel Ad'),
             ],
             [
                 'url' => 'https://www.youtube.com/playlist?list=PLKhDkilF5o6_pFucn5JHd6xy7muHLK6pS',
                 'feedTitle' => 'BeeKeeping',
-                'firstItemTitle' => 'Year of BeeKeeping Episode 15, Finding Queen',
+                'firstItemTitle' => HtmlString::fromPlainText('Year of BeeKeeping Episode 15, Finding Queen'),
             ],
         ];
     }

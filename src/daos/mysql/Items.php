@@ -9,6 +9,7 @@ use daos\ItemOptions;
 use DateTime;
 use DateTimeImmutable;
 use helpers\Configuration;
+use helpers\HtmlString;
 use Monolog\Logger;
 
 /**
@@ -103,6 +104,8 @@ class Items implements \daos\ItemsInterface {
 
     /**
      * add new item
+     *
+     * @param array{datetime: \DateTimeInterface, title: HtmlString, content: HtmlString, thumbnail: ?string, icon: ?string, source: int, uid: string, link: string, author: ?string} $values
      */
     public function add(array $values): void {
         $this->database->exec('INSERT INTO ' . $this->configuration->dbPrefix . 'items (
@@ -131,9 +134,9 @@ class Items implements \daos\ItemsInterface {
                     :author
                   )',
                  [
-                    ':datetime' => $values['datetime'],
-                    ':title' => $values['title'],
-                    ':content' => $values['content'],
+                    ':datetime' => $values['datetime']->format('Y-m-d H:i:s'),
+                    ':title' => $values['title']->getRaw(),
+                    ':content' => $values['content']->getRaw(),
                     ':thumbnail' => $values['thumbnail'],
                     ':icon' => $values['icon'],
                     ':unread' => 1,

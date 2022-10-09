@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace spouts\rss;
 
 use helpers\FeedReader;
+use helpers\HtmlString;
 use helpers\Image;
 use Monolog\Logger;
 use SimplePie;
@@ -94,8 +95,10 @@ class feed extends \spouts\spout {
             if (strlen($id) > 255) {
                 $id = md5($id);
             }
-            $title = htmlspecialchars_decode((string) $item->get_title());
-            $content = (string) $item->get_content();
+            $title = (string) $item->get_title();
+            // Atom feeds can contain HTML in titles, strip tags and convert to text.
+            $title = HtmlString::fromPlainText(htmlspecialchars_decode(strip_tags($title)));
+            $content = HtmlString::fromRaw((string) $item->get_content());
             $thumbnail = null;
             $icon = null;
             $link = htmlspecialchars_decode((string) $item->get_link(), ENT_COMPAT); // SimplePie sanitizes URLs
