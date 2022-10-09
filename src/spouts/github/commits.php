@@ -109,7 +109,7 @@ class commits extends \spouts\spout {
             $link = $item['html_url'];
             // Appears to be ISO 8601.
             $date = new \DateTimeImmutable($item['commit']['author']['date']);
-            $author = null;
+            $author = $item['commit']['author']['name'];
 
             yield new Item(
                 $id,
