@@ -71,9 +71,8 @@ class Import {
             }
 
             $subs = false;
+            $previousUseErrors = libxml_use_internal_errors(true);
             try {
-                $previousUseErrors = libxml_use_internal_errors(true);
-
                 $subs = simplexml_load_file($opml['tmp_name']);
 
                 if ($subs === false) {
