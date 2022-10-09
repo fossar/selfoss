@@ -63,10 +63,7 @@ function handleSave({
     setSourceActionLoading(true);
 
     const newSource = source;
-    const { id, tags, params, ...restSource } = source;
-
-    // Build params for the API request.
-    let values = Object.entries({ ...restSource, ...params });
+    const { id, tags, filter, params, ...restSource } = source;
 
     // Make tags into a list.
     const tagsList = tags
@@ -76,7 +73,12 @@ function handleSave({
             .filter((tag) => tag !== '')
         : [];
 
-    tagsList.forEach((tag) => values.push(['tags[]', tag]));
+    const values = {
+        ...restSource,
+        ...params,
+        tags: tagsList,
+        filter: filter || null,
+    };
 
     sourceRequests
         .update(id, values)
