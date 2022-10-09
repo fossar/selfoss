@@ -203,9 +203,6 @@ class ContentLoader {
                     continue;
                 }
 
-                // sanitize author
-                $author = $this->sanitizeField($item->getAuthor() ?: '');
-
                 $this->logger->debug('item content sanitized');
 
                 $newItem = [
@@ -215,7 +212,7 @@ class ContentLoader {
                     'datetime' => $itemDate->format('Y-m-d H:i:s'),
                     'uid' => $item->getId(),
                     'link' => htmLawed($item->getLink(), ['deny_attribute' => '*', 'elements' => '-*']),
-                    'author' => $author,
+                    'author' => $item->getAuthor() ?: '',
                     'thumbnail' => null,
                     'icon' => null,
                 ];

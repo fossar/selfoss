@@ -127,11 +127,14 @@ class feed extends \spouts\spout {
     private function getAuthorString(SimplePie\Item $item) {
         $author = $item->get_author();
         if (isset($author)) {
+            // Both are sanitized using SimplePie::CONSTRUCT_TEXT
+            // so they are plain text strings with escaped HTML special characters.
             $name = $author->get_name();
-            if (isset($name)) {
+            $email = $author->get_email();
+            if ($name !== null) {
                 return htmlspecialchars_decode($name);
-            } else {
-                return htmlspecialchars_decode((string) $author->get_email());
+            } elseif ($email !== null) {
+                return htmlspecialchars_decode($author->get_email());
             }
         }
 
