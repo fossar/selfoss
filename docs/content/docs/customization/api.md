@@ -11,7 +11,7 @@ Since selfoss 2.19, the API follows [semantic versioning](https://semver.org/) d
 
 | selfoss | API |
 |---|---|
-| [2.19] | [5.0.0] |
+| [2.19] | [6.0.0] |
 
 [2.19]: https://github.com/fossar/selfoss/releases/tag/2.19
-[5.0.0]: https://app.swaggerhub.com/apis-docs/jtojnar/selfoss/5.0.0
+[6.0.0]: https://app.swaggerhub.com/apis-docs/jtojnar/selfoss/6.0.0

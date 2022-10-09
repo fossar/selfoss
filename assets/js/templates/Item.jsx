@@ -472,7 +472,7 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
             <span className="entry-separator">•</span>
 
             {/* author */}
-            {author.trim() !== '' ?
+            {author !== null ?
                 <React.Fragment>
                     <span className="entry-author">{author}</span>
                     <span className="entry-separator">•</span>

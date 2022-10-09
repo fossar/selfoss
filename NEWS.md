@@ -59,6 +59,7 @@
   - `GET /login` endpoint, use `POST /login`. ([#1360](https://github.com/fossar/selfoss/pull/1360))
   - `GET /logout` was deprecated in favour of newly introduced (*API 4.1.0*) `DELETE /api/session/current`. ([#1360](https://github.com/fossar/selfoss/pull/1360))
   - `POST /source/delete/:id` in favour of `DELETE /source/:id`. ([#1360](https://github.com/fossar/selfoss/pull/1360))
+- *API 6.0.0*: Makes the `author` field `null` when an item author is not known ([#1367](https://github.com/fossar/selfoss/pull/1367))
 
 ### Customization changes
 - `selfoss.shares.register` was removed. Instead you should set `selfoss.customSharers` to an object of *sharer* objects. The `action` callback is now expected to open a window on its own, instead of returning a URL. A label and a HTML code of an icon (you can use a `<img>` tag, inline `<svg>`, emoji, etc.) are now expected.

@@ -212,7 +212,7 @@ class ContentLoader {
                     'datetime' => $itemDate->format('Y-m-d H:i:s'),
                     'uid' => $item->getId(),
                     'link' => htmLawed($item->getLink(), ['deny_attribute' => '*', 'elements' => '-*']),
-                    'author' => $item->getAuthor() ?: '',
+                    'author' => $item->getAuthor(),
                     'thumbnail' => null,
                     'icon' => null,
                 ];

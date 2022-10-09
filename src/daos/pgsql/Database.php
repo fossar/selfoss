@@ -265,6 +265,14 @@ class Database implements \daos\DatabaseInterface {
             $this->exec('INSERT INTO version (version) VALUES (13)');
             $this->commit();
         }
+        if ($version < 14) {
+            $this->logger->debug('Upgrading database schema to version 14');
+
+            $this->beginTransaction();
+            $this->exec("UPDATE items SET author = NULL WHERE author = ''");
+            $this->exec('INSERT INTO version (version) VALUES (14)');
+            $this->commit();
+        }
     }
 
     /**
