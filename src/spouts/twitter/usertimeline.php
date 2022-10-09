@@ -195,16 +195,22 @@ class usertimeline extends \spouts\spout {
      */
     public function getItems() {
         foreach ($this->items as $item) {
+            $author = $item->user->name;
+            $targetItem = $item;
+            if (isset($item->retweeted_status)) {
+                $targetItem = $item->retweeted_status;
+                $author .= ' (RT ' . $targetItem->user->name . ')';
+            }
+
             $id = $item->id_str;
-            $title = $this->getTweetTitle($item);
-            $content = $this->getContent($item);
-            $thumbnail = $this->getThumbnail($item);
-            $icon = $this->getTweetIcon($item);
+            $title = $this->getTweetTitle($targetItem);
+            $content = $this->getContent($targetItem);
+            $thumbnail = $this->getThumbnail($targetItem);
+            $icon = $this->getTweetIcon($targetItem);
             $link = 'https://twitter.com/' . $item->user->screen_name . '/status/' . $item->id_str;
             // Format of `created_at` field not specified, looks US-centric.
             // https://developer.twitter.com/en/docs/twitter-api/v1/data-dictionary/object-model/tweet
             $date = new \DateTimeImmutable($item->created_at);
-            $author = null;
 
             yield new Item(
                 $id,
@@ -223,14 +229,8 @@ class usertimeline extends \spouts\spout {
      * @return string
      */
     private function getTweetTitle(stdClass $item) {
-        $rt = '';
-        if (isset($item->retweeted_status)) {
-            $rt = ' (RT ' . $item->user->name . ')';
-            $item = $item->retweeted_status;
-        }
-
         $entities = self::formatEntities($item->entities);
-        $tweet = $item->user->name . $rt . ':<br>' . self::replaceEntities($item->full_text, $entities);
+        $tweet = self::replaceEntities($item->full_text, $entities);
 
         return $tweet;
     }
@@ -240,10 +240,6 @@ class usertimeline extends \spouts\spout {
      */
     private function getContent(stdClass $item) {
         $result = '';
-
-        if (isset($item->retweeted_status)) {
-            $item = $item->retweeted_status;
-        }
 
         if (isset($item->extended_entities) && isset($item->extended_entities->media) && count($item->extended_entities->media) > 0) {
             foreach ($item->extended_entities->media as $media) {
@@ -268,10 +264,6 @@ class usertimeline extends \spouts\spout {
      * @return string
      */
     private function getTweetIcon(stdClass $item) {
-        if (isset($item->retweeted_status)) {
-            $item = $item->retweeted_status;
-        }
-
         return $item->user->profile_image_url_https;
     }
 
@@ -279,9 +271,6 @@ class usertimeline extends \spouts\spout {
      * @return ?string
      */
     private function getThumbnail(stdClass $item) {
-        if (isset($item->retweeted_status)) {
-            $item = $item->retweeted_status;
-        }
         if (isset($item->entities->media) && $item->entities->media[0]->type === 'photo') {
             return $item->entities->media[0]->media_url_https;
         }

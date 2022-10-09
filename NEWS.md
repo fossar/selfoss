@@ -24,6 +24,7 @@
 - YouTube spout now supports all YouTube URLs that provide feeds. ([#1273](https://github.com/fossar/selfoss/issues/1273))
 - Add `open_in_background_tab` option to try to make <kbd>v</kbd> shortcut open articles in a background tab ([does not work in Chromium-based browsers](https://crbug.com/431335)). ([#1354](https://github.com/fossar/selfoss/pull/1354))
 - GitHub sources now include author. ([#1367](https://github.com/fossar/selfoss/pull/1367))
+- Twitter sources now indicate author using the author field rather than including in the title. ([#1367](https://github.com/fossar/selfoss/pull/1367))
 - Translations into several new languages were added:
   - English (United Kingdom): `en-GB`
   - French (Canada): `fr-CA`
