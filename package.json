@@ -1,7 +1,7 @@
 {
   "name": "selfoss",
   "description": "selfoss",
-  "ver": "2.19",
+  "ver": "2.20-SNAPSHOT",
   "repository": {
     "type": "git",
     "url": "https://github.com/fossar/selfoss.git"
