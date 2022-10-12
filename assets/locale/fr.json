@@ -99,5 +99,17 @@
   "lang_error_check_log_file": "Une erreur est survenue. Veuillez consulter le fichier « {0} ».",
   "lang_offline_navigation_unavailable": "Modifier les étiquettes et les sources n'est pas possible hors ligne pour le moment.",
   "lang_error_offline_storage_not_available": "Le stockage hors ligne n’est pas disponible. Assurez-vous que votre navigateur Web {0}prend en charge l’API IndexedDB{1} et, si vous utilisez un navigateur basé sur Google Chrome, que vous n’exécutez pas selfoss en mode de navigation privée.",
-  "lang_error_edit_source": "Impossible d'enregistrer les modifications de la source :"
+  "lang_error_edit_source": "Impossible d'enregistrer les modifications de la source :",
+  "lang_source_browse": "Naviguer",
+  "lang_no_sources": "Aucune source configurées.",
+  "lang_source_warn_cancel_dirty": "Annuler les changements non sauvegardés ?",
+  "lang_source_deleting": "Suppression de la source…",
+  "lang_source_saving": "Sauvegarde des changements de la source…",
+  "lang_entries_loading": "Chargement des entrées…",
+  "lang_source_menu": "Plus d'actions",
+  "lang_tag_change_color_button_title": "Changer la couleur",
+  "lang_sources_loading": "Chargement des sources…",
+  "lang_source_go_to_settings": "Ouvrir dans les paramètres",
+  "lang_sources_leaving_unsaved_prompt": "Quitter les paramètres avec des changements sur la source non sauvegardés ?",
+  "lang_source_params_loading": "Chargement des paramètres…"
 }
