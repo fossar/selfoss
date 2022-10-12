@@ -111,5 +111,10 @@
   "lang_sources_loading": "Chargement des sources…",
   "lang_source_go_to_settings": "Ouvrir dans les paramètres",
   "lang_sources_leaving_unsaved_prompt": "Quitter les paramètres avec des changements sur la source non sauvegardés ?",
-  "lang_source_params_loading": "Chargement des paramètres…"
+  "lang_source_params_loading": "Chargement des paramètres…",
+  "lang_experimental": "Expérimentale",
+  "lang_article_reading_time": "{0} min de lecture",
+  "lang_login_in_progress": "Tentative de connexion…",
+  "lang_login_error_generic": "Connexion impossible : {errorMessage}",
+  "lang_error_unauthorized": "S'il vous plaît {link_begin}connectez-vous{link_end} pour continuer."
 }
