@@ -9,6 +9,8 @@ selfoss can be configured using a configuration file or environment variables. A
 
 This is the easiest way. Just create a `config.ini` file in the top-level selfoss directory and include any options you want to override.
 
+The file uses [PHP’s variant](https://www.php.net/manual/en/function.parse-ini-file.php#refsect1-function.parse-ini-file-examples) of the [INI format](https://en.wikipedia.org/wiki/INI_file): each option is set on a separate line consisting of an option name, followed by `=` and an option value. Lines starting with `;` or empty lines will be ignored. If an option value contains any special characters such as `?{}|&~!()^"`, e.g. for a database password, it will need to be quoted like `db_password="life0fD4ng3r!"`.
+
 For convenience, the release archive includes `config-example.ini` file containing the default configuration exported in INI format. To customize the settings, you can:
 
 1. Rename `config-example.ini` to `config.ini`.

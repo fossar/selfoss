@@ -125,7 +125,7 @@
 - Placeholders are now used for images before they are loaded to avoid content jumping around ([#1204](https://github.com/fossar/selfoss/pull/1204))
 - Search button is now always on the screen, avoiding the need to scroll to top to be able to use it. ([#1231](https://github.com/fossar/selfoss/issues/1231))
 - Button for opening articles, tags, sources and filters in the sidebar, as well as the source and tag links in articles are now real links, allowing to open them in a new tab by middle-clicking them. ([#1216](https://github.com/fossar/selfoss/issues/1216), [#695](https://github.com/fossar/selfoss/issues/695))
-- Configuration is no longer managed by F3 framework. ([#1261](https://github.com/fossar/selfoss/pull/1261))
+- The way `config.ini` is parsed has changed. If you use any of the following characters `?{}|&~!()^"`, e.g. for database password, you will need to quote the config value like `db_password="life0fD4ng3r!"`. This is a consequence of replacing F3 framework with [PHP’s built-in INI parser](https://www.php.net/manual/en/function.parse-ini-file.php). ([#1261](https://github.com/fossar/selfoss/pull/1261))
 - Removed `anonymizer` configuration option. ([#1358](https://github.com/fossar/selfoss/pull/1358))
 
 
