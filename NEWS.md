@@ -1,4 +1,10 @@
 # selfoss news
+## 2.20 – unreleased
+
+### Bug fixes
+- Configuration parser was changed to *raw* method, which relaxes the requirement to quote option values containing special characters in `config.ini`. ([#1371](https://github.com/fossar/selfoss/issues/1371))
+
+
 ## 2.19 – 2022-10-12
 **This version requires PHP 5.6 or newer. It is also the last version to support PHP 7.**
 

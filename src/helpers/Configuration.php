@@ -171,7 +171,7 @@ class Configuration {
     public function __construct($configPath = null, $environment = []) {
         // read config.ini, if it exists
         if ($configPath !== null && file_exists($configPath)) {
-            $config = parse_ini_file($configPath);
+            $config = parse_ini_file($configPath, false, INI_SCANNER_RAW);
             if ($config === false) {
                 throw new Exception('Error loading config.ini');
             }
