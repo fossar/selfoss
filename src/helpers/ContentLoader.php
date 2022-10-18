@@ -167,7 +167,7 @@ class ContentLoader {
                     $itemDate = new \DateTimeImmutable();
                 }
                 if ($itemDate < $minDate) {
-                    $this->logger->debug('item "' . $item->getTitle() . '" (' . $itemDate->format(\DateTimeInterface::ATOM) . ') older than ' . $this->configuration->itemsLifetime . ' days');
+                    $this->logger->debug('item "' . $item->getTitle() . '" (' . $itemDate->format(\DateTime::ATOM) . ') older than ' . $this->configuration->itemsLifetime . ' days');
                     continue;
                 }
 
