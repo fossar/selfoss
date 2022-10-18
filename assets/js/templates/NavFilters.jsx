@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link, useRouteMatch } from 'react-router-dom';
+import { Link, useMatch } from 'react-router-dom';
 import classNames from 'classnames';
 import { FilterType } from '../Filter';
 import { forceReload, makeEntriesLinkLocation, ENTRIES_ROUTE_PATTERN } from '../helpers/uri';
@@ -22,7 +22,7 @@ export default function NavFilters({
     const [expanded, setExpanded] = React.useState(true);
 
     // useParams does not seem to work.
-    const match = useRouteMatch(ENTRIES_ROUTE_PATTERN);
+    const match = useMatch(ENTRIES_ROUTE_PATTERN);
     const params = match !== null ? match.params : {};
 
     const toggleExpanded = React.useCallback(

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { useOnline } from 'rooks';
@@ -114,7 +115,7 @@ function reloadList({
             }
 
             if (error instanceof HttpError && error.response.status === 403) {
-                selfoss.history.push('/sign/in', {
+                selfoss.navigage('/sign/in', {
                     error: selfoss.app._('error_session_expired')
                 });
                 return;
@@ -177,7 +178,7 @@ function handleRefreshSource({ event, source, setLoadingState, setNavExpanded, r
     });
 }
 
-export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, selectedEntry, expandedEntries, setNavExpanded, navSourcesExpanded, reload }) {
+export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, selectedEntry, expandedEntries, setNavExpanded, navSourcesExpanded, reload, unreadItemsCount, setTitle }) {
     const allowedToUpdate = useAllowedToUpdate();
     const allowedToWrite = useAllowedToWrite();
     const configuration = React.useContext(ConfigurationContext);
@@ -189,6 +190,18 @@ export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, s
 
         return queryString.get('search') ?? '';
     }, [location.search]);
+
+    useEffect(() => {
+        if (unreadItemsCount > 0) {
+            setTitle(configuration.htmlTitle + ' (' + unreadItemsCount + ')');
+        } else {
+            setTitle(configuration.htmlTitle);
+        }
+
+        return () => {
+            setTitle(null);
+        };
+    }, [configuration.htmlTitle, setTitle, unreadItemsCount]);
 
     const params = useParams();
     const currentTag = params.category?.startsWith('tag-') ? params.category.replace(/^tag-/, '') : null;
@@ -417,6 +430,8 @@ EntriesPage.propTypes = {
     setNavExpanded: PropTypes.func.isRequired,
     navSourcesExpanded: PropTypes.bool.isRequired,
     reload: PropTypes.func.isRequired,
+    setTitle: PropTypes.func.isRequired,
+    unreadItemsCount: PropTypes.number.isRequired,
 };
 
 const initialState = {
@@ -658,13 +673,6 @@ export default class StateHolder extends React.Component {
         return params.category?.startsWith('source-') ? parseInt(params.category.replace(/^source-/, ''), 10) : null;
     }
 
-    getActiveFilter() {
-        if (!this.props.match) {
-            return null;
-        }
-        return this.props.match.params.filter;
-    }
-
     /**
      * Mark all visible items as read
      */
@@ -706,8 +714,8 @@ export default class StateHolder extends React.Component {
         // close opened entry and list
         this.setExpandedEntries({});
 
-        if (ids.length !== 0 && this.props.match.filter === FilterType.UNREAD) {
-            markedEntries = markedEntries.filter(({ id }) => ids.includes(id));
+        if (this.entriesPageMatch.filter === FilterType.UNREAD) {
+            markedEntries = [];
         }
 
         this.setLoadingState(LoadingState.LOADING);
@@ -732,8 +740,10 @@ export default class StateHolder extends React.Component {
                 selfoss.dbOffline.enqueueStatuses(statuses);
             }).catch((error) => {
                 if (error instanceof HttpError && error.response.status === 403) {
-                    selfoss.history.push('/sign/in', {
-                        error: selfoss.app._('error_session_expired')
+                    selfoss.navigate('/sign/in', {
+                        state: {
+                            error: selfoss.app._('error_session_expired'),
+                        },
                     });
                     return;
                 }
@@ -794,8 +804,10 @@ export default class StateHolder extends React.Component {
                 selfoss.dbOffline.enqueueStatus(id, 'unread', !markRead);
             }).catch(function(error) {
                 if (error instanceof HttpError && error.response.status === 403) {
-                    selfoss.history.push('/sign/in', {
-                        error: selfoss.app._('error_session_expired')
+                    selfoss.navigate('/sign/in', {
+                        state: {
+                            error: selfoss.app._('error_session_expired'),
+                        },
                     });
                     return;
                 }
@@ -844,8 +856,10 @@ export default class StateHolder extends React.Component {
                 selfoss.dbOffline.enqueueStatus(id, 'starred', markStarred);
             }).catch(function(error) {
                 if (error instanceof HttpError && error.response.status === 403) {
-                    selfoss.history.push('/sign/in', {
-                        error: selfoss.app._('error_session_expired')
+                    selfoss.navigate('/sign/in', {
+                        state: {
+                            error: selfoss.app._('error_session_expired'),
+                        },
                     });
                     return;
                 }
@@ -862,11 +876,14 @@ export default class StateHolder extends React.Component {
         /**
          * HACK: A counter that is increased every time reload action (r key) is triggered.
          */
-        selfoss.history.replace({
-            ...this.props.location,
-            ...makeEntriesLinkLocation(this.props.location, { id: null }),
-            state: forceReload(this.props.location),
-        });
+        selfoss.navigate(
+            {
+                ...this.props.location,
+                ...makeEntriesLinkLocation(this.props.location, { id: null }),
+                state: forceReload(this.props.location),
+            },
+            { replace: true }
+        );
     }
 
     /**
@@ -1018,6 +1035,8 @@ export default class StateHolder extends React.Component {
                 setNavExpanded={this.props.setNavExpanded}
                 navSourcesExpanded={this.props.navSourcesExpanded}
                 reload={this.reload}
+                setTitle={this.props.setTitle}
+                unreadItemsCount={this.props.unreadItemsCount}
             />
         );
     }
@@ -1025,8 +1044,9 @@ export default class StateHolder extends React.Component {
 
 StateHolder.propTypes = {
     configuration: PropTypes.object.isRequired,
-    location: PropTypes.object.isRequired,
     match: PropTypes.object.isRequired,
     setNavExpanded: PropTypes.func.isRequired,
     navSourcesExpanded: PropTypes.bool.isRequired,
+    setTitle: PropTypes.func.isRequired,
+    unreadItemsCount: PropTypes.number.isRequired,
 };

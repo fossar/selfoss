@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Link, useHistory, useLocation } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { usePreviousImmediate } from 'rooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
@@ -89,15 +89,15 @@ function preventDefaultOnSmartphone(event) {
 }
 
 // Handle closing fullscreen on mobile
-function closeFullScreen({ event, history, location, entryId }) {
+function closeFullScreen({ event, navigate, location, entryId }) {
     event.preventDefault();
     event.stopPropagation();
     selfoss.entriesPage.setEntryExpanded(entryId, false);
-    history.replace(makeEntriesLink(location, { id: null }));
+    navigate(makeEntriesLink(location, { id: null }), { replace: true });
 }
 
 // show/hide entry
-function handleClick({ event, history, location, expanded, id, target }) {
+function handleClick({ event, navigate, location, expanded, id, target }) {
     const expected = selfoss.isMobile() ? '.entry' : '.entry-title';
     if (target !== expected) {
         return;
@@ -109,10 +109,10 @@ function handleClick({ event, history, location, expanded, id, target }) {
     if (expanded) {
         selfoss.entriesPage.setSelectedEntry(id);
         selfoss.entriesPage.deactivateEntry(id);
-        history.replace(makeEntriesLink(location, { id: null }));
+        navigate(makeEntriesLink(location, { id: null }), { replace: true });
     } else {
         selfoss.entriesPage.activateEntry(id);
-        history.replace(makeEntriesLink(location, { id }));
+        navigate(makeEntriesLink(location, { id }), { replace: true });
     }
 }
 
@@ -243,7 +243,7 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
     const contentBlock = React.useRef(null);
 
     const location = useLocation();
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const relDate = React.useMemo(
         () => datetimeRelative(currentTime, item.datetime),
@@ -353,13 +353,13 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
     }, [configuration, expanded, item.id, item.unread, previouslyExpanded]);
 
     const entryOnClick = React.useCallback(
-        (event) => handleClick({ event, history, location, expanded, id: item.id, target: '.entry' }),
-        [history, location, expanded, item.id]
+        (event) => handleClick({ event, navigate, location, expanded, id: item.id, target: '.entry' }),
+        [navigate, location, expanded, item.id]
     );
 
     const titleOnClick = React.useCallback(
-        (event) => handleClick({ event, history, location, expanded, id: item.id, target: '.entry-title' }),
-        [history, location, expanded, item.id]
+        (event) => handleClick({ event, navigate, location, expanded, id: item.id, target: '.entry-title' }),
+        [navigate, location, expanded, item.id]
     );
 
     const starOnClick = React.useCallback(
@@ -386,8 +386,8 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
     );
 
     const closeOnClick = React.useCallback(
-        (event) => closeFullScreen({ event, history, location, entryId: item.id }),
-        [history, location, item.id]
+        (event) => closeFullScreen({ event, navigate, location, entryId: item.id }),
+        [navigate, location, item.id]
     );
 
     const titleHtml = React.useMemo(

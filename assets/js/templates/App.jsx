@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 import nullable from 'prop-types-nullable';
 import {
     BrowserRouter as Router,
-    Switch,
+    Routes,
     Route,
     Link,
     Redirect,
     useHistory,
     useLocation,
-    useRouteMatch,
+    useMatch,
+    useNavigate,
 } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Collapse from '@kunukn/react-collapse';
@@ -147,10 +148,15 @@ function PureApp({
     }, []);
 
     // TODO: move stuff that depends on this to the App.
-    const history = useHistory();
+    const navigate = useNavigate();
     React.useEffect(() => {
-        selfoss.history = history;
-    }, [history]);
+        selfoss.navigate = navigate;
+    }, [navigate]);
+
+    const entriesPageMatch = useMatch(ENTRIES_ROUTE_PATTERN);
+    React.useEffect(() => {
+        selfoss.entriesPageMatch = entriesPageMatch;
+    }, [entriesPageMatch]);
 
     // Prepare path of the homepage for redirecting from /
     let homePagePath = configuration.homepage.split('/');
@@ -171,14 +177,9 @@ function PureApp({
         []
     );
 
-    const isEntriesRoute = useRouteMatch(ENTRIES_ROUTE_PATTERN) !== null;
-    React.useEffect(() => {
-        if (isEntriesRoute && unreadItemsCount > 0) {
-            document.title = configuration.htmlTitle + ' (' + unreadItemsCount + ')';
-        } else {
-            document.title = configuration.htmlTitle;
-        }
-    }, [configuration, unreadItemsCount, isEntriesRoute]);
+    const setTitle = React.useCallback((title) => {
+        document.title = title ?? configuration.htmlTitle;
+    }, [configuration.htmlTitle]);
 
     const _ = React.useContext(LocalizationContext);
 
@@ -186,95 +187,113 @@ function PureApp({
         <React.StrictMode>
             <Message message={globalMessage} />
 
-            <Switch>
-                <Route path="/sign/in">
-                    {/* menu open for smartphone */}
-                    <div id="loginform" role="main">
-                        <LoginForm
-                            {...{offlineEnabled}}
-                        />
-                    </div>
-                </Route>
+            <Routes>
+                <Route
+                    path="/sign/in"
+                    element={
+                        /* menu open for smartphone */
+                        <div id="loginform" role="main">
+                            <LoginForm
+                                {...{offlineEnabled}}
+                            />
+                        </div>
+                    }
+                />
 
-                <Route path="/">
-                    <CheckAuthorization
-                        isAllowed={selfoss.isAllowedToRead()}
-                        _={_}
-                    >
-                        <div id="nav-mobile" role="navigation">
-                            <div id="nav-mobile-logo">
-                                <div id="nav-mobile-count" className={classNames({'unread-count': true, offline: offlineState, online: !offlineState, unread: unreadItemsCount > 0})}>
-                                    <span className={classNames({'offline-count': true, offline: offlineState, online: !offlineState, diff: unreadItemsCount !== unreadItemsOfflineCount && unreadItemsOfflineCount})}>{unreadItemsOfflineCount > 0 ? unreadItemsOfflineCount : ''}</span>
-                                    <span className="count">{unreadItemsCount}</span>
+                <Route
+                    path="/"
+                    element={
+                        <CheckAuthorization
+                            isAllowed={selfoss.isAllowedToRead()}
+                            _={_}
+                        >
+                            <div id="nav-mobile" role="navigation">
+                                <div id="nav-mobile-logo">
+                                    <div id="nav-mobile-count" className={classNames({'unread-count': true, offline: offlineState, online: !offlineState, unread: unreadItemsCount > 0})}>
+                                        <span className={classNames({'offline-count': true, offline: offlineState, online: !offlineState, diff: unreadItemsCount !== unreadItemsOfflineCount && unreadItemsOfflineCount})}>{unreadItemsOfflineCount > 0 ? unreadItemsOfflineCount : ''}</span>
+                                        <span className="count">{unreadItemsCount}</span>
+                                    </div>
                                 </div>
+                                <button
+                                    id="nav-mobile-settings"
+                                    accessKey="t"
+                                    aria-label={_('settingsbutton')}
+                                    onClick={menuButtonOnClick}
+                                >
+                                    <FontAwesomeIcon icon={icons.menu} size="2x" />
+                                </button>
                             </div>
-                            <button
-                                id="nav-mobile-settings"
-                                accessKey="t"
-                                aria-label={_('settingsbutton')}
-                                onClick={menuButtonOnClick}
-                            >
-                                <FontAwesomeIcon icon={icons.menu} size="2x" />
-                            </button>
-                        </div>
 
-                        {/* navigation */}
-                        <Collapse isOpen={!smartphone || navExpanded} className="collapse-css-transition">
-                            <div id="nav" role="navigation">
-                                <Navigation
-                                    entriesPage={entriesPage}
-                                    setNavExpanded={setNavExpanded}
-                                    navSourcesExpanded={navSourcesExpanded}
-                                    setNavSourcesExpanded={setNavSourcesExpanded}
-                                    offlineState={offlineState}
-                                    allItemsCount={allItemsCount}
-                                    allItemsOfflineCount={allItemsOfflineCount}
-                                    unreadItemsCount={unreadItemsCount}
-                                    unreadItemsOfflineCount={unreadItemsOfflineCount}
-                                    starredItemsCount={starredItemsCount}
-                                    starredItemsOfflineCount={starredItemsOfflineCount}
-                                    sourcesState={sourcesState}
-                                    setSourcesState={setSourcesState}
-                                    sources={sources}
-                                    setSources={setSources}
-                                    tags={tags}
-                                    reloadAll={reloadAll}
-                                />
+                            {/* navigation */}
+                            <Collapse isOpen={!smartphone || navExpanded} className="collapse-css-transition">
+                                <div id="nav" role="navigation">
+                                    <Navigation
+                                        entriesPage={entriesPage}
+                                        setNavExpanded={setNavExpanded}
+                                        navSourcesExpanded={navSourcesExpanded}
+                                        setNavSourcesExpanded={setNavSourcesExpanded}
+                                        offlineState={offlineState}
+                                        allItemsCount={allItemsCount}
+                                        allItemsOfflineCount={allItemsOfflineCount}
+                                        unreadItemsCount={unreadItemsCount}
+                                        unreadItemsOfflineCount={unreadItemsOfflineCount}
+                                        starredItemsCount={starredItemsCount}
+                                        starredItemsOfflineCount={starredItemsOfflineCount}
+                                        sourcesState={sourcesState}
+                                        setSourcesState={setSourcesState}
+                                        sources={sources}
+                                        setSources={setSources}
+                                        tags={tags}
+                                        reloadAll={reloadAll}
+                                    />
+                                </div>
+                            </Collapse>
+
+                            <ul id="search-list">
+                                <SearchList />
+                            </ul>
+
+                            {/* content */}
+                            <div id="content" role="main">
+                                <Routes>
+                                    <Route
+                                        path="/"
+                                        element={
+                                            <Redirect to={`/${homePagePath.join('/')}`} />
+                                        }
+                                    />
+                                    <Route
+                                        /* TODO: regex pattern does not work https://github.com/remix-run/react-router/issues/8254 */
+                                        path={ENTRIES_ROUTE_PATTERN}
+                                        element={
+                                            <EntriesPage
+                                                ref={entriesRef}
+                                                setNavExpanded={setNavExpanded}
+                                                configuration={configuration}
+                                                navSourcesExpanded={navSourcesExpanded}
+                                                setTitle={setTitle}
+                                                unreadItemsCount={unreadItemsCount}
+                                            />
+                                        }
+                                    />
+                                    <Route
+                                        path="/manage/sources"
+                                        element={
+                                            <SourcesPage />
+                                        }
+                                    />
+                                    <Route
+                                        path="*"
+                                        element={
+                                            <NotFound />
+                                        }
+                                    />
+                                </Routes>
                             </div>
-                        </Collapse>
-
-                        <ul id="search-list">
-                            <SearchList />
-                        </ul>
-
-                        {/* content */}
-                        <div id="content" role="main">
-                            <Switch>
-                                <Route exact path="/">
-                                    <Redirect to={`/${homePagePath.join('/')}`} />
-                                </Route>
-                                <Route path={ENTRIES_ROUTE_PATTERN}>
-                                    {(routeProps) => (
-                                        <EntriesPage
-                                            {...routeProps}
-                                            ref={entriesRef}
-                                            setNavExpanded={setNavExpanded}
-                                            configuration={configuration}
-                                            navSourcesExpanded={navSourcesExpanded}
-                                        />
-                                    )}
-                                </Route>
-                                <Route path="/manage/sources">
-                                    <SourcesPage />
-                                </Route>
-                                <Route path="*">
-                                    <NotFound />
-                                </Route>
-                            </Switch>
-                        </div>
-                    </CheckAuthorization>
-                </Route>
-            </Switch>
+                        </CheckAuthorization>
+                    }
+                />
+            </Routes>
         </React.StrictMode>
     );
 }

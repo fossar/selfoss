@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link, useRouteMatch } from 'react-router-dom';
+import { Link, useMatch } from 'react-router-dom';
 import { usePreviousImmediate } from 'rooks';
 import classNames from 'classnames';
 import { unescape } from 'html-escaper';
@@ -73,7 +73,7 @@ export default function NavSources({
     const reallyExpanded = navSourcesExpanded && sourcesState === LoadingState.SUCCESS;
 
     // useParams does not seem to work.
-    const match = useRouteMatch(ENTRIES_ROUTE_PATTERN);
+    const match = useMatch(ENTRIES_ROUTE_PATTERN);
     const params = match !== null ? match.params : {};
     const currentSource = params.category?.startsWith('source-') ? parseInt(params.category.replace(/^source-/, ''), 10) : null;
 

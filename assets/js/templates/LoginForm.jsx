@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { SpinnerBig } from './Spinner';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { HttpError, LoginError } from '../errors';
 import { ConfigurationContext } from '../helpers/configuration';
 import { LocalizationContext } from '../helpers/i18n';
@@ -10,7 +10,7 @@ import { LocalizationContext } from '../helpers/i18n';
 function handleLogIn({
     event,
     configuration,
-    history,
+    navigate,
     setLoading,
     username,
     password,
@@ -21,7 +21,7 @@ function handleLogIn({
     setLoading(true);
 
     selfoss.login({ configuration, username, password, enableOffline }).then(() => {
-        history.push('/');
+        navigate('/');
     }).catch((err) => {
         const message =
             err instanceof LoginError
@@ -32,8 +32,11 @@ function handleLogIn({
                             ? `HTTP ${err.response.status} ${err.message}`
                             : err.message,
                 });
-        history.replace('/sign/in', {
-            error: message,
+        navigate('/sign/in', {
+            replace: true,
+            state: {
+                error: message,
+            },
         });
     }).finally(() => {
         setLoading(false);
@@ -49,7 +52,7 @@ export default function LoginForm({
     const [enableOffline, setEnableOffline] = React.useState(offlineEnabled);
 
     const configuration = React.useContext(ConfigurationContext);
-    const history = useHistory();
+    const navigate = useNavigate();
     const location = useLocation();
     const error = location?.state?.error;
 
@@ -58,13 +61,13 @@ export default function LoginForm({
             handleLogIn({
                 event,
                 configuration,
-                history,
+                navigate,
                 setLoading,
                 username,
                 password,
                 enableOffline
             }),
-        [configuration, history, username, password, enableOffline]
+        [configuration, navigate, username, password, enableOffline]
     );
 
     const usernameOnChange = React.useCallback(

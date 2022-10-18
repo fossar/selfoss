@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import nullable from 'prop-types-nullable';
-import { Link, useRouteMatch } from 'react-router-dom';
+import { Link, useMatch } from 'react-router-dom';
 import classNames from 'classnames';
 import { unescape } from 'html-escaper';
 import { forceReload, makeEntriesLinkLocation, ENTRIES_ROUTE_PATTERN } from '../helpers/uri';
@@ -78,7 +78,7 @@ export default function NavTags({ setNavExpanded, tags }) {
     const [expanded, setExpanded] = React.useState(true);
 
     // useParams does not seem to work.
-    const match = useRouteMatch(ENTRIES_ROUTE_PATTERN);
+    const match = useMatch(ENTRIES_ROUTE_PATTERN);
     const params = match !== null ? match.params : {};
 
     const currentAllTags = params.category === 'all';

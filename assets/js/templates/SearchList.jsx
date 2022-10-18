@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { useLocation, useHistory } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { makeEntriesLink } from '../helpers/uri';
 import * as icons from '../icons';
@@ -36,7 +36,7 @@ function joinTerm(words) {
 
 
 // remove search term
-function handleRemove({ index, location, history, regexSearch }) {
+function handleRemove({ index, location, navigate, regexSearch }) {
     let newterm;
     if (regexSearch) {
         newterm = '';
@@ -49,17 +49,17 @@ function handleRemove({ index, location, history, regexSearch }) {
         newterm = joinTerm(termArray);
     }
 
-    history.push(makeEntriesLink(location, { search: newterm, id: null }));
+    navigate(makeEntriesLink(location, { search: newterm, id: null }));
 }
 
 
 function SearchWord({ regexSearch, index, item }) {
     const location = useLocation();
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const removeOnClick = React.useCallback(
-        () => handleRemove({ index, location, history, regexSearch }),
-        [index, location, history, regexSearch]
+        () => handleRemove({ index, location, navigate, regexSearch }),
+        [index, location, navigate, regexSearch]
     );
 
     return (
