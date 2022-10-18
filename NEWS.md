@@ -6,7 +6,11 @@
 
 
 ## 2.19 – 2022-10-12
-**This version requires PHP 5.6 or newer. It is also the last version to support PHP 7.**
+**This version requires PHP ~~5.6~~ 7.2 (see known regressions section) or newer. It is also the last version to support PHP 7.**
+
+### Known regressions
+- Values in `config.ini` containing special characters need to be quoted. Will be fixed by <https://github.com/fossar/selfoss/commit/ba9339372a7bc0678c6c1f74336406ab1bbb4ecb>.
+- Updating sources that already contain items will fail on PHP < 7.2.0. Will be fixed by <https://github.com/fossar/selfoss/commit/d6e9bc8b01a7d58630772f6dc9938e88a28be706>.
 
 ### New features
 - Thumbnails can be disabled ([#897](https://github.com/fossar/selfoss/pull/897))
