@@ -11,6 +11,7 @@
 ### Known regressions
 - Values in `config.ini` containing special characters need to be quoted. Will be fixed by <https://github.com/fossar/selfoss/commit/ba9339372a7bc0678c6c1f74336406ab1bbb4ecb>.
 - Updating sources that already contain items will fail on PHP < 7.2.0. Will be fixed by <https://github.com/fossar/selfoss/commit/d6e9bc8b01a7d58630772f6dc9938e88a28be706>.
+- Updating RSS sources without a valid date fails. Will be fixed by [#1385](https://github.com/fossar/selfoss/pull/1385).
 
 ### New features
 - Thumbnails can be disabled ([#897](https://github.com/fossar/selfoss/pull/897))
