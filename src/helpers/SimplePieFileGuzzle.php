@@ -67,7 +67,7 @@ class SimplePieFileGuzzle extends File {
                 $this->url = WebClient::getEffectiveUrl($url, $response);
                 $this->body = (string) $response->getBody();
                 $this->status_code = $response->getStatusCode();
-            } catch (\GuzzleHttp\Exception\RequestException $e) {
+            } catch (\GuzzleHttp\Exception\GuzzleException $e) {
                 $this->error = $e->getMessage();
                 $this->success = false;
             }

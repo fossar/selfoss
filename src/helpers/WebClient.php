@@ -96,15 +96,12 @@ class WebClient {
     /**
      * Retrieve content from url
      *
-     * @param string $url
      * @param ?string $agentInfo Extra user agent info to use in the request
      *
-     * @throws GuzzleHttp\Exception\RequestException When an error is encountered
+     * @throws GuzzleHttp\Exception\GuzzleException When an error is encountered
      * @throws Exception Unless 200 0K response is received
-     *
-     * @return string request data
      */
-    public function request($url, $agentInfo = null) {
+    public function request(string $url, ?string $agentInfo = null): string {
         $http = $this->getHttpClient();
         $response = $http->get($url);
         $data = (string) $response->getBody();

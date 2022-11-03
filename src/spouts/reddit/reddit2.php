@@ -8,6 +8,7 @@ use GuzzleHttp\Psr7\Uri;
 use GuzzleHttp\Psr7\UriResolver;
 use helpers\Image;
 use helpers\WebClient;
+use Psr\Http\Message\ResponseInterface;
 use spouts\Item;
 use Stringy\Stringy as S;
 
@@ -219,13 +220,11 @@ class reddit2 extends \spouts\spout {
      *
      * @param array $params source parameters
      *
-     * @throws GuzzleHttp\Exception\RequestException When an error is encountered
+     * @throws GuzzleHttp\Exception\GuzzleException When an error is encountered
      * @throws \RuntimeException if the response body is not in JSON format
      * @throws \Exception if the credentials are invalid
-     *
-     * @return void
      */
-    private function login(array $params) {
+    private function login(array $params): void {
         $http = $this->webClient->getHttpClient();
         $response = $http->post("https://ssl.reddit.com/api/login/{$params['username']}", [
             GuzzleHttp\RequestOptions::FORM_PARAMS => [
@@ -252,14 +251,9 @@ class reddit2 extends \spouts\spout {
     /**
      * Send a HTTP request to given URL, possibly with a cookie.
      *
-     * @param string $url
-     * @param string $method
-     *
-     * @throws GuzzleHttp\Exception\RequestException When an error is encountered
-     *
-     * @return GuzzleHttp\Psr7\Response
+     * @throws GuzzleHttp\Exception\GuzzleException When an error is encountered
      */
-    private function sendRequest($url, $method = 'GET') {
+    private function sendRequest(string $url, string $method = 'GET'): ResponseInterface {
         $http = $this->webClient->getHttpClient();
 
         if (!empty($this->reddit_session)) {

@@ -49,7 +49,7 @@ abstract class spout {
      *
      * @param array $params params of this source
      *
-     * @throws \GuzzleHttp\Exception\RequestException When an error is encountered
+     * @throws \GuzzleHttp\Exception\GuzzleException When an error is encountered
      *
      * @return void
      */
