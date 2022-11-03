@@ -189,10 +189,6 @@ class ContentLoader {
                 } catch (\Throwable $e) {
                     $content = 'Error: Content not fetched. Reason: ' . $e->getMessage();
                     $this->logger->error('Can not fetch "' . $item->getTitle() . '"', ['exception' => $e]);
-                } catch (\Exception $e) {
-                    // For PHP 5
-                    $content = 'Error: Content not fetched. Reason: ' . $e->getMessage();
-                    $this->logger->error('Can not fetch "' . $item->getTitle() . '"', ['exception' => $e]);
                 }
 
                 // sanitize title
@@ -254,21 +250,9 @@ class ContentLoader {
                             // cache failure
                             $sourceIconUrl = '';
                             $this->logger->error('feed icon: error', ['exception' => $e]);
-                        } catch (\Exception $e) {
-                            // For PHP 5
-                            // cache failure
-                            $sourceIconUrl = '';
-                            $this->logger->error('feed icon: error', ['exception' => $e]);
                         }
                     }
                 } catch (\Throwable $e) {
-                    // cache failure
-                    if ($iconUrl !== null) {
-                        $iconCache[$iconUrl] = '';
-                    }
-                    $this->logger->error('icon: error', ['exception' => $e]);
-                } catch (\Exception $e) {
-                    // For PHP 5
                     // cache failure
                     if ($iconUrl !== null) {
                         $iconCache[$iconUrl] = '';
@@ -286,12 +270,6 @@ class ContentLoader {
                 $lastEntry = max($lastEntry, $itemDate->getTimestamp());
             }
         } catch (\Throwable $e) {
-            $this->logger->error('error loading feed content for ' . $source['title'], ['exception' => $e]);
-            $this->sourcesDao->error($source['id'], date('Y-m-d H:i:s') . 'error loading feed content: ' . $e->getMessage());
-
-            return;
-        } catch (\Exception $e) {
-            // For PHP 5
             $this->logger->error('error loading feed content for ' . $source['title'], ['exception' => $e]);
             $this->sourcesDao->error($source['id'], date('Y-m-d H:i:s') . 'error loading feed content: ' . $e->getMessage());
 
@@ -399,11 +377,6 @@ class ContentLoader {
             $this->logger->error("failed to retrieve thumbnail $url,", ['exception' => $e]);
 
             return null;
-        } catch (\Exception $e) {
-            // For PHP 5
-            $this->logger->error("failed to retrieve thumbnail $url,", ['exception' => $e]);
-
-            return null;
         }
 
         return null;
@@ -428,11 +401,6 @@ class ContentLoader {
                 $this->logger->error('icon generation error: ' . $url);
             }
         } catch (\Throwable $e) {
-            $this->logger->error("failed to retrieve image $url,", ['exception' => $e]);
-
-            return null;
-        } catch (\Exception $e) {
-            // For PHP 5
             $this->logger->error("failed to retrieve image $url,", ['exception' => $e]);
 
             return null;
@@ -467,11 +435,6 @@ class ContentLoader {
 
             $spout->load($data);
         } catch (\Throwable $e) {
-            $this->logger->error('Error fetching title', ['exception' => $e]);
-
-            return null;
-        } catch (\Exception $e) {
-            // For PHP 5
             $this->logger->error('Error fetching title', ['exception' => $e]);
 
             return null;

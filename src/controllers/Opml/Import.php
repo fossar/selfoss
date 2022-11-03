@@ -109,9 +109,6 @@ class Import {
             }
         } catch (\Throwable $e) {
             $messages[] = $e->getMessage();
-        } catch (\Exception $e) {
-            // For PHP 5
-            $messages[] = $e->getMessage();
         }
 
         $this->view->jsonSuccess([

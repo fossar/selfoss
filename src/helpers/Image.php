@@ -90,11 +90,6 @@ class Image {
             $this->logger->error("icon: failed to retrieve URL $url", ['exception' => $e]);
 
             return null;
-        } catch (\Exception $e) {
-            // For PHP 5
-            $this->logger->error("icon: failed to retrieve URL $url", ['exception' => $e]);
-
-            return null;
         }
 
         if ($isHtmlUrl === false) {
@@ -119,9 +114,6 @@ class Image {
                     }
                 } catch (\Throwable $e) {
                     $this->logger->error("failed to retrieve image $url,", ['exception' => $e]);
-                } catch (\Exception $e) {
-                    // For PHP 5
-                    $this->logger->error("failed to retrieve image $url,", ['exception' => $e]);
                 }
             }
         }
@@ -139,9 +131,6 @@ class Image {
                     return [$url, $image];
                 }
             } catch (\Throwable $e) {
-                $this->logger->error("failed to retrieve image $url,", ['exception' => $e]);
-            } catch (\Exception $e) {
-                // For PHP 5
                 $this->logger->error("failed to retrieve image $url,", ['exception' => $e]);
             }
         }
@@ -183,9 +172,7 @@ class Image {
         }
 
         $mimeType = isset($imgInfo['mime']) ? strtolower($imgInfo['mime']) : null;
-        // Workaround for PHP 5.6, which does not allow isset on array access to array constants.
-        $types = self::IMAGE_TYPES;
-        if ($mimeType !== null && isset($types[$mimeType])) {
+        if ($mimeType !== null && isset(self::IMAGE_TYPES[$mimeType])) {
             $type = self::IMAGE_TYPES[$mimeType];
         } else {
             return null;
@@ -248,9 +235,6 @@ class Image {
         try {
             $wideImage = WideImage::load($data);
         } catch (\Throwable $e) {
-            return null;
-        } catch (\Exception $e) {
-            // For PHP 5
             return null;
         }
 

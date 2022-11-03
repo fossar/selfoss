@@ -1,6 +1,6 @@
 <?php
 
-// Only run this if running from PHP 5.4+ embedded server.
+// Only run this if running from PHP embedded server.
 if (PHP_SAPI === 'cli-server') {
     $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
