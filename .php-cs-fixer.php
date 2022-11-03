@@ -20,7 +20,6 @@ $rules = [
     'yoda_style' => false,
     'semicolon_after_instruction' => false,
     // additional rules
-    'array_syntax' => ['syntax' => 'short'],
     'dir_constant' => true,
     'echo_tag_syntax' => ['format' => 'short'],
     'modernize_types_casting' => true,
