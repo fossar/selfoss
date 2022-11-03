@@ -38,10 +38,7 @@ error_reporting(0);
 
 $f3 = Base::instance();
 
-// Disable deprecation warnings.
-// Dice uses ReflectionParameter::getClass(), which is deprecated in PHP 8
-// but we have not set an error handler yet because it needs a Logger instantiated by Dice.
-error_reporting(E_ALL & ~E_DEPRECATED);
+error_reporting(E_ALL);
 
 $f3->set('AUTOLOAD', false);
 $f3->set('BASEDIR', BASEDIR);
@@ -58,21 +55,19 @@ $substitutions = [
     'substitutions' => [
         // Instantiate configuration container.
         Configuration::class => [
-            'instance' => function() use ($configuration) {
+            Dice::INSTANCE => function() use ($configuration) {
                 return $configuration;
             },
             'shared' => true,
         ],
 
         // Choose database implementation based on config
-        daos\DatabaseInterface::class => ['instance' => 'daos\\' . $configuration->dbType . '\\Database'],
-        daos\ItemsInterface::class => ['instance' => 'daos\\' . $configuration->dbType . '\\Items'],
-        daos\SourcesInterface::class => ['instance' => 'daos\\' . $configuration->dbType . '\\Sources'],
-        daos\TagsInterface::class => ['instance' => 'daos\\' . $configuration->dbType . '\\Tags'],
+        daos\DatabaseInterface::class => [Dice::INSTANCE => 'daos\\' . $configuration->dbType . '\\Database'],
+        daos\ItemsInterface::class => [Dice::INSTANCE => 'daos\\' . $configuration->dbType . '\\Items'],
+        daos\SourcesInterface::class => [Dice::INSTANCE => 'daos\\' . $configuration->dbType . '\\Sources'],
+        daos\TagsInterface::class => [Dice::INSTANCE => 'daos\\' . $configuration->dbType . '\\Tags'],
 
-        Dice::class => ['instance' => function() use ($dice) {
-            return $dice;
-        }],
+        Dice::class => [Dice::INSTANCE => Dice::SELF],
     ],
 ];
 
@@ -80,19 +75,19 @@ $shared = array_merge($substitutions, [
     'shared' => true,
 ]);
 
-$dice->addRule(Bramus\Router\Router::class, $shared);
-$dice->addRule(helpers\Authentication::class, $shared);
+$dice = $dice->addRule(Bramus\Router\Router::class, $shared);
+$dice = $dice->addRule(helpers\Authentication::class, $shared);
 
 // Database bridges
-$dice->addRule(daos\Items::class, $shared);
-$dice->addRule(daos\Sources::class, $shared);
-$dice->addRule(daos\Tags::class, $shared);
+$dice = $dice->addRule(daos\Items::class, $shared);
+$dice = $dice->addRule(daos\Sources::class, $shared);
+$dice = $dice->addRule(daos\Tags::class, $shared);
 
 // Database implementation
-$dice->addRule(daos\DatabaseInterface::class, $shared);
-$dice->addRule(daos\ItemsInterface::class, $shared);
-$dice->addRule(daos\SourcesInterface::class, $shared);
-$dice->addRule(daos\TagsInterface::class, $shared);
+$dice = $dice->addRule(daos\DatabaseInterface::class, $shared);
+$dice = $dice->addRule(daos\ItemsInterface::class, $shared);
+$dice = $dice->addRule(daos\SourcesInterface::class, $shared);
+$dice = $dice->addRule(daos\TagsInterface::class, $shared);
 
 if ($configuration->isChanged('dbSocket') && $configuration->isChanged('dbHost')) {
     boot_error('You cannot set both `db_socket` and `db_host` options.' . PHP_EOL);
@@ -196,43 +191,43 @@ if ($configuration->dbType === 'sqlite') {
     ]);
 }
 
-$dice->addRule(DatabaseConnection::class, $sqlParams);
+$dice = $dice->addRule(DatabaseConnection::class, $sqlParams);
 
-$dice->addRule('$iconStorageBackend', [
+$dice = $dice->addRule('$iconStorageBackend', [
     'instanceOf' => helpers\Storage\FileStorage::class,
     'constructParams' => [
         $configuration->datadir . '/favicons',
     ],
 ]);
 
-$dice->addRule(helpers\IconStore::class, array_merge($shared, [
+$dice = $dice->addRule(helpers\IconStore::class, array_merge($shared, [
     'constructParams' => [
-        ['instance' => '$iconStorageBackend'],
+        [Dice::INSTANCE => '$iconStorageBackend'],
     ],
 ]));
 
-$dice->addRule('$thumbnailStorageBackend', [
+$dice = $dice->addRule('$thumbnailStorageBackend', [
     'instanceOf' => helpers\Storage\FileStorage::class,
     'constructParams' => [
         $configuration->datadir . '/thumbnails',
     ],
 ]);
 
-$dice->addRule(helpers\ThumbnailStore::class, array_merge($shared, [
+$dice = $dice->addRule(helpers\ThumbnailStore::class, array_merge($shared, [
     'constructParams' => [
-        ['instance' => '$thumbnailStorageBackend'],
+        [Dice::INSTANCE => '$thumbnailStorageBackend'],
     ],
 ]));
 
 // Fallback rule
-$dice->addRule('*', $substitutions);
+$dice = $dice->addRule('*', $substitutions);
 
-$dice->addRule(Logger::class, [
+$dice = $dice->addRule(Logger::class, [
     'shared' => true,
     'constructParams' => ['selfoss'],
 ]);
 
-$dice->addRule(helpers\FeedReader::class, [
+$dice = $dice->addRule(helpers\FeedReader::class, [
     'constructParams' => [
         $configuration->cache,
     ],

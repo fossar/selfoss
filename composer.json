@@ -15,7 +15,7 @@
         "guzzlehttp/psr7": "^2.0",
         "http-interop/response-sender": "^1.0",
         "j0k3r/graby": "^2.0",
-        "level-2/dice": "^2.0",
+        "level-2/dice": "^4.0",
         "lordelph/icofileloader": "^2.0",
         "mibe/feedwriter": "^1.0",
         "monolog/monolog": "^1.0",

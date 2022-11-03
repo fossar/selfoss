@@ -22,53 +22,39 @@ final class YouTubeTest extends TestCase {
     public function testBasic($url, $feedTitle, $firstItemTitle) {
         $cachedFeedPath = __DIR__ . '/resources/YouTube/' . str_replace([':', '/', '?', '='], '_', $url) . '.xml';
 
-        // Disable deprecation warnings.
-        set_error_handler(function($errno, $errstr, $errfile, $errline) {
-            if (preg_match('(Method ReflectionParameter::getClass\(\) is deprecated)', $errstr)) {
-                // Dice uses ReflectionParameter::getClass(), which is deprecated in PHP 8.
-                return true;
-            }
+        $mock = new MockHandler([
+            new Response(200, ['Content-Type' => 'application/rss+xml'], file_get_contents($cachedFeedPath)),
+        ]);
+        $stack = HandlerStack::create($mock);
+        $httpClient = new Client(['handler' => $stack]);
 
-            return false;
-        }, E_DEPRECATED);
+        $dice = new Dice();
+        $dice = $dice->addRule('*', [
+            'substitutions' => [
+                WebClient::class => [
+                    Dice::INSTANCE => function() use ($httpClient) {
+                        $stub = $this->createMock(WebClient::class);
+                        $stub->method('getHttpClient')->willReturn($httpClient);
 
-        try {
-            $mock = new MockHandler([
-                new Response(200, ['Content-Type' => 'application/rss+xml'], file_get_contents($cachedFeedPath)),
-            ]);
-            $stack = HandlerStack::create($mock);
-            $httpClient = new Client(['handler' => $stack]);
-
-            $dice = new Dice();
-            $dice->addRule('*', [
-                'substitutions' => [
-                    WebClient::class => [
-                        'instance' => function() use ($httpClient) {
-                            $stub = $this->createMock(WebClient::class);
-                            $stub->method('getHttpClient')->willReturn($httpClient);
-
-                            return $stub;
-                        },
-                    ],
+                        return $stub;
+                    },
                 ],
-            ]);
+            ],
+        ]);
 
-            $yt = $dice->create(youtube::class);
+        $yt = $dice->create(youtube::class);
 
-            $params = [
-                'channel' => $url,
-            ];
+        $params = [
+            'channel' => $url,
+        ];
 
-            $yt->load($params);
+        $yt->load($params);
 
-            // Uncomment the following line to refresh the resources:
-            // file_put_contents($cachedFeedPath, file_get_contents($yt->getXmlUrl($params)));
+        // Uncomment the following line to refresh the resources:
+        // file_put_contents($cachedFeedPath, file_get_contents($yt->getXmlUrl($params)));
 
-            $this->assertEquals($feedTitle, $yt->getTitle());
-            $this->assertEquals($firstItemTitle, $yt->getItems()->current()->getTitle());
-        } finally {
-            restore_error_handler();
-        }
+        $this->assertEquals($feedTitle, $yt->getTitle());
+        $this->assertEquals($firstItemTitle, $yt->getItems()->current()->getTitle());
     }
 
     public function dataProvider() {
