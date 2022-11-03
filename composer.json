@@ -10,17 +10,16 @@
         "danielstjules/stringy": "^3.1",
         "fossar/guzzle-transcoder": "^0.2.0",
         "fossar/htmlawed": "^1.2.4.1",
-        "fossar/tcpdf-parser": "^6.2",
         "guzzlehttp/guzzle": "^6.3",
         "guzzlehttp/oauth-subscriber": "^0.6.0",
         "guzzlehttp/psr7": "^1.5",
         "http-interop/response-sender": "^1.0",
-        "j0k3r/graby": "2.0.0-alpha.0",
+        "j0k3r/graby": "^2.0",
         "level-2/dice": "^2.0",
         "lordelph/icofileloader": "^2.0",
         "mibe/feedwriter": "^1.0",
         "monolog/monolog": "^1.0",
-        "php-http/guzzle6-adapter": "^1.0",
+        "php-http/guzzle6-adapter": "^2.0",
         "simplepie/simplepie": "^1.6",
         "smottt/wideimage": "^1.1",
         "violet/streaming-json-encoder": "^1.1",
@@ -29,7 +28,7 @@
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.15",
         "php-parallel-lint/php-parallel-lint": "^1.0",
-        "symfony/phpunit-bridge": "^5.2"
+        "symfony/phpunit-bridge": "^6.0"
     },
     "license": "GPL-3.0",
     "authors": [
