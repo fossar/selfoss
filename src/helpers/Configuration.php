@@ -12,7 +12,7 @@ use ReflectionClass;
  */
 class Configuration {
     /** @var string[] List of config values that should have variables interpolated. */
-    const INTERPOLATED_PROPERTIES = [
+    public const INTERPOLATED_PROPERTIES = [
         'dbFile',
         'loggerDestination',
         'cache',

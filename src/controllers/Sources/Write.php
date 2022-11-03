@@ -51,7 +51,7 @@ class Write {
 
         // read data
         $body = file_get_contents('php://input');
-        $contentType = isset($_SERVER['CONTENT_TYPE']) ? $_SERVER['CONTENT_TYPE'] : '';
+        $contentType = $_SERVER['CONTENT_TYPE'] ?? '';
         if (strpos($contentType, 'application/json') === 0) {
             $data = json_decode($body, true);
         } else {
@@ -81,7 +81,7 @@ class Write {
         }
         $tags = array_map('htmlspecialchars', $data['tags']);
         $spout = $data['spout'];
-        $filter = isset($data['filter']) ? $data['filter'] : null;
+        $filter = $data['filter'] ?? null;
 
         unset($data['title']);
         unset($data['spout']);
@@ -102,7 +102,7 @@ class Write {
                         $oldSource = $this->sourcesDao->get($id);
                         $oldParams = json_decode(html_entity_decode($oldSource['params']), true);
                     }
-                    $data[$spoutParamName] = isset($oldParams[$spoutParamName]) ? $oldParams[$spoutParamName] : '';
+                    $data[$spoutParamName] = $oldParams[$spoutParamName] ?? '';
                 }
             }
         }

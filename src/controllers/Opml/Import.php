@@ -198,7 +198,9 @@ class Import {
         }
 
         // RSS URL
-        $data['url'] = (string) $attrs->xmlUrl;
+        $data = [
+            'url' => (string) $attrs->xmlUrl,
+        ];
 
         // set spout for new item
         if ($nsattrs->spout || $nsattrs->params) {

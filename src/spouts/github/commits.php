@@ -77,7 +77,7 @@ class commits extends \spouts\spout {
         $http = $this->webClient->getHttpClient();
         $response = $http->get($jsonUrl);
         $items = json_decode((string) $response->getBody(), true);
-        $this->items = $items === null ? [] : $items;
+        $this->items = $items ?? [];
 
         $this->title = "Recent Commits to {$params['repo']}:{$params['branch']}";
     }

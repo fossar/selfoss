@@ -6,10 +6,10 @@ namespace daos;
  * Interface describing database backend.
  */
 interface DatabaseInterface {
-    const PARAM_INT = 1;
-    const PARAM_BOOL = 2;
-    const PARAM_CSV = 3;
-    const PARAM_DATETIME = 4;
+    public const PARAM_INT = 1;
+    public const PARAM_BOOL = 2;
+    public const PARAM_CSV = 3;
+    public const PARAM_DATETIME = 4;
 
     /**
      * Execute SQL statement.

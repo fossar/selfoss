@@ -42,8 +42,8 @@ class ContentLoader {
     /** @var WebClient thumbnail store */
     private $webClient;
 
-    const ICON_FORMAT = Image::FORMAT_PNG;
-    const THUMBNAIL_FORMAT = Image::FORMAT_JPEG;
+    public const ICON_FORMAT = Image::FORMAT_PNG;
+    public const THUMBNAIL_FORMAT = Image::FORMAT_JPEG;
 
     /**
      * ctor

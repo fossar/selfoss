@@ -24,7 +24,7 @@ class lightreading extends fulltextrss {
     /**
      * addresses of feeds for the sections
      */
-    const FEED_URL = 'http://www.lightreading.com/rss_simple.asp';
+    private const FEED_URL = 'http://www.lightreading.com/rss_simple.asp';
 
     public function load(array $params) {
         parent::load(['url' => $this->getXmlUrl($params)]);

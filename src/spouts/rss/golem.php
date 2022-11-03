@@ -52,7 +52,7 @@ class golem extends fulltextrss {
     /**
      * addresses of feeds for the sections
      */
-    const FEED_URLS = [
+    private const FEED_URLS = [
         'main' => 'https://rss.golem.de/rss.php?feed=RSS2.0',
         'audiovideo' => 'https://rss.golem.de/rss.php?tp=av&feed=RSS2.0',
         'foto' => 'https://rss.golem.de/rss.php?tp=foto&feed=RSS2.0',

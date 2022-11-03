@@ -48,7 +48,7 @@ class heise extends fulltextrss {
     /**
      * addresses of feeds for the sections
      */
-    const FEED_URLS = [
+    private const FEED_URLS = [
         'main' => 'https://www.heise.de/newsticker/heise-atom.xml',
         'ct' => 'https://www.heise.de/ct/rss/artikel-atom.xml',
         'ix' => 'https://www.heise.de/ix/news/news-atom.xml',

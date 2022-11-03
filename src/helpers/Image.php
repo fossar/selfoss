@@ -16,15 +16,15 @@ use WideImage\WideImage;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class Image {
-    const FORMAT_JPEG = 'jpeg';
-    const FORMAT_PNG = 'png';
+    public const FORMAT_JPEG = 'jpeg';
+    public const FORMAT_PNG = 'png';
 
     private static $extensions = [
         self::FORMAT_JPEG => 'jpg',
         self::FORMAT_PNG => 'png',
     ];
 
-    const IMAGE_TYPES = [
+    public const IMAGE_TYPES = [
         // IANA assigned type
         'image/bmp' => 'bmp',
         'image/gif' => 'gif',

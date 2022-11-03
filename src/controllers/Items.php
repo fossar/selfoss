@@ -44,7 +44,7 @@ class Items {
         if ($itemId !== null) {
             $lastid = $itemId;
         } else {
-            $contentType = isset($_SERVER['CONTENT_TYPE']) ? $_SERVER['CONTENT_TYPE'] : '';
+            $contentType = $_SERVER['CONTENT_TYPE'] ?? '';
             if (strpos($contentType, 'application/json') === 0) {
                 $body = file_get_contents('php://input');
                 $lastid = json_decode($body, true);

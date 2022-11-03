@@ -190,7 +190,7 @@ class reddit2 extends \spouts\spout {
     private function findSiteIcon($url) {
         $faviconUrl = null;
         if ($url && ($iconData = $this->imageHelper->fetchFavicon($url)) !== null) {
-            list($faviconUrl, $iconBlob) = $iconData;
+            [$faviconUrl, $iconBlob] = $iconData;
         }
 
         return $faviconUrl;

@@ -140,7 +140,7 @@ if ($configuration->dbType === 'sqlite') {
         boot_error('Using PostgreSQL database requires pdo_pgsql PHP extension. Please make sure you have it installed and enabled.');
     }
     // PostgreSQL uses host key for socket.
-    $host = $configuration->dbSocket !== null ? $configuration->dbSocket : $configuration->dbHost;
+    $host = $configuration->dbSocket ?? $configuration->dbHost;
     $port = $configuration->dbPort;
     $database = $configuration->dbDatabase;
 

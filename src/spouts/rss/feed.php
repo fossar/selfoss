@@ -146,7 +146,7 @@ class feed extends \spouts\spout {
         // Try to use feed logo first
         $feedLogoUrl = $this->feed->getImageUrl();
         if ($feedLogoUrl && ($iconData = $this->imageHelper->fetchFavicon($feedLogoUrl)) !== null) {
-            list($faviconUrl, $iconBlob) = $iconData;
+            [$faviconUrl, $iconBlob] = $iconData;
 
             $aspectRatio = $iconBlob->getWidth() / $iconBlob->getHeight();
 
@@ -162,7 +162,7 @@ class feed extends \spouts\spout {
         // else fallback to the favicon of the associated web page
         $htmlUrl = $this->getHtmlUrl();
         if ($htmlUrl && ($iconData = $this->imageHelper->fetchFavicon($htmlUrl, true)) !== null) {
-            list($faviconUrl, $iconBlob) = $iconData;
+            [$faviconUrl, $iconBlob] = $iconData;
             $this->logger->debug('icon: using feed homepage favicon: ' . $faviconUrl);
 
             return $faviconUrl;
@@ -171,7 +171,7 @@ class feed extends \spouts\spout {
         // else fallback to the favicon of the feed effective domain
         $feedUrl = $this->feed->getFeedUrl();
         if ($feedUrl && ($iconData = $this->imageHelper->fetchFavicon($feedUrl, true)) !== null) {
-            list($faviconUrl, $iconBlob) = $iconData;
+            [$faviconUrl, $iconBlob] = $iconData;
             $this->logger->debug('icon: using feed homepage favicon: ' . $faviconUrl);
 
             return $faviconUrl;

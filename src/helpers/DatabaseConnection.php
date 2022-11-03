@@ -158,7 +158,7 @@ class DatabaseConnection {
                     throw new \InvalidArgumentException('Expected [$value, $type] for binding.');
                 }
 
-                list($value, $type) = $val;
+                [$value, $type] = $val;
                 $query->bindValue($key, $value, $type);
             } else {
                 // Convert to PDO data type

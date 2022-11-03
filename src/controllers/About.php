@@ -41,7 +41,7 @@ class About {
             'version' => SELFOSS_VERSION,
             'apiversion' => SELFOSS_API_VERSION,
             'configuration' => [
-                'homepage' => $this->configuration->homepage ? $this->configuration->homepage : 'newest', // string
+                'homepage' => $this->configuration->homepage ?: 'newest', // string
                 'share' => $this->configuration->share, // string
                 'wallabag' => $wallabag, // ?array
                 'wordpress' => $this->configuration->wordpress, // ?string

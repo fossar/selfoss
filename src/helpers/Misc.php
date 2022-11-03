@@ -3,17 +3,15 @@
 namespace helpers;
 
 class Misc {
-    const ORDER_ASC = 1;
-    const ORDER_DESC = -1;
+    public const ORDER_ASC = 1;
+    public const ORDER_DESC = -1;
 
-    const CMP_LT = -1;
-    const CMP_GT = 1;
-    const CMP_EQ = 0;
+    public const CMP_LT = -1;
+    public const CMP_GT = 1;
+    public const CMP_EQ = 0;
 
     /**
      * Compare two values for use in sort functions.
-     *
-     * In PHP 7, spaceship operator can be used instead.
      *
      * @param mixed $a
      * @param mixed $b
@@ -21,7 +19,7 @@ class Misc {
      * @return self::CMP_* mutual ordering
      */
     public static function compare($a, $b) {
-        return ($a < $b) ? self::CMP_LT : (($a > $b) ? self::CMP_GT : self::CMP_EQ);
+        return $a <=> $b;
     }
 
     /**
@@ -32,7 +30,7 @@ class Misc {
      *
      * @param callable|array-key|array{callable|array-key, self::ORDER_*} ...$transformations
      *
-     * @return callable comparator
+     * @return callable(mixed, mixed): self::CMP_* comparator
      */
     public static function compareBy(...$transformations) {
         if (count($transformations) > 0) {
@@ -40,12 +38,12 @@ class Misc {
                 foreach ($transformations as $transformation) {
                     $order = self::ORDER_ASC;
                     if (is_array($transformation)) {
-                        list($transformation, $order) = $transformation;
+                        [$transformation, $order] = $transformation;
                     }
                     if (is_callable($transformation)) {
-                        $comparison = self::compare($transformation($a), $transformation($b));
+                        $comparison = $transformation($a) <=> $transformation($b);
                     } else {
-                        $comparison = self::compare($a[$transformation], $b[$transformation]);
+                        $comparison = $a[$transformation] <=> $b[$transformation];
                     }
 
                     $comparison = $order * $comparison;

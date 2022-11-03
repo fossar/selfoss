@@ -58,7 +58,7 @@ class listtimeline extends \spouts\twitter\usertimeline {
     ];
 
     public function load(array $params) {
-        $this->client = $this->getHttpClient($params['consumer_key'], $params['consumer_secret'], isset($params['access_token']) ? $params['access_token'] : null, isset($params['access_token_secret']) ? $params['access_token_secret'] : null);
+        $this->client = $this->getHttpClient($params['consumer_key'], $params['consumer_secret'], $params['access_token'] ?? null, $params['access_token_secret'] ?? null);
 
         $this->items = $this->fetchTwitterTimeline('lists/statuses', [
             'slug' => $params['slug'],

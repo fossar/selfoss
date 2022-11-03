@@ -147,7 +147,7 @@ class Sources {
         // get last icon
         foreach ($sources as &$source) {
             $source['params'] = json_decode(html_entity_decode($source['params']), true);
-            $source['error'] = $source['error'] === null ? '' : $source['error'];
+            $source['error'] = $source['error'] ?? '';
         }
 
         $this->view->jsonSuccess($sources);
