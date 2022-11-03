@@ -256,7 +256,7 @@ if ($configuration->loggerLevel === 'NONE') {
 $log->pushHandler($handler);
 
 if (isset($startup_error)) {
-    $log->warn('PHP likely encountered a startup error: ', [$startup_error]);
+    $log->warning('PHP likely encountered a startup error: ', [$startup_error]);
 }
 
 // init error handling

@@ -8,6 +8,7 @@ use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use helpers\WebClient;
+use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
 use spouts\youtube\youtube;
 
@@ -29,6 +30,10 @@ final class YouTubeTest extends TestCase {
         $httpClient = new Client(['handler' => $stack]);
 
         $dice = new Dice();
+        $dice = $dice->addRule(Logger::class, [
+            'shared' => true,
+            'constructParams' => ['selfoss'],
+        ]);
         $dice = $dice->addRule('*', [
             'substitutions' => [
                 WebClient::class => [

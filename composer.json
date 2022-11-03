@@ -18,7 +18,7 @@
         "level-2/dice": "^4.0",
         "lordelph/icofileloader": "^2.0",
         "mibe/feedwriter": "^1.0",
-        "monolog/monolog": "^1.0",
+        "monolog/monolog": "^2.0",
         "php-http/guzzle7-adapter": "^1.0",
         "simplepie/simplepie": "^1.6",
         "smottt/wideimage": "^1.1",
