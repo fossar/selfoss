@@ -26,11 +26,8 @@ jobs:
           - '7.4'
           - '7.3'
           - '7.2'
-          - '7.1'
-          - '7.0'
-          - '5.6'
         include:
-          - php: '7.0'
+          - php: '7.2'
             cs_fixer: true
             lint_js: true
           - php: '8.1'
