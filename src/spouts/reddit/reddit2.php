@@ -10,7 +10,6 @@ use helpers\Image;
 use helpers\WebClient;
 use Psr\Http\Message\ResponseInterface;
 use spouts\Item;
-use Stringy\Stringy as S;
 
 /**
  * Spout for fetching from reddit
@@ -87,7 +86,8 @@ class reddit2 extends \spouts\spout {
         $url = UriResolver::resolve(new Uri('https://www.reddit.com/'), new Uri($params['url']));
         $this->htmlUrl = (string) $url;
         // and that the path ends with .json (Reddit does not seem to recogize Accept header)
-        $url = $url->withPath((string) S::create($url->getPath())->ensureRight('.json'));
+        $path = $url->getPath();
+        $url = $url->withPath(str_ends_with($path, '.json') ? $path : ($path . '.json'));
 
         $response = $this->sendRequest((string) $url);
         $json = json_decode((string) $response->getBody(), true);

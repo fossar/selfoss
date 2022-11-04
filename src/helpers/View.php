@@ -4,7 +4,6 @@ namespace helpers;
 
 use function Http\Response\send;
 use Psr\Http\Message\ResponseInterface;
-use Stringy\Stringy as S;
 
 /**
  * Helper class for rendering template
@@ -39,7 +38,7 @@ class View {
         // base url in config.ini file
         $base = $this->configuration->baseUrl;
         if ($base !== '') {
-            $base = (string) S::create($base)->ensureRight('/');
+            $base = str_ends_with($base, '/') ? $base : ($base . '/');
         } else { // auto generate base url
             $protocol = 'http';
             if ((isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ||
