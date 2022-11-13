@@ -8,6 +8,9 @@ use Monolog\Handler\ErrorLogHandler;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
+use Psr\SimpleCache\CacheInterface;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+use Symfony\Component\Cache\Psr16Cache;
 
 require __DIR__ . '/constants.php';
 
@@ -227,9 +230,28 @@ $dice = $dice->addRule(Logger::class, [
     'constructParams' => ['selfoss'],
 ]);
 
+$dice = $dice->addRule('$fileStorage', array_merge($shared, [
+    'instanceOf' => FilesystemAdapter::class,
+    'constructParams' => [
+        // namespace
+        'selfoss',
+        // directory
+        $configuration->cache,
+        // This should be a second argument but had to be swapped due to Dice bug:
+        // https://github.com/Level-2/Dice/issues/181
+        // lifetime
+        1800,
+    ],
+]));
+$dice = $dice->addRule(CacheInterface::class, array_merge($shared, [
+    'instanceOf' => Psr16Cache::class,
+    'constructParams' => [
+        [Dice::INSTANCE => '$fileStorage'],
+    ],
+]));
 $dice = $dice->addRule(helpers\FeedReader::class, [
     'constructParams' => [
-        $configuration->cache,
+        [Dice::INSTANCE => CacheInterface::class],
     ],
 ]);
 

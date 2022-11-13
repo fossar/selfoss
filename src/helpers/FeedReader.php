@@ -3,6 +3,7 @@
 namespace helpers;
 
 use SimplePie\SimplePie;
+use Psr\SimpleCache\CacheInterface;
 
 /**
  * Helper class for obtaining feeds
@@ -11,17 +12,12 @@ class FeedReader {
     /** @var SimplePie */
     private $simplepie;
 
-    /**
-     * @param ?string $cacheLocation
-     * @param int $cacheTimeout
-     */
-    public function __construct(SimplePie $simplepie, WebClient $webClient, $cacheLocation = null, $cacheTimeout = 1800) {
+    public function __construct(SimplePie $simplepie, WebClient $webClient, ?CacheInterface $cache = null) {
         $this->simplepie = $simplepie;
 
         // initialize simplepie feed loader
-        if ($cacheLocation !== null) {
-            $this->simplepie->set_cache_location($cacheLocation);
-            $this->simplepie->set_cache_duration($cacheTimeout);
+        if ($cache !== null) {
+            $this->simplepie->set_cache($cache);
         }
 
         // abuse set_curl_options since there is no sane way to pass data to SimplePie\File

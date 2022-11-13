@@ -19,8 +19,10 @@
         "mibe/feedwriter": "^1.0",
         "monolog/monolog": "^2.0",
         "php-http/guzzle7-adapter": "^1.0",
-        "simplepie/simplepie": "^1.6",
+        "psr/simple-cache": "^1.0.0",
+        "simplepie/simplepie": "dev-release-1.8.0 as 1.8.x-dev",
         "smottt/wideimage": "^1.1",
+        "symfony/cache": "5.4.x-dev",
         "symfony/polyfill-php80": "^1.26",
         "violet/streaming-json-encoder": "^1.1",
         "willwashburn/phpamo": "^1.0"
@@ -57,5 +59,12 @@
         "fix": "php-cs-fixer fix --verbose --diff",
         "lint": "parallel-lint src tests",
         "test": "simple-phpunit --bootstrap tests/bootstrap.php tests"
-    }
+    },
+    "repositories": {
+        "local": {
+            "type": "path",
+            "url": "../simplepie/"
+        }
+    },
+    "minimum-stability": "dev"
 }
