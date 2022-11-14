@@ -705,6 +705,7 @@ export default class StateHolder extends React.Component {
 
         // close opened entry and list
         this.setExpandedEntries({});
+        this.props.setNavExpanded(false);
 
         if (ids.length !== 0 && this.props.match.params.filter === FilterType.UNREAD) {
             markedEntries = markedEntries.filter(({ id }) => !ids.includes(id));
