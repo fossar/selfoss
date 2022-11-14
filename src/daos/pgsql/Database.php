@@ -283,7 +283,7 @@ class Database implements \daos\DatabaseInterface {
      *
      * @return int id after insert
      */
-    public function insert($query, array $params) {
+    public function insert(string $query, array $params): int {
         $res = $this->exec("$query RETURNING id", $params);
 
         return $res[0]['id'];
@@ -296,9 +296,7 @@ class Database implements \daos\DatabaseInterface {
      * enabled by default.
      * See
      * https://www.postgresql.org/docs/9.1/static/runtime-config-autovacuum.html
-     *
-     * @return  void
      */
-    public function optimize() {
+    public function optimize(): void {
     }
 }

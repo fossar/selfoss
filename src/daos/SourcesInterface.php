@@ -9,15 +9,13 @@ interface SourcesInterface {
     /**
      * add new source
      *
-     * @param string $title
      * @param string[] $tags
-     * @param string $filter
      * @param string $spout the source type
      * @param array $params depends from spout
      *
      * @return int new id
      */
-    public function add($title, array $tags, $filter, $spout, array $params);
+    public function add(string $title, array $tags, string $filter, string $spout, array $params): int;
 
     /**
      * edit source
@@ -25,42 +23,31 @@ interface SourcesInterface {
      * @param int $id the source id
      * @param string $title new title
      * @param string[] $tags new tags
-     * @param string $filter
      * @param string $spout new spout
      * @param array $params the new params
-     *
-     * @return void
      */
-    public function edit($id, $title, array $tags, $filter, $spout, array $params);
+    public function edit(int $id, string $title, array $tags, string $filter, string $spout, array $params): void;
 
     /**
      * delete source
-     *
-     * @param int $id
-     *
-     * @return void
      */
-    public function delete($id);
+    public function delete(int $id): void;
 
     /**
      * save error message
      *
      * @param int $id the source id
      * @param string $error error message
-     *
-     * @return void
      */
-    public function error($id, $error);
+    public function error(int $id, string $error): void;
 
     /**
      * sets the last updated timestamp
      *
      * @param int $id the source id
      * @param ?int $lastEntry timestamp of the newest item or NULL when no items were added
-     *
-     * @return void
      */
-    public function saveLastUpdate($id, $lastEntry);
+    public function saveLastUpdate(int $id, ?int $lastEntry): void;
 
     /**
      * returns all sources
@@ -77,7 +64,7 @@ interface SourcesInterface {
      *
      * @return ?mixed specified source or all sources
      */
-    public function get($id = null);
+    public function get(?int $id = null);
 
     /**
      * returns all sources including unread count
@@ -103,21 +90,18 @@ interface SourcesInterface {
     /**
      * returns tags of a source
      *
-     * @param int $id
-     *
      * @return mixed tags of a source
      */
-    public function getTags($id);
+    public function getTags(int $id);
 
     /**
      * test if a source is already present using title, spout and params.
      * if present returns the id, else returns 0
      *
-     * @param  string  $title
      * @param  string  $spout the source type
      * @param  array   $params depends from spout
      *
      * @return int id if any record is found
      */
-    public function checkIfExists($title, $spout, array $params);
+    public function checkIfExists(string $title, string $spout, array $params): int;
 }

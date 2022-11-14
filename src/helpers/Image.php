@@ -58,10 +58,8 @@ class Image {
      * Get preferred extension for the format.
      *
      * @param self::FORMAT_* $format
-     *
-     * @return string
      */
-    public static function getExtension($format) {
+    public static function getExtension(string $format): string {
         return self::$extensions[$format];
     }
 
@@ -69,13 +67,15 @@ class Image {
      * fetch favicon
      *
      * @param string $url source url
-     * @param bool $isHtmlUrl
-     * @param ?int $width
-     * @param ?int $height
      *
      * @return ?array{string, ImageHolder} pair of URL and blob containing the image data
      */
-    public function fetchFavicon($url, $isHtmlUrl = false, $width = null, $height = null) {
+    public function fetchFavicon(
+        string $url,
+        bool $isHtmlUrl = false,
+        ?int $width = null,
+        ?int $height = null
+    ): ?array {
         // try given url
         try {
             $http = $this->webClient->getHttpClient();
@@ -141,14 +141,18 @@ class Image {
     /**
      * Load image from URL, optionally resize it and convert it to desired format.
      *
-     * @param string $data
-     * @param self::FORMAT_JPEG|self::FORMAT_PNG $format file format of output file
+     * @param self::FORMAT_* $format file format of output file
      * @param ?int $width target width
      * @param ?int $height target height
      *
      * @return ?ImageHolder blob containing the processed image
      */
-    public function loadImage($data, $format = self::FORMAT_PNG, $width = null, $height = null) {
+    public function loadImage(
+        string $data,
+        string $format = self::FORMAT_PNG,
+        ?int $width = null,
+        ?int $height = null
+    ): ?ImageHolder {
         $imgInfo = null;
 
         // get image type

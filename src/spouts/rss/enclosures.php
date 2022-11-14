@@ -22,19 +22,14 @@ class enclosures extends feed {
     /**
      * @return \Generator<Item<SimplePie\Item>> list of items
      */
-    public function getItems() {
+    public function getItems(): iterable {
         foreach (parent::getItems() as $item) {
             $newContent = $this->getContentWithEnclosures($item->getContent(), $item->getExtraData());
             yield $item->withContent($newContent);
         }
     }
 
-    /**
-     * @param string $content
-     *
-     * @return string
-     */
-    private function getContentWithEnclosures($content, SimplePie\Item $item) {
+    private function getContentWithEnclosures(string $content, SimplePie\Item $item): string {
         $enclosures = $item->get_enclosures();
         if ($enclosures === null) {
             return $content;

@@ -68,7 +68,7 @@ class commits extends \spouts\spout {
     // Source Methods
     //
 
-    public function load(array $params) {
+    public function load(array $params): void {
         $this->htmlUrl = 'https://github.com/' . urlencode($params['owner']) . '/' . urlencode($params['repo']) . '/' . urlencode($params['branch']);
 
         // https://docs.github.com/en/rest/commits/commits#list-commits
@@ -82,22 +82,22 @@ class commits extends \spouts\spout {
         $this->title = "Recent Commits to {$params['repo']}:{$params['branch']}";
     }
 
-    public function getTitle() {
+    public function getTitle(): ?string {
         return $this->title;
     }
 
-    public function getHtmlUrl() {
+    public function getHtmlUrl(): ?string {
         return $this->htmlUrl;
     }
 
-    public function getIcon() {
+    public function getIcon(): ?string {
         return $this->faviconUrl;
     }
 
     /**
      * @return \Generator<Item<null>> list of items
      */
-    public function getItems() {
+    public function getItems(): iterable {
         foreach ($this->items as $item) {
             $message = $item['commit']['message'];
 
@@ -124,7 +124,7 @@ class commits extends \spouts\spout {
         }
     }
 
-    public function destroy() {
+    public function destroy(): void {
         unset($this->items);
         $this->items = [];
     }
@@ -137,7 +137,7 @@ class commits extends \spouts\spout {
      *
      * @return string Cutted title
      */
-    public static function cutTitle($title, $cutafter = 69) {
+    public static function cutTitle(string $title, int $cutafter = 69): string {
         $title = strtok($title, "\n");
         if (($cutafter > 0) && (strlen($title) > $cutafter)) {
             return substr($title, 0, $cutafter) . '…';

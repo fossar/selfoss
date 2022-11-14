@@ -31,15 +31,12 @@ class youtube extends \spouts\rss\feed {
         ],
     ];
 
-    public function load(array $params) {
+    public function load(array $params): void {
         $url = $this->getXmlUrl($params);
         parent::load(['url' => $url]);
     }
 
-    /**
-     * @return string
-     */
-    public function getXmlUrl(array $params) {
+    public function getXmlUrl(array $params): string {
         $urlOrUsername = $params['channel'];
         if (preg_match('(^https?://www.youtube.com/channel/([a-zA-Z0-9_-]+)$)', $urlOrUsername, $matched)) {
             $id = $matched[1];
@@ -66,17 +63,14 @@ class youtube extends \spouts\rss\feed {
     /**
      * @return \Generator<Item<SimplePie\Item>>
      */
-    public function getItems() {
+    public function getItems(): iterable {
         foreach (parent::getItems() as $item) {
             $thumbnail = $this->getThumbnail($item->getExtraData());
             yield $item->withThumbnail($thumbnail);
         }
     }
 
-    /**
-     * @return ?string
-     */
-    private function getThumbnail(SimplePie\Item $item) {
+    private function getThumbnail(SimplePie\Item $item): ?string {
         // search enclosures (media tags)
         if (($firstEnclosure = $item->get_enclosure(0)) !== null) {
             if ($firstEnclosure->get_thumbnail()) {

@@ -70,7 +70,7 @@ class reddit2 extends \spouts\spout {
         $this->webClient = $webClient;
     }
 
-    public function load(array $params) {
+    public function load(array $params): void {
         if (!empty($params['password']) && !empty($params['username'])) {
             if (function_exists('apc_fetch')) {
                 $this->reddit_session = apc_fetch("{$params['username']}_selfoss_reddit_session") ?: '';
@@ -101,24 +101,18 @@ class reddit2 extends \spouts\spout {
         }
     }
 
-    /**
-     * @return ?string
-     */
-    public function getHtmlUrl() {
+    public function getHtmlUrl(): ?string {
         return $this->htmlUrl;
     }
 
-    /**
-     * @return string
-     */
-    public function getXmlUrl(array $params) {
+    public function getXmlUrl(array $params): string {
         return 'reddit://' . urlencode($params['url']);
     }
 
     /**
      * @return \Generator<Item<null>> list of items
      */
-    public function getItems() {
+    public function getItems(): iterable {
         foreach ($this->items as $item) {
             // Reddit escapes HTML, we can get away with just ampersands, since quotes and angle brackets are excluded from URLs.
             $url = htmlspecialchars_decode($item['data']['url'], ENT_NOQUOTES);
@@ -150,12 +144,7 @@ class reddit2 extends \spouts\spout {
         }
     }
 
-    /**
-     * @param string $url
-     *
-     * @return string
-     */
-    private function getContent($url, array $item) {
+    private function getContent(string $url, array $item): string {
         $data = $item['data'];
         $text = $data['selftext_html'];
         if (!empty($text)) {
@@ -182,12 +171,7 @@ class reddit2 extends \spouts\spout {
         return $data['url'];
     }
 
-    /**
-     * @param string $url
-     *
-     * @return ?string
-     */
-    private function findSiteIcon($url) {
+    private function findSiteIcon(string $url): ?string {
         $faviconUrl = null;
         if ($url && ($iconData = $this->imageHelper->fetchFavicon($url)) !== null) {
             [$faviconUrl, $iconBlob] = $iconData;
@@ -196,10 +180,7 @@ class reddit2 extends \spouts\spout {
         return $faviconUrl;
     }
 
-    /**
-     * @return ?string
-     */
-    private function getThumbnail(array $item) {
+    private function getThumbnail(array $item): ?string {
         $thumbnail = $item['data']['thumbnail'];
 
         if (!in_array($thumbnail, ['default', 'self'], true)) {
@@ -209,7 +190,7 @@ class reddit2 extends \spouts\spout {
         return null;
     }
 
-    public function destroy() {
+    public function destroy(): void {
         unset($this->items);
         $this->items = [];
     }

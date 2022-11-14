@@ -20,7 +20,7 @@ class Statements implements \daos\StatementsInterface {
      *
      * @return string full statement
      */
-    public static function nullFirst($column, $order) {
+    public static function nullFirst(string $column, string $order): string {
         return "$column $order";
     }
 
@@ -31,7 +31,7 @@ class Statements implements \daos\StatementsInterface {
      *
      * @return string full statement
      */
-    public static function sumBool($column) {
+    public static function sumBool(string $column): string {
         return "SUM($column)";
     }
 
@@ -42,7 +42,7 @@ class Statements implements \daos\StatementsInterface {
      *
      * @return string full statement
      */
-    public static function isTrue($column) {
+    public static function isTrue(string $column): string {
         return "$column=1";
     }
 
@@ -53,7 +53,7 @@ class Statements implements \daos\StatementsInterface {
      *
      * @return string full statement
      */
-    public static function isFalse($column) {
+    public static function isFalse(string $column): string {
         return "$column=0";
     }
 
@@ -64,7 +64,7 @@ class Statements implements \daos\StatementsInterface {
      *
      * @return string combined expression
      */
-    public static function exprOr(...$exprs) {
+    public static function exprOr(string ...$exprs): string {
         return '(' . implode(' OR ', $exprs) . ')';
     }
 
@@ -72,11 +72,11 @@ class Statements implements \daos\StatementsInterface {
      * check if CSV column matches a value.
      *
      * @param string $column CSV column to check
-     * @param mixed $value value to search in CSV column
+     * @param string $value value to search in CSV column
      *
      * @return string full statement
      */
-    public static function csvRowMatches($column, $value) {
+    public static function csvRowMatches(string $column, string $value): string {
         if ($value[0] === ':') {
             $value = "_utf8mb4 $value";
         }
@@ -92,7 +92,7 @@ class Statements implements \daos\StatementsInterface {
      *
      * @return ?string full statement
      */
-    public static function intRowMatches($column, array $ints) {
+    public static function intRowMatches(string $column, array $ints) {
         // checks types
         if (count($ints) === 0) {
             return null;
@@ -107,22 +107,18 @@ class Statements implements \daos\StatementsInterface {
      * Return the statement required to update a datetime column to the current
      * datetime.
      *
-     * @param string $column
-     *
      * @return string full statement
      */
-    public static function rowTouch($column) {
+    public static function rowTouch(string $column): string {
         return $column . '=NOW()';
     }
 
     /**
      * Convert boolean into a representation recognized by the database engine.
      *
-     * @param bool $bool
-     *
      * @return string representation of boolean
      */
-    public static function bool($bool) {
+    public static function bool(bool $bool): string {
         return $bool ? 'TRUE' : 'FALSE';
     }
 
@@ -134,7 +130,7 @@ class Statements implements \daos\StatementsInterface {
      *
      * @return string representation of datetime
      */
-    public static function datetime(\DateTime $date) {
+    public static function datetime(\DateTime $date): string {
         // mysql supports ISO8601 datetime comparisons
         return $date->format(\DateTime::ATOM);
     }
@@ -149,7 +145,7 @@ class Statements implements \daos\StatementsInterface {
      * @return array of associative array representing row results having
      *         expected types
      */
-    public static function ensureRowTypes(array $rows, array $expectedRowTypes) {
+    public static function ensureRowTypes(array $rows, array $expectedRowTypes): array {
         foreach ($rows as $rowIndex => $row) {
             foreach ($expectedRowTypes as $columnIndex => $type) {
                 if (array_key_exists($columnIndex, $row)) {
@@ -196,10 +192,8 @@ class Statements implements \daos\StatementsInterface {
      * convert string array to string for storage in table row
      *
      * @param string[] $a
-     *
-     * @return string
      */
-    public static function csvRow(array $a) {
+    public static function csvRow(array $a): string {
         $filtered = [];
         foreach ($a as $s) {
             $t = trim($s);
@@ -219,7 +213,7 @@ class Statements implements \daos\StatementsInterface {
      *
      * @return string expression for matching
      */
-    public static function matchesRegex($value, $regex) {
+    public static function matchesRegex(string $value, string $regex): string {
         // https://dev.mysql.com/doc/refman/5.7/en/regexp.html
         return $value . ' REGEXP ' . $regex;
     }

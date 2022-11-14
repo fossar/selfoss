@@ -78,10 +78,8 @@ class Items implements \daos\ItemsInterface {
      * starr item
      *
      * @param int $id the item
-     *
-     * @return void
      */
-    public function starr($id) {
+    public function starr(int $id): void {
         $this->database->exec('UPDATE ' . $this->configuration->dbPrefix . 'items SET starred=:bool WHERE id=:id', [
             ':bool' => true,
             ':id' => $id,
@@ -92,10 +90,8 @@ class Items implements \daos\ItemsInterface {
      * unstarr item
      *
      * @param int $id the item
-     *
-     * @return void
      */
-    public function unstarr($id) {
+    public function unstarr(int $id): void {
         $this->database->exec('UPDATE ' . $this->configuration->dbPrefix . 'items SET starred=:bool WHERE id=:id', [
             ':bool' => false,
             ':id' => $id,
@@ -104,12 +100,8 @@ class Items implements \daos\ItemsInterface {
 
     /**
      * add new item
-     *
-     * @param array $values
-     *
-     * @return void
      */
-    public function add($values) {
+    public function add(array $values): void {
         $this->database->exec('INSERT INTO ' . $this->configuration->dbPrefix . 'items (
                     datetime,
                     title,
@@ -153,12 +145,8 @@ class Items implements \daos\ItemsInterface {
     /**
      * checks whether an item with given
      * uid exists or not
-     *
-     * @param string $uid
-     *
-     * @return bool
      */
-    public function exists($uid) {
+    public function exists(string $uid): bool {
         $res = $this->database->exec('SELECT COUNT(*) AS amount FROM ' . $this->configuration->dbPrefix . 'items WHERE uid=:uid',
             [':uid' => [$uid, \PDO::PARAM_STR]]);
 
@@ -173,13 +161,13 @@ class Items implements \daos\ItemsInterface {
      *
      * @return array with all existing uids from itemsInFeed (array (uid => id))
      */
-    public function findAll($itemsInFeed, $sourceId) {
+    public function findAll(array $itemsInFeed, int $sourceId): array {
         $itemsFound = [];
         if (count($itemsInFeed) < 1) {
             return $itemsFound;
         }
 
-        array_walk($itemsInFeed, function(&$value) {
+        array_walk($itemsInFeed, function(&$value): void {
             $value = $this->database->quote($value);
         });
         $query = 'SELECT id, uid AS uid FROM ' . $this->configuration->dbPrefix . 'items WHERE source = ' . $this->database->quote($sourceId) . ' AND uid IN (' . implode(',', $itemsInFeed) . ')';
@@ -196,10 +184,8 @@ class Items implements \daos\ItemsInterface {
      * Update the time items were last seen in the feed to prevent unwanted cleanup.
      *
      * @param int[] $itemIds ids of items to update
-     *
-     * @return void
      */
-    public function updateLastSeen(array $itemIds) {
+    public function updateLastSeen(array $itemIds): void {
         $stmt = static::$stmt;
         $this->database->exec('UPDATE ' . $this->configuration->dbPrefix . 'items SET lastseen = CURRENT_TIMESTAMP
             WHERE ' . $stmt::intRowMatches('id', $itemIds));
@@ -209,10 +195,8 @@ class Items implements \daos\ItemsInterface {
      * cleanup orphaned and old items
      *
      * @param ?DateTime $date date to delete all items older than this value
-     *
-     * @return void
      */
-    public function cleanup(DateTime $date = null) {
+    public function cleanup(?DateTime $date = null): void {
         $stmt = static::$stmt;
         $this->database->exec('DELETE FROM ' . $this->configuration->dbPrefix . 'items
             WHERE source NOT IN (
@@ -371,10 +355,8 @@ class Items implements \daos\ItemsInterface {
     /**
      * returns whether more items for last given
      * get call are available
-     *
-     * @return bool
      */
-    public function hasMore() {
+    public function hasMore(): bool {
         return $this->hasMore;
     }
 
@@ -384,11 +366,10 @@ class Items implements \daos\ItemsInterface {
      * @param int $sinceId id of last seen item
      * @param DateTime $notBefore cut off time stamp
      * @param DateTime $since timestamp of last seen item
-     * @param int $howMany
      *
      * @return array of items
      */
-    public function sync($sinceId, DateTime $notBefore, DateTime $since, $howMany) {
+    public function sync(int $sinceId, DateTime $notBefore, DateTime $since, int $howMany): array {
         $stmt = static::$stmt;
         $query = 'SELECT
         items.id, datetime, items.title AS title, content, unread, starred, source, thumbnail, icon, uid, link, updatetime, author, sources.title as sourcetitle, sources.tags as tags
@@ -425,7 +406,7 @@ class Items implements \daos\ItemsInterface {
      *
      * @return int lowest id of interest
      */
-    public function lowestIdOfInterest() {
+    public function lowestIdOfInterest(): int {
         $stmt = static::$stmt;
         $lowest = $stmt::ensureRowTypes(
             $this->database->exec(
@@ -447,7 +428,7 @@ class Items implements \daos\ItemsInterface {
      *
      * @return int last id in db
      */
-    public function lastId() {
+    public function lastId(): int {
         $stmt = static::$stmt;
         $lastId = $stmt::ensureRowTypes(
             $this->database->exec(
@@ -467,7 +448,7 @@ class Items implements \daos\ItemsInterface {
      *
      * @return string[] array with thumbnails
      */
-    public function getThumbnails() {
+    public function getThumbnails(): array {
         $thumbnails = [];
         $result = $this->database->exec('SELECT thumbnail
                    FROM ' . $this->configuration->dbPrefix . 'items
@@ -484,7 +465,7 @@ class Items implements \daos\ItemsInterface {
      *
      * @return string[] array with all icons
      */
-    public function getIcons() {
+    public function getIcons(): array {
         $icons = [];
         $result = $this->database->exec('SELECT icon
                    FROM ' . $this->configuration->dbPrefix . 'items
@@ -503,7 +484,7 @@ class Items implements \daos\ItemsInterface {
      *
      * @return bool true if thumbnail is still in use
      */
-    public function hasThumbnail($thumbnail) {
+    public function hasThumbnail(string $thumbnail): bool {
         $res = $this->database->exec('SELECT count(*) AS amount
                    FROM ' . $this->configuration->dbPrefix . 'items
                    WHERE thumbnail=:thumbnail',
@@ -523,7 +504,7 @@ class Items implements \daos\ItemsInterface {
      *
      * @return bool true if icon is still in use
      */
-    public function hasIcon($icon) {
+    public function hasIcon(string $icon): bool {
         $res = $this->database->exec('SELECT count(*) AS amount
                    FROM ' . $this->configuration->dbPrefix . 'items
                    WHERE icon=:icon',
@@ -537,7 +518,7 @@ class Items implements \daos\ItemsInterface {
      *
      * @return int amount of entries in database which are unread
      */
-    public function numberOfUnread() {
+    public function numberOfUnread(): int {
         $stmt = static::$stmt;
         $res = $this->database->exec('SELECT count(*) AS amount
                    FROM ' . $this->configuration->dbPrefix . 'items
@@ -551,7 +532,7 @@ class Items implements \daos\ItemsInterface {
      *
      * @return array mount of total, unread, starred entries in database
      */
-    public function stats() {
+    public function stats(): array {
         $stmt = static::$stmt;
         $res = $this->database->exec('SELECT
             COUNT(*) AS total,
@@ -572,7 +553,7 @@ class Items implements \daos\ItemsInterface {
      *
      * @return string timestamp
      */
-    public function lastUpdate() {
+    public function lastUpdate(): string {
         $res = $this->database->exec('SELECT
             MAX(updatetime) AS last_update_time
             FROM ' . $this->configuration->dbPrefix . 'items;');
@@ -587,7 +568,7 @@ class Items implements \daos\ItemsInterface {
      *
      * @return array of unread, starred, etc. status of specified items
      */
-    public function statuses(DateTime $since) {
+    public function statuses(DateTime $since): array {
         $stmt = static::$stmt;
         $res = $this->database->exec('SELECT id, unread, starred
             FROM ' . $this->configuration->dbPrefix . 'items
@@ -606,10 +587,8 @@ class Items implements \daos\ItemsInterface {
      * bulk update of item status
      *
      * @param array $statuses array of statuses updates
-     *
-     * @return void
      */
-    public function bulkStatusUpdate(array $statuses) {
+    public function bulkStatusUpdate(array $statuses): void {
         $stmt = static::$stmt;
         $sql = [];
         foreach ($statuses as $status) {

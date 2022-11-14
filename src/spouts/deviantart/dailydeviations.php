@@ -19,14 +19,11 @@ class dailydeviations extends \spouts\rss\images {
     /** @var array configurable parameters */
     public $params = [];
 
-    public function load(array $params) {
+    public function load(array $params): void {
         parent::load(['url' => $this->getXmlUrl($params)]);
     }
 
-    /**
-     * @return string
-     */
-    public function getXmlUrl(array $params) {
+    public function getXmlUrl(array $params): string {
         return 'https://backend.deviantart.com/rss.xml?q=special%3Add&type=deviation&offset=0';
     }
 }

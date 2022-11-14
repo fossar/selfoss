@@ -15,12 +15,8 @@ use spouts\youtube\youtube;
 final class YouTubeTest extends TestCase {
     /**
      * @dataProvider dataProvider
-     *
-     * @param string $url
-     * @param string $feedTitle
-     * @param string $firstItemTitle
      */
-    public function testBasic($url, $feedTitle, $firstItemTitle) {
+    public function testBasic(string $url, string $feedTitle, string $firstItemTitle): void {
         $cachedFeedPath = __DIR__ . '/resources/YouTube/' . str_replace([':', '/', '?', '='], '_', $url) . '.xml';
 
         $mock = new MockHandler([

@@ -28,10 +28,12 @@ class Tags {
     /** @var Logger */
     private $logger;
 
-    /**
-     * Constructor.
-     */
-    public function __construct(Authentication $authentication, Configuration $configuration, Logger $logger, TagsInterface $backend) {
+    public function __construct(
+        Authentication $authentication,
+        Configuration $configuration,
+        Logger $logger,
+        TagsInterface $backend
+    ) {
         $this->authentication = $authentication;
         $this->backend = $backend;
         $this->configuration = $configuration;
@@ -66,7 +68,7 @@ class Tags {
      *
      * @return mixed methods return value
      */
-    public function __call($name, $args) {
+    public function __call(string $name, array $args) {
         if (method_exists($this->backend, $name)) {
             return call_user_func_array([$this->backend, $name], $args);
         } else {

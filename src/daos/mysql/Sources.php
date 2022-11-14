@@ -30,15 +30,13 @@ class Sources implements \daos\SourcesInterface {
     /**
      * add new source
      *
-     * @param string $title
      * @param string[] $tags
-     * @param string $filter
      * @param string $spout the source type
      * @param array $params depends from spout
      *
      * @return int new id
      */
-    public function add($title, array $tags, $filter, $spout, array $params) {
+    public function add(string $title, array $tags, string $filter, string $spout, array $params): int {
         $stmt = static::$stmt;
 
         return $this->database->insert('INSERT INTO ' . $this->configuration->dbPrefix . 'sources (title, tags, filter, spout, params) VALUES (:title, :tags, :filter, :spout, :params)', [
@@ -56,13 +54,10 @@ class Sources implements \daos\SourcesInterface {
      * @param int $id the source id
      * @param string $title new title
      * @param string[] $tags new tags
-     * @param string $filter
      * @param string $spout new spout
      * @param array $params the new params
-     *
-     * @return void
      */
-    public function edit($id, $title, array $tags, $filter, $spout, array $params) {
+    public function edit(int $id, string $title, array $tags, string $filter, string $spout, array $params): void {
         $stmt = static::$stmt;
         $this->database->exec('UPDATE ' . $this->configuration->dbPrefix . 'sources SET title=:title, tags=:tags, filter=:filter, spout=:spout, params=:params WHERE id=:id', [
             ':title' => trim($title),
@@ -76,12 +71,8 @@ class Sources implements \daos\SourcesInterface {
 
     /**
      * delete source
-     *
-     * @param int $id
-     *
-     * @return void
      */
-    public function delete($id) {
+    public function delete(int $id): void {
         $this->database->exec('DELETE FROM ' . $this->configuration->dbPrefix . 'sources WHERE id=:id', [':id' => $id]);
 
         // delete items of this source
@@ -93,10 +84,8 @@ class Sources implements \daos\SourcesInterface {
      *
      * @param int $id the source id
      * @param string $error error message
-     *
-     * @return void
      */
-    public function error($id, $error) {
+    public function error(int $id, string $error): void {
         if (strlen($error) === 0) {
             $arr = [
                 ':id' => $id,
@@ -118,10 +107,8 @@ class Sources implements \daos\SourcesInterface {
      *
      * @param int $id the source id
      * @param ?int $lastEntry timestamp of the newest item or NULL when no items were added
-     *
-     * @return void
      */
-    public function saveLastUpdate($id, $lastEntry) {
+    public function saveLastUpdate(int $id, ?int $lastEntry): void {
         $this->database->exec('UPDATE ' . $this->configuration->dbPrefix . 'sources SET lastupdate=:lastupdate WHERE id=:id',
             [
                 ':id' => $id,
@@ -156,7 +143,7 @@ class Sources implements \daos\SourcesInterface {
      *
      * @return ?mixed specified source or all sources
      */
-    public function get($id = null) {
+    public function get(?int $id = null) {
         $stmt = static::$stmt;
         // select source by id if specified or return all sources
         if (isset($id)) {
@@ -248,11 +235,9 @@ class Sources implements \daos\SourcesInterface {
     /**
      * returns tags of a source
      *
-     * @param int $id
-     *
      * @return mixed tags of a source
      */
-    public function getTags($id) {
+    public function getTags(int $id) {
         $result = $this->database->exec('SELECT tags FROM ' . $this->configuration->dbPrefix . 'sources WHERE id=:id', [':id' => $id]);
         $tags = [];
         $tags = array_merge($tags, explode(',', $result[0]['tags']));
@@ -265,13 +250,12 @@ class Sources implements \daos\SourcesInterface {
      * test if a source is already present using title, spout and params.
      * if present returns the id, else returns 0
      *
-     * @param  string  $title
      * @param  string  $spout the source type
      * @param  array   $params depends from spout
      *
      * @return int id if any record is found
      */
-    public function checkIfExists($title, $spout, array $params) {
+    public function checkIfExists(string $title, string $spout, array $params): int {
         // Check if a entry exists with same title, spout and params
         $result = $this->database->exec('SELECT id FROM ' . $this->configuration->dbPrefix . 'sources WHERE title=:title AND spout=:spout AND params=:params', [
             ':title' => trim($title),

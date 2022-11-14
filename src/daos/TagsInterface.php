@@ -8,22 +8,13 @@ namespace daos;
 interface TagsInterface {
     /**
      * save given tag color
-     *
-     * @param string $tag
-     * @param string $color
-     *
-     * @return void
      */
-    public function saveTagColor($tag, $color);
+    public function saveTagColor(string $tag, string $color): void;
 
     /**
      * save given tag with random color
-     *
-     * @param string $tag
-     *
-     * @return void
      */
-    public function autocolorTag($tag);
+    public function autocolorTag(string $tag): void;
 
     /**
      * returns all tags with color
@@ -43,26 +34,18 @@ interface TagsInterface {
      * remove all unused tag color definitions
      *
      * @param array $tags available tags
-     *
-     * @return void
      */
-    public function cleanup(array $tags);
+    public function cleanup(array $tags): void;
 
     /**
      * check whether tag color is defined.
      *
-     * @param string $tag
-     *
      * @return bool true if color is used by an tag
      */
-    public function hasTag($tag);
+    public function hasTag(string $tag): bool;
 
     /**
      * delete tag
-     *
-     * @param string $tag
-     *
-     * @return void
      */
-    public function delete($tag);
+    public function delete(string $tag): void;
 }

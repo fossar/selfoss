@@ -20,10 +20,8 @@ class ImportPage {
     /**
      * Shows a simple html form
      * html
-     *
-     * @return void
      */
-    public function show() {
+    public function show(): void {
         $this->authentication->needsLoggedIn();
         readfile(BASEDIR . '/public/opml.html');
     }

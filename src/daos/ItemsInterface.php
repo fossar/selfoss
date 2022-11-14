@@ -26,38 +26,26 @@ interface ItemsInterface {
      * starr item
      *
      * @param int $id the item
-     *
-     * @return void
      */
-    public function starr($id);
+    public function starr(int $id): void;
 
     /**
      * unstarr item
      *
      * @param int $id the item
-     *
-     * @return void
      */
-    public function unstarr($id);
+    public function unstarr(int $id): void;
 
     /**
      * add new item
-     *
-     * @param array $values
-     *
-     * @return void
      */
-    public function add($values);
+    public function add(array $values): void;
 
     /**
      * checks whether an item with given
      * uid exists or not
-     *
-     * @param string $uid
-     *
-     * @return bool
      */
-    public function exists($uid);
+    public function exists(string $uid): bool;
 
     /**
      * search whether given uids are already in database or not
@@ -67,25 +55,21 @@ interface ItemsInterface {
      *
      * @return array with all existing uids from itemsInFeed (array (uid => id););
      */
-    public function findAll($itemsInFeed, $sourceId);
+    public function findAll(array $itemsInFeed, int $sourceId): array;
 
     /**
      * Update the time items were last seen in the feed to prevent unwanted cleanup.
      *
      * @param int[] $itemIds ids of items to update
-     *
-     * @return void
      */
-    public function updateLastSeen(array $itemIds);
+    public function updateLastSeen(array $itemIds): void;
 
     /**
      * cleanup orphaned and old items
      *
      * @param ?DateTime $date date to delete all items older than this value
-     *
-     * @return void
      */
-    public function cleanup(DateTime $date = null);
+    public function cleanup(DateTime $date = null): void;
 
     /**
      * returns items
@@ -99,10 +83,8 @@ interface ItemsInterface {
     /**
      * returns whether more items for last given
      * get call are available
-     *
-     * @return bool
      */
-    public function hasMore();
+    public function hasMore(): bool;
 
     /**
      * Obtain new or changed items in the database for synchronization with clients.
@@ -110,39 +92,38 @@ interface ItemsInterface {
      * @param int $sinceId id of last seen item
      * @param DateTime $notBefore cut off time stamp
      * @param DateTime $since timestamp of last seen item
-     * @param int $howMany
      *
      * @return array of items
      */
-    public function sync($sinceId, DateTime $notBefore, DateTime $since, $howMany);
+    public function sync(int $sinceId, DateTime $notBefore, DateTime $since, int $howMany): array;
 
     /**
      * Lowest id of interest
      *
      * @return int lowest id of interest
      */
-    public function lowestIdOfInterest();
+    public function lowestIdOfInterest(): int;
 
     /**
      * Last id in db
      *
      * @return int last id in db
      */
-    public function lastId();
+    public function lastId(): int;
 
     /**
      * return all thumbnails
      *
      * @return string[] array with thumbnails
      */
-    public function getThumbnails();
+    public function getThumbnails(): array;
 
     /**
      * return all icons
      *
      * @return string[] array with all icons
      */
-    public function getIcons();
+    public function getIcons(): array;
 
     /**
      * return all thumbnails
@@ -151,7 +132,7 @@ interface ItemsInterface {
      *
      * @return bool true if thumbnail is still in use
      */
-    public function hasThumbnail($thumbnail);
+    public function hasThumbnail(string $thumbnail): bool;
 
     /**
      * return all icons
@@ -160,28 +141,28 @@ interface ItemsInterface {
      *
      * @return bool true if icon is still in use
      */
-    public function hasIcon($icon);
+    public function hasIcon(string $icon): bool;
 
     /**
      * returns the amount of entries in database which are unread
      *
      * @return int amount of entries in database which are unread
      */
-    public function numberOfUnread();
+    public function numberOfUnread(): int;
 
     /**
      * returns the amount of total, unread, starred entries in database
      *
      * @return array mount of total, unread, starred entries in database
      */
-    public function stats();
+    public function stats(): array;
 
     /**
      * returns the datetime of the last item update or user action in db
      *
      * @return string timestamp
      */
-    public function lastUpdate();
+    public function lastUpdate(): string;
 
     /**
      * returns the statuses of items last update
@@ -190,14 +171,12 @@ interface ItemsInterface {
      *
      * @return array of unread, starred, etc. status of specified items
      */
-    public function statuses(DateTime $since);
+    public function statuses(DateTime $since): array;
 
     /**
      * bulk update of item status
      *
      * @param array $statuses array of statuses updates
-     *
-     * @return void
      */
-    public function bulkStatusUpdate(array $statuses);
+    public function bulkStatusUpdate(array $statuses): void;
 }

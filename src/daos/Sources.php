@@ -34,12 +34,13 @@ class Sources {
     /** @var SpoutLoader spout loader */
     private $spoutLoader;
 
-    /**
-     * Constructor.
-     *
-     * @return void
-     */
-    public function __construct(Authentication $authentication, Configuration $configuration, Logger $logger, SourcesInterface $backend, SpoutLoader $spoutLoader) {
+    public function __construct(
+        Authentication $authentication,
+        Configuration $configuration,
+        Logger $logger,
+        SourcesInterface $backend,
+        SpoutLoader $spoutLoader
+    ) {
         $this->authentication = $authentication;
         $this->configuration = $configuration;
         $this->backend = $backend;
@@ -55,7 +56,7 @@ class Sources {
      *
      * @return mixed methods return value
      */
-    public function __call($name, $args) {
+    public function __call(string $name, array $args) {
         if (method_exists($this->backend, $name)) {
             return call_user_func_array([$this->backend, $name], $args);
         } else {
@@ -63,10 +64,7 @@ class Sources {
         }
     }
 
-    /**
-     * @param int|null $id
-     */
-    public function get($id = null) {
+    public function get(?int $id = null) {
         $sources = $this->backend->get($id);
         if ($id === null) {
             // remove items with private tags
@@ -97,7 +95,7 @@ class Sources {
      *
      * @author Tobias Zeising
      */
-    public function validate($title, $spout, array $params) {
+    public function validate(string $title, string $spout, array $params) {
         $result = [];
 
         // title

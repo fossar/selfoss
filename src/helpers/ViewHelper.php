@@ -26,7 +26,7 @@ class ViewHelper {
      *
      * @return string with highlited words
      */
-    public static function highlight($content, $searchWords) {
+    public static function highlight(string $content, string $searchWords): string {
         if (strlen(trim($searchWords)) === 0) {
             return $content;
         }
@@ -52,7 +52,7 @@ class ViewHelper {
      *
      * @return string with replaced img tags
      */
-    public static function lazyimg($content) {
+    public static function lazyimg(string $content): string {
         return preg_replace_callback("/<img(?P<pre>[^<]+)src=(?:['\"])(?P<src>[^\"']*)(?:['\"])(?P<post>[^<]*)>/i", function(array $matches) {
             $width = null;
             $height = null;
@@ -85,10 +85,8 @@ class ViewHelper {
      * Return ISO8601 formatted date
      *
      * @param string $datestr sql date
-     *
-     * @return string
      */
-    public static function date_iso8601($datestr) {
+    public static function date_iso8601(string $datestr): string {
         $date = new \DateTime($datestr);
 
         return $date->format(\DateTime::ATOM);
@@ -101,7 +99,7 @@ class ViewHelper {
      *
      * @return string          item content
      */
-    public function camoflauge($content) {
+    public function camoflauge(string $content): string {
         if (empty($content)) {
             return $content;
         }
@@ -123,7 +121,7 @@ class ViewHelper {
      *
      * @return array modified item
      */
-    public function preprocessEntry(array $item, \controllers\Tags $tagsController, array $tags = null, $search = null) {
+    public function preprocessEntry(array $item, \controllers\Tags $tagsController, ?array $tags = null, ?string $search = null): array {
         // parse tags and assign tag colors
         $item['tags'] = $tagsController->tagsAddColors($item['tags'], $tags);
 

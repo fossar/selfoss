@@ -22,7 +22,7 @@ class images extends feed {
     /**
      * @return \Generator<Item<SimplePie\Item>> list of items
      */
-    public function getItems() {
+    public function getItems(): iterable {
         foreach (parent::getItems() as $item) {
             $thumbnail = $this->findThumbnail($item->getExtraData());
             if ($thumbnail !== null) {
@@ -33,10 +33,7 @@ class images extends feed {
         }
     }
 
-    /**
-     * @return ?string
-     */
-    private function findThumbnail(SimplePie\Item $item) {
+    private function findThumbnail(SimplePie\Item $item): ?string {
         // search enclosures (media tags)
         if (($firstEnclosure = $item->get_enclosure(0)) !== null) {
             // thumbnail given?

@@ -14,24 +14,15 @@ class FileStorage {
     /** @var string Directory where the files will be stored */
     private $directory;
 
-    /**
-     * @param string $directory
-     */
-    public function __construct(Logger $logger, $directory) {
+    public function __construct(Logger $logger, string $directory) {
         $this->logger = $logger;
         $this->directory = $directory;
     }
 
     /**
      * Store given blob with type $extension as URL.
-     *
-     * @param string $url
-     * @param string $extension
-     * @param string $blob
-     *
-     * @return ?string
      */
-    public function store($url, $extension, $blob) {
+    public function store(string $url, string $extension, string $blob): ?string {
         $filename = md5($url) . '.' . $extension;
         $path = $this->directory . '/' . $filename;
         $written = @file_put_contents($path, $blob);
@@ -49,10 +40,8 @@ class FileStorage {
      * Delete all files except for requested ones.
      *
      * @param callable(string):bool $shouldKeep
-     *
-     * @return void
      */
-    public function cleanup($shouldKeep) {
+    public function cleanup(callable $shouldKeep): void {
         $itemPath = $this->directory . '/';
         $undeleted = [];
         foreach (scandir($itemPath) as $file) {

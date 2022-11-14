@@ -43,11 +43,9 @@ class Write {
      * Update source data or create a new source.
      * json
      *
-     * @param ?int $id ID of source to update, or null to create a new one
-     *
-     * @return void
+     * @param ?string $id ID of source to update, or null to create a new one
      */
-    public function write($id = null) {
+    public function write(?string $id = null): void {
         $this->authentication->needsLoggedIn();
 
         // read data

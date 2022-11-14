@@ -19,14 +19,8 @@ class ImageUtils {
 
     /**
      * removes $startString, $endString and everything in between from $subject
-     *
-     * @param string $startString
-     * @param string $endString
-     * @param string $subject
-     *
-     * @return string
      */
-    public static function cleanString($startString, $endString, $subject) {
+    public static function cleanString(string $startString, string $endString, string $subject): string {
         while (false !== $p1 = stripos($subject, $startString)) {
             $block = substr($subject, $p1);
             $subject = substr($subject, 0, $p1);
@@ -43,11 +37,9 @@ class ImageUtils {
      * If icons are found, their URLs are returned in an array ordered by size
      * if given or by likely size of not, with the biggest one first.
      *
-     * @param string $html
-     *
      * @return string[]
      */
-    public static function parseShortcutIcons($html) {
+    public static function parseShortcutIcons(string $html): array {
         $end = strripos($html, '</head>');
         if ($end > 1) {
             $html = substr($html, 0, $end);
@@ -119,7 +111,7 @@ class ImageUtils {
      *
      * @return ?string content of the src attribute of the first image
      */
-    public static function findFirstImageSource($html) {
+    public static function findFirstImageSource(string $html): ?string {
         if (stripos($html, '<img') !== false) {
             $imgsrc_regex = '#<\s*img [^\>]*src\s*=\s*(["\'])(.*?)\1#im';
             if (preg_match($imgsrc_regex, $html, $matches)) {
@@ -135,11 +127,9 @@ class ImageUtils {
     /**
      * Detect if given data is an SVG file and not just a HTML document with SVG embedded.
      *
-     * @param string $blob
-     *
      * @return bool true when it is a SVG
      */
-    public static function detectSvg($blob) {
+    public static function detectSvg(string $blob): bool {
         return preg_match('#<svg[\s>]#si', $blob) && !preg_match('#<((!doctype )?html|body)[\s>]#si', $blob);
     }
 }

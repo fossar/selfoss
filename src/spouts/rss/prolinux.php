@@ -50,14 +50,11 @@ class prolinux extends fulltextrss {
         'comments' => 'http://www.pro-linux.de/NB3/rss/6/4/atom_kommentare.xml',
     ];
 
-    public function load(array $params) {
+    public function load(array $params): void {
         parent::load(['url' => $this->getXmlUrl($params)]);
     }
 
-    /**
-     * @return string
-     */
-    public function getXmlUrl(array $params) {
+    public function getXmlUrl(array $params): string {
         return self::FEED_URLS[$params['section']];
     }
 }

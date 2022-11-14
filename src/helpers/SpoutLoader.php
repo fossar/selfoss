@@ -29,7 +29,7 @@ class SpoutLoader {
      *
      * @return array<class-string<spout>, spout> available spouts
      */
-    public function all() {
+    public function all(): array {
         $this->readSpouts();
 
         return $this->spouts;
@@ -38,11 +38,11 @@ class SpoutLoader {
     /**
      * returns a given spout object
      *
-     * @param string $spout a given spout type
+     * @param class-string $spout a given spout type
      *
      * @return ?spout an instance of the spout, null if this spout doesn't exist
      */
-    public function get($spout) {
+    public function get(string $spout): ?spout {
         if (!class_exists($spout)) {
             return null;
         }
@@ -66,10 +66,8 @@ class SpoutLoader {
 
     /**
      * reads all spouts
-     *
-     * @return void
      */
-    protected function readSpouts() {
+    protected function readSpouts(): void {
         if ($this->spouts === null) {
             $this->spouts = $this->loadClasses(__DIR__ . '/../spouts', spout::class);
 
@@ -88,7 +86,7 @@ class SpoutLoader {
      *
      * @return array<class-string<P>, P> list of instantiated spouts associated to their class names
      */
-    protected function loadClasses($location, $parentClassName) {
+    protected function loadClasses(string $location, string $parentClassName): array {
         $return = [];
 
         foreach (scandir($location) as $dir) {
@@ -120,10 +118,8 @@ class SpoutLoader {
      *
      * @param spout $spout1 Spout 1
      * @param spout $spout2 Spout 2
-     *
-     * @return int
      */
-    private static function compareSpoutsByName(spout $spout1, spout $spout2) {
+    private static function compareSpoutsByName(spout $spout1, spout $spout2): int {
         return strcasecmp($spout1->name, $spout2->name);
     }
 }

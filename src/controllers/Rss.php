@@ -45,10 +45,8 @@ class Rss {
 
     /**
      * rss feed
-     *
-     * @return void
      */
-    public function rss() {
+    public function rss(): void {
         $this->authentication->needsLoggedInOrPublicMode();
 
         $this->feedWriter->setTitle($this->configuration->rssTitle);
@@ -113,12 +111,7 @@ class Rss {
         $this->feedWriter->printFeed();
     }
 
-    /**
-     * @param string $title
-     *
-     * @return string
-     */
-    private function sanitizeTitle($title) {
+    private function sanitizeTitle(string $title): string {
         $title = strip_tags($title);
         $title = html_entity_decode($title, ENT_HTML5, 'UTF-8');
 

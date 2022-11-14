@@ -27,13 +27,15 @@ class DatabaseConnection {
 
     /**
      * Instantiate class
-     *
-     * @param string $dsn
-     * @param string $user
-     * @param string $pw
-     * @param string $tableNamePrefix
-     **/
-    public function __construct(Logger $logger, $dsn, $user = null, $pw = null, array $options = [], $tableNamePrefix = '') {
+     */
+    public function __construct(
+        Logger $logger,
+        string $dsn,
+        ?string $user = null,
+        ?string $pw = null,
+        array $options = [],
+        string $tableNamePrefix = ''
+    ) {
         $this->logger = $logger;
         $this->logger->debug('Creating database connection', ['dsn' => $dsn]);
         $this->pdo = new PDO($dsn, $user, $pw, $options);
@@ -43,10 +45,8 @@ class DatabaseConnection {
 
     /**
      * Begin SQL transaction
-     *
-     * @return bool
-     **/
-    public function beginTransaction() {
+     */
+    public function beginTransaction(): bool {
         $out = $this->pdo->beginTransaction();
         $this->isInTransaction = true;
 
@@ -55,10 +55,8 @@ class DatabaseConnection {
 
     /**
      * Roll back SQL transaction
-     *
-     * @return bool
-     **/
-    public function rollBack() {
+     */
+    public function rollBack(): bool {
         $out = false;
         if ($this->pdo->inTransaction()) {
             $out = $this->pdo->rollBack();
@@ -70,10 +68,8 @@ class DatabaseConnection {
 
     /**
      * Commit SQL transaction
-     *
-     * @return bool
-     **/
-    public function commit() {
+     */
+    public function commit(): bool {
         $out = false;
         if ($this->pdo->inTransaction()) {
             $out = $this->pdo->commit();
@@ -83,19 +79,14 @@ class DatabaseConnection {
         return $out;
     }
 
-    /**
-     * @return string
-     **/
-    public function getTableNamePrefix() {
+    public function getTableNamePrefix(): string {
         return $this->tableNamePrefix;
     }
 
     /**
      * Return transaction flag
-     *
-     * @return bool
-     **/
-    private function isInTransaction() {
+     */
+    private function isInTransaction(): bool {
         return $this->isInTransaction;
     }
 
@@ -103,10 +94,8 @@ class DatabaseConnection {
      * Map data type of argument to a PDO constant
      *
      * @param scalar $val
-     *
-     * @return int
-     **/
-    private function type($val) {
+     */
+    private function type($val): int {
         switch (gettype($val)) {
             case 'NULL':
                 return PDO::PARAM_NULL;
@@ -124,12 +113,9 @@ class DatabaseConnection {
     /**
      * Execute SQL statement.
      *
-     * @param string $cmd
      * @param array|scalar $args
-     *
-     * @return \PDOStatement
-     **/
-    public function execute($cmd, $args = []) {
+     */
+    public function execute(string $cmd, $args = []): \PDOStatement {
         if (is_scalar($args)) {
             $args = [1 => $args];
         }
@@ -184,12 +170,9 @@ class DatabaseConnection {
     /**
      * Execute SQL statement and fetch the result as an associative array (when applicable).
      *
-     * @param string $cmd
      * @param array|scalar $args
-     *
-     * @return ?array
-     **/
-    public function exec($cmd, $args = []) {
+     */
+    public function exec(string $cmd, $args = []): ?array {
         $statement = $this->execute($cmd, $args);
 
         $result = null;
@@ -207,22 +190,17 @@ class DatabaseConnection {
      * Quote string
      *
      * @param mixed $val
-     * @param int $type
-     *
-     * @return string
-     **/
-    public function quote($val, $type = PDO::PARAM_STR) {
+     */
+    public function quote($val, int $type = PDO::PARAM_STR): string {
         return $this->pdo->quote($val, $type);
     }
 
     /**
      * Redirect call to PDO object
      *
-     * @param string $func
-     *
      * @return mixed
-     **/
-    public function __call($func, array $args) {
+     */
+    public function __call(string $func, array $args) {
         return call_user_func_array([$this->pdo, $func], $args);
     }
 }

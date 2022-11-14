@@ -29,12 +29,12 @@ class Items {
     /** @var Logger */
     private $logger;
 
-    /**
-     * Constructor.
-     *
-     * @return void
-     */
-    public function __construct(Authentication $authentication, Configuration $configuration, Logger $logger, ItemsInterface $backend) {
+    public function __construct(
+        Authentication $authentication,
+        Configuration $configuration,
+        Logger $logger,
+        ItemsInterface $backend
+    ) {
         $this->authentication = $authentication;
         $this->backend = $backend;
         $this->configuration = $configuration;
@@ -49,7 +49,7 @@ class Items {
      *
      * @return mixed methods return value
      */
-    public function __call($name, $args) {
+    public function __call(string $name, array $args) {
         if (method_exists($this->backend, $name)) {
             return call_user_func_array([$this->backend, $name], $args);
         } else {
@@ -61,10 +61,8 @@ class Items {
      * cleanup orphaned and old items
      *
      * @param int $days delete all items older than this value [optional]
-     *
-     * @return void
      */
-    public function cleanup($days) {
+    public function cleanup(int $days): void {
         $minDate = null;
         if ($days !== 0) {
             $minDate = new \DateTime();

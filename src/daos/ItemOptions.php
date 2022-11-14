@@ -41,11 +41,9 @@ final class ItemOptions {
     /**
      * Creates new ItemOptions object ensuring the values are proper types.
      *
-     * @param array $data
-     *
      * @return static
      */
-    public static function fromUser($data) {
+    public static function fromUser(array $data): self {
         $options = new static();
 
         if (isset($data['offset']) && is_numeric($data['offset'])) {

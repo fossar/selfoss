@@ -54,10 +54,8 @@ class Index {
     /**
      * home site
      * json
-     *
-     * @return void
      */
-    public function home() {
+    public function home(): void {
         $options = $_GET;
 
         if (!$this->view->isAjax()) {

@@ -9,7 +9,7 @@ final class ImageLazifierTest extends TestCase {
     /**
      * Check that src attribute is renamed, other attributes are preserved and a properly-sized placeholder is chosen.
      */
-    public function testBasic() {
+    public function testBasic(): void {
         $input = <<<EOD
 <img foo bar src="https://example.org/example.jpg" alt="" width="900" height="400">
 EOD;
@@ -26,7 +26,7 @@ EOD;
     /**
      * Check that width for the placeholder is calculated from height.
      */
-    public function testWidthMissing() {
+    public function testWidthMissing(): void {
         $input = <<<EOD
 <img src="https://example.org/example.jpg" height="300">
 EOD;
@@ -43,7 +43,7 @@ EOD;
     /**
      * Check that height for the placeholder is calculated from width.
      */
-    public function testHeightMissing() {
+    public function testHeightMissing(): void {
         $input = <<<EOD
 <img src="https://example.org/example.jpg" width="400">
 EOD;
@@ -60,7 +60,7 @@ EOD;
     /**
      * Check that placeholder dimensions are chosen even when the image does not specify any.
      */
-    public function testDimensionsMissing() {
+    public function testDimensionsMissing(): void {
         $input = <<<EOD
 <img src="https://example.org/example.jpg">
 EOD;

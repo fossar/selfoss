@@ -67,7 +67,7 @@ class page extends \spouts\spout {
         $this->webClient = $webClient;
     }
 
-    public function load(array $params) {
+    public function load(array $params): void {
         // https://developers.facebook.com/docs/graph-api/reference/user
         $http = $this->webClient->getHttpClient();
         $url = new Uri('https://graph.facebook.com/' . urlencode($params['user']));
@@ -84,22 +84,22 @@ class page extends \spouts\spout {
         $this->items = $data['feed']['data'];
     }
 
-    public function getTitle() {
+    public function getTitle(): ?string {
         return $this->title;
     }
 
-    public function getHtmlUrl() {
+    public function getHtmlUrl(): ?string {
         return $this->pageLink;
     }
 
-    public function getIcon() {
+    public function getIcon(): ?string {
         return $this->pagePicture;
     }
 
     /**
      * @return \Generator<Item<null>> list of items
      */
-    public function getItems() {
+    public function getItems(): iterable {
         foreach ($this->items as $item) {
             $id = $item['id'];
             $title = mb_strlen($item['message']) > 80 ? mb_substr($item['message'], 0, 100) . '…' : $item['message'];
@@ -126,10 +126,7 @@ class page extends \spouts\spout {
         }
     }
 
-    /**
-     * @return string
-     */
-    private function getPostContent(array $item) {
+    private function getPostContent(array $item): string {
         $message = $item['message'];
 
         if (isset($item['attachments']) && count($item['attachments']['data']) > 0) {

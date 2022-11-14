@@ -14,22 +14,16 @@ interface DatabaseInterface {
     /**
      * Execute SQL statement.
      *
-     * @param string $cmd
      * @param array|scalar $args
-     *
-     * @return \PDOStatement
      */
-    public function execute($cmd, $args = []);
+    public function execute(string $cmd, $args = []): \PDOStatement;
 
     /**
      * Execute SQL statement and fetch the result as an associative array (when applicable).
      *
-     * @param string $cmd
      * @param array|scalar $args
-     *
-     * @return ?array
-     **/
-    public function exec($cmd, $args = []);
+     */
+    public function exec(string $cmd, $args = []): ?array;
 
     /**
      * wrap insert statement to return id
@@ -39,50 +33,37 @@ interface DatabaseInterface {
      *
      * @return int id after insert
      */
-    public function insert($query, array $params);
+    public function insert(string $query, array $params): int;
 
     /**
      * Quote string
      *
      * @param mixed $value
-     * @param int $type
-     *
-     * @return string
      */
-    public function quote($value, $type = \PDO::PARAM_STR);
+    public function quote($value, int $type = \PDO::PARAM_STR): string;
 
     /**
      * Begin SQL transaction
-     *
-     * @return bool
      */
-    public function beginTransaction();
+    public function beginTransaction(): bool;
 
     /**
      * Rollback SQL transaction
-     *
-     * @return bool
      */
-    public function rollBack();
+    public function rollBack(): bool;
 
     /**
      * Commit SQL transaction
-     *
-     * @return bool
      */
-    public function commit();
+    public function commit(): bool;
 
     /**
      * Optimize database using its own optimize statement.
-     *
-     * @return void
      */
-    public function optimize();
+    public function optimize(): void;
 
     /**
      * Get the current version database schema.
-     *
-     * @return int
      */
-    public function getSchemaVersion();
+    public function getSchemaVersion(): int;
 }

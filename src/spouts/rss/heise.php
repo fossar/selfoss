@@ -66,14 +66,11 @@ class heise extends fulltextrss {
         'hh' => 'https://www.heise.de/hardware-hacks/rss/hardware-hacks-atom.xml',
     ];
 
-    public function load(array $params) {
+    public function load(array $params): void {
         parent::load(['url' => $this->getXmlUrl($params)]);
     }
 
-    /**
-     * @return string
-     */
-    public function getXmlUrl(array $params) {
+    public function getXmlUrl(array $params): string {
         return self::FEED_URLS[$params['section']];
     }
 }

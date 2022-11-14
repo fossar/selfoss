@@ -27,14 +27,11 @@ class usersfavs extends \spouts\rss\images {
         ],
     ];
 
-    public function load(array $params) {
+    public function load(array $params): void {
         parent::load(['url' => $this->getXmlUrl($params)]);
     }
 
-    /**
-     * @return string
-     */
-    public function getXmlUrl(array $params) {
+    public function getXmlUrl(array $params): string {
         return 'https://backend.deviantart.com/rss.xml?q=%20sort%3Atime%20favby%3A' . urlencode($params['username']) . '&type=deviation';
     }
 }

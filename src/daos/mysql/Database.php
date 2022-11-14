@@ -25,8 +25,6 @@ class Database implements \daos\DatabaseInterface {
     /**
      * establish connection and
      * create undefined tables
-     *
-     * @return void
      */
     public function __construct(DatabaseConnection $connection, Logger $logger) {
         $this->connection = $connection;
@@ -305,7 +303,7 @@ class Database implements \daos\DatabaseInterface {
      *
      * @return int id after insert
      */
-    public function insert($query, array $params) {
+    public function insert(string $query, array $params): int {
         $this->exec($query, $params);
         $res = $this->exec('SELECT LAST_INSERT_ID() as lastid');
 
@@ -315,10 +313,8 @@ class Database implements \daos\DatabaseInterface {
     /**
      * optimize database by
      * database own optimize statement
-     *
-     * @return void
      */
-    public function optimize() {
+    public function optimize(): void {
         @$this->exec('OPTIMIZE TABLE `' . $this->connection->getTableNamePrefix() . 'sources`, `' . $this->connection->getTableNamePrefix() . 'items`');
     }
 }

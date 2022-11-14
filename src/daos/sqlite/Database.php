@@ -301,7 +301,7 @@ class Database implements \daos\DatabaseInterface {
      *
      * @return int id after insert
      */
-    public function insert($query, array $params) {
+    public function insert(string $query, array $params): int {
         $this->exec($query, $params);
         $res = $this->exec('SELECT last_insert_rowid() as lastid');
 
@@ -310,10 +310,8 @@ class Database implements \daos\DatabaseInterface {
 
     /**
      * optimize database by database own optimize statement
-     *
-     * @return  void
      */
-    public function optimize() {
+    public function optimize(): void {
         @$this->exec('
             VACUUM;
         ');
@@ -321,10 +319,8 @@ class Database implements \daos\DatabaseInterface {
 
     /**
      * Initialize 'lastentry' Field in Source table during database upgrade
-     *
-     * @return void
      */
-    private function initLastEntryFieldDuringUpgrade() {
+    private function initLastEntryFieldDuringUpgrade(): void {
         $sources = @$this->exec('SELECT id FROM sources');
 
         // have a look at each entry in the source table

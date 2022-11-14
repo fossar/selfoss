@@ -50,10 +50,8 @@ class Sync {
     /**
      * returns updated database info (stats, item statuses)
      * json
-     *
-     * @return void
      */
-    public function sync() {
+    public function sync(): void {
         $this->authentication->needsLoggedInOrPublicMode();
 
         if (isset($_GET['since'])) {
@@ -125,10 +123,8 @@ class Sync {
 
     /**
      * Items statuses bulk update.
-     *
-     * @return void
      */
-    public function updateStatuses() {
+    public function updateStatuses(): void {
         $this->authentication->needsLoggedIn();
 
         if (isset($_POST['updatedStatuses'])

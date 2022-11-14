@@ -39,7 +39,7 @@ class Tags {
      *
      * @return array<string, array{backColor: string, foreColor: string}>
      */
-    public function tagsAddColors(array $itemTags, array $tags = null) {
+    public function tagsAddColors(array $itemTags, array $tags = null): array {
         if ($tags === null) {
             if ($this->tagsColors === null) {
                 $this->tagsColors = $this->getTagsWithColors($this->tagsDao->get());
@@ -62,10 +62,8 @@ class Tags {
 
     /**
      * set tag color
-     *
-     * @return void
      */
-    public function color() {
+    public function color(): void {
         $this->authentication->needsLoggedIn();
 
         // read data
@@ -90,10 +88,8 @@ class Tags {
     /**
      * returns all tags
      * html
-     *
-     * @return void
      */
-    public function listTags() {
+    public function listTags(): void {
         $this->authentication->needsLoggedInOrPublicMode();
 
         $tags = $this->tagsDao->getWithUnread();
@@ -108,7 +104,7 @@ class Tags {
      *
      * @return array<string, array{backColor: string, foreColor: string}> tag color array
      */
-    private function getTagsWithColors(array $tags) {
+    private function getTagsWithColors(array $tags): array {
         $assocTags = [];
         foreach ($tags as $tag) {
             $assocTags[$tag['tag']]['backColor'] = $tag['color'];
