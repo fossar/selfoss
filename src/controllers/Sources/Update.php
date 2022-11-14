@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace controllers\Sources;
 
 use helpers\Authentication;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace controllers\Items;
 
 use helpers\Authentication;
@@ -65,10 +67,10 @@ class Sync {
         $since = new \DateTime($params['since']);
         $since->setTimeZone(new \DateTimeZone(date_default_timezone_get()));
 
-        $last_update = new \DateTime($this->itemsDao->lastUpdate());
+        $lastUpdate = $this->itemsDao->lastUpdate();
 
         $sync = [
-            'lastUpdate' => $last_update->format(\DateTime::ATOM),
+            'lastUpdate' => $lastUpdate !== null ? $lastUpdate->format(\DateTime::ATOM) : null,
         ];
 
         if (array_key_exists('itemsSinceId', $params)) {
@@ -102,7 +104,7 @@ class Sync {
             }
         }
 
-        if ($last_update > $since) {
+        if ($lastUpdate === null || $lastUpdate > $since) {
             $sync['stats'] = $this->itemsDao->stats();
 
             if (array_key_exists('tags', $params) && $params['tags'] == 'true') {
