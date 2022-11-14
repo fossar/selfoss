@@ -671,7 +671,7 @@ export default class StateHolder extends React.Component {
     markVisibleRead() {
         let ids = [];
         let tagUnreadDiff = {};
-        let sourceUnreadDiff = [];
+        let sourceUnreadDiff = {};
 
         let markedEntries = this.state.entries.map((entry) => {
             if (!entry.unread) {
@@ -689,7 +689,7 @@ export default class StateHolder extends React.Component {
             });
 
             const { source } = entry;
-            if (Object.keys(sourceUnreadDiff).includes(source)) {
+            if (Object.keys(sourceUnreadDiff).includes(source.toString())) {
                 sourceUnreadDiff[source] += -1;
             } else {
                 sourceUnreadDiff[source] = -1;
@@ -713,10 +713,31 @@ export default class StateHolder extends React.Component {
         this.setLoadingState(LoadingState.LOADING);
         this.setEntries(markedEntries);
 
-        const unreadstats = selfoss.app.state.unreadItemsCount - ids.length;
+        // update statistics in main menu
+        function updateStats(markRead) {
+            // update all unread counters
+            const unreadstats = selfoss.app.state.unreadItemsCount;
+            const diff = markRead ? -1 : 1;
+
+            selfoss.refreshUnread(unreadstats + diff * ids.length);
+
+            // update unread on tags and sources
+            if (markRead) {
+                selfoss.app.refreshTagSourceUnread(
+                    tagUnreadDiff,
+                    sourceUnreadDiff,
+                );
+            } else {
+                // Diffs are negative by default.
+                selfoss.app.refreshTagSourceUnread(
+                    Object.fromEntries(Object.entries(tagUnreadDiff).map(([tag, diff]) => [tag, -1 * diff])),
+                    Object.fromEntries(Object.entries(sourceUnreadDiff).map(([source, diff]) => [source, -1 * diff])),
+                );
+            }
+        }
+        updateStats(true);
 
         if (selfoss.db.enableOffline.value) {
-            selfoss.refreshUnread(unreadstats);
             selfoss.dbOffline.entriesMark(ids, false);
         }
 
@@ -740,6 +761,7 @@ export default class StateHolder extends React.Component {
 
                 this.setLoadingState(LoadingState.SUCCESS);
                 this.setEntries(oldEntries);
+                updateStats(false);
                 this.setHasMore(hadMore);
                 selfoss.app.showError(selfoss.app._('error_mark_items') + ' ' + error.message);
             });

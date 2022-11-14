@@ -5,7 +5,7 @@
 
 ### Bug fixes
 - Configuration parser was changed to *raw* method, which relaxes the requirement to quote option values containing special characters in `config.ini`. ([#1371](https://github.com/fossar/selfoss/issues/1371))
-- Fix “Mark all as read” button not hiding marked articles in unread view. ([#1388](https://github.com/fossar/selfoss/issues/1388))
+- Fix “Mark all as read” button not hiding marked articles in unread view and not updating the unread counts in menu properly. ([#1388](https://github.com/fossar/selfoss/issues/1388))
 
 ### Other changes
 - `tidy` PHP extension is now required if you want to use “Content extractor” spout. ([#1392](https://github.com/fossar/selfoss/pull/1392))
