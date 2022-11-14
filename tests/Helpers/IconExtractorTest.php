@@ -9,7 +9,7 @@ final class IconExtractorTest extends TestCase {
     /**
      * Apple touch icons are supported.
      */
-    public function testAppleTouchIcon() {
+    public function testAppleTouchIcon(): void {
         $page = <<<EOD
 <html>
 <head>
@@ -31,7 +31,7 @@ EOD;
     /**
      * Apple touch precomposed icons are supported.
      */
-    public function testAppleTouchPrecomposedIcon() {
+    public function testAppleTouchPrecomposedIcon(): void {
         $page = <<<EOD
 <html>
 <head>
@@ -53,7 +53,7 @@ EOD;
     /**
      * Apple touch icons without sizes are supported.
      */
-    public function testAppleTouchWithoutSizesIcon() {
+    public function testAppleTouchWithoutSizesIcon(): void {
         $page = <<<EOD
 <html>
 <head>
@@ -75,7 +75,7 @@ EOD;
     /**
      * Shortcut icons are supported.
      */
-    public function testShortcutIcon() {
+    public function testShortcutIcon(): void {
         $page = <<<EOD
 <html>
 <head>
@@ -97,7 +97,7 @@ EOD;
     /**
      * Icons are supported.
      */
-    public function testIcon() {
+    public function testIcon(): void {
         $page = <<<EOD
 <html>
 <head>
@@ -119,7 +119,7 @@ EOD;
     /**
      * Multiple icons are recognized.
      */
-    public function testMultipleIcons() {
+    public function testMultipleIcons(): void {
         $page = <<<EOD
 <html>
 <head>
@@ -145,7 +145,7 @@ EOD;
     /**
      * Apple icons are prioritized over shortcut icons.
      */
-    public function testAppleAndIcon() {
+    public function testAppleAndIcon(): void {
         $page = <<<EOD
 <html>
 <head>
@@ -169,7 +169,7 @@ EOD;
     /**
      * Larger icons are prioritized over smaller ones.
      */
-    public function testAppleAndPrecomposed() {
+    public function testAppleAndPrecomposed(): void {
         $page = <<<EOD
 <html>
 <head>
@@ -193,7 +193,7 @@ EOD;
     /**
      * Apple precomposed icons are prioritized over normal touch icons.
      */
-    public function testAppleAndPrecomposedWithoutSizes() {
+    public function testAppleAndPrecomposedWithoutSizes(): void {
         $page = <<<EOD
 <html>
 <head>
@@ -217,7 +217,7 @@ EOD;
     /**
      * Uglified websites with unquoted atttributes are handled correctly.
      */
-    public function testUnquotedAttributes() {
+    public function testUnquotedAttributes(): void {
         $page = <<<EOD
 <html><head><link rel="shortcut icon" href=//www.example.com/favicons/favicon.ico><link rel=apple-touch-icon sizes=152x152 href=//www.example.com/favicons/apple-touch-icon-152x152.png><link rel=icon type=image/png href=//www.example.com/favicons/favicon-196x196.png sizes=196x196></head><body></body></html>
 EOD;
@@ -235,7 +235,7 @@ EOD;
     /**
      * Null is returned when no icon found.
      */
-    public function testMissingIcon() {
+    public function testMissingIcon(): void {
         $page = <<<EOD
 <html>
 <head>
@@ -254,7 +254,7 @@ EOD;
     /**
      * Commented out icons are ignored.
      */
-    public function testCommentIcon() {
+    public function testCommentIcon(): void {
         $page = <<<EOD
 <html>
 <head>
@@ -274,7 +274,7 @@ EOD;
     /**
      * Icons inside script elements are ignored.
      */
-    public function testScriptIcon() {
+    public function testScriptIcon(): void {
         $page = <<<EOD
 <html>
 <head>

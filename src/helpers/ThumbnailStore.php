@@ -22,13 +22,8 @@ class ThumbnailStore {
 
     /**
      * Store given blob as URL.
-     *
-     * @param string $url
-     * @param string $blob
-     *
-     * @return ?string
      */
-    public function store($url, $blob) {
+    public function store(string $url, string $blob): ?string {
         $extension = Image::getExtension(ContentLoader::THUMBNAIL_FORMAT);
         $this->logger->debug('Storing thumbnail: ' . $url);
 
@@ -39,10 +34,8 @@ class ThumbnailStore {
      * Delete all icons except for requested ones.
      *
      * @param callable(string):bool $shouldKeep
-     *
-     * @return void
      */
-    public function cleanup($shouldKeep) {
+    public function cleanup(callable $shouldKeep): void {
         $this->storage->cleanup($shouldKeep);
     }
 }

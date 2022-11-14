@@ -38,25 +38,17 @@ class Item {
     private $extraData;
 
     /**
-     * @param string $id
-     * @param string $title
-     * @param string $content
-     * @param ?string $thumbnail
-     * @param ?string $icon
-     * @param string $link
-     * @param ?DateTimeInterface $date
-     * @param ?string $author
      * @param ?Extra $extraData
      */
     public function __construct(
-        $id,
-        $title,
-        $content,
-        $thumbnail,
-        $icon,
-        $link,
-        $date,
-        $author,
+        string $id,
+        string $title,
+        string $content,
+        ?string $thumbnail,
+        ?string $icon,
+        string $link,
+        ?DateTimeInterface $date,
+        ?string $author,
         $extraData = null
     ) {
         $this->id = $id;
@@ -74,19 +66,12 @@ class Item {
      * Returns an ID for this article.
      *
      * It should be unique for the source.
-     *
-     * @return string
      */
-    public function getId() {
+    public function getId(): string {
         return $this->id;
     }
 
-    /**
-     * @param string $id
-     *
-     * @return self
-     */
-    public function withId($id) {
+    public function withId(string $id): self {
         $modified = clone $this;
         $modified->id = $id;
 
@@ -98,19 +83,12 @@ class Item {
      *
      * If the spout allows HTML in the title, HTML special chars are expected to be decoded by the spout
      * (for instance when the spout feed is XML).
-     *
-     * @return string
      */
-    public function getTitle() {
+    public function getTitle(): string {
         return $this->title;
     }
 
-    /**
-     * @param string $title
-     *
-     * @return self
-     */
-    public function withTitle($title) {
+    public function withTitle(string $title): self {
         $modified = clone $this;
         $modified->title = $title;
 
@@ -122,19 +100,12 @@ class Item {
      *
      * HTML special chars are expected to be decoded by the spout
      * (for instance when the spout feed is XML).
-     *
-     * @return string
      */
-    public function getContent() {
+    public function getContent(): string {
         return $this->content;
     }
 
-    /**
-     * @param string $content
-     *
-     * @return self
-     */
-    public function withContent($content) {
+    public function withContent(string $content): self {
         $modified = clone $this;
         $modified->content = $content;
 
@@ -143,19 +114,12 @@ class Item {
 
     /**
      * Returns the URL of a thumbnail (for multimedia feeds).
-     *
-     * @return ?string
      */
-    public function getThumbnail() {
+    public function getThumbnail(): ?string {
         return $this->thumbnail;
     }
 
-    /**
-     * @param ?string $thumbnail
-     *
-     * @return self
-     */
-    public function withThumbnail($thumbnail) {
+    public function withThumbnail(?string $thumbnail): self {
         $modified = clone $this;
         $modified->thumbnail = $thumbnail;
 
@@ -164,19 +128,12 @@ class Item {
 
     /**
      * Returns the URL for favicon of the article.
-     *
-     * @return ?string
      */
-    public function getIcon() {
+    public function getIcon(): ?string {
         return $this->icon;
     }
 
-    /**
-     * @param ?string $icon
-     *
-     * @return self
-     */
-    public function withIcon($icon) {
+    public function withIcon(?string $icon): self {
         $modified = clone $this;
         $modified->icon = $icon;
 
@@ -185,19 +142,12 @@ class Item {
 
     /**
      * Returns the direct link to the article.
-     *
-     * @return string
      */
-    public function getLink() {
+    public function getLink(): string {
         return $this->link;
     }
 
-    /**
-     * @param string $link
-     *
-     * @return self
-     */
-    public function withLink($link) {
+    public function withLink(string $link): self {
         $modified = clone $this;
         $modified->link = $link;
 
@@ -206,19 +156,12 @@ class Item {
 
     /**
      * Returns the publication date of the article.
-     *
-     * @return ?DateTimeInterface
      */
-    public function getDate() {
+    public function getDate(): ?DateTimeInterface {
         return $this->date;
     }
 
-    /**
-     * @param ?DateTimeInterface $date
-     *
-     * @return self
-     */
-    public function withDate(DateTimeInterface $date = null) {
+    public function withDate(?DateTimeInterface $date = null): self {
         $modified = clone $this;
         $modified->date = $date;
 
@@ -229,19 +172,12 @@ class Item {
      * Returns the author of the article.
      *
      * HTML special chars decoded, if applicable.
-     *
-     * @return ?string
      */
-    public function getAuthor() {
+    public function getAuthor(): ?string {
         return $this->author;
     }
 
-    /**
-     * @param ?string $author
-     *
-     * @return self
-     */
-    public function withAuthor($author) {
+    public function withAuthor(?string $author): self {
         $modified = clone $this;
         $modified->author = $author;
 
@@ -264,7 +200,7 @@ class Item {
      *
      * @return Item<NewExtra>
      */
-    public function withExtraData($extraData) {
+    public function withExtraData($extraData): Item {
         $modified = clone $this;
         $modified->extraData = $extraData;
 

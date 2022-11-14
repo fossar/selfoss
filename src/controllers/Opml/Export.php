@@ -53,10 +53,8 @@ class Export {
      * @note Uses the selfoss namespace to store information about spouts
      *
      * @param array $source source
-     *
-     * @return void
      */
-    private function writeSource(array $source) {
+    private function writeSource(array $source): void {
         // retrieve the feed url of the source
         $params = json_decode(html_entity_decode($source['params']), true);
         $feedUrl = $this->spoutLoader->get($source['spout'])->getXmlUrl($params);
@@ -88,10 +86,8 @@ class Export {
      * Export user's subscriptions to OPML file
      *
      * @note Uses the selfoss namespace to store selfoss-specific information
-     *
-     * @return void
      */
-    public function export() {
+    public function export(): void {
         $this->authentication->needsLoggedIn();
 
         $this->logger->debug('start OPML export');

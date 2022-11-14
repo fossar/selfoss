@@ -13,11 +13,9 @@ class Search {
     /**
      * return search terms as array
      *
-     * @param string $search
-     *
      * @return string[] search terms
      */
-    public static function splitTerms($search) {
+    public static function splitTerms(string $search): array {
         if (strlen($search) === 0) {
             return [];
         }

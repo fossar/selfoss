@@ -67,22 +67,15 @@ class Authentication {
 
     /**
      * login enabled
-     *
-     * @return bool
      */
-    public function enabled() {
+    public function enabled(): bool {
         return strlen($this->configuration->username) != 0 && strlen($this->configuration->password) != 0;
     }
 
     /**
      * login user
-     *
-     * @param string $username
-     * @param string $password
-     *
-     * @return bool
      */
-    public function login($username, $password) {
+    public function login(string $username, string $password): bool {
         if ($this->enabled()) {
             $usernameCorrect = $username === $this->configuration->username;
             $hashedPassword = $this->configuration->password;
@@ -111,10 +104,8 @@ class Authentication {
 
     /**
      * isloggedin
-     *
-     * @return bool
      */
-    public function isLoggedin() {
+    public function isLoggedin(): bool {
         if ($this->enabled() === false) {
             return true;
         }
@@ -124,19 +115,15 @@ class Authentication {
 
     /**
      * showPrivateTags
-     *
-     * @return bool
      */
-    public function showPrivateTags() {
+    public function showPrivateTags(): bool {
         return $this->isLoggedin();
     }
 
     /**
      * logout
-     *
-     * @return void
      */
-    public function logout() {
+    public function logout(): void {
         $this->loggedin = false;
         $_SESSION['loggedin'] = false;
         session_destroy();
@@ -145,10 +132,8 @@ class Authentication {
 
     /**
      * send 403 if not logged in and not public mode
-     *
-     * @return void
      */
-    public function needsLoggedInOrPublicMode() {
+    public function needsLoggedInOrPublicMode(): void {
         if ($this->isLoggedin() !== true && !$this->configuration->public) {
             $this->forbidden();
         }
@@ -156,10 +141,8 @@ class Authentication {
 
     /**
      * send 403 if not logged in
-     *
-     * @return void
      */
-    public function needsLoggedIn() {
+    public function needsLoggedIn(): void {
         if ($this->isLoggedin() !== true) {
             $this->forbidden();
         }
@@ -167,10 +150,8 @@ class Authentication {
 
     /**
      * send 403 if not logged in
-     *
-     * @return void
      */
-    public function forbidden() {
+    public function forbidden(): void {
         header('HTTP/1.0 403 Forbidden');
         echo 'Access forbidden!';
         exit;
@@ -182,10 +163,8 @@ class Authentication {
      * For that, the user either has to be logged in,
      * accessing selfoss from the same computer that it is running on,
      * or public update must be allowed in the config.
-     *
-     * @return bool
      */
-    public function allowedToUpdate() {
+    public function allowedToUpdate(): bool {
         return $this->isLoggedin() === true
             || $_SERVER['REMOTE_ADDR'] === $_SERVER['SERVER_ADDR']
             || $_SERVER['REMOTE_ADDR'] === '127.0.0.1'

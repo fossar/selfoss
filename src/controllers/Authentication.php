@@ -23,10 +23,8 @@ class Authentication {
     /**
      * login for api json access
      * json
-     *
-     * @return void
      */
-    public function login() {
+    public function login(): void {
         $error = null;
 
         if (isset($_REQUEST['username'])) {
@@ -65,10 +63,8 @@ class Authentication {
     /**
      * logout for api json access
      * json
-     *
-     * @return void
      */
-    public function logout() {
+    public function logout(): void {
         $this->authentication->logout();
         $this->view->jsonSuccess([
             'success' => true,

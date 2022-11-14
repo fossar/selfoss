@@ -75,14 +75,11 @@ class golem extends fulltextrss {
         'forum' => 'https://forum.golem.de/rss.php?feed=RSS2.0',
     ];
 
-    public function load(array $params) {
+    public function load(array $params): void {
         parent::load(['url' => $this->getXmlUrl($params)]);
     }
 
-    /**
-     * @return string
-     */
-    public function getXmlUrl(array $params) {
+    public function getXmlUrl(array $params): string {
         return self::FEED_URLS[$params['section']];
     }
 }

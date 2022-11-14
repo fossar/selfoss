@@ -83,15 +83,13 @@ class usertimeline extends \spouts\spout {
 
     /**
      * Provide a HTTP client for use by spouts
-     *
-     * @param string $consumerKey
-     * @param string $consumerSecret
-     * @param ?string $accessToken
-     * @param ?string $accessTokenSecret
-     *
-     * @return GuzzleHttp\Client
      */
-    public function getHttpClient($consumerKey, $consumerSecret, $accessToken, $accessTokenSecret) {
+    public function getHttpClient(
+        string $consumerKey,
+        string $consumerSecret,
+        ?string $accessToken,
+        ?string $accessTokenSecret
+    ): GuzzleHttp\Client {
         $access_token_used = !empty($accessToken) && !empty($accessTokenSecret);
 
         $oldClient = $this->webClient->getHttpClient();
@@ -124,7 +122,7 @@ class usertimeline extends \spouts\spout {
      *
      * @return stdClass[]
      */
-    protected function fetchTwitterTimeline($endpoint, array $params = []) {
+    protected function fetchTwitterTimeline(string $endpoint, array $params = []): array {
         if (!isset($this->client)) {
             throw new \Exception('Twitter client was not initialized.');
         }
@@ -170,7 +168,7 @@ class usertimeline extends \spouts\spout {
     // Source Methods
     //
 
-    public function load(array $params) {
+    public function load(array $params): void {
         $this->client = $this->getHttpClient($params['consumer_key'], $params['consumer_secret'], $params['access_token'] ?? null, $params['access_token_secret'] ?? null);
 
         $this->items = $this->fetchTwitterTimeline('statuses/user_timeline', [
@@ -182,18 +180,18 @@ class usertimeline extends \spouts\spout {
         $this->title = "@{$params['username']}";
     }
 
-    public function getTitle() {
+    public function getTitle(): ?string {
         return $this->title;
     }
 
-    public function getHtmlUrl() {
+    public function getHtmlUrl(): ?string {
         return $this->htmlUrl;
     }
 
     /**
      * @return \Generator<Item<null>> list of items
      */
-    public function getItems() {
+    public function getItems(): iterable {
         foreach ($this->items as $item) {
             $author = $item->user->name;
             $targetItem = $item;
@@ -225,20 +223,14 @@ class usertimeline extends \spouts\spout {
         }
     }
 
-    /**
-     * @return string
-     */
-    private function getTweetTitle(stdClass $item) {
+    private function getTweetTitle(stdClass $item): string {
         $entities = self::formatEntities($item->entities);
         $tweet = self::replaceEntities($item->full_text, $entities);
 
         return $tweet;
     }
 
-    /**
-     * @return string
-     */
-    private function getContent(stdClass $item) {
+    private function getContent(stdClass $item): string {
         $result = '';
 
         if (isset($item->extended_entities) && isset($item->extended_entities->media) && count($item->extended_entities->media) > 0) {
@@ -260,17 +252,11 @@ class usertimeline extends \spouts\spout {
         return $result;
     }
 
-    /**
-     * @return string
-     */
-    private function getTweetIcon(stdClass $item) {
+    private function getTweetIcon(stdClass $item): string {
         return $item->user->profile_image_url_https;
     }
 
-    /**
-     * @return ?string
-     */
-    private function getThumbnail(stdClass $item) {
+    private function getThumbnail(stdClass $item): ?string {
         if (isset($item->entities->media) && $item->entities->media[0]->type === 'photo') {
             return $item->entities->media[0]->media_url_https;
         }
@@ -278,7 +264,7 @@ class usertimeline extends \spouts\spout {
         return null;
     }
 
-    public function destroy() {
+    public function destroy(): void {
         unset($this->items);
         $this->items = [];
     }
@@ -291,7 +277,7 @@ class usertimeline extends \spouts\spout {
      *
      * @return string formated text
      */
-    public static function replaceEntities($text, array $entities) {
+    public static function replaceEntities(string $text, array $entities): string {
         /** @var string built text */
         $result = '';
         /** @var int number of bytes in text */
@@ -336,7 +322,7 @@ class usertimeline extends \spouts\spout {
      *
      * @return array{text: string, url: string, end: int}[] flattened and ordered array of entities
      */
-    public static function formatEntities(stdClass $groupedEntities) {
+    public static function formatEntities(stdClass $groupedEntities): array {
         $result = [];
 
         foreach ($groupedEntities as $type => $entities) {

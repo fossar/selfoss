@@ -4,6 +4,9 @@ namespace controllers\Sources;
 
 use helpers\Authentication;
 use helpers\ContentLoader;
+use helpers\Misc;
+use helpers\View;
+use InvalidArgumentException;
 
 /**
  * Controller updating sources
@@ -15,18 +18,24 @@ class Update {
     /** @var ContentLoader content loader */
     private $contentLoader;
 
-    public function __construct(Authentication $authentication, ContentLoader $contentLoader) {
+    /** @var View view helper */
+    private $view;
+
+    public function __construct(
+        Authentication $authentication,
+        ContentLoader $contentLoader,
+        View $view
+    ) {
         $this->authentication = $authentication;
         $this->contentLoader = $contentLoader;
+        $this->view = $view;
     }
 
     /**
      * update all feeds
      * text
-     *
-     * @return void
      */
-    public function updateAll() {
+    public function updateAll(): void {
         // only allow access for localhost and loggedin users
         if (!$this->authentication->allowedToUpdate()) {
             header('HTTP/1.0 403 Forbidden');
@@ -43,15 +52,19 @@ class Update {
      * update a single source
      * text
      *
-     * @param int $id id of source to update
-     *
-     * @return void
+     * @param string $id id of source to update
      */
-    public function update($id) {
+    public function update(string $id): void {
         // only allow access for localhost and authenticated users
         if (!$this->authentication->allowedToUpdate()) {
             header('HTTP/1.0 403 Forbidden');
             exit('unallowed access');
+        }
+
+        try {
+            $id = Misc::forceId($id);
+        } catch (InvalidArgumentException $e) {
+            $this->view->error('invalid id given');
         }
 
         // update the feed

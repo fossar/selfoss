@@ -15,11 +15,9 @@ use Symfony\Component\Cache\Psr16Cache;
 require __DIR__ . '/constants.php';
 
 /**
- * @param string $message
- *
  * @return never
  */
-function boot_error($message) {
+function boot_error(string $message) {
     http_response_code(500);
     header('Content-Type: text/plain');
     echo $message;
@@ -183,7 +181,7 @@ if ($configuration->dbType === 'sqlite') {
                     'sqliteCreateFunction',
                     [
                         'regexp',
-                        function($pattern, $text) {
+                        function(string $pattern, string $text): bool {
                             return preg_match('/' . addcslashes($pattern, '/') . '/', $text);
                         },
                         2,
@@ -276,7 +274,7 @@ if (isset($startup_error)) {
 
 // init error handling
 $f3->set('ONERROR',
-    function(Base $f3) use ($configuration, $log, $handler) {
+    function(Base $f3) use ($configuration, $log, $handler): void {
         $exception = $f3->get('EXCEPTION');
 
         try {

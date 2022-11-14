@@ -42,10 +42,8 @@ class Sources {
     /**
      * list all available sources
      * json
-     *
-     * @return void
      */
-    public function show() {
+    public function show(): void {
         $this->authentication->needsLoggedIn();
 
         // get available spouts
@@ -68,10 +66,8 @@ class Sources {
     /**
      * add new source
      * json
-     *
-     * @return void
      */
-    public function add() {
+    public function add(): void {
         $this->authentication->needsLoggedIn();
 
         $spouts = $this->spoutLoader->all();
@@ -84,10 +80,8 @@ class Sources {
     /**
      * render spouts params
      * json
-     *
-     * @return void
      */
-    public function params() {
+    public function params(): void {
         $this->authentication->needsLoggedIn();
 
         if (!isset($_GET['spout'])) {
@@ -112,11 +106,9 @@ class Sources {
      * delete source
      * json
      *
-     * @param int $id ID of source to remove
-     *
-     * @return void
+     * @param string $id ID of source to remove
      */
-    public function remove($id) {
+    public function remove(string $id): void {
         $this->authentication->needsLoggedIn();
 
         try {
@@ -139,10 +131,8 @@ class Sources {
     /**
      * returns all available sources
      * json
-     *
-     * @return void
      */
-    public function listSources() {
+    public function listSources(): void {
         $this->authentication->needsLoggedIn();
 
         // load sources
@@ -160,10 +150,8 @@ class Sources {
     /**
      * returns all available spouts
      * json
-     *
-     * @return void
      */
-    public function spouts() {
+    public function spouts(): void {
         $this->authentication->needsLoggedIn();
 
         $spouts = $this->spoutLoader->all();
@@ -173,10 +161,8 @@ class Sources {
     /**
      * returns all sources with unread items
      * json
-     *
-     * @return void
      */
-    public function stats() {
+    public function stats(): void {
         $this->authentication->needsLoggedInOrPublicMode();
 
         // load sources

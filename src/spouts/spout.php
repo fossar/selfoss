@@ -6,6 +6,8 @@ namespace spouts;
  * This abstract class defines the interface of a spout (source or plugin)
  * template pattern
  *
+ * @template ItemExtraData of mixed
+ *
  * @copyright  Copyright (c) Tobias Zeising (http://www.aditu.de)
  * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
@@ -50,10 +52,8 @@ abstract class spout {
      * @param array $params params of this source
      *
      * @throws \GuzzleHttp\Exception\GuzzleException When an error is encountered
-     *
-     * @return void
      */
-    abstract public function load(array $params);
+    abstract public function load(array $params): void;
 
     /**
      * returns the xml feed url for the source
@@ -62,7 +62,7 @@ abstract class spout {
      *
      * @return ?string url as xml
      */
-    public function getXmlUrl(array $params) {
+    public function getXmlUrl(array $params): ?string {
         return null;
     }
 
@@ -71,14 +71,14 @@ abstract class spout {
      *
      * @return ?string url as html
      */
-    abstract public function getHtmlUrl();
+    abstract public function getHtmlUrl(): ?string;
 
     /**
      * Returns the spout title
      *
      * @return ?string title as loaded by the spout
      */
-    public function getTitle() {
+    public function getTitle(): ?string {
         return null;
     }
 
@@ -87,22 +87,20 @@ abstract class spout {
      *
      * @return ?string icon as URL
      */
-    public function getIcon() {
+    public function getIcon(): ?string {
         return null;
     }
 
     /**
      * Returns list of items.
      *
-     * @return \Iterator<Item<mixed>> list of items
+     * @return iterable<Item<ItemExtraData>> list of items
      */
-    abstract public function getItems();
+    abstract public function getItems(): iterable;
 
     /**
      * destroy the plugin (prevent memory issues)
-     *
-     * @return void
      */
-    public function destroy() {
+    public function destroy(): void {
     }
 }

@@ -24,14 +24,11 @@ class mmospy extends fulltextrss {
      */
     private const FEED_URL = 'https://www.mmo-spy.de/misc.php?action=newsfeed';
 
-    public function load(array $params) {
+    public function load(array $params): void {
         parent::load(['url' => $this->getXmlUrl($params)]);
     }
 
-    /**
-     * @return string
-     */
-    public function getXmlUrl(array $params) {
+    public function getXmlUrl(array $params): string {
         return self::FEED_URL;
     }
 }

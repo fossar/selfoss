@@ -32,10 +32,8 @@ class WebClient {
 
     /**
      * Provide a HTTP client for use by spouts
-     *
-     * @return GuzzleHttp\Client
      */
-    public function getHttpClient() {
+    public function getHttpClient(): GuzzleHttp\Client {
         if ($this->httpClient === null) {
             $stack = HandlerStack::create();
             $stack->push(new GuzzleTranscoder());
@@ -81,7 +79,7 @@ class WebClient {
      *
      * @return string the user agent string for this spout
      */
-    public function getUserAgent($agentInfo = null) {
+    public function getUserAgent(?array $agentInfo = null): string {
         $userAgent = 'Selfoss/' . SELFOSS_VERSION;
 
         if ($agentInfo === null) {
@@ -122,7 +120,7 @@ class WebClient {
      *
      * @return string last URL we were redirected to
      */
-    public static function getEffectiveUrl($url, GuzzleHttp\Psr7\Response $response) {
+    public static function getEffectiveUrl(string $url, GuzzleHttp\Psr7\Response $response): string {
         // Sequence of fetched URLs
         $urlStack = array_merge([$url], $response->getHeader(\GuzzleHttp\RedirectMiddleware::HISTORY_HEADER));
 

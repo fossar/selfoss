@@ -52,7 +52,7 @@ class SimplePieFileGuzzle extends File {
 
                 // SimplePie expects the headers to be lower-case and strings but Guzzle returns original case and string arrays as mandated by PSR-7.
                 $this->headers = array_change_key_case($this->headers, CASE_LOWER);
-                array_walk($this->headers, function(&$value, $header) {
+                array_walk($this->headers, function(&$value, $header): void {
                     // There can be multiple header values if and only if the header is described as a list, in which case, they can be coalesced into a single string, separated by commas:
                     // https://tools.ietf.org/html/rfc2616#section-4.2
                     // Non-compliant servers might send multiple instances of single non-list header; we will use the last value then.

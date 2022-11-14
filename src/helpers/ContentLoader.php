@@ -63,10 +63,8 @@ class ContentLoader {
 
     /**
      * updates all sources
-     *
-     * @return void
      */
-    public function update() {
+    public function update(): void {
         foreach ($this->sourcesDao->getByLastUpdate() as $source) {
             $this->fetch($source);
         }
@@ -79,10 +77,8 @@ class ContentLoader {
      * @param int $id id of the source to update
      *
      * @throws FileNotFoundException it there is no source with the id
-     *
-     * @return void
      */
-    public function updateSingle($id) {
+    public function updateSingle(int $id): void {
         $source = $this->sourcesDao->get($id);
         if ($source) {
             $this->fetch($source);
@@ -97,10 +93,8 @@ class ContentLoader {
      * returns an error or true on success
      *
      * @param mixed $source the current source
-     *
-     * @return void
      */
-    public function fetch($source) {
+    public function fetch($source): void {
         $lastEntry = $source['lastentry'];
 
         // at least 20 seconds wait until next update of a given source
@@ -293,12 +287,10 @@ class ContentLoader {
      * Check if a new item matches the filter
      *
      * @param array{filter: string} $source
-     * @param string $title
-     * @param string $content
      *
      * @return bool indicating filter success
      */
-    protected function filter($source, $title, $content) {
+    protected function filter($source, string $title, string $content): bool {
         if (strlen(trim($source['filter'])) !== 0) {
             $resultTitle = @preg_match($source['filter'], $title);
             $resultContent = @preg_match($source['filter'], $content);
@@ -323,7 +315,7 @@ class ContentLoader {
      *
      * @return mixed|string sanitized content
      */
-    protected function sanitizeContent($content) {
+    protected function sanitizeContent(string $content) {
         return htmLawed(
             $content,
             [
@@ -345,7 +337,7 @@ class ContentLoader {
      *
      * @return mixed|string sanitized content
      */
-    protected function sanitizeField($value) {
+    protected function sanitizeField(string $value) {
         return htmLawed(
             $value,
             [
@@ -362,7 +354,7 @@ class ContentLoader {
      *
      * @return ?string path in the thumbnails directory
      */
-    protected function fetchThumbnail($url) {
+    protected function fetchThumbnail(string $url): ?string {
         try {
             $data = $this->webClient->request($url);
             $format = self::THUMBNAIL_FORMAT;
@@ -389,7 +381,7 @@ class ContentLoader {
      *
      * @return ?string path in the favicons directory
      */
-    protected function fetchIcon($url) {
+    protected function fetchIcon(string $url): ?string {
         try {
             $data = $this->webClient->request($url);
             $format = Image::FORMAT_PNG;
@@ -411,12 +403,8 @@ class ContentLoader {
 
     /**
      * Obtain title for given data
-     *
-     * @param array $data
-     *
-     * @return ?string
      */
-    public function fetchTitle($data) {
+    public function fetchTitle(array $data): ?string {
         $this->logger->debug('Start fetching spout title');
 
         // get spout
@@ -448,10 +436,8 @@ class ContentLoader {
 
     /**
      * clean up messages, thumbnails etc.
-     *
-     * @return void
      */
-    public function cleanup() {
+    public function cleanup(): void {
         // cleanup orphaned and old items
         $this->logger->debug('cleanup orphaned and old items');
         $this->itemsDao->cleanup($this->configuration->itemsLifetime);
@@ -482,10 +468,8 @@ class ContentLoader {
      *
      * @param mixed $source source object
      * @param ?int $lastEntry timestamp of the newest item or NULL when no items were added
-     *
-     * @return void
      */
-    protected function updateSource($source, $lastEntry) {
+    protected function updateSource($source, ?int $lastEntry): void {
         // remove previous error
         if ($source['error'] !== null) {
             $this->sourcesDao->error($source['id'], '');

@@ -23,10 +23,8 @@ final class HashPassword {
     /**
      * password hash generator
      * json
-     *
-     * @return void
      */
-    public function hash() {
+    public function hash(): void {
         $this->authentication->needsLoggedIn();
 
         if (!isset($_POST['password'])) {

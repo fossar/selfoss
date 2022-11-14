@@ -15,7 +15,7 @@ class Color {
      *
      * @return string random color in format #123456
      */
-    public static function randomColor() {
+    public static function randomColor(): string {
         return '#' . self::randomColorPart() . self::randomColorPart() . self::randomColorPart();
     }
 
@@ -24,7 +24,7 @@ class Color {
      *
      * @return string random color part
      */
-    private static function randomColorPart() {
+    private static function randomColorPart(): string {
         return str_pad(dechex(random_int(0, 255)), 2, '0', STR_PAD_LEFT);
     }
 
@@ -39,7 +39,7 @@ class Color {
      *
      * @see https://24ways.org/2010/calculating-color-contrast/
      */
-    public static function colorByBrightness($color, $darkColor = '#555', $brightColor = '#EEE') {
+    public static function colorByBrightness(string $color, string $darkColor = '#555', string $brightColor = '#EEE'): string {
         $color = trim($color, '#');
         $r = hexdec(substr($color, 0, 2));
         $g = hexdec(substr($color, 2, 2));

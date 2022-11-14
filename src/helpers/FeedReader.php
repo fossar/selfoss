@@ -12,7 +12,11 @@ class FeedReader {
     /** @var SimplePie */
     private $simplepie;
 
-    public function __construct(SimplePie $simplepie, WebClient $webClient, ?CacheInterface $cache = null) {
+    public function __construct(
+        SimplePie $simplepie,
+        WebClient $webClient,
+        ?CacheInterface $cache = null
+    ) {
         $this->simplepie = $simplepie;
 
         // initialize simplepie feed loader
@@ -37,7 +41,7 @@ class FeedReader {
      *
      * @return array{items: \SimplePie\Item[], htmlUrl: string, title: ?string}
      */
-    public function load($url) {
+    public function load(string $url): array {
         @$this->simplepie->set_feed_url($url);
         // fetch items
         @$this->simplepie->init();
@@ -65,10 +69,8 @@ class FeedReader {
 
     /**
      * Get the URL of the feed’s logo.
-     *
-     * @return ?string
      */
-    public function getImageUrl() {
+    public function getImageUrl(): ?string {
         $raw = $this->simplepie->get_image_url();
 
         return $raw === null ? $raw : htmlspecialchars_decode($raw, ENT_COMPAT); // SimplePie sanitizes URLs
@@ -76,10 +78,8 @@ class FeedReader {
 
     /**
      * Get the URL of the feed
-     *
-     * @return ?string
      */
-    public function getFeedUrl() {
+    public function getFeedUrl(): ?string {
         // SimplePie sanitizes URLs but it unescapes ampersands here.
         // Since double quotes and angle brackets are excluded from URIs,
         // we need not worry about them and consider this unescaped.
@@ -87,9 +87,6 @@ class FeedReader {
         return $this->simplepie->subscribe_url();
     }
 
-    /**
-     * @return void
-     */
     public function __destruct() {
         $this->simplepie->__destruct();
     }

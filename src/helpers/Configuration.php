@@ -165,10 +165,9 @@ class Configuration {
     public $readingSpeedWpm = 0;
 
     /**
-     * @param ?string $configPath
      * @param array<string, string> $environment
      */
-    public function __construct($configPath = null, $environment = []) {
+    public function __construct(?string $configPath = null, array $environment = []) {
         // read config.ini, if it exists
         if ($configPath !== null && file_exists($configPath)) {
             $config = parse_ini_file($configPath, false, INI_SCANNER_RAW);
@@ -236,12 +235,8 @@ class Configuration {
 
     /**
      * Checks whether given configuration option has been changed.
-     *
-     * @param string $key
-     *
-     * @return bool
      */
-    public function isChanged($key) {
+    public function isChanged(string $key): bool {
         return isset($this->modifiedOptions[$key]);
     }
 }

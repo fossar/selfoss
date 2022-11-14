@@ -47,10 +47,8 @@ class Import {
      * html
      *
      * @note Borrows from controllers/Sources.php:write
-     *
-     * @return void
      */
-    public function add() {
+    public function add(): void {
         $this->authentication->needsLoggedIn();
 
         http_response_code(400);
@@ -128,7 +126,7 @@ class Import {
      *
      * @return string[] titles of feeds that could not be added to subscriptions
      */
-    private function processGroup(SimpleXMLElement $xml, array $tags = []) {
+    private function processGroup(SimpleXMLElement $xml, array $tags = []): array {
         $errors = [];
 
         $xml->registerXPathNamespace('selfoss', 'https://selfoss.aditu.de/');

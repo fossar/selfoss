@@ -27,14 +27,11 @@ class user extends \spouts\rss\images {
         ],
     ];
 
-    public function load(array $params) {
+    public function load(array $params): void {
         parent::load(['url' => $this->getXmlUrl($params)]);
     }
 
-    /**
-     * @return string
-     */
-    public function getXmlUrl(array $params) {
+    public function getXmlUrl(array $params): string {
         return 'http://' . urlencode($params['username']) . '.tumblr.com/rss';
     }
 }

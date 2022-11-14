@@ -35,11 +35,9 @@ class Items {
      * mark items as read. Allows one id or an array of ids
      * json
      *
-     * @param ?int $itemId ID of item to mark as read
-     *
-     * @return void
+     * @param ?string $itemId ID of item to mark as read
      */
-    public function mark($itemId = null) {
+    public function mark(?string $itemId = null): void {
         $this->authentication->needsLoggedIn();
 
         $ids = null;
@@ -118,11 +116,9 @@ class Items {
      * unstarr item
      * json
      *
-     * @param int $itemId id of an item to unstarr
-     *
-     * @return void
+     * @param string $itemId id of an item to unstarr
      */
-    public function unstarr($itemId) {
+    public function unstarr(string $itemId): void {
         $this->authentication->needsLoggedIn();
 
         try {
@@ -140,10 +136,8 @@ class Items {
     /**
      * returns items as json string
      * json
-     *
-     * @return void
      */
-    public function listItems() {
+    public function listItems(): void {
         $this->authentication->needsLoggedInOrPublicMode();
 
         // parse params

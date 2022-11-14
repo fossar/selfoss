@@ -35,10 +35,8 @@ class Stats {
     /**
      * returns current basic stats
      * json
-     *
-     * @return void
      */
-    public function stats() {
+    public function stats(): void {
         $this->authentication->needsLoggedInOrPublicMode();
 
         $stats = $this->itemsDao->stats();

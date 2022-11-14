@@ -63,7 +63,7 @@ class fulltextrss extends feed {
     /**
      * @return \Generator<Item<SimplePie\Item>> list of items
      */
-    public function getItems() {
+    public function getItems(): iterable {
         foreach (parent::getItems() as $item) {
             $url = self::removeTrackersFromUrl($item->getLink());
             $newContent = $this->getFullContent($url, $item);
@@ -72,12 +72,9 @@ class fulltextrss extends feed {
     }
 
     /**
-     * @param string $url
      * @param Item<SimplePie\Item> $item
-     *
-     * @return string
      */
-    public function getFullContent($url, Item $item) {
+    public function getFullContent(string $url, Item $item): string {
         if ($this->graby === null) {
             $this->graby = new Graby([
                 'extractor' => [
@@ -110,11 +107,9 @@ class fulltextrss extends feed {
      *
      * @author Jean Baptiste Favre
      *
-     * @param string $url
-     *
      * @return string url
      */
-    private static function removeTrackersFromUrl($url) {
+    private static function removeTrackersFromUrl(string $url): string {
         $url = parse_url($url);
 
         // Next, rebuild URL
