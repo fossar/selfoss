@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace daos\mysql;
 
 use daos\DatabaseInterface;
@@ -128,6 +130,11 @@ class Sources implements \daos\SourcesInterface {
      */
     public function getByLastUpdate() {
         $ret = $this->database->exec('SELECT id, title, tags, spout, params, filter, error, lastupdate, lastentry FROM ' . $this->configuration->dbPrefix . 'sources ORDER BY lastupdate ASC');
+        $ret = static::$stmt::ensureRowTypes($ret, [
+            'id' => DatabaseInterface::PARAM_INT,
+            'lastupdate' => DatabaseInterface::PARAM_INT | DatabaseInterface::PARAM_NULL,
+            'lastentry' => DatabaseInterface::PARAM_INT | DatabaseInterface::PARAM_NULL,
+        ]);
 
         return $ret;
     }
@@ -146,6 +153,8 @@ class Sources implements \daos\SourcesInterface {
             $ret = $this->database->exec('SELECT id, title, tags, spout, params, filter, error, lastupdate, lastentry FROM ' . $this->configuration->dbPrefix . 'sources WHERE id=:id', [':id' => $id]);
             $ret = static::$stmt::ensureRowTypes($ret, [
                 'id' => DatabaseInterface::PARAM_INT,
+                'lastupdate' => DatabaseInterface::PARAM_INT | DatabaseInterface::PARAM_NULL,
+                'lastentry' => DatabaseInterface::PARAM_INT | DatabaseInterface::PARAM_NULL,
             ]);
             if (isset($ret[0])) {
                 $ret = $ret[0];
@@ -157,6 +166,8 @@ class Sources implements \daos\SourcesInterface {
             $ret = static::$stmt::ensureRowTypes($ret, [
                 'id' => DatabaseInterface::PARAM_INT,
                 'tags' => DatabaseInterface::PARAM_CSV,
+                'lastupdate' => DatabaseInterface::PARAM_INT | DatabaseInterface::PARAM_NULL,
+                'lastentry' => DatabaseInterface::PARAM_INT | DatabaseInterface::PARAM_NULL,
             ]);
         }
 
@@ -209,6 +220,7 @@ class Sources implements \daos\SourcesInterface {
         return static::$stmt::ensureRowTypes($ret, [
             'id' => DatabaseInterface::PARAM_INT,
             'tags' => DatabaseInterface::PARAM_CSV,
+            'lastentry' => DatabaseInterface::PARAM_INT | DatabaseInterface::PARAM_NULL,
         ]);
     }
 

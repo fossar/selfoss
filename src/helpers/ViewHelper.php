@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace helpers;
 
 /**
@@ -79,17 +81,6 @@ class ViewHelper {
 
             return "<img src=\"$placeholder\"{$matches['pre']}data-selfoss-src=\"{$matches['src']}\"{$matches['post']}>";
         }, $content);
-    }
-
-    /**
-     * Return ISO8601 formatted date
-     *
-     * @param string $datestr sql date
-     */
-    public static function date_iso8601(string $datestr): string {
-        $date = new \DateTime($datestr);
-
-        return $date->format(\DateTime::ATOM);
     }
 
     /**

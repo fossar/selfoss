@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace controllers\Sources;
 
 use helpers\Authentication;
@@ -80,7 +82,7 @@ class Write {
         }
         $tags = array_map('htmlspecialchars', $data['tags']);
         $spout = $data['spout'];
-        $filter = $data['filter'] ?? null;
+        $filter = $data['filter'] ?? '';
 
         unset($data['title']);
         unset($data['spout']);

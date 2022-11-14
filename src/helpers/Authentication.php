@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace helpers;
 
 use Monolog\Logger;
@@ -42,7 +44,12 @@ class Authentication {
         $cookie_domain = $base_url['host'] === 'localhost' ? null : $base_url['host'];
 
         session_set_cookie_params(
-            $cookie_expire, $cookie_path, $cookie_domain, $cookie_secure, $cookie_httponly
+            $cookie_expire,
+            $cookie_path,
+            // PHP < 8.0 does not accept null
+            $cookie_domain ?? '',
+            $cookie_secure,
+            $cookie_httponly
         );
         $this->logger->debug("set cookie on $cookie_domain$cookie_path expiring in $cookie_expire seconds");
 

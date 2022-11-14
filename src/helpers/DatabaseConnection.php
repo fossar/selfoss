@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace helpers;
 
 use Monolog\Logger;
@@ -192,7 +194,7 @@ class DatabaseConnection {
      * @param mixed $val
      */
     public function quote($val, int $type = PDO::PARAM_STR): string {
-        return $this->pdo->quote($val, $type);
+        return $this->pdo->quote((string) $val, $type);
     }
 
     /**

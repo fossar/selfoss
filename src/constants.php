@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 const BASEDIR = __DIR__ . '/..';
 
 const SELFOSS_VERSION = '2.20-SNAPSHOT';

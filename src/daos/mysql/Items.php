@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace daos\mysql;
 
 use daos\DatabaseInterface;
 use daos\ItemOptions;
 use DateTime;
+use DateTimeImmutable;
 use helpers\Configuration;
 use Monolog\Logger;
 
@@ -542,15 +545,14 @@ class Items implements \daos\ItemsInterface {
 
     /**
      * returns the datetime of the last item update or user action in db
-     *
-     * @return string timestamp
      */
-    public function lastUpdate(): string {
+    public function lastUpdate(): ?DateTimeImmutable {
         $res = $this->database->exec('SELECT
             MAX(updatetime) AS last_update_time
             FROM ' . $this->configuration->dbPrefix . 'items;');
+        $lastUpdate = $res[0]['last_update_time'];
 
-        return $res[0]['last_update_time'];
+        return $lastUpdate !== null ? new DateTimeImmutable($lastUpdate) : null;
     }
 
     /**

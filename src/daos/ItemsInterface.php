@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace daos;
 
 use DateTime;
+use DateTimeImmutable;
 
 /**
  * Interface describing concrete DAO for working with items.
@@ -159,10 +162,8 @@ interface ItemsInterface {
 
     /**
      * returns the datetime of the last item update or user action in db
-     *
-     * @return string timestamp
      */
-    public function lastUpdate(): string;
+    public function lastUpdate(): ?DateTimeImmutable;
 
     /**
      * returns the statuses of items last update

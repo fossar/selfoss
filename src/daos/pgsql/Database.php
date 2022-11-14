@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace daos\pgsql;
 
 use daos\CommonSqlDatabase;

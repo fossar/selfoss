@@ -31,6 +31,7 @@ $rules = [
     // 'phpdoc_to_return_type' => true,
     'psr_autoloading' => true,
     'strict_param' => true,
+    'declare_strict_types' => true,
 ];
 
 $config = new PhpCsFixer\Config();

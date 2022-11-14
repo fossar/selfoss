@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace controllers;
 
 use Bramus\Router\Router;
@@ -93,8 +95,9 @@ class Index {
             $statsUnread -= $tag['unread'];
         }
 
+        $lastUpdate = $this->itemsDao->lastUpdate();
         $result = [
-            'lastUpdate' => \helpers\ViewHelper::date_iso8601($this->itemsDao->lastUpdate()),
+            'lastUpdate' => $lastUpdate !== null ? $lastUpdate->format(\DateTime::ATOM) : null,
             'hasMore' => $items['hasMore'],
             'entries' => $items['entries'],
             'all' => $statsAll,
