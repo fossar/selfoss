@@ -1,0 +1,14 @@
+<?php
+
+namespace Psr\Container;
+
+class ContainerInterface {
+    /**
+     * @template T of object
+     *
+     * @phpstan-param class-string<T> $id PSR-11 mandates that this is an opaque string but we only use class-strings here.
+     *
+     * @phpstan-return T
+     */
+    public function get(string $id);
+}

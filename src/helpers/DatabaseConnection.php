@@ -32,13 +32,13 @@ class DatabaseConnection {
         Logger $logger,
         string $dsn,
         ?string $user = null,
-        ?string $pw = null,
+        ?string $password = null,
         ?array $options = null,
         string $tableNamePrefix = ''
     ) {
         $this->logger = $logger;
         $this->logger->debug('Creating database connection', ['dsn' => $dsn]);
-        $this->pdo = new PDO($dsn, $user, $pw, $options);
+        $this->pdo = new PDO($dsn, $user, $password, $options);
         $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $this->tableNamePrefix = $tableNamePrefix;
     }

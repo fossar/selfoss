@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3d8473e8857fadb3e40111ac659d7270",
+    "content-hash": "ab1da053d0886465d072851ebc0185d8",
     "packages": [
         {
             "name": "bcosca/fatfree-core",
@@ -157,6 +157,81 @@
                 }
             ],
             "time": "2022-02-21T13:15:14+00:00"
+        },
+        {
+            "name": "dflydev/dot-access-data",
+            "version": "v3.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dflydev/dflydev-dot-access-data.git",
+                "reference": "f41715465d65213d644d3141a6a93081be5d3549"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dflydev/dflydev-dot-access-data/zipball/f41715465d65213d644d3141a6a93081be5d3549",
+                "reference": "f41715465d65213d644d3141a6a93081be5d3549",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1 || ^8.0"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^0.12.42",
+                "phpunit/phpunit": "^7.5 || ^8.5 || ^9.3",
+                "scrutinizer/ocular": "1.6.0",
+                "squizlabs/php_codesniffer": "^3.5",
+                "vimeo/psalm": "^4.0.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "3.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Dflydev\\DotAccessData\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dragonfly Development Inc.",
+                    "email": "info@dflydev.com",
+                    "homepage": "http://dflydev.com"
+                },
+                {
+                    "name": "Beau Simensen",
+                    "email": "beau@dflydev.com",
+                    "homepage": "http://beausimensen.com"
+                },
+                {
+                    "name": "Carlos Frutos",
+                    "email": "carlos@kiwing.it",
+                    "homepage": "https://github.com/cfrutos"
+                },
+                {
+                    "name": "Colin O'Dell",
+                    "email": "colinodell@gmail.com",
+                    "homepage": "https://www.colinodell.com"
+                }
+            ],
+            "description": "Given a deep data structure, access data by dot notation.",
+            "homepage": "https://github.com/dflydev/dflydev-dot-access-data",
+            "keywords": [
+                "access",
+                "data",
+                "dot",
+                "notation"
+            ],
+            "support": {
+                "issues": "https://github.com/dflydev/dflydev-dot-access-data/issues",
+                "source": "https://github.com/dflydev/dflydev-dot-access-data/tree/v3.0.2"
+            },
+            "time": "2022-10-27T11:44:00+00:00"
         },
         {
             "name": "fossar/guzzle-transcoder",
@@ -1097,56 +1172,6 @@
                 }
             ],
             "time": "2022-06-13T04:15:24+00:00"
-        },
-        {
-            "name": "level-2/dice",
-            "version": "4.0.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Level-2/Dice.git",
-                "reference": "e04c98d96bcc932a917b2b7e7944887e4839056a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Level-2/Dice/zipball/e04c98d96bcc932a917b2b7e7944887e4839056a",
-                "reference": "e04c98d96bcc932a917b2b7e7944887e4839056a",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.0.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^6.5"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Dice\\": "./"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-2-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Tom Butler",
-                    "email": "tom@r.je"
-                }
-            ],
-            "description": "A minimalist Dependency injection container (DIC) for PHP. Please note: 3.0+ is only compatible with PHP 7.0. The 2.0 branch is compatbile with PHP 5.6.",
-            "homepage": "http://r.je/dice.html",
-            "keywords": [
-                "dependency injection",
-                "dependency injection container",
-                "di",
-                "ioc"
-            ],
-            "support": {
-                "issues": "https://github.com/Level-2/Dice/issues",
-                "source": "https://github.com/Level-2/Dice/tree/4.0.4"
-            },
-            "time": "2022-03-28T21:20:23+00:00"
         },
         {
             "name": "lordelph/icofileloader",
@@ -2396,6 +2421,59 @@
                 "source": "https://github.com/simplepie/simplepie/tree/1.8.0"
             },
             "time": "2023-01-20T08:37:35+00:00"
+        },
+        {
+            "name": "slince/di",
+            "version": "3.2.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/slince/di.git",
+                "reference": "975d514fadd0edb87a36da7577587f6b75c311a6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/slince/di/zipball/975d514fadd0edb87a36da7577587f6b75c311a6",
+                "reference": "975d514fadd0edb87a36da7577587f6b75c311a6",
+                "shasum": ""
+            },
+            "require": {
+                "dflydev/dot-access-data": "^3.0",
+                "php": ">=7.4",
+                "psr/container": "^1.0 || ^2.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^7.5|^8.0|^9.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Slince\\Di\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tao",
+                    "email": "taosikai@yeah.net"
+                }
+            ],
+            "description": "A flexible dependency injection container",
+            "keywords": [
+                "PSR-11",
+                "container",
+                "dependency injection",
+                "di",
+                "injection",
+                "ioc"
+            ],
+            "support": {
+                "issues": "https://github.com/slince/di/issues",
+                "source": "https://github.com/slince/di/tree/3.2.2"
+            },
+            "time": "2023-06-15T16:54:45+00:00"
         },
         {
             "name": "smalot/pdfparser",

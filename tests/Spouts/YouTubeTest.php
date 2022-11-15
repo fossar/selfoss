@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Spouts;
 
-use Dice\Dice;
 use Generator;
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
@@ -14,6 +13,7 @@ use helpers\HtmlString;
 use helpers\WebClient;
 use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
+use Slince\Di\Container;
 use spouts\youtube\youtube;
 
 function getResourcePath(string $url): string {
@@ -53,25 +53,24 @@ final class YouTubeTest extends TestCase {
         $stack = HandlerStack::create($mock);
         $httpClient = new Client(['handler' => $stack]);
 
-        $dice = new Dice();
-        $dice = $dice->addRule(Logger::class, [
-            'shared' => true,
-            'constructParams' => ['selfoss'],
-        ]);
-        $dice = $dice->addRule('*', [
-            'substitutions' => [
-                WebClient::class => [
-                    Dice::INSTANCE => function() use ($httpClient) {
-                        $stub = $this->createMock(WebClient::class);
-                        $stub->method('getHttpClient')->willReturn($httpClient);
+        $container = new Container();
+        $container->setDefaults(['shared' => false]);
 
-                        return $stub;
-                    },
-                ],
-            ],
-        ]);
+        $container
+            ->register(Logger::class)
+            ->setArgument('name', 'selfoss')
+            ->setShared(true)
+        ;
+        $container
+            ->register(WebClient::class, function() use ($httpClient) {
+                $stub = $this->createMock(WebClient::class);
+                $stub->method('getHttpClient')->willReturn($httpClient);
 
-        $yt = $dice->create(youtube::class);
+                return $stub;
+            })
+        ;
+
+        $yt = $container->get(youtube::class);
 
         $params = [
             'channel' => $urls[0]['url'],

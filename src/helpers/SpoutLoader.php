@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace helpers;
 
-use Dice\Dice;
+use Psr\Container\ContainerInterface;
 use spouts\spout;
 
 /**
@@ -19,10 +19,10 @@ class SpoutLoader {
     /** @var ?array<class-string<spout<mixed>>, spout<mixed>> array of available spouts */
     private ?array $spouts = null;
 
-    private Dice $dic;
+    private ContainerInterface $container;
 
-    public function __construct(Dice $dice) {
-        $this->dic = $dice;
+    public function __construct(ContainerInterface $container) {
+        $this->container = $container;
     }
 
     /**
@@ -51,9 +51,9 @@ class SpoutLoader {
         }
 
         try {
-            $class = $this->dic->create($spout);
+            $class = $this->container->get($spout);
 
-            if (is_subclass_of($class, spout::class)) {
+            if ($class instanceof spout) {
                 return $class;
             } else {
                 return null;
@@ -108,7 +108,7 @@ class SpoutLoader {
                         // register widget
                         if (is_subclass_of($className, $parentClassName)) {
                             /** @var P */
-                            $class = $this->dic->create($className);
+                            $class = $this->container->get($className);
                             $return[$className] = $class;
                         }
                     }

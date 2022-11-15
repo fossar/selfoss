@@ -13,7 +13,8 @@ parameters:
         - vendor/bin/.phpunit/phpunit/vendor/autoload.php
 
     stubFiles:
-        - utils/PHPStan/Stubs/Dice.stub
+        - utils/PHPStan/Stubs/Container.stub
+        - utils/PHPStan/Stubs/ContainerInterface.stub
         - utils/PHPStan/Stubs/IcoFileLoader.stub
 
     ignoreErrors:

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Spouts;
 
-use Dice\Dice;
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
@@ -13,6 +12,7 @@ use helpers\HtmlString;
 use helpers\WebClient;
 use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
+use Slince\Di\Container;
 use spouts\spout;
 use spouts\twitter;
 
@@ -36,25 +36,24 @@ final class TwitterTest extends TestCase {
             'handler' => $stack,
         ]);
 
-        $dice = new Dice();
-        $dice = $dice->addRule(Logger::class, [
-            'shared' => true,
-            'constructParams' => ['selfoss'],
-        ]);
-        $dice = $dice->addRule('*', [
-            'substitutions' => [
-                WebClient::class => [
-                    Dice::INSTANCE => function() use ($httpClient) {
-                        $stub = $this->createMock(WebClient::class);
-                        $stub->method('getHttpClient')->willReturn($httpClient);
+        $container = new Container();
+        $container->setDefaults(['shared' => false]);
 
-                        return $stub;
-                    },
-                ],
-            ],
-        ]);
+        $container
+            ->register(Logger::class)
+            ->setArgument('name', 'selfoss')
+            ->setShared(true)
+        ;
+        $container
+            ->register(WebClient::class, function() use ($httpClient) {
+                $stub = $this->createMock(WebClient::class);
+                $stub->method('getHttpClient')->willReturn($httpClient);
 
-        return $dice->create($spout);
+                return $stub;
+            })
+        ;
+
+        return $container->get($spout);
     }
 
     public function testListTimeline(): void {

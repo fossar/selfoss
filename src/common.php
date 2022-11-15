@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use Dice\Dice;
 use helpers\Configuration;
 use helpers\DatabaseConnection;
 use Monolog\Formatter\LineFormatter;
@@ -10,7 +9,9 @@ use Monolog\Handler\ErrorLogHandler;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
+use Psr\Container\ContainerInterface;
 use Psr\SimpleCache\CacheInterface;
+use Slince\Di\Container;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Cache\Psr16Cache;
 
@@ -51,39 +52,59 @@ $configuration = new Configuration(__DIR__ . '/../config.ini', $_ENV);
 $f3->set('DEBUG', $configuration->debug);
 $f3->set('cache', $configuration->cache);
 
-$dice = new Dice();
+$container = new Container();
+$container->setDefaults(['shared' => false]);
 
-// DI rules
-$substitutions = [
-    'substitutions' => [
-        // Instantiate configuration container.
-        Configuration::class => [
-            Dice::INSTANCE => fn() => $configuration,
-            'shared' => true,
-        ],
+// Instantiate configuration container.
+$container
+    ->register(Configuration::class, $configuration)
+    ->setShared(true)
+;
 
-        Dice::class => [Dice::INSTANCE => Dice::SELF],
-    ],
-];
-
-$shared = array_merge($substitutions, [
-    'shared' => true,
-]);
-
-$dice = $dice->addRule(Bramus\Router\Router::class, $shared);
-$dice = $dice->addRule(helpers\Authentication::class, $shared);
-$dice = $dice->addRule(helpers\Session::class, $shared);
+$container
+    ->register(Bramus\Router\Router::class)
+    ->setShared(true)
+;
+$container
+    ->register(helpers\Authentication::class)
+    ->setShared(true)
+;
+$container
+    ->register(helpers\Session::class)
+    ->setShared(true)
+;
 
 // Database bridges
-$dice = $dice->addRule(daos\Items::class, $shared);
-$dice = $dice->addRule(daos\Sources::class, $shared);
-$dice = $dice->addRule(daos\Tags::class, $shared);
+$container
+    ->register(daos\Items::class)
+    ->setShared(true)
+;
+$container
+    ->register(daos\Sources::class)
+    ->setShared(true)
+;
+$container
+    ->register(daos\Tags::class)
+    ->setShared(true)
+;
 
 // Choose database implementation based on config
-$dice = $dice->addRule(daos\DatabaseInterface::class, array_merge($shared, ['instanceOf' => 'daos\\' . $configuration->dbType . '\\Database']));
-$dice = $dice->addRule(daos\ItemsInterface::class, array_merge($shared, ['instanceOf' => 'daos\\' . $configuration->dbType . '\\Items']));
-$dice = $dice->addRule(daos\SourcesInterface::class, array_merge($shared, ['instanceOf' => 'daos\\' . $configuration->dbType . '\\Sources']));
-$dice = $dice->addRule(daos\TagsInterface::class, array_merge($shared, ['instanceOf' => 'daos\\' . $configuration->dbType . '\\Tags']));
+$container
+    ->register(daos\DatabaseInterface::class, 'daos\\' . $configuration->dbType . '\\Database')
+    ->setShared(true)
+;
+$container
+    ->register(daos\ItemsInterface::class, 'daos\\' . $configuration->dbType . '\\Items')
+    ->setShared(true)
+;
+$container
+    ->register(daos\SourcesInterface::class, 'daos\\' . $configuration->dbType . '\\Sources')
+    ->setShared(true)
+;
+$container
+    ->register(daos\TagsInterface::class, 'daos\\' . $configuration->dbType . '\\Tags')
+    ->setShared(true)
+;
 
 if ($configuration->isChanged('dbSocket') && $configuration->isChanged('dbHost')) {
     boot_error('You cannot set both `db_socket` and `db_host` options.' . PHP_EOL);
@@ -104,7 +125,7 @@ if ($configuration->dbType === 'sqlite') {
     // https://www.php.net/manual/en/ref.pdo-sqlite.connection.php
     $dsn = 'sqlite:' . $db_file;
     $dbParams = [
-        $dsn,
+        'dsn' => $dsn,
     ];
 } elseif ($configuration->dbType === 'mysql') {
     if (!extension_loaded('pdo_mysql')) {
@@ -125,11 +146,11 @@ if ($configuration->dbType === 'sqlite') {
     }
 
     $dbParams = [
-        $dsn,
-        $configuration->dbUsername,
-        $configuration->dbPassword,
-        [PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8mb4;'],
-        $configuration->dbPrefix,
+        'dsn' => $dsn,
+        'user' => $configuration->dbUsername,
+        'password' => $configuration->dbPassword,
+        'options' => [PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8mb4;'],
+        'tableNamePrefix' => $configuration->dbPrefix,
     ];
 } elseif ($configuration->dbType === 'pgsql') {
     if (!extension_loaded('pdo_pgsql')) {
@@ -148,93 +169,87 @@ if ($configuration->dbType === 'sqlite') {
     }
 
     $dbParams = [
-        $dsn,
-        $configuration->dbUsername,
-        $configuration->dbPassword,
+        'dsn' => $dsn,
+        'user' => $configuration->dbUsername,
+        'password' => $configuration->dbPassword,
     ];
 } else {
     throw new Exception('Unsupported value for db_type option: ' . $configuration->dbType);
 }
 
-$sqlParams = array_merge($shared, [
-    'constructParams' => $dbParams,
-]);
+$databaseConnection =
+    $container
+        ->register(DatabaseConnection::class)
+        ->setArguments($dbParams)
+        ->setShared(true)
+;
 
 // Define regexp function for SQLite
 if ($configuration->dbType === 'sqlite') {
-    $sqlParams = array_merge($sqlParams, [
-        'call' => [
-            [
-                // https://www.sqlite.org/lang_expr.html#the_like_glob_regexp_match_and_extract_operators
-                'sqliteCreateFunction',
-                [
-                    'regexp',
-                    function(string $pattern, string $text): bool {
-                        return preg_match('/' . addcslashes($pattern, '/') . '/', $text) === 1;
-                    },
-                    2,
-                ],
-            ],
-        ],
-    ]);
+    $databaseConnection->addMethodCall(
+        // https://www.sqlite.org/lang_expr.html#the_like_glob_regexp_match_and_extract_operators
+        'sqliteCreateFunction',
+        [
+            'regexp',
+            function(string $pattern, string $text): bool {
+                return preg_match('/' . addcslashes($pattern, '/') . '/', $text) === 1;
+            },
+            2,
+        ]
+    );
 }
 
-$dice = $dice->addRule(DatabaseConnection::class, $sqlParams);
+$container
+    ->register('$iconStorageBackend', helpers\Storage\FileStorage::class)
+    ->setArgument('directory', $configuration->datadir . '/favicons')
+;
 
-$dice = $dice->addRule('$iconStorageBackend', [
-    'instanceOf' => helpers\Storage\FileStorage::class,
-    'constructParams' => [
-        $configuration->datadir . '/favicons',
-    ],
-]);
+$container
+    ->register(helpers\IconStore::class)
+    ->setArgument('storage', new Slince\Di\Reference('$iconStorageBackend'))
+    ->setShared(true)
+;
 
-$dice = $dice->addRule(helpers\IconStore::class, array_merge($shared, [
-    'constructParams' => [
-        [Dice::INSTANCE => '$iconStorageBackend'],
-    ],
-]));
+$container
+    ->register('$thumbnailStorageBackend', helpers\Storage\FileStorage::class)
+    ->setArgument('directory', $configuration->datadir . '/thumbnails')
+;
 
-$dice = $dice->addRule('$thumbnailStorageBackend', [
-    'instanceOf' => helpers\Storage\FileStorage::class,
-    'constructParams' => [
-        $configuration->datadir . '/thumbnails',
-    ],
-]);
+$container
+    ->register(helpers\ThumbnailStore::class)
+    ->setArgument('storage', new Slince\Di\Reference('$thumbnailStorageBackend'))
+    ->setShared(true)
+;
 
-$dice = $dice->addRule(helpers\ThumbnailStore::class, array_merge($shared, [
-    'constructParams' => [
-        [Dice::INSTANCE => '$thumbnailStorageBackend'],
-    ],
-]));
+$container
+    ->register(Logger::class)
+    ->setArgument('name', 'selfoss')
+    ->setShared(true)
+;
 
-// Fallback rule
-$dice = $dice->addRule('*', $substitutions);
+$container
+    ->register('$fileStorage', FilesystemAdapter::class)
+    ->setArguments([
+        'namespace' => 'selfoss',
+        'lifetime' => 1800,
+        'directory' => $configuration->cache,
+    ])
+    ->setShared(true)
+;
 
-$dice = $dice->addRule(Logger::class, [
-    'shared' => true,
-    'constructParams' => ['selfoss'],
-]);
+$container
+    ->register(CacheInterface::class, Psr16Cache::class)
+    ->setArgument('pool', new Slince\Di\Reference('$fileStorage'))
+    ->setShared(true)
+;
 
-$dice = $dice->addRule('$fileStorage', array_merge($shared, [
-    'instanceOf' => FilesystemAdapter::class,
-    'constructParams' => [
-        // namespace
-        'selfoss',
-        // lifetime
-        1800,
-        // directory
-        $configuration->cache,
-    ],
-]));
-$dice = $dice->addRule(CacheInterface::class, array_merge($shared, [
-    'instanceOf' => Psr16Cache::class,
-    'constructParams' => [
-        [Dice::INSTANCE => '$fileStorage'],
-    ],
-]));
+$container
+    ->register(ContainerInterface::class, $container)
+    ->setShared(true)
+;
 
 // init logger
-$log = $dice->create(Logger::class);
+$log = $container->get(Logger::class);
 
 if ($configuration->loggerLevel === Configuration::LOGGER_LEVEL_NONE) {
     $handler = new NullHandler();
