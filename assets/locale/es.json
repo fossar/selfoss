@@ -101,5 +101,20 @@
   "lang_error_offline_storage_not_available": "Almacenaje fuera de línea no está disponible. Asegúrese que su navegador {0}soporta IndexedDB API{1} y, si está utilizando un navegador basado en Google Chrome, que no está usando selfoss en modo incógnito.",
   "lang_error_edit_source": "No se pudo guardar los cambios en las fuentes:",
   "lang_experimental": "Experimental",
-  "lang_article_reading_time": "{0} min lectura"
+  "lang_article_reading_time": "{0} min lectura",
+  "lang_sources_loading": "Cargando fuentes…",
+  "lang_source_warn_cancel_dirty": "¿Descartar los cambios no guardados?",
+  "lang_error_unauthorized": "Por favor, {link_begin}firme{link_end} para continuar.",
+  "lang_no_sources": "No hay fuentes configuradas.",
+  "lang_source_menu": "Más acciones",
+  "lang_source_browse": "Navegar",
+  "lang_source_deleting": "Borrando fuente…",
+  "lang_source_params_loading": "Cargando parámetros…",
+  "lang_login_in_progress": "Intentando iniciar sesión…",
+  "lang_source_saving": "Guardando cambios en la fuente…",
+  "lang_source_go_to_settings": "Abrir en los ajustes",
+  "lang_tag_change_color_button_title": "Cambiar el color",
+  "lang_entries_loading": "Cargando las entradas…",
+  "lang_login_error_generic": "No se ha podido iniciar la sesión: {errorMessage}",
+  "lang_sources_leaving_unsaved_prompt": "¿Dejar la configuración con los cambios sin guardar?"
 }
