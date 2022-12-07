@@ -114,5 +114,7 @@
   "lang_info_url_copied": "URL 已复制到剪贴板。",
   "lang_error_share_native": "无法分享条目。",
   "lang_article_actions": "动作",
-  "lang_reload_list": "重新加载列表"
+  "lang_reload_list": "重新加载列表",
+  "lang_login_error_generic": "无法登录: {errorMessage}",
+  "lang_error_unauthorized": "请 {link_begin}登录{link_end} 以继续。"
 }
