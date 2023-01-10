@@ -93,11 +93,18 @@ function NotFound() {
     );
 }
 
-function CheckAuthorization({ isAllowed, _, children }) {
+function CheckAuthorization({
+    isAllowed,
+    returnLocation,
+    _,
+    children,
+}) {
     const history = useHistory();
     if (!isAllowed) {
         const [preLink, inLink, postLink] = _('error_unauthorized').split(/\{(?:link_begin|link_end)\}/);
-        history.push('/sign/in');
+        history.push('/sign/in', {
+            returnLocation,
+        });
 
         return (
             <p>
@@ -111,6 +118,7 @@ function CheckAuthorization({ isAllowed, _, children }) {
 
 CheckAuthorization.propTypes = {
     isAllowed: PropTypes.bool.isRequired,
+    returnLocation: PropTypes.string,
     _: PropTypes.func.isRequired,
     children: PropTypes.any,
 };

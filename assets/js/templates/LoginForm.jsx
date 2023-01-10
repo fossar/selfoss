@@ -14,14 +14,15 @@ function handleLogIn({
     setLoading,
     username,
     password,
-    enableOffline
+    enableOffline,
+    returnLocation,
 }) {
     event.preventDefault();
 
     setLoading(true);
 
     selfoss.login({ configuration, username, password, enableOffline }).then(() => {
-        history.push('/');
+        history.push(returnLocation);
     }).catch((err) => {
         const message =
             err instanceof LoginError
@@ -52,6 +53,7 @@ export default function LoginForm({
     const history = useHistory();
     const location = useLocation();
     const error = location?.state?.error;
+    const returnLocation = location?.state?.returnLocation ?? '/';
 
     const formOnSubmit = React.useCallback(
         (event) =>
@@ -62,9 +64,10 @@ export default function LoginForm({
                 setLoading,
                 username,
                 password,
-                enableOffline
+                enableOffline,
+                returnLocation,
             }),
-        [configuration, history, username, password, enableOffline]
+        [configuration, history, username, password, enableOffline, returnLocation]
     );
 
     const usernameOnChange = React.useCallback(
