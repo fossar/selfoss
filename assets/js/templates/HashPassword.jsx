@@ -80,7 +80,7 @@ export default function HashPassword({
                     <input
                         className="button"
                         type="submit"
-                        value={state === LoadingState.LOADING ? 'Hashing password…' : 'generate password'}
+                        value={state === LoadingState.LOADING ? 'Hashing password…' : 'Compute hash'}
                         accessKey="g"
                         disabled={state === LoadingState.LOADING}
                     />
