@@ -16,7 +16,7 @@ import Lightbox from 'yet-another-react-lightbox';
 
 // TODO: do the search highlights client-side
 function reHighlight(text) {
-    return text.split(/<span class="found">(.+?)<\/span>/).map((n, i) => i % 2 == 0 ? n : <span className="found">{n}</span>);
+    return text.split(/<span class="found">(.+?)<\/span>/).map((n, i) => i % 2 == 0 ? n : <span key={i} className="found">{n}</span>);
 }
 
 function setupLightbox({
