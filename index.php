@@ -15,10 +15,6 @@ $router->get('/api/about', function() use ($dice) {
     // json
     $dice->create(controllers\About::class)->about();
 });
-$router->get('/password', function() use ($dice) {
-    // html
-    $dice->create(controllers\Authentication::class)->password();
-});
 $router->post('/api/private/hash-password', function() use ($dice) {
     // json
     $dice->create(controllers\Helpers\HashPassword::class)->hash();
@@ -160,7 +156,7 @@ $router->get('/opmlexport', function() use ($dice) {
 });
 
 // Client side routes need to be directed to index.html.
-$router->get('/sign/in|/manage/sources(/add)?|/(newest|unread|starred)(/(all|tag-[^/]+|source-[0-9]+)(/[0-9]+)?)?', function() use ($dice) {
+$router->get('/sign/in|/password|/manage/sources(/add)?|/(newest|unread|starred)(/(all|tag-[^/]+|source-[0-9]+)(/[0-9]+)?)?', function() use ($dice) {
     // html
     $dice->create(controllers\Index::class)->home();
 });

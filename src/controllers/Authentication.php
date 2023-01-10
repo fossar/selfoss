@@ -21,16 +21,6 @@ class Authentication {
     }
 
     /**
-     * password hash generator
-     * html
-     *
-     * @return void
-     */
-    public function password() {
-        readfile(BASEDIR . '/public/hashpassword.html');
-    }
-
-    /**
      * login for api json access
      * json
      *

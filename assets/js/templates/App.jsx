@@ -15,6 +15,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Collapse from '@kunukn/react-collapse';
 import classNames from 'classnames';
+import HashPassword from './HashPassword';
 import LoginForm from './LoginForm';
 import SourcesPage from './SourcesPage';
 import EntriesPage from './EntriesPage';
@@ -172,10 +173,11 @@ function PureApp({
         []
     );
 
+    const [title, setTitle] = useState(null);
     const [globalUnreadCount, setGlobalUnreadCount] = useState(null);
     React.useEffect(() => {
-        document.title = configuration.htmlTitle + ((globalUnreadCount ?? 0) > 0 ? ` (${globalUnreadCount})` : '');
-    }, [configuration, globalUnreadCount]);
+        document.title = (title ?? configuration.htmlTitle) + ((globalUnreadCount ?? 0) > 0 ? ` (${globalUnreadCount})` : '');
+    }, [configuration, title, globalUnreadCount]);
 
     const _ = React.useContext(LocalizationContext);
 
@@ -189,6 +191,14 @@ function PureApp({
                     <div id="loginform" role="main">
                         <LoginForm
                             {...{offlineEnabled}}
+                        />
+                    </div>
+                </Route>
+
+                <Route path="/password">
+                    <div id="hashpasswordbody" role="main">
+                        <HashPassword
+                            setTitle={setTitle}
                         />
                     </div>
                 </Route>

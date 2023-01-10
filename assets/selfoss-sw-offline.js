@@ -8,7 +8,7 @@ async function install() {
     const entriesToCache =
         manifest
             // These make no sense offline.
-            .filter((entry) => !entry.match(/^(hashpassword|opml)\b/))
+            .filter((entry) => !entry.match(/^(opml)\b/))
             // We need to pass index.html through PHP to perform templating.
             .map((entry) => entry === 'index.html' ? './' : entry);
 
