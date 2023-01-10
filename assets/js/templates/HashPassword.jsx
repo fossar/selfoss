@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { useCallback, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useInput } from 'rooks';
 import { LoadingState } from '../requests/LoadingState';
+import { HttpError } from '../errors';
 import { hashPassword } from '../requests/common';
 
 export default function HashPassword({
@@ -12,6 +14,8 @@ export default function HashPassword({
     const [error, setError] = useState(null);
     const passwordEntry = useInput('');
 
+    const history = useHistory();
+
     const submit = useCallback((event) => {
         event.preventDefault();
 
@@ -20,10 +24,17 @@ export default function HashPassword({
             setHashedPassword(hashedPassword);
             setState(LoadingState.SUCCESS);
         }).catch(error => {
+            if (error instanceof HttpError && error.response.status === 403) {
+                history.push('/sign/in', {
+                    error: 'Generating a new password hash requires being logged in or not setting “password” in selfoss configuration.',
+                    returnLocation: '/password',
+                });
+                return;
+            }
             setError(error);
             setState(LoadingState.ERROR);
         });
-    }, [passwordEntry.value]);
+    }, [history, passwordEntry.value]);
 
     React.useEffect(() => {
         setTitle('selfoss password hash generator');

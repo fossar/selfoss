@@ -204,11 +204,17 @@ function PureApp({
                 </Route>
 
                 <Route path="/password">
-                    <div id="hashpasswordbody" role="main">
-                        <HashPassword
-                            setTitle={setTitle}
-                        />
-                    </div>
+                    <CheckAuthorization
+                        isAllowed={selfoss.isAllowedToWrite()}
+                        returnLocation="/password"
+                        _={_}
+                    >
+                        <div id="hashpasswordbody" role="main">
+                            <HashPassword
+                                setTitle={setTitle}
+                            />
+                        </div>
+                    </CheckAuthorization>
                 </Route>
 
                 <Route path="/">

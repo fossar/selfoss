@@ -2,16 +2,21 @@
 
 namespace controllers\Helpers;
 
+use helpers\Authentication;
 use helpers\View;
 
 /**
  * Controller for user related tasks
  */
 final class HashPassword {
+    /** @var Authentication authentication helper */
+    private $authentication;
+
     /** @var View view helper */
     private $view;
 
-    public function __construct(View $view) {
+    public function __construct(Authentication $authentication, View $view) {
+        $this->authentication = $authentication;
         $this->view = $view;
     }
 
@@ -22,6 +27,8 @@ final class HashPassword {
      * @return void
      */
     public function hash() {
+        $this->authentication->needsLoggedIn();
+
         if (!isset($_POST['password'])) {
             $this->view->jsonError([
                 'success' => false,
