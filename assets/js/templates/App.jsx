@@ -1,4 +1,6 @@
-import React from 'react';
+import React, {
+    useState,
+} from 'react';
 import PropTypes from 'prop-types';
 import nullable from 'prop-types-nullable';
 import {
@@ -9,7 +11,6 @@ import {
     Redirect,
     useHistory,
     useLocation,
-    useRouteMatch,
 } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Collapse from '@kunukn/react-collapse';
@@ -171,14 +172,10 @@ function PureApp({
         []
     );
 
-    const isEntriesRoute = useRouteMatch(ENTRIES_ROUTE_PATTERN) !== null;
+    const [globalUnreadCount, setGlobalUnreadCount] = useState(null);
     React.useEffect(() => {
-        if (isEntriesRoute && unreadItemsCount > 0) {
-            document.title = configuration.htmlTitle + ' (' + unreadItemsCount + ')';
-        } else {
-            document.title = configuration.htmlTitle;
-        }
-    }, [configuration, unreadItemsCount, isEntriesRoute]);
+        document.title = configuration.htmlTitle + ((globalUnreadCount ?? 0) > 0 ? ` (${globalUnreadCount})` : '');
+    }, [configuration, globalUnreadCount]);
 
     const _ = React.useContext(LocalizationContext);
 
@@ -261,6 +258,8 @@ function PureApp({
                                             setNavExpanded={setNavExpanded}
                                             configuration={configuration}
                                             navSourcesExpanded={navSourcesExpanded}
+                                            unreadItemsCount={unreadItemsCount}
+                                            setGlobalUnreadCount={setGlobalUnreadCount}
                                         />
                                     )}
                                 </Route>

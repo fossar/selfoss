@@ -177,7 +177,19 @@ function handleRefreshSource({ event, source, setLoadingState, setNavExpanded, r
     });
 }
 
-export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, selectedEntry, expandedEntries, setNavExpanded, navSourcesExpanded, reload }) {
+export function EntriesPage({
+    entries,
+    hasMore,
+    loadingState,
+    setLoadingState,
+    selectedEntry,
+    expandedEntries,
+    setNavExpanded,
+    navSourcesExpanded,
+    reload,
+    setGlobalUnreadCount,
+    unreadItemsCount,
+}) {
     const allowedToUpdate = useAllowedToUpdate();
     const allowedToWrite = useAllowedToWrite();
     const configuration = React.useContext(ConfigurationContext);
@@ -292,6 +304,14 @@ export function EntriesPage({ entries, hasMore, loadingState, setLoadingState, s
             window.clearInterval(interval);
         };
     }, []);
+
+    React.useEffect(() => {
+        setGlobalUnreadCount(unreadItemsCount);
+
+        return () => {
+            setGlobalUnreadCount(null);
+        };
+    }, [setGlobalUnreadCount, unreadItemsCount]);
 
     const isOnline = useOnline();
 
@@ -417,6 +437,8 @@ EntriesPage.propTypes = {
     setNavExpanded: PropTypes.func.isRequired,
     navSourcesExpanded: PropTypes.bool.isRequired,
     reload: PropTypes.func.isRequired,
+    setGlobalUnreadCount: PropTypes.func.isRequired,
+    unreadItemsCount: PropTypes.number.isRequired,
 };
 
 const initialState = {
@@ -1041,6 +1063,8 @@ export default class StateHolder extends React.Component {
                 setNavExpanded={this.props.setNavExpanded}
                 navSourcesExpanded={this.props.navSourcesExpanded}
                 reload={this.reload}
+                setGlobalUnreadCount={this.props.setGlobalUnreadCount}
+                unreadItemsCount={this.props.unreadItemsCount}
             />
         );
     }
@@ -1052,4 +1076,6 @@ StateHolder.propTypes = {
     match: PropTypes.object.isRequired,
     setNavExpanded: PropTypes.func.isRequired,
     navSourcesExpanded: PropTypes.bool.isRequired,
+    setGlobalUnreadCount: PropTypes.func.isRequired,
+    unreadItemsCount: PropTypes.number.isRequired,
 };
