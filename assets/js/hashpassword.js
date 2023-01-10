@@ -1,4 +1,4 @@
-import { hash } from 'bcryptjs';
+import { hashPassword } from './requests/common';
 
 const msgContainer = document.querySelector('.message-container');
 const passwordEntry = document.getElementById('password');
@@ -12,7 +12,7 @@ document.querySelector('form').addEventListener('submit', e => {
     submit.disabled = true;
     submit.value = 'Hashing password…';
 
-    hash(passwordEntry.value.trim(), 10).then(hashedPassword => {
+    hashPassword(passwordEntry.value.trim()).then(hashedPassword => {
         msgContainer.innerHTML = `<p class="error"><label>Generated Password (insert this into config.ini): <input type="text" value="${hashedPassword}"></label></p>`;
     }).catch(err => {
         msgContainer.innerHTML = `<p class="error">Unexpected happened. <details><pre>${JSON.stringify(err)}</pre></details></p>`;

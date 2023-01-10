@@ -1,6 +1,13 @@
 import { LoginError } from '../errors';
 import * as ajax from '../helpers/ajax';
 
+export class PasswordHashingError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = 'PasswordHashingError';
+    }
+}
+
 /**
  * Gets information about selfoss instance.
  */
@@ -24,6 +31,23 @@ export function login(credentials) {
             return Promise.resolve();
         } else {
             return Promise.reject(new LoginError(data.error));
+        }
+    });
+}
+
+/**
+ * Salt and hash a password.
+ */
+export function hashPassword(password) {
+    return ajax.post('api/private/hash-password', {
+        body: new URLSearchParams({ password }),
+    }).promise.then(
+        response => response.json()
+    ).then((data) => {
+        if (data.success) {
+            return Promise.resolve(data.hash);
+        } else {
+            return Promise.reject(new PasswordHashingError(data.error));
         }
     });
 }

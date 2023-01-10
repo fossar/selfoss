@@ -19,6 +19,10 @@ $router->get('/password', function() use ($dice) {
     // html
     $dice->create(controllers\Authentication::class)->password();
 });
+$router->post('/api/private/hash-password', function() use ($dice) {
+    // json
+    $dice->create(controllers\Helpers\HashPassword::class)->hash();
+});
 $router->get('/login', function() use ($dice) {
     // json, deprecated
     $dice->create(controllers\Authentication::class)->login();
