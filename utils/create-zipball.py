@@ -36,6 +36,7 @@ DISALLOWED_DEST_PATTERNS = list(map(re.compile, [
     r'^vendor/smalot/pdfparser/\.atoum\.php$',
     r'^vendor/smottt/wideimage/demo',
     r'^vendor/simplepie/simplepie/(db\.sql|autoload\.php)$',
+    r'^vendor/simplepie/simplepie/library$',
     r'^vendor/composer/installed\.json$',
     r'(?i)^vendor/[^/]+/[^/]+/(test|doc)s?',
     r'^vendor/[^/]+/[^/]+/\.git(/|$)',
