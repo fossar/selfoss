@@ -104,8 +104,7 @@ class feed extends \spouts\spout {
             $icon = null;
             $link = htmlspecialchars_decode((string) $item->get_link(), ENT_COMPAT); // SimplePie sanitizes URLs
             $unixDate = $item->get_date('U');
-            // TODO: remove the `false` check once we upgrade to SimplePie 1.8
-            $date = $unixDate !== null && $unixDate !== false ? new \DateTimeImmutable('@' . $unixDate) : new \DateTimeImmutable();
+            $date = $unixDate !== null ? new \DateTimeImmutable('@' . $unixDate) : new \DateTimeImmutable();
             $author = $this->getAuthorString($item);
 
             yield new Item(
