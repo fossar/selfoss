@@ -94,16 +94,6 @@ interface SourcesInterface {
     public function getWithIcon();
 
     /**
-     * test if the value of a specified field is valid
-     *
-     * @param   string      $name
-     * @param   mixed       $value
-     *
-     * @return  bool
-     */
-    public function isValid($name, $value);
-
-    /**
      * returns all tags
      *
      * @return mixed all sources

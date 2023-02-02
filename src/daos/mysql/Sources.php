@@ -230,26 +230,6 @@ class Sources implements \daos\SourcesInterface {
     }
 
     /**
-     * test if the value of a specified field is valid
-     *
-     * @param   string      $name
-     * @param   mixed       $value
-     *
-     * @return  bool
-     */
-    public function isValid($name, $value) {
-        $return = false;
-
-        switch ($name) {
-        case 'id':
-            $return = is_numeric($value);
-            break;
-        }
-
-        return $return;
-    }
-
-    /**
      * returns all tags
      *
      * @return mixed all sources

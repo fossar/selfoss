@@ -41,37 +41,37 @@ class Items implements \daos\ItemsInterface {
     /**
      * mark item as read
      *
-     * @param int|int[] $id
-     *
-     * @return void
+     * @param non-empty-array<int> $ids
      */
-    public function mark($id) {
-        if ($this->isValid('id', $id) === false) {
-            return;
-        }
-
-        if (is_array($id)) {
-            $id = implode(',', $id);
-        }
-
-        // i used string concatenation after validating $id
-        $this->database->exec('UPDATE ' . $this->configuration->dbPrefix . "items SET unread=? WHERE id IN ($id)", false);
+    public function mark(array $ids): void {
+        $ids = implode(
+            ',',
+            array_map(
+                function(int $id): string {
+                    return (string) $id;
+                },
+                $ids
+            )
+        );
+        $this->database->exec('UPDATE ' . $this->configuration->dbPrefix . "items SET unread=? WHERE id IN ($ids)", false);
     }
 
     /**
      * mark item as unread
      *
-     * @param int|int[] $id
-     *
-     * @return void
+     * @param non-empty-array<int> $ids
      */
-    public function unmark($id) {
-        if (is_array($id)) {
-            $id = implode(',', $id);
-        } elseif (!is_numeric($id)) {
-            return;
-        }
-        $this->database->exec('UPDATE ' . $this->configuration->dbPrefix . "items SET unread=? WHERE id IN ($id)", true);
+    public function unmark(array $ids): void {
+        $ids = implode(
+            ',',
+            array_map(
+                function(int $id): string {
+                    return (string) $id;
+                },
+                $ids
+            )
+        );
+        $this->database->exec('UPDATE ' . $this->configuration->dbPrefix . "items SET unread=? WHERE id IN ($ids)", true);
     }
 
     /**
@@ -530,36 +530,6 @@ class Items implements \daos\ItemsInterface {
                   [':icon' => $icon]);
 
         return $res[0]['amount'] > 0;
-    }
-
-    /**
-     * test if the value of a specified field is valid
-     *
-     * @param   string      $name
-     * @param   mixed       $value
-     *
-     * @return  bool
-     */
-    public function isValid($name, $value) {
-        $return = false;
-
-        switch ($name) {
-        case 'id':
-            $return = is_numeric($value);
-
-            if (is_array($value)) {
-                $return = true;
-                foreach ($value as $id) {
-                    if (is_numeric($id) === false) {
-                        $return = false;
-                        break;
-                    }
-                }
-            }
-            break;
-        }
-
-        return $return;
     }
 
     /**

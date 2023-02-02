@@ -4,7 +4,9 @@ namespace controllers;
 
 use daos\ItemOptions;
 use helpers\Authentication;
+use helpers\Misc;
 use helpers\View;
+use InvalidArgumentException;
 
 /**
  * Controller for item handling
@@ -40,25 +42,27 @@ class Items {
     public function mark($itemId = null) {
         $this->authentication->needsLoggedIn();
 
-        $lastid = null;
+        $ids = null;
         if ($itemId !== null) {
-            $lastid = $itemId;
+            $ids = $itemId;
         } else {
             $contentType = $_SERVER['CONTENT_TYPE'] ?? '';
             if (strpos($contentType, 'application/json') === 0) {
                 $body = file_get_contents('php://input');
-                $lastid = json_decode($body, true);
+                $ids = json_decode($body, true);
             } elseif (isset($_POST['ids'])) {
-                $lastid = $_POST['ids'];
+                $ids = $_POST['ids'];
             }
         }
 
         // validate id or ids
-        if (!$this->itemsDao->isValid('id', $lastid)) {
+        try {
+            $ids = Misc::forceIds($ids);
+        } catch (InvalidArgumentException $e) {
             $this->view->error('invalid id');
         }
 
-        $this->itemsDao->mark($lastid);
+        $this->itemsDao->mark($ids);
 
         $return = [
             'success' => true,
@@ -71,18 +75,18 @@ class Items {
      * mark item as unread
      * json
      *
-     * @param int $itemId id of an item to mark as unread
-     *
-     * @return void
+     * @param string $itemId id of an item to mark as unread
      */
-    public function unmark($itemId) {
+    public function unmark(string $itemId): void {
         $this->authentication->needsLoggedIn();
 
-        if (!$this->itemsDao->isValid('id', $itemId)) {
+        try {
+            $itemId = Misc::forceId($itemId);
+        } catch (InvalidArgumentException $e) {
             $this->view->error('invalid id');
         }
 
-        $this->itemsDao->unmark($itemId);
+        $this->itemsDao->unmark([(int) $itemId]);
 
         $this->view->jsonSuccess([
             'success' => true,
@@ -93,14 +97,14 @@ class Items {
      * starr item
      * json
      *
-     * @param int $itemId id of an item to starr
-     *
-     * @return void
+     * @param string $itemId id of an item to starr
      */
-    public function starr($itemId) {
+    public function starr(string $itemId): void {
         $this->authentication->needsLoggedIn();
 
-        if (!$this->itemsDao->isValid('id', $itemId)) {
+        try {
+            $itemId = Misc::forceId($itemId);
+        } catch (InvalidArgumentException $e) {
             $this->view->error('invalid id');
         }
 
@@ -121,7 +125,9 @@ class Items {
     public function unstarr($itemId) {
         $this->authentication->needsLoggedIn();
 
-        if (!$this->itemsDao->isValid('id', $itemId)) {
+        try {
+            $itemId = Misc::forceId($itemId);
+        } catch (InvalidArgumentException $e) {
             $this->view->error('invalid id');
         }
 

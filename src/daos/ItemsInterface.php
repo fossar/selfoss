@@ -9,22 +9,18 @@ use DateTime;
  */
 interface ItemsInterface {
     /**
-     * mark item as read
+     * Mark items as read.
      *
-     * @param int $id
-     *
-     * @return void
+     * @param int[] $ids
      */
-    public function mark($id);
+    public function mark(array $ids): void;
 
     /**
-     * mark item as unread
+     * Mark items as unread.
      *
-     * @param int $id
-     *
-     * @return void
+     * @param int[] $ids
      */
-    public function unmark($id);
+    public function unmark(array $ids): void;
 
     /**
      * starr item
@@ -165,16 +161,6 @@ interface ItemsInterface {
      * @return bool true if icon is still in use
      */
     public function hasIcon($icon);
-
-    /**
-     * test if the value of a specified field is valid
-     *
-     * @param   string      $name
-     * @param   mixed       $value
-     *
-     * @return  bool
-     */
-    public function isValid($name, $value);
 
     /**
      * returns the amount of entries in database which are unread
