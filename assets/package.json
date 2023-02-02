@@ -9,7 +9,6 @@
     "@kunukn/react-collapse": "^2.2.9",
     "@parcel/service-worker": "^2.5.0",
     "@siteparts/show-hide-effects": "^1.0.0",
-    "bcryptjs": "^2.4.3",
     "classnames": "^2.2.6",
     "core-js": "^3.2.1",
     "dexie": "^3.0.0",
