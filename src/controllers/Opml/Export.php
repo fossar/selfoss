@@ -59,7 +59,8 @@ class Export {
     private function writeSource(array $source): void {
         // retrieve the feed url of the source
         $params = json_decode(html_entity_decode($source['params']), true);
-        $feedUrl = $this->spoutLoader->get($source['spout'])->getXmlUrl($params);
+        $feed = $this->spoutLoader->get($source['spout']);
+        $feedUrl = $feed !== null ? $feed->getXmlUrl($params) : null;
 
         // if the spout doesn't return a feed url, the source isn't an RSS feed
         if ($feedUrl !== null) {
