@@ -4,6 +4,7 @@ namespace controllers\Sources;
 
 use helpers\Authentication;
 use helpers\ContentLoader;
+use helpers\Misc;
 use helpers\SpoutLoader;
 use helpers\View;
 
@@ -88,12 +89,19 @@ class Write {
         unset($data['filter']);
         unset($data['tags']);
 
-        // check if source already exists
-        $sourceExists = $id !== null && $this->sourcesDao->isValid('id', $id);
+        // We assume numeric id means source already exists, new sources will have “new-” prefix.
+        $sourceProbablyExists = false;
+        try {
+            if ($id !== null) {
+                $id = Misc::forceId($id);
+                $sourceProbablyExists = true;
+            }
+        } catch (\InvalidArgumentException $e) {
+        }
 
         // load password value if not changed for spouts containing passwords
         $oldParams = null;
-        if ($sourceExists) {
+        if ($sourceProbablyExists) {
             $spoutInstance = $this->spoutLoader->get($spout);
 
             foreach ($spoutInstance->params as $spoutParamName => $spoutParam) {
@@ -113,7 +121,7 @@ class Write {
         }
 
         // add/edit source
-        if (!$sourceExists) {
+        if (!$sourceProbablyExists) {
             $id = $this->sourcesDao->add($title, $tags, $filter, $spout, $data);
         } else {
             $this->sourcesDao->edit($id, $title, $tags, $filter, $spout, $data);

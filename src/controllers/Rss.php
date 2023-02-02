@@ -101,7 +101,7 @@ class Rss {
 
             // mark as read
             if ($this->configuration->rssMarkAsRead && $lastid !== null) {
-                $this->itemsDao->mark($lastid);
+                $this->itemsDao->mark([$lastid]);
             }
         }
 

@@ -3,8 +3,10 @@
 namespace controllers;
 
 use helpers\Authentication;
+use helpers\Misc;
 use helpers\SpoutLoader;
 use helpers\View;
+use InvalidArgumentException;
 
 /**
  * Controller for sources handling
@@ -117,7 +119,9 @@ class Sources {
     public function remove($id) {
         $this->authentication->needsLoggedIn();
 
-        if (!$this->sourcesDao->isValid('id', $id)) {
+        try {
+            $id = Misc::forceId($id);
+        } catch (InvalidArgumentException $e) {
             $this->view->error('invalid id given');
         }
 
