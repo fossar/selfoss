@@ -34,7 +34,7 @@ class Misc {
      *
      * @param callable|array-key|array{callable|array-key, self::ORDER_*} ...$transformations
      *
-     * @return callable(mixed, mixed): self::CMP_* comparator
+     * @return callable(mixed, mixed): (self::CMP_*) comparator
      */
     public static function compareBy(...$transformations) {
         if (count($transformations) > 0) {
@@ -50,6 +50,7 @@ class Misc {
                         $comparison = $a[$transformation] <=> $b[$transformation];
                     }
 
+                    /** @var self::CMP_* */ // For PHPStan.
                     $comparison = $order * $comparison;
 
                     if ($comparison !== self::CMP_EQ) {

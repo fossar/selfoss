@@ -9,6 +9,7 @@ use Fossar\GuzzleTranscoder\GuzzleTranscoder;
 use GuzzleHttp;
 use GuzzleHttp\HandlerStack;
 use Monolog\Logger;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * Helper class for web request
@@ -118,11 +119,11 @@ class WebClient {
      * RedirectMiddleware will need to be enabled for this to work.
      *
      * @param string $url requested URL, to use as a fallback
-     * @param GuzzleHttp\Psr7\Response $response response to inspect
+     * @param ResponseInterface $response response to inspect
      *
      * @return string last URL we were redirected to
      */
-    public static function getEffectiveUrl(string $url, GuzzleHttp\Psr7\Response $response): string {
+    public static function getEffectiveUrl(string $url, ResponseInterface $response): string {
         // Sequence of fetched URLs
         $urlStack = array_merge([$url], $response->getHeader(\GuzzleHttp\RedirectMiddleware::HISTORY_HEADER));
 

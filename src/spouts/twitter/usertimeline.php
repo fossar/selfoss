@@ -64,6 +64,14 @@ class usertimeline extends \spouts\spout {
         ],
     ];
 
+    private const GROUPED_ENTITY_TYPES = [
+        'hashtags',
+        'symbols',
+        'user_mentions',
+        'urls',
+        'media',
+    ];
+
     /** @var string URL of the source */
     protected $htmlUrl = '';
 
@@ -327,7 +335,8 @@ class usertimeline extends \spouts\spout {
     public static function formatEntities(stdClass $groupedEntities): array {
         $result = [];
 
-        foreach ($groupedEntities as $type => $entities) {
+        foreach (self::GROUPED_ENTITY_TYPES as $type) {
+            $entities = $groupedEntities->{$type};
             foreach ($entities as $entity) {
                 $start = $entity->indices[0];
                 $end = $entity->indices[1];
