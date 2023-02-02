@@ -74,7 +74,7 @@ class SpoutLoader {
             $this->spouts = $this->loadClasses(__DIR__ . '/../spouts', spout::class);
 
             // sort spouts by name
-            uasort($this->spouts, ['self', 'compareSpoutsByName']);
+            uasort($this->spouts, [self::class, 'compareSpoutsByName']);
         }
     }
 

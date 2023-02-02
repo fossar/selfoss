@@ -2,3 +2,13 @@ parameters:
     bootstrapFiles:
         - src/constants.php
         - vendor/bin/.phpunit/phpunit/vendor/autoload.php
+
+    ignoreErrors:
+        # We want exhaustiveness check in spouts\twitter\usertimeline::formatEntities
+        - '(Result of \|\| is always true\.)'
+        # The arguments are provided by SimplePie and we want the value of a later one.
+        - '(Constructor of class helpers\\SimplePieFileGuzzle has an unused parameter \$force_fsockopen\.)'
+
+        # Bad PHPStan typing rules.
+        - '(Parameter #3 \$namespace of method XMLWriter::writeAttributeNs\(\) expects string, null given\.)'
+        - '(Parameter #2 \$algo of function password_hash expects int, string given\.)'

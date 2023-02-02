@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace helpers;
 
+use Elphin\IcoFileLoader;
 use Elphin\IcoFileLoader\IcoFileService;
 use GuzzleHttp\Psr7\Uri;
 use GuzzleHttp\Psr7\UriResolver;
@@ -21,7 +22,7 @@ class Image {
     public const FORMAT_JPEG = 'jpeg';
     public const FORMAT_PNG = 'png';
 
-    private static $extensions = [
+    private const EXTENSIONS = [
         self::FORMAT_JPEG => 'jpg',
         self::FORMAT_PNG => 'png',
     ];
@@ -62,7 +63,7 @@ class Image {
      * @param self::FORMAT_* $format
      */
     public static function getExtension(string $format): string {
-        return self::$extensions[$format];
+        return self::EXTENSIONS[$format];
     }
 
     /**
@@ -222,6 +223,7 @@ class Image {
             }
 
             if ($image === null) {
+                /** @var ?IcoFileLoader\Icon */ // Type annotation says it cannot return null but that is not the case when the ico file does not contain images.
                 $image = $icon->findBest();
             }
 
