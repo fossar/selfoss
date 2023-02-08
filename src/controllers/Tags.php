@@ -30,7 +30,7 @@ class Tags {
         $this->view = $view;
     }
 
-    /* @var ?array<string, array{backColor: string, foreColor: string}> cache of tags and associated colors */
+    /** @var ?array<string, array{backColor: string, foreColor: string}> cache of tags and associated colors */
     protected $tagsColors = null;
 
     /**

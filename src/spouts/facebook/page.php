@@ -18,6 +18,8 @@ use spouts\Parameter;
  * @license GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author Tobias Zeising <tobias.zeising@aditu.de>
  * @author Jan Tojnar <jtojnar@gmail.com>
+ *
+ * @extends \spouts\spout<null>
  */
 class page extends \spouts\spout {
     /** @var string name of source */

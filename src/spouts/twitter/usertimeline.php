@@ -18,6 +18,8 @@ use stdClass;
  * @copyright  Copyright (c) Tobias Zeising (http://www.aditu.de)
  * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
+ *
+ * @extends \spouts\spout<null>
  */
 class usertimeline extends \spouts\spout {
     /** @var string name of source */
@@ -126,7 +128,7 @@ class usertimeline extends \spouts\spout {
      * Assumes client property is initialized to Guzzle client configured to access Twitter.
      *
      * @param string $endpoint API endpoint to use
-     * @param array $params extra query arguments to pass to the API call
+     * @param array<string, string> $params extra query arguments to pass to the API call
      *
      * @throws \Exception when API request fails
      * @throws GuzzleHttp\Exception\GuzzleException when HTTP request fails for API-unrelated reasons

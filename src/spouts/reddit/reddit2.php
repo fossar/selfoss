@@ -20,6 +20,8 @@ use spouts\Parameter;
  * @copyright  Copyright (c) Tobias Zeising (http://www.aditu.de)
  * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
+ *
+ * @extends \spouts\spout<null>
  */
 class reddit2 extends \spouts\spout {
     /** @var string name of spout */
@@ -202,7 +204,7 @@ class reddit2 extends \spouts\spout {
      * Sign in to reddit using the credentials in params and save a session cookie
      * for further requests.
      *
-     * @param array $params source parameters
+     * @param array<string, string> $params source parameters
      *
      * @throws GuzzleHttp\Exception\GuzzleException When an error is encountered
      * @throws \RuntimeException if the response body is not in JSON format

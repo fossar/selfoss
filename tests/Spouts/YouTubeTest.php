@@ -60,7 +60,10 @@ final class YouTubeTest extends TestCase {
         $this->assertEquals($firstItemTitle, $yt->getItems()->current()->getTitle());
     }
 
-    public function dataProvider() {
+    /**
+     * @return array<array{url: string, feedTitle: string, firstItemTitle: string}>
+     */
+    public function dataProvider(): array {
         return [
             [
                 'url' => 'https://www.youtube.com/user/ZoggFromBetelgeuse',
