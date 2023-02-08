@@ -16,7 +16,7 @@ use spouts\spout;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class SpoutLoader {
-    /** @var ?array<class-string<spout>, spout> array of available spouts */
+    /** @var ?array<class-string<spout<mixed>>, spout<mixed>> array of available spouts */
     private $spouts = null;
 
     /** @var Dice dependency injection container */
@@ -29,7 +29,7 @@ class SpoutLoader {
     /**
      * returns all available spouts
      *
-     * @return array<class-string<spout>, spout> available spouts
+     * @return array<class-string<spout<mixed>>, spout<mixed>> available spouts
      */
     public function all(): array {
         $this->readSpouts();
@@ -42,7 +42,7 @@ class SpoutLoader {
      *
      * @param class-string $spout a given spout type
      *
-     * @return ?spout an instance of the spout, null if this spout doesn't exist
+     * @return ?spout<mixed> an instance of the spout, null if this spout doesn't exist
      */
     public function get(string $spout): ?spout {
         if (!class_exists($spout)) {
@@ -118,8 +118,8 @@ class SpoutLoader {
     /**
      * compare spouts by name
      *
-     * @param spout $spout1 Spout 1
-     * @param spout $spout2 Spout 2
+     * @param spout<mixed> $spout1 Spout 1
+     * @param spout<mixed> $spout2 Spout 2
      */
     private static function compareSpoutsByName(spout $spout1, spout $spout2): int {
         return strcasecmp($spout1->name, $spout2->name);

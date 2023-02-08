@@ -12,7 +12,7 @@ namespace helpers;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class ImageUtils {
-    private static $iconRelWeights = [
+    private const ICON_REL_WEIGHTS = [
         'apple-touch-icon-precomposed' => 3,
         'apple-touch-icon' => 2,
         'shortcut icon' => 1,
@@ -91,7 +91,7 @@ class ImageUtils {
 
             // then by rel priority
             [function($val) {
-                return self::$iconRelWeights[$val['rel']];
+                return self::ICON_REL_WEIGHTS[$val['rel']];
             }, Misc::ORDER_DESC],
 
             // and finally by order to make the sorting stable

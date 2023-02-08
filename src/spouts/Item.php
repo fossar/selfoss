@@ -73,6 +73,9 @@ class Item {
         return $this->id;
     }
 
+    /**
+     * @return static
+     */
     public function withId(string $id): self {
         $modified = clone $this;
         $modified->id = $id;
@@ -90,6 +93,9 @@ class Item {
         return $this->title;
     }
 
+    /**
+     * @return static
+     */
     public function withTitle(string $title): self {
         $modified = clone $this;
         $modified->title = $title;
@@ -107,6 +113,9 @@ class Item {
         return $this->content;
     }
 
+    /**
+     * @return static
+     */
     public function withContent(string $content): self {
         $modified = clone $this;
         $modified->content = $content;
@@ -121,6 +130,9 @@ class Item {
         return $this->thumbnail;
     }
 
+    /**
+     * @return static
+     */
     public function withThumbnail(?string $thumbnail): self {
         $modified = clone $this;
         $modified->thumbnail = $thumbnail;
@@ -135,6 +147,9 @@ class Item {
         return $this->icon;
     }
 
+    /**
+     * @return static
+     */
     public function withIcon(?string $icon): self {
         $modified = clone $this;
         $modified->icon = $icon;
@@ -149,6 +164,9 @@ class Item {
         return $this->link;
     }
 
+    /**
+     * @return static
+     */
     public function withLink(string $link): self {
         $modified = clone $this;
         $modified->link = $link;
@@ -163,6 +181,9 @@ class Item {
         return $this->date;
     }
 
+    /**
+     * @return static
+     */
     public function withDate(?DateTimeInterface $date = null): self {
         $modified = clone $this;
         $modified->date = $date;
@@ -179,6 +200,9 @@ class Item {
         return $this->author;
     }
 
+    /**
+     * @return static
+     */
     public function withAuthor(?string $author): self {
         $modified = clone $this;
         $modified->author = $author;

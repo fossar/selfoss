@@ -21,9 +21,10 @@ class SimplePieFileGuzzle extends File {
      * @param ?array<string,string> $headers
      * @param ?string $useragent
      * @param bool $force_fsockopen
-     * @param array $curl_options
+     * @param array{'helpers\WebClient'?: WebClient} $curl_options
      */
     public function __construct($url, $timeout = 10, $redirects = 5, $headers = null, $useragent = null, $force_fsockopen = false, $curl_options = []) {
+        assert(isset($curl_options[WebClient::class]));
         $this->webClient = $curl_options[WebClient::class];
         $this->url = $url;
         $this->permanent_url = $url;
