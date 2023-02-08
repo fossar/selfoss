@@ -22,11 +22,22 @@ abstract class spout {
     public $description = '';
 
     /**
-     * config params
+    /* Configurable parameters
      * array of arrays with name, type, default value, required, validation type
      *
-     * - Values for type: text, password, checkbox, select
-     * - Values for validation: alpha, email, numeric, int, alnum, notempty
+     * - Values for type:
+     *   - `Parameter::TYPE_TEXT`
+     *   - `Parameter::TYPE_URL`
+     *   - `Parameter::TYPE_PASSWORD`
+     *   - `Parameter::TYPE_CHECKBOX`
+     *   - `Parameter::TYPE_SELECT`
+     * - Values for validation:
+     *   - `Parameter::VALIDATION_ALPHA`
+     *   - `Parameter::VALIDATION_EMAIL`
+     *   - `Parameter::VALIDATION_NUMERIC`
+     *   - `Parameter::VALIDATION_INT`
+     *   - `Parameter::VALIDATION_ALPHANUMERIC`
+     *   - `Parameter::VALIDATION_NONEMPTY`
      *
      * When type is "select", a new entry "values" must be supplied, holding
      * key/value pairs of internal names (key) and displayed labels (value).
@@ -36,22 +47,22 @@ abstract class spout {
      * [
      *   "id" => [
      *     "title"      => "URL",
-     *     "type"       => "text",
+     *     "type"       => Parameter::TYPE_TEXT,
      *     "default"    => "",
      *     "required"   => true,
-     *     "validation" => ["alnum"]
+     *     "validation" => [Parameter::VALIDATION_ALPHANUMERIC]
      *   ],
      *   ....
      * ]
      *
-     * @var array
+     * @var SpoutParameters
      */
     public $params = [];
 
     /**
      * loads content for given source
      *
-     * @param array $params params of this source
+     * @param array<string, mixed> $params params of this source
      *
      * @throws \GuzzleHttp\Exception\GuzzleException When an error is encountered
      */
@@ -60,7 +71,7 @@ abstract class spout {
     /**
      * returns the xml feed url for the source
      *
-     * @param array $params params for the source
+     * @param array<string, mixed> $params params for the source
      *
      * @return ?string url as xml
      */

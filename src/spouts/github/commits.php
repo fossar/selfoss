@@ -6,6 +6,7 @@ namespace spouts\github;
 
 use helpers\WebClient;
 use spouts\Item;
+use spouts\Parameter;
 
 /**
  * Spout for fetching from GitHub
@@ -22,28 +23,28 @@ class commits extends \spouts\spout {
     /** @var string description of this source type */
     public $description = 'List commits on a repository.';
 
-    /** @var array configurable parameters */
+    /** @var SpoutParameters configurable parameters */
     public $params = [
         'owner' => [
             'title' => 'Owner',
-            'type' => 'text',
+            'type' => Parameter::TYPE_TEXT,
             'default' => '',
             'required' => true,
-            'validation' => ['notempty'],
+            'validation' => [Parameter::VALIDATION_NONEMPTY],
         ],
         'repo' => [
             'title' => 'Repository',
-            'type' => 'text',
+            'type' => Parameter::TYPE_TEXT,
             'default' => '',
             'required' => true,
-            'validation' => ['notempty'],
+            'validation' => [Parameter::VALIDATION_NONEMPTY],
         ],
         'branch' => [
             'title' => 'Branch',
-            'type' => 'text',
+            'type' => Parameter::TYPE_TEXT,
             'default' => '',
             'required' => true,
-            'validation' => ['notempty'],
+            'validation' => [Parameter::VALIDATION_NONEMPTY],
         ],
     ];
 

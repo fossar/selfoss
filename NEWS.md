@@ -8,6 +8,9 @@
 - Fix “Mark all as read” button not hiding marked articles in unread view, not updating the unread counts in menu properly, and not closing menu on mobile. ([#1388](https://github.com/fossar/selfoss/issues/1388)
 - Re-added “Next” button on smartphones. ([#1406](https://github.com/fossar/selfoss/issues/1406)
 
+### Customization changes
+- Custom spout parameter declarations should now use constants from `Parameter` interface. ([#1409](https://github.com/fossar/selfoss/pull/1409))
+
 ### Other changes
 - `tidy` PHP extension is now required if you want to use “Content extractor” spout. ([#1392](https://github.com/fossar/selfoss/pull/1392))
 - Password hashing helper page will delegate the hashing to server again. ([#1401](https://github.com/fossar/selfoss/pull/1401))

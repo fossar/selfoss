@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace spouts\rss;
 
+use spouts\Parameter;
+
 /**
  * Plugin for fetching the news from pro-linux with the full text.
  * Based on heise.php
@@ -21,11 +23,11 @@ class prolinux extends fulltextrss {
     /** @var string description of this source type */
     public $description = 'Fetch the pro-linux news with full content (not only the header as content).';
 
-    /** @var array configurable parameters */
+    /** @var SpoutParameters configurable parameters */
     public $params = [
         'section' => [
             'title' => 'Section',
-            'type' => 'select',
+            'type' => Parameter::TYPE_SELECT,
             'values' => [
                 'main' => 'Alles',
                 'news' => 'Nachrichten/Artikel',

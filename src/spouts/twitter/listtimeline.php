@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace spouts\twitter;
 
+use spouts\Parameter;
+
 /**
  * Spout for fetching a twitter list
  *
@@ -14,48 +16,50 @@ namespace spouts\twitter;
 class listtimeline extends \spouts\twitter\usertimeline {
     public $name = 'Twitter: list timeline';
     public $description = 'Fetch the timeline of a given list.';
+
+    /** @var SpoutParameters configurable parameters */
     public $params = [
         'consumer_key' => [
             'title' => 'Consumer Key',
-            'type' => 'text',
+            'type' => Parameter::TYPE_TEXT,
             'default' => '',
             'required' => true,
-            'validation' => ['notempty'],
+            'validation' => [Parameter::VALIDATION_NONEMPTY],
         ],
         'consumer_secret' => [
             'title' => 'Consumer Secret',
-            'type' => 'password',
+            'type' => Parameter::TYPE_PASSWORD,
             'default' => '',
             'required' => true,
-            'validation' => ['notempty'],
+            'validation' => [Parameter::VALIDATION_NONEMPTY],
         ],
         'access_token' => [
             'title' => 'Access Token (optional)',
-            'type' => 'text',
+            'type' => Parameter::TYPE_TEXT,
             'default' => '',
             'required' => false,
             'validation' => [],
         ],
         'access_token_secret' => [
             'title' => 'Access Token Secret (optional)',
-            'type' => 'password',
+            'type' => Parameter::TYPE_PASSWORD,
             'default' => '',
             'required' => false,
             'validation' => [],
         ],
         'slug' => [
             'title' => 'List Slug',
-            'type' => 'text',
+            'type' => Parameter::TYPE_TEXT,
             'default' => '',
             'required' => true,
-            'validation' => ['notempty'],
+            'validation' => [Parameter::VALIDATION_NONEMPTY],
         ],
         'owner_screen_name' => [
             'title' => 'Username',
-            'type' => 'text',
+            'type' => Parameter::TYPE_TEXT,
             'default' => '',
             'required' => true,
-            'validation' => ['notempty'],
+            'validation' => [Parameter::VALIDATION_NONEMPTY],
         ],
     ];
 

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace spouts\rss;
 
+use spouts\Parameter;
+
 /**
  * Plugin for fetching the news from heise with the full text
  *
@@ -19,11 +21,11 @@ class heise extends fulltextrss {
     /** @var string description of this source type */
     public $description = 'Fetch the heise news with full content (not only the header as content).';
 
-    /** @var array configurable parameters */
+    /** @var SpoutParameters configurable parameters */
     public $params = [
         'section' => [
             'title' => 'Section',
-            'type' => 'select',
+            'type' => Parameter::TYPE_SELECT,
             'values' => [
                 'main' => 'Hauptseite',
                 'ct' => "c't",

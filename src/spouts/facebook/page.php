@@ -7,6 +7,7 @@ namespace spouts\facebook;
 use GuzzleHttp\Psr7\Uri;
 use helpers\WebClient;
 use spouts\Item;
+use spouts\Parameter;
 
 /**
  * Spout for fetching a facebook page feed
@@ -25,28 +26,28 @@ class page extends \spouts\spout {
     /** @var string description of this source type */
     public $description = 'Get posts from given Facebook page wall.';
 
-    /** @var array configurable parameters */
+    /** @var SpoutParameters configurable parameters */
     public $params = [
         'user' => [
             'title' => 'Page name',
-            'type' => 'text',
+            'type' => Parameter::TYPE_TEXT,
             'default' => '',
             'required' => true,
-            'validation' => ['notempty'],
+            'validation' => [Parameter::VALIDATION_NONEMPTY],
         ],
         'app_id' => [
             'title' => 'App ID',
-            'type' => 'text',
+            'type' => Parameter::TYPE_TEXT,
             'default' => '',
             'required' => true,
-            'validation' => ['notempty'],
+            'validation' => [Parameter::VALIDATION_NONEMPTY],
         ],
         'app_secret' => [
             'title' => 'App Secret',
-            'type' => 'text',
+            'type' => Parameter::TYPE_TEXT,
             'default' => '',
             'required' => true,
-            'validation' => ['notempty'],
+            'validation' => [Parameter::VALIDATION_NONEMPTY],
         ],
     ];
 

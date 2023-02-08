@@ -20,7 +20,7 @@ class teltarif extends fulltextrss {
     /** @var string description of this source type */
     public $description = 'Fetch Telarif news with full content (not only the header as content).';
 
-    /** @var array configurable parameters */
+    /** @var SpoutParameters configurable parameters */
     public $params = [];
 
     /**

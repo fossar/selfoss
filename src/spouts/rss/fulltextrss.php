@@ -13,6 +13,7 @@ use Http\Adapter\Guzzle7\Client as GuzzleAdapter;
 use Monolog\Logger;
 use SimplePie;
 use spouts\Item;
+use spouts\Parameter;
 
 /**
  * Plugin for fetching the news with fivefilters Full-Text RSS
@@ -28,14 +29,14 @@ class fulltextrss extends feed {
     /** @var string description of this source type */
     public $description = 'Use “Graby” library to get full content of feed posts instead of partial content provided by some websites.';
 
-    /** @var array configurable parameters */
+    /** @var SpoutParameters configurable parameters */
     public $params = [
         'url' => [
             'title' => 'URL',
-            'type' => 'url',
+            'type' => Parameter::TYPE_URL,
             'default' => '',
             'required' => true,
-            'validation' => ['notempty'],
+            'validation' => [Parameter::VALIDATION_NONEMPTY],
         ],
     ];
 

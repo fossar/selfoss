@@ -29,30 +29,32 @@ A simple example for the member variables of a spout for accessing an e-mail inb
 
 namespace spouts\Mail;
 
+use spouts\Parameter;
+
 class Imap extends \spouts\spout {
     public $name = 'E-mail';
     public $description = 'Obtain e-mails from IMAP account';
     public $params = [
         'email' => [
             'title'      => 'E-mail',
-            'type'       => 'text',
+            'type'       => Parameter::TYPE_TEXT,
             'default'    => '',
             'required'   => true,
-            'validation' => ['email']
+            'validation' => [Parameter::VALIDATION_EMAIL]
         ],
         'password' => [
             'title'      => 'Password',
-            'type'       => 'password',
+            'type'       => Parameter::TYPE_PASSWORD,
             'default'    => '',
             'required'   => true,
-            'validation' => ['notempty']
+            'validation' => [Parameter::VALIDATION_NONEMPTY]
         ],
         'host' => [
             'title'      => 'URL',
-            'type'       => 'text',
+            'type'       => Parameter::TYPE_TEXT,
             'default'    => '',
             'required'   => true,
-            'validation' => ['notempty']
+            'validation' => [Parameter::VALIDATION_NONEMPTY]
         ]
     ];
 }

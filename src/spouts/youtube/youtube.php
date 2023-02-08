@@ -6,6 +6,7 @@ namespace spouts\youtube;
 
 use SimplePie;
 use spouts\Item;
+use spouts\Parameter;
 
 /**
  * Spout for fetching a YouTube rss feed
@@ -22,14 +23,14 @@ class youtube extends \spouts\rss\feed {
     /** @var string description of this source type */
     public $description = 'Follow videos from a YouTube channel or a playlist.';
 
-    /** @var array configurable parameters */
+    /** @var SpoutParameters configurable parameters */
     public $params = [
         'channel' => [
             'title' => 'URL or username',
-            'type' => 'text',
+            'type' => Parameter::TYPE_TEXT,
             'default' => '',
             'required' => true,
-            'validation' => ['notempty'],
+            'validation' => [Parameter::VALIDATION_NONEMPTY],
         ],
     ];
 
