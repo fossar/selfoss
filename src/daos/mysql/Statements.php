@@ -149,12 +149,20 @@ class Statements implements \daos\StatementsInterface {
         foreach ($rows as $rowIndex => $row) {
             foreach ($expectedRowTypes as $columnIndex => $type) {
                 if (array_key_exists($columnIndex, $row)) {
+                    if ($type & DatabaseInterface::PARAM_NULL) {
+                        $type ^= DatabaseInterface::PARAM_NULL;
+                        if ($row[$columnIndex] === null) {
+                            // Keep as is.
+                            continue;
+                        }
+                    }
                     switch ($type) {
                         case DatabaseInterface::PARAM_INT:
+                            // PDO returns a string in PHP < 8.1.
                             $value = (int) $row[$columnIndex];
                             break;
                         case DatabaseInterface::PARAM_BOOL:
-                            // PDO returns integer in PHP ≥ 8.1.
+                            // PDO returns '0'|'1' in PHP < 8.1.
                             if ($row[$columnIndex] === 1 || $row[$columnIndex] === '1') {
                                 $value = true;
                             } else {
@@ -169,11 +177,7 @@ class Statements implements \daos\StatementsInterface {
                             }
                             break;
                         case DatabaseInterface::PARAM_DATETIME:
-                            if (empty($row[$columnIndex])) {
-                                $value = null;
-                            } else {
-                                $value = new \DateTime($row[$columnIndex]);
-                            }
+                            $value = new \DateTime($row[$columnIndex]);
                             break;
                         default:
                             $value = null;

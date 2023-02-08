@@ -10,6 +10,7 @@ interface DatabaseInterface {
     public const PARAM_BOOL = 2;
     public const PARAM_CSV = 3;
     public const PARAM_DATETIME = 4;
+    public const PARAM_NULL = 128;
 
     /**
      * Execute SQL statement.

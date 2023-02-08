@@ -85,6 +85,13 @@ class Statements extends \daos\mysql\Statements {
         foreach ($rows as $rowIndex => $row) {
             foreach ($expectedRowTypes as $columnIndex => $type) {
                 if (array_key_exists($columnIndex, $row)) {
+                    if ($type & DatabaseInterface::PARAM_NULL) {
+                        $type ^= DatabaseInterface::PARAM_NULL;
+                        if ($row[$columnIndex] === null) {
+                            // Keep as is.
+                            continue;
+                        }
+                    }
                     switch ($type) {
                         // pgsql returns correct PHP types for INT and BOOL
                         case DatabaseInterface::PARAM_CSV:
@@ -95,11 +102,7 @@ class Statements extends \daos\mysql\Statements {
                             }
                             break;
                         case DatabaseInterface::PARAM_DATETIME:
-                            if (empty($row[$columnIndex])) {
-                                $value = null;
-                            } else {
-                                $value = new \DateTime($row[$columnIndex]);
-                            }
+                            $value = new \DateTime($row[$columnIndex]);
                             break;
                         default:
                             $value = null;
