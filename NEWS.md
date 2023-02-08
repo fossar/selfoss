@@ -11,6 +11,7 @@
 ### Other changes
 - `tidy` PHP extension is now required if you want to use “Content extractor” spout. ([#1392](https://github.com/fossar/selfoss/pull/1392))
 - Password hashing helper page will delegate the hashing to server again. ([#1401](https://github.com/fossar/selfoss/pull/1401))
+- Back-end source code is now checked using [PHPStan](https://phpstan.org/). ([#1409](https://github.com/fossar/selfoss/pull/1409))
 
 ## 2.19 – 2022-10-12
 **This version requires PHP ~~5.6~~ 7.2 (see known regressions section) or newer. It is also the last version to support PHP 7.**

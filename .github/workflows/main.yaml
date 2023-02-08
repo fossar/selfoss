@@ -31,6 +31,7 @@ jobs:
           - php: '7.2'
             cs_fixer: true
             lint_js: true
+            phpstan: true
           - php: '8.2'
             storage: mysql
           - php: '8.2'
@@ -93,6 +94,10 @@ jobs:
 
       - name: Run unit tests
         run: nix-shell --run 'npm run test:server'
+
+      - name: Analyse back-end code
+        if: matrix.phpstan
+        run: nix-shell --run 'npm run analyse:server'
 
       - name: Run integration tests
         run: SELFOSS_TEST_STORAGE_BACKEND=${{ matrix.storage }} nix-shell --run 'npm run test:integration'

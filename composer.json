@@ -30,6 +30,7 @@
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.0",
         "php-parallel-lint/php-parallel-lint": "^1.0",
+        "phpstan/phpstan": "^1.9",
         "symfony/phpunit-bridge": "^6.0"
     },
     "license": "GPL-3.0",
@@ -58,6 +59,7 @@
         "cs": "php-cs-fixer fix --verbose --dry-run --diff",
         "fix": "php-cs-fixer fix --verbose --diff",
         "lint": "parallel-lint src tests",
+        "phpstan": "phpstan analyse --memory-limit 512M",
         "test": "simple-phpunit --bootstrap tests/bootstrap.php tests"
     }
 }
