@@ -9,6 +9,7 @@ use helpers\Image;
 use Monolog\Logger;
 use SimplePie;
 use spouts\Item;
+use spouts\Parameter;
 
 /**
  * Spout for fetching an rss feed
@@ -26,14 +27,14 @@ class feed extends \spouts\spout {
     /** @var string description of this source type */
     public $description = 'Get posts from plain RSS/Atom feed.';
 
-    /** @var array configurable parameters */
+    /** @var SpoutParameters configurable parameters */
     public $params = [
         'url' => [
             'title' => 'URL',
-            'type' => 'url',
+            'type' => Parameter::TYPE_URL,
             'default' => '',
             'required' => true,
-            'validation' => ['notempty'],
+            'validation' => [Parameter::VALIDATION_NONEMPTY],
         ],
     ];
 

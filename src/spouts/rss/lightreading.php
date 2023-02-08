@@ -20,7 +20,7 @@ class lightreading extends fulltextrss {
     /** @var string description of this source type */
     public $description = 'Fetch Lightreading news with full content (not only the header as content).';
 
-    /** @var array configurable parameters */
+    /** @var SpoutParameters configurable parameters */
     public $params = [];
 
     /**

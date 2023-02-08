@@ -12,6 +12,7 @@ use helpers\Image;
 use helpers\WebClient;
 use Psr\Http\Message\ResponseInterface;
 use spouts\Item;
+use spouts\Parameter;
 
 /**
  * Spout for fetching from reddit
@@ -27,28 +28,28 @@ class reddit2 extends \spouts\spout {
     /** @var string description of this source type */
     public $description = 'Get your fix from Reddit.';
 
-    /** @var array configurable parameters */
+    /** @var SpoutParameters configurable parameters */
     public $params = [
         'url' => [
             'title' => 'Subreddit or multireddit url',
-            'type' => 'text',
+            'type' => Parameter::TYPE_TEXT,
             'default' => 'r/worldnews/top',
             'required' => true,
-            'validation' => ['notempty'],
+            'validation' => [Parameter::VALIDATION_NONEMPTY],
         ],
         'username' => [
             'title' => 'Username',
-            'type' => 'text',
+            'type' => Parameter::TYPE_TEXT,
             'default' => '',
             'required' => false,
-            'validation' => '',
+            'validation' => [],
         ],
         'password' => [
             'title' => 'Password',
-            'type' => 'password',
+            'type' => Parameter::TYPE_PASSWORD,
             'default' => '',
             'required' => false,
-            'validation' => '',
+            'validation' => [],
         ],
     ];
 

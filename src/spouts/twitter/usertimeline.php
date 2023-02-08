@@ -9,6 +9,7 @@ use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Subscriber\Oauth\Oauth1;
 use helpers\WebClient;
 use spouts\Item;
+use spouts\Parameter;
 use stdClass;
 
 /**
@@ -25,42 +26,42 @@ class usertimeline extends \spouts\spout {
     /** @var string description of this source type */
     public $description = 'Fetch the timeline of a given user.';
 
-    /** @var array configurable parameters */
+    /** @var SpoutParameters configurable parameters */
     public $params = [
         'consumer_key' => [
             'title' => 'Consumer Key',
-            'type' => 'text',
+            'type' => Parameter::TYPE_TEXT,
             'default' => '',
             'required' => true,
-            'validation' => ['notempty'],
+            'validation' => [Parameter::VALIDATION_NONEMPTY],
         ],
         'consumer_secret' => [
             'title' => 'Consumer Secret',
-            'type' => 'password',
+            'type' => Parameter::TYPE_PASSWORD,
             'default' => '',
             'required' => true,
-            'validation' => ['notempty'],
+            'validation' => [Parameter::VALIDATION_NONEMPTY],
         ],
         'access_token' => [
             'title' => 'Access Token (optional)',
-            'type' => 'text',
+            'type' => Parameter::TYPE_TEXT,
             'default' => '',
             'required' => false,
             'validation' => [],
         ],
         'access_token_secret' => [
             'title' => 'Access Token Secret (optional)',
-            'type' => 'password',
+            'type' => Parameter::TYPE_PASSWORD,
             'default' => '',
             'required' => false,
             'validation' => [],
         ],
         'username' => [
             'title' => 'Username',
-            'type' => 'text',
+            'type' => Parameter::TYPE_TEXT,
             'default' => '',
             'required' => true,
-            'validation' => ['notempty'],
+            'validation' => [Parameter::VALIDATION_NONEMPTY],
         ],
     ];
 

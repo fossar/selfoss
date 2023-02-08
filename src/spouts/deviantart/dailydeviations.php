@@ -18,7 +18,7 @@ class dailydeviations extends \spouts\rss\images {
     /** @var string description of this source type */
     public $description = 'Get daily deviations on DeviantArt.';
 
-    /** @var array configurable parameters */
+    /** @var SpoutParameters configurable parameters */
     public $params = [];
 
     public function load(array $params): void {

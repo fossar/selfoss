@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace spouts\tumblr;
 
+use spouts\Parameter;
+
 /**
  * Spout for fetching an tumblr user
  *
@@ -18,14 +20,14 @@ class user extends \spouts\rss\images {
     /** @var string description of this source type */
     public $description = 'Get posts of a tumblr user.';
 
-    /** @var array configurable parameters */
+    /** @var SpoutParameters configurable parameters */
     public $params = [
         'username' => [
             'title' => 'Username',
-            'type' => 'text',
+            'type' => Parameter::TYPE_TEXT,
             'default' => '',
             'required' => true,
-            'validation' => ['notempty'],
+            'validation' => [Parameter::VALIDATION_NONEMPTY],
         ],
     ];
 

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace spouts\twitter;
 
+use spouts\Parameter;
+
 /**
  * Spout for fetching the twitter timeline of your twitter account
  *
@@ -18,35 +20,35 @@ class hometimeline extends \spouts\twitter\usertimeline {
     /** @var string description of this source type */
     public $description = 'Fetch your twitter timeline.';
 
-    /** @var array configurable parameters */
+    /** @var SpoutParameters configurable parameters */
     public $params = [
         'consumer_key' => [
             'title' => 'Consumer Key',
-            'type' => 'text',
+            'type' => Parameter::TYPE_TEXT,
             'default' => '',
             'required' => true,
-            'validation' => ['notempty'],
+            'validation' => [Parameter::VALIDATION_NONEMPTY],
         ],
         'consumer_secret' => [
             'title' => 'Consumer Secret',
-            'type' => 'password',
+            'type' => Parameter::TYPE_PASSWORD,
             'default' => '',
             'required' => true,
-            'validation' => ['notempty'],
+            'validation' => [Parameter::VALIDATION_NONEMPTY],
         ],
         'access_key' => [
             'title' => 'Access Key',
-            'type' => 'password',
+            'type' => Parameter::TYPE_PASSWORD,
             'default' => '',
             'required' => true,
-            'validation' => ['notempty'],
+            'validation' => [Parameter::VALIDATION_NONEMPTY],
         ],
         'access_secret' => [
             'title' => 'Access Secret',
-            'type' => 'password',
+            'type' => Parameter::TYPE_PASSWORD,
             'default' => '',
             'required' => true,
-            'validation' => ['notempty'],
+            'validation' => [Parameter::VALIDATION_NONEMPTY],
         ],
     ];
 
