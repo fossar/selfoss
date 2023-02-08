@@ -11,10 +11,11 @@
     "npm": ">=5"
   },
   "scripts": {
+    "analyse:server": "composer run-script phpstan",
     "bump-version": "$NODE utils/bump-version.js",
     "check": "npm run check:client && npm run check:server",
     "check:client": "npm run lint:client",
-    "check:server": "npm run lint:server && npm run cs:server && npm run test:server",
+    "check:server": "npm run lint:server && npm run cs:server && npm run test:server && npm run analyse:server",
     "cs:server": "composer run-script cs",
     "dev": "npm run --prefix assets/ dev",
     "build": "npm run --prefix assets/ build",
