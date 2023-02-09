@@ -28,10 +28,11 @@ jobs:
           - '7.3'
           - '7.2'
         include:
+          - php: '7.4'
+            phpstan: true
           - php: '7.2'
             cs_fixer: true
             lint_js: true
-            phpstan: true
           - php: '8.2'
             storage: mysql
           - php: '8.2'
