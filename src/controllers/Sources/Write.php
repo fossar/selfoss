@@ -82,7 +82,7 @@ class Write {
         }
         $tags = array_map('htmlspecialchars', $data['tags']);
         $spout = $data['spout'];
-        $filter = $data['filter'] ?? '';
+        $filter = $data['filter'];
 
         unset($data['title']);
         unset($data['spout']);

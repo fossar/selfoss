@@ -288,12 +288,12 @@ class ContentLoader {
     /**
      * Check if a new item matches the filter
      *
-     * @param array{filter: string} $source
+     * @param array{filter: ?string} $source
      *
      * @return bool indicating filter success
      */
     protected function filter($source, string $title, string $content): bool {
-        if (strlen(trim($source['filter'])) !== 0) {
+        if (strlen(trim($source['filter'] ?? '')) !== 0) {
             $resultTitle = @preg_match($source['filter'], $title);
             $resultContent = @preg_match($source['filter'], $content);
             if ($resultTitle === false || $resultContent === false) {

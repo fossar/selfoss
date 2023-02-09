@@ -38,7 +38,7 @@ class Sources implements \daos\SourcesInterface {
      *
      * @return int new id
      */
-    public function add(string $title, array $tags, string $filter, string $spout, array $params): int {
+    public function add(string $title, array $tags, ?string $filter, string $spout, array $params): int {
         return $this->database->insert('INSERT INTO ' . $this->configuration->dbPrefix . 'sources (title, tags, filter, spout, params) VALUES (:title, :tags, :filter, :spout, :params)', [
             ':title' => trim($title),
             ':tags' => static::$stmt::csvRow($tags),
@@ -57,7 +57,7 @@ class Sources implements \daos\SourcesInterface {
      * @param string $spout new spout
      * @param array $params the new params
      */
-    public function edit(int $id, string $title, array $tags, string $filter, string $spout, array $params): void {
+    public function edit(int $id, string $title, array $tags, ?string $filter, string $spout, array $params): void {
         $this->database->exec('UPDATE ' . $this->configuration->dbPrefix . 'sources SET title=:title, tags=:tags, filter=:filter, spout=:spout, params=:params WHERE id=:id', [
             ':title' => trim($title),
             ':tags' => static::$stmt::csvRow($tags),

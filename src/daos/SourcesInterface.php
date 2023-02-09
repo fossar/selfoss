@@ -17,7 +17,7 @@ interface SourcesInterface {
      *
      * @return int new id
      */
-    public function add(string $title, array $tags, string $filter, string $spout, array $params): int;
+    public function add(string $title, array $tags, ?string $filter, string $spout, array $params): int;
 
     /**
      * edit source
@@ -28,7 +28,7 @@ interface SourcesInterface {
      * @param string $spout new spout
      * @param array $params the new params
      */
-    public function edit(int $id, string $title, array $tags, string $filter, string $spout, array $params): void;
+    public function edit(int $id, string $title, array $tags, ?string $filter, string $spout, array $params): void;
 
     /**
      * delete source
