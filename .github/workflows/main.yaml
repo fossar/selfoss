@@ -14,7 +14,7 @@ env:
 jobs:
   tests:
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
         # Other backends run only for single PHP version to reduce the CI costs.
@@ -39,13 +39,13 @@ jobs:
             storage: postgresql
     name: 'Check with PHP ${{ matrix.php }} and ${{ matrix.storage }} storage backend'
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Install Nix
-        uses: cachix/install-nix-action@v17
+        uses: cachix/install-nix-action@v19
 
       - name: Set up Nix cache
-        uses: cachix/cachix-action@v10
+        uses: cachix/cachix-action@v12
         with:
           name: fossar
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
@@ -56,9 +56,7 @@ jobs:
           sed -i 's/matrix.storage = "all";/matrix.storage = "${{ matrix.storage }}";/' flake.nix
 
       - name: Cache Node modules
-        uses: actions/cache@v2
-        env:
-          cache-name: cache-node-modules
+        uses: actions/cache@v3
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
@@ -68,11 +66,9 @@ jobs:
       - name: Get Composer Cache Directory
         id: composer-cache
         run: |
-          echo "::set-output name=dir::$(composer config cache-files-dir)"
+          echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
 
-      - uses: actions/cache@v2
-        env:
-          cache-name: cache-composer-modules
+      - uses: actions/cache@v3
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -105,19 +101,17 @@ jobs:
 
   deploy:
     name: 'Upload artefacts'
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     needs:
       - tests
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Install Nix
-        uses: cachix/install-nix-action@v17
+        uses: cachix/install-nix-action@v19
 
       - name: Cache Node modules
-        uses: actions/cache@v2
-        env:
-          cache-name: cache-node-modules
+        uses: actions/cache@v3
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
@@ -127,11 +121,9 @@ jobs:
       - name: Get Composer Cache Directory
         id: composer-cache
         run: |
-          echo "::set-output name=dir::$(composer config cache-files-dir)"
+          echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
 
-      - uses: actions/cache@v2
-        env:
-          cache-name: cache-composer-modules
+      - uses: actions/cache@v3
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -142,11 +134,11 @@ jobs:
         id: zipball
         run: |
           nix-shell --run 'npm run dist'
-          echo "::set-output name=file_name::$(echo selfoss-*.zip)"
-          echo "::set-output name=version::$(echo selfoss-*.zip | sed -e 's/^selfoss-//' -e 's/\.zip$//')"
+          echo "file_name=$(echo selfoss-*.zip)" >> "$GITHUB_OUTPUT"
+          echo "version=$(echo selfoss-*.zip | sed -e 's/^selfoss-//' -e 's/\.zip$//')" >> "$GITHUB_OUTPUT"
 
       - name: Upload the zipball to GitHub
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ steps.zipball.outputs.file_name }}
           if-no-files-found: error
@@ -173,7 +165,7 @@ jobs:
           echo "CHANGES_EOF" >> $GITHUB_ENV
 
       - name: Create a release
-        uses: softprops/action-gh-release@v0.1.14
+        uses: softprops/action-gh-release@v0.1.15
         if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
