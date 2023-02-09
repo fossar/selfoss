@@ -86,17 +86,16 @@ class Tags implements \daos\TagsInterface {
      * @return array{tag: string, color: string, unread: int}[]
      */
     public function getWithUnread() {
-        $stmt = static::$stmt;
         $select = 'SELECT tag, color, COUNT(items.id) AS unread
                    FROM ' . $this->configuration->dbPrefix . 'tags AS tags,
                         ' . $this->configuration->dbPrefix . 'sources AS sources
                    LEFT OUTER JOIN ' . $this->configuration->dbPrefix . 'items AS items
-                       ON (items.source=sources.id AND ' . $stmt::isTrue('items.unread') . ')
-                   WHERE ' . $stmt::csvRowMatches('sources.tags', 'tags.tag') . '
+                       ON (items.source=sources.id AND ' . static::$stmt::isTrue('items.unread') . ')
+                   WHERE ' . static::$stmt::csvRowMatches('sources.tags', 'tags.tag') . '
                    GROUP BY tags.tag, tags.color
                    ORDER BY LOWER(tags.tag);';
 
-        return $stmt::ensureRowTypes($this->database->exec($select), ['unread' => DatabaseInterface::PARAM_INT]);
+        return static::$stmt::ensureRowTypes($this->database->exec($select), ['unread' => DatabaseInterface::PARAM_INT]);
     }
 
     /**

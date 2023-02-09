@@ -37,11 +37,9 @@ class Sources implements \daos\SourcesInterface {
      * @return int new id
      */
     public function add(string $title, array $tags, string $filter, string $spout, array $params): int {
-        $stmt = static::$stmt;
-
         return $this->database->insert('INSERT INTO ' . $this->configuration->dbPrefix . 'sources (title, tags, filter, spout, params) VALUES (:title, :tags, :filter, :spout, :params)', [
             ':title' => trim($title),
-            ':tags' => $stmt::csvRow($tags),
+            ':tags' => static::$stmt::csvRow($tags),
             ':filter' => $filter,
             ':spout' => $spout,
             ':params' => htmlentities(json_encode($params)),
@@ -58,10 +56,9 @@ class Sources implements \daos\SourcesInterface {
      * @param array $params the new params
      */
     public function edit(int $id, string $title, array $tags, string $filter, string $spout, array $params): void {
-        $stmt = static::$stmt;
         $this->database->exec('UPDATE ' . $this->configuration->dbPrefix . 'sources SET title=:title, tags=:tags, filter=:filter, spout=:spout, params=:params WHERE id=:id', [
             ':title' => trim($title),
-            ':tags' => $stmt::csvRow($tags),
+            ':tags' => static::$stmt::csvRow($tags),
             ':filter' => $filter,
             ':spout' => $spout,
             ':params' => htmlentities(json_encode($params)),
@@ -144,11 +141,12 @@ class Sources implements \daos\SourcesInterface {
      * @return ?mixed specified source or all sources
      */
     public function get(?int $id = null) {
-        $stmt = static::$stmt;
         // select source by id if specified or return all sources
         if (isset($id)) {
             $ret = $this->database->exec('SELECT id, title, tags, spout, params, filter, error, lastupdate, lastentry FROM ' . $this->configuration->dbPrefix . 'sources WHERE id=:id', [':id' => $id]);
-            $ret = $stmt::ensureRowTypes($ret, ['id' => DatabaseInterface::PARAM_INT]);
+            $ret = static::$stmt::ensureRowTypes($ret, [
+                'id' => DatabaseInterface::PARAM_INT,
+            ]);
             if (isset($ret[0])) {
                 $ret = $ret[0];
             } else {
@@ -156,7 +154,7 @@ class Sources implements \daos\SourcesInterface {
             }
         } else {
             $ret = $this->database->exec('SELECT id, title, tags, spout, params, filter, error, lastupdate, lastentry FROM ' . $this->configuration->dbPrefix . 'sources ORDER BY error DESC, lower(title) ASC');
-            $ret = $stmt::ensureRowTypes($ret, [
+            $ret = static::$stmt::ensureRowTypes($ret, [
                 'id' => DatabaseInterface::PARAM_INT,
                 'tags' => DatabaseInterface::PARAM_CSV,
             ]);
@@ -171,16 +169,15 @@ class Sources implements \daos\SourcesInterface {
      * @return mixed all sources
      */
     public function getWithUnread() {
-        $stmt = static::$stmt;
         $ret = $this->database->exec('SELECT
             sources.id, sources.title, COUNT(items.id) AS unread
             FROM ' . $this->configuration->dbPrefix . 'sources AS sources
             LEFT OUTER JOIN ' . $this->configuration->dbPrefix . 'items AS items
-                 ON (items.source=sources.id AND ' . $stmt::isTrue('items.unread') . ')
+                 ON (items.source=sources.id AND ' . static::$stmt::isTrue('items.unread') . ')
             GROUP BY sources.id, sources.title
             ORDER BY lower(sources.title) ASC');
 
-        return $stmt::ensureRowTypes($ret, [
+        return static::$stmt::ensureRowTypes($ret, [
             'id' => DatabaseInterface::PARAM_INT,
             'unread' => DatabaseInterface::PARAM_INT,
         ]);
@@ -192,7 +189,6 @@ class Sources implements \daos\SourcesInterface {
      * @return mixed all sources
      */
     public function getWithIcon() {
-        $stmt = static::$stmt;
         $ret = $this->database->exec('SELECT
                 sources.id, sources.title, sources.tags, sources.spout,
                 sources.params, sources.filter, sources.error, sources.lastentry,
@@ -208,9 +204,9 @@ class Sources implements \daos\SourcesInterface {
                  WHERE items.id=icons.maxid AND items.source=icons.source
                  ) AS sourceicons
                 ON sources.id=sourceicons.source
-            ORDER BY ' . $stmt::nullFirst('sources.error', 'DESC') . ', lower(sources.title)');
+            ORDER BY ' . static::$stmt::nullFirst('sources.error', 'DESC') . ', lower(sources.title)');
 
-        return $stmt::ensureRowTypes($ret, [
+        return static::$stmt::ensureRowTypes($ret, [
             'id' => DatabaseInterface::PARAM_INT,
             'tags' => DatabaseInterface::PARAM_CSV,
         ]);

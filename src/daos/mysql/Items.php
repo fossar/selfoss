@@ -186,9 +186,8 @@ class Items implements \daos\ItemsInterface {
      * @param int[] $itemIds ids of items to update
      */
     public function updateLastSeen(array $itemIds): void {
-        $stmt = static::$stmt;
         $this->database->exec('UPDATE ' . $this->configuration->dbPrefix . 'items SET lastseen = CURRENT_TIMESTAMP
-            WHERE ' . $stmt::intRowMatches('id', $itemIds));
+            WHERE ' . static::$stmt::intRowMatches('id', $itemIds));
     }
 
     /**
@@ -197,13 +196,12 @@ class Items implements \daos\ItemsInterface {
      * @param ?DateTime $date date to delete all items older than this value
      */
     public function cleanup(?DateTime $date = null): void {
-        $stmt = static::$stmt;
         $this->database->exec('DELETE FROM ' . $this->configuration->dbPrefix . 'items
             WHERE source NOT IN (
                 SELECT id FROM ' . $this->configuration->dbPrefix . 'sources)');
         if ($date !== null) {
             $this->database->exec('DELETE FROM ' . $this->configuration->dbPrefix . 'items
-                WHERE ' . $stmt::isFalse('starred') . ' AND lastseen<:date',
+                WHERE ' . static::$stmt::isFalse('starred') . ' AND lastseen<:date',
                     [':date' => $date->format('Y-m-d') . ' 00:00:00']
             );
         }
@@ -217,20 +215,19 @@ class Items implements \daos\ItemsInterface {
      * @return mixed items as array
      */
     public function get(ItemOptions $options) {
-        $stmt = static::$stmt;
         $params = [];
-        $where = [$stmt::bool(true)];
+        $where = [static::$stmt::bool(true)];
         $order = 'DESC';
         $offset = $options->offset;
 
         // only starred
         if ($options->filter === 'starred') {
-            $where[] = $stmt::isTrue('starred');
+            $where[] = static::$stmt::isTrue('starred');
         }
 
         // only unread
         elseif ($options->filter === 'unread') {
-            $where[] = $stmt::isTrue('unread');
+            $where[] = static::$stmt::isTrue('unread');
             if ($this->configuration->unreadOrder === 'asc') {
                 $order = 'ASC';
             }
@@ -240,7 +237,7 @@ class Items implements \daos\ItemsInterface {
         if ($options->search !== null) {
             if (preg_match('#^/(?P<regex>.+)/$#', $options->search, $matches)) {
                 $params[':search'] = $params[':search2'] = $params[':search3'] = [$matches['regex'], \PDO::PARAM_STR];
-                $where[] = $stmt::exprOr($stmt::matchesRegex('items.title', ':search'), $stmt::matchesRegex('items.content', ':search2'), $stmt::matchesRegex('sources.title', ':search3'));
+                $where[] = static::$stmt::exprOr(static::$stmt::matchesRegex('items.title', ':search'), static::$stmt::matchesRegex('items.content', ':search2'), static::$stmt::matchesRegex('sources.title', ':search3'));
             } else {
                 $search = implode('%', \helpers\Search::splitTerms($options->search));
                 $params[':search'] = $params[':search2'] = $params[':search3'] = ['%' . $search . '%', \PDO::PARAM_STR];
@@ -252,7 +249,7 @@ class Items implements \daos\ItemsInterface {
         if ($options->tag !== null) {
             $params[':tag'] = $options->tag;
             $where[] = 'items.source=sources.id';
-            $where[] = $stmt::csvRowMatches('sources.tags', ':tag');
+            $where[] = static::$stmt::csvRowMatches('sources.tags', ':tag');
         }
         // source filter
         elseif ($options->source !== null) {
@@ -263,7 +260,7 @@ class Items implements \daos\ItemsInterface {
         // update time filter
         if ($options->updatedSince !== null) {
             $params[':updatedsince'] = [
-                $stmt::datetime($options->updatedSince), \PDO::PARAM_STR,
+                static::$stmt::datetime($options->updatedSince), \PDO::PARAM_STR,
             ];
             $where[] = 'items.updatetime > :updatedsince ';
         }
@@ -274,7 +271,7 @@ class Items implements \daos\ItemsInterface {
             // with seek pagination.
             $offset = 0;
 
-            $offset_from_datetime_sql = $stmt::datetime($options->fromDatetime);
+            $offset_from_datetime_sql = static::$stmt::datetime($options->fromDatetime);
             $params[':offset_from_datetime'] = [
                 $offset_from_datetime_sql, \PDO::PARAM_STR,
             ];
@@ -299,7 +296,7 @@ class Items implements \daos\ItemsInterface {
         if (count($options->extraIds) > 0
             // limit the query to a sensible max
             && count($options->extraIds) <= $this->configuration->itemsPerpage) {
-            $where_ids = $stmt::intRowMatches('items.id', $options->extraIds);
+            $where_ids = static::$stmt::intRowMatches('items.id', $options->extraIds);
         }
 
         // finalize items filter
@@ -341,7 +338,7 @@ class Items implements \daos\ItemsInterface {
             $query = "$select $where_sql $order_sql LIMIT " . $pageSize . ' OFFSET ' . $offset;
         }
 
-        return $stmt::ensureRowTypes($this->database->exec($query, $params), [
+        return static::$stmt::ensureRowTypes($this->database->exec($query, $params), [
             'id' => DatabaseInterface::PARAM_INT,
             'datetime' => DatabaseInterface::PARAM_DATETIME | DatabaseInterface::PARAM_NULL,
             'unread' => DatabaseInterface::PARAM_BOOL,
@@ -370,13 +367,12 @@ class Items implements \daos\ItemsInterface {
      * @return array of items
      */
     public function sync(int $sinceId, DateTime $notBefore, DateTime $since, int $howMany): array {
-        $stmt = static::$stmt;
         $query = 'SELECT
         items.id, datetime, items.title AS title, content, unread, starred, source, thumbnail, icon, uid, link, updatetime, author, sources.title as sourcetitle, sources.tags as tags
         FROM ' . $this->configuration->dbPrefix . 'items AS items, ' . $this->configuration->dbPrefix . 'sources AS sources
         WHERE items.source=sources.id
-            AND (' . $stmt::isTrue('unread') .
-                 ' OR ' . $stmt::isTrue('starred') .
+            AND (' . static::$stmt::isTrue('unread') .
+                 ' OR ' . static::$stmt::isTrue('starred') .
                  ' OR datetime >= :notBefore
                 )
             AND (items.id > :sinceId OR
@@ -390,7 +386,7 @@ class Items implements \daos\ItemsInterface {
             'since' => [$since->format('Y-m-d H:i:s'), \PDO::PARAM_STR],
         ];
 
-        return $stmt::ensureRowTypes($this->database->exec($query, $params), [
+        return static::$stmt::ensureRowTypes($this->database->exec($query, $params), [
             'id' => DatabaseInterface::PARAM_INT,
             'datetime' => DatabaseInterface::PARAM_DATETIME | DatabaseInterface::PARAM_NULL,
             'unread' => DatabaseInterface::PARAM_BOOL,
@@ -407,12 +403,11 @@ class Items implements \daos\ItemsInterface {
      * @return int lowest id of interest
      */
     public function lowestIdOfInterest(): int {
-        $stmt = static::$stmt;
-        $lowest = $stmt::ensureRowTypes(
+        $lowest = static::$stmt::ensureRowTypes(
             $this->database->exec(
                 'SELECT id FROM ' . $this->configuration->dbPrefix . 'items AS items
-                 WHERE ' . $stmt::isTrue('unread') .
-                    ' OR ' . $stmt::isTrue('starred') .
+                 WHERE ' . static::$stmt::isTrue('unread') .
+                    ' OR ' . static::$stmt::isTrue('starred') .
                 ' ORDER BY id LIMIT 1'),
             ['id' => DatabaseInterface::PARAM_INT]
         );
@@ -429,8 +424,7 @@ class Items implements \daos\ItemsInterface {
      * @return int last id in db
      */
     public function lastId(): int {
-        $stmt = static::$stmt;
-        $lastId = $stmt::ensureRowTypes(
+        $lastId = static::$stmt::ensureRowTypes(
             $this->database->exec(
                 'SELECT id FROM ' . $this->configuration->dbPrefix . 'items AS items
                  ORDER BY id DESC LIMIT 1'),
@@ -519,10 +513,9 @@ class Items implements \daos\ItemsInterface {
      * @return int amount of entries in database which are unread
      */
     public function numberOfUnread(): int {
-        $stmt = static::$stmt;
         $res = $this->database->exec('SELECT count(*) AS amount
                    FROM ' . $this->configuration->dbPrefix . 'items
-                   WHERE ' . $stmt::isTrue('unread'));
+                   WHERE ' . static::$stmt::isTrue('unread'));
 
         return $res[0]['amount'];
     }
@@ -533,13 +526,12 @@ class Items implements \daos\ItemsInterface {
      * @return array mount of total, unread, starred entries in database
      */
     public function stats(): array {
-        $stmt = static::$stmt;
         $res = $this->database->exec('SELECT
             COUNT(*) AS total,
-            ' . $stmt::sumBool('unread') . ' AS unread,
-            ' . $stmt::sumBool('starred') . ' AS starred
+            ' . static::$stmt::sumBool('unread') . ' AS unread,
+            ' . static::$stmt::sumBool('starred') . ' AS starred
             FROM ' . $this->configuration->dbPrefix . 'items;');
-        $res = $stmt::ensureRowTypes($res, [
+        $res = static::$stmt::ensureRowTypes($res, [
             'total' => DatabaseInterface::PARAM_INT,
             'unread' => DatabaseInterface::PARAM_INT,
             'starred' => DatabaseInterface::PARAM_INT,
@@ -569,12 +561,11 @@ class Items implements \daos\ItemsInterface {
      * @return array of unread, starred, etc. status of specified items
      */
     public function statuses(DateTime $since): array {
-        $stmt = static::$stmt;
         $res = $this->database->exec('SELECT id, unread, starred
             FROM ' . $this->configuration->dbPrefix . 'items
             WHERE ' . $this->configuration->dbPrefix . 'items.updatetime > :since;',
                 [':since' => [$since->format('Y-m-d H:i:s'), \PDO::PARAM_STR]]);
-        $res = $stmt::ensureRowTypes($res, [
+        $res = static::$stmt::ensureRowTypes($res, [
             'id' => DatabaseInterface::PARAM_INT,
             'unread' => DatabaseInterface::PARAM_BOOL,
             'starred' => DatabaseInterface::PARAM_BOOL,
@@ -589,7 +580,6 @@ class Items implements \daos\ItemsInterface {
      * @param array $statuses array of statuses updates
      */
     public function bulkStatusUpdate(array $statuses): void {
-        $stmt = static::$stmt;
         $sql = [];
         foreach ($statuses as $status) {
             if (array_key_exists('id', $status)) {
@@ -603,12 +593,12 @@ class Items implements \daos\ItemsInterface {
                             if ($status[$sk] == 'true') {
                                 $statusUpdate = [
                                     'sk' => $sk,
-                                    'sql' => $stmt::isTrue($sk),
+                                    'sql' => static::$stmt::isTrue($sk),
                                 ];
                             } elseif ($status[$sk] == 'false') {
                                 $statusUpdate = [
                                     'sk' => $sk,
-                                    'sql' => $stmt::isFalse($sk),
+                                    'sql' => static::$stmt::isFalse($sk),
                                 ];
                             }
                         }
@@ -663,7 +653,7 @@ class Items implements \daos\ItemsInterface {
                     // statuses.
                     $this->database->exec(
                         'UPDATE ' . $this->configuration->dbPrefix . 'items
-                         SET ' . $stmt::rowTouch('updatetime') . '
+                         SET ' . static::$stmt::rowTouch('updatetime') . '
                          WHERE id = :id', [':id' => [$id, \PDO::PARAM_INT]]);
                 }
             }
