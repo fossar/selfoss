@@ -110,6 +110,12 @@ jobs:
       - name: Install Nix
         uses: cachix/install-nix-action@v19
 
+      - name: Set up Nix cache
+        uses: cachix/cachix-action@v12
+        with:
+          name: fossar
+          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+
       - name: Cache Node modules
         uses: actions/cache@v3
         with:
