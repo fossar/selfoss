@@ -99,5 +99,22 @@
   "lang_error_check_system_logs": "Ett fel uppstod. Kontrollera dina systemloggar.",
   "lang_error_check_log_file": "Ett fel uppstod. Kontrollera loggfilen “{0}”.",
   "lang_source_browse": "Bläddra",
-  "lang_tag_change_color_button_title": "Ändra färg"
+  "lang_tag_change_color_button_title": "Ändra färg",
+  "lang_source_warn_cancel_dirty": "Kasta bort osparade ändringar?",
+  "lang_offline_navigation_unavailable": "Att byta taggar och källor är för närvarande inte tillgängligt i offlineläge.",
+  "lang_sources_leaving_unsaved_prompt": "Lämna inställningar med osparade källändringar?",
+  "lang_error_offline_storage_not_available": "Offlinelagring är inte tillgängligt. Se till att din webbläsare {0}stödjer IndexedDB API{1} och, om du använder en Google Chrome baserad webbläsare, att du inte kör selfoss i incognito läge.",
+  "lang_error_edit_source": "Kunde inte spara källändringar:",
+  "lang_source_menu": "Mer åtgärder",
+  "lang_no_sources": "Inga källor konfigurerade.",
+  "lang_source_deleting": "Raderar källa…",
+  "lang_login_error_generic": "Kunde inte logga in: {errorMessage}",
+  "lang_sources_loading": "Laddar källor…",
+  "lang_source_params_loading": "Laddar parametrar…",
+  "lang_source_saving": "Sparar källändringar…",
+  "lang_source_go_to_settings": "Öppna i inställningar",
+  "lang_entries_loading": "Läser in poster…",
+  "lang_login_in_progress": "Försöker att logga in…",
+  "lang_error_unauthorized": "Vänligen {link_begin}logga in{link_end} för att fortsätta.",
+  "lang_article_reading_time": "{0}min läs"
 }
