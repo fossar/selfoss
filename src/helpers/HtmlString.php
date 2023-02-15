@@ -26,7 +26,7 @@ class HtmlString {
      * Creates a new HtmlString from a plain text string.
      */
     public static function fromPlainText(string $content): self {
-        return new self(htmlspecialchars($content));
+        return new self(htmlspecialchars($content, ENT_NOQUOTES));
     }
 
     /**
