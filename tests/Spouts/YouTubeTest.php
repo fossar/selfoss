@@ -92,7 +92,7 @@ final class YouTubeTest extends TestCase {
                 makeRemoteFile('https://www.youtube.com/user/ZoggFromBetelgeuse', 'application/rss+xml', '.xml'),
             ],
             'feedTitle' => 'Zogg from Betelgeuse',
-            'firstItemTitle' => HtmlString::fromPlainText('Earthlings 101 - Channel Ad'),
+            'firstItemTitle' => HtmlString::fromPlainText('No Edge 3: The Shape of the Universe (What do we know?)'),
         ];
 
         yield [
@@ -100,7 +100,7 @@ final class YouTubeTest extends TestCase {
                 makeRemoteFile('https://www.youtube.com/channel/UCKY00CSQo1MoC27bdGd-w_g', 'application/rss+xml', '.xml'),
             ],
             'feedTitle' => 'Zogg from Betelgeuse',
-            'firstItemTitle' => HtmlString::fromPlainText('Earthlings 101 - Channel Ad'),
+            'firstItemTitle' => HtmlString::fromPlainText('No Edge 3: The Shape of the Universe (What do we know?)'),
         ];
 
         yield [
@@ -108,7 +108,7 @@ final class YouTubeTest extends TestCase {
                 makeRemoteFile('https://www.youtube.com/ZoggFromBetelgeuse', 'application/rss+xml', '.xml'),
             ],
             'feedTitle' => 'Zogg from Betelgeuse',
-            'firstItemTitle' => HtmlString::fromPlainText('Earthlings 101 - Channel Ad'),
+            'firstItemTitle' => HtmlString::fromPlainText('No Edge 3: The Shape of the Universe (What do we know?)'),
         ];
 
         yield [
@@ -116,7 +116,7 @@ final class YouTubeTest extends TestCase {
                 makeRemoteFile('ZoggFromBetelgeuse', 'application/rss+xml', '.xml'),
             ],
             'feedTitle' => 'Zogg from Betelgeuse',
-            'firstItemTitle' => HtmlString::fromPlainText('Earthlings 101 - Channel Ad'),
+            'firstItemTitle' => HtmlString::fromPlainText('No Edge 3: The Shape of the Universe (What do we know?)'),
         ];
 
         yield [
