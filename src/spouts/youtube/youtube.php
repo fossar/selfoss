@@ -79,20 +79,9 @@ class youtube extends \spouts\rss\feed {
     }
 
     private function getThumbnail(SimplePie\Item $item): ?string {
-        // search enclosures (media tags)
+        // Each entry in YouTube’s RSS feed contains a media:group with media:thumbnail.
         if (($firstEnclosure = $item->get_enclosure(0)) !== null) {
-            if ($firstEnclosure->get_thumbnail()) {
-                // thumbnail given
-                return $firstEnclosure->get_thumbnail();
-            } elseif ($firstEnclosure->get_link()) {
-                // link given
-                return $firstEnclosure->get_link();
-            }
-        } else { // no enclosures: search image link in content
-            $image = \helpers\ImageUtils::findFirstImageSource((string) $item->get_content());
-            if ($image !== null) {
-                return $image;
-            }
+            return $firstEnclosure->get_thumbnail();
         }
 
         return null;
