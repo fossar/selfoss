@@ -4,9 +4,14 @@ declare(strict_types=1);
 
 namespace spouts\youtube;
 
+use helpers\FeedReader;
+use helpers\HtmlString;
+use helpers\Image;
+use Monolog\Logger;
 use SimplePie;
 use spouts\Item;
 use spouts\Parameter;
+use VStelmakh\UrlHighlight\UrlHighlight;
 
 /**
  * Spout for fetching a YouTube rss feed
@@ -33,6 +38,15 @@ class youtube extends \spouts\rss\feed {
             'validation' => [Parameter::VALIDATION_NONEMPTY],
         ],
     ];
+
+    /** @var UrlHighlight urlHighlight */
+    private $urlHighlight;
+
+    public function __construct(UrlHighlight $urlHighlight, FeedReader $feed, Image $imageHelper, Logger $logger) {
+        parent::__construct($feed, $imageHelper, $logger);
+
+        $this->urlHighlight = $urlHighlight;
+    }
 
     public function load(array $params): void {
         $url = $this->getXmlUrl($params);
@@ -74,8 +88,20 @@ class youtube extends \spouts\rss\feed {
     public function getItems(): iterable {
         foreach (parent::getItems() as $item) {
             $thumbnail = $this->getThumbnail($item->getExtraData());
-            yield $item->withThumbnail($thumbnail);
+            $content = $this->getContent($item->getExtraData());
+            yield $item->withContent($content)->withThumbnail($thumbnail);
         }
+    }
+
+    private function getContent(SimplePie\Item $item): ?HtmlString {
+        // Each entry in YouTube’s RSS feed contains a media:group with media:description.
+        if (($firstEnclosure = $item->get_enclosure(0)) !== null) {
+            if (($description = $firstEnclosure->get_description()) !== null) {
+                return HtmlString::fromRaw(nl2br($this->urlHighlight->highlightUrls($description), false));
+            }
+        }
+
+        return null;
     }
 
     private function getThumbnail(SimplePie\Item $item): ?string {

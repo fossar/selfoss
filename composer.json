@@ -25,6 +25,7 @@
         "symfony/cache": "^5.4",
         "symfony/polyfill-php80": "^1.26",
         "violet/streaming-json-encoder": "^1.1",
+        "vstelmakh/url-highlight": "^3.0",
         "willwashburn/phpamo": "^1.0"
     },
     "require-dev": {

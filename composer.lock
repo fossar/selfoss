@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f12ec81ae6e81131272322639b6f6d79",
+    "content-hash": "706e164231ed6ec4404bbdfc489287eb",
     "packages": [
         {
             "name": "bcosca/fatfree-core",
@@ -2956,6 +2956,82 @@
             "time": "2022-11-03T14:55:06+00:00"
         },
         {
+            "name": "symfony/polyfill-php72",
+            "version": "v1.27.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/polyfill-php72.git",
+                "reference": "869329b1e9894268a8a61dabb69153029b7a8c97"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/polyfill-php72/zipball/869329b1e9894268a8a61dabb69153029b7a8c97",
+                "reference": "869329b1e9894268a8a61dabb69153029b7a8c97",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "1.27-dev"
+                },
+                "thanks": {
+                    "name": "symfony/polyfill",
+                    "url": "https://github.com/symfony/polyfill"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "bootstrap.php"
+                ],
+                "psr-4": {
+                    "Symfony\\Polyfill\\Php72\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nicolas Grekas",
+                    "email": "p@tchwork.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony polyfill backporting some PHP 7.2+ features to lower PHP versions",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "compatibility",
+                "polyfill",
+                "portable",
+                "shim"
+            ],
+            "support": {
+                "source": "https://github.com/symfony/polyfill-php72/tree/v1.27.0"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2022-11-03T14:55:06+00:00"
+        },
+        {
             "name": "symfony/polyfill-php73",
             "version": "v1.27.0",
             "source": {
@@ -3372,6 +3448,65 @@
                 "source": "https://github.com/violet-php/streaming-json-encoder/tree/v1.1.5"
             },
             "time": "2022-12-09T15:47:21+00:00"
+        },
+        {
+            "name": "vstelmakh/url-highlight",
+            "version": "v3.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/vstelmakh/url-highlight.git",
+                "reference": "458f1af6acdf63d33e7fb43aeeecb4bfe64bda2b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/vstelmakh/url-highlight/zipball/458f1af6acdf63d33e7fb43aeeecb4bfe64bda2b",
+                "reference": "458f1af6acdf63d33e7fb43aeeecb4bfe64bda2b",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "php": "^7.1 || ^8",
+                "symfony/polyfill-php72": "^1.10"
+            },
+            "require-dev": {
+                "phpbench/phpbench": "^0.16 || ^1.2.6",
+                "phpstan/phpstan": "^1.4",
+                "phpunit/phpunit": "^7.5.3 || ^8 || ^9.3",
+                "squizlabs/php_codesniffer": "^3.7.1",
+                "vstelmakh/covelyzer": "^0.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "VStelmakh\\UrlHighlight\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Volodymyr Stelmakh",
+                    "homepage": "https://github.com/vstelmakh"
+                }
+            ],
+            "description": "Library to parse urls from string input",
+            "homepage": "https://github.com/vstelmakh/url-highlight",
+            "keywords": [
+                "Linkify",
+                "clickable",
+                "extract",
+                "html",
+                "parser",
+                "url"
+            ],
+            "support": {
+                "issues": "https://github.com/vstelmakh/url-highlight/issues",
+                "source": "https://github.com/vstelmakh/url-highlight/tree/v3.0.2"
+            },
+            "time": "2023-01-15T16:58:38+00:00"
         },
         {
             "name": "willwashburn/phpamo",
