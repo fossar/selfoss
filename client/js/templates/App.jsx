@@ -16,6 +16,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Collapse from '@kunukn/react-collapse';
 import classNames from 'classnames';
 import HashPassword from './HashPassword';
+import OpmlImport from './OpmlImport';
 import LoginForm from './LoginForm';
 import SourcesPage from './SourcesPage';
 import EntriesPage from './EntriesPage';
@@ -218,6 +219,20 @@ function PureApp({
                                 setTitle={setTitle}
                             />
                         </div>
+                    </CheckAuthorization>
+                </Route>
+
+                <Route path="/opml">
+                    <CheckAuthorization
+                        isAllowed={selfoss.isAllowedToWrite()}
+                        returnLocation="/opml"
+                        _={_}
+                    >
+                        <main id="opmlbody">
+                            <OpmlImport
+                                setTitle={setTitle}
+                            />
+                        </main>
                     </CheckAuthorization>
                 </Route>
 

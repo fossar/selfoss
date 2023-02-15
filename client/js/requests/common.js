@@ -53,6 +53,21 @@ export function hashPassword(password) {
 }
 
 /**
+ * Import OPML file.
+ */
+export function importOpml(file) {
+    const data = new FormData();
+    data.append('opml', file);
+
+    return ajax.post('opml', {
+        body: data,
+        failOnHttpErrors: false,
+    }).promise
+        .then(ajax.rejectUnless(response => response.status === 200 || response.status === 202 || response.status === 400))
+        .then(response => response.json().then(data => ({ response, data })));
+}
+
+/**
  * Terminates the active user session.
  */
 export function logout() {

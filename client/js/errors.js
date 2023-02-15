@@ -25,3 +25,10 @@ export class LoginError extends Error {
         this.name = 'LoginError';
     }
 }
+
+export class UnexpectedStateError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = 'UnexpectedStateError';
+    }
+}

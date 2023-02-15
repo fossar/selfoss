@@ -56,7 +56,7 @@
     "check:styles": "npm run check:styles:lint && npm run check:styles:prettify",
     "check:styles:lint": "stylelint styles/*.scss",
     "check:styles:prettify": "prettier styles/*.scss --check",
-    "dev": "parcel watch index.html opml.html --dist-dir ../public/ --public-url ./",
-    "build": "parcel build index.html opml.html --dist-dir ../public/ --public-url ./"
+    "dev": "parcel watch index.html --dist-dir ../public/ --public-url ./",
+    "build": "parcel build index.html --dist-dir ../public/ --public-url ./"
   }
 }

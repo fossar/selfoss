@@ -90,7 +90,6 @@ class Import {
             // show errors
             if (count($errors) > 0) {
                 http_response_code(202);
-                $messages[] = 'The following feeds could not be imported:';
                 $messages = array_merge($messages, $errors);
             } else { // On success bring them back to their subscription list
                 http_response_code(200);

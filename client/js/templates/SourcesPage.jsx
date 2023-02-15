@@ -1,7 +1,7 @@
 import React from 'react';
 import { useMemo } from 'react';
 import { Prompt } from 'react-router';
-import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
+import { Link, useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 import Source from './Source';
 import { SpinnerBig } from './Spinner';
 import { LoadingState } from '../requests/LoadingState';
@@ -173,9 +173,9 @@ export default function SourcesPage() {
             <a className="source-export" href="opmlexport">
                 {_('source_export')}
             </a>
-            <a className="source-opml" href="opml">
+            <Link className="source-opml" to="/opml">
                 {_('source_opml')}
-            </a>
+            </Link>
             {sources
                 ? (
                     <ul>

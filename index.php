@@ -147,10 +147,6 @@ $router->post('/tags/color', function() use ($container): void {
     $container->get(controllers\Tags::class)->color();
 });
 
-$router->get('/opml', function() use ($container): void {
-    // html
-    $container->get(controllers\Opml\ImportPage::class)->show();
-});
 $router->post('/opml', function() use ($container): void {
     // json
     $container->get(controllers\Opml\Import::class)->add();
@@ -161,7 +157,7 @@ $router->get('/opmlexport', function() use ($container): void {
 });
 
 // Client side routes need to be directed to index.html.
-$router->get('/sign/in|/password|/manage/sources(/add)?|/(newest|unread|starred)(/(all|tag-[^/]+|source-[0-9]+)(/[0-9]+)?)?', function() use ($container): void {
+$router->get('/sign/in|/opml|/password|/manage/sources(/add)?|/(newest|unread|starred)(/(all|tag-[^/]+|source-[0-9]+)(/[0-9]+)?)?', function() use ($container): void {
     // html
     $container->get(controllers\Index::class)->home();
 });
