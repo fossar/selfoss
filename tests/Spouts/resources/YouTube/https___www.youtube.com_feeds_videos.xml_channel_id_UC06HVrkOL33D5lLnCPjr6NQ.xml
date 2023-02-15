@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns:yt="http://www.youtube.com/xml/schemas/2015" xmlns:media="http://search.yahoo.com/mrss/" xmlns="http://www.w3.org/2005/Atom">
+ <link rel="self" href="http://www.youtube.com/feeds/videos.xml?channel_id=UC06HVrkOL33D5lLnCPjr6NQ"/>
+ <id>yt:channel:</id>
+ <yt:channelId></yt:channelId>
+ <title>Breaking Taps</title>
+ <link rel="alternate" href="https://www.youtube.com/channel/UC06HVrkOL33D5lLnCPjr6NQ"/>
+ <author>
+  <name>Breaking Taps</name>
+  <uri>https://www.youtube.com/channel/UC06HVrkOL33D5lLnCPjr6NQ</uri>
+ </author>
+ <published>2017-12-06T01:54:54+00:00</published>
+ <entry>
+  <id>yt:video:rZXCbHa8vjk</id>
+  <yt:videoId>rZXCbHa8vjk</yt:videoId>
+  <yt:channelId>UC06HVrkOL33D5lLnCPjr6NQ</yt:channelId>
+  <title>Slow Motion Tuning Fork</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=rZXCbHa8vjk"/>
+  <author>
+   <name>Breaking Taps</name>
+   <uri>https://www.youtube.com/channel/UC06HVrkOL33D5lLnCPjr6NQ</uri>
+  </author>
+  <published>2023-02-14T15:54:45+00:00</published>
+  <updated>2023-02-15T07:17:42+00:00</updated>
+  <media:group>
+   <media:title>Slow Motion Tuning Fork</media:title>
+   <media:content url="https://www.youtube.com/v/rZXCbHa8vjk?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i3.ytimg.com/vi/rZXCbHa8vjk/hqdefault.jpg" width="480" height="360"/>
+   <media:description>Have you ever seen a tuning fork at 10,000 FPS?
+
+Small clarification: the large fork has a 180hz tone when analyzed with a frequency detector (and held up to your ear), but also higher overtones which is mostly what's heard on the microphone. I should have mentioned the overtones but slipped my mind when filming. Sorry!
+
+#shorts</media:description>
+   <media:community>
+    <media:starRating count="1561" average="5.00" min="1" max="5"/>
+    <media:statistics views="25613"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:X0-xo-2Jrlg</id>
+  <yt:videoId>X0-xo-2Jrlg</yt:videoId>
+  <yt:channelId>UC06HVrkOL33D5lLnCPjr6NQ</yt:channelId>
+  <title>Parasitic Wasp</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=X0-xo-2Jrlg"/>
+  <author>
+   <name>Breaking Taps</name>
+   <uri>https://www.youtube.com/channel/UC06HVrkOL33D5lLnCPjr6NQ</uri>
+  </author>
+  <published>2023-02-03T17:29:01+00:00</published>
+  <updated>2023-02-14T23:40:43+00:00</updated>
+  <media:group>
+   <media:title>Parasitic Wasp</media:title>
+   <media:content url="https://www.youtube.com/v/X0-xo-2Jrlg?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i1.ytimg.com/vi/X0-xo-2Jrlg/hqdefault.jpg" width="480" height="360"/>
+   <media:description>Common Hoverfly Parasitoid Wasp. It injects it's eggs into a host larva (hoverflys), and as the wasp grows it devours the host from the inside out. 😱
+
+#shorts</media:description>
+   <media:community>
+    <media:starRating count="793" average="5.00" min="1" max="5"/>
+    <media:statistics views="14828"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:_Aa_4wGsHNg</id>
+  <yt:videoId>_Aa_4wGsHNg</yt:videoId>
+  <yt:channelId>UC06HVrkOL33D5lLnCPjr6NQ</yt:channelId>
+  <title>Microscopic view of a Parasitic Wasp</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=_Aa_4wGsHNg"/>
+  <author>
+   <name>Breaking Taps</name>
+   <uri>https://www.youtube.com/channel/UC06HVrkOL33D5lLnCPjr6NQ</uri>
+  </author>
+  <published>2023-01-31T22:51:02+00:00</published>
+  <updated>2023-02-14T13:17:23+00:00</updated>
+  <media:group>
+   <media:title>Microscopic view of a Parasitic Wasp</media:title>
+   <media:content url="https://www.youtube.com/v/_Aa_4wGsHNg?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i4.ytimg.com/vi/_Aa_4wGsHNg/hqdefault.jpg" width="480" height="360"/>
+   <media:description>Common Hoverfly Parasitoid Wasps! Today we're looking at a wasp I found in my backyard. This little insect lays its eggs inside of other hosts (hoverflys), which consumes the hoverfly larva from the inside out before bursting forth. Like a real life Alien! 
+
+The anatomy and morphology is absolutely fascinating under the SEM, especially compared to the fruit fly we saw in a prior episode.
+
+(This was previously on my second channel, Micrographia, but will now live here)
+
+📚 Sources
+• http://www.waspweb.org/Ichneumonoidea/Ichneumonidae/Diplazontinae/Diplazon/Diplazon_laetatorius.htm
+• https://en.wikipedia.org/wiki/Ichneumonidae
+• Fitton, M.G. &amp; Rotheray, G.E. (1982) A key to the European genera of diplazontine ichneumonflies, with notes on the British fauna. Systematic Entomology, 7: 311-320.
+• https://www.sciencelearn.org.nz/resources/2756-insect-antennae
+• Schmidt, Hayden R., and Richard Benton. &quot;Molecular mechanisms of olfactory detection in insects: beyond receptors.&quot; _Open biology_ 10.10 (2020): 200252.
+
+🔬Instruments
+• Amscope 40X-800X Trinocular Dual-illumination Metallurgical Microscope with Polarization
+• Thermo Phenom XL G2 (BSD, SED and EDS)
+
+🎵 Music
+• Odd Numbers by Curtis Cole
+• Synthetic Network by C.K. Martin</media:description>
+   <media:community>
+    <media:starRating count="1330" average="5.00" min="1" max="5"/>
+    <media:statistics views="13596"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:gCIGS2HX_PY</id>
+  <yt:videoId>gCIGS2HX_PY</yt:videoId>
+  <yt:channelId>UC06HVrkOL33D5lLnCPjr6NQ</yt:channelId>
+  <title>Microscopic view of Goldenrod</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=gCIGS2HX_PY"/>
+  <author>
+   <name>Breaking Taps</name>
+   <uri>https://www.youtube.com/channel/UC06HVrkOL33D5lLnCPjr6NQ</uri>
+  </author>
+  <published>2023-01-31T22:50:48+00:00</published>
+  <updated>2023-02-01T21:18:36+00:00</updated>
+  <media:group>
+   <media:title>Microscopic view of Goldenrod</media:title>
+   <media:content url="https://www.youtube.com/v/gCIGS2HX_PY?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i4.ytimg.com/vi/gCIGS2HX_PY/hqdefault.jpg" width="480" height="360"/>
+   <media:description>Goldenrod: harbinger of allergies or misunderstood wildflower? 
+
+(This was moved from my old Micrographia channel)
+
+✅ Sources
+• Perez, B., Carrettoni, D. M., Lus, B. A., &amp; Apóstolo, N. M. (2019). Morphoanatomy of the inflorescence and flowers of Solidago chilensis (Asteraceae). Brazilian Journal of Botany. doi:10.1007/s40415-019-00555-w 
+• Evans, W. C., &amp; Evans, D. (2009). Cell differentiation and ergastic cell contents. Trease and Evans’ Pharmacognosy, 551–562. doi:10.1016/b978-0-7020-2933-2.00042-3 
+• Anderson, Loran C., and Jessica B. Creech. &quot;Comparative leaf anatomy of Solidago and related Asteraceae.&quot; _American Journal of Botany_ 62.5 (1975): 486-493.
+• https://analyticalanswersinc.com/science-stigma-solidago/
+• https://cronodon.com/BioTech/asteraceae.html
+• https://en.wikipedia.org/wiki/Solidago
+
+🎵 Music
+- &quot;Watching the Rain Fall&quot; by Be Still the Earth (https://artlist.io/song/7667/watching-the-rain-fall)
+- &quot;Within Reach&quot; by the same artist (https://artlist.io/song/5917/within-reach)</media:description>
+   <media:community>
+    <media:starRating count="1156" average="5.00" min="1" max="5"/>
+    <media:statistics views="11779"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:4Ua6gCrrofI</id>
+  <yt:videoId>4Ua6gCrrofI</yt:videoId>
+  <yt:channelId>UC06HVrkOL33D5lLnCPjr6NQ</yt:channelId>
+  <title>Blasting electrons through samples to image them</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=4Ua6gCrrofI"/>
+  <author>
+   <name>Breaking Taps</name>
+   <uri>https://www.youtube.com/channel/UC06HVrkOL33D5lLnCPjr6NQ</uri>
+  </author>
+  <published>2023-01-20T15:31:53+00:00</published>
+  <updated>2023-02-08T14:04:39+00:00</updated>
+  <media:group>
+   <media:title>Blasting electrons through samples to image them</media:title>
+   <media:content url="https://www.youtube.com/v/4Ua6gCrrofI?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i1.ytimg.com/vi/4Ua6gCrrofI/hqdefault.jpg" width="480" height="360"/>
+   <media:description>Using a STEM-in-SEM conversion holder, we can convert a scanning electron microscope into a scanning transmission microscope. Neat!
+
+🥰 CONSIDER SUBSCRIBING 🥰
+🔬Patreon if that's your jam: https://www.patreon.com/breakingtaps
+☕Or buy me a coffee? https://www.buymeacoffee.com/Breakingtaps
+
+📢Twitter: https://twitter.com/BreakingTaps
+📷Instagram: https://instagram.com/breakingtaps
+💻Discord: https://discord.gg/R45uCXcEv4 
+
+
+==== Timeline ====
+0:00 Intro
+0:27 How an SEM works
+1:50 Backscattered Electrons
+3:38 Secondary Electrons
+6:08 How a TEM works
+9:33 STEM-in-SEM Conversion Holder
+12:40 Calibration Grid
+14:18 Nanoparticles
+15:10 Graphite / Graphene
+16:50 Tungsten Disfulfide
+17:31 Titanium Dioxide
+17:45 Gold</media:description>
+   <media:community>
+    <media:starRating count="2450" average="5.00" min="1" max="5"/>
+    <media:statistics views="35714"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:8Wp82__0XUE</id>
+  <yt:videoId>8Wp82__0XUE</yt:videoId>
+  <yt:channelId>UC06HVrkOL33D5lLnCPjr6NQ</yt:channelId>
+  <title>Machining a Mars Crater in Aluminum</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=8Wp82__0XUE"/>
+  <author>
+   <name>Breaking Taps</name>
+   <uri>https://www.youtube.com/channel/UC06HVrkOL33D5lLnCPjr6NQ</uri>
+  </author>
+  <published>2023-01-18T22:04:30+00:00</published>
+  <updated>2023-01-24T02:15:01+00:00</updated>
+  <media:group>
+   <media:title>Machining a Mars Crater in Aluminum</media:title>
+   <media:content url="https://www.youtube.com/v/8Wp82__0XUE?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i1.ytimg.com/vi/8Wp82__0XUE/hqdefault.jpg" width="480" height="360"/>
+   <media:description>Machining a topo map of Gale Crater (on Mars) using my 5 axis CNC 🙂
+
+#shorts</media:description>
+   <media:community>
+    <media:starRating count="557" average="5.00" min="1" max="5"/>
+    <media:statistics views="8498"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:-PTPNi-i0kI</id>
+  <yt:videoId>-PTPNi-i0kI</yt:videoId>
+  <yt:channelId>UC06HVrkOL33D5lLnCPjr6NQ</yt:channelId>
+  <title>Making Microscopic Pictures</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=-PTPNi-i0kI"/>
+  <author>
+   <name>Breaking Taps</name>
+   <uri>https://www.youtube.com/channel/UC06HVrkOL33D5lLnCPjr6NQ</uri>
+  </author>
+  <published>2023-01-18T17:02:28+00:00</published>
+  <updated>2023-02-15T10:26:32+00:00</updated>
+  <media:group>
+   <media:title>Making Microscopic Pictures</media:title>
+   <media:content url="https://www.youtube.com/v/-PTPNi-i0kI?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i2.ytimg.com/vi/-PTPNi-i0kI/hqdefault.jpg" width="480" height="360"/>
+   <media:description>Just testing out a new electron beam lithography setup in my shop 😇 The final pattern that's etched is about the width of a human hair, if that helps provide some context
+
+#shorts</media:description>
+   <media:community>
+    <media:starRating count="61196" average="5.00" min="1" max="5"/>
+    <media:statistics views="2083497"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:g--OkGVTc9k</id>
+  <yt:videoId>g--OkGVTc9k</yt:videoId>
+  <yt:channelId>UC06HVrkOL33D5lLnCPjr6NQ</yt:channelId>
+  <title>Capacitance Electronic Discs</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=g--OkGVTc9k"/>
+  <author>
+   <name>Breaking Taps</name>
+   <uri>https://www.youtube.com/channel/UC06HVrkOL33D5lLnCPjr6NQ</uri>
+  </author>
+  <published>2023-01-18T17:02:14+00:00</published>
+  <updated>2023-01-19T06:00:36+00:00</updated>
+  <media:group>
+   <media:title>Capacitance Electronic Discs</media:title>
+   <media:content url="https://www.youtube.com/v/g--OkGVTc9k?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i4.ytimg.com/vi/g--OkGVTc9k/hqdefault.jpg" width="480" height="360"/>
+   <media:description>Capacitive Electronic Discs are a cool tech from RCA that ultimately failed due to competition from VHS and Betamax, and gross managerial incompetence inside RCA. But the tech is very cool and utilized nanoscale engineering which was quite revolutionary for its time!
+--------------------------------
+
+
+#shorts</media:description>
+   <media:community>
+    <media:starRating count="11625" average="5.00" min="1" max="5"/>
+    <media:statistics views="244767"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:vb1dciVAM_w</id>
+  <yt:videoId>vb1dciVAM_w</yt:videoId>
+  <yt:channelId>UC06HVrkOL33D5lLnCPjr6NQ</yt:channelId>
+  <title>Adaptive Milling aluminum on my Desktop CNC</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=vb1dciVAM_w"/>
+  <author>
+   <name>Breaking Taps</name>
+   <uri>https://www.youtube.com/channel/UC06HVrkOL33D5lLnCPjr6NQ</uri>
+  </author>
+  <published>2023-01-18T16:52:53+00:00</published>
+  <updated>2023-01-19T06:00:44+00:00</updated>
+  <media:group>
+   <media:title>Adaptive Milling aluminum on my Desktop CNC</media:title>
+   <media:content url="https://www.youtube.com/v/vb1dciVAM_w?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i3.ytimg.com/vi/vb1dciVAM_w/hqdefault.jpg" width="480" height="360"/>
+   <media:description>Just chewing up some aluminum using an AvidCNC 
+
+#shorts</media:description>
+   <media:community>
+    <media:starRating count="283" average="5.00" min="1" max="5"/>
+    <media:statistics views="11394"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:B8ohDNBsR_o</id>
+  <yt:videoId>B8ohDNBsR_o</yt:videoId>
+  <yt:channelId>UC06HVrkOL33D5lLnCPjr6NQ</yt:channelId>
+  <title>Cutting Steel on a Desktop CNC</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=B8ohDNBsR_o"/>
+  <author>
+   <name>Breaking Taps</name>
+   <uri>https://www.youtube.com/channel/UC06HVrkOL33D5lLnCPjr6NQ</uri>
+  </author>
+  <published>2023-01-18T16:52:36+00:00</published>
+  <updated>2023-01-19T05:43:20+00:00</updated>
+  <media:group>
+   <media:title>Cutting Steel on a Desktop CNC</media:title>
+   <media:content url="https://www.youtube.com/v/B8ohDNBsR_o?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i3.ytimg.com/vi/B8ohDNBsR_o/hqdefault.jpg" width="480" height="360"/>
+   <media:description>Can we cut steel on a desktop CNC? Yes, but it takes some tuning to get there 😁
+
+#shorts</media:description>
+   <media:community>
+    <media:starRating count="1318" average="5.00" min="1" max="5"/>
+    <media:statistics views="68984"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:S2QGnMVoN2U</id>
+  <yt:videoId>S2QGnMVoN2U</yt:videoId>
+  <yt:channelId>UC06HVrkOL33D5lLnCPjr6NQ</yt:channelId>
+  <title>Slow motion chatter on Desktop CNC</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=S2QGnMVoN2U"/>
+  <author>
+   <name>Breaking Taps</name>
+   <uri>https://www.youtube.com/channel/UC06HVrkOL33D5lLnCPjr6NQ</uri>
+  </author>
+  <published>2023-01-18T16:52:20+00:00</published>
+  <updated>2023-01-24T02:15:38+00:00</updated>
+  <media:group>
+   <media:title>Slow motion chatter on Desktop CNC</media:title>
+   <media:content url="https://www.youtube.com/v/S2QGnMVoN2U?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i4.ytimg.com/vi/S2QGnMVoN2U/hqdefault.jpg" width="480" height="360"/>
+   <media:description>What does it look like when an endmill starts chattering?  How about at 20,000 frames-per-second?  I'm in the shop playing with a high speed camera, filming Online Carbide 1/4&quot; 4FL variable helix end mill on mild steel with my AvidCNC Benchtop Pro.
+
+#shorts</media:description>
+   <media:community>
+    <media:starRating count="342" average="5.00" min="1" max="5"/>
+    <media:statistics views="8726"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:YLgGQnEaigQ</id>
+  <yt:videoId>YLgGQnEaigQ</yt:videoId>
+  <yt:channelId>UC06HVrkOL33D5lLnCPjr6NQ</yt:channelId>
+  <title>Making Microlenses smaller than a human hair</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=YLgGQnEaigQ"/>
+  <author>
+   <name>Breaking Taps</name>
+   <uri>https://www.youtube.com/channel/UC06HVrkOL33D5lLnCPjr6NQ</uri>
+  </author>
+  <published>2023-01-18T16:52:05+00:00</published>
+  <updated>2023-01-19T06:26:54+00:00</updated>
+  <media:group>
+   <media:title>Making Microlenses smaller than a human hair</media:title>
+   <media:content url="https://www.youtube.com/v/YLgGQnEaigQ?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i2.ytimg.com/vi/YLgGQnEaigQ/hqdefault.jpg" width="480" height="360"/>
+   <media:description>Microlenses are tiny optical devices used to focus light onto cameras and fiber optics.  While debugging a different project, I stumbled on a technique that made hemispherical depressions.  So I made some microlenses.
+-----------------------------
+
+#shorts 
+
+Full video on Breaking Taps channel (I made lenses smaller than a fly's eye): https://www.youtube.com/watch?v=1tf--Fy5YJw&amp;t=0s</media:description>
+   <media:community>
+    <media:starRating count="11402" average="5.00" min="1" max="5"/>
+    <media:statistics views="253766"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:snmIKpjg6Wo</id>
+  <yt:videoId>snmIKpjg6Wo</yt:videoId>
+  <yt:channelId>UC06HVrkOL33D5lLnCPjr6NQ</yt:channelId>
+  <title>Making Gold Nanoparticles with Lasers</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=snmIKpjg6Wo"/>
+  <author>
+   <name>Breaking Taps</name>
+   <uri>https://www.youtube.com/channel/UC06HVrkOL33D5lLnCPjr6NQ</uri>
+  </author>
+  <published>2023-01-18T16:24:25+00:00</published>
+  <updated>2023-02-13T02:24:37+00:00</updated>
+  <media:group>
+   <media:title>Making Gold Nanoparticles with Lasers</media:title>
+   <media:content url="https://www.youtube.com/v/snmIKpjg6Wo?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i4.ytimg.com/vi/snmIKpjg6Wo/hqdefault.jpg" width="480" height="360"/>
+   <media:description>The color of gold nanoparticles depends on their physical size, ranging from light red to a dark bluish/purple. This phenomenon is caused by Plasmon Resonance. There is a cloud of delocalized electrons flying around a metal, and these electrons can react in a coordinated manner to electromagnetic fields (like light).  But when the surface of the metal is very small -- like in a nanoparticle -- the electron cloud is can begin to oscillate across the surface.  
+
+If the wavelength of light is just right it will resonate with the electron cloud, and that wavelength of light is reflected while all others are transmitted or absorbed.  This causes the particle to look a specific color.
+
+Or... Ghosts.
+
+--------------------------------
+
+Full video with references/sources: https://www.youtube.com/watch?v=m_ScOUNAdlM
+
+#shorts</media:description>
+   <media:community>
+    <media:starRating count="44572" average="5.00" min="1" max="5"/>
+    <media:statistics views="872552"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:gsmqijBjBAc</id>
+  <yt:videoId>gsmqijBjBAc</yt:videoId>
+  <yt:channelId>UC06HVrkOL33D5lLnCPjr6NQ</yt:channelId>
+  <title>More rigorous analysis of &quot;Ceramic&quot; car spray</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=gsmqijBjBAc"/>
+  <author>
+   <name>Breaking Taps</name>
+   <uri>https://www.youtube.com/channel/UC06HVrkOL33D5lLnCPjr6NQ</uri>
+  </author>
+  <published>2023-01-06T22:56:52+00:00</published>
+  <updated>2023-02-07T03:07:20+00:00</updated>
+  <media:group>
+   <media:title>More rigorous analysis of &quot;Ceramic&quot; car spray</media:title>
+   <media:content url="https://www.youtube.com/v/gsmqijBjBAc?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i4.ytimg.com/vi/gsmqijBjBAc/hqdefault.jpg" width="480" height="360"/>
+   <media:description>So in the prior video, there were a lot of questions and suggestions. Here's a quick clarification video with some followup experiments!
+
+Previous Video: https://www.youtube.com/watch?v=up_iNN3cQ-A
+
+🥰 CONSIDER SUBSCRIBING 🥰
+🔬Patreon if that's your jam: https://www.patreon.com/breakingtaps
+☕Or buy me a coffee? https://www.buymeacoffee.com/Breakingtaps
+
+📢Twitter: https://twitter.com/BreakingTaps
+📷Instagram: https://instagram.com/breakingtaps
+💻Discord: https://discord.gg/R45uCXcEv4 
+
+
+==== Timeline ====
+0:00 Intro
+0:26 Did you shake it?
+0:56 Does it work?
+1:22 Screen Protectors
+2:12 Ceramic != Glass
+2:47 Scratched substrate
+7:06 Paint substrate
+8:01 Bare aluminum substrate
+9:49 Anodized aluminum substrate
+10:25 Conclusion and thoughts</media:description>
+   <media:community>
+    <media:starRating count="1949" average="5.00" min="1" max="5"/>
+    <media:statistics views="29129"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:up_iNN3cQ-A</id>
+  <yt:videoId>up_iNN3cQ-A</yt:videoId>
+  <yt:channelId>UC06HVrkOL33D5lLnCPjr6NQ</yt:channelId>
+  <title>Let's look at the nanoparticles in &quot;Ceramic&quot; car spray</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=up_iNN3cQ-A"/>
+  <author>
+   <name>Breaking Taps</name>
+   <uri>https://www.youtube.com/channel/UC06HVrkOL33D5lLnCPjr6NQ</uri>
+  </author>
+  <published>2023-01-06T00:38:29+00:00</published>
+  <updated>2023-02-11T15:46:52+00:00</updated>
+  <media:group>
+   <media:title>Let's look at the nanoparticles in &quot;Ceramic&quot; car spray</media:title>
+   <media:content url="https://www.youtube.com/v/up_iNN3cQ-A?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i2.ytimg.com/vi/up_iNN3cQ-A/hqdefault.jpg" width="480" height="360"/>
+   <media:description>I purchased some &quot;ceramic&quot; (amorphous silicon dioxide) hydrophobic spray and was curious if the marketing matched the reality. We'll look at the spray under the Atomic Force Microscope and Scanning Electron Microscope
+
+There's a followup video! https://www.youtube.com/watch?v=gsmqijBjBAc
+
+Note: This is the only &quot;ceramic&quot; spray I've tested, there are several on the market. Perhaps others are better, and perhaps I just analyzed this product poorly! Suffice to say I was unimpressed though 🙂
+
+🥰 CONSIDER SUBSCRIBING 🥰
+🔬Patreon if that's your jam: https://www.patreon.com/breakingtaps
+☕Or buy me a coffee? https://www.buymeacoffee.com/Breakingtaps
+
+📢Twitter: https://twitter.com/BreakingTaps
+📷Instagram: https://instagram.com/breakingtaps
+💻Discord: https://discord.gg/R45uCXcEv4 
+
+
+==== Timeline ====
+0:00 Intro
+0:52 Ingredients
+1:39 Coating Experiment
+4:17 Atomic Force Microscope Results
+7:28 Tangent: F-35s and Sensitive Instruments
+7:59 Scanning Electron Microscope Results
+9:36 Conclusion</media:description>
+   <media:community>
+    <media:starRating count="3172" average="5.00" min="1" max="5"/>
+    <media:statistics views="86084"/>
+   </media:community>
+  </media:group>
+ </entry>
+</feed>
