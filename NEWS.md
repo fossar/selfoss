@@ -3,6 +3,9 @@
 
 **This version currently requires PHP 7.2.5 or newer. (Will be increased later.)**
 
+### New features
+- YouTube spout now accepts handles (starting with `@` sign). ([#1412](https://github.com/fossar/selfoss/pull/1412))
+
 ### Bug fixes
 - Configuration parser was changed to *raw* method, which relaxes the requirement to quote option values containing special characters in `config.ini`. ([#1371](https://github.com/fossar/selfoss/issues/1371))
 - Fix “Mark all as read” button not hiding marked articles in unread view, not updating the unread counts in menu properly, and not closing menu on mobile. ([#1388](https://github.com/fossar/selfoss/issues/1388)

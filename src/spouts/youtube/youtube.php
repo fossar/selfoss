@@ -53,7 +53,12 @@ class youtube extends \spouts\rss\feed {
         } elseif (preg_match('(^https?://www.youtube.com/playlist\?list=([a-zA-Z0-9_]+)$)', $urlOrUsername, $matched)) {
             $id = $matched[1];
             $feed_type = 'playlist_id';
+        } elseif (preg_match('(^@)', $urlOrUsername)) {
+            // https://www.youtube.com/handle
+            // Rely on feed discovery.
+            return 'https://www.youtube.com/' . $urlOrUsername;
         } elseif (preg_match('(^https?://www.youtube.com/)', $urlOrUsername)) {
+            // Rely on feed discovery.
             return $urlOrUsername;
         } else {
             $id = $urlOrUsername;
