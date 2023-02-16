@@ -1,5 +1,13 @@
 <?php
 
+// SPDX-FileCopyrightText: 2011–2016 Tobias Zeising <tobias.zeising@aditu.de>
+// SPDX-FileCopyrightText: 2013 zajad <stephan@muehe.de>
+// SPDX-FileCopyrightText: 2013 arbk <arbk@aruo.net>
+// SPDX-FileCopyrightText: 2013 yDelouis <ydelouis@gmail.com>
+// SPDX-FileCopyrightText: 2014–2017 Alexandre Rossi <alexandre.rossi@gmail.com>
+// SPDX-FileCopyrightText: 2016–2023 Jan Tojnar <jtojnar@gmail.com>
+// SPDX-License-Identifier: GPL-3.0
+
 declare(strict_types=1);
 
 namespace helpers;
@@ -7,11 +15,7 @@ namespace helpers;
 use Monolog\Logger;
 
 /**
- * Helper class for authenticate user
- *
- * @copyright  Copyright (c) Tobias Zeising (http://www.aditu.de)
- * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
- * @author     Tobias Zeising <tobias.zeising@aditu.de>
+ * Helper class for user authentication.
  */
 class Authentication {
     /** @var Configuration configuration */
@@ -23,41 +27,23 @@ class Authentication {
     /** @var Logger */
     private $logger;
 
+    /** @var Session */
+    private $session;
+
     /**
      * start session and check login
      */
-    public function __construct(Configuration $configuration, Logger $logger, View $view) {
+    public function __construct(Configuration $configuration, Logger $logger, Session $session) {
         $this->configuration = $configuration;
         $this->logger = $logger;
+        $this->session = $session;
 
         if ($this->enabled() === false) {
             return;
         }
 
-        $base_url = parse_url($view->getBaseUrl());
-
-        // session cookie will be valid for one month.
-        $cookie_expire = 3600 * 24 * 30;
-        $cookie_secure = $base_url['scheme'] === 'https';
-        $cookie_httponly = true;
-        $cookie_path = $base_url['path'];
-        $cookie_domain = $base_url['host'] === 'localhost' ? null : $base_url['host'];
-
-        session_set_cookie_params(
-            $cookie_expire,
-            $cookie_path,
-            // PHP < 8.0 does not accept null
-            $cookie_domain ?? '',
-            $cookie_secure,
-            $cookie_httponly
-        );
-        $this->logger->debug("set cookie on $cookie_domain$cookie_path expiring in $cookie_expire seconds");
-
-        session_name();
-        if (session_id() === '') {
-            session_start();
-        }
-        if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
+        $this->session->start();
+        if ($this->session->getBool('loggedin', false)) {
             $this->loggedin = true;
             $this->logger->debug('logged in using valid session');
         } else {
@@ -95,7 +81,7 @@ class Authentication {
 
             if ($credentialsCorrect) {
                 $this->loggedin = true;
-                $_SESSION['loggedin'] = true;
+                $this->session->setBool('loggedin', true);
                 $this->logger->debug('logged in with supplied username and password');
 
                 return true;
@@ -132,8 +118,8 @@ class Authentication {
      */
     public function logout(): void {
         $this->loggedin = false;
-        $_SESSION['loggedin'] = false;
-        session_destroy();
+        $this->session->setBool('loggedin', false);
+        $this->session->destroy();
         $this->logger->debug('logged out and destroyed session');
     }
 

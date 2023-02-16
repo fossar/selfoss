@@ -80,6 +80,7 @@ $shared = array_merge($substitutions, [
 
 $dice = $dice->addRule(Bramus\Router\Router::class, $shared);
 $dice = $dice->addRule(helpers\Authentication::class, $shared);
+$dice = $dice->addRule(helpers\Session::class, $shared);
 
 // Database bridges
 $dice = $dice->addRule(daos\Items::class, $shared);
