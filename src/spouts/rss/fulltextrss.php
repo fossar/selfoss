@@ -70,8 +70,9 @@ class fulltextrss extends feed {
     public function getItems(): iterable {
         foreach (parent::getItems() as $item) {
             $url = self::removeTrackersFromUrl($item->getLink());
-            $newContent = $this->getFullContent($url, $item);
-            yield $item->withLink($url)->withContent($newContent);
+            yield $item->withLink($url)->withContent(function(Item $item) use ($url): HtmlString {
+                return $this->getFullContent($url, $item);
+            });
         }
     }
 

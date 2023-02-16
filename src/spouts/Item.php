@@ -19,7 +19,7 @@ class Item {
     /** @var HtmlString title */
     private $title;
 
-    /** @var HtmlString content */
+    /** @var HtmlString|(callable(self): HtmlString) content */
     private $content;
 
     /** @var ?string thumbnail */
@@ -42,11 +42,12 @@ class Item {
 
     /**
      * @param ?Extra $extraData
+     * @param HtmlString|(callable(self): HtmlString) $content
      */
     public function __construct(
         string $id,
         HtmlString $title,
-        HtmlString $content,
+        $content,
         ?string $thumbnail,
         ?string $icon,
         string $link,
@@ -111,13 +112,19 @@ class Item {
      * (for instance when the spout feed is XML).
      */
     public function getContent(): HtmlString {
+        if (is_callable($this->content)) {
+            $this->content = ($this->content)($this);
+        }
+
         return $this->content;
     }
 
     /**
+     * @param HtmlString|(callable(self): HtmlString) $content
+     *
      * @return static
      */
-    public function withContent(HtmlString $content): self {
+    public function withContent($content): self {
         $modified = clone $this;
         $modified->content = $content;
 
