@@ -1,19 +1,24 @@
 <?php
 
+// SPDX-FileCopyrightText: 2011–2015 Tobias Zeising <tobias.zeising@aditu.de>
+// SPDX-FileCopyrightText: 2014 Nicola Malizia <unnikked@gmail.com>
+// SPDX-FileCopyrightText: 2016–2023 Jan Tojnar <jtojnar@gmail.com>
+// SPDX-FileCopyrightText: 2018 Binnette <binnette@gmail.com>
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 declare(strict_types=1);
 
 namespace spouts\twitter;
 
+use spouts\Item;
 use spouts\Parameter;
 
 /**
  * Spout for fetching a twitter list
  *
- * @copyright  Copyright (c) Nicola Malizia (https://unnikked.ga/)
- * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
- * @author     Nicola Malizia <unnikked@gmail.com>
+ * @extends \spouts\spout<null>
  */
-class listtimeline extends \spouts\twitter\usertimeline {
+class listtimeline extends \spouts\spout {
     public $name = 'Twitter: list timeline';
     public $description = 'Fetch the timeline of a given list.';
 
@@ -63,10 +68,31 @@ class listtimeline extends \spouts\twitter\usertimeline {
         ],
     ];
 
-    public function load(array $params): void {
-        $this->client = $this->getHttpClient($params['consumer_key'], $params['consumer_secret'], $params['access_token'] ?? null, $params['access_token_secret'] ?? null);
+    /** @var string URL of the source */
+    private $htmlUrl = '';
 
-        $this->items = $this->fetchTwitterTimeline('lists/statuses', [
+    /** @var ?string title of the source */
+    private $title = null;
+
+    /** @var iterable<Item<null>> current fetched items */
+    private $items = [];
+
+    /** @var TwitterV1ApiClientFactory */
+    private $clientFactory;
+
+    public function __construct(TwitterV1ApiClientFactory $clientFactory) {
+        $this->clientFactory = $clientFactory;
+    }
+
+    public function load(array $params): void {
+        $client = $this->clientFactory->create(
+            $params['consumer_key'],
+            $params['consumer_secret'],
+            $params['access_token'] ?? null,
+            $params['access_token_secret'] ?? null
+        );
+
+        $this->items = $client->fetchTimeline('lists/statuses', [
             'slug' => $params['slug'],
             'owner_screen_name' => $params['owner_screen_name'],
         ]);
@@ -74,5 +100,25 @@ class listtimeline extends \spouts\twitter\usertimeline {
         $this->htmlUrl = 'https://twitter.com/' . urlencode($params['owner_screen_name']);
 
         $this->title = "@{$params['owner_screen_name']}/{$params['slug']}";
+    }
+
+    public function getTitle(): ?string {
+        return $this->title;
+    }
+
+    public function getHtmlUrl(): ?string {
+        return $this->htmlUrl;
+    }
+
+    /**
+     * @return iterable<Item<null>> list of items
+     */
+    public function getItems(): iterable {
+        return $this->items;
+    }
+
+    public function destroy(): void {
+        unset($this->items);
+        $this->items = [];
     }
 }

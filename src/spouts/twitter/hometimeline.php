@@ -1,19 +1,24 @@
 <?php
 
+// SPDX-FileCopyrightText: 2011–2013 Tobias Zeising <tobias.zeising@aditu.de>
+// SPDX-FileCopyrightText: 2013 Tim Gerundt <tim@gerundt.de>
+// SPDX-FileCopyrightText: 2017–2023 Jan Tojnar <jtojnar@gmail.com>
+// SPDX-FileCopyrightText: 2018 Binnette <binnette@gmail.com>
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 declare(strict_types=1);
 
 namespace spouts\twitter;
 
+use spouts\Item;
 use spouts\Parameter;
 
 /**
  * Spout for fetching the twitter timeline of your twitter account
  *
- * @copyright  Copyright (c) Tobias Zeising (http://www.aditu.de)
- * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
- * @author     Tobias Zeising <tobias.zeising@aditu.de>
+ * @extends \spouts\spout<null>
  */
-class hometimeline extends \spouts\twitter\usertimeline {
+class hometimeline extends \spouts\spout {
     /** @var string name of source */
     public $name = 'Twitter: your timeline';
 
@@ -52,13 +57,54 @@ class hometimeline extends \spouts\twitter\usertimeline {
         ],
     ];
 
-    public function load(array $params): void {
-        $this->client = $this->getHttpClient($params['consumer_key'], $params['consumer_secret'], $params['access_key'], $params['access_secret']);
+    /** @var string URL of the source */
+    private $htmlUrl = '';
 
-        $this->items = $this->fetchTwitterTimeline('statuses/home_timeline');
+    /** @var ?string title of the source */
+    private $title = null;
+
+    /** @var iterable<Item<null>> current fetched items */
+    private $items = [];
+
+    /** @var TwitterV1ApiClientFactory */
+    private $clientFactory;
+
+    public function __construct(TwitterV1ApiClientFactory $clientFactory) {
+        $this->clientFactory = $clientFactory;
+    }
+
+    public function load(array $params): void {
+        $client = $this->clientFactory->create(
+            $params['consumer_key'],
+            $params['consumer_secret'],
+            $params['access_key'],
+            $params['access_secret']
+        );
+
+        $this->items = $client->fetchTimeline('statuses/home_timeline');
 
         $this->htmlUrl = 'https://twitter.com/';
 
         $this->title = 'Home timeline';
+    }
+
+    public function getTitle(): ?string {
+        return $this->title;
+    }
+
+    public function getHtmlUrl(): ?string {
+        return $this->htmlUrl;
+    }
+
+    /**
+     * @return iterable<Item<null>> list of items
+     */
+    public function getItems(): iterable {
+        return $this->items;
+    }
+
+    public function destroy(): void {
+        unset($this->items);
+        $this->items = [];
     }
 }

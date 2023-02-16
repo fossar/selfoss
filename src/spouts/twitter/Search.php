@@ -1,19 +1,22 @@
 <?php
 
+// SPDX-FileCopyrightText: 2011 Tobias Zeising <tobias.zeising@aditu.de>
+// SPDX-FileCopyrightText: 2020–2023 Jan Tojnar <jtojnar@gmail.com>
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 declare(strict_types=1);
 
 namespace spouts\twitter;
 
+use spouts\Item;
 use spouts\Parameter;
 
 /**
  * Spout for fetching a Twitter search
  *
- * @author Jan Tojnar <jtojnar@gmail.com>
- * @copyright Jan Tojnar <jtojnar@gmail.com>
- * @license GPL-3.0-or-later
+ * @extends \spouts\spout<null>
  */
-class Search extends \spouts\twitter\usertimeline {
+class Search extends \spouts\spout {
     /** @var string name of source */
     public $name = 'Twitter: search';
 
@@ -59,10 +62,31 @@ class Search extends \spouts\twitter\usertimeline {
         ],
     ];
 
-    public function load(array $params): void {
-        $this->client = $this->getHttpClient($params['consumer_key'], $params['consumer_secret'], $params['access_token'] ?? null, $params['access_token_secret'] ?? null);
+    /** @var string URL of the source */
+    private $htmlUrl = '';
 
-        $this->items = $this->fetchTwitterTimeline('search/tweets', [
+    /** @var ?string title of the source */
+    private $title = null;
+
+    /** @var iterable<Item<null>> current fetched items */
+    private $items = [];
+
+    /** @var TwitterV1ApiClientFactory */
+    private $clientFactory;
+
+    public function __construct(TwitterV1ApiClientFactory $clientFactory) {
+        $this->clientFactory = $clientFactory;
+    }
+
+    public function load(array $params): void {
+        $client = $this->clientFactory->create(
+            $params['consumer_key'],
+            $params['consumer_secret'],
+            $params['access_token'] ?? null,
+            $params['access_token_secret'] ?? null
+        );
+
+        $this->items = $client->fetchTimeline('search/tweets', [
             'q' => $params['query'],
             'result_type' => 'recent',
         ]);
@@ -70,5 +94,25 @@ class Search extends \spouts\twitter\usertimeline {
         $this->htmlUrl = 'https://twitter.com/search?q=' . urlencode($params['query']);
 
         $this->title = "Search twitter for {$params['query']}";
+    }
+
+    public function getTitle(): ?string {
+        return $this->title;
+    }
+
+    public function getHtmlUrl(): ?string {
+        return $this->htmlUrl;
+    }
+
+    /**
+     * @return iterable<Item<null>> list of items
+     */
+    public function getItems(): iterable {
+        return $this->items;
+    }
+
+    public function destroy(): void {
+        unset($this->items);
+        $this->items = [];
     }
 }
