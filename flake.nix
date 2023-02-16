@@ -70,9 +70,6 @@
               # npm for front-end.
               pkgs.nodejs_latest
 
-              # For building zip archive.
-              pkgs.jq
-
               # For building zip archive and integration tests.
               python
 
