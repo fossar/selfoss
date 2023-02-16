@@ -25,7 +25,7 @@ class Item {
     /** @var ?string thumbnail */
     private $thumbnail;
 
-    /** @var ?string icon */
+    /** @var (?string)|(callable(self): ?string) icon */
     private $icon;
 
     /** @var string link */
@@ -43,13 +43,14 @@ class Item {
     /**
      * @param ?Extra $extraData
      * @param HtmlString|(callable(self): HtmlString) $content
+     * @param (?string)|(callable(self): ?string) $icon
      */
     public function __construct(
         string $id,
         HtmlString $title,
         $content,
         ?string $thumbnail,
-        ?string $icon,
+        $icon,
         string $link,
         ?DateTimeInterface $date,
         ?string $author,
@@ -152,13 +153,19 @@ class Item {
      * Returns the URL for favicon of the article.
      */
     public function getIcon(): ?string {
+        if (is_callable($this->icon)) {
+            $this->icon = ($this->icon)($this);
+        }
+
         return $this->icon;
     }
 
     /**
+     * @param (?string)|(callable(self): ?string) $icon
+     *
      * @return static
      */
-    public function withIcon(?string $icon): self {
+    public function withIcon($icon): self {
         $modified = clone $this;
         $modified->icon = $icon;
 

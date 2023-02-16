@@ -130,7 +130,9 @@ class reddit2 extends \spouts\spout {
             $title = HtmlString::fromPlainText($item['data']['title']);
             $content = $this->getContent($url, $item);
             $thumbnail = $this->getThumbnail($item);
-            $icon = $this->findSiteIcon($url);
+            $icon = function(Item $item) use ($url): ?string {
+                return $this->findSiteIcon($url);
+            };
             $link = 'https://www.reddit.com' . $item['data']['permalink'];
             // UNIX timestamp
             // https://www.reddit.com/r/redditdev/comments/3qsv97/whats_the_time_unit_for_created_utc_and_what_time/
