@@ -34,6 +34,7 @@
 - Spouts can fetch item contents lazily by passing a function as `content` to `Item`. ([#1413](https://github.com/fossar/selfoss/pull/1413))
 - Spouts’ `name`, `description` and `params` properties now require a type hint. ([#1425](https://github.com/fossar/selfoss/pull/1425))
 - All classes other than spouts were made final. ([#1546](https://github.com/fossar/selfoss/pull/1546))
+- The debugging level (in selfoss ≤ 2.18 set by modifying `src/common.php`) can be changed in the `config.ini` using `debug` key. ([#1298](https://github.com/fossar/selfoss/pull/1298))
 
 ### Other changes
 - `tidy` PHP extension is now required if you want to use “Content extractor” spout. ([#1392](https://github.com/fossar/selfoss/pull/1392))

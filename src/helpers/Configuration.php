@@ -49,9 +49,6 @@ final class Configuration {
 
     // Internal but overridable values.
 
-    /** Debugging level @internal */
-    public int $debug = 0;
-
     /** @internal */
     public string $datadir = __DIR__ . '/../../data';
 
@@ -62,6 +59,9 @@ final class Configuration {
     public string $ftrssCustomDataDir = '%datadir%/fulltextrss';
 
     // Rest of the values.
+
+    /** Debugging level */
+    public int $debug = 0;
 
     public string $dbType = 'sqlite';
 
