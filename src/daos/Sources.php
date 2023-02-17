@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace daos;
 
 use helpers\Authentication;
-use helpers\Configuration;
 use helpers\SpoutLoader;
-use Monolog\Logger;
 use spouts\Parameter;
 
 /**
@@ -18,53 +16,49 @@ use spouts\Parameter;
  * @author     Harald Lapp <harald.lapp@gmail.com>
  * @author     Daniel Seither <post@tiwoc.de>
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
- *
- * @mixin SourcesInterface
  */
-class Sources {
+class Sources implements SourcesInterface {
     /** @var SourcesInterface Instance of backend specific sources class */
     private $backend;
 
     /** @var Authentication authentication helper */
     private $authentication;
 
-    /** @var Configuration configuration */
-    private $configuration;
-
-    /** @var Logger */
-    private $logger;
-
     /** @var SpoutLoader spout loader */
     private $spoutLoader;
 
     public function __construct(
         Authentication $authentication,
-        Configuration $configuration,
-        Logger $logger,
         SourcesInterface $backend,
         SpoutLoader $spoutLoader
     ) {
         $this->authentication = $authentication;
-        $this->configuration = $configuration;
         $this->backend = $backend;
-        $this->logger = $logger;
         $this->spoutLoader = $spoutLoader;
     }
 
-    /**
-     * pass any method call to the backend.
-     *
-     * @param string $name name of the function
-     * @param array $args arguments
-     *
-     * @return mixed methods return value
-     */
-    public function __call(string $name, array $args) {
-        if (method_exists($this->backend, $name)) {
-            return call_user_func_array([$this->backend, $name], $args);
-        } else {
-            $this->logger->error('Unimplemented method for ' . $this->configuration->dbType . ': ' . $name);
-        }
+    public function add(string $title, array $tags, ?string $filter, string $spout, array $params): int {
+        return $this->backend->add($title, $tags, $filter, $spout, $params);
+    }
+
+    public function edit(int $id, string $title, array $tags, ?string $filter, string $spout, array $params): void {
+        $this->backend->edit($id, $title, $tags, $filter, $spout, $params);
+    }
+
+    public function delete(int $id): void {
+        $this->backend->delete($id);
+    }
+
+    public function error(int $id, string $error): void {
+        $this->backend->error($id, $error);
+    }
+
+    public function saveLastUpdate(int $id, ?int $lastEntry): void {
+        $this->backend->saveLastUpdate($id, $lastEntry);
+    }
+
+    public function getByLastUpdate(): array {
+        return $this->backend->getByLastUpdate();
     }
 
     public function get(int $id): ?array {
@@ -90,12 +84,32 @@ class Sources {
         return $sources;
     }
 
+    public function getWithUnread(): array {
+        return $this->backend->getWithUnread();
+    }
+
+    public function getWithIcon(): array {
+        return $this->backend->getWithIcon();
+    }
+
+    public function getAllTags(): array {
+        return $this->backend->getAllTags();
+    }
+
+    public function getTags(int $id): array {
+        return $this->backend->getTags($id);
+    }
+
+    public function checkIfExists(string $title, string $spout, array $params): int {
+        return $this->backend->checkIfExists($title, $spout, $params);
+    }
+
     /**
      * validate new data for a given source
      *
      * @param string $title title of the source
      * @param string $spout class path for the spout
-     * @param array $params parameters supplied to the spout
+     * @param array<string, mixed> $params parameters supplied to the spout
      *
      * @return array<string,string>|true true on success or array of errors on failure
      *

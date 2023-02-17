@@ -103,7 +103,7 @@ class Tags implements \daos\TagsInterface {
     /**
      * remove all unused tag color definitions
      *
-     * @param array $tags available tags
+     * @param string[] $tags available tags
      */
     public function cleanup(array $tags): void {
         $tagsInDb = $this->get();

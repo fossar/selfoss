@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace helpers;
 
+use DateTime;
+
 /**
  * Helper class for loading extern items
  *
@@ -105,12 +107,12 @@ class ViewHelper {
     /**
      * Prepare entry as expected by the client.
      *
-     * @param array $item item to modify
+     * @param array{title: string, content: string, datetime: DateTime, updatetime: DateTime, sourcetitle: string, tags: string[]} $item item to modify
      * @param \controllers\Tags $tagsController tags controller
-     * @param ?array $tags list of tags
+     * @param ?array<array{tag: string, color: string}> $tags list of tags
      * @param ?string $search search query
      *
-     * @return array modified item
+     * @return array{title: string, strippedTitle: string, content: string, wordCount: int, lengthWithoutTags: int, datetime: string, updatetime: string, sourcetitle: string, tags: array<string, array{backColor: string, foreColor: string}>} modified item
      */
     public function preprocessEntry(array $item, \controllers\Tags $tagsController, ?array $tags = null, ?string $search = null): array {
         // parse tags and assign tag colors

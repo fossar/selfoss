@@ -34,7 +34,7 @@ class Sources implements \daos\SourcesInterface {
      *
      * @param string[] $tags
      * @param string $spout the source type
-     * @param array $params depends from spout
+     * @param array<string, mixed> $params spout-specific parameters
      *
      * @return int new id
      */
@@ -55,7 +55,7 @@ class Sources implements \daos\SourcesInterface {
      * @param string $title new title
      * @param string[] $tags new tags
      * @param string $spout new spout
-     * @param array $params the new params
+     * @param array<string, mixed> $params the new params
      */
     public function edit(int $id, string $title, array $tags, ?string $filter, string $spout, array $params): void {
         $this->database->exec('UPDATE ' . $this->configuration->dbPrefix . 'sources SET title=:title, tags=:tags, filter=:filter, spout=:spout, params=:params WHERE id=:id', [
@@ -126,7 +126,7 @@ class Sources implements \daos\SourcesInterface {
     /**
      * returns all sources
      *
-     * @return array<array<mixed>> all sources
+     * @return array<array{id: int, title: string, tags: string, spout: string, params: string, filter: ?string, error: ?string, lastupdate: ?int, lastentry: ?int}> all sources
      */
     public function getByLastUpdate(): array {
         $ret = $this->database->exec('SELECT id, title, tags, spout, params, filter, error, lastupdate, lastentry FROM ' . $this->configuration->dbPrefix . 'sources ORDER BY lastupdate ASC');
@@ -142,7 +142,7 @@ class Sources implements \daos\SourcesInterface {
     /**
      * Returns source with given id (or null if it doesnt exist).
      *
-     * @return ?array<mixed>
+     * @return ?array{id: int, title: string, tags: string, spout: string, params: string, filter: ?string, error: ?string, lastupdate: ?int, lastentry: ?int}
      */
     public function get(int $id): ?array {
         $ret = $this->database->exec('SELECT id, title, tags, spout, params, filter, error, lastupdate, lastentry FROM ' . $this->configuration->dbPrefix . 'sources WHERE id=:id', [':id' => $id]);
@@ -162,7 +162,7 @@ class Sources implements \daos\SourcesInterface {
     /**
      * Returns specified source all sources.
      *
-     * @return array<array<mixed>>
+     * @return array<array{id: int, title: string, tags: string[], spout: string, params: string, filter: ?string, error: ?string, lastupdate: ?int, lastentry: ?int}>
      */
     public function getAll(): array {
         $ret = $this->database->exec('SELECT id, title, tags, spout, params, filter, error, lastupdate, lastentry FROM ' . $this->configuration->dbPrefix . 'sources ORDER BY error DESC, lower(title) ASC');
@@ -179,7 +179,7 @@ class Sources implements \daos\SourcesInterface {
     /**
      * returns all sources including unread count
      *
-     * @return array<array<mixed>> all sources
+     * @return array<array{id: int, title: string, unread: int}> all sources
      */
     public function getWithUnread(): array {
         $ret = $this->database->exec('SELECT
@@ -199,7 +199,7 @@ class Sources implements \daos\SourcesInterface {
     /**
      * returns all sources including last icon
      *
-     * @return array<array<mixed>> all sources
+     * @return array<array{id: int, title: string, tags: string[], spout: string, params: string, filter: ?string, error: ?string, lastentry: ?int, icon: ?string}> all sources
      */
     public function getWithIcon(): array {
         $ret = $this->database->exec('SELECT
@@ -260,8 +260,8 @@ class Sources implements \daos\SourcesInterface {
      * test if a source is already present using title, spout and params.
      * if present returns the id, else returns 0
      *
-     * @param  string  $spout the source type
-     * @param  array   $params depends from spout
+     * @param string $spout the source type
+     * @param array<string, mixed> $params spout-specific parameters
      *
      * @return int id if any record is found
      */

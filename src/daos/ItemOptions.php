@@ -43,6 +43,8 @@ final class ItemOptions {
     /**
      * Creates new ItemOptions object ensuring the values are proper types.
      *
+     * @param array<string, mixed> $data
+     *
      * @return static
      */
     public static function fromUser(array $data): self {

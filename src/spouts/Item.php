@@ -19,13 +19,13 @@ class Item {
     /** @var HtmlString title */
     private $title;
 
-    /** @var HtmlString|(callable(self): HtmlString) content */
+    /** @var HtmlString|(callable(static): HtmlString) content */
     private $content;
 
     /** @var ?string thumbnail */
     private $thumbnail;
 
-    /** @var (?string)|(callable(self): ?string) icon */
+    /** @var (?string)|(callable(static): ?string) icon */
     private $icon;
 
     /** @var string link */
@@ -42,8 +42,8 @@ class Item {
 
     /**
      * @param ?Extra $extraData
-     * @param HtmlString|(callable(self): HtmlString) $content
-     * @param (?string)|(callable(self): ?string) $icon
+     * @param HtmlString|(callable(static): HtmlString) $content
+     * @param (?string)|(callable(static): ?string) $icon
      */
     public function __construct(
         string $id,
@@ -121,7 +121,7 @@ class Item {
     }
 
     /**
-     * @param HtmlString|(callable(self): HtmlString) $content
+     * @param HtmlString|(callable(static): HtmlString) $content
      *
      * @return static
      */
@@ -161,7 +161,7 @@ class Item {
     }
 
     /**
-     * @param (?string)|(callable(self): ?string) $icon
+     * @param (?string)|(callable(static): ?string) $icon
      *
      * @return static
      */

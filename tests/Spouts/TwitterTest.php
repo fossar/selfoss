@@ -22,8 +22,12 @@ final class TwitterTest extends TestCase {
     }
 
     /**
-     * @param class-string<spout<mixed>> $spout
+     * @template T
+     *
+     * @param class-string<spout<T>> $spout
      * @param Response[] $responses
+     *
+     * @return spout<T>
      */
     private function makeSpout($spout, array $responses): spout {
         $mock = new MockHandler($responses);

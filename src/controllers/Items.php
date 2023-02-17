@@ -151,10 +151,8 @@ class Items {
         $items = array_map(function(array $item) {
             $stringifiedDates = [
                 'datetime' => $item['datetime']->format(\DateTime::ATOM),
+                'updatetime' => $item['updatetime']->format(\DateTime::ATOM),
             ];
-            if (!empty($item['updatetime'])) {
-                $stringifiedDates['updatetime'] = $item['updatetime']->format(\DateTime::ATOM);
-            }
 
             return array_merge($item, $stringifiedDates);
         }, $items);

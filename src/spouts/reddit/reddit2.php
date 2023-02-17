@@ -22,6 +22,8 @@ use spouts\Parameter;
  * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  *
+ * @phpstan-type RedditItem array{data: array{id: string, url: string, title: string, permalink: string, selftext_html: string, created_utc: int, preview?: array{images?: array<array{source?: array{url?: string}}>}, thumbnail: string}}
+ * @phpstan-type RedditParams array{url: string, username?: string, password?: string}
  * @extends \spouts\spout<null>
  */
 class reddit2 extends \spouts\spout {
@@ -68,7 +70,7 @@ class reddit2 extends \spouts\spout {
     /** @var WebClient */
     private $webClient;
 
-    /** @var array[] current fetched items */
+    /** @var RedditItem[] current fetched items */
     private $items = [];
 
     public function __construct(Image $imageHelper, WebClient $webClient) {
@@ -76,6 +78,9 @@ class reddit2 extends \spouts\spout {
         $this->webClient = $webClient;
     }
 
+    /**
+     * @param RedditParams $params
+     */
     public function load(array $params): void {
         if (!empty($params['password']) && !empty($params['username'])) {
             if (function_exists('apc_fetch')) {
@@ -111,6 +116,9 @@ class reddit2 extends \spouts\spout {
         return $this->htmlUrl;
     }
 
+    /**
+     * @param RedditParams $params
+     */
     public function getXmlUrl(array $params): string {
         return 'reddit://' . urlencode($params['url']);
     }
@@ -152,6 +160,9 @@ class reddit2 extends \spouts\spout {
         }
     }
 
+    /**
+     * @param RedditItem $item
+     */
     private function getContent(string $url, array $item): HtmlString {
         $data = $item['data'];
         // Contains escaped HTML or null.
@@ -191,6 +202,9 @@ class reddit2 extends \spouts\spout {
         return $faviconUrl;
     }
 
+    /**
+     * @param RedditItem $item
+     */
     private function getThumbnail(array $item): ?string {
         $thumbnail = $item['data']['thumbnail'];
 

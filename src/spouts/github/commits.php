@@ -17,6 +17,8 @@ use spouts\Parameter;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  * @author     Tim Gerundt <tim@gerundt.de>
  *
+ * @phpstan-type Commit array{commit: array{message: string, author: array{date: string, name: string}}, sha: string, html_url: string}
+ * @phpstan-type GhParams array{owner: string, repo: string, branch: string}
  * @extends \spouts\spout<null>
  */
 class commits extends \spouts\spout {
@@ -63,7 +65,7 @@ class commits extends \spouts\spout {
     /** @var WebClient */
     private $webClient;
 
-    /** @var array[] current fetched items */
+    /** @var Commit[] current fetched items */
     private $items = [];
 
     public function __construct(WebClient $webClient) {
@@ -74,6 +76,9 @@ class commits extends \spouts\spout {
     // Source Methods
     //
 
+    /**
+     * @param GhParams $params
+     */
     public function load(array $params): void {
         $this->htmlUrl = 'https://github.com/' . urlencode($params['owner']) . '/' . urlencode($params['repo']) . '/' . urlencode($params['branch']);
 

@@ -1,52 +1,41 @@
 <?php
 
+// SPDX-FileCopyrightText: 2015 Kevin P <wazari972@gmail.com>
+// SPDX-FileCopyrightText: 2016–2023 Jan Tojnar <jtojnar@gmail.com>
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 declare(strict_types=1);
 
 namespace daos;
 
 use helpers\Authentication;
-use helpers\Configuration;
-use Monolog\Logger;
 
 /**
- * Class for accessing tag colors
- *
- * @copyright  Copyright (c) Tobias Zeising (http://www.aditu.de)
- * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
- * @author     Tobias Zeising <tobias.zeising@aditu.de>
- *
- * @mixin TagsInterface
+ * Proxy for accessing tag colors.
  */
-class Tags {
-    /** @var TagsInterface Instance of backend specific sources class */
+class Tags implements TagsInterface {
+    /** @var TagsInterface Instance of backend-specific Tags class */
     private $backend;
 
-    /** @var Authentication authentication helper */
+    /** @var Authentication */
     private $authentication;
-
-    /** @var Configuration configuration */
-    private $configuration;
-
-    /** @var Logger */
-    private $logger;
 
     public function __construct(
         Authentication $authentication,
-        Configuration $configuration,
-        Logger $logger,
         TagsInterface $backend
     ) {
         $this->authentication = $authentication;
         $this->backend = $backend;
-        $this->configuration = $configuration;
-        $this->logger = $logger;
     }
 
-    /**
-     * Returns all tags user has access to.
-     *
-     * @return array<array{tag: string, color: string}>
-     */
+    public function saveTagColor(string $tag, string $color): void {
+        $this->backend->saveTagColor($tag, $color);
+    }
+
+    public function autocolorTag(string $tag): void {
+        $this->backend->autocolorTag($tag);
+    }
+
     public function get(): array {
         $tags = $this->backend->get();
         // remove items with private tags
@@ -62,19 +51,19 @@ class Tags {
         return $tags;
     }
 
-    /**
-     * pass any method call to the backend.
-     *
-     * @param string $name name of the function
-     * @param array $args arguments
-     *
-     * @return mixed methods return value
-     */
-    public function __call(string $name, array $args) {
-        if (method_exists($this->backend, $name)) {
-            return call_user_func_array([$this->backend, $name], $args);
-        } else {
-            $this->logger->error('Unimplemented method for ' . $this->configuration->dbType . ': ' . $name);
-        }
+    public function getWithUnread(): array {
+        return $this->backend->getWithUnread();
+    }
+
+    public function cleanup(array $tags): void {
+        $this->backend->cleanup($tags);
+    }
+
+    public function hasTag(string $tag): bool {
+        return $this->backend->hasTag($tag);
+    }
+
+    public function delete(string $tag): void {
+        $this->backend->delete($tag);
     }
 }

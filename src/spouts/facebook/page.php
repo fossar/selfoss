@@ -20,6 +20,9 @@ use spouts\Parameter;
  * @author Tobias Zeising <tobias.zeising@aditu.de>
  * @author Jan Tojnar <jtojnar@gmail.com>
  *
+ * @phpstan-type FbAttachment array{type: string, target: array{url: string}, media: array{image: array{src: string}}, description: string}
+ * @phpstan-type FbItem array{id: string, message: string, permalink_url: string, created_time: string, attachments?: array{data: array<FbAttachment>}}
+ * @phpstan-type FbParams array{user: string, app_id: string, app_secret: string}
  * @extends \spouts\spout<null>
  */
 class page extends \spouts\spout {
@@ -66,13 +69,16 @@ class page extends \spouts\spout {
     /** @var WebClient */
     private $webClient;
 
-    /** @var array[] current fetched items */
+    /** @var FbItem[] current fetched items */
     private $items = [];
 
     public function __construct(WebClient $webClient) {
         $this->webClient = $webClient;
     }
 
+    /**
+     * @param FbParams $params
+     */
     public function load(array $params): void {
         // https://developers.facebook.com/docs/graph-api/reference/user
         $http = $this->webClient->getHttpClient();
@@ -132,6 +138,9 @@ class page extends \spouts\spout {
         }
     }
 
+    /**
+     * @param FbItem $item
+     */
     private function getPostContent(array $item): HtmlString {
         $message = htmlspecialchars($item['message']);
 

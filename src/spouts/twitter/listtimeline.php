@@ -84,6 +84,9 @@ class listtimeline extends \spouts\spout {
         $this->clientFactory = $clientFactory;
     }
 
+    /**
+     * @param array{consumer_key: string, consumer_secret: string, access_token?: string, access_token_secret?: string, slug: string, owner_screen_name: string} $params
+     */
     public function load(array $params): void {
         $client = $this->clientFactory->create(
             $params['consumer_key'],

@@ -29,13 +29,15 @@ class DatabaseConnection {
 
     /**
      * Instantiate class
+     *
+     * @param ?array<string, mixed> $options
      */
     public function __construct(
         Logger $logger,
         string $dsn,
         ?string $user = null,
         ?string $pw = null,
-        array $options = [],
+        ?array $options = null,
         string $tableNamePrefix = ''
     ) {
         $this->logger = $logger;
@@ -163,6 +165,8 @@ class DatabaseConnection {
      * Execute SQL statement and fetch the result as an associative array (when applicable).
      *
      * @param array<string, mixed> $args
+     *
+     * @return ?array<int, array<string, mixed>>
      */
     public function exec(string $cmd, array $args = []): ?array {
         $statement = $this->execute($cmd, $args);
@@ -187,12 +191,17 @@ class DatabaseConnection {
         return $this->pdo->quote((string) $val, $type);
     }
 
-    /**
-     * Redirect call to PDO object
-     *
-     * @return mixed
-     */
-    public function __call(string $func, array $args) {
-        return call_user_func_array([$this->pdo, $func], $args);
+    public function sqliteCreateFunction(
+        string $function_name,
+        callable $callback,
+        int $num_args = -1,
+        int $flags = 0
+    ): bool {
+        return $this->pdo->sqliteCreateFunction(
+            $function_name,
+            $callback,
+            $num_args,
+            $flags
+        );
     }
 }

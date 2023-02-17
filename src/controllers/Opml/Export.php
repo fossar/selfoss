@@ -54,7 +54,7 @@ class Export {
      *
      * @note Uses the selfoss namespace to store information about spouts
      *
-     * @param array $source source
+     * @param array{title: string, spout: string, params: string} $source source
      */
     private function writeSource(array $source): void {
         // retrieve the feed url of the source

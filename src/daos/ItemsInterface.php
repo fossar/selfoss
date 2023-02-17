@@ -6,6 +6,7 @@ namespace daos;
 
 use DateTime;
 use DateTimeImmutable;
+use helpers\HtmlString;
 
 /**
  * Interface describing concrete DAO for working with items.
@@ -41,6 +42,8 @@ interface ItemsInterface {
 
     /**
      * add new item
+     *
+     * @param array{datetime: \DateTimeInterface, title: HtmlString, content: HtmlString, thumbnail: ?string, icon: ?string, source: int, uid: string, link: string, author: ?string} $values
      */
     public function add(array $values): void;
 
@@ -53,10 +56,10 @@ interface ItemsInterface {
     /**
      * search whether given uids are already in database or not
      *
-     * @param array $itemsInFeed list with ids for checking whether they are already in database or not
+     * @param string[] $itemsInFeed list with ids for checking whether they are already in database or not
      * @param int $sourceId the id of the source to search for the items
      *
-     * @return array with all existing uids from itemsInFeed (array (uid => id););
+     * @return array<string, int> with all existing uids from itemsInFeed (array (uid => id););
      */
     public function findAll(array $itemsInFeed, int $sourceId): array;
 
@@ -72,14 +75,14 @@ interface ItemsInterface {
      *
      * @param ?DateTime $date date to delete all items older than this value
      */
-    public function cleanup(DateTime $date = null): void;
+    public function cleanup(?DateTime $date): void;
 
     /**
      * returns items
      *
      * @param ItemOptions $options search, offset and filter params
      *
-     * @return array<array<mixed>> items as array
+     * @return array<array{id: int, datetime: DateTime, title: string, content: string, unread: bool, starred: bool, source: int, thumbnail: string, icon: string, uid: string, link: string, updatetime: DateTime, author: string, sourcetitle: string, tags: string[]}> items as array
      */
     public function get(ItemOptions $options): array;
 
@@ -96,7 +99,7 @@ interface ItemsInterface {
      * @param DateTime $notBefore cut off time stamp
      * @param DateTime $since timestamp of last seen item
      *
-     * @return array of items
+     * @return array<array{id: int, datetime: DateTime, title: string, content: string, unread: bool, starred: bool, source: int, thumbnail: string, icon: string, uid: string, link: string, updatetime: DateTime, author: string, sourcetitle: string, tags: string[]}> of items
      */
     public function sync(int $sinceId, DateTime $notBefore, DateTime $since, int $howMany): array;
 
@@ -156,7 +159,7 @@ interface ItemsInterface {
     /**
      * returns the amount of total, unread, starred entries in database
      *
-     * @return array mount of total, unread, starred entries in database
+     * @return array{total: int, unread: int, starred: int} mount of total, unread, starred entries in database
      */
     public function stats(): array;
 
@@ -170,14 +173,14 @@ interface ItemsInterface {
      *
      * @param DateTime $since minimal date of returned items
      *
-     * @return array of unread, starred, etc. status of specified items
+     * @return array<array{id: int, unread: bool, starred: bool}> of unread, starred, etc. status of specified items
      */
     public function statuses(DateTime $since): array;
 
     /**
      * bulk update of item status
      *
-     * @param array $statuses array of statuses updates
+     * @param array<array{id: int, unread?: mixed, starred?: mixed, datetime?: string}> $statuses array of statuses updates
      */
     public function bulkStatusUpdate(array $statuses): void;
 }

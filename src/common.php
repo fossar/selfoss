@@ -172,22 +172,14 @@ if ($configuration->dbType === 'sqlite') {
     $sqlParams = array_merge($sqlParams, [
         'call' => [
             [
-                // DB\SQL uses PDO instance through composition
-                // and forwards calls of non-existent methods to it.
-                // But Dice can only call existing methods.
-                // Let’s walk around these limitations by directly
-                // calling the __call magic method.
-                '__call',
+                // https://www.sqlite.org/lang_expr.html#the_like_glob_regexp_match_and_extract_operators
+                'sqliteCreateFunction',
                 [
-                    // https://www.sqlite.org/lang_expr.html#the_like_glob_regexp_match_and_extract_operators
-                    'sqliteCreateFunction',
-                    [
-                        'regexp',
-                        function(string $pattern, string $text): bool {
-                            return preg_match('/' . addcslashes($pattern, '/') . '/', $text) === 1;
-                        },
-                        2,
-                    ],
+                    'regexp',
+                    function(string $pattern, string $text): bool {
+                        return preg_match('/' . addcslashes($pattern, '/') . '/', $text) === 1;
+                    },
+                    2,
                 ],
             ],
         ],

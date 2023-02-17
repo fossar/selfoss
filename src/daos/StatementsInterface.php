@@ -68,7 +68,7 @@ interface StatementsInterface {
      * check column against int list.
      *
      * @param string $column column to check
-     * @param array $ints of string or int values to match column against
+     * @param int[] $ints of string or int values to match column against
      *
      * @return ?string full statement
      */
@@ -103,10 +103,10 @@ interface StatementsInterface {
      * Ensure row values have the appropriate PHP type. This assumes we are
      * using buffered queries (sql results are in PHP memory);.
      *
-     * @param array $rows array of associative array representing row results
-     * @param array $expectedRowTypes associative array mapping columns to PDO types
+     * @param array<array<mixed>> $rows array of associative array representing row results
+     * @param array<string, DatabaseInterface::PARAM_*> $expectedRowTypes associative array mapping columns to PDO types
      *
-     * @return array of associative array representing row results having
+     * @return array<array<mixed>> of associative array representing row results having
      *         expected types
      */
     public static function ensureRowTypes(array $rows, array $expectedRowTypes): array;

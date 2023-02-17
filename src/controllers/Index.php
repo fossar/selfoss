@@ -117,10 +117,10 @@ class Index {
     /**
      * load items
      *
-     * @param array $params request parameters
-     * @param array $tags information about tags
+     * @param array<string, mixed> $params request parameters
+     * @param array<array{tag: string, color: string, unread: int}> $tags information about tags
      *
-     * @return array{entries: array, hasMore: bool} html with items
+     * @return array{entries: array<array{title: string, strippedTitle: string, content: string, wordCount: int, lengthWithoutTags: int, datetime: string, updatetime: string, sourcetitle: string, tags: array<string, array{backColor: string, foreColor: string}>}>, hasMore: bool} html with items
      */
     private function loadItems(array $params, array $tags) {
         $options = ItemOptions::fromUser($params);

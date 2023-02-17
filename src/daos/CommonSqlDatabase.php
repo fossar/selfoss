@@ -18,6 +18,8 @@ trait CommonSqlDatabase {
      * Execute SQL statement and fetch the result as an associative array (when applicable).
      *
      * @param array<string, mixed> $args
+     *
+     * @return ?array<int, array<string, mixed>>
      */
     public function exec(string $cmd, array $args = []): ?array {
         return $this->connection->exec($cmd, $args);

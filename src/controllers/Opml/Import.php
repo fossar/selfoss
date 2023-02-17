@@ -21,7 +21,7 @@ class Import {
     /** @var Authentication authentication helper */
     private $authentication;
 
-    /** @var array Sources that have been imported from the OPML file */
+    /** @var array<string, array{id: int, tags: string[]}> Sources that have been imported from the OPML file */
     private $imported = [];
 
     /** @var Logger */
@@ -55,7 +55,7 @@ class Import {
 
         http_response_code(400);
 
-        /** @var array */
+        /** @var string[] */
         $messages = [];
 
         try {
@@ -124,7 +124,7 @@ class Import {
      * - Reads outline elements from both the default and selfoss namespace
      *
      * @param SimpleXMLElement $xml A SimpleXML object with <outline> children
-     * @param array $tags An array of tags for the current <outline>
+     * @param string[] $tags An array of tags for the current <outline>
      *
      * @return string[] titles of feeds that could not be added to subscriptions
      */
@@ -174,7 +174,7 @@ class Import {
      * Add new feed subscription
      *
      * @param SimpleXMLElement $xml xml feed entry for item
-     * @param array $tags of the entry
+     * @param string[] $tags of the entry
      *
      * @return true|string true on success or item title on error
      */

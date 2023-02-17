@@ -406,6 +406,8 @@ class ContentLoader {
 
     /**
      * Obtain title for given data
+     *
+     * @param array<string, mixed>&array{spout: string} $data
      */
     public function fetchTitle(array $data): ?string {
         $this->logger->debug('Start fetching spout title');
@@ -443,7 +445,12 @@ class ContentLoader {
     public function cleanup(): void {
         // cleanup orphaned and old items
         $this->logger->debug('cleanup orphaned and old items');
-        $this->itemsDao->cleanup($this->configuration->itemsLifetime);
+        $minDate = null;
+        if ($this->configuration->itemsLifetime !== 0) {
+            $minDate = new \DateTime();
+            $minDate->sub(new \DateInterval('P' . $this->configuration->itemsLifetime . 'D'));
+        }
+        $this->itemsDao->cleanup($minDate);
         $this->logger->debug('cleanup orphaned and old items finished');
 
         // delete orphaned thumbnails

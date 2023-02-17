@@ -73,6 +73,9 @@ class hometimeline extends \spouts\spout {
         $this->clientFactory = $clientFactory;
     }
 
+    /**
+     * @param array{consumer_key: string, consumer_secret: string, access_key: string, access_secret: string} $params
+     */
     public function load(array $params): void {
         $client = $this->clientFactory->create(
             $params['consumer_key'],
