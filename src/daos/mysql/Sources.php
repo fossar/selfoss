@@ -140,36 +140,38 @@ class Sources implements \daos\SourcesInterface {
     }
 
     /**
-     * returns specified source (null if it doesnt exist)
-     * or all sources if no id specified
+     * Returns source with given id (or null if it doesnt exist).
      *
-     * @param ?int $id specification of source id
-     *
-     * @return ?mixed specified source or all sources
+     * @return ?array<mixed>
      */
-    public function get(?int $id = null) {
-        // select source by id if specified or return all sources
-        if (isset($id)) {
-            $ret = $this->database->exec('SELECT id, title, tags, spout, params, filter, error, lastupdate, lastentry FROM ' . $this->configuration->dbPrefix . 'sources WHERE id=:id', [':id' => $id]);
-            $ret = static::$stmt::ensureRowTypes($ret, [
-                'id' => DatabaseInterface::PARAM_INT,
-                'lastupdate' => DatabaseInterface::PARAM_INT | DatabaseInterface::PARAM_NULL,
-                'lastentry' => DatabaseInterface::PARAM_INT | DatabaseInterface::PARAM_NULL,
-            ]);
-            if (isset($ret[0])) {
-                $ret = $ret[0];
-            } else {
-                $ret = null;
-            }
-        } else {
-            $ret = $this->database->exec('SELECT id, title, tags, spout, params, filter, error, lastupdate, lastentry FROM ' . $this->configuration->dbPrefix . 'sources ORDER BY error DESC, lower(title) ASC');
-            $ret = static::$stmt::ensureRowTypes($ret, [
-                'id' => DatabaseInterface::PARAM_INT,
-                'tags' => DatabaseInterface::PARAM_CSV,
-                'lastupdate' => DatabaseInterface::PARAM_INT | DatabaseInterface::PARAM_NULL,
-                'lastentry' => DatabaseInterface::PARAM_INT | DatabaseInterface::PARAM_NULL,
-            ]);
+    public function get(int $id): ?array {
+        $ret = $this->database->exec('SELECT id, title, tags, spout, params, filter, error, lastupdate, lastentry FROM ' . $this->configuration->dbPrefix . 'sources WHERE id=:id', [':id' => $id]);
+        $ret = static::$stmt::ensureRowTypes($ret, [
+            'id' => DatabaseInterface::PARAM_INT,
+            'lastupdate' => DatabaseInterface::PARAM_INT | DatabaseInterface::PARAM_NULL,
+            'lastentry' => DatabaseInterface::PARAM_INT | DatabaseInterface::PARAM_NULL,
+        ]);
+
+        if (count($ret) > 0) {
+            return $ret[0];
         }
+
+        return null;
+    }
+
+    /**
+     * Returns specified source all sources.
+     *
+     * @return array<array<mixed>>
+     */
+    public function getAll(): array {
+        $ret = $this->database->exec('SELECT id, title, tags, spout, params, filter, error, lastupdate, lastentry FROM ' . $this->configuration->dbPrefix . 'sources ORDER BY error DESC, lower(title) ASC');
+        $ret = static::$stmt::ensureRowTypes($ret, [
+            'id' => DatabaseInterface::PARAM_INT,
+            'tags' => DatabaseInterface::PARAM_CSV,
+            'lastupdate' => DatabaseInterface::PARAM_INT | DatabaseInterface::PARAM_NULL,
+            'lastentry' => DatabaseInterface::PARAM_INT | DatabaseInterface::PARAM_NULL,
+        ]);
 
         return $ret;
     }

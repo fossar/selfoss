@@ -59,14 +59,18 @@ interface SourcesInterface {
     public function getByLastUpdate();
 
     /**
-     * returns specified source (null if it doesnt exist)
-     * or all sources if no id specified
+     * Returns source with given id (or null if it doesnt exist).
      *
-     * @param ?int $id specification of source id
-     *
-     * @return ?mixed specified source or all sources
+     * @return ?array<mixed>
      */
-    public function get(?int $id = null);
+    public function get(int $id): ?array;
+
+    /**
+     * Returns specified source all sources.
+     *
+     * @return array<array<mixed>>
+     */
+    public function getAll(): array;
 
     /**
      * returns all sources including unread count

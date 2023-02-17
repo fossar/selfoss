@@ -66,21 +66,24 @@ class Sources {
         }
     }
 
-    public function get(?int $id = null) {
-        $sources = $this->backend->get($id);
-        if ($id === null) {
-            // remove items with private tags
-            if (!$this->authentication->showPrivateTags()) {
-                foreach ($sources as $idx => $source) {
-                    foreach ($source['tags'] as $tag) {
-                        if (strpos(trim($tag), '@') === 0) {
-                            unset($sources[$idx]);
-                            break;
-                        }
+    public function get(int $id): ?array {
+        return $this->backend->get($id);
+    }
+
+    public function getAll(): array {
+        $sources = $this->backend->getAll();
+
+        // remove items with private tags
+        if (!$this->authentication->showPrivateTags()) {
+            foreach ($sources as $idx => $source) {
+                foreach ($source['tags'] as $tag) {
+                    if (strpos(trim($tag), '@') === 0) {
+                        unset($sources[$idx]);
+                        break;
                     }
                 }
-                $sources = array_values($sources);
             }
+            $sources = array_values($sources);
         }
 
         return $sources;

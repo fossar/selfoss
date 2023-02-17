@@ -122,7 +122,7 @@ class Export {
 
         // create tree structure for tagged and untagged sources
         $sources = ['tagged' => [], 'untagged' => []];
-        foreach ($this->sourcesDao->get() as $source) {
+        foreach ($this->sourcesDao->getAll() as $source) {
             if ($source['tags']) {
                 foreach ($source['tags'] as $tag) {
                     $sources['tagged'][$tag][] = $source;

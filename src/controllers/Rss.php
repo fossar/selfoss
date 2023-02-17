@@ -73,7 +73,7 @@ class Rss {
 
             // get Source Name
             if ($item['source'] != $lastSourceId) {
-                foreach ($this->sourcesDao->get() as $source) {
+                foreach ($this->sourcesDao->getAll() as $source) {
                     if ($source['id'] == $item['source']) {
                         $lastSourceId = $source['id'];
                         $lastSourceName = $source['title'];
