@@ -78,9 +78,9 @@ class Items {
      *
      * @param ItemOptions $options search, offset and filter params
      *
-     * @return mixed items as array
+     * @return array<array<mixed>> items as array
      */
-    public function get(ItemOptions $options) {
+    public function get(ItemOptions $options): array {
         $items = $this->backend->get($options);
 
         // remove private posts with private tags

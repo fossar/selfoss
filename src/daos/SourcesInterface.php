@@ -54,9 +54,9 @@ interface SourcesInterface {
     /**
      * returns all sources
      *
-     * @return mixed all sources
+     * @return array<array<mixed>> all sources
      */
-    public function getByLastUpdate();
+    public function getByLastUpdate(): array;
 
     /**
      * Returns source with given id (or null if it doesnt exist).
@@ -75,30 +75,30 @@ interface SourcesInterface {
     /**
      * returns all sources including unread count
      *
-     * @return mixed all sources
+     * @return array<array<mixed>> all sources
      */
-    public function getWithUnread();
+    public function getWithUnread(): array;
 
     /**
      * returns all sources including last icon
      *
-     * @return mixed all sources
+     * @return array<array<mixed>> all sources
      */
-    public function getWithIcon();
+    public function getWithIcon(): array;
 
     /**
      * returns all tags
      *
-     * @return mixed all sources
+     * @return string[] all sources
      */
-    public function getAllTags();
+    public function getAllTags(): array;
 
     /**
      * returns tags of a source
      *
-     * @return mixed tags of a source
+     * @return string[] tags of a source
      */
-    public function getTags(int $id);
+    public function getTags(int $id): array;
 
     /**
      * test if a source is already present using title, spout and params.

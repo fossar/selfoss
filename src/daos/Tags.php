@@ -45,9 +45,9 @@ class Tags {
     /**
      * Returns all tags user has access to.
      *
-     * @return array{tag: string, color: string}[]
+     * @return array<array{tag: string, color: string}>
      */
-    public function get() {
+    public function get(): array {
         $tags = $this->backend->get();
         // remove items with private tags
         if (!$this->authentication->showPrivateTags()) {

@@ -21,16 +21,16 @@ interface TagsInterface {
     /**
      * returns all tags with color
      *
-     * @return array{tag: string, color: string}[]
+     * @return array<array{tag: string, color: string}>
      */
-    public function get();
+    public function get(): array;
 
     /**
      * returns all tags with color and unread count
      *
-     * @return array{tag: string, color: string, unread: int}[]
+     * @return array<array{tag: string, color: string, unread: int}>
      */
-    public function getWithUnread();
+    public function getWithUnread(): array;
 
     /**
      * remove all unused tag color definitions

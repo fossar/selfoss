@@ -126,9 +126,9 @@ class Sources implements \daos\SourcesInterface {
     /**
      * returns all sources
      *
-     * @return mixed all sources
+     * @return array<array<mixed>> all sources
      */
-    public function getByLastUpdate() {
+    public function getByLastUpdate(): array {
         $ret = $this->database->exec('SELECT id, title, tags, spout, params, filter, error, lastupdate, lastentry FROM ' . $this->configuration->dbPrefix . 'sources ORDER BY lastupdate ASC');
         $ret = static::$stmt::ensureRowTypes($ret, [
             'id' => DatabaseInterface::PARAM_INT,
@@ -179,9 +179,9 @@ class Sources implements \daos\SourcesInterface {
     /**
      * returns all sources including unread count
      *
-     * @return mixed all sources
+     * @return array<array<mixed>> all sources
      */
-    public function getWithUnread() {
+    public function getWithUnread(): array {
         $ret = $this->database->exec('SELECT
             sources.id, sources.title, COUNT(items.id) AS unread
             FROM ' . $this->configuration->dbPrefix . 'sources AS sources
@@ -199,9 +199,9 @@ class Sources implements \daos\SourcesInterface {
     /**
      * returns all sources including last icon
      *
-     * @return mixed all sources
+     * @return array<array<mixed>> all sources
      */
-    public function getWithIcon() {
+    public function getWithIcon(): array {
         $ret = $this->database->exec('SELECT
                 sources.id, sources.title, sources.tags, sources.spout,
                 sources.params, sources.filter, sources.error, sources.lastentry,
@@ -229,9 +229,9 @@ class Sources implements \daos\SourcesInterface {
     /**
      * returns all tags
      *
-     * @return mixed all sources
+     * @return string[] all sources
      */
-    public function getAllTags() {
+    public function getAllTags(): array {
         $result = $this->database->exec('SELECT tags FROM ' . $this->configuration->dbPrefix . 'sources');
         $tags = [];
         foreach ($result as $res) {
@@ -245,9 +245,9 @@ class Sources implements \daos\SourcesInterface {
     /**
      * returns tags of a source
      *
-     * @return mixed tags of a source
+     * @return string[] tags of a source
      */
-    public function getTags(int $id) {
+    public function getTags(int $id): array {
         $result = $this->database->exec('SELECT tags FROM ' . $this->configuration->dbPrefix . 'sources WHERE id=:id', [':id' => $id]);
         $tags = [];
         $tags = array_merge($tags, explode(',', $result[0]['tags']));

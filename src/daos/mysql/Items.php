@@ -218,9 +218,9 @@ class Items implements \daos\ItemsInterface {
      *
      * @param ItemOptions $options search, offset and filter params
      *
-     * @return mixed items as array
+     * @return array<array<mixed>> items as array
      */
-    public function get(ItemOptions $options) {
+    public function get(ItemOptions $options): array {
         $params = [];
         $where = [static::$stmt::bool(true)];
         $order = 'DESC';

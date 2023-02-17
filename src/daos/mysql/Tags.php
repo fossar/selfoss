@@ -73,9 +73,9 @@ class Tags implements \daos\TagsInterface {
     /**
      * returns all tags with color
      *
-     * @return array{tag: string, color: string}[]
+     * @return array<array{tag: string, color: string}>
      */
-    public function get() {
+    public function get(): array {
         return $this->database->exec('SELECT
                     tag, color
                    FROM ' . $this->configuration->dbPrefix . 'tags
@@ -85,9 +85,9 @@ class Tags implements \daos\TagsInterface {
     /**
      * returns all tags with color and unread count
      *
-     * @return array{tag: string, color: string, unread: int}[]
+     * @return array<array{tag: string, color: string, unread: int}>
      */
-    public function getWithUnread() {
+    public function getWithUnread(): array {
         $select = 'SELECT tag, color, COUNT(items.id) AS unread
                    FROM ' . $this->configuration->dbPrefix . 'tags AS tags,
                         ' . $this->configuration->dbPrefix . 'sources AS sources
