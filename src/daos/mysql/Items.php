@@ -346,12 +346,12 @@ class Items implements \daos\ItemsInterface {
 
         return static::$stmt::ensureRowTypes($this->database->exec($query, $params), [
             'id' => DatabaseInterface::PARAM_INT,
-            'datetime' => DatabaseInterface::PARAM_DATETIME | DatabaseInterface::PARAM_NULL,
+            'datetime' => DatabaseInterface::PARAM_DATETIME,
             'unread' => DatabaseInterface::PARAM_BOOL,
             'starred' => DatabaseInterface::PARAM_BOOL,
             'source' => DatabaseInterface::PARAM_INT,
             'tags' => DatabaseInterface::PARAM_CSV,
-            'updatetime' => DatabaseInterface::PARAM_DATETIME | DatabaseInterface::PARAM_NULL,
+            'updatetime' => DatabaseInterface::PARAM_DATETIME,
         ]);
     }
 
@@ -394,12 +394,12 @@ class Items implements \daos\ItemsInterface {
 
         return static::$stmt::ensureRowTypes($this->database->exec($query, $params), [
             'id' => DatabaseInterface::PARAM_INT,
-            'datetime' => DatabaseInterface::PARAM_DATETIME | DatabaseInterface::PARAM_NULL,
+            'datetime' => DatabaseInterface::PARAM_DATETIME,
             'unread' => DatabaseInterface::PARAM_BOOL,
             'starred' => DatabaseInterface::PARAM_BOOL,
             'source' => DatabaseInterface::PARAM_INT,
             'tags' => DatabaseInterface::PARAM_CSV,
-            'updatetime' => DatabaseInterface::PARAM_DATETIME | DatabaseInterface::PARAM_NULL,
+            'updatetime' => DatabaseInterface::PARAM_DATETIME,
         ]);
     }
 
