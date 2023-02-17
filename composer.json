@@ -54,6 +54,7 @@
         "platform": {
             "php": "7.2.5"
         },
+        "allow-plugins": false,
         "sort-packages": true
     },
     "scripts": {
