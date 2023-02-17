@@ -82,7 +82,7 @@ number of entries per page on your stream
 ### `items_lifetime`
 <div class="config-option">
 
-days until items will be deleted (starred items will never be deleted)
+Number of days since the item has been last seen after which it can be deleted. Set to `0` to disable item deletion. Starred items will never be deleted.
 </div>
 
 ### `base_url`
