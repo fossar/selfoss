@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace spouts\rss;
 
 use Graby\Graby;
+use GuzzleHttp\Psr7\Uri;
 use helpers\Configuration;
 use helpers\FeedReader;
 use helpers\HtmlString;
@@ -69,7 +70,7 @@ class fulltextrss extends feed {
      */
     public function getItems(): iterable {
         foreach (parent::getItems() as $item) {
-            $url = self::removeTrackersFromUrl($item->getLink());
+            $url = (string) self::removeTrackersFromUrl(new Uri($item->getLink()));
             yield $item->withLink($url)->withContent(function(Item $item) use ($url): HtmlString {
                 return $this->getFullContent($url, $item);
             });
@@ -111,39 +112,30 @@ class fulltextrss extends feed {
      * remove trackers from url
      *
      * @author Jean Baptiste Favre
-     *
-     * @return string url
      */
-    private static function removeTrackersFromUrl(string $url): string {
-        $url = parse_url($url);
-
-        // Next, rebuild URL
-        $real_url = $url['scheme'] . '://';
-        if (isset($url['user']) && isset($url['pass'])) {
-            $real_url .= $url['user'] . ':' . $url['pass'] . '@';
-        }
-        $real_url .= $url['host'] . $url['path'];
-
+    private static function removeTrackersFromUrl(Uri $uri): Uri {
         // Query string
-        if (isset($url['query'])) {
-            parse_str($url['query'], $q_array);
-            $real_query = [];
-            foreach ($q_array as $key => $value) {
-                // Remove utm_* parameters
-                if (strpos($key, 'utm_') === false) {
-                    $real_query[] = $key . '=' . $value;
+        $query = $uri->getQuery();
+        if ($query !== '') {
+            $q_array = explode('&', $query);
+            // Remove utm_* parameters
+            $clean_query = array_filter(
+                $q_array,
+                function(string $param): bool {
+                    return !str_starts_with($param, 'utm_');
                 }
-            }
-            $real_url .= '?' . implode('&', $real_query);
+            );
+            $uri = $uri->withQuery(implode('&', $clean_query));
         }
         // Fragment
-        if (isset($url['fragment'])) {
+        $fragment = $uri->getFragment();
+        if ($fragment !== '') {
             // Remove xtor=RSS anchor
-            if (strpos($url['fragment'], 'xtor=RSS') === false) {
-                $real_url .= '#' . $url['fragment'];
+            if (str_contains($fragment, 'xtor=RSS')) {
+                $uri = $uri->withFragment('');
             }
         }
 
-        return $real_url;
+        return $uri;
     }
 }
