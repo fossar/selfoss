@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 // Only run this if running from PHP embedded server.
 if (PHP_SAPI === 'cli-server') {
-    $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+    $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?: '';
 
     if (preg_match('/\.(?:js|ico|gif|jpg|png|css|asc|txt|svg)$/', $path)) {
         // Serves customization.

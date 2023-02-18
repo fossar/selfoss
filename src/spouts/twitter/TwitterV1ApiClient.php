@@ -230,6 +230,7 @@ class TwitterV1ApiClient {
 
             $entities = $groupedEntities->{$type};
             foreach ($entities as $entity) {
+                /** @var int $start */
                 $start = $entity->indices[0];
                 $end = $entity->indices[1];
                 if ($type === 'hashtags') {

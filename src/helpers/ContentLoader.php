@@ -138,7 +138,10 @@ class ContentLoader {
             $this->logger->debug('start item fetching');
 
             // Spout iterator can be a generator so we cannot iterate it twice.
-            $items = iterator_to_array($spout->getItems());
+            $items = $spout->getItems();
+            if (!is_array($items)) {
+                $items = iterator_to_array($items);
+            }
 
             $itemsInFeed = [];
             foreach ($items as $item) {
@@ -184,7 +187,7 @@ class ContentLoader {
                     // sanitize content html
                     $content = $this->sanitizeContent($content);
                 } catch (\Throwable $e) {
-                    $content = 'Error: Content not fetched. Reason: ' . $e->getMessage();
+                    $content = HtmlString::fromPlainText('Error: Content not fetched. Reason: ' . $e->getMessage());
                     $this->logger->error('Can not fetch "' . $titlePlainText . '"', ['exception' => $e]);
                 }
 

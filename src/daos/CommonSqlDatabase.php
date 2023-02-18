@@ -19,9 +19,9 @@ trait CommonSqlDatabase {
      *
      * @param array<string, mixed> $args
      *
-     * @return ?array<int, array<string, mixed>>
+     * @return array<int, array<string, mixed>>
      */
-    public function exec(string $cmd, array $args = []): ?array {
+    public function exec(string $cmd, array $args = []): array {
         return $this->connection->exec($cmd, $args);
     }
 

@@ -187,8 +187,9 @@ class Items implements \daos\ItemsInterface {
             return $this->database->quote($uid);
         }, $itemsInFeed);
         $query = 'SELECT id, uid AS uid FROM ' . $this->configuration->dbPrefix . 'items WHERE source = ' . $this->database->quote($sourceId) . ' AND uid IN (' . implode(',', $itemsInFeed) . ')';
-        $res = $this->database->exec($query);
-        foreach ($res as $row) {
+        /** @var array<array{id: int, uid: string}> $result */
+        $result = $this->database->exec($query);
+        foreach ($result as $row) {
             $uid = $row['uid'];
             $itemsFound[$uid] = (int) $row['id'];
         }

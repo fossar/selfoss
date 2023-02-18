@@ -154,7 +154,7 @@ class Import {
         }
 
         // parse outline items from the default and selfoss namespaces
-        foreach ($xml->xpath('outline|selfoss:outline') as $outline) {
+        foreach ($xml->xpath('outline|selfoss:outline') ?: [] as $outline) {
             if (count($outline->children()) + count($outline->children('selfoss', true)) > 0) {
                 // outline element has children, recurse into it
                 $ret = $this->processGroup($outline, $tags);

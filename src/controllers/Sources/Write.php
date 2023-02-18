@@ -103,18 +103,17 @@ class Write {
         unset($data['tags']);
 
         // We assume numeric id means source already exists, new sources will have “new-” prefix.
-        $sourceProbablyExists = false;
         try {
             if ($id !== null) {
                 $id = Misc::forceId($id);
-                $sourceProbablyExists = true;
             }
         } catch (\InvalidArgumentException $e) {
+            $id = null;
         }
 
         // load password value if not changed for spouts containing passwords
         $oldParams = null;
-        if ($sourceProbablyExists) {
+        if ($id !== null) {
             $spoutInstance = $this->spoutLoader->get($spout);
 
             foreach ($spoutInstance->params as $spoutParamName => $spoutParam) {
@@ -130,11 +129,11 @@ class Write {
 
         $validation = $this->sourcesDao->validate($title, $spout, $data);
         if ($validation !== true) {
-            $this->view->error(json_encode($validation));
+            $this->view->jsonError($validation);
         }
 
         // add/edit source
-        if (!$sourceProbablyExists) {
+        if ($id === null) {
             $id = $this->sourcesDao->add($title, $tags, $filter, $spout, $data);
         } else {
             $this->sourcesDao->edit($id, $title, $tags, $filter, $spout, $data);

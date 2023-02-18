@@ -44,13 +44,14 @@ class FileStorage {
      * @param callable(string):bool $shouldKeep
      */
     public function cleanup(callable $shouldKeep): void {
-        $itemPath = $this->directory . '/';
         $undeleted = [];
-        foreach (scandir($itemPath) as $file) {
-            if (is_file($itemPath . $file) && $file !== '.htaccess') {
-                if (!$shouldKeep($file)) {
-                    if (!@unlink($itemPath . $file)) {
-                        $undeleted[] = $itemPath . $file;
+        foreach (new \DirectoryIterator($this->directory) as $fileInfo) {
+            $name = $fileInfo->getFilename();
+            if ($fileInfo->isFile() && $name !== '.htaccess') {
+                if (!$shouldKeep($name)) {
+                    $path = $fileInfo->getPathname();
+                    if (!@unlink($path)) {
+                        $undeleted[] = $path;
                     }
                 }
             }

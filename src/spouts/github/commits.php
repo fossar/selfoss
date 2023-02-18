@@ -149,7 +149,8 @@ class commits extends \spouts\spout {
      * @return string Cutted title
      */
     public static function cutTitle(string $title, int $cutafter = 69): string {
-        $title = strtok($title, "\n");
+        // strtok returns false for empty string.
+        $title = strtok($title, "\n") ?: '';
         if (($cutafter > 0) && (strlen($title) > $cutafter)) {
             return substr($title, 0, $cutafter) . '…';
         }

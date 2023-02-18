@@ -62,14 +62,14 @@ class Index {
 
         if (!$this->view->isAjax()) {
             $home = BASEDIR . '/public/index.html';
-            if (!file_exists($home)) {
+            if (!file_exists($home) || ($homeData = file_get_contents($home)) === false) { // For PHPStan: Error will be already handled by global error handler.
                 http_response_code(500);
                 echo 'Please build the assets using `npm run build` or obtain a pre-built packages from https://selfoss.aditu.de.';
                 exit;
             }
 
             // show as full html page
-            echo str_replace('@basePath@', $this->router->getBasePath(), file_get_contents($home));
+            echo str_replace('@basePath@', $this->router->getBasePath(), $homeData);
 
             return;
         }

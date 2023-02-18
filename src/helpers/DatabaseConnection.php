@@ -166,14 +166,15 @@ class DatabaseConnection {
      *
      * @param array<string, mixed> $args
      *
-     * @return ?array<int, array<string, mixed>>
+     * @return array<int, array<string, mixed>>
      */
-    public function exec(string $cmd, array $args = []): ?array {
+    public function exec(string $cmd, array $args = []): array {
         $statement = $this->execute($cmd, $args);
 
-        $result = null;
+        $result = [];
         if ($statement->columnCount() !== 0) {
-            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+            // Can return false on failure before PHP 8.0.0.
+            $result = $statement->fetchAll(PDO::FETCH_ASSOC) ?: [];
         }
 
         $statement->closeCursor();

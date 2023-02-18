@@ -162,6 +162,7 @@ class Image {
         if (extension_loaded('imagick')) {
             // check for svgz or svg
             if (substr($data, 0, 2) === "\x1f\x8b" && ($d = gzdecode($data) !== false)) {
+                /** @var string $data */ // For PHPStan, it thinks gzdecode returns string|bool rather than string|false.
                 $data = $d;
             }
 
@@ -223,7 +224,7 @@ class Image {
             }
 
             if ($image === null) {
-                /** @var ?IcoFileLoader\Icon */ // Type annotation says it cannot return null but that is not the case when the ico file does not contain images.
+                /** @var ?IcoFileLoader\IconImage */ // Type annotation says it cannot return null but that is not the case when the ico file does not contain images.
                 $image = $icon->findBest();
             }
 

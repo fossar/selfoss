@@ -26,9 +26,9 @@ interface DatabaseInterface {
      *
      * @param array<string, mixed> $args
      *
-     * @return ?array<int, array<string, mixed>>
+     * @return array<int, array<string, mixed>>
      */
-    public function exec(string $cmd, array $args = []): ?array;
+    public function exec(string $cmd, array $args = []): array;
 
     /**
      * wrap insert statement to return id

@@ -4,7 +4,12 @@ declare(strict_types=1);
 
 namespace helpers;
 
+use Exception;
 use function Http\Response\send;
+use function json_encode;
+use const JSON_ERROR_NONE;
+use function json_last_error;
+use function json_last_error_msg;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -105,7 +110,14 @@ class View {
      */
     public function jsonError($data) {
         header('Content-type: application/json');
-        $this->error(json_encode($data));
+
+        /** @var string $error */ // For PHPStan: Or an exception will be thrown.
+        $error = @json_encode($data);
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new Exception(json_last_error_msg(), json_last_error());
+        }
+
+        $this->error($error);
     }
 
     /**
@@ -117,7 +129,14 @@ class View {
      */
     public function jsonSuccess($data) {
         header('Content-type: application/json');
-        exit(json_encode($data));
+
+        /** @var string $message */ // For PHPStan: Or an exception will be thrown.
+        $message = @json_encode($data);
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new Exception(json_last_error_msg(), json_last_error());
+        }
+
+        exit($message);
     }
 
     /**

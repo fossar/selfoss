@@ -13,7 +13,9 @@ class Request {
     }
 
     public function getBody(): string {
-        return file_get_contents('php://input');
+        // Always seems to return a string, even with multipart/form-data where it is not supported (empty string).
+        // Coercing it to string for peace of mind.
+        return @file_get_contents('php://input') ?: '';
     }
 
     /**

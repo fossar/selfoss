@@ -5,7 +5,12 @@ declare(strict_types=1);
 namespace daos\mysql;
 
 use daos\DatabaseInterface;
+use Exception;
 use helpers\Configuration;
+use function json_encode;
+use const JSON_ERROR_NONE;
+use function json_last_error;
+use function json_last_error_msg;
 
 /**
  * Class for accessing persistent saved sources -- mysql
@@ -39,12 +44,18 @@ class Sources implements \daos\SourcesInterface {
      * @return int new id
      */
     public function add(string $title, array $tags, ?string $filter, string $spout, array $params): int {
+        /** @var string $params */ // For PHPStan: Or an exception will be thrown.
+        $params = @json_encode($params);
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new Exception(json_last_error_msg(), json_last_error());
+        }
+
         return $this->database->insert('INSERT INTO ' . $this->configuration->dbPrefix . 'sources (title, tags, filter, spout, params) VALUES (:title, :tags, :filter, :spout, :params)', [
             ':title' => trim($title),
             ':tags' => static::$stmt::csvRow($tags),
             ':filter' => $filter,
             ':spout' => $spout,
-            ':params' => htmlentities(json_encode($params)),
+            ':params' => htmlentities($params),
         ]);
     }
 
@@ -58,12 +69,18 @@ class Sources implements \daos\SourcesInterface {
      * @param array<string, mixed> $params the new params
      */
     public function edit(int $id, string $title, array $tags, ?string $filter, string $spout, array $params): void {
+        /** @var string $params */ // For PHPStan: Or an exception will be thrown.
+        $params = @json_encode($params);
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new Exception(json_last_error_msg(), json_last_error());
+        }
+
         $this->database->exec('UPDATE ' . $this->configuration->dbPrefix . 'sources SET title=:title, tags=:tags, filter=:filter, spout=:spout, params=:params WHERE id=:id', [
             ':title' => trim($title),
             ':tags' => static::$stmt::csvRow($tags),
             ':filter' => $filter,
             ':spout' => $spout,
-            ':params' => htmlentities(json_encode($params)),
+            ':params' => htmlentities($params),
             ':id' => $id,
         ]);
     }
@@ -266,11 +283,17 @@ class Sources implements \daos\SourcesInterface {
      * @return int id if any record is found
      */
     public function checkIfExists(string $title, string $spout, array $params): int {
+        /** @var string $params */ // For PHPStan: Or an exception will be thrown.
+        $params = @json_encode($params);
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new Exception(json_last_error_msg(), json_last_error());
+        }
+
         // Check if a entry exists with same title, spout and params
         $result = $this->database->exec('SELECT id FROM ' . $this->configuration->dbPrefix . 'sources WHERE title=:title AND spout=:spout AND params=:params', [
             ':title' => trim($title),
             ':spout' => $spout,
-            ':params' => htmlentities(json_encode($params)),
+            ':params' => htmlentities($params),
         ]);
         if ($result) {
             return $result[0]['id'];

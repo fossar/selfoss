@@ -227,7 +227,7 @@ class Configuration {
 
             $value = trim($value);
 
-            preg_match('(@var (?P<nullable>\??)(?P<type>[^\s]+))', $property->getDocComment(), $matches);
+            preg_match('(@var (?P<nullable>\??)(?P<type>[^\s]+))', $property->getDocComment() ?: '', $matches);
             if ($matches['nullable'] === '?' && $value === '') {
                 // Keep the default value for empty nullables.
                 continue;

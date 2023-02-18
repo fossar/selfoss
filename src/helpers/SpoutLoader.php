@@ -40,7 +40,7 @@ class SpoutLoader {
     /**
      * returns a given spout object
      *
-     * @param class-string $spout a given spout type
+     * @param string $spout a given spout type
      *
      * @return ?spout<mixed> an instance of the spout, null if this spout doesn't exist
      */
@@ -91,15 +91,16 @@ class SpoutLoader {
     protected function loadClasses(string $location, string $parentClassName): array {
         $return = [];
 
-        foreach (scandir($location) as $dir) {
-            if (is_dir($location . '/' . $dir) && substr($dir, 0, 1) !== '.') {
+        foreach (new \DirectoryIterator($location) as $dirInfo) {
+            if ($dirInfo->isDir() && !$dirInfo->isDot()) {
                 // search for spouts
-                foreach (scandir($location . '/' . $dir) as $file) {
+                foreach (new \DirectoryIterator($dirInfo->getPathname()) as $fileInfo) {
+                    $name = $fileInfo->getFilename();
                     // only scan visible .php files
-                    if (is_file($location . '/' . $dir . '/' . $file) && substr($file, 0, 1) !== '.' && strpos($file, '.php') !== false) {
+                    if ($fileInfo->isFile() && !str_starts_with($name, '.') && $fileInfo->getExtension() === 'php') {
                         // create reflection class
                         /** @var class-string<P> */
-                        $className = 'spouts\\' . $dir . '\\' . str_replace('.php', '', $file);
+                        $className = 'spouts\\' . $dirInfo->getFilename() . '\\' . $fileInfo->getBasename('.php');
 
                         // register widget
                         if (is_subclass_of($className, $parentClassName)) {

@@ -180,12 +180,13 @@ class Sources implements SourcesInterface {
                     continue;
                 }
 
-                $values = $spout->params[$id]['values'];
+                $values = $spout->params[$id]['values'] ?? [];
 
                 $found = false;
                 foreach ($values as $optionName => $optionTitle) {
                     if ($optionName == $value) {
                         $found = true;
+                        break;
                     }
                 }
                 if ($found === false) {

@@ -45,7 +45,7 @@ final class YouTubeTest extends TestCase {
                 function(array $remoteFile): Response {
                     ['fileName' => $fileName, 'contentType' => $contentType] = $remoteFile;
 
-                    return new Response(200, ['Content-Type' => $contentType], file_get_contents($fileName));
+                    return new Response(200, ['Content-Type' => $contentType], @file_get_contents($fileName) ?: "Unable to open  {$fileName}.");
                 },
                 $urls
             )

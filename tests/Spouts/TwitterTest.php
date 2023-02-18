@@ -17,8 +17,8 @@ use spouts\spout;
 use spouts\twitter;
 
 final class TwitterTest extends TestCase {
-    private function getResourcePath(string $fileName): string {
-        return __DIR__ . '/resources/Twitter/' . $fileName;
+    private function getResourceData(string $fileName): string {
+        return @file_get_contents(__DIR__ . '/resources/Twitter/' . $fileName) ?: "Unable to load test resource {$fileName}.";
     }
 
     /**
@@ -61,7 +61,7 @@ final class TwitterTest extends TestCase {
         $list = $this->makeSpout(
             twitter\listtimeline::class,
             [
-                new Response(200, ['Content-Type' => 'application/json;charset=utf-8'], file_get_contents($this->getResourcePath('list-FilipHorky-1463400275650174980.json'))),
+                new Response(200, ['Content-Type' => 'application/json;charset=utf-8'], $this->getResourceData('list-FilipHorky-1463400275650174980.json')),
             ]
         );
 
@@ -87,7 +87,7 @@ final class TwitterTest extends TestCase {
         $list = $this->makeSpout(
             twitter\Search::class,
             [
-                new Response(200, ['Content-Type' => 'application/json;charset=utf-8'], file_get_contents($this->getResourcePath('search-heart.json'))),
+                new Response(200, ['Content-Type' => 'application/json;charset=utf-8'], $this->getResourceData('search-heart.json')),
             ]
         );
 
@@ -108,7 +108,7 @@ final class TwitterTest extends TestCase {
         $list = $this->makeSpout(
             twitter\usertimeline::class,
             [
-                new Response(200, ['Content-Type' => 'application/json;charset=utf-8'], file_get_contents($this->getResourcePath('user-JoeTegtmeyer.json'))),
+                new Response(200, ['Content-Type' => 'application/json;charset=utf-8'], $this->getResourceData('user-JoeTegtmeyer.json')),
             ]
         );
 

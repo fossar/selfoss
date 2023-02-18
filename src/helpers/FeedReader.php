@@ -49,20 +49,25 @@ class FeedReader {
         @$this->simplepie->init();
 
         // on error retry with force_feed
-        if (@$this->simplepie->error()) {
+        if ($this->simplepie->error() !== null) {
             @$this->simplepie->set_autodiscovery_level(SimplePie::LOCATOR_NONE);
             @$this->simplepie->force_feed(true);
             @$this->simplepie->init();
         }
 
         // check for error
-        if (@$this->simplepie->error()) {
-            throw new \Exception($this->simplepie->error());
+        /** @var ?string $error */ // For PHPStan: This can only be an array in multifeed mode, which we do not use.
+        $error = $this->simplepie->error();
+        if ($error !== null) {
+            throw new \Exception($error);
         }
+
+        /** @var \SimplePie\Item[] $items */ // SimplePie considers this nullable for some reason.
+        $items = $this->simplepie->get_items();
 
         return [
             // save fetched items
-            'items' => $this->simplepie->get_items(),
+            'items' => $items,
             'htmlUrl' => htmlspecialchars_decode((string) $this->simplepie->get_link(), ENT_COMPAT), // SimplePie sanitizes URLs
             // Atom feeds can contain HTML in titles, strip tags and convert to text.
             'title' => htmlspecialchars_decode(strip_tags($this->simplepie->get_title())),

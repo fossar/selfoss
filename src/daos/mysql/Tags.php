@@ -76,10 +76,10 @@ class Tags implements \daos\TagsInterface {
      * @return array<array{tag: string, color: string}>
      */
     public function get(): array {
-        return $this->database->exec('SELECT
-                    tag, color
-                   FROM ' . $this->configuration->dbPrefix . 'tags
-                   ORDER BY LOWER(tag);');
+        /** @var array<array{tag: string, color: string}> */
+        $result = $this->database->exec('SELECT tag, color FROM ' . $this->configuration->dbPrefix . 'tags ORDER BY LOWER(tag);');
+
+        return $result;
     }
 
     /**

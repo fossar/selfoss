@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace helpers;
 
+use GuzzleHttp\Psr7\Uri;
 use Monolog\Logger;
 
 /**
@@ -38,14 +39,14 @@ class Session {
 
         $this->started = true;
 
-        $base_url = parse_url($this->view->getBaseUrl());
+        $base_url = new Uri($this->view->getBaseUrl());
 
         // session cookie will be valid for one month.
         $cookie_expire = 3600 * 24 * 30;
-        $cookie_secure = $base_url['scheme'] === 'https';
+        $cookie_secure = $base_url->getScheme() === 'https';
         $cookie_httponly = true;
-        $cookie_path = $base_url['path'];
-        $cookie_domain = $base_url['host'] === 'localhost' ? null : $base_url['host'];
+        $cookie_path = $base_url->getPath();
+        $cookie_domain = $base_url->getHost() === 'localhost' ? null : $base_url->getHost();
 
         session_set_cookie_params(
             $cookie_expire,
