@@ -81,7 +81,7 @@ class SpoutLoader {
     /**
      * returns all classes which extends a given class
      *
-     * @template P
+     * @template P of spout
      *
      * @param string $location the path where all spouts in
      * @param class-string<P> $parentClassName the parent class which files must extend

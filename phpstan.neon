@@ -12,6 +12,9 @@ parameters:
         - src/constants.php
         - vendor/bin/.phpunit/phpunit/vendor/autoload.php
 
+    stubFiles:
+        - utils/PHPStan/Stubs/Dice.stub
+
     ignoreErrors:
         # We want exhaustiveness check in spouts\twitter\usertimeline::formatEntities
         - '(Result of \|\| is always true\.)'
