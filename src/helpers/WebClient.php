@@ -41,7 +41,7 @@ class WebClient {
             $stack = HandlerStack::create();
             $stack->push(new GuzzleTranscoder());
 
-            if ($this->configuration->loggerLevel === 'DEBUG') {
+            if ($this->configuration->loggerLevel === Configuration::LOGGER_LEVEL_DEBUG) {
                 if ($this->configuration->debug === 0) {
                     $logFormat = GuzzleHttp\MessageFormatter::SHORT;
                 } elseif ($this->configuration->debug === 1) {

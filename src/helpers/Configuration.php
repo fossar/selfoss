@@ -21,6 +21,28 @@ class Configuration {
         'ftrssCustomDataDir',
     ];
 
+    public const LOGGER_LEVEL_EMERGENCY = 'EMERGENCY';
+    public const LOGGER_LEVEL_ALERT = 'ALERT';
+    public const LOGGER_LEVEL_CRITICAL = 'CRITICAL';
+    public const LOGGER_LEVEL_ERROR = 'ERROR';
+    public const LOGGER_LEVEL_WARNING = 'WARNING';
+    public const LOGGER_LEVEL_NOTICE = 'NOTICE';
+    public const LOGGER_LEVEL_INFO = 'INFO';
+    public const LOGGER_LEVEL_DEBUG = 'DEBUG';
+    public const LOGGER_LEVEL_NONE = 'NONE';
+
+    private const ALLOWED_LOGGER_LEVELS = [
+        self::LOGGER_LEVEL_EMERGENCY,
+        self::LOGGER_LEVEL_ALERT,
+        self::LOGGER_LEVEL_CRITICAL,
+        self::LOGGER_LEVEL_ERROR,
+        self::LOGGER_LEVEL_WARNING,
+        self::LOGGER_LEVEL_NOTICE,
+        self::LOGGER_LEVEL_INFO,
+        self::LOGGER_LEVEL_DEBUG,
+        self::LOGGER_LEVEL_NONE,
+    ];
+
     /** @var array<string, bool> Keeps track of options that have been changed. */
     private $modifiedOptions = [];
 
@@ -70,7 +92,7 @@ class Configuration {
     /** @var string */
     public $loggerDestination = 'file:%datadir%/logs/default.log';
 
-    /** @var string */
+    /** @var self::LOGGER_LEVEL_* */
     public $loggerLevel = 'ERROR';
 
     /** @var int */
@@ -205,7 +227,7 @@ class Configuration {
 
             $value = trim($value);
 
-            preg_match('(@var (?P<nullable>\??)(?P<type>[a-z]+))', $property->getDocComment(), $matches);
+            preg_match('(@var (?P<nullable>\??)(?P<type>[^\s]+))', $property->getDocComment(), $matches);
             if ($matches['nullable'] === '?' && $value === '') {
                 // Keep the default value for empty nullables.
                 continue;
@@ -219,6 +241,10 @@ class Configuration {
                 $value = (int) $value;
             } elseif ($propertyType === 'string') {
                 // Should already be a string.
+            } elseif ($propertyType === 'self::LOGGER_LEVEL_*') {
+                if (!in_array($value, self::ALLOWED_LOGGER_LEVELS, true)) {
+                    throw new Exception("Unsupported value “${value}” for property “${propertyName}”, must be one of " . implode(', ', self::ALLOWED_LOGGER_LEVELS) . '.', 1);
+                }
             } else {
                 throw new Exception("Unknown type “${propertyType}” for property “${propertyName}”.", 1);
             }

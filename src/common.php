@@ -243,7 +243,7 @@ $dice = $dice->addRule(CacheInterface::class, array_merge($shared, [
 // init logger
 $log = $dice->create(Logger::class);
 
-if ($configuration->loggerLevel === 'NONE') {
+if ($configuration->loggerLevel === Configuration::LOGGER_LEVEL_NONE) {
     $handler = new NullHandler();
 } else {
     $logger_destination = $configuration->loggerDestination;
