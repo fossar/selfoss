@@ -57,7 +57,12 @@ class Items implements \daos\ItemsInterface {
                 $ids
             )
         );
-        $this->database->exec('UPDATE ' . $this->configuration->dbPrefix . "items SET unread=? WHERE id IN ($ids)", false);
+        $this->database->exec(
+            'UPDATE ' . $this->configuration->dbPrefix . "items SET unread=:unread WHERE id IN ($ids)",
+            [
+                'unread' => false,
+            ]
+        );
     }
 
     /**
@@ -75,7 +80,12 @@ class Items implements \daos\ItemsInterface {
                 $ids
             )
         );
-        $this->database->exec('UPDATE ' . $this->configuration->dbPrefix . "items SET unread=? WHERE id IN ($ids)", true);
+        $this->database->exec(
+            'UPDATE ' . $this->configuration->dbPrefix . "items SET unread=:unread WHERE id IN ($ids)",
+            [
+                'unread' => true,
+            ]
+        );
     }
 
     /**

@@ -115,19 +115,9 @@ class DatabaseConnection {
     /**
      * Execute SQL statement.
      *
-     * @param array|scalar $args
+     * @param array<string, mixed> $args
      */
-    public function execute(string $cmd, $args = []): \PDOStatement {
-        if (is_scalar($args)) {
-            $args = [1 => $args];
-        }
-
-        // ensure 1-based arguments
-        if (array_key_exists(0, $args)) {
-            array_unshift($args, '');
-            unset($args[0]);
-        }
-
+    public function execute(string $cmd, array $args = []): \PDOStatement {
         try {
             $query = $this->pdo->prepare($cmd);
         } catch (PDOException $e) {
@@ -172,9 +162,9 @@ class DatabaseConnection {
     /**
      * Execute SQL statement and fetch the result as an associative array (when applicable).
      *
-     * @param array|scalar $args
+     * @param array<string, mixed> $args
      */
-    public function exec(string $cmd, $args = []): ?array {
+    public function exec(string $cmd, array $args = []): ?array {
         $statement = $this->execute($cmd, $args);
 
         $result = null;

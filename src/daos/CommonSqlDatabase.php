@@ -8,18 +8,18 @@ trait CommonSqlDatabase {
     /**
      * Execute SQL statement.
      *
-     * @param array|scalar $args
+     * @param array<string, mixed> $args
      */
-    public function execute(string $cmd, $args = []): \PDOStatement {
+    public function execute(string $cmd, array $args = []): \PDOStatement {
         return $this->connection->execute($cmd, $args);
     }
 
     /**
      * Execute SQL statement and fetch the result as an associative array (when applicable).
      *
-     * @param array|scalar $args
+     * @param array<string, mixed> $args
      */
-    public function exec(string $cmd, $args = []): ?array {
+    public function exec(string $cmd, array $args = []): ?array {
         return $this->connection->exec($cmd, $args);
     }
 

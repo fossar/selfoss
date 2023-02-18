@@ -299,7 +299,7 @@ class Database implements \daos\DatabaseInterface {
      * wrap insert statement to return id
      *
      * @param string $query sql statement
-     * @param array $params sql params
+     * @param array<string, mixed> $params sql params
      *
      * @return int id after insert
      */
@@ -329,17 +329,19 @@ class Database implements \daos\DatabaseInterface {
         foreach ($sources as $current_src) {
             // get the date of the newest entry found in the database
             $latestEntryDate = @$this->exec(
-                'SELECT datetime FROM items WHERE source=? ORDER BY datetime DESC LIMIT 0, 1',
-                $current_src['id']
+                'SELECT datetime FROM items WHERE source=:id ORDER BY datetime DESC LIMIT 0, 1',
+                [
+                    'id' => $current_src['id'],
+                ]
             );
 
             // if an entry for this source was found in the database, write the date of the newest one into the sources table
             if (isset($latestEntryDate[0]['datetime'])) {
                 @$this->exec(
-                    'UPDATE sources SET lastentry=? WHERE id=?',
+                    'UPDATE sources SET lastentry=:entry WHERE id=:id',
                     [
-                        strtotime($latestEntryDate[0]['datetime']),
-                        $current_src['id'],
+                        'entry' => strtotime($latestEntryDate[0]['datetime']),
+                        'id' => $current_src['id'],
                     ]
                 );
             }

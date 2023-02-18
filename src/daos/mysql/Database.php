@@ -301,7 +301,7 @@ class Database implements \daos\DatabaseInterface {
      * wrap insert statement to return id
      *
      * @param string $query sql statement
-     * @param array $params sql params
+     * @param array<string, mixed> $params sql params
      *
      * @return int id after insert
      */
