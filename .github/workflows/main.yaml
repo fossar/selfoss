@@ -32,7 +32,7 @@ jobs:
             phpstan: true
           - php: '7.2'
             cs_fixer: true
-            lint_js: true
+            check_client: true
           - php: '8.2'
             storage: mysql
           - php: '8.2'
@@ -78,9 +78,9 @@ jobs:
       - name: Install dependencies
         run: nix-shell --run 'npm run install-dependencies'
 
-      - name: Lint front-end code
-        if: matrix.lint_js
-        run: nix-shell --run 'npm run lint:client'
+      - name: Check front-end code
+        if: matrix.check_client
+        run: nix-shell --run 'npm run check:client'
 
       - name: Check syntax of back-end code
         run: nix-shell --run 'npm run lint:server'

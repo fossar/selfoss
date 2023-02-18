@@ -43,18 +43,20 @@
     "postcss": "^8.4.4",
     "prettier": "^2.0.0",
     "process": "^0.11.10",
-    "stylelint": "^14.0.0",
-    "stylelint-config-prettier": "^9.0.0",
-    "stylelint-config-standard-scss": "^6.0.0",
-    "stylelint-prettier": "^2.0.0"
+    "stylelint": "^15.0.0",
+    "stylelint-config-standard-scss": "^7.0.0"
   },
   "scripts": {
     "fix": "npm run fix:js && npm run fix:styles",
-    "fix:styles": "npm run lint:styles -- --fix",
+    "fix:styles": "npm run fix:styles:lint && npm run fix:styles:prettify",
+    "fix:styles:lint": "npm run check:styles:lint -- --fix",
+    "fix:styles:prettify": "npm run check:styles:prettify -- --write",
     "fix:js": "npm run lint:js -- --fix",
-    "lint": "npm run lint:js && npm run lint:styles",
+    "check": "npm run lint:js && npm run check:styles",
     "lint:js": "eslint --ext .jsx,.js .",
-    "lint:styles": "stylelint styles/*.scss",
+    "check:styles": "npm run check:styles:lint && npm run check:styles:prettify",
+    "check:styles:lint": "stylelint styles/*.scss",
+    "check:styles:prettify": "prettier styles/*.scss --check",
     "dev": "parcel watch index.html opml.html --dist-dir ../public/ --public-url ./",
     "build": "parcel build index.html opml.html --dist-dir ../public/ --public-url ./"
   }
