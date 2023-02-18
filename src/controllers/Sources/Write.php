@@ -9,6 +9,7 @@ use helpers\ContentLoader;
 use helpers\Misc;
 use helpers\SpoutLoader;
 use helpers\View;
+use spouts\Parameter;
 
 /**
  * Controller for creating and editing sources
@@ -105,7 +106,7 @@ class Write {
             $spoutInstance = $this->spoutLoader->get($spout);
 
             foreach ($spoutInstance->params as $spoutParamName => $spoutParam) {
-                if ($spoutParam['type'] === 'password' && empty($data[$spoutParamName])) {
+                if ($spoutParam['type'] === Parameter::TYPE_PASSWORD && empty($data[$spoutParamName])) {
                     if ($oldParams === null) {
                         $oldSource = $this->sourcesDao->get($id);
                         $oldParams = json_decode(html_entity_decode($oldSource['params']), true);
