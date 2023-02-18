@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 require __DIR__ . '/src/common.php';
 
+/** @var Dice\Dice $dice */
 $router = $dice->create(Bramus\Router\Router::class);
 
 // define routes

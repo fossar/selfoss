@@ -4,6 +4,9 @@ parameters:
     paths:
         - src/
         - tests/
+        - cliupdate.php
+        - index.php
+        - run.php
 
     bootstrapFiles:
         - src/constants.php
