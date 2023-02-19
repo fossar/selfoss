@@ -341,6 +341,10 @@ class usertimeline extends \spouts\spout {
         $result = [];
 
         foreach (self::GROUPED_ENTITY_TYPES as $type) {
+            if (!isset($groupedEntities->{$type})) {
+                continue;
+            }
+
             $entities = $groupedEntities->{$type};
             foreach ($entities as $entity) {
                 $start = $entity->indices[0];
