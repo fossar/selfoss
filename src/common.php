@@ -249,7 +249,7 @@ if ($configuration->loggerLevel === Configuration::LOGGER_LEVEL_NONE) {
 } else {
     $logger_destination = $configuration->loggerDestination;
 
-    if (strpos($logger_destination, 'file:') === 0) {
+    if (str_starts_with($logger_destination, 'file:')) {
         $handler = new StreamHandler(substr($logger_destination, 5), $configuration->loggerLevel);
     } elseif ($logger_destination === 'error_log') {
         $handler = new ErrorLogHandler(ErrorLogHandler::OPERATING_SYSTEM, $configuration->loggerLevel);

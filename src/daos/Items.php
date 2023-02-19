@@ -81,7 +81,7 @@ class Items implements ItemsInterface {
         if (!$this->authentication->showPrivateTags()) {
             foreach ($items as $idx => $item) {
                 foreach ($item['tags'] as $tag) {
-                    if (strpos(trim($tag), '@') === 0) {
+                    if (str_starts_with(trim($tag), '@')) {
                         unset($items[$idx]);
                         break;
                     }
@@ -94,7 +94,7 @@ class Items implements ItemsInterface {
         if ($options->tag !== null) {
             foreach ($items as $idx => $item) {
                 foreach ($item['tags'] as $tag) {
-                    if (strpos(trim($tag), '#') === 0) {
+                    if (str_starts_with(trim($tag), '#')) {
                         unset($items[$idx]);
                         break;
                     }

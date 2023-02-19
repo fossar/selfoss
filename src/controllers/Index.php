@@ -89,7 +89,7 @@ class Index {
         $statsStarred = $stats['starred'];
 
         foreach ($tags as $tag) {
-            if (strpos($tag['tag'], '#') !== 0) {
+            if (!str_starts_with($tag['tag'], '#')) {
                 continue;
             }
             $statsUnread -= $tag['unread'];

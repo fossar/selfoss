@@ -46,7 +46,7 @@ class Stats {
         $tags = $this->tagsDao->getWithUnread();
 
         foreach ($tags as $tag) {
-            if (strpos($tag['tag'], '#') !== 0) {
+            if (!str_starts_with($tag['tag'], '#')) {
                 continue;
             }
             $stats['unread'] -= $tag['unread'];

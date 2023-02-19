@@ -41,7 +41,7 @@ class Tags implements TagsInterface {
         // remove items with private tags
         if (!$this->authentication->showPrivateTags()) {
             foreach ($tags as $idx => $tag) {
-                if (strpos($tag['tag'], '@') === 0) {
+                if (str_starts_with($tag['tag'], '@')) {
                     unset($tags[$idx]);
                 }
             }

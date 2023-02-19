@@ -17,7 +17,7 @@ $example = '; see https://selfoss.aditu.de/docs/administration/options/' . PHP_E
 $example .= '; for more information about the configuration parameters' . PHP_EOL;
 
 foreach ($reflection->getProperties() as $property) {
-    if (!$property->isPublic() || strpos($property->getDocComment(), '@internal') !== false) {
+    if (!$property->isPublic() || str_contains($property->getDocComment(), '@internal')) {
         continue;
     }
 

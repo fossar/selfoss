@@ -72,7 +72,7 @@ class Sources implements SourcesInterface {
         if (!$this->authentication->showPrivateTags()) {
             foreach ($sources as $idx => $source) {
                 foreach ($source['tags'] as $tag) {
-                    if (strpos(trim($tag), '@') === 0) {
+                    if (str_starts_with(trim($tag), '@')) {
                         unset($sources[$idx]);
                         break;
                     }
