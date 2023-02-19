@@ -7,6 +7,7 @@ namespace controllers;
 use daos\ItemOptions;
 use helpers\Authentication;
 use helpers\Misc;
+use helpers\Request;
 use helpers\View;
 use InvalidArgumentException;
 
@@ -24,12 +25,21 @@ class Items {
     /** @var \daos\Items items */
     private $itemsDao;
 
+    /** @var Request */
+    private $request;
+
     /** @var View view helper */
     private $view;
 
-    public function __construct(Authentication $authentication, \daos\Items $itemsDao, View $view) {
+    public function __construct(
+        Authentication $authentication,
+        \daos\Items $itemsDao,
+        Request $request,
+        View $view
+    ) {
         $this->authentication = $authentication;
         $this->itemsDao = $itemsDao;
+        $this->request = $request;
         $this->view = $view;
     }
 
@@ -44,14 +54,16 @@ class Items {
 
         $ids = null;
         if ($itemId !== null) {
-            $ids = $itemId;
+            $ids = [$itemId];
         } else {
-            $contentType = $_SERVER['CONTENT_TYPE'] ?? '';
-            if (strpos($contentType, 'application/json') === 0) {
-                $body = file_get_contents('php://input');
-                $ids = json_decode($body, true);
-            } elseif (isset($_POST['ids'])) {
-                $ids = $_POST['ids'];
+            $ids = $this->request->getData();
+            if (!is_array($ids)) {
+                $this->view->error('The request body needs to contain a list of numbers.');
+            }
+
+            // Legacy format $_POST['ids'].
+            if (isset($ids['ids'])) {
+                $ids = $ids['ids'];
             }
         }
 

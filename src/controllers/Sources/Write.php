@@ -7,6 +7,7 @@ namespace controllers\Sources;
 use helpers\Authentication;
 use helpers\ContentLoader;
 use helpers\Misc;
+use helpers\Request;
 use helpers\SpoutLoader;
 use helpers\View;
 use spouts\Parameter;
@@ -21,6 +22,9 @@ class Write {
     /** @var ContentLoader content loader */
     private $contentLoader;
 
+    /** @var Request */
+    private $request;
+
     /** @var \daos\Sources sources */
     private $sourcesDao;
 
@@ -33,9 +37,18 @@ class Write {
     /** @var View view helper */
     private $view;
 
-    public function __construct(Authentication $authentication, ContentLoader $contentLoader, \daos\Sources $sourcesDao, SpoutLoader $spoutLoader, \daos\Tags $tagsDao, View $view) {
+    public function __construct(
+        Authentication $authentication,
+        ContentLoader $contentLoader,
+        Request $request,
+        \daos\Sources $sourcesDao,
+        SpoutLoader $spoutLoader,
+        \daos\Tags $tagsDao,
+        View $view
+    ) {
         $this->authentication = $authentication;
         $this->contentLoader = $contentLoader;
+        $this->request = $request;
         $this->sourcesDao = $sourcesDao;
         $this->spoutLoader = $spoutLoader;
         $this->tagsDao = $tagsDao;
@@ -51,13 +64,12 @@ class Write {
     public function write(?string $id = null): void {
         $this->authentication->needsLoggedIn();
 
-        // read data
-        $body = file_get_contents('php://input');
-        $contentType = $_SERVER['CONTENT_TYPE'] ?? '';
-        if (strpos($contentType, 'application/json') === 0) {
-            $data = json_decode($body, true);
-        } else {
-            parse_str($body, $data);
+        $data = $this->request->getData();
+
+        if (!is_array($data)) {
+            $this->view->jsonError([
+                'error' => 'The request body needs to contain a dictionary/object.',
+            ]);
         }
 
         if (empty($data['spout'])) {

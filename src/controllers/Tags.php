@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace controllers;
 
 use helpers\Authentication;
+use helpers\Request;
 use helpers\View;
 
 /**
@@ -18,14 +19,23 @@ class Tags {
     /** @var Authentication authentication helper */
     private $authentication;
 
+    /** @var Request */
+    private $request;
+
     /** @var \daos\Tags tags */
     private $tagsDao;
 
     /** @var View view helper */
     private $view;
 
-    public function __construct(Authentication $authentication, \daos\Tags $tagsDao, View $view) {
+    public function __construct(
+        Authentication $authentication,
+        Request $request,
+        \daos\Tags $tagsDao,
+        View $view
+    ) {
         $this->authentication = $authentication;
+        $this->request = $request;
         $this->tagsDao = $tagsDao;
         $this->view = $view;
     }
@@ -68,8 +78,13 @@ class Tags {
     public function color(): void {
         $this->authentication->needsLoggedIn();
 
-        // read data
-        parse_str(file_get_contents('php://input'), $data);
+        $data = $this->request->getData();
+
+        if (!is_array($data)) {
+            $this->view->jsonError([
+                'error' => 'The request body needs to contain a dictionary/object.',
+            ]);
+        }
 
         $tag = isset($data['tag']) && ($trimmed = trim($data['tag'])) !== '' ? $trimmed : null;
         $color = isset($data['color']) && ($trimmed = trim($data['color'])) !== '' ? $trimmed : null;
