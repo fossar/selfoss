@@ -170,7 +170,7 @@ class TwitterV1ApiClient {
      * convert URLs, handles and hashtags as links
      *
      * @param string $text unformated text
-     * @param array $entities ordered entities
+     * @param array<int, array{text: string, url: string, end: int}> $entities array of entities, indexed by index of their initial Unicode code point
      *
      * @return HtmlString formated text
      */
@@ -179,11 +179,11 @@ class TwitterV1ApiClient {
         $result = '';
         /** @var int number of bytes in text */
         $length = strlen($text);
-        /** @var int index of a byte in the text */
+        /** @var int index of the currently processed byte in the text */
         $i = 0;
-        /** @var int index of a UTF-8 codepoint in the text */
+        /** @var int index of the currently processed Unicode code point in the text */
         $cpi = -1;
-        /** @var int index of a UTF-8 codepoint where the last entity ends */
+        /** @var int index of the index of the final Unicode code point of the last processed entity */
         $skipUntilCp = -1;
 
         while ($i < $length) {
@@ -202,7 +202,8 @@ class TwitterV1ApiClient {
                     $appended = '<a href="' . htmlspecialchars($entity['url'], ENT_QUOTES) . '" target="_blank" rel="noreferrer">' . htmlspecialchars($entity['text']) . '</a>';
                     $skipUntilCp = $entity['end'];
                 } else {
-                    $appended = htmlspecialchars($c);
+                    // HTML-special characters like “<” or “&” appear to be already escaped.
+                    $appended = $c;
                 }
 
                 $result .= $appended;
@@ -217,7 +218,7 @@ class TwitterV1ApiClient {
      *
      * @param stdClass $groupedEntities entities returned by Twitter API
      *
-     * @return array{text: string, url: string, end: int}[] flattened and ordered array of entities
+     * @return array<int, array{text: string, url: string, end: int}> array of entities, indexed by index of their initial Unicode code point
      */
     private static function formatEntities(stdClass $groupedEntities): array {
         $result = [];
