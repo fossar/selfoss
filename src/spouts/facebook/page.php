@@ -133,7 +133,8 @@ class page extends \spouts\spout {
                 $icon,
                 $link,
                 $date,
-                $author
+                $author,
+                null
             );
         }
     }

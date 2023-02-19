@@ -32,7 +32,9 @@ class SpoutLoader {
      * @return array<class-string<spout<mixed>>, spout<mixed>> available spouts
      */
     public function all(): array {
-        $this->readSpouts();
+        if ($this->spouts === null) {
+            $this->spouts = $this->readSpouts();
+        }
 
         return $this->spouts;
     }
@@ -68,14 +70,16 @@ class SpoutLoader {
 
     /**
      * reads all spouts
+     *
+     * @return array<class-string<spout<mixed>>, spout<mixed>>
      */
-    protected function readSpouts(): void {
-        if ($this->spouts === null) {
-            $this->spouts = $this->loadClasses(__DIR__ . '/../spouts', spout::class);
+    private function readSpouts(): array {
+        $spouts = $this->loadClasses(__DIR__ . '/../spouts', spout::class);
 
-            // sort spouts by name
-            uasort($this->spouts, [self::class, 'compareSpoutsByName']);
-        }
+        // sort spouts by name
+        uasort($spouts, [self::class, 'compareSpoutsByName']);
+
+        return $spouts;
     }
 
     /**

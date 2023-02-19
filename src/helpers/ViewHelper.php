@@ -36,13 +36,21 @@ class ViewHelper {
         }
 
         if (preg_match('#^/(?P<regex>.+)/$#', $searchWords, $matches)) {
-            return preg_replace('/(?!<[^<>])(' . $matches[1] . ')(?![^<>]*>)/', '<span class="found">$0</span>', $content);
+            /** @var string $content */ // For PHPStan: array can only occur when $subject is array.
+            $content = preg_replace('/(?!<[^<>])(' . $matches[1] . ')(?![^<>]*>)/', '<span class="found">$0</span>', $content);
+
+            assert($content !== null, 'Regex must be valid.'); // For PHPStan: Will be picked up by error handler.
+
+            return $content;
         }
 
         $searchWords = \helpers\Search::splitTerms($searchWords);
 
         foreach ($searchWords as $word) {
-            $content = preg_replace('/(?!<[^<>])(' . preg_quote($word, '/') . ')(?![^<>]*>)/i', '<span class="found">$0</span>', $content);
+            /** @var string $content */ // For PHPStan: array can only occur when $subject is array.
+            $content = @preg_replace('/(?!<[^<>])(' . preg_quote($word, '/') . ')(?![^<>]*>)/i', '<span class="found">$0</span>', $content);
+
+            assert($content !== null, 'Regex must be valid.');
         }
 
         return $content;
@@ -57,7 +65,7 @@ class ViewHelper {
      * @return string with replaced img tags
      */
     public static function lazyimg(string $content): string {
-        return preg_replace_callback("/<img(?P<pre>[^<]+)src=(?:['\"])(?P<src>[^\"']*)(?:['\"])(?P<post>[^<]*)>/i", function(array $matches) {
+        $content = preg_replace_callback("/<img(?P<pre>[^<]+)src=(?:['\"])(?P<src>[^\"']*)(?:['\"])(?P<post>[^<]*)>/i", function(array $matches) {
             $width = null;
             $height = null;
 
@@ -83,6 +91,10 @@ class ViewHelper {
 
             return "<img src=\"$placeholder\"{$matches['pre']}data-selfoss-src=\"{$matches['src']}\"{$matches['post']}>";
         }, $content);
+
+        assert($content !== null, 'Regex must be valid');
+
+        return $content;
     }
 
     /**
@@ -99,9 +111,13 @@ class ViewHelper {
 
         $camo = new \WillWashburn\Phpamo\Phpamo($this->configuration->camoKey, $this->configuration->camoDomain);
 
-        return preg_replace_callback("/<img([^<]+)src=(['\"])([^\"']*)(['\"])([^<]*)>/i", function(array $matches) use ($camo) {
+        $content = preg_replace_callback("/<img([^<]+)src=(['\"])([^\"']*)(['\"])([^<]*)>/i", function(array $matches) use ($camo) {
             return '<img' . $matches[1] . 'src=' . $matches[2] . $camo->camoHttpOnly($matches[3]) . $matches[4] . $matches[5] . '>';
         }, $content);
+
+        assert($content !== null, 'Regex must be valid');
+
+        return $content;
     }
 
     /**

@@ -130,7 +130,7 @@ class feed extends \spouts\spout {
             if ($name !== null) {
                 return htmlspecialchars_decode($name);
             } elseif ($email !== null) {
-                return htmlspecialchars_decode($author->get_email());
+                return htmlspecialchars_decode($author->get_email() ?? '');
             }
         }
 

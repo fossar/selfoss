@@ -51,7 +51,7 @@ class Tags {
      *
      * @return array<string, array{backColor: string, foreColor: string}>
      */
-    public function tagsAddColors(array $itemTags, array $tags = null): array {
+    public function tagsAddColors(array $itemTags, ?array $tags = null): array {
         if ($tags === null) {
             if ($this->tagsColors === null) {
                 $this->tagsColors = $this->getTagsWithColors($this->tagsDao->get());

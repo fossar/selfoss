@@ -13,6 +13,7 @@
 - Re-added “Next” button on smartphones. ([#1406](https://github.com/fossar/selfoss/issues/1406)
 
 ### Customization changes
+- Custom spouts must explicitly pass `null` to `Item::__construct()` when they do not need the `extraData` argument. ([#1415](https://github.com/fossar/selfoss/pull/1415))
 - Custom spout parameter declarations should now use constants from `Parameter` interface. ([#1409](https://github.com/fossar/selfoss/pull/1409))
 - Custom spouts are expected to pass `HtmlString` object to items’ title and content. ([#1368](https://github.com/fossar/selfoss/pull/1368))
 - Spouts can fetch item contents lazily by passing a function as `content` to `Item`. ([#1413](https://github.com/fossar/selfoss/pull/1413))

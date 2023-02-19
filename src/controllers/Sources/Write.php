@@ -115,12 +115,21 @@ class Write {
         $oldParams = null;
         if ($id !== null) {
             $spoutInstance = $this->spoutLoader->get($spout);
+            if ($spoutInstance === null) {
+                $this->view->jsonError([
+                    'spout' => 'spout does not exist',
+                ]);
+            }
 
             foreach ($spoutInstance->params as $spoutParamName => $spoutParam) {
                 if ($spoutParam['type'] === Parameter::TYPE_PASSWORD && empty($data[$spoutParamName])) {
                     if ($oldParams === null) {
                         $oldSource = $this->sourcesDao->get($id);
-                        $oldParams = json_decode(html_entity_decode($oldSource['params']), true);
+                        if ($oldSource === null) {
+                            $oldParams = [];
+                        } else {
+                            $oldParams = json_decode(html_entity_decode($oldSource['params']), true);
+                        }
                     }
                     $data[$spoutParamName] = $oldParams[$spoutParamName] ?? '';
                 }

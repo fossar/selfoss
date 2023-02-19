@@ -119,7 +119,8 @@ class TwitterV1ApiClient {
                 $icon,
                 $link,
                 $date,
-                $author
+                $author,
+                null
             );
         }
     }

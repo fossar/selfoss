@@ -88,7 +88,7 @@ class youtube extends \spouts\rss\feed {
     public function getItems(): iterable {
         foreach (parent::getItems() as $item) {
             $thumbnail = $this->getThumbnail($item->getExtraData());
-            $content = $this->getContent($item->getExtraData());
+            $content = $this->getContent($item->getExtraData()) ?? HtmlString::fromRaw('');
             yield $item->withContent($content)->withThumbnail($thumbnail);
         }
     }

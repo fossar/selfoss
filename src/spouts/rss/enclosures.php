@@ -43,7 +43,7 @@ class enclosures extends feed {
         foreach ($enclosures as $enclosure) {
             if ($enclosure->get_medium() === 'image') {
                 $title = htmlspecialchars(strip_tags((string) $enclosure->get_title()), ENT_QUOTES);
-                $url = htmlspecialchars_decode($enclosure->get_link(), ENT_COMPAT); // SimplePie sanitizes URLs
+                $url = htmlspecialchars_decode($enclosure->get_link() ?? '', ENT_COMPAT); // SimplePie sanitizes URLs
                 $newContent .= '<img src="' . htmlspecialchars($url, ENT_QUOTES) . '" alt="' . $title . '" title="' . $title . '" />';
             }
         }

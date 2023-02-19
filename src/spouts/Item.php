@@ -37,11 +37,11 @@ class Item {
     /** @var ?string author */
     private $author;
 
-    /** @var ?Extra extra data */
+    /** @var Extra extra data */
     private $extraData;
 
     /**
-     * @param ?Extra $extraData
+     * @param Extra $extraData
      * @param HtmlString|(callable(static): HtmlString) $content
      * @param (?string)|(callable(static): ?string) $icon
      */
@@ -54,7 +54,7 @@ class Item {
         string $link,
         ?DateTimeInterface $date,
         ?string $author,
-        $extraData = null
+        $extraData
     ) {
         $this->id = $id;
         $this->title = $title;

@@ -123,7 +123,7 @@ class Import {
      * - We use non-rss outline’s text as tags
      * - Reads outline elements from both the default and selfoss namespace
      *
-     * @param SimpleXMLElement $xml A SimpleXML object with <outline> children
+     * @param SimpleXMLElement $xml A XML element object with <outline> children
      * @param string[] $tags An array of tags for the current <outline>
      *
      * @return string[] titles of feeds that could not be added to subscriptions
@@ -138,13 +138,17 @@ class Import {
         // but both Google Reader and Feedly duplicate the “text” attribute as “title” so it seems to be common.
         // Feedly seems to prefer “title” for both category names and feed names.
         // We will do the same in case someone mistakenly exports the “title” and forgets about “text”.
-        $title = (string) $xml->attributes()->title;
-        $title = $title ?: (string) $xml->attributes()->text;
+        /** @var SimpleXMLElement attributes */
+        $attrs = $xml->attributes();
+        $title = (string) $attrs->title;
+        $title = $title ?: (string) $attrs->text;
         if ($title !== '' && $title !== '/') {
             $tags[] = $title;
             // for new tags, try to import tag color, otherwise use random color
             if (!$this->tagsDao->hasTag($title)) {
-                $tagColor = (string) $xml->attributes('selfoss', true)->color;
+                /** @var SimpleXMLElement attributes in selfoss namespace */
+                $selfossAttrs = $xml->attributes('selfoss', true);
+                $tagColor = (string) $selfossAttrs->color;
                 if ($tagColor !== '') {
                     $this->tagsDao->saveTagColor($title, $tagColor);
                 } else {
@@ -173,7 +177,7 @@ class Import {
     /**
      * Add new feed subscription
      *
-     * @param SimpleXMLElement $xml xml feed entry for item
+     * @param SimpleXMLElement $xml An <outline> XML element corresponding to a feed
      * @param string[] $tags of the entry
      *
      * @return true|string true on success or item title on error
@@ -183,7 +187,9 @@ class Import {
         // Optional attributes: title, htmlUrl, language, title, version
         // Selfoss namespaced attributes: spout, params
 
+        /** @var SimpleXMLElement attributes */
         $attrs = $xml->attributes();
+        /** @var SimpleXMLElement attributes in selfoss namespace */
         $nsattrs = $xml->attributes('selfoss', true);
 
         // description

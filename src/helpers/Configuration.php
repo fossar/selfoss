@@ -209,7 +209,9 @@ class Configuration {
 
         $reflection = new ReflectionClass(self::class);
         foreach ($reflection->getProperties() as $property) {
-            $configKey = strtolower(preg_replace('([[:upper:]]+)', '_$0', $property->getName()));
+            $underscoreSeparatedName = preg_replace('([[:upper:]]+)', '_$0', $property->getName());
+            assert($underscoreSeparatedName !== null, 'Regex must be valid');
+            $configKey = strtolower($underscoreSeparatedName);
 
             if (isset($environment[strtoupper($this->envPrefix . $configKey)])) {
                 // Prefer the value from environment variable if present.

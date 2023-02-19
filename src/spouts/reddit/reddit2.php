@@ -155,7 +155,8 @@ class reddit2 extends \spouts\spout {
                 $icon,
                 $link,
                 $date,
-                $author
+                $author,
+                null
             );
         }
     }

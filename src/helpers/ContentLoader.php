@@ -297,11 +297,12 @@ class ContentLoader {
      * @return bool indicating filter success
      */
     protected function filter($source, string $title, string $content): bool {
-        if (strlen(trim($source['filter'] ?? '')) !== 0) {
-            $resultTitle = @preg_match($source['filter'], $title);
-            $resultContent = @preg_match($source['filter'], $content);
+        $filter = trim($source['filter'] ?? '');
+        if (strlen($filter) !== 0) {
+            $resultTitle = @preg_match($filter, $title);
+            $resultContent = @preg_match($filter, $content);
             if ($resultTitle === false || $resultContent === false) {
-                $this->logger->error('filter error: ' . $source['filter']);
+                $this->logger->error('filter error: ' . $filter);
 
                 return true; // do not filter out item
             }
