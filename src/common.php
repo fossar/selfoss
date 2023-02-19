@@ -179,12 +179,12 @@ if ($configuration->dbType === 'sqlite') {
                 // calling the __call magic method.
                 '__call',
                 [
-                    // https://www.sqlite.org/lang_expr.html#the_like_glob_regexp_and_match_operators
+                    // https://www.sqlite.org/lang_expr.html#the_like_glob_regexp_match_and_extract_operators
                     'sqliteCreateFunction',
                     [
                         'regexp',
                         function(string $pattern, string $text): bool {
-                            return preg_match('/' . addcslashes($pattern, '/') . '/', $text);
+                            return preg_match('/' . addcslashes($pattern, '/') . '/', $text) === 1;
                         },
                         2,
                     ],
