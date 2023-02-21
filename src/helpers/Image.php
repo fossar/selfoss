@@ -247,11 +247,9 @@ class Image {
         }
 
         // resize
-        if ($width !== null && $height !== null) {
-            if (($height !== null && $wideImage->getHeight() > $height) ||
-               ($width !== null && $wideImage->getWidth() > $width)) {
-                $wideImage = $wideImage->resize($width, $height);
-            }
+        if (($height !== null && $wideImage->getHeight() > $height) ||
+           ($width !== null && $wideImage->getWidth() > $width)) {
+            $wideImage = $wideImage->resize($width, $height);
         }
 
         // return image as jpg or png
