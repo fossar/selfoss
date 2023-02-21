@@ -36,7 +36,6 @@ class ViewHelper {
         }
 
         if (preg_match('#^/(?P<regex>.+)/$#', $searchWords, $matches)) {
-            /** @var string $content */ // For PHPStan: array can only occur when $subject is array.
             $content = preg_replace('/(?!<[^<>])(' . $matches[1] . ')(?![^<>]*>)/', '<span class="found">$0</span>', $content);
 
             assert($content !== null, 'Regex must be valid.'); // For PHPStan: Will be picked up by error handler.
@@ -47,7 +46,6 @@ class ViewHelper {
         $searchWords = \helpers\Search::splitTerms($searchWords);
 
         foreach ($searchWords as $word) {
-            /** @var string $content */ // For PHPStan: array can only occur when $subject is array.
             $content = @preg_replace('/(?!<[^<>])(' . preg_quote($word, '/') . ')(?![^<>]*>)/i', '<span class="found">$0</span>', $content);
 
             assert($content !== null, 'Regex must be valid.');
