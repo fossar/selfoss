@@ -184,7 +184,7 @@ class TwitterV1ApiClient {
         $i = 0;
         /** @var int index of the currently processed Unicode code point in the text */
         $cpi = -1;
-        /** @var int index of the index of the final Unicode code point of the last processed entity */
+        /** @var int index of the final Unicode code point of the last processed entity */
         $skipUntilCp = -1;
 
         while ($i < $length) {
