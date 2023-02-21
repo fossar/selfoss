@@ -88,13 +88,6 @@ class DatabaseConnection {
     }
 
     /**
-     * Return transaction flag
-     */
-    private function isInTransaction(): bool {
-        return $this->isInTransaction;
-    }
-
-    /**
      * Map data type of argument to a PDO constant
      *
      * @param scalar $val
