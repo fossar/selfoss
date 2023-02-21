@@ -65,6 +65,7 @@ class Rss {
 
         // get items
         $newestEntryDate = null;
+        $itemsToMark = [];
         foreach ($this->itemsDao->get($options) as $item) {
             if ($newestEntryDate === null) {
                 $newestEntryDate = $item['datetime'];
@@ -97,12 +98,12 @@ class Rss {
             }
 
             $this->feedWriter->addItem($newItem);
-            $lastid = $item['id'];
+            $itemsToMark[] = $item['id'];
+        }
 
-            // mark as read
-            if ($this->configuration->rssMarkAsRead && $lastid !== null) {
-                $this->itemsDao->mark([$lastid]);
-            }
+        // mark as read
+        if ($this->configuration->rssMarkAsRead && count($itemsToMark) > 0) {
+            $this->itemsDao->mark($itemsToMark);
         }
 
         if ($newestEntryDate === null) {
