@@ -111,11 +111,11 @@ class View {
     public function jsonError($data) {
         header('Content-type: application/json');
 
-        /** @var string $error */ // For PHPStan: Or an exception will be thrown.
         $error = @json_encode($data);
         if (json_last_error() !== JSON_ERROR_NONE) {
             throw new Exception(json_last_error_msg(), json_last_error());
         }
+        assert($error !== false); // For PHPStan: Exception would be thrown when the function returns false.
 
         $this->error($error);
     }
@@ -130,11 +130,11 @@ class View {
     public function jsonSuccess($data) {
         header('Content-type: application/json');
 
-        /** @var string $message */ // For PHPStan: Or an exception will be thrown.
         $message = @json_encode($data);
         if (json_last_error() !== JSON_ERROR_NONE) {
             throw new Exception(json_last_error_msg(), json_last_error());
         }
+        assert($message !== false); // For PHPStan: Exception would be thrown when the function returns false.
 
         exit($message);
     }

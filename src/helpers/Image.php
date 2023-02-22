@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace helpers;
 
-use Elphin\IcoFileLoader;
 use Elphin\IcoFileLoader\IcoFileService;
 use GuzzleHttp\Psr7\Uri;
 use GuzzleHttp\Psr7\UriResolver;
@@ -223,7 +222,6 @@ class Image {
             }
 
             if ($image === null) {
-                /** @var ?IcoFileLoader\IconImage */ // Type annotation says it cannot return null but that is not the case when the ico file does not contain images.
                 $image = $icon->findBest();
             }
 

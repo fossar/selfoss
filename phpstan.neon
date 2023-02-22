@@ -14,6 +14,7 @@ parameters:
 
     stubFiles:
         - utils/PHPStan/Stubs/Dice.stub
+        - utils/PHPStan/Stubs/IcoFileLoader.stub
 
     ignoreErrors:
         # The arguments are provided by SimplePie and we want the value of a later one.

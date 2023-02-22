@@ -1,0 +1,13 @@
+<?php
+
+namespace Elphin\IcoFileLoader;
+
+class Icon {
+	/**
+	 * @phpstan-return ?IconImage Can be null when an icon is empty.
+	 */
+	public function findBest();
+}
+
+class IconImage {
+}

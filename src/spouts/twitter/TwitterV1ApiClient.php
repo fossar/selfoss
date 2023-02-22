@@ -178,9 +178,9 @@ class TwitterV1ApiClient {
     private static function replaceEntities(string $text, array $entities): HtmlString {
         /** @var string built text */
         $result = '';
-        /** @var int number of bytes in text */
+        /** @var int<0, max> number of bytes in text */
         $length = strlen($text);
-        /** @var int index of the currently processed byte in the text */
+        /** @var int<0, max> index of the currently processed byte in the text */
         $i = 0;
         /** @var int index of the currently processed Unicode code point in the text */
         $cpi = -1;
