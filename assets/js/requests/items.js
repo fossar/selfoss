@@ -1,4 +1,5 @@
 import * as ajax from '../helpers/ajax';
+import { unescape } from 'html-escaper';
 
 function safeDate(datetimeString) {
     const date = new Date(datetimeString);
@@ -56,6 +57,7 @@ export function mark(id, read) {
 function enrichEntry(entry) {
     return {
         ...entry,
+        link: unescape(entry.link),
         datetime: safeDate(entry.datetime),
         updatetime: entry.updatetime ? safeDate(entry.updatetime) : entry.updatetime
     };
