@@ -245,10 +245,10 @@ class Configuration {
                 // Should already be a string.
             } elseif ($propertyType === 'self::LOGGER_LEVEL_*') {
                 if (!in_array($value, self::ALLOWED_LOGGER_LEVELS, true)) {
-                    throw new Exception("Unsupported value “${value}” for property “${propertyName}”, must be one of " . implode(', ', self::ALLOWED_LOGGER_LEVELS) . '.', 1);
+                    throw new Exception("Unsupported value “{$value}” for property “{$propertyName}”, must be one of " . implode(', ', self::ALLOWED_LOGGER_LEVELS) . '.', 1);
                 }
             } else {
-                throw new Exception("Unknown type “${propertyType}” for property “${propertyName}”.", 1);
+                throw new Exception("Unknown type “{$propertyType}” for property “{$propertyName}”.", 1);
             }
 
             $this->{$propertyName} = $value;

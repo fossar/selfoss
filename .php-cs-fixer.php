@@ -32,6 +32,7 @@ $rules = [
     'psr_autoloading' => true,
     'strict_param' => true,
     'declare_strict_types' => true,
+    'simple_to_complex_string_variable' => true,
 ];
 
 $config = new PhpCsFixer\Config();
