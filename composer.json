@@ -7,7 +7,7 @@
         "ext-gd": "*",
         "bcosca/fatfree-core": "^3.8",
         "bramus/router": "^1.6",
-        "fossar/guzzle-transcoder": "^0.2.0",
+        "fossar/guzzle-transcoder": "^0.3.0",
         "fossar/htmlawed": "^1.2.4.1",
         "guzzlehttp/guzzle": "^7.0",
         "guzzlehttp/oauth-subscriber": "^0.6.0",
