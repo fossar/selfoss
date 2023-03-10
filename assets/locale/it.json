@@ -101,5 +101,20 @@
   "lang_error_check_log_file": "Si è verificato un errore, controlla il file di log «{0}».",
   "lang_offline_navigation_unavailable": "Al momento non è possibile modificare etichette e fonti nella modalità fuori linea.",
   "lang_article_reading_time": "{0} min letti",
-  "lang_experimental": "Sperimentale"
+  "lang_experimental": "Sperimentale",
+  "lang_source_go_to_settings": "Apri nelle impostazioni",
+  "lang_sources_loading": "Caricamento delle fonti…",
+  "lang_source_deleting": "Eliminazione della fonte…",
+  "lang_source_browse": "Sfoglia",
+  "lang_source_params_loading": "Caricamento dei parametri…",
+  "lang_no_sources": "Nessuna fonte configurata.",
+  "lang_source_warn_cancel_dirty": "Scartare le modifiche non salvate?",
+  "lang_source_menu": "Più azioni",
+  "lang_sources_leaving_unsaved_prompt": "Esci dalle impostazioni con delle modifiche della fonte non salvate?",
+  "lang_tag_change_color_button_title": "Cambia il colore",
+  "lang_entries_loading": "Caricamento delle pubblicazioni…",
+  "lang_source_saving": "Salvataggio delle modifiche alla fonte…",
+  "lang_error_unauthorized": "Per favore {link_begin} connettiti{link_end} per continuare.",
+  "lang_login_in_progress": "Tentativo di connessione…",
+  "lang_login_error_generic": "Connessione impossibile: {errorMessage}"
 }
