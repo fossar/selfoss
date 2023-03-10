@@ -99,5 +99,22 @@
   "lang_error_unwritable_logs": "Unable to write logs.",
   "lang_error_check_system_logs": "An error occured, please check your system logs.",
   "lang_error_check_log_file": "An error occured, please check the log file ‘{0}’.",
-  "lang_offline_navigation_unavailable": "Switching tags and sources is currently not available in offline mode."
+  "lang_offline_navigation_unavailable": "Switching tags and sources is currently not available in offline mode.",
+  "lang_experimental": "Experimental",
+  "lang_entries_loading": "Loading entries…",
+  "lang_login_in_progress": "Trying to log in…",
+  "lang_login_error_generic": "Could not log in: {errorMessage}",
+  "lang_error_unauthorized": "Please {link_begin}sign in{link_end} to continue.",
+  "lang_no_sources": "No sources configured.",
+  "lang_source_menu": "More actions",
+  "lang_source_browse": "Browse",
+  "lang_source_params_loading": "Loading parameters…",
+  "lang_sources_loading": "Loading sources…",
+  "lang_source_deleting": "Deleting source…",
+  "lang_source_saving": "Saving source changes…",
+  "lang_source_go_to_settings": "Open in settings",
+  "lang_source_warn_cancel_dirty": "Discard unsaved changes?",
+  "lang_sources_leaving_unsaved_prompt": "Leave settings with unsaved source changes?",
+  "lang_tag_change_color_button_title": "Change colour",
+  "lang_article_reading_time": "{0} min read"
 }
