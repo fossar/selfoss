@@ -45,6 +45,7 @@ class About {
                 'share' => $this->configuration->share, // string
                 'wallabag' => $wallabag, // ?array
                 'wordpress' => $this->configuration->wordpress, // ?string
+                'mastodon' => $this->configuration->mastodon, // ?string
                 'autoMarkAsRead' => $this->configuration->autoMarkAsRead, // bool
                 'autoCollapse' => $this->configuration->autoCollapse, // bool
                 'autoStreamMore' => $this->configuration->autoStreamMore, // bool

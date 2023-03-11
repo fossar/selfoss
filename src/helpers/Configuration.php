@@ -158,6 +158,9 @@ class Configuration {
     /** @var ?string */
     public $wordpress = null;
 
+    /** @var ?string */
+    public $mastodon = null;
+
     /** @var bool */
     public $allowPublicUpdateAccess = false;
 

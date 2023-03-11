@@ -6,6 +6,7 @@ import { faFacebookSquare } from '@fortawesome/free-brands-svg-icons/faFacebookS
 import { faGetPocket } from '@fortawesome/free-brands-svg-icons/faGetPocket';
 import { faTwitter } from '@fortawesome/free-brands-svg-icons/faTwitter';
 import { faWordpressSimple } from '@fortawesome/free-brands-svg-icons/faWordpressSimple';
+import { faMastodon } from '@fortawesome/free-brands-svg-icons/faMastodon';
 import { faCheckCircle as faCheckCircleRegular } from '@fortawesome/free-regular-svg-icons/faCheckCircle';
 import { faStar as faStarRegular } from '@fortawesome/free-regular-svg-icons/faStar';
 import { faTimesCircle } from '@fortawesome/free-regular-svg-icons/faTimesCircle';
@@ -48,6 +49,7 @@ export {
     faGetPocket as pocket,
     faTwitter as twitter,
     faWordpressSimple as wordpress,
+    faMastodon as mastodon,
     faCheckCircleRegular as markUnread,
     faStarRegular as star,
     faTimesCircle as close,

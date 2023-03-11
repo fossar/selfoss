@@ -217,6 +217,7 @@ Set to `1` to allow public access for `/update` (anybody can access and start th
 <dt><code>t</code></dt><dd>Twitter</dd>
 <dt><code>p</code></dt><dd>Pocket</dd>
 <dt><code>d</code></dt><dd>Diaspora</dd>
+<dt><code>m</code></dt><dd>Mastodon (requires <a href="#mastodon"><code>mastodon</code></a> option to be set)</dd>
 <dt><code>w</code></dt><dd>Wallabag (requires <a href="#wallabag"><code>wallabag</code></a> option to be set)</dd>
 <dt><code>s</code></dt><dd>Wordpress (requires <a href="#wordpress"><code>wordpress</code></a> option to be set)</dd>
 <dt><code>e</code></dt><dd>E-mail</dd>
@@ -226,6 +227,12 @@ Set to `1` to allow public access for `/update` (anybody can access and start th
 Include the letters for methods you want to use. For example, if you would like to only show Facebook and Twitter share buttons, use `share=ft`.
 
 Defaults to `share=atfpde`.
+</div>
+
+### `mastodon`
+<div class="config-option">
+
+URL of your Mastodon instance, for example `https://example.com`.
 </div>
 
 ### `wallabag`

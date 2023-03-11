@@ -58,6 +58,15 @@ export function useSharers({ configuration, _ }) {
                     },
                 },
 
+                'm': {
+                    label: _('share_mastodon_label'),
+                    icon: <FontAwesomeIcon icon={icons.mastodon} />,
+                    action: ({url, title}) => {
+                        window.open(configuration.mastodon + '/share?text=' + encodeURIComponent('"' + title + '"\n' + url), undefined, 'noreferrer');
+                    },
+                    available: configuration.mastodon !== null,
+                },
+
                 'p': {
                     label: _('share_pocket_label'),
                     icon: <FontAwesomeIcon icon={icons.pocket} />,
