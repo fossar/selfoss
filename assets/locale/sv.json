@@ -116,5 +116,6 @@
   "lang_entries_loading": "Läser in poster…",
   "lang_login_in_progress": "Försöker att logga in…",
   "lang_error_unauthorized": "Vänligen {link_begin}logga in{link_end} för att fortsätta.",
-  "lang_article_reading_time": "{0}min läs"
+  "lang_article_reading_time": "{0}min läs",
+  "lang_share_mastodon_label": "Dela på Mastodon"
 }
