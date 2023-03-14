@@ -116,5 +116,6 @@
   "lang_app_update": "Selfoss actualizouse, recargue",
   "lang_app_reload": "Recargar",
   "lang_error_unauthorized": "{link_begin}inicia sesión{link_end} para continuar.",
-  "lang_login_error_generic": "Non se puido iniciar sesión: {errorMessage}"
+  "lang_login_error_generic": "Non se puido iniciar sesión: {errorMessage}",
+  "lang_share_mastodon_label": "Comparte en Mastodon"
 }
