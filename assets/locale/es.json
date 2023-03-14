@@ -116,5 +116,6 @@
   "lang_tag_change_color_button_title": "Cambiar el color",
   "lang_entries_loading": "Cargando las entradas…",
   "lang_login_error_generic": "No se ha podido iniciar la sesión: {errorMessage}",
-  "lang_sources_leaving_unsaved_prompt": "¿Dejar la configuración con los cambios sin guardar?"
+  "lang_sources_leaving_unsaved_prompt": "¿Dejar la configuración con los cambios sin guardar?",
+  "lang_share_mastodon_label": "Compartir en Mastodon"
 }
