@@ -116,5 +116,6 @@
   "lang_source_warn_cancel_dirty": "Discard unsaved changes?",
   "lang_sources_leaving_unsaved_prompt": "Leave settings with unsaved source changes?",
   "lang_tag_change_color_button_title": "Change colour",
-  "lang_article_reading_time": "{0} min read"
+  "lang_article_reading_time": "{0} min read",
+  "lang_share_mastodon_label": "Share on Mastodon"
 }
