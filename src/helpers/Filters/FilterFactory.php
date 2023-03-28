@@ -24,7 +24,7 @@ final class FilterFactory {
             return new AcceptingFilter();
         }
 
-        if (@preg_match('/^(?:(?P<field>[^:]*):)?(?P<regex>.+)$/', $expression, $match) === 0) {
+        if (@preg_match('/^(?P<negated>!)?(?:(?P<field>[^:]*):)?(?P<regex>.+)$/', $expression, $match) === 0) {
             throw new FilterSyntaxError("Invalid filter expression {$expression}, see https://selfoss.aditu.de/docs/usage/filters/");
         }
 
@@ -39,6 +39,10 @@ final class FilterFactory {
             $filter = new MapFilter($filter, Closure::fromCallable([self::class, 'getContentString']));
         } else {
             throw new FilterSyntaxError("Invalid filter expression {$expression}, field must be one of “title” or “content”.");
+        }
+
+        if ($match['negated'] === '!') {
+            $filter = new NegationFilter($filter);
         }
 
         return $filter;

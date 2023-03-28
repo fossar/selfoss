@@ -138,6 +138,42 @@ final class FilterTest extends TestCase {
             true,
         ];
 
+        yield 'Not(Item): No match' => [
+            '!/(?i)reg(ular expression|exp)/',
+            self::mkItem(
+                /* title: */ 'foo',
+                /* content: */ 'foo'
+            ),
+            true,
+        ];
+
+        yield 'Not(Item): Title match' => [
+            '!/(?i)reg(ular expression|exp)/',
+            self::mkItem(
+                /* title: */ 'Regexp tips and tricks',
+                /* content: */ 'foo'
+            ),
+            false,
+        ];
+
+        yield 'Not(Item): Content match' => [
+            '!/(?i)reg(ular expression|exp)/',
+            self::mkItem(
+                /* title: */ 'foo',
+                /* content: */ 'Regular expressions are great.'
+            ),
+            false,
+        ];
+
+        yield 'Not(Item): Both match' => [
+            '!/(?i)reg(ular expression|exp)/',
+            self::mkItem(
+                /* title: */ 'Regexp tips and tricks',
+                /* content: */ 'Regular expressions are great.'
+            ),
+            false,
+        ];
+
         yield 'Title: No match' => [
             'title:/(?i)reg(ular expression|exp)/',
             self::mkItem(
@@ -174,6 +210,42 @@ final class FilterTest extends TestCase {
             true,
         ];
 
+        yield 'Not(Title): No match' => [
+            '!title:/(?i)reg(ular expression|exp)/',
+            self::mkItem(
+                /* title: */ 'foo',
+                /* content: */ 'foo'
+            ),
+            true,
+        ];
+
+        yield 'Not(Title): Title match' => [
+            '!title:/(?i)reg(ular expression|exp)/',
+            self::mkItem(
+                /* title: */ 'Regexp tips and tricks',
+                /* content: */ 'foo'
+            ),
+            false,
+        ];
+
+        yield 'Not(Title): Content match' => [
+            '!title:/(?i)reg(ular expression|exp)/',
+            self::mkItem(
+                /* title: */ 'foo',
+                /* content: */ 'Regular expressions are great.'
+            ),
+            true,
+        ];
+
+        yield 'Not(Title): Both match' => [
+            '!title:/(?i)reg(ular expression|exp)/',
+            self::mkItem(
+                /* title: */ 'Regexp tips and tricks',
+                /* content: */ 'Regular expressions are great.'
+            ),
+            false,
+        ];
+
         yield 'Content: No match' => [
             'content:/(?i)reg(ular expression|exp)/',
             self::mkItem(
@@ -208,6 +280,42 @@ final class FilterTest extends TestCase {
                 /* content: */ 'Regular expressions are great.'
             ),
             true,
+        ];
+
+        yield 'Not(Content): No match' => [
+            '!content:/(?i)reg(ular expression|exp)/',
+            self::mkItem(
+                /* title: */ 'foo',
+                /* content: */ 'foo'
+            ),
+            true,
+        ];
+
+        yield 'Not(Content): Title match' => [
+            '!content:/(?i)reg(ular expression|exp)/',
+            self::mkItem(
+                /* title: */ 'Regexp tips and tricks',
+                /* content: */ 'foo'
+            ),
+            true,
+        ];
+
+        yield 'Not(Content): Content match' => [
+            '!content:/(?i)reg(ular expression|exp)/',
+            self::mkItem(
+                /* title: */ 'foo',
+                /* content: */ 'Regular expressions are great.'
+            ),
+            false,
+        ];
+
+        yield 'Not(Content): Both match' => [
+            '!content:/(?i)reg(ular expression|exp)/',
+            self::mkItem(
+                /* title: */ 'Regexp tips and tricks',
+                /* content: */ 'Regular expressions are great.'
+            ),
+            false,
         ];
     }
 
