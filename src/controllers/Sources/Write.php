@@ -6,6 +6,8 @@ namespace controllers\Sources;
 
 use helpers\Authentication;
 use helpers\ContentLoader;
+use helpers\Filters\FilterFactory;
+use helpers\Filters\FilterSyntaxError;
 use helpers\Misc;
 use helpers\Request;
 use helpers\SpoutLoader;
@@ -96,6 +98,13 @@ class Write {
         $tags = array_map('htmlspecialchars', $data['tags']);
         $spout = $data['spout'];
         $filter = $data['filter'];
+
+        try {
+            // Try to create a filter object for validation.
+            FilterFactory::fromString($filter ?? '');
+        } catch (FilterSyntaxError $exception) {
+            $this->view->jsonError(['filter' => $exception->getMessage()]);
+        }
 
         unset($data['title']);
         unset($data['spout']);
