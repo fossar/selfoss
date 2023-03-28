@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace helpers;
 
+use helpers\Filters\AcceptingFilter;
+use helpers\Filters\FilterFactory;
+use helpers\Filters\FilterSyntaxError;
 use Monolog\Logger;
 
 /**
@@ -154,6 +157,15 @@ class ContentLoader {
             $iconCache = [];
             $sourceIconUrl = null;
             $itemsSeen = [];
+
+            $filterExpression = trim($source['filter'] ?? '');
+            try {
+                $filter = FilterFactory::fromString($filterExpression);
+            } catch (FilterSyntaxError $exception) {
+                $this->logger->error('filter error: ' . $exception->getMessage());
+                $filter = new AcceptingFilter();
+            }
+
             foreach ($items as $item) {
                 $titlePlainText = $item->getTitle()->getPlainText();
                 // item already in database?
@@ -197,7 +209,7 @@ class ContentLoader {
                 $title = HtmlString::fromRaw(trim($this->sanitizeField($item->getTitle())->getRaw()));
 
                 // Check sanitized title against filter
-                if ($this->filter($source, $title->getRaw(), $content->getRaw()) === false) {
+                if (!$filter->admits($item->withTitle($title)->withContent($content))) {
                     continue;
                 }
 
@@ -289,32 +301,6 @@ class ContentLoader {
         if (count($itemsSeen) > 0) {
             $this->itemsDao->updateLastSeen($itemsSeen);
         }
-    }
-
-    /**
-     * Check if a new item matches the filter
-     *
-     * @param array{filter: ?string} $source
-     *
-     * @return bool indicating filter success
-     */
-    protected function filter($source, string $title, string $content): bool {
-        $filter = trim($source['filter'] ?? '');
-        if (strlen($filter) !== 0) {
-            $resultTitle = @preg_match($filter, $title);
-            $resultContent = @preg_match($filter, $content);
-            if ($resultTitle === false || $resultContent === false) {
-                $this->logger->error('filter error: ' . $filter);
-
-                return true; // do not filter out item
-            }
-            // test filter
-            if ($resultTitle === 0 && $resultContent === 0) {
-                return false;
-            }
-        }
-
-        return true;
     }
 
     /**
