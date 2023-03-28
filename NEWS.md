@@ -6,6 +6,7 @@
 ### New features
 - YouTube spout now accepts handles (starting with `@` sign). ([#1412](https://github.com/fossar/selfoss/pull/1412))
 - YouTube spout now includes the video description. ([#1412](https://github.com/fossar/selfoss/pull/1412))
+- Mastodon share button was added. Can be enabled by adding `m` to `share` and setting `mastodon` pointing to your chosen instance. ([#1421](https://github.com/fossar/selfoss/pull/1421))
 
 ### Bug fixes
 - Configuration parser was changed to *raw* method, which relaxes the requirement to quote option values containing special characters in `config.ini`. ([#1371](https://github.com/fossar/selfoss/issues/1371))
