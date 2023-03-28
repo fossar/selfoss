@@ -56,7 +56,14 @@ def is_not_unimportant(dest: Path) -> bool:
     return allowed
 
 class ZipFile(zipfile.ZipFile):
+    def create_directory_entry(self, path: str) -> None:
+        # Directories are empty files whose path ends with a slash.
+        # https://mail.python.org/pipermail/python-list/2003-June/205859.html
+        self.writestr(str(self.prefix / path) + '/', '')
+
     def directory(self, name: str, allowed: Callable[[Path], bool] = lambda item: True) -> None:
+        self.create_directory_entry(name)
+
         for root, dirs, files in os.walk(name):
             root = Path(root)
 
@@ -69,9 +76,7 @@ class ZipFile(zipfile.ZipFile):
                 path = root / directory
 
                 if allowed(path):
-                    # Directories are empty files whose path ends with a slash.
-                    # https://mail.python.org/pipermail/python-list/2003-June/205859.html
-                    self.writestr(str(self.prefix / path) + '/', '')
+                    self.create_directory_entry(path)
 
             for file in files:
                 path = root / file
@@ -122,6 +127,8 @@ def main() -> None:
         # fill archive with data
         with ZipFile(source_dir / filename, 'w', zipfile.ZIP_DEFLATED) as archive:
             archive.prefix = Path('selfoss')
+
+            archive.create_directory_entry('')
 
             archive.directory('src/')
             archive.directory('vendor/', is_not_unimportant)
