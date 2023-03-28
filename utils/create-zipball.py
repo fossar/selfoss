@@ -9,7 +9,6 @@ import zipfile
 from pathlib import Path
 from typing import Callable
 
-logger = logging.getLogger('create-zipfile')
 
 DISALLOWED_FILENAME_PATTERNS = list(map(re.compile, [
     r'^\.git(hub|ignore|attributes|keep)$',
@@ -87,6 +86,9 @@ class ZipFile(zipfile.ZipFile):
         self.write(name, self.prefix / name)
 
 def main() -> None:
+    logging.basicConfig(level=logging.DEBUG)
+    logger = logging.getLogger('create-zipfile')
+
     source_dir = Path.cwd()
     with tempfile.TemporaryDirectory(prefix='selfoss-dist-') as temp_dir:
         dirty = subprocess.run(['git','-C', source_dir, 'diff-index', '--quiet', 'HEAD']).returncode == 1
