@@ -39,8 +39,10 @@ final class FilterFactory {
             $filter = new MapFilter($filter, Closure::fromCallable([self::class, 'getContentString']));
         } elseif ($field === 'author') {
             $filter = new MapFilter(new DisjunctionFilter($filter), Closure::fromCallable([self::class, 'getAuthors']));
+        } elseif ($field === 'category') {
+            $filter = new MapFilter(new DisjunctionFilter($filter), Closure::fromCallable([self::class, 'getCategories']));
         } else {
-            throw new FilterSyntaxError("Invalid filter expression {$expression}, field must be one of “title”, “content” or “author”.");
+            throw new FilterSyntaxError("Invalid filter expression {$expression}, field must be one of “title”, “content”, “author” or “category”.");
         }
 
         if ($match['negated'] === '!') {
@@ -85,5 +87,28 @@ final class FilterFactory {
         $author = $item->getAuthor();
 
         return $author === null ? [] : [$author];
+    }
+
+    /**
+     * @param Item<mixed> $item
+     *
+     * @return string[]
+     */
+    private static function getCategories(Item $item): array {
+        $extraData = $item->getExtraData();
+        if ($extraData instanceof \SimplePie\Item) {
+            $categories = [];
+            foreach ($extraData->get_categories() ?? [] as $category) {
+                $label = $category->get_label();
+                if ($label !== null) {
+                    $categories[] = $label;
+                }
+            }
+
+            return $categories;
+        }
+
+        // We do not know how to extract categories.
+        return [];
     }
 }

@@ -82,9 +82,13 @@ final class FilterTest extends TestCase {
     }
 
     /**
-     * @return Item<mixed>
+     * @template T
+     *
+     * @param T $extraData
+     *
+     * @return Item<T>
      */
-    private static function mkItem(string $title, string $content, ?string $author = null): Item {
+    private static function mkItem(string $title, string $content, ?string $author = null, $extraData = null): Item {
         return new Item(
             /* id: */ '0',
             /* title: */ HtmlString::fromRaw($title),
@@ -94,7 +98,7 @@ final class FilterTest extends TestCase {
             /* link: */ '',
             /* date: */ new DateTimeImmutable(),
             /* author: */ $author,
-            /* extraData: */ null
+            /* extraData: */ $extraData
         );
     }
 
@@ -372,6 +376,103 @@ final class FilterTest extends TestCase {
             self::mkItem(
                 /* title: */ 'John’s risotto recipe',
                 /* content: */ 'John recommends using rice.'
+            ),
+            true,
+        ];
+
+        $stubItemSport = $this->createMock(\SimplePie\Item::class);
+        $stubItemSport->method('get_categories')->willReturn([
+            new \SimplePie\Category('sport'),
+            new \SimplePie\Category('kickball'),
+        ]);
+        $stubItemActualNews = $this->createMock(\SimplePie\Item::class);
+        $stubItemActualNews->method('get_categories')->willReturn([
+            new \SimplePie\Category('ukraine'),
+            new \SimplePie\Category('war'),
+        ]);
+        $stubItemNoCategories = $this->createMock(\SimplePie\Item::class);
+        $stubItemNoCategories->method('get_categories')->willReturn(null);
+
+        yield 'Category: Match' => [
+            'category:/sport/',
+            self::mkItem(
+                /* title: */ 'Real Milan wins kickball terran bowl',
+                /* content: */ '',
+                /* author: */ null,
+                /* extraData: */ $stubItemSport
+            ),
+            true,
+        ];
+
+        yield 'Category: No match' => [
+            'category:/sport/',
+            self::mkItem(
+                /* title: */ 'Arrest warrant issued for Putin over war crime allegations',
+                /* content: */ '',
+                /* author: */ null,
+                /* extraData: */ $stubItemActualNews
+            ),
+            false,
+        ];
+
+        yield 'Category: No categories' => [
+            'category:/sport/',
+            self::mkItem(
+                /* title: */ 'Real Milan wins kickball terran bowl',
+                /* content: */ '',
+                /* author: */ null,
+                /* extraData: */ $stubItemNoCategories
+            ),
+            false,
+        ];
+
+        yield 'Category: Not SimplePie' => [
+            'category:/sport/',
+            self::mkItem(
+                /* title: */ 'Real Milan wins kickball terran bowl',
+                /* content: */ ''
+            ),
+            false,
+        ];
+
+        yield 'Not(Category): Match' => [
+            '!category:/sport/',
+            self::mkItem(
+                /* title: */ 'Real Milan wins kickball terran bowl',
+                /* content: */ '',
+                /* author: */ null,
+                /* extraData: */ $stubItemSport
+            ),
+            false,
+        ];
+
+        yield 'Not(Category): No match' => [
+            '!category:/sport/',
+            self::mkItem(
+                /* title: */ 'Arrest warrant issued for Putin over war crime allegations',
+                /* content: */ '',
+                /* author: */ null,
+                /* extraData: */ $stubItemActualNews
+            ),
+            true,
+        ];
+
+        yield 'Not(Category): No categories' => [
+            '!category:/sport/',
+            self::mkItem(
+                /* title: */ 'Foo',
+                /* content: */ '',
+                /* author: */ null,
+                /* extraData: */ $stubItemNoCategories
+            ),
+            true,
+        ];
+
+        yield 'Not(Category): Not SimplePie' => [
+            '!category:/sport/',
+            self::mkItem(
+                /* title: */ 'Foo',
+                /* content: */ ''
             ),
             true,
         ];
