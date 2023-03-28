@@ -7,6 +7,7 @@ import subprocess
 import tempfile
 import zipfile
 from pathlib import Path
+from typing import Callable
 
 logger = logging.getLogger('create-zipfile')
 
@@ -56,15 +57,11 @@ def is_not_unimportant(dest: Path) -> bool:
     return allowed
 
 class ZipFile(zipfile.ZipFile):
-    def directory(self, name, allowed=None):
-        if allowed is None:
-            allowed = lambda item: True
-
+    def directory(self, name: str, allowed: Callable[[Path], bool] = lambda item: True) -> None:
         for root, dirs, files in os.walk(name):
             root = Path(root)
 
             for directory in dirs:
-                directory = Path(directory)
                 path = root / directory
 
                 if allowed(path):
@@ -77,10 +74,10 @@ class ZipFile(zipfile.ZipFile):
 
                 if allowed(path):
                     self.write(path, self.prefix / path)
-    def file(self, name):
+    def file(self, name: str) -> None:
         self.write(name, self.prefix / name)
 
-def main():
+def main() -> None:
     source_dir = Path.cwd()
     with tempfile.TemporaryDirectory(prefix='selfoss-dist-') as temp_dir:
         dirty = subprocess.run(['git','-C', source_dir, 'diff-index', '--quiet', 'HEAD']).returncode == 1
