@@ -37,8 +37,10 @@ final class FilterFactory {
             $filter = new MapFilter($filter, Closure::fromCallable([self::class, 'getTitleString']));
         } elseif ($field === 'content') {
             $filter = new MapFilter($filter, Closure::fromCallable([self::class, 'getContentString']));
+        } elseif ($field === 'author') {
+            $filter = new MapFilter(new DisjunctionFilter($filter), Closure::fromCallable([self::class, 'getAuthors']));
         } else {
-            throw new FilterSyntaxError("Invalid filter expression {$expression}, field must be one of “title” or “content”.");
+            throw new FilterSyntaxError("Invalid filter expression {$expression}, field must be one of “title”, “content” or “author”.");
         }
 
         if ($match['negated'] === '!') {
@@ -72,5 +74,16 @@ final class FilterFactory {
      */
     private static function getContentString(Item $item): string {
         return $item->getContent()->getRaw();
+    }
+
+    /**
+     * @param Item<mixed> $item
+     *
+     * @return string[]
+     */
+    private static function getAuthors(Item $item): array {
+        $author = $item->getAuthor();
+
+        return $author === null ? [] : [$author];
     }
 }

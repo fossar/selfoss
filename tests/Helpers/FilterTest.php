@@ -84,7 +84,7 @@ final class FilterTest extends TestCase {
     /**
      * @return Item<mixed>
      */
-    private static function mkItem(string $title, string $content): Item {
+    private static function mkItem(string $title, string $content, ?string $author = null): Item {
         return new Item(
             /* id: */ '0',
             /* title: */ HtmlString::fromRaw($title),
@@ -93,7 +93,7 @@ final class FilterTest extends TestCase {
             /* icon: */ null,
             /* link: */ '',
             /* date: */ new DateTimeImmutable(),
-            /* author: */ null,
+            /* author: */ $author,
             /* extraData: */ null
         );
     }
@@ -316,6 +316,64 @@ final class FilterTest extends TestCase {
                 /* content: */ 'Regular expressions are great.'
             ),
             false,
+        ];
+
+        yield 'Author: Match' => [
+            'author:/John/',
+            self::mkItem(
+                /* title: */ 'foo',
+                /* content: */ 'foo',
+                /* author: */ 'John'
+            ),
+            true,
+        ];
+
+        yield 'Author: No match' => [
+            'author:/John/',
+            self::mkItem(
+                /* title: */ 'John’s risotto recipe',
+                /* content: */ 'John recommends using rice.',
+                /* author: */ 'Josh'
+            ),
+            false,
+        ];
+
+        yield 'Author: No author' => [
+            'author:/John/',
+            self::mkItem(
+                /* title: */ 'John’s risotto recipe',
+                /* content: */ 'John recommends using rice.'
+            ),
+            false,
+        ];
+
+        yield 'Not(Author): Match' => [
+            '!author:/John/',
+            self::mkItem(
+                /* title: */ 'foo',
+                /* content: */ 'foo',
+                /* author: */ 'John'
+            ),
+            false,
+        ];
+
+        yield 'Not(Author): No match' => [
+            '!author:/John/',
+            self::mkItem(
+                /* title: */ 'John’s risotto recipe',
+                /* content: */ 'John recommends using rice.',
+                /* author: */ 'Josh'
+            ),
+            true,
+        ];
+
+        yield 'Not(Author): No author' => [
+            '!author:/John/',
+            self::mkItem(
+                /* title: */ 'John’s risotto recipe',
+                /* content: */ 'John recommends using rice.'
+            ),
+            true,
         ];
     }
 
