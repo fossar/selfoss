@@ -137,6 +137,78 @@ final class FilterTest extends TestCase {
             ),
             true,
         ];
+
+        yield 'Title: No match' => [
+            'title:/(?i)reg(ular expression|exp)/',
+            self::mkItem(
+                /* title: */ 'foo',
+                /* content: */ 'foo'
+            ),
+            false,
+        ];
+
+        yield 'Title: Title match' => [
+            'title:/(?i)reg(ular expression|exp)/',
+            self::mkItem(
+                /* title: */ 'Regexp tips and tricks',
+                /* content: */ 'foo'
+            ),
+            true,
+        ];
+
+        yield 'Title: Content match' => [
+            'title:/(?i)reg(ular expression|exp)/',
+            self::mkItem(
+                /* title: */ 'foo',
+                /* content: */ 'Regular expressions are great.'
+            ),
+            false,
+        ];
+
+        yield 'Title: Both match' => [
+            'title:/(?i)reg(ular expression|exp)/',
+            self::mkItem(
+                /* title: */ 'Regexp tips and tricks',
+                /* content: */ 'Regular expressions are great.'
+            ),
+            true,
+        ];
+
+        yield 'Content: No match' => [
+            'content:/(?i)reg(ular expression|exp)/',
+            self::mkItem(
+                /* title: */ 'foo',
+                /* content: */ 'foo'
+            ),
+            false,
+        ];
+
+        yield 'Content: Title match' => [
+            'content:/(?i)reg(ular expression|exp)/',
+            self::mkItem(
+                /* title: */ 'Regexp tips and tricks',
+                /* content: */ 'foo'
+            ),
+            false,
+        ];
+
+        yield 'Content: Content match' => [
+            'content:/(?i)reg(ular expression|exp)/',
+            self::mkItem(
+                /* title: */ 'foo',
+                /* content: */ 'Regular expressions are great.'
+            ),
+            true,
+        ];
+
+        yield 'Content: Both match' => [
+            'content:/(?i)reg(ular expression|exp)/',
+            self::mkItem(
+                /* title: */ 'Regexp tips and tricks',
+                /* content: */ 'Regular expressions are great.'
+            ),
+            true,
+        ];
     }
 
     /**

@@ -24,9 +24,24 @@ final class FilterFactory {
             return new AcceptingFilter();
         }
 
-        $filter = new RegexFilter($expression);
+        if (@preg_match('/^(?:(?P<field>[^:]*):)?(?P<regex>.+)$/', $expression, $match) === 0) {
+            throw new FilterSyntaxError("Invalid filter expression {$expression}, see https://selfoss.aditu.de/docs/usage/filters/");
+        }
 
-        return new MapFilter(new DisjunctionFilter($filter), Closure::fromCallable([self::class, 'getTitleAndContentStrings']));
+        $filter = new RegexFilter($match['regex']);
+        $field = $match['field'];
+
+        if ($field === '') {
+            $filter = new MapFilter(new DisjunctionFilter($filter), Closure::fromCallable([self::class, 'getTitleAndContentStrings']));
+        } elseif ($field === 'title') {
+            $filter = new MapFilter($filter, Closure::fromCallable([self::class, 'getTitleString']));
+        } elseif ($field === 'content') {
+            $filter = new MapFilter($filter, Closure::fromCallable([self::class, 'getContentString']));
+        } else {
+            throw new FilterSyntaxError("Invalid filter expression {$expression}, field must be one of “title” or “content”.");
+        }
+
+        return $filter;
     }
 
     /**
