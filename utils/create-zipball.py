@@ -129,12 +129,8 @@ def main() -> None:
             # pack all bundles and bundled assets
             archive.directory('public/')
 
-            # copy data: only directory structure and .htaccess for deny
-            archive.directory('data/', lambda file: file.is_dir())
-            archive.file('data/cache/.htaccess')
-            archive.file('data/logs/.htaccess')
-            archive.file('data/sqlite/.htaccess')
-            archive.directory('data/fulltextrss')
+            # copy data directory structure and .htaccess for deny
+            archive.directory('data/')
 
             archive.file('.htaccess')
             archive.file('.nginx.conf')
