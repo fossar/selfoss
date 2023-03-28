@@ -102,6 +102,8 @@ class ContentLoader {
         // at least 20 seconds wait until next update of a given source
         $this->updateSource($source, null);
         if (time() - $source['lastupdate'] < 20) {
+            $this->logger->debug('Source ' . $source['title'] . ' updated less then 20 seconds ago, skipping.');
+
             return;
         }
 
