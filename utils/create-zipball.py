@@ -40,7 +40,6 @@ DISALLOWED_DEST_PATTERNS = list(map(re.compile, [
     r'^vendor/simplepie/simplepie/library$',
     r'^vendor/composer/installed\.json$',
     r'(?i)^vendor/[^/]+/[^/]+/(test|doc)s?',
-    r'^vendor/[^/]+/[^/]+/\.git(/|$)',
     r'^vendor/smalot/pdfparser/samples',
     r'^vendor/smalot/pdfparser/src/Smalot/PdfParser/Tests',
 ]))
@@ -60,6 +59,11 @@ class ZipFile(zipfile.ZipFile):
     def directory(self, name: str, allowed: Callable[[Path], bool] = lambda item: True) -> None:
         for root, dirs, files in os.walk(name):
             root = Path(root)
+
+            if not allowed(root):
+                # Do not traverse child directories.
+                dirs.clear()
+                continue
 
             for directory in dirs:
                 path = root / directory
