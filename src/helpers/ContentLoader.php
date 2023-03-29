@@ -135,9 +135,12 @@ class ContentLoader {
             );
 
             // current date
-            $minDate = new \DateTime();
-            $minDate->sub(new \DateInterval('P' . $this->configuration->itemsLifetime . 'D'));
-            $this->logger->debug('minimum date: ' . $minDate->format('Y-m-d H:i:s'));
+            $minDate = null;
+            if ($this->configuration->itemsLifetime !== 0) {
+                $minDate = new \DateTime();
+                $minDate->sub(new \DateInterval('P' . $this->configuration->itemsLifetime . 'D'));
+                $this->logger->debug('minimum date: ' . $minDate->format('Y-m-d H:i:s'));
+            }
 
             // insert new items in database
             $this->logger->debug('start item fetching');
@@ -180,7 +183,7 @@ class ContentLoader {
                 if ($itemDate === null) {
                     $itemDate = new \DateTimeImmutable();
                 }
-                if ($itemDate < $minDate) {
+                if ($minDate !== null && $itemDate < $minDate) {
                     $this->logger->debug('item "' . $titlePlainText . '" (' . $itemDate->format(\DateTime::ATOM) . ') older than ' . $this->configuration->itemsLifetime . ' days');
                     continue;
                 }
