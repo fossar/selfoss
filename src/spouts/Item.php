@@ -114,7 +114,10 @@ class Item {
      */
     public function getContent(): HtmlString {
         if (is_callable($this->content)) {
-            $this->content = ($this->content)($this);
+            $oldContent = $this->content;
+            // Temporarily unset so that calling getContent from the callback does not create an infinite loop.
+            $this->content = HtmlString::fromRaw('');
+            $this->content = $oldContent($this);
         }
 
         return $this->content;
@@ -154,7 +157,10 @@ class Item {
      */
     public function getIcon(): ?string {
         if (is_callable($this->icon)) {
-            $this->icon = ($this->icon)($this);
+            $oldIcon = $this->icon;
+            // Temporarily unset so that calling getIcon from the callback does not create an infinite loop.
+            $this->icon = null;
+            $this->icon = $oldIcon($this);
         }
 
         return $this->icon;
