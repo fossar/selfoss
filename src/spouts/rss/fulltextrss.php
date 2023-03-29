@@ -69,18 +69,18 @@ class fulltextrss extends feed {
      * @return \Generator<Item<SimplePie\Item>> list of items
      */
     public function getItems(): iterable {
-        foreach (parent::getItems() as $item) {
-            $url = (string) self::removeTrackersFromUrl(new Uri($item->getLink()));
-            yield $item->withLink($url)->withContent(function(Item $item) use ($url): HtmlString {
-                return $this->getFullContent($url, $item);
+        foreach (parent::getItems() as $originalItem) {
+            $url = (string) self::removeTrackersFromUrl(new Uri($originalItem->getLink()));
+            yield $originalItem->withLink($url)->withContent(function(Item $item) use ($originalItem): HtmlString {
+                return $this->getFullContent($item->getLink(), $originalItem);
             });
         }
     }
 
     /**
-     * @param Item<SimplePie\Item> $item
+     * @param Item<SimplePie\Item> $originalItem
      */
-    public function getFullContent(string $url, Item $item): HtmlString {
+    public function getFullContent(string $url, Item $originalItem): HtmlString {
         if ($this->graby === null) {
             $this->graby = new Graby([
                 'extractor' => [
@@ -100,7 +100,7 @@ class fulltextrss extends feed {
         if ($response['status'] !== 200) {
             $this->logger->error('Failed loading page');
 
-            return HtmlString::fromRaw('<p><strong>Failed to get web page</strong></p>' . $item->getContent()->getRaw());
+            return HtmlString::fromRaw('<p><strong>Failed to get web page</strong></p>' . $originalItem->getContent()->getRaw());
         }
 
         $content = HtmlString::fromRaw($response['html']);
