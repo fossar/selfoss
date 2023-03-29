@@ -82,13 +82,9 @@ final class FilterTest extends TestCase {
     }
 
     /**
-     * @template T
-     *
-     * @param T $extraData
-     *
-     * @return Item<T>
+     * @return Item<null>
      */
-    private static function mkItem(string $title, string $content, ?string $author = null, $extraData = null): Item {
+    private static function mkItem(string $title, string $content): Item {
         return new Item(
             /* id: */ '0',
             /* title: */ HtmlString::fromRaw($title),
@@ -97,8 +93,8 @@ final class FilterTest extends TestCase {
             /* icon: */ null,
             /* link: */ '',
             /* date: */ new DateTimeImmutable(),
-            /* author: */ $author,
-            /* extraData: */ $extraData
+            /* author: */ null,
+            /* extraData: */ null
         );
     }
 
@@ -326,9 +322,8 @@ final class FilterTest extends TestCase {
             'author:/John/',
             self::mkItem(
                 /* title: */ 'foo',
-                /* content: */ 'foo',
-                /* author: */ 'John'
-            ),
+                /* content: */ 'foo'
+            )->withAuthor('John'),
             true,
         ];
 
@@ -336,9 +331,8 @@ final class FilterTest extends TestCase {
             'author:/John/',
             self::mkItem(
                 /* title: */ 'John’s risotto recipe',
-                /* content: */ 'John recommends using rice.',
-                /* author: */ 'Josh'
-            ),
+                /* content: */ 'John recommends using rice.'
+            )->withAuthor('Josh'),
             false,
         ];
 
@@ -355,9 +349,8 @@ final class FilterTest extends TestCase {
             '!author:/John/',
             self::mkItem(
                 /* title: */ 'foo',
-                /* content: */ 'foo',
-                /* author: */ 'John'
-            ),
+                /* content: */ 'foo'
+            )->withAuthor('John'),
             false,
         ];
 
@@ -365,9 +358,8 @@ final class FilterTest extends TestCase {
             '!author:/John/',
             self::mkItem(
                 /* title: */ 'John’s risotto recipe',
-                /* content: */ 'John recommends using rice.',
-                /* author: */ 'Josh'
-            ),
+                /* content: */ 'John recommends using rice.'
+            )->withAuthor('Josh'),
             true,
         ];
 
@@ -397,10 +389,8 @@ final class FilterTest extends TestCase {
             'category:/sport/',
             self::mkItem(
                 /* title: */ 'Real Milan wins kickball terran bowl',
-                /* content: */ '',
-                /* author: */ null,
-                /* extraData: */ $stubItemSport
-            ),
+                /* content: */ ''
+            )->withExtraData($stubItemSport),
             true,
         ];
 
@@ -408,10 +398,8 @@ final class FilterTest extends TestCase {
             'category:/sport/',
             self::mkItem(
                 /* title: */ 'Arrest warrant issued for Putin over war crime allegations',
-                /* content: */ '',
-                /* author: */ null,
-                /* extraData: */ $stubItemActualNews
-            ),
+                /* content: */ ''
+            )->withExtraData($stubItemActualNews),
             false,
         ];
 
@@ -419,10 +407,8 @@ final class FilterTest extends TestCase {
             'category:/sport/',
             self::mkItem(
                 /* title: */ 'Real Milan wins kickball terran bowl',
-                /* content: */ '',
-                /* author: */ null,
-                /* extraData: */ $stubItemNoCategories
-            ),
+                /* content: */ ''
+            )->withExtraData($stubItemNoCategories),
             false,
         ];
 
@@ -439,10 +425,8 @@ final class FilterTest extends TestCase {
             '!category:/sport/',
             self::mkItem(
                 /* title: */ 'Real Milan wins kickball terran bowl',
-                /* content: */ '',
-                /* author: */ null,
-                /* extraData: */ $stubItemSport
-            ),
+                /* content: */ ''
+            )->withExtraData($stubItemSport),
             false,
         ];
 
@@ -450,10 +434,8 @@ final class FilterTest extends TestCase {
             '!category:/sport/',
             self::mkItem(
                 /* title: */ 'Arrest warrant issued for Putin over war crime allegations',
-                /* content: */ '',
-                /* author: */ null,
-                /* extraData: */ $stubItemActualNews
-            ),
+                /* content: */ ''
+            )->withExtraData($stubItemActualNews),
             true,
         ];
 
@@ -461,10 +443,8 @@ final class FilterTest extends TestCase {
             '!category:/sport/',
             self::mkItem(
                 /* title: */ 'Foo',
-                /* content: */ '',
-                /* author: */ null,
-                /* extraData: */ $stubItemNoCategories
-            ),
+                /* content: */ ''
+            )->withExtraData($stubItemNoCategories),
             true,
         ];
 
