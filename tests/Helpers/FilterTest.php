@@ -318,6 +318,42 @@ final class FilterTest extends TestCase {
             false,
         ];
 
+        yield 'Url: Match' => [
+            'url:/^https:\\/\\/www\\.bbc\\.co\\.uk\\/sport\\//',
+            self::mkItem(
+                /* title: */ 'Fabio Paratici: Tottenham managing director banned worldwide by Fifa',
+                /* content: */ ''
+            )->withLink('https://www.bbc.co.uk/sport/football/65112730'),
+            true,
+        ];
+
+        yield 'Url: No match' => [
+            'url:/^https:\\/\\/www\\.bbc\\.co\\.uk\\/sport\\//',
+            self::mkItem(
+                /* title: */ 'Arrest warrant issued for Putin over war crime allegations',
+                /* content: */ ''
+            )->withLink('https://www.bbc.co.uk/news/world-europe-64992727'),
+            false,
+        ];
+
+        yield 'Not(Url): Match' => [
+            '!url:/^https:\\/\\/www\\.bbc\\.co\\.uk\\/sport\\//',
+            self::mkItem(
+                /* title: */ 'Fabio Paratici: Tottenham managing director banned worldwide by Fifa',
+                /* content: */ ''
+            )->withLink('https://www.bbc.co.uk/sport/football/65112730'),
+            false,
+        ];
+
+        yield 'Not(Url): No match' => [
+            '!url:/^https:\\/\\/www\\.bbc\\.co\\.uk\\/sport\\//',
+            self::mkItem(
+                /* title: */ 'Arrest warrant issued for Putin over war crime allegations',
+                /* content: */ ''
+            )->withLink('https://www.bbc.co.uk/news/world-europe-64992727'),
+            true,
+        ];
+
         yield 'Author: Match' => [
             'author:/John/',
             self::mkItem(

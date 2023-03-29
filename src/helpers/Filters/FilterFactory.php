@@ -37,12 +37,14 @@ final class FilterFactory {
             $filter = new MapFilter($filter, Closure::fromCallable([self::class, 'getTitleString']));
         } elseif ($field === 'content') {
             $filter = new MapFilter($filter, Closure::fromCallable([self::class, 'getContentString']));
+        } elseif ($field === 'url') {
+            $filter = new MapFilter($filter, Closure::fromCallable([self::class, 'getUrl']));
         } elseif ($field === 'author') {
             $filter = new MapFilter(new DisjunctionFilter($filter), Closure::fromCallable([self::class, 'getAuthors']));
         } elseif ($field === 'category') {
             $filter = new MapFilter(new DisjunctionFilter($filter), Closure::fromCallable([self::class, 'getCategories']));
         } else {
-            throw new FilterSyntaxError("Invalid filter expression {$expression}, field must be one of “title”, “content”, “author” or “category”.");
+            throw new FilterSyntaxError("Invalid filter expression {$expression}, field must be one of “title”, “content”, “url”, “author” or “category”.");
         }
 
         if ($match['negated'] === '!') {
@@ -76,6 +78,13 @@ final class FilterFactory {
      */
     private static function getContentString(Item $item): string {
         return $item->getContent()->getRaw();
+    }
+
+    /**
+     * @param Item<mixed> $item
+     */
+    private static function getUrl(Item $item): string {
+        return $item->getLink();
     }
 
     /**

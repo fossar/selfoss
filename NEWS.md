@@ -8,7 +8,7 @@
 - YouTube spout now includes the video description. ([#1412](https://github.com/fossar/selfoss/pull/1412))
 - Mastodon share button was added. Can be enabled by adding `m` to `share` and setting `mastodon` pointing to your chosen instance. ([#1421](https://github.com/fossar/selfoss/pull/1421))
 - Source filters can be negated, or limited to only title or only content. ([#1423](https://github.com/fossar/selfoss/pull/1423))
-- Sources can be filtered based on item’s author or categories. ([#1423](https://github.com/fossar/selfoss/pull/1423))
+- Sources can be filtered based on item’s author, URL or categories. ([#1423](https://github.com/fossar/selfoss/pull/1423), [#1424](https://github.com/fossar/selfoss/pull/1424))
 - Source filter expression is now validated whenever a source is modified. ([#1423](https://github.com/fossar/selfoss/pull/1423))
 
 ### Bug fixes
