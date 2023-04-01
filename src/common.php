@@ -268,7 +268,8 @@ if (isset($startup_error)) {
 }
 
 // init error handling
-$f3->set('ONERROR',
+$f3->set(
+    'ONERROR',
     function(Base $f3) use ($configuration, $log, $handler): void {
         $exception = $f3->get('EXCEPTION');
 

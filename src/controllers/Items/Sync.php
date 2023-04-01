@@ -89,8 +89,10 @@ class Sync {
                 $itemsHowMany = $this->configuration->itemsPerpage;
                 if (array_key_exists('itemsHowMany', $params)
                     && is_int($params['itemsHowMany'])) {
-                    $itemsHowMany = min($params['itemsHowMany'],
-                                        2 * $itemsHowMany);
+                    $itemsHowMany = min(
+                        $params['itemsHowMany'],
+                        2 * $itemsHowMany
+                    );
                 }
 
                 $sync['newItems'] = function() use ($sinceId, $notBefore, $since, $itemsHowMany) {

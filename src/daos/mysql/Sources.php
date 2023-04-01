@@ -125,18 +125,22 @@ class Sources implements \daos\SourcesInterface {
      * @param ?int $lastEntry timestamp of the newest item or NULL when no items were added
      */
     public function saveLastUpdate(int $id, ?int $lastEntry): void {
-        $this->database->exec('UPDATE ' . $this->configuration->dbPrefix . 'sources SET lastupdate=:lastupdate WHERE id=:id',
+        $this->database->exec(
+            'UPDATE ' . $this->configuration->dbPrefix . 'sources SET lastupdate=:lastupdate WHERE id=:id',
             [
                 ':id' => $id,
                 ':lastupdate' => time(),
-            ]);
+            ]
+        );
 
         if ($lastEntry !== null) {
-            $this->database->exec('UPDATE ' . $this->configuration->dbPrefix . 'sources SET lastentry=:lastentry WHERE id=:id',
+            $this->database->exec(
+                'UPDATE ' . $this->configuration->dbPrefix . 'sources SET lastentry=:lastentry WHERE id=:id',
                 [
                     ':id' => $id,
                     ':lastentry' => $lastEntry,
-                ]);
+                ]
+            );
         }
     }
 
