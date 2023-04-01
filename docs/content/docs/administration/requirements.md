@@ -6,7 +6,7 @@ extra.show_next = true
 
 selfoss is not a hosted service. It has to be installed on your own web server. This web server must fulfil the following requirements (which are available from most providers)
 
-* PHP 5.6 or higher with the `php-gd` and `php-http` extensions enabled. Some spouts may also require `curl`, `mbstring` or `tidy` extensions. The `php-imagick` extension is required if you want selfoss to support SVG site icons.
+* PHP 7.2.0 or higher with the `php-gd` and `php-http` extensions enabled. Some spouts may also require `curl`, `mbstring` or `tidy` extensions. The `php-imagick` extension is required if you want selfoss to support SVG site icons.
 * MySQL 5.5.3 or higher, PostgreSQL, or SQLite
 * Apache web server (nginx and Lighttpd also possible)
 
