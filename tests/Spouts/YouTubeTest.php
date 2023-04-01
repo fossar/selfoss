@@ -88,34 +88,35 @@ final class YouTubeTest extends TestCase {
      * @return Generator<array{urls: array{url: string, fileName: string, contentType: string}[], feedTitle: string, firstItemTitle: HtmlString, firstItemContent: HtmlString}>
      */
     public function dataProvider(): Generator {
-        $zoggContent = HtmlString::fromRaw(<<<HTML
-This is the third and last part of a three-part miniseries on the shape of the universe. What do we actually know about the shape of the universe?<br>
-<br>
-Playlist with parts 1, 2 and 3: <a href="https://www.youtube.com/watch?v=_k3_B9Eq7eM&amp;list=PLbqa_PZ3dNahC2jqyu5dxN6I_wqAP2mjc">https://www.youtube.com/watch?v=_k3_B9Eq7eM&amp;list=PLbqa_PZ3dNahC2jqyu5dxN6I_wqAP2mjc</a><br>
-<br>
-0:00 Introduction<br>
-0:22 Intro video<br>
-0:53 Curvature and Hyperburritos<br>
-2:10 The Big Bang<br>
-5:38 Dark Energy and Dark Matter<br>
-7:51 The CMB<br>
-10:18 Circles in the Sky<br>
-11:43 Cosmic Crystallography<br>
-12:38 Hot Spots in the CMB<br>
-14:51 The Cosmic Drum<br>
-16:09 Conclusion<br>
-16:37 Ad: Smooth Space<br>
-17:32 Alien Cosmology<br>
-18:48 Thanks<br>
-19:03 The End<br>
-<br>
-<br>
-Links<br>
-- Concept, artwork and text by Martin Kuppe<br>
-- Title music by OcularNebula (<a href="https://www.newgrounds.com/audio/listen/381971">https://www.newgrounds.com/audio/listen/381971</a>)<br>
-- Other music and sound effects from <a href="http://Artlist.io">Artlist.io</a><br>
-- An article which gives an excellent overview of what we know: <a href="https://www.mdpi.com/2218-1997/2/1/1">https://www.mdpi.com/2218-1997/2/1/1</a>
-HTML
+        $zoggContent = HtmlString::fromRaw(
+            <<<HTML
+                This is the third and last part of a three-part miniseries on the shape of the universe. What do we actually know about the shape of the universe?<br>
+                <br>
+                Playlist with parts 1, 2 and 3: <a href="https://www.youtube.com/watch?v=_k3_B9Eq7eM&amp;list=PLbqa_PZ3dNahC2jqyu5dxN6I_wqAP2mjc">https://www.youtube.com/watch?v=_k3_B9Eq7eM&amp;list=PLbqa_PZ3dNahC2jqyu5dxN6I_wqAP2mjc</a><br>
+                <br>
+                0:00 Introduction<br>
+                0:22 Intro video<br>
+                0:53 Curvature and Hyperburritos<br>
+                2:10 The Big Bang<br>
+                5:38 Dark Energy and Dark Matter<br>
+                7:51 The CMB<br>
+                10:18 Circles in the Sky<br>
+                11:43 Cosmic Crystallography<br>
+                12:38 Hot Spots in the CMB<br>
+                14:51 The Cosmic Drum<br>
+                16:09 Conclusion<br>
+                16:37 Ad: Smooth Space<br>
+                17:32 Alien Cosmology<br>
+                18:48 Thanks<br>
+                19:03 The End<br>
+                <br>
+                <br>
+                Links<br>
+                - Concept, artwork and text by Martin Kuppe<br>
+                - Title music by OcularNebula (<a href="https://www.newgrounds.com/audio/listen/381971">https://www.newgrounds.com/audio/listen/381971</a>)<br>
+                - Other music and sound effects from <a href="http://Artlist.io">Artlist.io</a><br>
+                - An article which gives an excellent overview of what we know: <a href="https://www.mdpi.com/2218-1997/2/1/1">https://www.mdpi.com/2218-1997/2/1/1</a>
+                HTML
         );
 
         yield [
@@ -160,11 +161,12 @@ HTML
             ],
             'feedTitle' => 'BeeKeeping',
             'firstItemTitle' => HtmlString::fromPlainText('Year of BeeKeeping Episode 15, Finding Queen'),
-            'firstItemContent' => HtmlString::fromRaw(<<<HTML
-In this episode I find the queen, move her to a nuc box for transport, and put the queen cells I made into the now queenless hive.<br>
-<br>
-this video originally was over an hour and I cut out half so... I actually should do that more.
-HTML
+            'firstItemContent' => HtmlString::fromRaw(
+                <<<HTML
+                    In this episode I find the queen, move her to a nuc box for transport, and put the queen cells I made into the now queenless hive.<br>
+                    <br>
+                    this video originally was over an hour and I cut out half so... I actually should do that more.
+                    HTML
             ),
         ];
 
@@ -175,13 +177,14 @@ HTML
             ],
             'feedTitle' => 'Breaking Taps',
             'firstItemTitle' => HtmlString::fromPlainText('Slow Motion Tuning Fork'),
-            'firstItemContent' => HtmlString::fromRaw(<<<HTML
-Have you ever seen a tuning fork at 10,000 FPS?<br>
-<br>
-Small clarification: the large fork has a 180hz tone when analyzed with a frequency detector (and held up to your ear), but also higher overtones which is mostly what's heard on the microphone. I should have mentioned the overtones but slipped my mind when filming. Sorry!<br>
-<br>
-#shorts
-HTML
+            'firstItemContent' => HtmlString::fromRaw(
+                <<<HTML
+                    Have you ever seen a tuning fork at 10,000 FPS?<br>
+                    <br>
+                    Small clarification: the large fork has a 180hz tone when analyzed with a frequency detector (and held up to your ear), but also higher overtones which is mostly what's heard on the microphone. I should have mentioned the overtones but slipped my mind when filming. Sorry!<br>
+                    <br>
+                    #shorts
+                    HTML
             ),
         ];
     }

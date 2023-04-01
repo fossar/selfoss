@@ -12,15 +12,15 @@ final class IconExtractorTest extends TestCase {
      * Apple touch icons are supported.
      */
     public function testAppleTouchIcon(): void {
-        $page = <<<EOD
-<html>
-<head>
-<link rel="apple-touch-icon" sizes="114x114" href="https://www.example.com/images/apple-touch-114x114.png">
-</head>
-<body>
-</body>
-</html>
-EOD;
+        $page = <<<HTML
+            <html>
+            <head>
+            <link rel="apple-touch-icon" sizes="114x114" href="https://www.example.com/images/apple-touch-114x114.png">
+            </head>
+            <body>
+            </body>
+            </html>
+            HTML;
 
         $this->assertEquals(
             [
@@ -34,15 +34,15 @@ EOD;
      * Apple touch precomposed icons are supported.
      */
     public function testAppleTouchPrecomposedIcon(): void {
-        $page = <<<EOD
-<html>
-<head>
-<link rel="apple-touch-icon-precomposed" sizes="114x114" href="https://www.example.com/images/apple-touch-precomposed-114x114.png">
-</head>
-<body>
-</body>
-</html>
-EOD;
+        $page = <<<HTML
+            <html>
+            <head>
+            <link rel="apple-touch-icon-precomposed" sizes="114x114" href="https://www.example.com/images/apple-touch-precomposed-114x114.png">
+            </head>
+            <body>
+            </body>
+            </html>
+            HTML;
 
         $this->assertEquals(
             [
@@ -56,15 +56,15 @@ EOD;
      * Apple touch icons without sizes are supported.
      */
     public function testAppleTouchWithoutSizesIcon(): void {
-        $page = <<<EOD
-<html>
-<head>
-<link rel="apple-touch-icon" href="https://www.example.com/images/apple-touch-114x114.png">
-</head>
-<body>
-</body>
-</html>
-EOD;
+        $page = <<<HTML
+            <html>
+            <head>
+            <link rel="apple-touch-icon" href="https://www.example.com/images/apple-touch-114x114.png">
+            </head>
+            <body>
+            </body>
+            </html>
+            HTML;
 
         $this->assertEquals(
             [
@@ -78,15 +78,15 @@ EOD;
      * Shortcut icons are supported.
      */
     public function testShortcutIcon(): void {
-        $page = <<<EOD
-<html>
-<head>
-<link rel="shortcut icon" href="https://www.example.com/favicon.ico">
-</head>
-<body>
-</body>
-</html>
-EOD;
+        $page = <<<HTML
+            <html>
+            <head>
+            <link rel="shortcut icon" href="https://www.example.com/favicon.ico">
+            </head>
+            <body>
+            </body>
+            </html>
+            HTML;
 
         $this->assertEquals(
             [
@@ -100,15 +100,15 @@ EOD;
      * Icons are supported.
      */
     public function testIcon(): void {
-        $page = <<<EOD
-<html>
-<head>
-<link rel="icon" href="https://www.example.com/favicon.ico">
-</head>
-<body>
-</body>
-</html>
-EOD;
+        $page = <<<HTML
+            <html>
+            <head>
+            <link rel="icon" href="https://www.example.com/favicon.ico">
+            </head>
+            <body>
+            </body>
+            </html>
+            HTML;
 
         $this->assertEquals(
             [
@@ -122,17 +122,17 @@ EOD;
      * Multiple icons are recognized.
      */
     public function testMultipleIcons(): void {
-        $page = <<<EOD
-<html>
-<head>
-<link rel="icon" href="/favicon.png" type="image/png">
-<link rel="icon" href="/favicon.ico" type="image/vnd.microsoft.icon">
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
-</head>
-<body>
-</body>
-</html>
-EOD;
+        $page = <<<HTML
+            <html>
+            <head>
+            <link rel="icon" href="/favicon.png" type="image/png">
+            <link rel="icon" href="/favicon.ico" type="image/vnd.microsoft.icon">
+            <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+            </head>
+            <body>
+            </body>
+            </html>
+            HTML;
 
         $this->assertEquals(
             [
@@ -148,16 +148,16 @@ EOD;
      * Apple icons are prioritized over shortcut icons.
      */
     public function testAppleAndIcon(): void {
-        $page = <<<EOD
-<html>
-<head>
-<link rel="icon" href="/favicon.ico">
-<link rel="apple-touch-icon" sizes="114x114" href="https://www.example.com/images/apple-touch-114x114.png">
-</head>
-<body>
-</body>
-</html>
-EOD;
+        $page = <<<HTML
+            <html>
+            <head>
+            <link rel="icon" href="/favicon.ico">
+            <link rel="apple-touch-icon" sizes="114x114" href="https://www.example.com/images/apple-touch-114x114.png">
+            </head>
+            <body>
+            </body>
+            </html>
+            HTML;
 
         $this->assertEquals(
             [
@@ -172,16 +172,16 @@ EOD;
      * Larger icons are prioritized over smaller ones.
      */
     public function testAppleAndPrecomposed(): void {
-        $page = <<<EOD
-<html>
-<head>
-<link rel="apple-touch-icon" sizes="144x144" href="https://www.example.com/images/apple-touch-114x114.png">
-<link rel="apple-touch-icon-precomposed" sizes="87x87" href="https://www.example.com/images/apple-touch-precomposed-87x87.png">
-</head>
-<body>
-</body>
-</html>
-EOD;
+        $page = <<<HTML
+            <html>
+            <head>
+            <link rel="apple-touch-icon" sizes="144x144" href="https://www.example.com/images/apple-touch-114x114.png">
+            <link rel="apple-touch-icon-precomposed" sizes="87x87" href="https://www.example.com/images/apple-touch-precomposed-87x87.png">
+            </head>
+            <body>
+            </body>
+            </html>
+            HTML;
 
         $this->assertEquals(
             [
@@ -196,16 +196,16 @@ EOD;
      * Apple precomposed icons are prioritized over normal touch icons.
      */
     public function testAppleAndPrecomposedWithoutSizes(): void {
-        $page = <<<EOD
-<html>
-<head>
-<link rel="apple-touch-icon" href="https://www.example.com/images/apple-touch-114x114.png">
-<link rel="apple-touch-icon-precomposed" href="https://www.example.com/images/apple-touch-precomposed-114x114.png">
-</head>
-<body>
-</body>
-</html>
-EOD;
+        $page = <<<HTML
+            <html>
+            <head>
+            <link rel="apple-touch-icon" href="https://www.example.com/images/apple-touch-114x114.png">
+            <link rel="apple-touch-icon-precomposed" href="https://www.example.com/images/apple-touch-precomposed-114x114.png">
+            </head>
+            <body>
+            </body>
+            </html>
+            HTML;
 
         $this->assertEquals(
             [
@@ -220,9 +220,9 @@ EOD;
      * Uglified websites with unquoted atttributes are handled correctly.
      */
     public function testUnquotedAttributes(): void {
-        $page = <<<EOD
-<html><head><link rel="shortcut icon" href=//www.example.com/favicons/favicon.ico><link rel=apple-touch-icon sizes=152x152 href=//www.example.com/favicons/apple-touch-icon-152x152.png><link rel=icon type=image/png href=//www.example.com/favicons/favicon-196x196.png sizes=196x196></head><body></body></html>
-EOD;
+        $page = <<<HTML
+            <html><head><link rel="shortcut icon" href=//www.example.com/favicons/favicon.ico><link rel=apple-touch-icon sizes=152x152 href=//www.example.com/favicons/apple-touch-icon-152x152.png><link rel=icon type=image/png href=//www.example.com/favicons/favicon-196x196.png sizes=196x196></head><body></body></html>
+            HTML;
 
         $this->assertEquals(
             [
@@ -238,14 +238,14 @@ EOD;
      * Null is returned when no icon found.
      */
     public function testMissingIcon(): void {
-        $page = <<<EOD
-<html>
-<head>
-</head>
-<body>
-</body>
-</html>
-EOD;
+        $page = <<<HTML
+            <html>
+            <head>
+            </head>
+            <body>
+            </body>
+            </html>
+            HTML;
 
         $this->assertEquals(
             [],
@@ -257,15 +257,15 @@ EOD;
      * Commented out icons are ignored.
      */
     public function testCommentIcon(): void {
-        $page = <<<EOD
-<html>
-<head>
-<!--<link rel="icon" href="https://www.example.com/favicon.ico">-->
-</head>
-<body>
-</body>
-</html>
-EOD;
+        $page = <<<HTML
+            <html>
+            <head>
+            <!--<link rel="icon" href="https://www.example.com/favicon.ico">-->
+            </head>
+            <body>
+            </body>
+            </html>
+            HTML;
 
         $this->assertEquals(
             [],
@@ -277,17 +277,17 @@ EOD;
      * Icons inside script elements are ignored.
      */
     public function testScriptIcon(): void {
-        $page = <<<EOD
-<html>
-<head>
-<script>
-console.log('<link rel="icon" href="https://www.example.com/favicon.ico">');
-</script>
-</head>
-<body>
-</body>
-</html>
-EOD;
+        $page = <<<HTML
+            <html>
+            <head>
+            <script>
+            console.log('<link rel="icon" href="https://www.example.com/favicon.ico">');
+            </script>
+            </head>
+            <body>
+            </body>
+            </html>
+            HTML;
 
         $this->assertEquals(
             [],
