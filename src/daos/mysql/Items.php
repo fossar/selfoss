@@ -51,9 +51,7 @@ class Items implements \daos\ItemsInterface {
         $ids = implode(
             ',',
             array_map(
-                function(int $id): string {
-                    return (string) $id;
-                },
+                fn(int $id): string => (string) $id,
                 $ids
             )
         );
@@ -74,9 +72,7 @@ class Items implements \daos\ItemsInterface {
         $ids = implode(
             ',',
             array_map(
-                function(int $id): string {
-                    return (string) $id;
-                },
+                fn(int $id): string => (string) $id,
                 $ids
             )
         );
@@ -187,9 +183,10 @@ class Items implements \daos\ItemsInterface {
             return $itemsFound;
         }
 
-        $itemsInFeed = array_map(function(string $uid): string {
-            return $this->database->quote($uid);
-        }, $itemsInFeed);
+        $itemsInFeed = array_map(
+            fn(string $uid): string => $this->database->quote($uid),
+            $itemsInFeed
+        );
         $query = 'SELECT id, uid AS uid FROM ' . $this->configuration->dbPrefix . 'items WHERE source = ' . $this->database->quote($sourceId) . ' AND uid IN (' . implode(',', $itemsInFeed) . ')';
         /** @var array<array{id: int, uid: string}> $result */
         $result = $this->database->exec($query);

@@ -75,9 +75,13 @@ class TwitterV1ApiClient {
                 $body = json_decode((string) $e->getResponse()->getBody());
 
                 if (isset($body->errors)) {
-                    $errors = implode("\n", array_map(function($error) {
-                        return $error->message;
-                    }, $body->errors));
+                    $errors = implode(
+                        "\n",
+                        array_map(
+                            fn($error) => $error->message,
+                            $body->errors
+                        )
+                    );
 
                     throw new \Exception($errors, $e->getCode(), $e);
                 }

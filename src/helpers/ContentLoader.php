@@ -450,16 +450,16 @@ class ContentLoader {
 
         // delete orphaned thumbnails
         $this->logger->debug('delete orphaned thumbnails');
-        $this->thumbnailStore->cleanup(function($file) {
-            return $this->itemsDao->hasThumbnail($file);
-        });
+        $this->thumbnailStore->cleanup(
+            fn($file) => $this->itemsDao->hasThumbnail($file)
+        );
         $this->logger->debug('delete orphaned thumbnails finished');
 
         // delete orphaned icons
         $this->logger->debug('delete orphaned icons');
-        $this->iconStore->cleanup(function($file) {
-            return $this->itemsDao->hasIcon($file);
-        });
+        $this->iconStore->cleanup(
+            fn($file) => $this->itemsDao->hasIcon($file)
+        );
         $this->logger->debug('delete orphaned icons finished');
 
         // optimize database

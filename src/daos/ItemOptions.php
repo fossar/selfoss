@@ -87,9 +87,10 @@ final class ItemOptions {
         }
 
         if (isset($data['extraIds']) && is_array($data['extraIds'])) {
-            $options->extraIds = array_map(function($val) {
-                return (int) $val;
-            }, $data['extraIds']);
+            $options->extraIds = array_map(
+                fn($val) => (int) $val,
+                $data['extraIds']
+            );
         }
 
         return $options;

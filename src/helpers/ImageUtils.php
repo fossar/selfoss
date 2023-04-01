@@ -85,22 +85,25 @@ class ImageUtils {
 
         usort($icons, Misc::compareBy(
             // largest icons first
-            [function($val) {
-                return (int) $val['sizes'];
-            }, Misc::ORDER_DESC],
+            [
+                fn($val) => (int) $val['sizes'],
+                Misc::ORDER_DESC,
+            ],
 
             // then by rel priority
-            [function($val) {
-                return self::ICON_REL_WEIGHTS[$val['rel']];
-            }, Misc::ORDER_DESC],
+            [
+                fn($val) => self::ICON_REL_WEIGHTS[$val['rel']],
+                Misc::ORDER_DESC,
+            ],
 
             // and finally by order to make the sorting stable
             'order'
         ));
 
-        return array_map(function($i) {
-            return $i['url'];
-        }, $icons);
+        return array_map(
+            fn($i) => $i['url'],
+            $icons
+        );
     }
 
     /**

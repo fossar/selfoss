@@ -10,7 +10,10 @@ $rules = [
     '@Symfony' => true,
     // why would anyone put braces on different line
     'braces' => ['position_after_functions_and_oop_constructs' => 'same'],
-    'function_declaration' => ['closure_function_spacing' => 'none'],
+    'function_declaration' => [
+        'closure_function_spacing' => 'none',
+        'closure_fn_spacing' => 'none',
+    ],
     // overwrite some Symfony rules
     'concat_space' => ['spacing' => 'one'],
     'global_namespace_import' => false,

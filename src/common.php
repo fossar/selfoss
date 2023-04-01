@@ -58,9 +58,7 @@ $substitutions = [
     'substitutions' => [
         // Instantiate configuration container.
         Configuration::class => [
-            Dice::INSTANCE => function() use ($configuration) {
-                return $configuration;
-            },
+            Dice::INSTANCE => fn() => $configuration,
             'shared' => true,
         ],
 

@@ -26,8 +26,9 @@ class Search {
         /** @var string[] */ // For PHPStan: The only case where null appears is array{null} when the $string is empty.
         $parts = str_getcsv(trim($search), ' ');
 
-        return array_filter($parts, function(string $item): bool {
-            return $item !== '';
-        });
+        return array_filter(
+            $parts,
+            fn(string $item): bool => $item !== ''
+        );
     }
 }

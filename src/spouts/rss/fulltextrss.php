@@ -71,9 +71,9 @@ class fulltextrss extends feed {
     public function getItems(): iterable {
         foreach (parent::getItems() as $originalItem) {
             $url = (string) self::removeTrackersFromUrl(new Uri($originalItem->getLink()));
-            yield $originalItem->withLink($url)->withContent(function(Item $item) use ($originalItem): HtmlString {
-                return $this->getFullContent($item->getLink(), $originalItem);
-            });
+            yield $originalItem->withLink($url)->withContent(
+                fn(Item $item): HtmlString => $this->getFullContent($item->getLink(), $originalItem)
+            );
         }
     }
 
@@ -121,9 +121,7 @@ class fulltextrss extends feed {
             // Remove utm_* parameters
             $clean_query = array_filter(
                 $q_array,
-                function(string $param): bool {
-                    return !str_starts_with($param, 'utm_');
-                }
+                fn(string $param): bool => !str_starts_with($param, 'utm_')
             );
             $uri = $uri->withQuery(implode('&', $clean_query));
         }

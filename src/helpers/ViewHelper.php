@@ -109,9 +109,11 @@ class ViewHelper {
 
         $camo = new \WillWashburn\Phpamo\Phpamo($this->configuration->camoKey, $this->configuration->camoDomain);
 
-        $content = preg_replace_callback("/<img([^<]+)src=(['\"])([^\"']*)(['\"])([^<]*)>/i", function(array $matches) use ($camo) {
-            return '<img' . $matches[1] . 'src=' . $matches[2] . $camo->camoHttpOnly($matches[3]) . $matches[4] . $matches[5] . '>';
-        }, $content);
+        $content = preg_replace_callback(
+            "/<img([^<]+)src=(['\"])([^\"']*)(['\"])([^<]*)>/i",
+            fn(array $matches) => '<img' . $matches[1] . 'src=' . $matches[2] . $camo->camoHttpOnly($matches[3]) . $matches[4] . $matches[5] . '>',
+            $content
+        );
 
         assert($content !== null, 'Regex must be valid');
 
