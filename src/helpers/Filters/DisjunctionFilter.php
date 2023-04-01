@@ -11,6 +11,7 @@ namespace helpers\Filters;
  * Filter that admits a list of items iff the inner filter admits any of them.
  *
  * @template T
+ *
  * @implements Filter<array<T>>
  */
 final class DisjunctionFilter implements Filter {

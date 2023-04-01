@@ -23,6 +23,7 @@ use spouts\Parameter;
  * @phpstan-type FbAttachment array{type: string, target: array{url: string}, media: array{image: array{src: string}}, description: string}
  * @phpstan-type FbItem array{id: string, message: string, permalink_url: string, created_time: string, attachments?: array{data: array<FbAttachment>}}
  * @phpstan-type FbParams array{user: string, app_id: string, app_secret: string}
+ *
  * @extends \spouts\spout<null>
  */
 class page extends \spouts\spout {
@@ -114,7 +115,7 @@ class page extends \spouts\spout {
     public function getItems(): iterable {
         foreach ($this->items as $item) {
             $id = $item['id'];
-            $title = HtmlString::fromPlainText((mb_strlen($item['message']) > 80 ? mb_substr($item['message'], 0, 100) . '…' : $item['message']));
+            $title = HtmlString::fromPlainText(mb_strlen($item['message']) > 80 ? mb_substr($item['message'], 0, 100) . '…' : $item['message']);
             $content = $this->getPostContent($item);
             $thumbnail = null;
             $icon = null;

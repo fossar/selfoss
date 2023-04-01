@@ -19,6 +19,7 @@ use spouts\Parameter;
  *
  * @phpstan-type Commit array{commit: array{message: string, author: array{date: string, name: string}}, sha: string, html_url: string}
  * @phpstan-type GhParams array{owner: string, repo: string, branch: string}
+ *
  * @extends \spouts\spout<null>
  */
 class commits extends \spouts\spout {

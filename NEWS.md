@@ -1,7 +1,7 @@
 # selfoss news
 ## 2.20 – unreleased
 
-**This version currently requires PHP 7.2.5 or newer. (Will be increased later.)**
+**This version currently requires PHP 7.4 or newer. (Might be increased later.)**
 
 ### New features
 - YouTube spout now accepts handles (starting with `@` sign). ([#1412](https://github.com/fossar/selfoss/pull/1412))

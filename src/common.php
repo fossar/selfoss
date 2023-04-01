@@ -281,7 +281,7 @@ $f3->set(
             }
 
             if ($configuration->debug !== 0) {
-                echo 'An error occurred' . ': ';
+                echo 'An error occurred: ';
                 echo $f3->get('ERROR.text') . "\n";
                 echo $f3->get('ERROR.trace');
             } else {

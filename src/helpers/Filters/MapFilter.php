@@ -14,6 +14,7 @@ use spouts\Item;
  *
  * @template T
  * @template InnerT
+ *
  * @implements Filter<T>
  */
 final class MapFilter implements Filter {

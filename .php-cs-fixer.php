@@ -13,6 +13,8 @@ $rules = [
     'function_declaration' => ['closure_function_spacing' => 'none'],
     // overwrite some Symfony rules
     'concat_space' => ['spacing' => 'one'],
+    'global_namespace_import' => false,
+    'blank_line_between_import_groups' => false,
     'phpdoc_align' => false,
     'phpdoc_no_empty_return' => false,
     'phpdoc_summary' => false,

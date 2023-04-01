@@ -13,6 +13,7 @@ use spouts\Item;
  * Filter that rejects an item iff inner filter admits it.
  *
  * @template T
+ *
  * @implements Filter<T>
  */
 final class NegationFilter implements Filter {

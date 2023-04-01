@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace controllers;
 
 use daos\ItemOptions;
+use DateTimeInterface;
 use helpers\Authentication;
 use helpers\Misc;
 use helpers\Request;
@@ -162,8 +163,8 @@ class Items {
 
         $items = array_map(function(array $item) {
             $stringifiedDates = [
-                'datetime' => $item['datetime']->format(\DateTime::ATOM),
-                'updatetime' => $item['updatetime']->format(\DateTime::ATOM),
+                'datetime' => $item['datetime']->format(DateTimeInterface::ATOM),
+                'updatetime' => $item['updatetime']->format(DateTimeInterface::ATOM),
             ];
 
             return array_merge($item, $stringifiedDates);

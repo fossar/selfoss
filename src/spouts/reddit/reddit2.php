@@ -24,6 +24,7 @@ use spouts\Parameter;
  *
  * @phpstan-type RedditItem array{data: array{id: string, url: string, title: string, permalink: string, selftext_html: string, created_utc: int, preview?: array{images?: array<array{source?: array{url?: string}}>}, thumbnail: string}}
  * @phpstan-type RedditParams array{url: string, username?: string, password?: string}
+ *
  * @extends \spouts\spout<null>
  */
 class reddit2 extends \spouts\spout {

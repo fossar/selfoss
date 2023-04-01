@@ -71,7 +71,7 @@ class View {
                 ($protocol === 'https' && $_SERVER['SERVER_PORT'] != '443'))) {
                 $port = ':' . $_SERVER['SERVER_PORT'];
             }
-            //Override the port if nginx is the front end and the traffic is being forwarded
+            // Override the port if nginx is the front end and the traffic is being forwarded
             if (isset($_SERVER['HTTP_X_FORWARDED_PORT'])) {
                 $port = ':' . $_SERVER['HTTP_X_FORWARDED_PORT'];
             }
