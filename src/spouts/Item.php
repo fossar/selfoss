@@ -10,7 +10,7 @@ use helpers\HtmlString;
 /**
  * Value object representing a source item (e.g. an article).
  *
- * @template Extra type of extra data
+ * @template-covariant Extra type of extra data
  */
 class Item {
     /** @var string an unique id for this item */
@@ -243,6 +243,7 @@ class Item {
      * @return Item<NewExtra>
      */
     public function withExtraData($extraData): Item {
+        /** @var Item<NewExtra> */ // For PHPStan
         $modified = clone $this;
         $modified->extraData = $extraData;
 
