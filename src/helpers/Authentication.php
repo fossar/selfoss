@@ -18,17 +18,11 @@ use Monolog\Logger;
  * Helper class for user authentication.
  */
 class Authentication {
-    /** @var Configuration configuration */
-    private $configuration;
+    private bool $loggedin = false;
 
-    /** @var bool loggedin */
-    private $loggedin = false;
-
-    /** @var Logger */
-    private $logger;
-
-    /** @var Session */
-    private $session;
+    private Configuration $configuration;
+    private Logger $logger;
+    private Session $session;
 
     /**
      * start session and check login

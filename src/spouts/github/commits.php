@@ -23,14 +23,11 @@ use spouts\Parameter;
  * @extends \spouts\spout<null>
  */
 class commits extends \spouts\spout {
-    /** @var string name of source */
-    public $name = 'GitHub: commits';
+    public string $name = 'GitHub: commits';
 
-    /** @var string description of this source type */
-    public $description = 'List commits on a repository.';
+    public string $description = 'List commits on a repository.';
 
-    /** @var SpoutParameters configurable parameters */
-    public $params = [
+    public array $params = [
         'owner' => [
             'title' => 'Owner',
             'type' => Parameter::TYPE_TEXT,
@@ -54,20 +51,19 @@ class commits extends \spouts\spout {
         ],
     ];
 
-    /** @var ?string title of the source */
-    protected $title = null;
+    /** Title of the source */
+    protected ?string $title = null;
 
-    /** @var string global html url for the source */
-    protected $htmlUrl = '';
+    /** Global html url for the source */
+    protected string $htmlUrl = '';
 
-    /** @var string URL of the favicon */
-    protected $faviconUrl = 'https://assets-cdn.github.com/favicon.ico';
-
-    /** @var WebClient */
-    private $webClient;
+    /** URL of the favicon */
+    protected string $faviconUrl = 'https://assets-cdn.github.com/favicon.ico';
 
     /** @var Commit[] current fetched items */
-    private $items = [];
+    private array $items = [];
+
+    private WebClient $webClient;
 
     public function __construct(WebClient $webClient) {
         $this->webClient = $webClient;

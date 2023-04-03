@@ -14,14 +14,11 @@ use spouts\Parameter;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class golem extends fulltextrss {
-    /** @var string name of spout */
-    public $name = '[German] golem.de';
+    public string $name = '[German] golem.de';
 
-    /** @var string description of this source type */
-    public $description = 'Fetch the golem news with full content (not only the header as content).';
+    public string $description = 'Fetch the golem news with full content (not only the header as content).';
 
-    /** @var SpoutParameters configurable parameters */
-    public $params = [
+    public array $params = [
         'section' => [
             'title' => 'Section',
             'type' => Parameter::TYPE_SELECT,

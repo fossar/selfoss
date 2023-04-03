@@ -14,11 +14,9 @@ use helpers\Authentication;
  * Proxy for accessing tag colors.
  */
 class Tags implements TagsInterface {
-    /** @var TagsInterface Instance of backend-specific Tags class */
-    private $backend;
-
-    /** @var Authentication */
-    private $authentication;
+    private Authentication $authentication;
+    /** Instance of backend-specific Tags class */
+    private TagsInterface $backend;
 
     public function __construct(
         Authentication $authentication,

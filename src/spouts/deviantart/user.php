@@ -14,14 +14,11 @@ use spouts\Parameter;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class user extends \spouts\rss\images {
-    /** @var string name of source */
-    public $name = 'DeviantArt: user deviations';
+    public string $name = 'DeviantArt: user deviations';
 
-    /** @var string description of this source type */
-    public $description = 'Get deviations of a DeviantArt user.';
+    public string $description = 'Get deviations of a DeviantArt user.';
 
-    /** @var SpoutParameters configurable parameters */
-    public $params = [
+    public array $params = [
         'username' => [
             'title' => 'Username',
             'type' => Parameter::TYPE_TEXT,

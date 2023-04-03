@@ -18,23 +18,14 @@ use SimpleXMLElement;
  * @author     Sean Rand <asanernd@gmail.com>
  */
 class Import {
-    /** @var Authentication authentication helper */
-    private $authentication;
-
     /** @var array<string, array{id: int, tags: string[]}> Sources that have been imported from the OPML file */
-    private $imported = [];
+    private array $imported = [];
 
-    /** @var Logger */
-    private $logger;
-
-    /** @var \daos\Sources */
-    private $sourcesDao;
-
-    /** @var \daos\Tags */
-    private $tagsDao;
-
-    /** @var View view helper */
-    private $view;
+    private Authentication $authentication;
+    private Logger $logger;
+    private \daos\Sources $sourcesDao;
+    private \daos\Tags $tagsDao;
+    private View $view;
 
     public function __construct(Authentication $authentication, Logger $logger, \daos\Sources $sourcesDao, \daos\Tags $tagsDao, View $view) {
         $this->authentication = $authentication;

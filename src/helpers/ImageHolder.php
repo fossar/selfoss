@@ -8,14 +8,11 @@ namespace helpers;
  * Class holding image data and accompanying metadata.
  */
 class ImageHolder {
-    /** @var string */
-    private $data;
+    private string $data;
     /** @var Image::FORMAT_JPEG|Image::FORMAT_PNG */
-    private $format;
-    /** @var int */
-    private $width;
-    /** @var int */
-    private $height;
+    private string $format;
+    private int $width;
+    private int $height;
 
     /**
      * @param Image::FORMAT_JPEG|Image::FORMAT_PNG $format

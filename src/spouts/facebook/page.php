@@ -27,14 +27,11 @@ use spouts\Parameter;
  * @extends \spouts\spout<null>
  */
 class page extends \spouts\spout {
-    /** @var string name of source */
-    public $name = 'Facebook: page feed';
+    public string $name = 'Facebook: page feed';
 
-    /** @var string description of this source type */
-    public $description = 'Get posts from given Facebook page wall.';
+    public string $description = 'Get posts from given Facebook page wall.';
 
-    /** @var SpoutParameters configurable parameters */
-    public $params = [
+    public array $params = [
         'user' => [
             'title' => 'Page name',
             'type' => Parameter::TYPE_TEXT,
@@ -58,20 +55,17 @@ class page extends \spouts\spout {
         ],
     ];
 
-    /** @var ?string title of the source */
-    protected $title = null;
+    /** Title of the source */
+    protected ?string $title = null;
 
-    /** @var ?string page picture */
-    private $pageLink;
+    private ?string $pageLink = null;
 
-    /** @var ?string page picture */
-    private $pagePicture;
-
-    /** @var WebClient */
-    private $webClient;
+    private ?string $pagePicture = null;
 
     /** @var FbItem[] current fetched items */
-    private $items = [];
+    private array $items = [];
+
+    private WebClient $webClient;
 
     public function __construct(WebClient $webClient) {
         $this->webClient = $webClient;

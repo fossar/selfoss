@@ -29,8 +29,7 @@ class TwitterV1ApiClient {
         'media',
     ];
 
-    /** @var GuzzleHttp\Client HTTP client configured with Twitter OAuth support */
-    private $client;
+    private GuzzleHttp\Client $client;
 
     public function __construct(GuzzleHttp\Client $client) {
         $this->client = $client;

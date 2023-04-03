@@ -18,14 +18,9 @@ use spouts\Parameter;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class Sources implements SourcesInterface {
-    /** @var SourcesInterface Instance of backend specific sources class */
-    private $backend;
-
-    /** @var Authentication authentication helper */
-    private $authentication;
-
-    /** @var SpoutLoader spout loader */
-    private $spoutLoader;
+    private Authentication $authentication;
+    private SourcesInterface $backend;
+    private SpoutLoader $spoutLoader;
 
     public function __construct(
         Authentication $authentication,

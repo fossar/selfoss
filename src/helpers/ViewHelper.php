@@ -14,8 +14,7 @@ use DateTime;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class ViewHelper {
-    /** @var Configuration configuration */
-    private $configuration;
+    private Configuration $configuration;
 
     public function __construct(Configuration $configuration) {
         $this->configuration = $configuration;

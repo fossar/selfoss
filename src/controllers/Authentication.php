@@ -11,11 +11,8 @@ use helpers\View;
  * Controller for user related tasks
  */
 class Authentication {
-    /** @var helpers\Authentication authentication helper */
-    private $authentication;
-
-    /** @var View view helper */
-    private $view;
+    private helpers\Authentication $authentication;
+    private View $view;
 
     public function __construct(helpers\Authentication $authentication, View $view) {
         $this->authentication = $authentication;

@@ -15,8 +15,7 @@ use spouts\Item;
  * @implements Filter<string>
  */
 final class RegexFilter implements Filter {
-    /** @var string */
-    private $regex;
+    private string $regex;
 
     public function __construct(string $regex) {
         if (@preg_match('/^\\/((?<!\\\\)(?:\\\\)*\\/|[^\\/])*\\/$/', $regex) === 0) {

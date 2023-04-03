@@ -14,14 +14,9 @@ use InvalidArgumentException;
  * Controller updating sources
  */
 class Update {
-    /** @var Authentication authentication helper */
-    private $authentication;
-
-    /** @var ContentLoader content loader */
-    private $contentLoader;
-
-    /** @var View view helper */
-    private $view;
+    private Authentication $authentication;
+    private ContentLoader $contentLoader;
+    private View $view;
 
     public function __construct(
         Authentication $authentication,

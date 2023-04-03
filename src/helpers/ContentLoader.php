@@ -17,42 +17,20 @@ use Monolog\Logger;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class ContentLoader {
-    /** @var Configuration configuration */
-    private $configuration;
-
-    /** @var \daos\DatabaseInterface database for optimization */
-    private $database;
-
-    /** @var IconStore icon store */
-    private $iconStore;
-
-    /** @var Image image helper */
-    private $imageHelper;
-
-    /** @var \daos\Items database access for saving new item */
-    private $itemsDao;
-
-    /** @var Logger */
-    private $logger;
-
-    /** @var \daos\Sources database access for saving source’s last update */
-    private $sourcesDao;
-
-    /** @var SpoutLoader spout loader */
-    private $spoutLoader;
-
-    /** @var ThumbnailStore thumbnail store */
-    private $thumbnailStore;
-
-    /** @var WebClient thumbnail store */
-    private $webClient;
-
     public const ICON_FORMAT = Image::FORMAT_PNG;
     public const THUMBNAIL_FORMAT = Image::FORMAT_JPEG;
 
-    /**
-     * ctor
-     */
+    private Configuration $configuration;
+    private \daos\DatabaseInterface $database;
+    private IconStore $iconStore;
+    private Image $imageHelper;
+    private \daos\Items $itemsDao;
+    private Logger $logger;
+    private \daos\Sources $sourcesDao;
+    private SpoutLoader $spoutLoader;
+    private ThumbnailStore $thumbnailStore;
+    private WebClient $webClient;
+
     public function __construct(Configuration $configuration, \daos\DatabaseInterface $database, IconStore $iconStore, Image $imageHelper, \daos\Items $itemsDao, Logger $logger, \daos\Sources $sourcesDao, SpoutLoader $spoutLoader, ThumbnailStore $thumbnailStore, WebClient $webClient) {
         $this->configuration = $configuration;
         $this->database = $database;

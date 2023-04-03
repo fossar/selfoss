@@ -11,8 +11,7 @@ use SimplePie\SimplePie;
  * Bridge to make SimplePie fetch resources using Guzzle library
  */
 class SimplePieFileGuzzle extends File {
-    /** @var WebClient */
-    private $webClient;
+    private WebClient $webClient;
 
     /**
      * @param string $url

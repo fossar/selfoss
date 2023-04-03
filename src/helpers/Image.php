@@ -45,11 +45,8 @@ class Image {
         'application/ico' => 'ico',
     ];
 
-    /** @var Logger */
-    private $logger;
-
-    /** @var WebClient */
-    private $webClient;
+    private Logger $logger;
+    private WebClient $webClient;
 
     public function __construct(Logger $logger, WebClient $webClient) {
         $this->logger = $logger;

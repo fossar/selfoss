@@ -18,14 +18,10 @@ use Monolog\Logger;
  * Helper class for session management.
  */
 class Session {
-    /** @var Logger */
-    private $logger;
+    private bool $started = false;
 
-    /** @var View view */
-    private $view;
-
-    /** @var bool */
-    private $started = false;
+    private Logger $logger;
+    private View $view;
 
     public function __construct(Logger $logger, View $view) {
         $this->logger = $logger;

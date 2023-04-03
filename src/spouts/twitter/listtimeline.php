@@ -19,11 +19,10 @@ use spouts\Parameter;
  * @extends \spouts\spout<null>
  */
 class listtimeline extends \spouts\spout {
-    public $name = 'Twitter: list timeline';
-    public $description = 'Fetch the timeline of a given list.';
+    public string $name = 'Twitter: list timeline';
+    public string $description = 'Fetch the timeline of a given list.';
 
-    /** @var SpoutParameters configurable parameters */
-    public $params = [
+    public array $params = [
         'consumer_key' => [
             'title' => 'Consumer Key',
             'type' => Parameter::TYPE_TEXT,
@@ -68,17 +67,16 @@ class listtimeline extends \spouts\spout {
         ],
     ];
 
-    /** @var string URL of the source */
-    private $htmlUrl = '';
+    /** URL of the source */
+    private string $htmlUrl = '';
 
-    /** @var ?string title of the source */
-    private $title = null;
+    /** Title of the source */
+    private ?string $title = null;
 
     /** @var iterable<Item<null>> current fetched items */
-    private $items = [];
+    private iterable $items = [];
 
-    /** @var TwitterV1ApiClientFactory */
-    private $clientFactory;
+    private TwitterV1ApiClientFactory $clientFactory;
 
     public function __construct(TwitterV1ApiClientFactory $clientFactory) {
         $this->clientFactory = $clientFactory;

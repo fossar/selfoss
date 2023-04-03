@@ -14,5 +14,5 @@ namespace daos\pgsql;
  */
 class Tags extends \daos\mysql\Tags {
     /** @var class-string SQL helper */
-    protected static $stmt = Statements::class;
+    protected static string $stmt = Statements::class;
 }

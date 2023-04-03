@@ -19,14 +19,9 @@ use Psr\Http\Message\ResponseInterface;
  * @author     Alexandre Rossi <alexandre.rossi@gmail.com>
  */
 class WebClient {
-    /** @var Configuration configuration */
-    private $configuration;
-
-    /** @var ?GuzzleHttp\Client */
-    private $httpClient = null;
-
-    /** @var Logger */
-    private $logger;
+    private Configuration $configuration;
+    private ?GuzzleHttp\Client $httpClient = null;
+    private Logger $logger;
 
     public function __construct(Configuration $configuration, Logger $logger) {
         $this->configuration = $configuration;

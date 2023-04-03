@@ -16,13 +16,10 @@ use helpers\Configuration;
  */
 class Tags implements \daos\TagsInterface {
     /** @var class-string SQL helper */
-    protected static $stmt = Statements::class;
+    protected static string $stmt = Statements::class;
 
-    /** @var Configuration configuration */
-    private $configuration;
-
-    /** @var DatabaseInterface database connection */
-    protected $database;
+    private Configuration $configuration;
+    protected DatabaseInterface $database;
 
     public function __construct(Configuration $configuration, DatabaseInterface $database) {
         $this->configuration = $configuration;

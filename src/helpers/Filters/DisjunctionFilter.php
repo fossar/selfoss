@@ -16,7 +16,7 @@ namespace helpers\Filters;
  */
 final class DisjunctionFilter implements Filter {
     /** @var Filter<T> */
-    private $filter;
+    private Filter $filter;
 
     /**
      * @param Filter<T> $filter

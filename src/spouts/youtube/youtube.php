@@ -23,14 +23,11 @@ use VStelmakh\UrlHighlight\UrlHighlight;
  * @copywork   Arndt Staudinger <info@clucose.com> April 2013
  */
 class youtube extends \spouts\rss\feed {
-    /** @var string name of source */
-    public $name = 'YouTube';
+    public string $name = 'YouTube';
 
-    /** @var string description of this source type */
-    public $description = 'Follow videos from a YouTube channel or a playlist.';
+    public string $description = 'Follow videos from a YouTube channel or a playlist.';
 
-    /** @var SpoutParameters configurable parameters */
-    public $params = [
+    public array $params = [
         'channel' => [
             'title' => 'URL or username',
             'type' => Parameter::TYPE_TEXT,
@@ -40,8 +37,7 @@ class youtube extends \spouts\rss\feed {
         ],
     ];
 
-    /** @var UrlHighlight urlHighlight */
-    private $urlHighlight;
+    private UrlHighlight $urlHighlight;
 
     public function __construct(UrlHighlight $urlHighlight, FeedReader $feed, Image $imageHelper, Logger $logger) {
         parent::__construct($feed, $imageHelper, $logger);

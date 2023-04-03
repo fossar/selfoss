@@ -15,11 +15,9 @@ use spouts\Item;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class images extends feed {
-    /** @var string name of spout */
-    public $name = 'RSS Feed Images';
+    public string $name = 'RSS Feed Images';
 
-    /** @var string description of this source type */
-    public $description = 'Fetch images from given rss feed.';
+    public string $description = 'Fetch images from given rss feed.';
 
     /**
      * @return \Generator<Item<SimplePie\Item>> list of items

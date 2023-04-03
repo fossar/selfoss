@@ -17,10 +17,9 @@ use spouts\spout;
  */
 class SpoutLoader {
     /** @var ?array<class-string<spout<mixed>>, spout<mixed>> array of available spouts */
-    private $spouts = null;
+    private ?array $spouts = null;
 
-    /** @var Dice dependency injection container */
-    private $dic;
+    private Dice $dic;
 
     public function __construct(Dice $dice) {
         $this->dic = $dice;

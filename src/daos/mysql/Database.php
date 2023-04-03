@@ -18,11 +18,8 @@ use Monolog\Logger;
 class Database implements \daos\DatabaseInterface {
     use CommonSqlDatabase;
 
-    /** @var DatabaseConnection database connection */
-    private $connection;
-
-    /** @var Logger */
-    private $logger;
+    private DatabaseConnection $connection;
+    private Logger $logger;
 
     /**
      * establish connection and

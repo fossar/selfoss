@@ -22,14 +22,11 @@ use spouts\Parameter;
  * @extends \spouts\spout<SimplePie\Item>
  */
 class feed extends \spouts\spout {
-    /** @var string name of source */
-    public $name = 'RSS Feed';
+    public string $name = 'RSS Feed';
 
-    /** @var string description of this source type */
-    public $description = 'Get posts from plain RSS/Atom feed.';
+    public string $description = 'Get posts from plain RSS/Atom feed.';
 
-    /** @var SpoutParameters configurable parameters */
-    public $params = [
+    public array $params = [
         'url' => [
             'title' => 'URL',
             'type' => Parameter::TYPE_URL,
@@ -39,23 +36,18 @@ class feed extends \spouts\spout {
         ],
     ];
 
-    /** @var ?string URL of the source */
-    protected $htmlUrl = null;
+    /** URL of the source */
+    protected ?string $htmlUrl = null;
 
-    /** @var Logger */
-    private $logger;
-
-    /** @var FeedReader */
-    private $feed;
-
-    /** @var Image image helper */
-    private $imageHelper;
-
-    /** @var ?string title of the source */
-    protected $title = null;
+    /** Title of the source */
+    protected ?string $title = null;
 
     /** @var SimplePie\Item[] current fetched items */
-    private $items = [];
+    private array $items = [];
+
+    private Logger $logger;
+    private FeedReader $feed;
+    private Image $imageHelper;
 
     public function __construct(FeedReader $feed, Image $imageHelper, Logger $logger) {
         $this->imageHelper = $imageHelper;

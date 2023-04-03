@@ -11,11 +11,8 @@ use helpers\View;
  * Controller for user related tasks
  */
 final class HashPassword {
-    /** @var Authentication authentication helper */
-    private $authentication;
-
-    /** @var View view helper */
-    private $view;
+    private Authentication $authentication;
+    private View $view;
 
     public function __construct(Authentication $authentication, View $view) {
         $this->authentication = $authentication;

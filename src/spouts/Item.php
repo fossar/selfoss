@@ -14,28 +14,23 @@ use helpers\HtmlString;
  */
 class Item {
     /** @var string an unique id for this item */
-    private $id;
+    private string $id;
 
-    /** @var HtmlString title */
-    private $title;
+    private HtmlString $title;
 
     /** @var HtmlString|(callable(static): HtmlString) content */
     private $content;
 
-    /** @var ?string thumbnail */
-    private $thumbnail;
+    private ?string $thumbnail = null;
 
     /** @var (?string)|(callable(static): ?string) icon */
     private $icon;
 
-    /** @var string link */
-    private $link;
+    private string $link;
 
-    /** @var ?DateTimeInterface date */
-    private $date;
+    private ?DateTimeInterface $date = null;
 
-    /** @var ?string author */
-    private $author;
+    private ?string $author = null;
 
     /** @var Extra extra data */
     private $extraData;

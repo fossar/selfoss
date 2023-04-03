@@ -11,11 +11,8 @@ use Monolog\Logger;
  * Icon storage.
  */
 class IconStore {
-    /** @var Logger */
-    private $logger;
-
-    /** @var FileStorage */
-    private $storage;
+    private FileStorage $storage;
+    private Logger $logger;
 
     public function __construct(FileStorage $storage, Logger $logger) {
         $this->storage = $storage;

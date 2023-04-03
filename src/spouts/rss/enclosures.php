@@ -16,11 +16,9 @@ use spouts\Item;
  * @author     Daniel Rudolf <https://daniel-rudolf.de/>
  */
 class enclosures extends feed {
-    /** @var string name of spout */
-    public $name = 'RSS Feed (with enclosures)';
+    public string $name = 'RSS Feed (with enclosures)';
 
-    /** @var string description of this source type */
-    public $description = 'Get posts from RSS feed, including media enclosures.';
+    public string $description = 'Get posts from RSS feed, including media enclosures.';
 
     /**
      * @return \Generator<Item<SimplePie\Item>> list of items

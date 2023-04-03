@@ -15,11 +15,11 @@ namespace spouts;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 abstract class spout {
-    /** @var string name of source */
-    public $name = '';
+    /** Name of source */
+    public string $name = '';
 
-    /** @var string description of this source type */
-    public $description = '';
+    /** Description of this source type */
+    public string $description = '';
 
     /**
     /* Configurable parameters
@@ -57,7 +57,7 @@ abstract class spout {
      *
      * @var SpoutParameters
      */
-    public $params = [];
+    public array $params = [];
 
     /**
      * loads content for given source

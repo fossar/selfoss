@@ -17,11 +17,8 @@ use helpers\Authentication;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class Items implements ItemsInterface {
-    /** @var ItemsInterface Instance of backend specific items class */
-    private $backend;
-
-    /** @var Authentication authentication helper */
-    private $authentication;
+    private Authentication $authentication;
+    private ItemsInterface $backend;
 
     public function __construct(
         Authentication $authentication,

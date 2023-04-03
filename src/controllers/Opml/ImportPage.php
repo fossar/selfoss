@@ -12,8 +12,7 @@ use helpers\Authentication;
  * @TODO move this into JS client
  */
 class ImportPage {
-    /** @var Authentication authentication helper */
-    private $authentication;
+    private Authentication $authentication;
 
     public function __construct(Authentication $authentication) {
         $this->authentication = $authentication;

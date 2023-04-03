@@ -28,14 +28,11 @@ use spouts\Parameter;
  * @extends \spouts\spout<null>
  */
 class reddit2 extends \spouts\spout {
-    /** @var string name of spout */
-    public $name = 'Reddit';
+    public string $name = 'Reddit';
 
-    /** @var string description of this source type */
-    public $description = 'Get your fix from Reddit.';
+    public string $description = 'Get your fix from Reddit.';
 
-    /** @var SpoutParameters configurable parameters */
-    public $params = [
+    public array $params = [
         'url' => [
             'title' => 'Subreddit or multireddit url',
             'type' => Parameter::TYPE_TEXT,
@@ -59,20 +56,17 @@ class reddit2 extends \spouts\spout {
         ],
     ];
 
-    /** @var ?string URL of the source */
-    protected $htmlUrl = null;
+    /** URL of the source */
+    protected ?string $htmlUrl = null;
 
-    /** @var string the reddit_session cookie */
-    private $reddit_session = '';
-
-    /** @var Image image helper */
-    private $imageHelper;
-
-    /** @var WebClient */
-    private $webClient;
+    /** the reddit_session cookie */
+    private string $reddit_session = '';
 
     /** @var RedditItem[] current fetched items */
-    private $items = [];
+    private array $items = [];
+
+    private Image $imageHelper;
+    private WebClient $webClient;
 
     public function __construct(Image $imageHelper, WebClient $webClient) {
         $this->imageHelper = $imageHelper;

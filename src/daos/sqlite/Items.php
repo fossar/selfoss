@@ -14,5 +14,5 @@ namespace daos\sqlite;
  */
 class Items extends \daos\mysql\Items {
     /** @var class-string SQL helper */
-    protected static $stmt = Statements::class;
+    protected static string $stmt = Statements::class;
 }

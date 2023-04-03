@@ -8,8 +8,7 @@ namespace helpers;
  * A string wrapper representing a HTML fragment.
  */
 class HtmlString {
-    /** @var string */
-    private $content;
+    private string $content;
 
     private function __construct(string $content) {
         $this->content = $content;

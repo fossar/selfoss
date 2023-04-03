@@ -11,8 +11,7 @@ use SimplePie\SimplePie;
  * Helper class for obtaining feeds
  */
 class FeedReader {
-    /** @var SimplePie */
-    private $simplepie;
+    private SimplePie $simplepie;
 
     public function __construct(
         SimplePie $simplepie,

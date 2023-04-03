@@ -20,17 +20,10 @@ use InvalidArgumentException;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class Items {
-    /** @var Authentication authentication helper */
-    private $authentication;
-
-    /** @var \daos\Items items */
-    private $itemsDao;
-
-    /** @var Request */
-    private $request;
-
-    /** @var View view helper */
-    private $view;
+    private Authentication $authentication;
+    private \daos\Items $itemsDao;
+    private Request $request;
+    private View $view;
 
     public function __construct(
         Authentication $authentication,

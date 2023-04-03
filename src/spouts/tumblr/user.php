@@ -14,14 +14,11 @@ use spouts\Parameter;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class user extends \spouts\rss\images {
-    /** @var string name of source */
-    public $name = 'tumblr: user posts';
+    public string $name = 'tumblr: user posts';
 
-    /** @var string description of this source type */
-    public $description = 'Get posts of a tumblr user.';
+    public string $description = 'Get posts of a tumblr user.';
 
-    /** @var SpoutParameters configurable parameters */
-    public $params = [
+    public array $params = [
         'username' => [
             'title' => 'Username',
             'type' => Parameter::TYPE_TEXT,

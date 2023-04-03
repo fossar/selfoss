@@ -19,14 +19,11 @@ use spouts\Parameter;
  * @extends \spouts\spout<null>
  */
 class hometimeline extends \spouts\spout {
-    /** @var string name of source */
-    public $name = 'Twitter: your timeline';
+    public string $name = 'Twitter: your timeline';
 
-    /** @var string description of this source type */
-    public $description = 'Fetch your twitter timeline.';
+    public string $description = 'Fetch your twitter timeline.';
 
-    /** @var SpoutParameters configurable parameters */
-    public $params = [
+    public array $params = [
         'consumer_key' => [
             'title' => 'Consumer Key',
             'type' => Parameter::TYPE_TEXT,
@@ -57,17 +54,16 @@ class hometimeline extends \spouts\spout {
         ],
     ];
 
-    /** @var string URL of the source */
-    private $htmlUrl = '';
+    /** URL of the source */
+    private string $htmlUrl = '';
 
-    /** @var ?string title of the source */
-    private $title = null;
+    /** Title of the source */
+    private ?string $title = null;
 
     /** @var iterable<Item<null>> current fetched items */
-    private $items = [];
+    private iterable $items = [];
 
-    /** @var TwitterV1ApiClientFactory */
-    private $clientFactory;
+    private TwitterV1ApiClientFactory $clientFactory;
 
     public function __construct(TwitterV1ApiClientFactory $clientFactory) {
         $this->clientFactory = $clientFactory;

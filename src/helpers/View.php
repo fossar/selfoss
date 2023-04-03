@@ -20,11 +20,10 @@ use Psr\Http\Message\ResponseInterface;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class View {
-    /** @var string current base url */
-    public $base = '';
+    /** Current base url */
+    public string $base = '';
 
-    /** @var Configuration configuration */
-    private $configuration;
+    private Configuration $configuration;
 
     /**
      * set global view vars

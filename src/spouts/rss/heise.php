@@ -15,14 +15,11 @@ use spouts\Parameter;
  * @author     Daniel Seither <post@tiwoc.de>
  */
 class heise extends fulltextrss {
-    /** @var string name of spout */
-    public $name = '[German] heise.de';
+    public string $name = '[German] heise.de';
 
-    /** @var string description of this source type */
-    public $description = 'Fetch the heise news with full content (not only the header as content).';
+    public string $description = 'Fetch the heise news with full content (not only the header as content).';
 
-    /** @var SpoutParameters configurable parameters */
-    public $params = [
+    public array $params = [
         'section' => [
             'title' => 'Section',
             'type' => Parameter::TYPE_SELECT,

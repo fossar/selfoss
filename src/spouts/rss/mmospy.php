@@ -12,14 +12,11 @@ namespace spouts\rss;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class mmospy extends fulltextrss {
-    /** @var string name of spout */
-    public $name = '[German] mmo-spy.de';
+    public string $name = '[German] mmo-spy.de';
 
-    /** @var string description of this source type */
-    public $description = 'Fetch the mmospy news with full content (not only the header as content).';
+    public string $description = 'Fetch the mmospy news with full content (not only the header as content).';
 
-    /** @var SpoutParameters configurable parameters */
-    public $params = [];
+    public array $params = [];
 
     /**
      * addresses of feeds for the sections

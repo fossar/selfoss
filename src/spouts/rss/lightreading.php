@@ -14,14 +14,11 @@ namespace spouts\rss;
  * @author     Daniel Seither <post@tiwoc.de>
  */
 class lightreading extends fulltextrss {
-    /** @var string name of spout */
-    public $name = '[English] lightreading.com';
+    public string $name = '[English] lightreading.com';
 
-    /** @var string description of this source type */
-    public $description = 'Fetch Lightreading news with full content (not only the header as content).';
+    public string $description = 'Fetch Lightreading news with full content (not only the header as content).';
 
-    /** @var SpoutParameters configurable parameters */
-    public $params = [];
+    public array $params = [];
 
     /**
      * addresses of feeds for the sections

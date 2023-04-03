@@ -18,26 +18,13 @@ use Monolog\Logger;
  * @author     Sean Rand <asanernd@gmail.com>
  */
 class Export {
-    /** @var Authentication authentication helper */
-    private $authentication;
-
-    /** @var Configuration configuration */
-    private $configuration;
-
-    /** @var Logger */
-    private $logger;
-
-    /** @var SpoutLoader */
-    private $spoutLoader;
-
-    /** @var \XMLWriter */
-    private $writer;
-
-    /** @var \daos\Sources */
-    private $sourcesDao;
-
-    /** @var \daos\Tags */
-    private $tagsDao;
+    private Authentication $authentication;
+    private Configuration $configuration;
+    private Logger $logger;
+    private SpoutLoader $spoutLoader;
+    private \XMLWriter $writer;
+    private \daos\Sources $sourcesDao;
+    private \daos\Tags $tagsDao;
 
     public function __construct(Authentication $authentication, Configuration $configuration, Logger $logger, \daos\Sources $sourcesDao, SpoutLoader $spoutLoader, \daos\Tags $tagsDao, \XMLWriter $writer) {
         $this->authentication = $authentication;

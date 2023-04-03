@@ -21,13 +21,10 @@ use function json_last_error_msg;
  */
 class Sources implements \daos\SourcesInterface {
     /** @var class-string SQL helper */
-    protected static $stmt = Statements::class;
+    protected static string $stmt = Statements::class;
 
-    /** @var Configuration configuration */
-    private $configuration;
-
-    /** @var DatabaseInterface database connection */
-    protected $database;
+    private Configuration $configuration;
+    protected DatabaseInterface $database;
 
     public function __construct(Configuration $configuration, DatabaseInterface $database) {
         $this->configuration = $configuration;

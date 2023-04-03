@@ -18,23 +18,12 @@ use helpers\View;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class Rss {
-    /** @var Authentication authentication helper */
-    private $authentication;
-
-    /** @var Configuration configuration */
-    private $configuration;
-
-    /** @var RSS2 feed writer */
-    private $feedWriter;
-
-    /** @var \daos\Items items */
-    private $itemsDao;
-
-    /** @var \daos\Sources sources */
-    private $sourcesDao;
-
-    /** @var View view helper */
-    private $view;
+    private Authentication $authentication;
+    private Configuration $configuration;
+    private RSS2 $feedWriter;
+    private \daos\Items $itemsDao;
+    private \daos\Sources $sourcesDao;
+    private View $view;
 
     public function __construct(Authentication $authentication, Configuration $configuration, RSS2 $feedWriter, \daos\Items $itemsDao, \daos\Sources $sourcesDao, View $view) {
         $this->authentication = $authentication;

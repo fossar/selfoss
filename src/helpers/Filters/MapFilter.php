@@ -19,7 +19,7 @@ use spouts\Item;
  */
 final class MapFilter implements Filter {
     /** @var Filter<InnerT> */
-    private $filter;
+    private Filter $filter;
 
     /** @var callable(T): InnerT */
     private $transform;

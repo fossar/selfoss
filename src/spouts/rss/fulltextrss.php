@@ -25,14 +25,11 @@ use spouts\Parameter;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class fulltextrss extends feed {
-    /** @var string name of spout */
-    public $name = 'RSS Feed (with content extraction)';
+    public string $name = 'RSS Feed (with content extraction)';
 
-    /** @var string description of this source type */
-    public $description = 'Use “Graby” library to get full content of feed posts instead of partial content provided by some websites.';
+    public string $description = 'Use “Graby” library to get full content of feed posts instead of partial content provided by some websites.';
 
-    /** @var SpoutParameters configurable parameters */
-    public $params = [
+    public array $params = [
         'url' => [
             'title' => 'URL',
             'type' => Parameter::TYPE_URL,
@@ -42,20 +39,13 @@ class fulltextrss extends feed {
         ],
     ];
 
-    /** @var string tag for logger */
-    private static $loggerTag = 'selfoss.graby';
+    /** Tag for logger */
+    private static string $loggerTag = 'selfoss.graby';
 
-    /** @var Configuration configuration */
-    private $configuration;
-
-    /** @var ?Graby */
-    private $graby = null;
-
-    /** @var Logger */
-    private $logger;
-
-    /** @var WebClient */
-    private $webClient;
+    private Configuration $configuration;
+    private ?Graby $graby = null;
+    private Logger $logger;
+    private WebClient $webClient;
 
     public function __construct(Configuration $configuration, FeedReader $feed, Image $imageHelper, Logger $logger, WebClient $webClient) {
         parent::__construct($feed, $imageHelper, $logger);

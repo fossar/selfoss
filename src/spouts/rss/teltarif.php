@@ -14,14 +14,11 @@ namespace spouts\rss;
  * @author     Daniel Seither <post@tiwoc.de>
  */
 class teltarif extends fulltextrss {
-    /** @var string name of spout */
-    public $name = '[German] teltarif.de';
+    public string $name = '[German] teltarif.de';
 
-    /** @var string description of this source type */
-    public $description = 'Fetch Telarif news with full content (not only the header as content).';
+    public string $description = 'Fetch Telarif news with full content (not only the header as content).';
 
-    /** @var SpoutParameters configurable parameters */
-    public $params = [];
+    public array $params = [];
 
     /**
      * addresses of feeds for the sections

@@ -18,29 +18,14 @@ use helpers\ViewHelper;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class Index {
-    /** @var Authentication authentication helper */
-    private $authentication;
-
-    /** @var \daos\Items items */
-    private $itemsDao;
-
-    /** @var Router router */
-    private $router;
-
-    /** @var \daos\Sources sources */
-    private $sourcesDao;
-
-    /** @var \controllers\Tags tags controller */
-    private $tagsController;
-
-    /** @var \daos\Tags tags */
-    private $tagsDao;
-
-    /** @var View view helper */
-    private $view;
-
-    /** @var ViewHelper */
-    private $viewHelper;
+    private Authentication $authentication;
+    private \daos\Items $itemsDao;
+    private Router $router;
+    private \daos\Sources $sourcesDao;
+    private Tags $tagsController;
+    private \daos\Tags $tagsDao;
+    private View $view;
+    private ViewHelper $viewHelper;
 
     public function __construct(Authentication $authentication, \daos\Items $itemsDao, Router $router, \daos\Sources $sourcesDao, Tags $tagsController, \daos\Tags $tagsDao, View $view, ViewHelper $viewHelper) {
         $this->authentication = $authentication;

@@ -14,14 +14,11 @@ use spouts\Parameter;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class usersfavs extends \spouts\rss\images {
-    /** @var string name of source */
-    public $name = 'DeviantArt: user favs';
+    public string $name = 'DeviantArt: user favs';
 
-    /** @var string description of this source type */
-    public $description = 'Get favorites of a DeviantArt user.';
+    public string $description = 'Get favorites of a DeviantArt user.';
 
-    /** @var SpoutParameters configurable parameters */
-    public $params = [
+    public array $params = [
         'username' => [
             'title' => 'Username',
             'type' => Parameter::TYPE_TEXT,

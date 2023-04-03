@@ -32,9 +32,9 @@ namespace spouts\Mail;
 use spouts\Parameter;
 
 class Imap extends \spouts\spout {
-    public $name = 'E-mail';
-    public $description = 'Obtain e-mails from IMAP account';
-    public $params = [
+    public string $name = 'E-mail';
+    public string $description = 'Obtain e-mails from IMAP account';
+    public array $params = [
         'email' => [
             'title'      => 'E-mail',
             'type'       => Parameter::TYPE_TEXT,

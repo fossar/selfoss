@@ -17,14 +17,11 @@ use spouts\Parameter;
  * @author     Sebastian Gibb <mail@sebastiangibb.de>
  */
 class prolinux extends fulltextrss {
-    /** @var string name of spout */
-    public $name = '[German] pro-linux.de';
+    public string $name = '[German] pro-linux.de';
 
-    /** @var string description of this source type */
-    public $description = 'Fetch the pro-linux news with full content (not only the header as content).';
+    public string $description = 'Fetch the pro-linux news with full content (not only the header as content).';
 
-    /** @var SpoutParameters configurable parameters */
-    public $params = [
+    public array $params = [
         'section' => [
             'title' => 'Section',
             'type' => Parameter::TYPE_SELECT,

@@ -10,11 +10,10 @@ use Monolog\Logger;
  * Simple file storage.
  */
 class FileStorage {
-    /** @var Logger */
-    private $logger;
+    private Logger $logger;
 
-    /** @var string Directory where the files will be stored */
-    private $directory;
+    /** Directory where the files will be stored */
+    private string $directory;
 
     public function __construct(Logger $logger, string $directory) {
         $this->logger = $logger;

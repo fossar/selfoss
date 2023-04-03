@@ -21,20 +21,15 @@ use Monolog\Logger;
  * @author     Harald Lapp <harald.lapp@gmail.com>
  */
 class Items implements \daos\ItemsInterface {
-    /** @var bool indicates whether last run has more results or not */
-    protected $hasMore = false;
+    /** Indicates whether last run has more results or not */
+    protected bool $hasMore = false;
 
     /** @var class-string SQL helper */
-    protected static $stmt = Statements::class;
+    protected static string $stmt = Statements::class;
 
-    /** @var Configuration configuration */
-    private $configuration;
-
-    /** @var DatabaseInterface database connection */
-    protected $database;
-
-    /** @var Logger */
-    private $logger;
+    private Logger $logger;
+    private Configuration $configuration;
+    protected DatabaseInterface $database;
 
     public function __construct(Logger $logger, Configuration $configuration, DatabaseInterface $database) {
         $this->configuration = $configuration;

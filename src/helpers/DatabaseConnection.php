@@ -15,17 +15,13 @@ use PDOException;
  * Copyright (c) 2009-2019 F3::Factory/Bong Cosca
  */
 class DatabaseConnection {
-    /** @var PDO Original PDO connection */
-    private $pdo;
+    /** Whether a transaction is currently in progress */
+    private bool $isInTransaction = false;
 
-    /** @var string */
-    private $tableNamePrefix;
+    private PDO $pdo;
 
-    /** @var bool whether a transaction is currently in progress */
-    private $isInTransaction = false;
-
-    /** @var Logger */
-    private $logger;
+    private Logger $logger;
+    private string $tableNamePrefix;
 
     /**
      * Instantiate class

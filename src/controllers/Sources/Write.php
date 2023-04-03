@@ -18,26 +18,13 @@ use spouts\Parameter;
  * Controller for creating and editing sources
  */
 class Write {
-    /** @var Authentication authentication helper */
-    private $authentication;
-
-    /** @var ContentLoader content loader */
-    private $contentLoader;
-
-    /** @var Request */
-    private $request;
-
-    /** @var \daos\Sources sources */
-    private $sourcesDao;
-
-    /** @var SpoutLoader spout loader */
-    private $spoutLoader;
-
-    /** @var \daos\Tags tags */
-    private $tagsDao;
-
-    /** @var View view helper */
-    private $view;
+    private Authentication $authentication;
+    private ContentLoader $contentLoader;
+    private \helpers\Request $request;
+    private \daos\Sources $sourcesDao;
+    private SpoutLoader $spoutLoader;
+    private \daos\Tags $tagsDao;
+    private View $view;
 
     public function __construct(
         Authentication $authentication,

@@ -16,17 +16,13 @@ use helpers\View;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class Tags {
-    /** @var Authentication authentication helper */
-    private $authentication;
+    /** @var ?array<string, array{backColor: string, foreColor: string}> cache of tags and associated colors */
+    protected ?array $tagsColors = null;
 
-    /** @var Request */
-    private $request;
-
-    /** @var \daos\Tags tags */
-    private $tagsDao;
-
-    /** @var View view helper */
-    private $view;
+    private Authentication $authentication;
+    private Request $request;
+    private \daos\Tags $tagsDao;
+    private View $view;
 
     public function __construct(
         Authentication $authentication,
@@ -39,9 +35,6 @@ class Tags {
         $this->tagsDao = $tagsDao;
         $this->view = $view;
     }
-
-    /** @var ?array<string, array{backColor: string, foreColor: string}> cache of tags and associated colors */
-    protected $tagsColors = null;
 
     /**
      * returns item tags as HTML
