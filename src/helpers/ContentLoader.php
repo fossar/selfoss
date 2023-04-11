@@ -47,11 +47,17 @@ class ContentLoader {
     /**
      * updates all sources
      */
-    public function update(): void {
-        foreach ($this->sourcesDao->getByLastUpdate() as $source) {
+    public function update(UpdateVisitor $updateVisitor): void {
+        $count = $this->sourcesDao->count();
+        $updateVisitor->started($count);
+
+        $sources = $this->sourcesDao->getByLastUpdate();
+        foreach ($sources as $source) {
             $this->fetch($source);
+            $updateVisitor->sourceUpdated();
         }
         $this->cleanup();
+        $updateVisitor->finished();
     }
 
     /**

@@ -52,6 +52,10 @@ class Sources implements SourcesInterface {
         $this->backend->saveLastUpdate($id, $lastEntry);
     }
 
+    public function count(): int {
+        return $this->backend->count();
+    }
+
     public function getByLastUpdate(): array {
         return $this->backend->getByLastUpdate();
     }

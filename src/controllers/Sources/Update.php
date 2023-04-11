@@ -7,6 +7,7 @@ namespace controllers\Sources;
 use helpers\Authentication;
 use helpers\ContentLoader;
 use helpers\Misc;
+use helpers\UpdateVisitor;
 use helpers\View;
 use InvalidArgumentException;
 
@@ -39,10 +40,46 @@ class Update {
             exit('unallowed access');
         }
 
-        // update all feeds
-        $this->contentLoader->update();
+        $accept = $_SERVER['HTTP_ACCEPT'] ?? '';
+        // Do not want to bother implementing content negotiation.
+        $reportProgress = $accept === 'text/event-stream';
 
-        echo 'finished';
+        if ($reportProgress) {
+            // Server-sent events inspired response format.
+            header('Content-Type: text/event-stream');
+
+            $updateVisitor = new class() implements UpdateVisitor {
+                private int $finishedCount = 0;
+
+                public function started(int $count): void {
+                    echo "event: started\ndata: {\"count\": {$count}}\n\n";
+                }
+
+                public function sourceUpdated(): void {
+                    ++$this->finishedCount;
+                    echo "event: sourceUpdated\ndata: {\"finishedCount\": {$this->finishedCount}}\n\n";
+                }
+
+                public function finished(): void {
+                    echo "event: finished\ndata: {}\n\n";
+                }
+            };
+        } else {
+            $updateVisitor = new class() implements UpdateVisitor {
+                public function started(int $count): void {
+                }
+
+                public function sourceUpdated(): void {
+                }
+
+                public function finished(): void {
+                    echo 'finished';
+                }
+            };
+        }
+
+        // update all feeds
+        $this->contentLoader->update($updateVisitor);
     }
 
     /**

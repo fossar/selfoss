@@ -52,6 +52,11 @@ interface SourcesInterface {
     public function saveLastUpdate(int $id, ?int $lastEntry): void;
 
     /**
+     * Gets the number of sources.
+     */
+    public function count(): int;
+
+    /**
      * returns all sources
      *
      * @return array<array{id: int, title: string, tags: string, spout: string, params: string, filter: ?string, error: ?string, lastupdate: ?int, lastentry: ?int}> all sources

@@ -29,7 +29,10 @@ export function refreshSingle(id) {
  */
 export function refreshAll() {
     return ajax.get('update', {
-        timeout: 0
+        headers: {
+            'Accept': 'text/event-stream',
+        },
+        timeout: 0,
     }).promise;
 }
 

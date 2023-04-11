@@ -142,6 +142,15 @@ class Sources implements \daos\SourcesInterface {
     }
 
     /**
+     * Gets the number of sources.
+     */
+    public function count(): int {
+        $ret = $this->database->exec('SELECT COUNT(*) AS amount FROM ' . $this->configuration->dbPrefix . 'sources');
+
+        return (int) $ret[0]['amount'];
+    }
+
+    /**
      * returns all sources
      *
      * @return array<array{id: int, title: string, tags: string, spout: string, params: string, filter: ?string, error: ?string, lastupdate: ?int, lastentry: ?int}> all sources
