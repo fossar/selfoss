@@ -1,4 +1,5 @@
 import { useListenableValue } from './hooks';
+import { useMemo } from 'react';
 
 
 export function useLoggedIn() {
@@ -6,13 +7,28 @@ export function useLoggedIn() {
 }
 
 export function useAllowedToRead() {
-    return selfoss.isAllowedToRead();
+    const loggedIn = useLoggedIn();
+
+    return useMemo(
+        () => selfoss.isAllowedToRead(),
+        [loggedIn],
+    );
 }
 
 export function useAllowedToUpdate() {
-    return selfoss.isAllowedToUpdate();
+    const loggedIn = useLoggedIn();
+
+    return useMemo(
+        () => selfoss.isAllowedToUpdate(),
+        [loggedIn],
+    );
 }
 
 export function useAllowedToWrite() {
-    return selfoss.isAllowedToWrite();
+    const loggedIn = useLoggedIn();
+
+    return useMemo(
+        () => selfoss.isAllowedToWrite(),
+        [loggedIn],
+    );
 }

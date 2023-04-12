@@ -19,6 +19,7 @@
 - Fix compressed SVG (svgz) support. ([#1418](https://github.com/fossar/selfoss/pulls/1418)
 - Fix article links containing HTML-special characters. ([#1407](https://github.com/fossar/selfoss/issues/1407))
 - Reduce the chance of “Update all sources” button timing out. ([#1428](https://github.com/fossar/selfoss/pulls/1428))
+- Fix a log-in loop in client. ([#1429](https://github.com/fossar/selfoss/pulls/1429))
 
 ### Customization changes
 - Custom spouts must explicitly pass `null` to `Item::__construct()` when they do not need the `extraData` argument. ([#1415](https://github.com/fossar/selfoss/pull/1415))

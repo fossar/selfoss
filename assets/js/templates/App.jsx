@@ -23,6 +23,7 @@ import Navigation from './Navigation';
 import SearchList from './SearchList';
 import makeShortcuts from '../shortcuts';
 import * as icons from '../icons';
+import { useAllowedToRead, useAllowedToWrite } from '../helpers/authorizations';
 import { ConfigurationContext } from '../helpers/configuration';
 import { useIsSmartphone, useListenableValue } from '../helpers/hooks';
 import { ENTRIES_ROUTE_PATTERN } from '../helpers/uri';
@@ -189,6 +190,9 @@ function PureApp({
 
     const _ = React.useContext(LocalizationContext);
 
+    const isAllowedToRead = useAllowedToRead();
+    const isAllowedToWrite = useAllowedToWrite();
+
     return (
         <React.StrictMode>
             <Message message={globalMessage} />
@@ -205,7 +209,7 @@ function PureApp({
 
                 <Route path="/password">
                     <CheckAuthorization
-                        isAllowed={selfoss.isAllowedToWrite()}
+                        isAllowed={isAllowedToWrite}
                         returnLocation="/password"
                         _={_}
                     >
@@ -219,7 +223,7 @@ function PureApp({
 
                 <Route path="/">
                     <CheckAuthorization
-                        isAllowed={selfoss.isAllowedToRead()}
+                        isAllowed={isAllowedToRead}
                         _={_}
                     >
                         <div id="nav-mobile" role="navigation">
