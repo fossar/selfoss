@@ -65,7 +65,7 @@ var selfoss = {
             configurationToUse = configuration;
 
             // We are on-line, prune the user files when changed.
-            if ('caches' in window) {
+            if ('caches' in window && 'serviceWorker' in navigator) {
                 if (oldConfiguration === null || oldConfiguration.userCss !== configuration.userCss) {
                     await caches.delete('userCss');
                 }
@@ -197,7 +197,7 @@ var selfoss = {
                 localStorage.setItem('configuration', JSON.stringify(configuration));
 
                 // Cache user files manually since service worker is not aware of them.
-                if ('caches' in window) {
+                if ('caches' in window && 'serviceWorker' in navigator) {
                     caches.open('userCss').then((cache) => cache.add(`user.css?v=${configuration.userCss}`));
                     caches.open('userJs').then((cache) => cache.add(`user.js?v=${configuration.userJs}`));
                 }
@@ -238,15 +238,18 @@ var selfoss = {
 
         selfoss.db.clear(); // will not work after a failure, since storage is nulled
         window.localStorage.clear();
-        if ('caches' in window) {
-            caches.keys().then(keys => keys.forEach(key => caches.delete(key)));
-        }
-        navigator.serviceWorker.getRegistrations().then(function(registrations) {
-            registrations.forEach(function(reg) {
-                reg.unregister();
+        if ('serviceWorker' in navigator) {
+            if ('caches' in window) {
+                caches.keys().then(keys => keys.forEach(key => caches.delete(key)));
+            }
+
+            navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                registrations.forEach(function(reg) {
+                    reg.unregister();
+                });
             });
-        });
-        selfoss.serviceWorkerInitialized = false;
+            selfoss.serviceWorkerInitialized = false;
+        }
 
         try {
             await logout();
