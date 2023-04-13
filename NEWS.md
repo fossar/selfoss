@@ -18,7 +18,7 @@
 - Re-added “Next” button on smartphones. ([#1406](https://github.com/fossar/selfoss/issues/1406)
 - Fix compressed SVG (svgz) support. ([#1418](https://github.com/fossar/selfoss/pulls/1418)
 - Fix article links containing HTML-special characters. ([#1407](https://github.com/fossar/selfoss/issues/1407))
-- Reduce the chance of “Update all sources” button timing out. ([#1428](https://github.com/fossar/selfoss/pulls/1428))
+- Reduce the chance of “Update all sources” button timing out. ([#1428](https://github.com/fossar/selfoss/pulls/1428), [#1430](https://github.com/fossar/selfoss/pulls/1430))
 - Fix a log-in loop in client. ([#1429](https://github.com/fossar/selfoss/pulls/1429))
 - Fix errors in Firefox’s private browsing mode.
 

@@ -45,23 +45,44 @@ class Update {
         $reportProgress = $accept === 'text/event-stream';
 
         if ($reportProgress) {
+            // Individual events are short so we need to prevent various layers in the stack from buffering the response body.
+            // Otherwise a consuming layer may time out before any output gets to it.
+
+            // Ensure PHP compression is disabled since it would enable output buffering.
+            // https://www.php.net/manual/en/zlib.configuration.php#ini.zlib.output-compression
+            ini_set('zlib.output_compression', '0');
+
+            // End implicit buffering caused by `output_buffering` option.
+            while (ob_get_level() > 0) {
+                ob_end_clean();
+            }
+
+            // Ask nginx to not buffer FastCGI response.
+            // http://nginx.org/en/docs/http/ngx_http_fastcgi_module.html#fastcgi_buffering
+            header('X-Accel-Buffering: no');
+
             // Server-sent events inspired response format.
             header('Content-Type: text/event-stream');
 
             $updateVisitor = new class() implements UpdateVisitor {
                 private int $finishedCount = 0;
 
+                private function sendEvent(string $type, string $data = '{}'): void {
+                    echo "event: {$type}\ndata: {$data}\n\n";
+                    flush();
+                }
+
                 public function started(int $count): void {
-                    echo "event: started\ndata: {\"count\": {$count}}\n\n";
+                    $this->sendEvent('started', "{\"count\": {$count}}");
                 }
 
                 public function sourceUpdated(): void {
                     ++$this->finishedCount;
-                    echo "event: sourceUpdated\ndata: {\"finishedCount\": {$this->finishedCount}}\n\n";
+                    $this->sendEvent('sourceUpdated', "{\"finishedCount\": {$this->finishedCount}}");
                 }
 
                 public function finished(): void {
-                    echo "event: finished\ndata: {}\n\n";
+                    $this->sendEvent('finished');
                 }
             };
         } else {

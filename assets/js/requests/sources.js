@@ -33,7 +33,7 @@ export function refreshAll() {
             'Accept': 'text/event-stream',
         },
         timeout: 0,
-    }).promise;
+    }).promise.then(response => response.text());
 }
 
 /**
