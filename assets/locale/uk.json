@@ -37,5 +37,8 @@
   "lang_login": "вхід",
   "lang_login_username": "ім'я",
   "lang_login_password": "пароль",
-  "lang_no_title": "без назви"
+  "lang_no_title": "без назви",
+  "lang_filter": "Фільтр",
+  "lang_online_count": "Доступні елементи на сервері",
+  "lang_offline_count": "Елементи, доступні локально"
 }
