@@ -18,7 +18,7 @@
     "lodash.pick": "^4.4.0",
     "prop-types": "^15.7.2",
     "prop-types-nullable": "^1.0.1",
-    "ramda": "^0.28.0",
+    "ramda": "^0.29.0",
     "react": "^17.0.1",
     "react-aria-menubutton": "^7.0.3",
     "react-dom": "^17.0.1",
@@ -28,7 +28,7 @@
     "tinykeys": "^1.1.1",
     "unreset-css": "^1.0.1",
     "use-state-with-deps": "^1.1.1",
-    "yet-another-react-lightbox": "^2.1.1"
+    "yet-another-react-lightbox": "^3.5.0"
   },
   "devDependencies": {
     "@parcel/packager-raw-url": "^2.0.0",
@@ -44,7 +44,7 @@
     "prettier": "^2.0.0",
     "process": "^0.11.10",
     "stylelint": "^15.0.0",
-    "stylelint-config-standard-scss": "^7.0.0"
+    "stylelint-config-standard-scss": "^9.0.0"
   },
   "scripts": {
     "fix": "npm run fix:js && npm run fix:styles",
