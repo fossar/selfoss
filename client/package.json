@@ -1,4 +1,5 @@
 {
+  "name": "selfoss-client",
   "dependencies": {
     "@floating-ui/react-dom": "^1.0.0",
     "@floating-ui/react-dom-interactions": "^0.10.1",

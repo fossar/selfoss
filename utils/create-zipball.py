@@ -135,7 +135,7 @@ def main() -> None:
             archive.directory('src/')
             archive.directory('vendor/', is_not_unimportant)
 
-            # pack all bundles and bundled assets
+            # pack all bundles and bundled client assets
             archive.directory('public/')
 
             # copy data directory structure and .htaccess for deny

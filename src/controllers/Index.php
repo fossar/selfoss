@@ -49,7 +49,7 @@ class Index {
             $home = BASEDIR . '/public/index.html';
             if (!file_exists($home) || ($homeData = file_get_contents($home)) === false) { // For PHPStan: Error will be already handled by global error handler.
                 http_response_code(500);
-                echo 'Please build the assets using `npm run build` or obtain a pre-built packages from https://selfoss.aditu.de.';
+                echo 'Please build the client assets using `npm run build` or obtain a pre-built packages from https://selfoss.aditu.de.';
                 exit;
             }
 

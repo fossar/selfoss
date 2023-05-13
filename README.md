@@ -69,9 +69,9 @@ We recommend [Reader For Selfoss](https://f-droid.org/packages/bou.amine.apps.re
 
 Selfoss uses [composer](https://getcomposer.org/) and [npm](https://www.npmjs.com/get-npm) for installing external libraries. When you clone the repository you have to issue `composer install` to retrieve the external sources.
 
-For the client side, you will also need JavaScript dependencies installed by calling `npm install` in the `assets` directory. You can use `npm run install-dependencies` as a shortcut for installing both sets of dependencies.
+For the client side, you will also need JavaScript dependencies installed by calling `npm install` in the `client/` directory. You can use `npm run install-dependencies` as a shortcut for installing both sets of dependencies.
 
-We use [Parcel](https://parceljs.org/) (installed by the command above) to build the client side of selfoss. Every time anything in `assets` directory changes, you will need to run `npm run build` for the client to be built and installed into the `public` directory. When developing, you can also use `npm run dev`; it will watch for asset changes, rebuild the bundles as needed, and reload selfoss automatically. Upon switching between `npm run dev` and `npm run build`, you may need to delete `assets/.cache`.
+We use [Parcel](https://parceljs.org/) (installed by the command above) to build the client side of selfoss. Every time anything in `client/` directory changes, you will need to run `npm run build` for the client to be built and installed into the `public` directory. When developing, you can also use `npm run dev`; it will watch for asset changes, rebuild the bundles as needed, and reload selfoss automatically. Upon switching between `npm run dev` and `npm run build`, you may need to delete `client/.cache`.
 
 If you want to create a package with all the dependencies bundled, you can run `npm run dist` command to produce a zipball.
 
