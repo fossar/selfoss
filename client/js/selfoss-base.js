@@ -1,4 +1,4 @@
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { getInstanceInfo, login, logout } from './requests/common';
 import { getAllTags } from './requests/tags';
 import * as ajax from './helpers/ajax';
@@ -139,15 +139,15 @@ var selfoss = {
         // BrowserRouter expects no slash at the end.
         const basePath = (new URL(document.baseURI)).pathname.replace(/\/$/, '');
 
-        ReactDOM.render(
+        const root = createRoot(mainUi);
+        root.render(
             createApp({
                 basePath,
                 appRef: (app) => {
                     selfoss.app = app;
                 },
                 configuration,
-            }),
-            mainUi
+            })
         );
     },
 
