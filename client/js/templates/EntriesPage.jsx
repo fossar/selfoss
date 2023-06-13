@@ -944,7 +944,7 @@ export default class StateHolder extends React.Component {
                     current = old;
 
                     // attempt to load more
-                    document.querySelector('.stream-more').click();
+                    document.querySelector('.stream-more')?.click();
                 } else {
                     current = this.state.entries[nextIndex].id;
                 }
