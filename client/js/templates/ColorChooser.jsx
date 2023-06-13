@@ -1,8 +1,6 @@
 import React, { useContext, useMemo } from 'react';
-import { useFloating, autoUpdate, flip, offset, shift } from '@floating-ui/react-dom';
-import { FloatingPortal } from '@floating-ui/react-dom-interactions';
 import PropTypes from 'prop-types';
-import { Button as MenuButton, Wrapper as MenuWrapper, Menu, MenuItem } from 'react-aria-menubutton';
+import { Menu, MenuButton, MenuItem } from '@szhsin/react-menu';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { colorByBrightness } from '../helpers/color';
 import { LocalizationContext } from '../helpers/i18n';
@@ -52,71 +50,49 @@ export default function ColorChooser({tag, onChange}) {
         [tag.color]
     );
 
-    const {
-        x: menuX,
-        y: menuY,
-        reference: buttonRef,
-        floating: floatingRef,
-        strategy: positionStrategy,
-    } = useFloating({
-        placement: 'right-start',
-        strategy: 'fixed',
-        middleware: [
-            offset({ mainAxis: 10 }),
-            shift(),
-            flip(),
-        ],
-        whileElementsMounted: autoUpdate,
-    });
-
     const _ = useContext(LocalizationContext);
 
     return (
-        <MenuWrapper
-            className="popup-menu-wrapper color"
-            onSelection={onChange}
+        <div
+            className="color"
             onClick={preventDefault}
         >
-            <MenuButton
-                className="color-chooser-button"
-                ref={buttonRef}
-                title={_('tag_change_color_button_title')}
+            <Menu
+                menuButton={
+                    <MenuButton
+                        className="color-chooser-button"
+                        title={_('tag_change_color_button_title')}
+                    >
+                        <span
+                            className="color-box"
+                            style={style}
+                        />
+                        <span className="visually-hidden">
+                            {_('tag_change_color_button_title')}
+                        </span>
+                    </MenuButton>
+                }
+                menuClassName="color-chooser popup-menu"
+                onItemClick={onChange}
+                viewScroll="auto"
+                portal={true}
             >
-                <span
-                    className="color-box"
-                    style={style}
-                />
-                <span className="visually-hidden">
-                    {_('tag_change_color_button_title')}
-                </span>
-            </MenuButton>
-            <FloatingPortal>
-                <Menu
-                    className="color-chooser popup-menu"
-                    ref={floatingRef}
-                    style={{
-                        position: positionStrategy,
-                        top: menuY ?? '',
-                        left: menuX ?? '',
-                    }}
-                >
-                    {palette.map((color) => (
-                        <ColorButton
-                            key={color}
-                            color={color}
-                            tag={tag}
-                        />
-                    ))}
-                    {!palette.includes(tag.color) && (
-                        <ColorButton
-                            key="custom"
-                            color={tag.color}
-                            tag={tag}
-                        />
-                    )}
-                </Menu>
-            </FloatingPortal>
-        </MenuWrapper>
+                {palette.map((color) => (
+                    <ColorButton
+                        key={color}
+                        color={color}
+                        tag={tag}
+                    />
+                ))}
+                {!palette.includes(tag.color) && (
+                    <ColorButton
+                        key="custom"
+                        color={tag.color}
+                        tag={tag}
+                    />
+                )}
+            </Menu>
+        </div>
     );
 }
 

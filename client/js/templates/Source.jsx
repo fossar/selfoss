@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRef } from 'react';
-import { Button as MenuButton, Wrapper as MenuWrapper, Menu, MenuItem } from 'react-aria-menubutton';
+import { Menu, MenuButton, MenuItem } from '@szhsin/react-menu';
 import { useHistory, useLocation } from 'react-router-dom';
 import { fadeOut } from '@siteparts/show-hide-effects';
 import { makeEntriesLinkLocation } from '../helpers/uri';
@@ -138,15 +138,12 @@ function handleSave({
 
 // delete source
 function handleDelete({
-    event,
     source,
     sourceElem,
     setSources,
     setSourceBeingDeleted,
     setDirty,
 }) {
-    event.preventDefault();
-
     const answer = confirm(selfoss.app._('source_warn'));
     if (answer == false) {
         return;
@@ -611,10 +608,9 @@ export default function Source({ source, setSources, spouts, setSpouts, dirty, s
     const sourceElem = useRef(null);
 
     const extraMenuOnSelection = React.useCallback(
-        (value, event) => {
+        ({ value }) => {
             if (value === 'delete') {
                 handleDelete({
-                    event,
                     source,
                     sourceElem,
                     setSources,
@@ -672,40 +668,38 @@ export default function Source({ source, setSources, spouts, setSpouts, dirty, s
                         {' • '}
                     </React.Fragment>
                 }
-                <MenuWrapper
-                    className="popup-menu-wrapper"
-                    onSelection={extraMenuOnSelection}
+                <Menu
+                    onItemClick={extraMenuOnSelection}
+                    menuButton={
+                        <MenuButton
+                            className="source-menu-button"
+                        >
+                            {_('source_menu')}
+                            {sourceBeingDeleted &&
+                                <React.Fragment>
+                                    {' '}
+                                    <Spinner label={_('source_deleting')} />
+                                </React.Fragment>
+                            }
+                        </MenuButton>
+                    }
+                    menuClassName="popup-menu"
                 >
-                    <MenuButton
-                        className="source-menu-button"
+                    <MenuItem
+                        accessKey="d"
+                        className="popup-menu-item source-browse"
+                        value="browse"
                     >
-                        {_('source_menu')}
-                        {sourceBeingDeleted &&
-                            <React.Fragment>
-                                {' '}
-                                <Spinner label={_('source_deleting')} />
-                            </React.Fragment>
-                        }
-                    </MenuButton>
-                    <Menu
-                        className="popup-menu"
+                        {_('source_browse')}
+                    </MenuItem>
+                    <MenuItem
+                        accessKey="d"
+                        className="popup-menu-item source-delete"
+                        value="delete"
                     >
-                        <MenuItem
-                            accessKey="d"
-                            className="popup-menu-item source-browse"
-                            value="browse"
-                        >
-                            {_('source_browse')}
-                        </MenuItem>
-                        <MenuItem
-                            accessKey="d"
-                            className="popup-menu-item source-delete"
-                            value="delete"
-                        >
-                            {_('source_delete')}
-                        </MenuItem>
-                    </Menu>
-                </MenuWrapper>
+                        {_('source_delete')}
+                    </MenuItem>
+                </Menu>
             </div>
             <div className="source-days">
                 {source.lastentry

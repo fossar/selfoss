@@ -17,10 +17,10 @@ function Tag({ tag, active, collapseNav }) {
     const tagName = tag !== null ? tag.tag : null;
 
     const colorChanged = React.useCallback(
-        (color) => {
+        ({ value }) => {
             updateTag(
                 tagName,
-                color
+                value
             ).then(() => {
                 selfoss.entriesPage?.reload();
             }).catch((error) => {

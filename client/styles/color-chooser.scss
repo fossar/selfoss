@@ -1,9 +1,12 @@
 .color-chooser-button {
-    display: flex;
-
     /* Span the whole wrapper */
     height: 100%;
     width: 100%;
+
+    // Override button style.
+    background: transparent;
+    border: 0;
+    cursor: pointer;
 }
 
 .color-chooser {

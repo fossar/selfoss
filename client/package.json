@@ -1,8 +1,6 @@
 {
   "name": "selfoss-client",
   "dependencies": {
-    "@floating-ui/react-dom": "^1.0.0",
-    "@floating-ui/react-dom-interactions": "^0.10.1",
     "@fortawesome/free-brands-svg-icons": "^6.2.0",
     "@fortawesome/free-regular-svg-icons": "^6.2.0",
     "@fortawesome/free-solid-svg-icons": "^6.2.0",
@@ -10,6 +8,7 @@
     "@kunukn/react-collapse": "^2.2.9",
     "@parcel/service-worker": "^2.5.0",
     "@siteparts/show-hide-effects": "^1.0.0",
+    "@szhsin/react-menu": "^4.0.0",
     "classnames": "^2.2.6",
     "core-js": "^3.2.1",
     "dexie": "^3.0.0",
@@ -21,7 +20,6 @@
     "prop-types-nullable": "^1.0.1",
     "ramda": "^0.29.0",
     "react": "^17.0.1",
-    "react-aria-menubutton": "^7.0.3",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
     "reset-css": "^5.0.1",
