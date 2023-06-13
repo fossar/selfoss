@@ -22,7 +22,7 @@ abstract class spout {
     public string $description = '';
 
     /**
-    /* Configurable parameters
+     * Configurable parameters
      * array of arrays with name, type, default value, required, validation type
      *
      * - Values for type:

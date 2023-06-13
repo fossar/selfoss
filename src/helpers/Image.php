@@ -174,8 +174,8 @@ class Image {
             }
         }
 
-        $mimeType = isset($imgInfo['mime']) ? strtolower($imgInfo['mime']) : null;
-        if ($mimeType !== null && isset(self::IMAGE_TYPES[$mimeType])) {
+        $mimeType = strtolower($imgInfo['mime']);
+        if (isset(self::IMAGE_TYPES[$mimeType])) {
             $type = self::IMAGE_TYPES[$mimeType];
         } else {
             return null;
@@ -242,8 +242,8 @@ class Image {
         }
 
         // resize
-        if (($height !== null && $wideImage->getHeight() > $height) ||
-           ($width !== null && $wideImage->getWidth() > $width)) {
+        if (($height !== null && $wideImage->getHeight() > $height)
+            || ($width !== null && $wideImage->getWidth() > $width)) {
             $wideImage = $wideImage->resize($width, $height);
         }
 

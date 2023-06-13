@@ -17,16 +17,26 @@ $rules = [
         'closure_function_spacing' => 'none',
         'closure_fn_spacing' => 'none',
     ],
+
     // overwrite some Symfony rules
     'concat_space' => ['spacing' => 'one'],
     'global_namespace_import' => false,
     'blank_line_between_import_groups' => false,
+    // We need the `mixed`s for PHPStan.
+    'no_superfluous_phpdoc_tags' => [
+        'allow_mixed' => true,
+    ],
+    // Inconsistent with arguments without default value.
+    'nullable_type_declaration_for_default_null_value' => [
+        'use_nullable_type_declaration' => true,
+    ],
     'phpdoc_align' => false,
     'phpdoc_no_empty_return' => false,
     'phpdoc_summary' => false,
     'trailing_comma_in_multiline' => false,
     'yoda_style' => false,
     'semicolon_after_instruction' => false,
+
     // additional rules
     'dir_constant' => true,
     'echo_tag_syntax' => ['format' => 'short'],
