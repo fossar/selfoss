@@ -26,7 +26,7 @@
     "react-router-dom": "^5.2.0",
     "reset-css": "^5.0.1",
     "rooks": "^7.1.1",
-    "tinykeys": "^1.1.1",
+    "tinykeys": "^2.0.0",
     "unreset-css": "^1.0.1",
     "use-state-with-deps": "^1.1.1",
     "yet-another-react-lightbox": "^3.5.0"

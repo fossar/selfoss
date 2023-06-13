@@ -1,4 +1,4 @@
-import tinykeys from 'tinykeys';
+import { tinykeys } from 'tinykeys';
 import { Direction } from './helpers/navigation';
 
 /**
