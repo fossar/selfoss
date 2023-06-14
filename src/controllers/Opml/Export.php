@@ -7,6 +7,7 @@ namespace controllers\Opml;
 use helpers\Authentication;
 use helpers\Configuration;
 use helpers\SpoutLoader;
+use helpers\StringKeyedArray;
 use Monolog\Logger;
 
 /**
@@ -107,7 +108,8 @@ class Export {
 
         $this->writer->startElement('body');
 
-        $taggedSources = [];
+        /** @var StringKeyedArray<array<array{id: int, title: string, tags: string[], spout: string, params: string, filter: ?string, error: ?string, lastupdate: ?int, lastentry: ?int}>> */
+        $taggedSources = new StringKeyedArray();
         $untaggedSources = [];
         foreach ($this->sourcesDao->getAll() as $source) {
             if ($source['tags']) {
@@ -122,8 +124,8 @@ class Export {
             }
         }
 
-        // create associative array with tag names as keys, colors as values
-        $tagColors = [];
+        /** @var StringKeyedArray<string> associate tag names with colors */
+        $tagColors = new StringKeyedArray();
         foreach ($this->tagsDao->get() as $tag) {
             $this->logger->debug('OPML export: tag ' . $tag['tag'] . ' has color ' . $tag['color']);
             $tagColors[$tag['tag']] = $tag['color'];

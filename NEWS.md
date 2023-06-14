@@ -21,6 +21,7 @@
 - Reduce the chance of “Update all sources” button timing out. ([#1428](https://github.com/fossar/selfoss/pulls/1428), [#1430](https://github.com/fossar/selfoss/pulls/1430))
 - Fix a log-in loop in client. ([#1429](https://github.com/fossar/selfoss/pulls/1429))
 - Fix errors in Firefox’s private browsing mode.
+- Fix exporting OPML when there are tags that look like numbers ([#1439](https://github.com/fossar/selfoss/pull/1439))
 
 ### Customization changes
 - Custom spouts must explicitly pass `null` to `Item::__construct()` when they do not need the `extraData` argument. ([#1415](https://github.com/fossar/selfoss/pull/1415))

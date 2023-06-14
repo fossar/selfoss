@@ -127,7 +127,7 @@ class ViewHelper {
      * @param ?array<array{tag: string, color: string}> $tags list of tags
      * @param ?string $search search query
      *
-     * @return array{title: string, strippedTitle: string, content: string, wordCount: int, lengthWithoutTags: int, datetime: string, updatetime: string, sourcetitle: string, tags: array<string, array{backColor: string, foreColor: string}>} modified item
+     * @return array{title: string, strippedTitle: string, content: string, wordCount: int, lengthWithoutTags: int, datetime: string, updatetime: string, sourcetitle: string, tags: StringKeyedArray<array{backColor: string, foreColor: string}>} modified item
      */
     public function preprocessEntry(array $item, \controllers\Tags $tagsController, ?array $tags = null, ?string $search = null): array {
         // parse tags and assign tag colors
