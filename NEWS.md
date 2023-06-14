@@ -22,6 +22,7 @@
 - Fix a log-in loop in client. ([#1429](https://github.com/fossar/selfoss/pulls/1429))
 - Fix errors in Firefox’s private browsing mode.
 - Fix exporting OPML when there are tags that look like numbers ([#1439](https://github.com/fossar/selfoss/pull/1439))
+- Fix incorrect handling of tags in MySQL backend, which could result in OPML export being broken ([#1439](https://github.com/fossar/selfoss/pull/1439))
 
 ### Customization changes
 - Custom spouts must explicitly pass `null` to `Item::__construct()` when they do not need the `extraData` argument. ([#1415](https://github.com/fossar/selfoss/pull/1415))

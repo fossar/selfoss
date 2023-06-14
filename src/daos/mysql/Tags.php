@@ -129,7 +129,7 @@ class Tags implements \daos\TagsInterface {
      */
     public function hasTag(string $tag): bool {
         if ($this->configuration->dbType === 'mysql') {
-            $where = 'WHERE tag = _utf8mb4 :tag COLLATE utf8mb4_general_ci';
+            $where = 'WHERE tag = _utf8mb4 :tag COLLATE utf8mb4_bin';
         } else {
             $where = 'WHERE tag=:tag';
         }

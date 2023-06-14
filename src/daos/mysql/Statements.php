@@ -83,7 +83,7 @@ class Statements implements \daos\StatementsInterface {
             $value = "_utf8mb4 $value";
         }
 
-        return "CONCAT(',', $column, ',') LIKE CONCAT('%,', $value, ',%') COLLATE utf8mb4_general_ci";
+        return "CONCAT(',', $column, ',') LIKE CONCAT('%,', $value, ',%') COLLATE utf8mb4_bin ESCAPE ''";
     }
 
     /**
