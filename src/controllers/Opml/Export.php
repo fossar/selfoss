@@ -107,27 +107,30 @@ class Export {
 
         $this->writer->startElement('body');
 
-        // create tree structure for tagged and untagged sources
-        $sources = ['tagged' => [], 'untagged' => []];
+        $taggedSources = [];
+        $untaggedSources = [];
         foreach ($this->sourcesDao->getAll() as $source) {
             if ($source['tags']) {
                 foreach ($source['tags'] as $tag) {
-                    $sources['tagged'][$tag][] = $source;
+                    if (!isset($taggedSources[$tag])) {
+                        $taggedSources[$tag] = [];
+                    }
+                    $taggedSources[$tag][] = $source;
                 }
             } else {
-                $sources['untagged'][] = $source;
+                $untaggedSources[] = $source;
             }
         }
 
         // create associative array with tag names as keys, colors as values
         $tagColors = [];
-        foreach ($this->tagsDao->get() as $key => $tag) {
+        foreach ($this->tagsDao->get() as $tag) {
             $this->logger->debug('OPML export: tag ' . $tag['tag'] . ' has color ' . $tag['color']);
             $tagColors[$tag['tag']] = $tag['color'];
         }
 
         // generate outline elements for all sources
-        foreach ($sources['tagged'] as $tag => $children) {
+        foreach ($taggedSources as $tag => $children) {
             $this->logger->debug("OPML export: exporting tag $tag sources");
             $this->writer->startElement('outline');
             $this->writer->writeAttribute('title', $tag);
@@ -143,7 +146,7 @@ class Export {
         }
 
         $this->logger->debug('OPML export: exporting untagged sources');
-        foreach ($sources['untagged'] as $key => $source) {
+        foreach ($untaggedSources as $source) {
             $this->writeSource($source);
         }
 
