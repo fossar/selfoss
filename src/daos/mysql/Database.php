@@ -6,6 +6,7 @@ namespace daos\mysql;
 
 use daos\CommonSqlDatabase;
 use helpers\DatabaseConnection;
+use helpers\StringKeyedArray;
 use Monolog\Logger;
 
 /**
@@ -290,6 +291,77 @@ class Database implements \daos\DatabaseInterface {
             $this->beginTransaction();
             $this->exec('UPDATE ' . $this->connection->getTableNamePrefix() . "items SET author = NULL WHERE author = ''");
             $this->exec('INSERT INTO ' . $this->connection->getTableNamePrefix() . 'version (version) VALUES (14)');
+            $this->commit();
+        }
+        if ($version < 15) {
+            $this->logger->debug('Upgrading database schema to version 15 by ensuring all tags have colors');
+
+            $this->beginTransaction();
+
+            /** @var StringKeyedArray<bool> */
+            $coloredTags = new StringKeyedArray();
+            /** @var StringKeyedArray<string> */
+            $coloredTagsNormalised = new StringKeyedArray();
+            /** @var StringKeyedArray<string> */
+            $tagsWithoutColor = new StringKeyedArray();
+
+            $tags = $this->exec('SELECT tag, LOWER(tag) as normal FROM ' . $this->connection->getTableNamePrefix() . 'tags');
+            foreach ($tags as $tag) {
+                $coloredTags[$tag['tag']] = true;
+                $coloredTagsNormalised[$tag['normal']] = $tag['tag'];
+            }
+
+            $sources = $this->exec('SELECT id, tags, LOWER(tags) as normal FROM ' . $this->connection->getTableNamePrefix() . 'sources');
+            foreach ($sources as $source) {
+                if ($source['tags'] === '') {
+                    continue;
+                }
+
+                $shouldUpdateSourceTags = false;
+
+                $sourceTags = explode(',', $source['tags']);
+                $sourceTagPairs = array_map(
+                    null,
+                    $sourceTags,
+                    explode(',', $source['normal'])
+                );
+                foreach ($sourceTagPairs as $key => [$tag, $normal]) {
+                    // If the tag does not have associated color:
+                    if (!isset($coloredTags[$tag])) {
+                        // Try to match it to a differently-cased tag.
+                        if (isset($coloredTagsNormalised[$normal])) {
+                            $sourceTags[$key] = $coloredTagsNormalised[$normal];
+                            $shouldUpdateSourceTags = true;
+                        } else {
+                            // Otherwise mark it for assigning a color.
+                            $tagsWithoutColor[$normal] = $tag;
+                        }
+                    }
+                }
+
+                if ($shouldUpdateSourceTags) {
+                    $this->exec(
+                        'UPDATE ' . $this->connection->getTableNamePrefix() . 'sources SET tags = :tags WHERE id = :id',
+                        [
+                            'id' => $source['id'],
+                            'tags' => implode(',', $sourceTags),
+                        ]
+                    );
+                }
+            }
+
+            // Add color to all tags without one.
+            foreach ($tagsWithoutColor as $tag) {
+                $this->exec(
+                    'INSERT INTO ' . $this->connection->getTableNamePrefix() . 'tags(tag, color) VALUES (:tag, :color)',
+                    [
+                        'tag' => $tag,
+                        'color' => '#df1818',
+                    ]
+                );
+            }
+
+            $this->exec('INSERT INTO ' . $this->connection->getTableNamePrefix() . 'version (version) VALUES (15)');
             $this->commit();
         }
     }
