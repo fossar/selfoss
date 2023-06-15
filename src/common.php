@@ -62,12 +62,6 @@ $substitutions = [
             'shared' => true,
         ],
 
-        // Choose database implementation based on config
-        daos\DatabaseInterface::class => [Dice::INSTANCE => 'daos\\' . $configuration->dbType . '\\Database'],
-        daos\ItemsInterface::class => [Dice::INSTANCE => 'daos\\' . $configuration->dbType . '\\Items'],
-        daos\SourcesInterface::class => [Dice::INSTANCE => 'daos\\' . $configuration->dbType . '\\Sources'],
-        daos\TagsInterface::class => [Dice::INSTANCE => 'daos\\' . $configuration->dbType . '\\Tags'],
-
         Dice::class => [Dice::INSTANCE => Dice::SELF],
     ],
 ];
@@ -85,11 +79,11 @@ $dice = $dice->addRule(daos\Items::class, $shared);
 $dice = $dice->addRule(daos\Sources::class, $shared);
 $dice = $dice->addRule(daos\Tags::class, $shared);
 
-// Database implementation
-$dice = $dice->addRule(daos\DatabaseInterface::class, $shared);
-$dice = $dice->addRule(daos\ItemsInterface::class, $shared);
-$dice = $dice->addRule(daos\SourcesInterface::class, $shared);
-$dice = $dice->addRule(daos\TagsInterface::class, $shared);
+// Choose database implementation based on config
+$dice = $dice->addRule(daos\DatabaseInterface::class, array_merge($shared, ['instanceOf' => 'daos\\' . $configuration->dbType . '\\Database']));
+$dice = $dice->addRule(daos\ItemsInterface::class, array_merge($shared, ['instanceOf' => 'daos\\' . $configuration->dbType . '\\Items']));
+$dice = $dice->addRule(daos\SourcesInterface::class, array_merge($shared, ['instanceOf' => 'daos\\' . $configuration->dbType . '\\Sources']));
+$dice = $dice->addRule(daos\TagsInterface::class, array_merge($shared, ['instanceOf' => 'daos\\' . $configuration->dbType . '\\Tags']));
 
 if ($configuration->isChanged('dbSocket') && $configuration->isChanged('dbHost')) {
     boot_error('You cannot set both `db_socket` and `db_host` options.' . PHP_EOL);
