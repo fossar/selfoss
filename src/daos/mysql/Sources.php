@@ -7,6 +7,7 @@ namespace daos\mysql;
 use daos\DatabaseInterface;
 use Exception;
 use helpers\Configuration;
+use function helpers\Functions\map;
 use function json_encode;
 use const JSON_ERROR_NONE;
 use function json_last_error;
@@ -310,5 +311,45 @@ class Sources implements \daos\SourcesInterface {
         }
 
         return 0;
+    }
+
+    public function getRaw(): iterable {
+        $stmt = static::$stmt;
+        $sources = $this->database->exec('SELECT * FROM ' . $this->configuration->dbPrefix . 'sources');
+
+        return map(function($row) {
+            // Stored as UNIX timestamp, use ISO 8601 as export format.
+            $row['lastentry'] = (new \DateTime('@' . $row['lastentry']))->format(\DateTimeInterface::ATOM);
+            $row['lastupdate'] = (new \DateTime('@' . $row['lastupdate']))->format(\DateTimeInterface::ATOM);
+
+            return $row;
+        }, $stmt::ensureRowTypes($sources, [
+            'id' => DatabaseInterface::PARAM_INT,
+            'tags' => DatabaseInterface::PARAM_CSV,
+            'lastupdate' => DatabaseInterface::PARAM_INT,
+            'lastentry' => DatabaseInterface::PARAM_INT,
+        ]));
+    }
+
+    public function insertRaw(array $sources): void {
+        $stmt = static::$stmt;
+        foreach ($sources as $source) {
+            // Stored as UNIX timestamp, use ISO 8601 as export format.
+            $lastentry = \DateTime::createFromFormat(\DateTimeInterface::ATOM, $source['lastentry']);
+            if ($lastentry === false) {
+                throw new Exception("Last entry time in unsupported format: {$source['lastentry']}”");
+            }
+
+            $lastupdate = \DateTime::createFromFormat(\DateTimeInterface::ATOM, $source['lastupdate']);
+            if ($lastupdate === false) {
+                throw new Exception("Last update time in unsupported format: {$source['lastupdate']}”");
+            }
+
+            $source['lastentry'] = $lastentry->getTimestamp();
+            $source['lastupdate'] = $lastupdate->getTimestamp();
+            $source['tags'] = $stmt::csvRow($source['tags']);
+
+            $this->database->insertRaw($this->configuration->dbPrefix . 'sources', ['id', 'title', 'tags', 'filter', 'spout', 'params', 'error', 'lastupdate', 'lastentry'], $source);
+        }
     }
 }

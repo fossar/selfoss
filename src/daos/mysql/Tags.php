@@ -144,4 +144,17 @@ class Tags implements \daos\TagsInterface {
     public function delete(string $tag): void {
         $this->database->exec('DELETE FROM ' . $this->configuration->dbPrefix . 'tags WHERE tag=:tag', [':tag' => $tag]);
     }
+
+    public function getRaw(): array {
+        /** @var array<array{tag: string, color: string}> */
+        $tags = $this->database->exec('SELECT * FROM ' . $this->configuration->dbPrefix . 'tags');
+
+        return $tags;
+    }
+
+    public function insertRaw(array $tags): void {
+        foreach ($tags as $tag) {
+            $this->database->insertRaw($this->configuration->dbPrefix . 'tags', ['tag', 'color'], $tag);
+        }
+    }
 }

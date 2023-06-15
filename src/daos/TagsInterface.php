@@ -50,4 +50,18 @@ interface TagsInterface {
      * delete tag
      */
     public function delete(string $tag): void;
+
+    /**
+     * returns raw tags table contents
+     *
+     * @return array<array{tag: string, color: string}> of all tags
+     */
+    public function getRaw(): array;
+
+    /**
+     * inserts raw data into tags table
+     *
+     * @param array<array{tag: string, color: string}> $tags
+     */
+    public function insertRaw(array $tags): void;
 }

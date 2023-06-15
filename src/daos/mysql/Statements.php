@@ -138,17 +138,16 @@ class Statements implements \daos\StatementsInterface {
     }
 
     /**
-     * Ensure row values have the appropriate PHP type. This assumes we are
-     * using buffered queries (sql results are in PHP memory).
+     * Ensure row values have the appropriate PHP type.
      *
-     * @param array<array<mixed>> $rows array of associative array representing row results
+     * @param iterable<array<mixed>> $rows array of associative array representing row results
      * @param array<string, DatabaseInterface::PARAM_*> $expectedRowTypes associative array mapping columns to PDO types
      *
-     * @return array<array<mixed>> of associative array representing row results having
+     * @return iterable<int, array<mixed>> of associative array representing row results having
      *         expected types
      */
-    public static function ensureRowTypes(array $rows, array $expectedRowTypes): array {
-        foreach ($rows as $rowIndex => $row) {
+    public static function ensureRowTypes(iterable $rows, array $expectedRowTypes): iterable {
+        foreach ($rows as $row) {
             foreach ($expectedRowTypes as $columnIndex => $type) {
                 if (array_key_exists($columnIndex, $row)) {
                     if ($type & DatabaseInterface::PARAM_NULL) {
@@ -185,13 +184,13 @@ class Statements implements \daos\StatementsInterface {
                             $value = null;
                     }
                     if ($value !== null) {
-                        $rows[$rowIndex][$columnIndex] = $value;
+                        $row[$columnIndex] = $value;
                     }
                 }
             }
-        }
 
-        return $rows;
+            yield $row;
+        }
     }
 
     /**
