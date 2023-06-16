@@ -50,8 +50,7 @@ class Import {
         $messages = [];
 
         try {
-            $opml = $_FILES['opml'];
-            if ($opml['error'] === UPLOAD_ERR_NO_FILE) {
+            if (!isset($_FILES['opml']) || ($opml = $_FILES['opml'])['error'] === UPLOAD_ERR_NO_FILE) {
                 throw new \Exception('No file uploaded!');
             }
 
