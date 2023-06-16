@@ -2424,16 +2424,16 @@
         },
         {
             "name": "slince/di",
-            "version": "3.2.2",
+            "version": "3.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/slince/di.git",
-                "reference": "975d514fadd0edb87a36da7577587f6b75c311a6"
+                "reference": "1cc23487f9ffb459f3eb4ca68f4c3e7005a6d9ba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/slince/di/zipball/975d514fadd0edb87a36da7577587f6b75c311a6",
-                "reference": "975d514fadd0edb87a36da7577587f6b75c311a6",
+                "url": "https://api.github.com/repos/slince/di/zipball/1cc23487f9ffb459f3eb4ca68f4c3e7005a6d9ba",
+                "reference": "1cc23487f9ffb459f3eb4ca68f4c3e7005a6d9ba",
                 "shasum": ""
             },
             "require": {
@@ -2471,9 +2471,9 @@
             ],
             "support": {
                 "issues": "https://github.com/slince/di/issues",
-                "source": "https://github.com/slince/di/tree/3.2.2"
+                "source": "https://github.com/slince/di/tree/3.2.3"
             },
-            "time": "2023-06-15T16:54:45+00:00"
+            "time": "2023-06-16T15:05:09+00:00"
         },
         {
             "name": "smalot/pdfparser",
@@ -4204,16 +4204,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.10.18",
+            "version": "1.10.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "52b6416c579663eebdd2f1d97df21971daf3b43f"
+                "reference": "af5a296ff02610c1bfb4ddfac9fd4a08657b9046"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/52b6416c579663eebdd2f1d97df21971daf3b43f",
-                "reference": "52b6416c579663eebdd2f1d97df21971daf3b43f",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/af5a296ff02610c1bfb4ddfac9fd4a08657b9046",
+                "reference": "af5a296ff02610c1bfb4ddfac9fd4a08657b9046",
                 "shasum": ""
             },
             "require": {
@@ -4262,7 +4262,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-06-07T22:00:43+00:00"
+            "time": "2023-06-14T15:26:58+00:00"
         },
         {
             "name": "psr/event-dispatcher",
