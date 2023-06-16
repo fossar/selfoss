@@ -40,6 +40,10 @@ class Database implements \daos\DatabaseInterface {
 
         $this->logger->debug('Establishing PostgreSQL database connection');
 
+        $this->migrate();
+    }
+
+    private function migrate(): void {
         // create tables if necessary
         $result = @$this->exec("SELECT table_name FROM information_schema.tables WHERE table_schema='public'");
         $tables = [];

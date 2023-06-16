@@ -32,6 +32,10 @@ class Database implements \daos\DatabaseInterface {
 
         $this->logger->debug('Establishing MySQL database connection');
 
+        $this->migrate();
+    }
+
+    private function migrate(): void {
         // create tables if necessary
         $result = @$this->exec('SHOW TABLES');
         $tables = [];

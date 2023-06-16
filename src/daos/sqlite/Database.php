@@ -33,6 +33,10 @@ class Database implements \daos\DatabaseInterface {
 
         $this->logger->debug('Establishing SQLite database connection');
 
+        $this->migrate();
+    }
+
+    private function migrate(): void {
         // create tables if necessary
         $result = @$this->exec('SELECT name FROM sqlite_master WHERE type = "table"');
         $tables = [];
