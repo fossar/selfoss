@@ -7,8 +7,6 @@ declare(strict_types=1);
 
 namespace helpers\Filters;
 
-use spouts\Item;
-
 /**
  * Filter that admits an item iff the inner filter admits an item obtained from the original item with the given transform function.
  *

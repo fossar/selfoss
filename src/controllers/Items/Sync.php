@@ -81,8 +81,7 @@ class Sync {
                 }
 
                 $sync['newItems'] = function() use ($sinceId, $notBefore, $since, $itemsHowMany) {
-                    foreach ($this->itemsDao->sync($sinceId, $notBefore, $since, $itemsHowMany)
-                             as $newItem) {
+                    foreach ($this->itemsDao->sync($sinceId, $notBefore, $since, $itemsHowMany) as $newItem) {
                         yield $this->viewHelper->preprocessEntry($newItem, $this->tagsController);
                     }
                 };

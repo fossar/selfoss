@@ -7,8 +7,6 @@ declare(strict_types=1);
 
 namespace helpers\Filters;
 
-use spouts\Item;
-
 /**
  * Filter that always admits an item.
  *

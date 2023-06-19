@@ -7,8 +7,6 @@ declare(strict_types=1);
 
 namespace helpers\Filters;
 
-use spouts\Item;
-
 /**
  * Filter that rejects an item iff inner filter admits it.
  *
