@@ -42,7 +42,7 @@
     "postcss": "^8.4.4",
     "prettier": "^2.0.0",
     "process": "^0.11.10",
-    "stylelint": "^15.0.0",
+    "stylelint": "^15.10.1",
     "stylelint-config-standard-scss": "^9.0.0"
   },
   "scripts": {
