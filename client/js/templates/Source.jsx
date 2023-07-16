@@ -300,17 +300,20 @@ Tag.propTypes = {
 
 const reactTagsClassNames = {
     root: 'react-tags',
-    rootFocused: 'is-focused',
-    selected: 'react-tags-selected',
-    selectedTag: 'react-tags-selected-tag',
-    selectedTagName: 'react-tags-selected-tag-name',
-    search: 'react-tags-search',
-    searchWrapper: 'react-tags-search-wrapper',
-    searchInput: 'react-tags-search-input',
-    suggestions: 'react-tags-suggestions',
-    suggestionActive: 'is-active',
-    suggestionDisabled: 'is-disabled',
-    suggestionPrefix: 'react-tags-suggestion-prefix'
+    rootIsActive: 'is-active',
+    rootIsDisabled: 'is-disabled',
+    rootIsInvalid: 'is-invalid',
+    label: 'react-tags-label',
+    tagList: 'react-tags-list',
+    tagListItem: 'react-tags-list-item',
+    tag: 'react-tags-tag',
+    tagName: 'react-tags-tag-name',
+    comboBox: 'react-tags-combobox',
+    input: 'react-tags-combobox-input',
+    listBox: 'react-tags-list-box',
+    option: 'react-tags-list-box-option',
+    optionIsActive: 'is-active',
+    highligh: 'react-tags-listbox-option-highlight',
 };
 
 function SourceEditForm({
