@@ -273,7 +273,7 @@ function daysAgo(date) {
 }
 
 
-function Tag({ classNames, tag, tagProps }) {
+function Tag({ classNames, tag, ...tagProps }) {
     return (
         <button
             type="button"
@@ -293,6 +293,9 @@ Tag.propTypes = {
     classNames: PropTypes.object.isRequired,
     tag: PropTypes.object.isRequired,
     tagProps: PropTypes.object.isRequired,
+    'aria-disabled': PropTypes.bool.isRequired,
+    title: PropTypes.string.isRequired,
+    onClick: PropTypes.func.isRequired,
 };
 
 
