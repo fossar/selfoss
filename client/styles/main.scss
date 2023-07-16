@@ -60,7 +60,7 @@ input,
 }
 
 select:focus,
-input:not(.react-tags-search-input):focus,
+input:not(.react-tags__search-input):focus,
 .react-tags.is-focused {
     color: color.mix($text-color, $primary, 50%);
     border-color: var(--primary);

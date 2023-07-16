@@ -2,7 +2,7 @@ import React from 'react';
 import { useMemo, useRef } from 'react';
 import { Menu, MenuButton, MenuItem } from '@szhsin/react-menu';
 import { useHistory, useLocation } from 'react-router-dom';
-import ReactTags from 'react-tag-autocomplete';
+import { ReactTags } from 'react-tag-autocomplete';
 import { fadeOut } from '@siteparts/show-hide-effects';
 import { makeEntriesLinkLocation } from '../helpers/uri';
 import PropTypes from 'prop-types';
@@ -68,7 +68,7 @@ function handleSave({
 
     // Make tags into a list.
     const tagsList = tags
-        ? tags.map((tag) => tag.name)
+        ? tags.map((tag) => tag.label)
         : [];
 
     const values = {
@@ -195,7 +195,7 @@ function handleEdit({ event, source, tagInfo, setEditedSource }) {
     setEditedSource({
         id,
         title: title ? unescape(title) : '',
-        tags: tags ? tags.map(unescape).map((name) => ({ id: tagInfo[name]?.id, name })) : [],
+        tags: tags ? tags.map(unescape).map((label) => ({ value: tagInfo[label]?.id, label })) : [],
         filter,
         spout,
         params
@@ -316,20 +316,21 @@ function SourceEditForm({
         [updateEditedSource]
     );
 
-    const tagsOnAddition = React.useCallback(
+    const tagsOnAdd = React.useCallback(
         (input) => {
+            // TODO: Paste not working,
             // We need to handle pasting as well.
             const tagsToAdd =
-                typeof input.id !== 'undefined'
+                typeof input.value !== 'undefined'
                     ? [input]
-                    : input.name
+                    : input.label
                         .split(',')
                         .map((tag) => tag.trim())
                         .filter((tag) => tag !== '')
-                        .map((tag) => ({ name: tag, id: undefined }));
+                        .map((tag) => ({ label: tag, value: undefined }));
             updateEditedSource(({ tags }) => {
-                const usedTagNames = tags.map(({ name }) => name);
-                const freshTagsToAdd = tagsToAdd.filter((tag) => !usedTagNames.includes(tag.name));
+                const usedTagLabels = tags.map(({ label }) => label);
+                const freshTagsToAdd = tagsToAdd.filter((tag) => !usedTagLabels.includes(tag.label));
                 if (freshTagsToAdd.length === 0) {
                     // All tags already included, no change.
                     return {};
@@ -409,7 +410,7 @@ function SourceEditForm({
     );
 
     const tagSuggestions = useMemo(
-        () => Object.entries(tagInfo).map(([name, { id }]) => ({ id, name })),
+        () => Object.entries(tagInfo).map(([label, { id }]) => ({ value: id, label })),
         [tagInfo]
     );
 
@@ -482,20 +483,21 @@ function SourceEditForm({
                     </label>
                     <ReactTags
                         ref={reactTags}
-                        tags={source.tags}
-                        inputAttributes={{
-                            id: `tags-${sourceId}`,
-                            accessKey: 'g',
-                        }}
+                        selected={source.tags}
+                        // inputAttributes={{
+                        //     id: `tags-${sourceId}`,
+                        //     accessKey: 'g',
+                        // }}
                         suggestions={tagSuggestions}
                         onDelete={tagsOnDelete}
-                        onAddition={tagsOnAddition}
+                        onAdd={tagsOnAdd}
                         allowNew={true}
-                        minQueryLength={1}
+                        // minQueryLength={1}
                         placeholderText={_('source_tags_placeholder')}
-                        removeButtonText={_('source_tag_remove_button_label')}
-                        classNames={reactTagsClassNames}
-                        delimiters={['Enter', 'Tab', ',']}
+                        newOptionText={_('source_tags_create_new').replace('{0}', '%value%')}
+                        deleteButtonText={_('source_tag_remove_button_label')}
+                        // classNames={reactTagsClassNames}
+                        delimiterKeys={['Enter', 'Tab', ',']}
                     />
                     {sourceErrors['tags'] ? (
                         <span className="error">{sourceErrors['tags']}</span>

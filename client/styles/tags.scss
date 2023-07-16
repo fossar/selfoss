@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: MIT
 // Taken with minor changes from:
-// https://github.com/i-like-robots/react-tags/blob/9ac82a9879f53d46759dbd559d8b0a99bcd376ae/example/styles.css
-// © 2015 Prakhar Srivastav
-// © 2016–2018 Matt Hinchliffe
+// https://github.com/i-like-robots/react-tag-autocomplete/blob/de2d9a4b76b7349e44d1e9953fe7c329bf17c162/example/src/styles.css
+// SPDX-FileCopyrightText: 2021–2023 Matt Hinchliffe
 
 /**
  * <div class="react-tags">
@@ -30,129 +29,158 @@
  */
 
 .react-tags {
-    position: relative;
-    display: inline-block;
-    padding: 3px 0 0 3px;
-
-    /* shared font styles */
-    font-size: 1em;
-    line-height: 1.2;
-
-    /* clicking anywhere will focus the input */
-    cursor: text;
+  position: relative;
+  padding: 0.25rem 0 0 0.25rem;
+  border: 2px solid #afb8c1;
+  border-radius: 6px;
+  background: #ffffff;
+  /* shared font styles */
+  font-size: 1rem;
+  line-height: 1.2;
+  /* clicking anywhere will focus the input */
+  cursor: text;
 }
 
-.react-tags-selected {
-    display: inline;
+.react-tags.is-active {
+  border-color: #4f46e5;
 }
 
-.react-tags-selected-tag {
-    display: inline-block;
-    box-sizing: border-box;
-    margin: 3px;
-    padding: 3px 4px;
-    border: 1px solid #d1d1d1;
-    border-radius: 4px;
-    background: #f1f1f1;
-    color: #1f1f1f;
-    cursor: pointer;
-
-    /* match the font styles */
-    font-size: inherit;
-    line-height: inherit;
-
-    &:hover,
-    &:focus {
-        border-color: #b1b1b1;
-    }
+.react-tags.is-disabled {
+  opacity: 0.75;
+  background-color: #eaeef2;
+  /* Prevent any clicking on the component */
+  pointer-events: none;
+  cursor: not-allowed;
 }
 
-.react-tags-selected-tag::after {
-    content: '✕';
-    color: #aaaaaa;
-    margin-left: 4px;
+.react-tags.is-invalid {
+  border-color: #fd5956;
+  box-shadow: 0 0 0 2px rgba(253, 86, 83, 0.25);
 }
 
-.react-tags-search {
-    display: inline-block;
-
-    /* match tag layout */
-    padding: 4px 2px;
-    margin: 3px 0;
-
-    /* prevent autoresize overflowing the container */
-    max-width: 100%;
+.react-tags__label {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
 }
 
-@media screen and (min-width: 30em) {
-    .react-tags-search {
-        /* this will become the offsetParent for suggestions */
-        position: relative;
-    }
+.react-tags__list {
+  /* Do not use display: contents, it's too buggy */
+  display: inline;
+  padding: 0;
 }
 
-.react-tags-search-input {
-    /* prevent autoresize overflowing the container */
-    max-width: 100%;
-
-    /* remove styles and layout from this element */
-    margin: 0;
-    padding: 0;
-    border: 0;
-    outline: none;
-
-    /* match the font styles */
-    font-size: inherit;
-    line-height: inherit;
+.react-tags__list-item {
+  display: inline;
+  list-style: none;
 }
 
-.react-tags-suggestions {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
+.react-tags__tag {
+  margin: 0 0.25rem 0.25rem 0;
+  padding: 0.375rem 0.5rem;
+  border: 0;
+  border-radius: 3px;
+  background: #eaeef2;
+  /* match the font styles */
+  font-size: inherit;
+  line-height: inherit;
 }
 
-@media screen and (min-width: 30em) {
-    .react-tags-suggestions {
-        width: 240px;
-    }
+.react-tags__tag:hover {
+  color: #ffffff;
+  background-color: #4f46e5;
 }
 
-.react-tags-suggestions ul {
-    margin: 4px -1px;
-    padding: 0;
-    list-style: none;
-    background: var(--background-color);
-    color: var(--text-color);
-    border: 1px solid #d1d1d1;
-    border-radius: 2px;
-    box-shadow: 0 2px 3px rgb(0 0 0 / 20%);
+.react-tags__tag::after {
+  content: '';
+  display: inline-block;
+  width: 0.65rem;
+  height: 0.65rem;
+  clip-path: polygon(10% 0, 0 10%, 40% 50%, 0 90%, 10% 100%, 50% 60%, 90% 100%, 100% 90%, 60% 50%, 100% 10%, 90% 0, 50% 40%);
+  margin-left: 0.5rem;
+  font-size: 0.875rem;
+  background-color: #7c7d86;
 }
 
-.react-tags-suggestions li {
-    border-bottom: 1px solid #dddddd;
-    padding: 3px 4px;
+.react-tags__tag:hover::after {
+  background-color: #ffffff;
 }
 
-.react-tags-suggestions li mark {
-    text-decoration: underline;
-    background: none;
-    font-weight: 600;
+.react-tags__combobox {
+  display: inline-block;
+  /* match tag layout */
+  padding: 0.375rem 0.25rem;
+  margin-bottom: 0.25rem;
+  /* prevents autoresize overflowing the container */
+  max-width: 100%;
 }
 
-.react-tags-suggestions li.is-active {
-    background: var(--primary-highlight);
-    color: var(--text-color);
+.react-tags__combobox-input {
+  /* prevent autoresize overflowing the container */
+  max-width: 100%;
+  /* remove styles and layout from this element */
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: none;
+  background: none;
+  /* match the font styles */
+  font-size: inherit;
+  line-height: inherit;
 }
 
-.react-tags-suggestions li:hover {
-    cursor: pointer;
-    background: var(--primary);
-    color: var(--text-color-for-primary);
+.react-tags__combobox-input::placeholder {
+  color: #7c7d86;
+  opacity: 1;
 }
 
-.react-tags-suggestions li.is-disabled {
-    opacity: 0.5;
-    cursor: auto;
+.react-tags__listbox {
+  position: absolute;
+  z-index: 1;
+  top: calc(100% + 5px);
+  /* Negate the border width on the container */
+  left: -2px;
+  right: -2px;
+  max-height: 12.5rem;
+  overflow-y: auto;
+  background: #ffffff;
+  border: 1px solid #afb8c1;
+  border-radius: 6px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0 10px 15px -4px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+}
+
+.react-tags__listbox-option {
+  padding: 0.375rem 0.5rem;
+}
+
+.react-tags__listbox-option:hover {
+  cursor: pointer;
+  background: #eaeef2;
+}
+
+.react-tags__listbox-option:not([aria-disabled='true']).is-active {
+  background: #4f46e5;
+  color: #ffffff;
+}
+
+.react-tags__listbox-option[aria-disabled='true'] {
+  color: #7c7d86;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.react-tags__listbox-option[aria-selected='true']::after {
+  content: '✓';
+  margin-left: 0.5rem;
+}
+
+.react-tags__listbox-option[aria-selected='true']:not(.is-active)::after {
+  color: #4f46e5;
+}
+
+.react-tags__listbox-option-highlight {
+  background-color: #ffdd00;
 }

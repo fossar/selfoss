@@ -56,6 +56,7 @@
   "lang_source_title": "Title",
   "lang_source_autotitle_hint": "Leave empty to fetch title",
   "lang_source_tags": "Tags",
+  "lang_source_tags_create_new": "Create a new tag “{0}” and add it.",
   "lang_source_tags_placeholder": "Add new tag",
   "lang_source_tag_remove_button_label": "Click to remove tag",
   "lang_source_pwd_placeholder": "Not changed",
