@@ -60,7 +60,7 @@ input,
 }
 
 select:focus,
-input:not(.react-tags__input):focus,
+input:not(.react-tags__combobox-input):focus,
 .react-tags.is-active {
     color: color.mix($text-color, $primary, 50%);
     border-color: var(--primary);
