@@ -273,28 +273,26 @@ function daysAgo(date) {
 }
 
 
-function Tag({ classNames, removeButtonText, onDelete, tag }) {
+function Tag({ classNames, tag, tagProps }) {
     return (
         <button
             type="button"
-            className={classNames.selectedTag}
-            title={removeButtonText}
-            onClick={onDelete}
+            className={classNames.tag}
             style={{
                 backgroundColor: tag.color,
                 color: tag.foregroundColor,
             }}
+            {...tagProps}
         >
-            <span className={classNames.selectedTagName}>{tag.name}</span>
+            <span className={classNames.tagName}>{tag.label}</span>
         </button>
     );
 }
 
 Tag.propTypes = {
     classNames: PropTypes.object.isRequired,
-    removeButtonText: PropTypes.string.isRequired,
-    onDelete: PropTypes.func.isRequired,
     tag: PropTypes.object.isRequired,
+    tagProps: PropTypes.object.isRequired,
 };
 
 
