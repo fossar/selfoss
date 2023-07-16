@@ -11,7 +11,7 @@
 - Sources can be filtered based on item’s author, URL or categories. ([#1423](https://github.com/fossar/selfoss/pull/1423), [#1424](https://github.com/fossar/selfoss/pull/1424))
 - Source filter expression is now validated whenever a source is modified. ([#1423](https://github.com/fossar/selfoss/pull/1423))
 - Garbage collection can be completely disabled by setting `items_lifetime=0`.
-- Tags are now autocompleted when editing a new source. ([#1311](https://github.com/fossar/selfoss/pull/1311), [#669](https://github.com/fossar/selfoss/issues/669))
+- Tags are now autocompleted when editing a new source. ([#1445](https://github.com/fossar/selfoss/pull/1445), [#669](https://github.com/fossar/selfoss/issues/669))
 
 ### Bug fixes
 - Configuration parser was changed to *raw* method, which relaxes the requirement to quote option values containing special characters in `config.ini`. ([#1371](https://github.com/fossar/selfoss/issues/1371))
