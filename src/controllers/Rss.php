@@ -75,7 +75,7 @@ class Rss {
             $newItem->setTitle($this->sanitizeTitle($item['title'] . ' (' . $lastSourceName . ')'));
             @$newItem->setLink($item['link']);
             @$newItem->setId($item['link']);
-            $newItem->setDate($item['datetime']);
+            $newItem->setDate(DateTime::createFromImmutable($item['datetime']));
             $newItem->setDescription(str_replace('&#34;', '"', $item['content']));
 
             // add tags in category node
@@ -96,9 +96,9 @@ class Rss {
         }
 
         if ($newestEntryDate === null) {
-            $newestEntryDate = new \DateTime();
+            $newestEntryDate = new \DateTimeImmutable();
         }
-        $this->feedWriter->setDate($newestEntryDate);
+        $this->feedWriter->setDate(DateTime::createFromImmutable($newestEntryDate));
 
         $this->feedWriter->printFeed();
     }

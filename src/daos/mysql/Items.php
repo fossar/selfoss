@@ -6,7 +6,6 @@ namespace daos\mysql;
 
 use daos\DatabaseInterface;
 use daos\ItemOptions;
-use DateTime;
 use DateTimeImmutable;
 use helpers\Configuration;
 use helpers\HtmlString;
@@ -206,9 +205,9 @@ class Items implements \daos\ItemsInterface {
     /**
      * cleanup orphaned and old items
      *
-     * @param ?DateTime $date date to delete all items older than this value
+     * @param ?DateTimeImmutable $date date to delete all items older than this value
      */
-    public function cleanup(?DateTime $date): void {
+    public function cleanup(?DateTimeImmutable $date): void {
         $this->database->exec('DELETE FROM ' . $this->configuration->dbPrefix . 'items
             WHERE source NOT IN (
                 SELECT id FROM ' . $this->configuration->dbPrefix . 'sources)');
@@ -226,7 +225,7 @@ class Items implements \daos\ItemsInterface {
      *
      * @param ItemOptions $options search, offset and filter params
      *
-     * @return array<array{id: int, datetime: DateTime, title: string, content: string, unread: bool, starred: bool, source: int, thumbnail: string, icon: string, uid: string, link: string, updatetime: DateTime, author: string, sourcetitle: string, tags: string[]}> items as array
+     * @return array<array{id: int, datetime: DateTimeImmutable, title: string, content: string, unread: bool, starred: bool, source: int, thumbnail: string, icon: string, uid: string, link: string, updatetime: DateTimeImmutable, author: string, sourcetitle: string, tags: string[]}> items as array
      */
     public function get(ItemOptions $options): array {
         $params = [];
@@ -375,12 +374,12 @@ class Items implements \daos\ItemsInterface {
      * Obtain new or changed items in the database for synchronization with clients.
      *
      * @param int $sinceId id of last seen item
-     * @param DateTime $notBefore cut off time stamp
-     * @param DateTime $since timestamp of last seen item
+     * @param DateTimeImmutable $notBefore cut off time stamp
+     * @param DateTimeImmutable $since timestamp of last seen item
      *
-     * @return array<array{id: int, datetime: DateTime, title: string, content: string, unread: bool, starred: bool, source: int, thumbnail: string, icon: string, uid: string, link: string, updatetime: DateTime, author: string, sourcetitle: string, tags: string[]}> of items
+     * @return array<array{id: int, datetime: DateTimeImmutable, title: string, content: string, unread: bool, starred: bool, source: int, thumbnail: string, icon: string, uid: string, link: string, updatetime: DateTimeImmutable, author: string, sourcetitle: string, tags: string[]}> of items
      */
-    public function sync(int $sinceId, DateTime $notBefore, DateTime $since, int $howMany): array {
+    public function sync(int $sinceId, DateTimeImmutable $notBefore, DateTimeImmutable $since, int $howMany): array {
         $query = 'SELECT
         items.id, datetime, items.title AS title, content, unread, starred, source, thumbnail, icon, uid, link, updatetime, author, sources.title as sourcetitle, sources.tags as tags
         FROM ' . $this->configuration->dbPrefix . 'items AS items, ' . $this->configuration->dbPrefix . 'sources AS sources
@@ -575,11 +574,11 @@ class Items implements \daos\ItemsInterface {
     /**
      * returns the statuses of items last update
      *
-     * @param DateTime $since minimal date of returned items
+     * @param DateTimeImmutable $since minimal date of returned items
      *
      * @return array<array{id: int, unread: bool, starred: bool}> of unread, starred, etc. status of specified items
      */
-    public function statuses(DateTime $since): array {
+    public function statuses(DateTimeImmutable $since): array {
         $res = $this->database->exec(
             'SELECT id, unread, starred
             FROM ' . $this->configuration->dbPrefix . 'items
@@ -627,7 +626,7 @@ class Items implements \daos\ItemsInterface {
 
                     // sanitize update time
                     if (array_key_exists('datetime', $status)) {
-                        $updateDate = new \DateTime($status['datetime']);
+                        $updateDate = new \DateTimeImmutable($status['datetime']);
                     } else {
                         $updateDate = null;
                     }

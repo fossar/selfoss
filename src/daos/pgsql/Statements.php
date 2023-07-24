@@ -104,7 +104,7 @@ class Statements extends \daos\mysql\Statements {
                             }
                             break;
                         case DatabaseInterface::PARAM_DATETIME:
-                            $value = new \DateTime($row[$columnIndex]);
+                            $value = new \DateTimeImmutable($row[$columnIndex]);
                             break;
                         default:
                             $value = null;

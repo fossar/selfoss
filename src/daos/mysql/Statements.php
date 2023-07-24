@@ -128,13 +128,11 @@ class Statements implements \daos\StatementsInterface {
      * Convert a date into a representation suitable for comparison by
      * the database engine.
      *
-     * @param \DateTime $date datetime
-     *
      * @return string representation of datetime
      */
-    public static function datetime(\DateTime $date): string {
+    public static function datetime(\DateTimeImmutable $date): string {
         // mysql supports ISO8601 datetime comparisons
-        return $date->format(\DateTime::ATOM);
+        return $date->format(\DateTimeImmutable::ATOM);
     }
 
     /**
@@ -179,7 +177,7 @@ class Statements implements \daos\StatementsInterface {
                             }
                             break;
                         case DatabaseInterface::PARAM_DATETIME:
-                            $value = new \DateTime($row[$columnIndex]);
+                            $value = new \DateTimeImmutable($row[$columnIndex]);
                             break;
                         default:
                             $value = null;

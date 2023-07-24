@@ -83,7 +83,7 @@ class Index {
 
         $lastUpdate = $this->itemsDao->lastUpdate();
         $result = [
-            'lastUpdate' => $lastUpdate !== null ? $lastUpdate->format(\DateTime::ATOM) : null,
+            'lastUpdate' => $lastUpdate !== null ? $lastUpdate->format(\DateTimeImmutable::ATOM) : null,
             'hasMore' => $items['hasMore'],
             'entries' => $items['entries'],
             'all' => $statsAll,
