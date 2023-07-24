@@ -49,8 +49,8 @@ class Sync {
             $this->view->jsonError(['sync' => 'missing since argument']);
         }
 
-        $since = new \DateTimeImmutable($params['since']);
-        $since = $since->setTimeZone(new \DateTimeZone(date_default_timezone_get()));
+        // The client should include a timezone offset but let’s default to UTC in case it does not.
+        $since = new \DateTimeImmutable($params['since'], new \DateTimeZone('UTC'));
 
         $lastUpdate = $this->itemsDao->lastUpdate();
 
@@ -66,9 +66,7 @@ class Sync {
                     $sinceId = $this->itemsDao->lowestIdOfInterest() - 1;
                     // only send 1 day worth of items
                     $notBefore = new \DateTimeImmutable();
-                    $notBefore = $notBefore->setTimeZone(new \DateTimeZone(date_default_timezone_get()));
                     $notBefore = $notBefore->sub(new \DateInterval('P1D'));
-                    $notBefore = $notBefore->setTimeZone(new \DateTimeZone(date_default_timezone_get()));
                 }
 
                 $itemsHowMany = $this->configuration->itemsPerpage;

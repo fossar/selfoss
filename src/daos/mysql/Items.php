@@ -568,7 +568,9 @@ class Items implements \daos\ItemsInterface {
             FROM ' . $this->configuration->dbPrefix . 'items;');
         $lastUpdate = $res[0]['last_update_time'];
 
-        return $lastUpdate !== null ? new DateTimeImmutable($lastUpdate) : null;
+        // MySQL and SQLite do not support timezones, load it as UTC.
+        // PostgreSQL will include the timezone offset as the part of the returned value and it will take precedence.
+        return $lastUpdate !== null ? new DateTimeImmutable($lastUpdate, new \DateTimeZone('UTC')) : null;
     }
 
     /**
@@ -626,7 +628,8 @@ class Items implements \daos\ItemsInterface {
 
                     // sanitize update time
                     if (array_key_exists('datetime', $status)) {
-                        $updateDate = new \DateTimeImmutable($status['datetime']);
+                        // The client should include a timezone offset but let’s default to UTC in case it does not.
+                        $updateDate = new \DateTimeImmutable($status['datetime'], new \DateTimeZone('UTC'));
                     } else {
                         $updateDate = null;
                     }

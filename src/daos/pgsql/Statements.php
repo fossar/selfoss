@@ -104,6 +104,7 @@ class Statements extends \daos\mysql\Statements {
                             }
                             break;
                         case DatabaseInterface::PARAM_DATETIME:
+                            // PostgreSQL will include the timezone offset as the part of the returned value.
                             $value = new \DateTimeImmutable($row[$columnIndex]);
                             break;
                         default:

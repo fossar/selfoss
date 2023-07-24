@@ -50,14 +50,10 @@ class Statements extends \daos\mysql\Statements {
      * @return string representation of datetime
      */
     public static function datetime(\DateTimeImmutable $date): string {
-        // SQLite does not support timezones.
-        // The client previously sent the local timezone
-        // but now it sends UTC time so we need to adjust it here
-        // to avoid fromDatetime mismatch.
-        // TODO: Switch to UTC everywhere.
-        $date = $date->setTimeZone((new \DateTimeImmutable())->getTimeZone());
+        // SQLite does not support timezones so we store all dates in UTC.
+        $utcDate = $date->setTimeZone(new \DateTimeZone('UTC'));
 
-        return $date->format('Y-m-d H:i:s');
+        return $utcDate->format('Y-m-d H:i:s');
     }
 
     /**

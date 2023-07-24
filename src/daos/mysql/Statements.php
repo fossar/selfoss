@@ -177,7 +177,8 @@ class Statements implements \daos\StatementsInterface {
                             }
                             break;
                         case DatabaseInterface::PARAM_DATETIME:
-                            $value = new \DateTimeImmutable($row[$columnIndex]);
+                            // MySQL and SQLite do not support timezones, load it as UTC.
+                            $value = new \DateTimeImmutable($row[$columnIndex], new \DateTimeZone('UTC'));
                             break;
                         default:
                             $value = null;
