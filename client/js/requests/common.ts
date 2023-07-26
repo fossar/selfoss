@@ -2,6 +2,8 @@ import { LoginError } from '../errors';
 import * as ajax from '../helpers/ajax';
 
 export class PasswordHashingError extends Error {
+    public name: any;
+
     constructor(message) {
         super(message);
         this.name = 'PasswordHashingError';

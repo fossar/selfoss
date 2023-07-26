@@ -34,6 +34,8 @@
     "@parcel/transformer-image": "^2.0.1",
     "@parcel/transformer-sass": "^2.0.0",
     "@parcel/transformer-webmanifest": "^2.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.2.0",
+    "@typescript-eslint/parser": "^6.2.0",
     "autoprefixer": "^10.4.0",
     "eslint": "^8.45.0",
     "eslint-plugin-react": "^7.20.6",
@@ -43,7 +45,8 @@
     "prettier": "^2.0.0",
     "process": "^0.11.10",
     "stylelint": "^15.10.1",
-    "stylelint-config-standard-scss": "^9.0.0"
+    "stylelint-config-standard-scss": "^9.0.0",
+    "typescript": "^5.1.6"
   },
   "scripts": {
     "fix": "npm run fix:js && npm run fix:styles",
@@ -52,7 +55,7 @@
     "fix:styles:prettify": "npm run check:styles:prettify -- --write",
     "fix:js": "npm run lint:js -- --fix",
     "check": "npm run lint:js && npm run check:styles",
-    "lint:js": "eslint --ext .jsx,.js .",
+    "lint:js": "eslint --ext .tsx,.ts .",
     "check:styles": "npm run check:styles:lint && npm run check:styles:prettify",
     "check:styles:lint": "stylelint styles/*.scss",
     "check:styles:prettify": "prettier styles/*.scss --check",
