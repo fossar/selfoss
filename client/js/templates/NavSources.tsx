@@ -1,5 +1,4 @@
 import React, { useCallback, useContext, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { Link, useRouteMatch } from 'react-router-dom';
 import { usePreviousImmediate } from 'rooks';
 import classNames from 'classnames';
@@ -49,7 +48,15 @@ function handleTitleClick({
     });
 }
 
-function Source({ source, active, collapseNav }) {
+type SourceProps = {
+    source: object;
+    active: boolean;
+    collapseNav: () => void;
+};
+
+function Source(props: SourceProps) {
+    const { source, active, collapseNav } = props;
+
     const link = useCallback(
         (location) => ({
             ...location,
@@ -78,21 +85,27 @@ function Source({ source, active, collapseNav }) {
     );
 }
 
-Source.propTypes = {
-    source: PropTypes.object.isRequired,
-    active: PropTypes.bool.isRequired,
-    collapseNav: PropTypes.func.isRequired,
+type NavSourcesProps = {
+    setNavExpanded: React.Dispatch<React.SetStateAction<boolean>>;
+    navSourcesExpanded: boolean;
+    setNavSourcesExpanded: React.Dispatch<React.SetStateAction<boolean>>;
+    sourcesState: LoadingState;
+    setSourcesState: React.Dispatch<React.SetStateAction<LoadingState>>;
+    sources: Array<object>;
+    setSources: React.Dispatch<React.SetStateAction<Array<object>>>;
 };
 
-export default function NavSources({
-    setNavExpanded,
-    navSourcesExpanded,
-    setNavSourcesExpanded,
-    sourcesState,
-    setSourcesState,
-    sources,
-    setSources,
-}) {
+export default function NavSources(props: NavSourcesProps) {
+    const {
+        setNavExpanded,
+        navSourcesExpanded,
+        setNavSourcesExpanded,
+        sourcesState,
+        setSourcesState,
+        sources,
+        setSources,
+    } = props;
+
     const reallyExpanded =
         navSourcesExpanded && sourcesState === LoadingState.SUCCESS;
 
@@ -175,13 +188,3 @@ export default function NavSources({
         </React.Fragment>
     );
 }
-
-NavSources.propTypes = {
-    setNavExpanded: PropTypes.func.isRequired,
-    navSourcesExpanded: PropTypes.bool.isRequired,
-    setNavSourcesExpanded: PropTypes.func.isRequired,
-    sourcesState: PropTypes.oneOf(Object.values(LoadingState)).isRequired,
-    setSourcesState: PropTypes.func.isRequired,
-    sources: PropTypes.arrayOf(PropTypes.object).isRequired,
-    setSources: PropTypes.func.isRequired,
-};
