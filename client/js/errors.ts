@@ -1,4 +1,6 @@
 export class OfflineStorageNotAvailableError extends Error {
+    public name: any;
+
     constructor(message = 'Offline storage is not available') {
         super(message);
         this.name = 'OfflineStorageNotAvailableError';
@@ -6,6 +8,8 @@ export class OfflineStorageNotAvailableError extends Error {
 }
 
 export class TimeoutError extends Error {
+    public name: any;
+
     constructor(message) {
         super(message);
         this.name = 'TimeoutError';
@@ -13,6 +17,8 @@ export class TimeoutError extends Error {
 }
 
 export class HttpError extends Error {
+    public name: any;
+
     constructor(message) {
         super(message);
         this.name = 'HttpError';
@@ -20,6 +26,8 @@ export class HttpError extends Error {
 }
 
 export class LoginError extends Error {
+    public name: any;
+
     constructor(message) {
         super(message);
         this.name = 'LoginError';
@@ -27,6 +35,8 @@ export class LoginError extends Error {
 }
 
 export class UnexpectedStateError extends Error {
+    public name: any;
+
     constructor(message) {
         super(message);
         this.name = 'UnexpectedStateError';

@@ -915,7 +915,7 @@ class StateHolder extends React.Component {
      * @param {number} id of entry to mark
      * @param {bool|'toggle'} true to mark read, false to mark unread
      */
-    markEntryRead(id, markRead) {
+    markEntryRead(id, markRead?) {
         // only loggedin users
         if (!selfoss.isAllowedToWrite()) {
             console.log('User not allowed to mark an entry (un)read.');
@@ -999,7 +999,7 @@ class StateHolder extends React.Component {
      * @param {number} id of entry to mark
      * @param {bool|'toggle'} true to mark starred, false to mark unstarred
      */
-    markEntryStarred(id, markStarred) {
+    markEntryStarred(id, markStarred?) {
         // only loggedin users
         if (!selfoss.isAllowedToWrite()) {
             console.log('User not allowed to (un)star an entry.');

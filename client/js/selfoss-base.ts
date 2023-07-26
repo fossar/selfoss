@@ -243,7 +243,7 @@ const selfoss = {
         });
 
         navigator.serviceWorker
-            .register(new URL('../selfoss-sw-offline.js', import.meta.url), {
+            .register(new URL('../selfoss-sw-offline.ts', import.meta.url), {
                 type: 'module',
             })
             .then((reg) => {

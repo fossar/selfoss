@@ -434,6 +434,10 @@ PureApp.propTypes = {
 };
 
 export class App extends React.Component {
+    public state: any;
+    public setState: any;
+    public props: any;
+
     constructor(props) {
         super(props);
         this.state = {
@@ -695,7 +699,7 @@ export class App extends React.Component {
      * @param ?array parameters
      * @return string
      */
-    _(identifier, params) {
+    _(identifier, params?) {
         const fallbackLanguage = 'en';
         const langKey = `lang_${identifier}`;
 
