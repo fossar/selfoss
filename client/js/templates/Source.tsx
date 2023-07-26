@@ -4,8 +4,6 @@ import { Menu, MenuButton, MenuItem } from '@szhsin/react-menu';
 import { useNavigate, useLocation } from 'react-router';
 import { fadeOut } from '@siteparts/show-hide-effects';
 import { makeEntriesLinkLocation } from '../helpers/uri';
-import PropTypes from 'prop-types';
-import nullable from 'prop-types-nullable';
 import { unescape } from 'html-escaper';
 import classNames from 'classnames';
 import { pick } from 'lodash-es';
@@ -253,26 +251,51 @@ function daysAgo(date) {
     return Math.floor((today - old) / MS_PER_DAY);
 }
 
-function SourceEditForm({
-    source,
-    sourceElem,
-    sourceError,
-    setSources,
-    spouts,
-    setSpouts,
-    setEditedSource,
-    sourceActionLoading,
-    setSourceActionLoading,
-    sourceParamsLoading,
-    setSourceParamsLoading,
-    sourceParamsError,
-    setSourceParamsError,
-    setJustSavedTimeout,
-    sourceErrors,
-    setSourceErrors,
-    dirty,
-    setDirty,
-}) {
+type SourceEditFormProps = {
+    source: object;
+    sourceElem: object;
+    sourceError?: string;
+    setSources: React.Dispatch<React.SetStateAction<Array<object>>>;
+    spouts: object;
+    setSpouts: React.Dispatch<React.SetStateAction<Array<object>>>;
+    setEditedSource: React.Dispatch<React.SetStateAction<object>>;
+    sourceActionLoading: boolean;
+    setSourceActionLoading: React.Dispatch<React.SetStateAction<boolean>>;
+    sourceParamsLoading: boolean;
+    setSourceParamsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+    sourceParamsError: string | null;
+    setSourceParamsError: React.Dispatch<React.SetStateAction<string | null>>;
+    setJustSavedTimeout: React.Dispatch<React.SetStateAction<number>>;
+    sourceErrors: { [index: string]: string };
+    setSourceErrors: React.Dispatch<
+        React.SetStateAction<{ [index: string]: string }>
+    >;
+    dirty: boolean;
+    setDirty: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+function SourceEditForm(props: SourceEditFormProps) {
+    const {
+        source,
+        sourceElem,
+        sourceError,
+        setSources,
+        spouts,
+        setSpouts,
+        setEditedSource,
+        sourceActionLoading,
+        setSourceActionLoading,
+        sourceParamsLoading,
+        setSourceParamsLoading,
+        sourceParamsError,
+        setSourceParamsError,
+        setJustSavedTimeout,
+        sourceErrors,
+        setSourceErrors,
+        dirty,
+        setDirty,
+    } = props;
+
     const sourceId = source.id;
     const updateEditedSource = useCallback(
         (changes) => {
@@ -535,35 +558,19 @@ function SourceEditForm({
     );
 }
 
-SourceEditForm.propTypes = {
-    source: PropTypes.object.isRequired,
-    sourceElem: PropTypes.object.isRequired,
-    sourceError: PropTypes.string,
-    setSources: PropTypes.func.isRequired,
-    spouts: PropTypes.object.isRequired,
-    setSpouts: PropTypes.func.isRequired,
-    setEditedSource: PropTypes.func.isRequired,
-    sourceActionLoading: PropTypes.bool.isRequired,
-    setSourceActionLoading: PropTypes.func.isRequired,
-    sourceParamsLoading: PropTypes.bool.isRequired,
-    setSourceParamsLoading: PropTypes.func.isRequired,
-    sourceParamsError: nullable(PropTypes.string).isRequired,
-    setSourceParamsError: PropTypes.func.isRequired,
-    setJustSavedTimeout: PropTypes.func.isRequired,
-    sourceErrors: PropTypes.objectOf(PropTypes.string).isRequired,
-    setSourceErrors: PropTypes.func.isRequired,
-    dirty: PropTypes.bool.isRequired,
-    setDirty: PropTypes.func.isRequired,
+type SourceProps = {
+    source: object;
+    setSources: React.Dispatch<React.SetStateAction<Array<object>>>;
+    spouts: object;
+    setSpouts: React.Dispatch<React.SetStateAction<object>>;
+    dirty: boolean;
+    setDirtySources: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function Source({
-    source,
-    setSources,
-    spouts,
-    setSpouts,
-    dirty,
-    setDirtySources,
-}) {
+export default function Source(props: SourceProps) {
+    const { source, setSources, spouts, setSpouts, dirty, setDirtySources } =
+        props;
+
     const isNew = !source.title;
     const classes = {
         source: true,
@@ -708,7 +715,9 @@ export default function Source({
             </div>
             <div className="source-days">
                 {source.lastentry
-                    ? ` • ${_('source_last_post')} ${_('days', [daysAgo(new Date(source.lastentry * 1000))])}`
+                    ? ` • ${_('source_last_post')} ${_('days', [
+                          daysAgo(new Date(source.lastentry * 1000)),
+                      ])}`
                     : null}
             </div>
             {/* edit */}
@@ -739,12 +748,3 @@ export default function Source({
         </li>
     );
 }
-
-Source.propTypes = {
-    source: PropTypes.object.isRequired,
-    setSources: PropTypes.func.isRequired,
-    spouts: PropTypes.object.isRequired,
-    setSpouts: PropTypes.func.isRequired,
-    dirty: PropTypes.bool.isRequired,
-    setDirtySources: PropTypes.func.isRequired,
-};

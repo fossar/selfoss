@@ -1,5 +1,4 @@
 import React, { useCallback, useMemo } from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useLocation, useNavigate } from 'react-router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -49,7 +48,15 @@ function handleRemove({ index, location, navigate, regexSearch }) {
     navigate(makeEntriesLink(location, { search: newterm, id: null }));
 }
 
-function SearchWord({ regexSearch, index, item }) {
+type SearchWordProps = {
+    regexSearch: boolean;
+    index: number;
+    item: string;
+};
+
+function SearchWord(props: SearchWordProps) {
+    const { regexSearch, index, item } = props;
+
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -67,12 +74,6 @@ function SearchWord({ regexSearch, index, item }) {
         </li>
     );
 }
-
-SearchWord.propTypes = {
-    regexSearch: PropTypes.bool.isRequired,
-    index: PropTypes.number.isRequired,
-    item: PropTypes.string.isRequired,
-};
 
 /**
  * Component for showing list of search terms at the top of the page.

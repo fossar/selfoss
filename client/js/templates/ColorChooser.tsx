@@ -1,10 +1,10 @@
 import React, { useContext, useMemo } from 'react';
-import PropTypes from 'prop-types';
-import { Menu, MenuButton, MenuItem } from '@szhsin/react-menu';
+import { ClickEvent, Menu, MenuButton, MenuItem } from '@szhsin/react-menu';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { colorByBrightness } from '../helpers/color';
 import { LocalizationContext } from '../helpers/i18n';
 import * as icons from '../icons';
+import { NavTag } from '../requests/items';
 
 const palette = [
     '#ffccc9',
@@ -71,7 +71,14 @@ const palette = [
     '#340096',
 ];
 
-function ColorButton({ tag, color }) {
+type ColorButtonProps = {
+    tag: NavTag;
+    color: string;
+};
+
+function ColorButton(props: ColorButtonProps) {
+    const { tag, color } = props;
+
     const style = useMemo(
         () => ({
             backgroundColor: color,
@@ -89,18 +96,20 @@ function ColorButton({ tag, color }) {
     );
 }
 
-ColorButton.propTypes = {
-    tag: PropTypes.object.isRequired,
-    color: PropTypes.string.isRequired,
-};
-
 const preventDefault = (event) => {
     event.preventDefault();
     // Prevent closing navigation on mobile.
     event.stopPropagation();
 };
 
-export default function ColorChooser({ tag, onChange }) {
+type ColorChooserProps = {
+    tag: NavTag;
+    onChange: (event: ClickEvent) => void;
+};
+
+export default function ColorChooser(props: ColorChooserProps) {
+    const { tag, onChange } = props;
+
     const style = useMemo(() => ({ backgroundColor: tag.color }), [tag.color]);
 
     const _ = useContext(LocalizationContext);
@@ -134,8 +143,3 @@ export default function ColorChooser({ tag, onChange }) {
         </div>
     );
 }
-
-ColorChooser.propTypes = {
-    tag: PropTypes.object.isRequired,
-    onChange: PropTypes.func.isRequired,
-};

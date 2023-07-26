@@ -1,6 +1,4 @@
 import React, { useContext, useMemo, useCallback, useState } from 'react';
-import PropTypes from 'prop-types';
-import nullable from 'prop-types-nullable';
 import { Link, useLocation } from 'react-router';
 import classNames from 'classnames';
 import { unescape } from 'html-escaper';
@@ -16,7 +14,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as icons from '../icons';
 import { LocalizationContext } from '../helpers/i18n';
 
-function Tag({ tag, active, collapseNav }) {
+type TagProps = {
+    tag: object | null;
+    active: boolean;
+    collapseNav: () => void;
+};
+
+function Tag(props: TagProps) {
+    const { tag, active, collapseNav } = props;
+
     const _ = useContext(LocalizationContext);
     const tagName = tag !== null ? tag.tag : null;
 
@@ -74,13 +80,14 @@ function Tag({ tag, active, collapseNav }) {
     );
 }
 
-Tag.propTypes = {
-    tag: nullable(PropTypes.object).isRequired,
-    active: PropTypes.bool.isRequired,
-    collapseNav: PropTypes.func.isRequired,
+type NavTagsProps = {
+    setNavExpanded: React.Dispatch<React.SetStateAction<boolean>>;
+    tags: Array<object>;
 };
 
-export default function NavTags({ setNavExpanded, tags }) {
+export default function NavTags(props: NavTagsProps) {
+    const { setNavExpanded, tags } = props;
+
     const [expanded, setExpanded] = useState(true);
 
     const params = useEntriesParams();
@@ -148,8 +155,3 @@ export default function NavTags({ setNavExpanded, tags }) {
         </>
     );
 }
-
-NavTags.propTypes = {
-    setNavExpanded: PropTypes.func.isRequired,
-    tags: PropTypes.arrayOf(PropTypes.object).isRequired,
-};

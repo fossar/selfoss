@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useInput } from 'rooks';
@@ -6,7 +5,13 @@ import { LoadingState } from '../requests/LoadingState';
 import { HttpError } from '../errors';
 import { hashPassword } from '../requests/common';
 
-export default function HashPassword({ setTitle }) {
+type HashPasswordProps = {
+    setTitle: (title: string | null) => void;
+};
+
+export default function HashPassword(props: HashPasswordProps) {
+    const { setTitle } = props;
+
     const [state, setState] = useState(LoadingState.INITIAL);
     const [hashedPassword, setHashedPassword] = useState('');
     const [error, setError] = useState(null);
@@ -106,7 +111,3 @@ export default function HashPassword({ setTitle }) {
         </form>
     );
 }
-
-HashPassword.propTypes = {
-    setTitle: PropTypes.func.isRequired,
-};
