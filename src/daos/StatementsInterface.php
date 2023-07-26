@@ -90,8 +90,7 @@ interface StatementsInterface {
     public static function bool(bool $bool): string;
 
     /**
-     * Convert a date into a representation suitable for comparison by
-     * the database engine.
+     * Convert a date into a representation suitable for storage or comparison.
      *
      * @return string representation of datetime
      */

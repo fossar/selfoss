@@ -44,19 +44,6 @@ class Statements extends \daos\mysql\Statements {
     }
 
     /**
-     * Convert a date into a representation suitable for comparison by
-     * the database engine.
-     *
-     * @return string representation of datetime
-     */
-    public static function datetime(\DateTimeImmutable $date): string {
-        // SQLite does not support timezones so we store all dates in UTC.
-        $utcDate = $date->setTimeZone(new \DateTimeZone('UTC'));
-
-        return $utcDate->format('Y-m-d H:i:s');
-    }
-
-    /**
      * Match a value to a regular expression.
      *
      * @param string $value value to match

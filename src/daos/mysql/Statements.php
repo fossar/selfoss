@@ -125,14 +125,16 @@ class Statements implements \daos\StatementsInterface {
     }
 
     /**
-     * Convert a date into a representation suitable for comparison by
-     * the database engine.
+     * Convert a date into a representation suitable for storage or comparison.
      *
      * @return string representation of datetime
      */
     public static function datetime(\DateTimeImmutable $date): string {
-        // mysql supports ISO8601 datetime comparisons
-        return $date->format(\DateTimeImmutable::ATOM);
+        // SQLite does not support timezones so we store all dates in UTC.
+        // MySQL supports them for comparison but not for storage.
+        $utcDate = $date->setTimeZone(new \DateTimeZone('UTC'));
+
+        return $utcDate->format('Y-m-d H:i:s');
     }
 
     /**
