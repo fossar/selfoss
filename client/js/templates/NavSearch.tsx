@@ -5,7 +5,6 @@ import React, {
     useRef,
     useState,
 } from 'react';
-import PropTypes from 'prop-types';
 import { useLocation, useNavigate } from 'react-router';
 import classNames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -62,7 +61,14 @@ function handleRemove({ setActive, searchField, navigate, location }) {
     navigate(makeEntriesLink(location, { search: '', id: null }));
 }
 
-export default function NavSearch({ setNavExpanded, offlineState }) {
+type NavSearchProps = {
+    setNavExpanded: React.Dispatch<React.SetStateAction<boolean>>;
+    offlineState: boolean;
+};
+
+export default function NavSearch(props: NavSearchProps) {
+    const { setNavExpanded, offlineState } = props;
+
     const [active, setActive] = useState(false);
 
     const searchField = useRef(null);
@@ -162,8 +168,3 @@ export default function NavSearch({ setNavExpanded, offlineState }) {
         </div>
     );
 }
-
-NavSearch.propTypes = {
-    setNavExpanded: PropTypes.func.isRequired,
-    offlineState: PropTypes.bool.isRequired,
-};

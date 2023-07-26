@@ -1,8 +1,6 @@
 import React, { useContext } from 'react';
-import PropTypes from 'prop-types';
-import nullable from 'prop-types-nullable';
 import classNames from 'classnames';
-import EntriesPage from './EntriesPage';
+import { StateHolder as EntriesPage } from './EntriesPage';
 import NavFilters from './NavFilters';
 import NavSources from './NavSources';
 import NavSearch from './NavSearch';
@@ -14,25 +12,47 @@ import { LoadingState } from '../requests/LoadingState';
 import { useAllowedToWrite } from '../helpers/authorizations';
 import { LocalizationContext } from '../helpers/i18n';
 
-export default function Navigation({
-    entriesPage,
-    setNavExpanded,
-    navSourcesExpanded,
-    setNavSourcesExpanded,
-    offlineState,
-    allItemsCount,
-    allItemsOfflineCount,
-    unreadItemsCount,
-    unreadItemsOfflineCount,
-    starredItemsCount,
-    starredItemsOfflineCount,
-    sourcesState,
-    setSourcesState,
-    sources,
-    setSources,
-    tags,
-    reloadAll,
-}) {
+type NavigationProps = {
+    entriesPage: EntriesPage | null;
+    setNavExpanded: React.Dispatch<React.SetStateAction<boolean>>;
+    navSourcesExpanded: boolean;
+    setNavSourcesExpanded: React.Dispatch<React.SetStateAction<boolean>>;
+    offlineState: boolean;
+    allItemsCount: number;
+    allItemsOfflineCount: number;
+    unreadItemsCount: number;
+    unreadItemsOfflineCount: number;
+    starredItemsCount: number;
+    starredItemsOfflineCount: number;
+    sourcesState: LoadingState;
+    setSourcesState: React.Dispatch<React.SetStateAction<LoadingState>>;
+    sources: Array<object>;
+    setSources: React.Dispatch<React.SetStateAction<Array<object>>>;
+    tags: Array<object>;
+    reloadAll: React.Dispatch<React.SetStateAction<Array<object>>>;
+};
+
+export default function Navigation(props: NavigationProps) {
+    const {
+        entriesPage,
+        setNavExpanded,
+        navSourcesExpanded,
+        setNavSourcesExpanded,
+        offlineState,
+        allItemsCount,
+        allItemsOfflineCount,
+        unreadItemsCount,
+        unreadItemsOfflineCount,
+        starredItemsCount,
+        starredItemsOfflineCount,
+        sourcesState,
+        setSourcesState,
+        sources,
+        setSources,
+        tags,
+        reloadAll,
+    } = props;
+
     const _ = useContext(LocalizationContext);
 
     const canWrite = useAllowedToWrite();
@@ -116,23 +136,3 @@ export default function Navigation({
         </>
     );
 }
-
-Navigation.propTypes = {
-    entriesPage: nullable(PropTypes.instanceOf(EntriesPage)).isRequired,
-    setNavExpanded: PropTypes.func.isRequired,
-    navSourcesExpanded: PropTypes.bool.isRequired,
-    setNavSourcesExpanded: PropTypes.func.isRequired,
-    offlineState: PropTypes.bool.isRequired,
-    allItemsCount: PropTypes.number.isRequired,
-    allItemsOfflineCount: PropTypes.number.isRequired,
-    unreadItemsCount: PropTypes.number.isRequired,
-    unreadItemsOfflineCount: PropTypes.number.isRequired,
-    starredItemsCount: PropTypes.number.isRequired,
-    starredItemsOfflineCount: PropTypes.number.isRequired,
-    sourcesState: PropTypes.oneOf(Object.values(LoadingState)).isRequired,
-    setSourcesState: PropTypes.func.isRequired,
-    sources: PropTypes.arrayOf(PropTypes.object).isRequired,
-    setSources: PropTypes.func.isRequired,
-    tags: PropTypes.arrayOf(PropTypes.object).isRequired,
-    reloadAll: PropTypes.func.isRequired,
-};
