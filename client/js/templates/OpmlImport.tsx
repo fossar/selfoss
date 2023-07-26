@@ -4,16 +4,23 @@ import React, {
     useRef,
     useState,
 } from 'react';
-import PropTypes from 'prop-types';
 import { useOnline } from 'rooks';
 import { Link, useHistory } from 'react-router-dom';
 import { LoadingState } from '../requests/LoadingState';
 import { HttpError, UnexpectedStateError } from '../errors';
 import { importOpml } from '../requests/common';
 
-export default function OpmlImport({
-    setTitle,
-}) {
+type OpmlImportProps = {
+    setTitle: (title: string | null) => void,
+};
+
+export default function OpmlImport(
+    props: OpmlImportProps,
+) {
+    const {
+        setTitle,
+    } = props;
+
     const [state, setState] = useState(LoadingState.INITIAL);
     const [message, setMessage] = useState(null);
     const fileEntry = useRef();
@@ -137,7 +144,3 @@ export default function OpmlImport({
         </form>
     );
 }
-
-OpmlImport.propTypes = {
-    setTitle: PropTypes.func.isRequired,
-};

@@ -6,7 +6,6 @@ import React, {
     useRef,
     useState,
 } from 'react';
-import PropTypes from 'prop-types';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import { usePreviousImmediate } from 'rooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -142,13 +141,27 @@ function openNext(event) {
     });
 }
 
-function ShareButton({
-    label,
-    icon,
-    item,
-    action,
-    showLabel = true,
-}) {
+type ShareAction = ({id: string, url: string, title: string}) => void;
+
+type ShareButtonProps = {
+    label: string,
+    icon: string | HTMLElement,
+    item: object,
+    action: ShareAction,
+    showLabel?: boolean,
+};
+
+function ShareButton(
+    props: ShareButtonProps,
+) {
+    const {
+        label,
+        icon,
+        item,
+        action,
+        showLabel = true,
+    } = props;
+
     const shareOnClick = useCallback(
         (event) => {
             event.preventDefault();
@@ -177,18 +190,16 @@ function ShareButton({
     );
 }
 
-ShareButton.propTypes = {
-    label: PropTypes.string.isRequired,
-    icon: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.element,
-    ]).isRequired,
-    item: PropTypes.object.isRequired,
-    action: PropTypes.func.isRequired,
-    showLabel: PropTypes.bool,
+type ItemTagProps = {
+    tag: string,
+    color: object,
 };
 
-function ItemTag({tag, color}) {
+function ItemTag(
+    props: ItemTagProps,
+) {
+    const {tag, color} = props;
+
     const style = useMemo(
         () => ({ color: color.foreColor, backgroundColor: color.backColor }),
         [color]
@@ -215,11 +226,6 @@ function ItemTag({tag, color}) {
     );
 }
 
-ItemTag.propTypes = {
-    tag: PropTypes.string.isRequired,
-    color: PropTypes.object.isRequired,
-};
-
 /**
  * Converts Date to a relative string.
  * When the date is too old, null is returned instead.
@@ -242,7 +248,25 @@ function datetimeRelative(currentTime, datetime) {
     }
 }
 
-export default function Item({ currentTime, item, selected, expanded, setNavExpanded }) {
+type ItemProps = {
+    currentTime: Date,
+    item: object,
+    selected: boolean,
+    expanded: boolean,
+    setNavExpanded: React.Dispatch<React.SetStateAction<boolean>>,
+};
+
+export default function Item(
+    props: ItemProps,
+) {
+    const {
+        currentTime,
+        item,
+        selected,
+        expanded,
+        setNavExpanded,
+    } = props;
+
     const { title, author, sourcetitle } = item;
 
     const [fullScreenTrap, setFullScreenTrap] = useState(null);
@@ -637,11 +661,3 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
         </div>
     );
 }
-
-Item.propTypes = {
-    currentTime: PropTypes.instanceOf(Date).isRequired,
-    item: PropTypes.object.isRequired,
-    selected: PropTypes.bool.isRequired,
-    expanded: PropTypes.bool.isRequired,
-    setNavExpanded: PropTypes.func.isRequired,
-};

@@ -2,7 +2,6 @@ import React, {
     useCallback,
     useMemo,
 } from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useLocation, useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -56,7 +55,21 @@ function handleRemove({ index, location, history, regexSearch }) {
 }
 
 
-function SearchWord({ regexSearch, index, item }) {
+type SearchWordProps = {
+    regexSearch: boolean,
+    index: number,
+    item: string,
+};
+
+function SearchWord(
+    props: SearchWordProps,
+) {
+    const {
+        regexSearch,
+        index,
+        item,
+    } = props;
+
     const location = useLocation();
     const history = useHistory();
 
@@ -71,12 +84,6 @@ function SearchWord({ regexSearch, index, item }) {
         </li>
     );
 }
-
-SearchWord.propTypes = {
-    regexSearch: PropTypes.bool.isRequired,
-    index: PropTypes.number.isRequired,
-    item: PropTypes.string.isRequired,
-};
 
 
 /**
