@@ -69,7 +69,8 @@ selfoss.dbOffline = {
                                 selfoss.db.lastUpdate = stamp.datetime;
                                 selfoss.dbOnline.firstSync = false;
                             } else {
-                                selfoss.dbOffline.shouldLoadEntriesOnline = true;
+                                selfoss.dbOffline.shouldLoadEntriesOnline =
+                                    true;
                             }
                         },
                     );
