@@ -4,12 +4,17 @@
         "eslint:recommended",
         "plugin:react/recommended",
         "plugin:react-hooks/recommended",
+        "plugin:@typescript-eslint/recommended",
         "prettier"
     ],
+    "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "ecmaVersion": "latest",
         "sourceType": "module"
     },
+    "plugins": [
+        "@typescript-eslint"
+    ],
     "rules": {
         "no-eval": "error",
         "array-bracket-spacing": "error",
@@ -44,7 +49,9 @@
         "space-before-function-paren": ["error", "never"],
         "space-in-parens": "error",
         "space-infix-ops": "error",
-        "unicode-bom": "error"
+        "unicode-bom": "error",
+        "@typescript-eslint/no-explicit-any": 0,
+        "@typescript-eslint/no-unused-vars": 0
     },
     "env": {
         "browser": true,
