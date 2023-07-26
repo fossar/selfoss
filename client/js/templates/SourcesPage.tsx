@@ -170,7 +170,7 @@ export default function SourcesPage() {
     const _ = useContext(LocalizationContext);
 
     const [dirtySources, setDirtySources] = useState({});
-    // eslint-disable-next-line no-unused-vars
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const isDirty = useMemo(
         () => Object.values(dirtySources).includes(true),
         [dirtySources],

@@ -3,6 +3,7 @@ import js from '@eslint/js';
 import eslintConfigPrettier from 'eslint-config-prettier';
 import eslintPluginReact from 'eslint-plugin-react';
 import eslintPluginReactHooks from 'eslint-plugin-react-hooks';
+import tseslint from 'typescript-eslint';
 
 const config = {
     languageOptions: {
@@ -22,7 +23,7 @@ const config = {
         },
     },
 
-    files: ['**/*.js', '**/*.jsx'],
+    files: ['**/*.ts', '**/*.tsx', '**/*.js'],
 
     rules: {
         'no-eval': 'error',
@@ -38,13 +39,16 @@ const config = {
         ],
 
         'unicode-bom': 'error',
+
+        '@typescript-eslint/no-explicit-any': 0,
     },
 };
 
-export default [
+export default tseslint.config(
     js.configs.recommended,
     eslintPluginReact.configs.flat.recommended,
     eslintPluginReactHooks.configs.flat.recommended,
     eslintConfigPrettier,
+    tseslint.configs.recommended,
     config,
-];
+);
