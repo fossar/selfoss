@@ -135,7 +135,7 @@ class Items implements \daos\ItemsInterface {
                 :author
             )',
             [
-               ':datetime' => $values['datetime']->format('Y-m-d H:i:s'),
+               ':datetime' => static::$stmt::datetime($values['datetime']),
                ':title' => $values['title']->getRaw(),
                ':content' => $values['content']->getRaw(),
                ':thumbnail' => $values['thumbnail'],
@@ -395,8 +395,8 @@ class Items implements \daos\ItemsInterface {
         $params = [
             'sinceId' => [$sinceId, \PDO::PARAM_INT],
             'howMany' => [$howMany, \PDO::PARAM_INT],
-            'notBefore' => [$notBefore->format('Y-m-d H:i:s'), \PDO::PARAM_STR],
-            'since' => [$since->format('Y-m-d H:i:s'), \PDO::PARAM_STR],
+            'notBefore' => [static::$stmt::datetime($notBefore), \PDO::PARAM_STR],
+            'since' => [static::$stmt::datetime($since), \PDO::PARAM_STR],
         ];
 
         return static::$stmt::ensureRowTypes($this->database->exec($query, $params), [
@@ -585,7 +585,7 @@ class Items implements \daos\ItemsInterface {
             'SELECT id, unread, starred
             FROM ' . $this->configuration->dbPrefix . 'items
             WHERE ' . $this->configuration->dbPrefix . 'items.updatetime > :since;',
-            [':since' => [$since->format('Y-m-d H:i:s'), \PDO::PARAM_STR]]
+            [':since' => [static::$stmt::datetime($since), \PDO::PARAM_STR]]
         );
         $res = static::$stmt::ensureRowTypes($res, [
             'id' => DatabaseInterface::PARAM_INT,
@@ -651,7 +651,7 @@ class Items implements \daos\ItemsInterface {
                             // create new status update
                             $sql[$id] = [
                                 'updates' => [$sk => $statusUpdate['sql']],
-                                'datetime' => $updateDate->format('Y-m-d H:i:s'),
+                                'datetime' => static::$stmt::datetime($updateDate),
                             ];
                         }
                     }
