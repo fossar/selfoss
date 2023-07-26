@@ -1,5 +1,4 @@
 import React, { useCallback, useContext, useState } from 'react';
-import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as icons from '../icons';
@@ -31,7 +30,14 @@ function handleLogOut({ setNavExpanded }) {
     setNavExpanded(false);
 }
 
-export default function NavToolBar({ reloadAll, setNavExpanded }) {
+type NavToolBarProps = {
+    reloadAll: () => void;
+    setNavExpanded: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export default function NavToolBar(props: NavToolBarProps) {
+    const { reloadAll, setNavExpanded } = props;
+
     const [reloading, setReloading] = useState(false);
 
     const refreshOnClick = useCallback(
@@ -120,8 +126,3 @@ export default function NavToolBar({ reloadAll, setNavExpanded }) {
         </div>
     );
 }
-
-NavToolBar.propTypes = {
-    reloadAll: PropTypes.func.isRequired,
-    setNavExpanded: PropTypes.func.isRequired,
-};

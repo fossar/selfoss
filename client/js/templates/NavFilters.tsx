@@ -1,5 +1,4 @@
 import React, { useCallback, useContext, useState } from 'react';
-import PropTypes from 'prop-types';
 import { Link, useRouteMatch } from 'react-router-dom';
 import classNames from 'classnames';
 import { FilterType } from '../Filter';
@@ -13,16 +12,29 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as icons from '../icons';
 import { LocalizationContext } from '../helpers/i18n';
 
-export default function NavFilters({
-    setNavExpanded,
-    offlineState,
-    allItemsCount,
-    allItemsOfflineCount,
-    unreadItemsCount,
-    unreadItemsOfflineCount,
-    starredItemsCount,
-    starredItemsOfflineCount,
-}) {
+type NavFiltersProps = {
+    setNavExpanded: React.Dispatch<React.SetStateAction<boolean>>;
+    offlineState: boolean;
+    allItemsCount: number;
+    allItemsOfflineCount: number;
+    unreadItemsCount: number;
+    unreadItemsOfflineCount: number;
+    starredItemsCount: number;
+    starredItemsOfflineCount: number;
+};
+
+export default function NavFilters(props: NavFiltersProps) {
+    const {
+        setNavExpanded,
+        offlineState,
+        allItemsCount,
+        allItemsOfflineCount,
+        unreadItemsCount,
+        unreadItemsOfflineCount,
+        starredItemsCount,
+        starredItemsOfflineCount,
+    } = props;
+
     const [expanded, setExpanded] = useState(true);
 
     // useParams does not seem to work.
@@ -220,14 +232,3 @@ export default function NavFilters({
         </div>
     );
 }
-
-NavFilters.propTypes = {
-    setNavExpanded: PropTypes.func.isRequired,
-    offlineState: PropTypes.bool.isRequired,
-    allItemsCount: PropTypes.number.isRequired,
-    allItemsOfflineCount: PropTypes.number.isRequired,
-    unreadItemsCount: PropTypes.number.isRequired,
-    unreadItemsOfflineCount: PropTypes.number.isRequired,
-    starredItemsCount: PropTypes.number.isRequired,
-    starredItemsOfflineCount: PropTypes.number.isRequired,
-};

@@ -5,11 +5,9 @@ import React, {
     useMemo,
     useState,
 } from 'react';
-import PropTypes from 'prop-types';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { useOnline } from 'rooks';
 import { useStateWithDeps } from 'use-state-with-deps';
-import nullable from 'prop-types-nullable';
 import Item from './Item';
 import { FilterType } from '../Filter';
 import * as itemsRequests from '../requests/items';
@@ -209,19 +207,35 @@ function handleRefreshSource({
         });
 }
 
-export function EntriesPage({
-    entries,
-    hasMore,
-    loadingState,
-    setLoadingState,
-    selectedEntry,
-    expandedEntries,
-    setNavExpanded,
-    navSourcesExpanded,
-    reload,
-    setGlobalUnreadCount,
-    unreadItemsCount,
-}) {
+type EntriesPageProps = {
+    entries: array;
+    hasMore: boolean;
+    loadingState: LoadingState;
+    setLoadingState: React.Dispatch<React.SetStateAction<LoadingState>>;
+    selectedEntry: number | null;
+    expandedEntries: { [index: string]: boolean };
+    setNavExpanded: React.Dispatch<React.SetStateAction<boolean>>;
+    navSourcesExpanded: boolean;
+    reload: () => void;
+    setGlobalUnreadCount: React.Dispatch<React.SetStateAction<number>>;
+    unreadItemsCount: number;
+};
+
+export function EntriesPage(props: EntriesPageProps) {
+    const {
+        entries,
+        hasMore,
+        loadingState,
+        setLoadingState,
+        selectedEntry,
+        expandedEntries,
+        setNavExpanded,
+        navSourcesExpanded,
+        reload,
+        setGlobalUnreadCount,
+        unreadItemsCount,
+    } = props;
+
     const allowedToUpdate = useAllowedToUpdate();
     const allowedToWrite = useAllowedToWrite();
     const configuration = useContext(ConfigurationContext);
@@ -512,20 +526,6 @@ export function EntriesPage({
     );
 }
 
-EntriesPage.propTypes = {
-    entries: PropTypes.array.isRequired,
-    hasMore: PropTypes.bool.isRequired,
-    loadingState: PropTypes.oneOf(Object.values(LoadingState)).isRequired,
-    setLoadingState: PropTypes.func.isRequired,
-    selectedEntry: nullable(PropTypes.number).isRequired,
-    expandedEntries: PropTypes.objectOf(PropTypes.bool).isRequired,
-    setNavExpanded: PropTypes.func.isRequired,
-    navSourcesExpanded: PropTypes.bool.isRequired,
-    reload: PropTypes.func.isRequired,
-    setGlobalUnreadCount: PropTypes.func.isRequired,
-    unreadItemsCount: PropTypes.number.isRequired,
-};
-
 const initialState = {
     entries: [],
     hasMore: false,
@@ -539,8 +539,18 @@ const initialState = {
     loadingState: LoadingState.INITIAL,
 };
 
+type StateHolderProps = {
+    configuration: object;
+    location: object;
+    match: object;
+    setNavExpanded: React.Dispatch<React.SetStateAction<boolean>>;
+    navSourcesExpanded: boolean;
+    setGlobalUnreadCount: React.Dispatch<React.SetStateAction<number>>;
+    unreadItemsCount: number;
+};
+
 export default class StateHolder extends React.Component {
-    constructor(props) {
+    constructor(props: StateHolderProps) {
         super(props);
         this.state = initialState;
 
@@ -1228,13 +1238,3 @@ export default class StateHolder extends React.Component {
         );
     }
 }
-
-StateHolder.propTypes = {
-    configuration: PropTypes.object.isRequired,
-    location: PropTypes.object.isRequired,
-    match: PropTypes.object.isRequired,
-    setNavExpanded: PropTypes.func.isRequired,
-    navSourcesExpanded: PropTypes.bool.isRequired,
-    setGlobalUnreadCount: PropTypes.func.isRequired,
-    unreadItemsCount: PropTypes.number.isRequired,
-};

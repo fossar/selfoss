@@ -1,6 +1,4 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import nullable from 'prop-types-nullable';
 import {
     BrowserRouter as Router,
     Switch,
@@ -31,6 +29,17 @@ import { LoadingState } from '../requests/LoadingState';
 import * as sourceRequests from '../requests/sources';
 import locales from '../locales';
 
+type MessageAction = {
+    label: string;
+    callback: (event: React.MouseEvent<HTMLButtonElement>) => null;
+};
+
+type GlobalMessage = {
+    message: string;
+    actions: Array<MessageAction>;
+    isError?: boolean;
+};
+
 function handleNavToggle({ event, setNavExpanded }) {
     event.preventDefault();
 
@@ -44,12 +53,18 @@ function dismissMessage(event) {
     event.stopPropagation();
 }
 
+type MessageProps = {
+    message: GlobalMessage | null;
+};
+
 /**
  * Global message bar for showing errors/information at the top of the page.
  * It watches globalMessage and updates/shows/hides itself as necessary
  * when the value changes.
  */
-function Message({ message }) {
+function Message(props: MessageProps) {
+    const { message } = props;
+
     // Whenever message changes, dismiss it after 15 seconds.
     useEffect(() => {
         if (message !== null) {
@@ -80,17 +95,22 @@ function Message({ message }) {
     ) : null;
 }
 
-Message.propTypes = {
-    message: nullable(PropTypes.object).isRequired,
-};
-
 function NotFound() {
     const location = useLocation();
     const _ = useContext(LocalizationContext);
     return <p>{_('error_invalid_subsection') + location.pathname}</p>;
 }
 
-function CheckAuthorization({ isAllowed, returnLocation, _, children }) {
+type CheckAuthorizationProps = {
+    isAllowed: boolean;
+    returnLocation?: string;
+    _: (translated: string, params?: { [index: string]: string }) => string;
+    children?: any;
+};
+
+function CheckAuthorization(props: CheckAuthorizationProps) {
+    const { isAllowed, returnLocation, _, children } = props;
+
     const history = useHistory();
     if (!isAllowed) {
         const [preLink, inLink, postLink] = _('error_unauthorized').split(
@@ -112,31 +132,45 @@ function CheckAuthorization({ isAllowed, returnLocation, _, children }) {
     }
 }
 
-CheckAuthorization.propTypes = {
-    isAllowed: PropTypes.bool.isRequired,
-    returnLocation: PropTypes.string,
-    _: PropTypes.func.isRequired,
-    children: PropTypes.any,
+type PureAppProps = {
+    navSourcesExpanded: boolean;
+    setNavSourcesExpanded: React.Dispatch<React.SetStateAction<boolean>>;
+    offlineState: boolean;
+    allItemsCount: number;
+    allItemsOfflineCount: number;
+    unreadItemsCount: number;
+    unreadItemsOfflineCount: number;
+    starredItemsCount: number;
+    starredItemsOfflineCount: number;
+    globalMessage: object | null;
+    sourcesState: LoadingState;
+    setSourcesState: React.Dispatch<React.SetStateAction<LoadingState>>;
+    sources: Array<object>;
+    setSources: React.Dispatch<React.SetStateAction<Array<object>>>;
+    tags: Array<object>;
+    reloadAll: () => void;
 };
 
-function PureApp({
-    navSourcesExpanded,
-    setNavSourcesExpanded,
-    offlineState,
-    allItemsCount,
-    allItemsOfflineCount,
-    unreadItemsCount,
-    unreadItemsOfflineCount,
-    starredItemsCount,
-    starredItemsOfflineCount,
-    globalMessage,
-    sourcesState,
-    setSourcesState,
-    sources,
-    setSources,
-    tags,
-    reloadAll,
-}) {
+function PureApp(props: PureAppProps) {
+    const {
+        navSourcesExpanded,
+        setNavSourcesExpanded,
+        offlineState,
+        allItemsCount,
+        allItemsOfflineCount,
+        unreadItemsCount,
+        unreadItemsOfflineCount,
+        starredItemsCount,
+        starredItemsOfflineCount,
+        globalMessage,
+        sourcesState,
+        setSourcesState,
+        sources,
+        setSources,
+        tags,
+        reloadAll,
+    } = props;
+
     const [navExpanded, setNavExpanded] = useState(false);
     const smartphone = useIsSmartphone();
     const offlineEnabled = useListenableValue(selfoss.db.enableOffline);
@@ -344,31 +378,16 @@ function PureApp({
     );
 }
 
-PureApp.propTypes = {
-    navSourcesExpanded: PropTypes.bool.isRequired,
-    setNavSourcesExpanded: PropTypes.func.isRequired,
-    offlineState: PropTypes.bool.isRequired,
-    allItemsCount: PropTypes.number.isRequired,
-    allItemsOfflineCount: PropTypes.number.isRequired,
-    unreadItemsCount: PropTypes.number.isRequired,
-    unreadItemsOfflineCount: PropTypes.number.isRequired,
-    starredItemsCount: PropTypes.number.isRequired,
-    starredItemsOfflineCount: PropTypes.number.isRequired,
-    globalMessage: nullable(PropTypes.object).isRequired,
-    sourcesState: PropTypes.oneOf(Object.values(LoadingState)).isRequired,
-    setSourcesState: PropTypes.func.isRequired,
-    sources: PropTypes.arrayOf(PropTypes.object).isRequired,
-    setSources: PropTypes.func.isRequired,
-    tags: PropTypes.arrayOf(PropTypes.object).isRequired,
-    reloadAll: PropTypes.func.isRequired,
+type AppProps = {
+    configuration: object;
 };
 
 export class App extends React.Component {
     public state: any;
-    public setState: any;
-    public props: any;
+    public setState: React.Dispatch<React.SetStateAction<any>>;
+    public props: AppProps;
 
-    constructor(props) {
+    constructor(props: AppProps) {
         super(props);
         this.state = {
             /**
@@ -786,10 +805,6 @@ export class App extends React.Component {
         );
     }
 }
-
-App.propTypes = {
-    configuration: PropTypes.object.isRequired,
-};
 
 /**
  * Creates the selfoss single-page application

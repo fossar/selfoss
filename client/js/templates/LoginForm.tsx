@@ -1,5 +1,4 @@
 import React, { useCallback, useContext, useState } from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { SpinnerBig } from './Spinner';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -45,7 +44,13 @@ function handleLogIn({
         });
 }
 
-export default function LoginForm({ offlineEnabled }) {
+type LoginFormProps = {
+    offlineEnabled: boolean;
+};
+
+export default function LoginForm(props: LoginFormProps) {
+    const { offlineEnabled } = props;
+
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
@@ -165,7 +170,3 @@ export default function LoginForm({ offlineEnabled }) {
         </React.Fragment>
     );
 }
-
-LoginForm.propTypes = {
-    offlineEnabled: PropTypes.bool.isRequired,
-};
