@@ -1,9 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as icons from '../icons';
+import { SizeProp } from '@fortawesome/fontawesome-svg-core';
 
-export function Spinner({ label, size }) {
+type SpinnerProps = {
+    label: string;
+    size?: SizeProp;
+};
+
+export function Spinner(props: SpinnerProps) {
+    const { label, size } = props;
+
     return (
         <>
             <FontAwesomeIcon
@@ -20,19 +27,16 @@ export function Spinner({ label, size }) {
     );
 }
 
-Spinner.propTypes = {
-    label: PropTypes.string.isRequired,
-    size: PropTypes.string,
+type SpinnerBigProps = {
+    label: string;
 };
 
-export function SpinnerBig({ label }) {
+export function SpinnerBig(props: SpinnerBigProps) {
+    const { label } = props;
+
     return (
         <div className="spinner-big">
             <Spinner size="10x" label={label} />
         </div>
     );
 }
-
-SpinnerBig.propTypes = {
-    label: PropTypes.string.isRequired,
-};

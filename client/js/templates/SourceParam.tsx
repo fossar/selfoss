@@ -1,16 +1,27 @@
 import React, { useCallback, useContext } from 'react';
-import PropTypes from 'prop-types';
 import { LocalizationContext } from '../helpers/i18n';
 
-export default function SourceParam({
-    spoutParamName,
-    spoutParam,
-    params = {},
-    sourceErrors,
-    sourceId,
-    setEditedSource,
-    setDirty,
-}) {
+type SourceParamProps = {
+    spoutParamName: string;
+    spoutParam: object;
+    params: object;
+    sourceErrors: { [index: string]: string };
+    sourceId: number;
+    setEditedSource: React.Dispatch<React.SetStateAction<object | null>>;
+    setDirty: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export default function SourceParam(props: SourceParamProps) {
+    const {
+        spoutParamName,
+        spoutParam,
+        params = {},
+        sourceErrors,
+        sourceId,
+        setEditedSource,
+        setDirty,
+    } = props;
+
     const updateSourceParam = useCallback(
         (event) => {
             setDirty(true);
@@ -109,13 +120,3 @@ export default function SourceParam({
         </li>
     );
 }
-
-SourceParam.propTypes = {
-    spoutParamName: PropTypes.string.isRequired,
-    spoutParam: PropTypes.object.isRequired,
-    params: PropTypes.object.isRequired,
-    sourceErrors: PropTypes.objectOf(PropTypes.string).isRequired,
-    sourceId: PropTypes.number.isRequired,
-    setEditedSource: PropTypes.func.isRequired,
-    setDirty: PropTypes.func.isRequired,
-};
