@@ -45,7 +45,7 @@ function reloadList({
 
     setLoadingState(LoadingState.LOADING);
 
-    var reload = () => {
+    const reload = () => {
         if (abortController.signal.aborted) {
             return Promise.resolve();
         }
@@ -57,7 +57,7 @@ function reloadList({
             reloader = selfoss.dbOnline.getEntries;
         }
 
-        var forceLoadOnline = selfoss.dbOffline.olderEntriesOnline || selfoss.dbOffline.shouldLoadEntriesOnline;
+        const forceLoadOnline = selfoss.dbOffline.olderEntriesOnline || selfoss.dbOffline.shouldLoadEntriesOnline;
         if (!selfoss.db.enableOffline.value || (selfoss.isOnline() && forceLoadOnline)) {
             reloader = selfoss.dbOnline.getEntries;
         }
@@ -88,7 +88,7 @@ function reloadList({
                 // open selected entry only if entry was requested (i.e. if not streaming
                 // more)
                 if (entryId && fetchParams.fromId === undefined) {
-                    var entry = document.querySelector(`.entry[data-entry-id="${entryId}"]`);
+                    const entry = document.querySelector(`.entry[data-entry-id="${entryId}"]`);
 
                     if (!entry) {
                         return;
@@ -644,7 +644,7 @@ export default class StateHolder extends React.Component {
     refreshEntryStatuses(entryStatuses) {
         this.state.entries.forEach((entry) => {
             const { id } = entry;
-            var newStatus = false;
+            let newStatus = false;
             entryStatuses.some(function(entryStatus) {
                 if (entryStatus.id == id) {
                     newStatus = entryStatus;
@@ -709,9 +709,9 @@ export default class StateHolder extends React.Component {
      * Mark all visible items as read
      */
     markVisibleRead() {
-        let ids = [];
-        let tagUnreadDiff = {};
-        let sourceUnreadDiff = {};
+        const ids = [];
+        const tagUnreadDiff = {};
+        const sourceUnreadDiff = {};
 
         let markedEntries = this.state.entries.map((entry) => {
             if (!entry.unread) {
@@ -786,7 +786,7 @@ export default class StateHolder extends React.Component {
             this.setLoadingState(LoadingState.SUCCESS);
         }).catch((error) => {
             selfoss.handleAjaxError(error).then(() => {
-                let statuses = ids.map((id) => ({
+                const statuses = ids.map((id) => ({
                     entryId: id,
                     name: 'unread',
                     value: false
@@ -1060,7 +1060,7 @@ export default class StateHolder extends React.Component {
     }
 
     throw(direction) {
-        let selected = this.getSelectedEntry();
+        const selected = this.getSelectedEntry();
 
         if (selected !== null) {
             this.markEntryRead(selected, true);

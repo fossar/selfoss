@@ -7,18 +7,18 @@ import React from 'react';
  * not fully implemented.
  */
 export function i18nFormat(translated, params) {
-    var formatted = '';
+    let formatted = '';
 
-    var curChar = undefined;
-    var buffer = '';
+    let curChar = undefined;
+    let buffer = '';
 
-    var state = 'out';
-    var placeholder = undefined;
-    var plural = undefined;
-    var pluralKeyword = undefined;
-    var pluralValue = undefined;
+    let state = 'out';
+    let placeholder = undefined;
+    let plural = undefined;
+    let pluralKeyword = undefined;
+    let pluralValue = undefined;
 
-    for (var i = 0, len = translated.length; i < len; i++) {
+    for (let i = 0, len = translated.length; i < len; i++) {
         curChar = translated.charAt(i);
         switch (curChar) {
         case '{':

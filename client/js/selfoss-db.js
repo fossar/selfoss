@@ -53,7 +53,7 @@ selfoss.db = {
 
             return Promise.resolve();
         } else {
-            let err = new OfflineStorageNotAvailableError();
+            const err = new OfflineStorageNotAvailableError();
             return Promise.reject(err);
         }
     },
@@ -62,7 +62,7 @@ selfoss.db = {
     clear: function() {
         if (selfoss.db.storage) {
             window.localStorage.removeItem('offlineDays');
-            var clearing = selfoss.db.storage.delete();
+            const clearing = selfoss.db.storage.delete();
             selfoss.db.storage = null;
             selfoss.db.lastUpdate = null;
             return clearing;
@@ -86,8 +86,8 @@ selfoss.db = {
 
 
     sync: function(force = false) {
-        var lastUpdateIsOld = selfoss.db.lastUpdate === null || selfoss.db.lastSync === null || Date.now() - selfoss.db.lastSync > 5 * 60 * 1000;
-        var shouldSync = force || selfoss.dbOffline.needsSync || lastUpdateIsOld;
+        const lastUpdateIsOld = selfoss.db.lastUpdate === null || selfoss.db.lastSync === null || Date.now() - selfoss.db.lastSync > 5 * 60 * 1000;
+        const shouldSync = force || selfoss.dbOffline.needsSync || lastUpdateIsOld;
         if (selfoss.isAllowedToRead() && selfoss.isOnline() && shouldSync) {
             if (selfoss.db.enableOffline.value) {
                 return selfoss.dbOffline.sendNewStatuses();

@@ -16,9 +16,8 @@ selfoss.dbOffline = {
     shouldLoadEntriesOnline: false,
     olderEntriesOnline: false,
 
-    _tr: function() {
-        return selfoss.db.storage.transaction
-            .apply(selfoss.db.storage, arguments)
+    _tr: function(...args) {
+        return selfoss.db.storage.transaction(...args)
             .catch(function(error) {
                 selfoss.app.showError(
                     selfoss.app._('error_offline_storage', [error.message])
@@ -79,14 +78,14 @@ selfoss.dbOffline = {
                         selfoss.dbOffline.newestGCedEntry = stamp.datetime;
                     }
 
-                    var limit = new Date(Date.now() - 3 * 24 * 3600 * 1000);
+                    const limit = new Date(Date.now() - 3 * 24 * 3600 * 1000);
                     if (!stamp || selfoss.dbOffline.newestGCedEntry < limit) {
                         selfoss.dbOffline.newestGCedEntry = new Date(Date.now() - 24 * 3600 * 1000);
                     }
                 });
             })
             .then(function() {
-                var offlineDays = window.localStorage.getItem('offlineDays');
+                const offlineDays = window.localStorage.getItem('offlineDays');
                 if (offlineDays !== null) {
                     selfoss.dbOffline.offlineDays = parseInt(offlineDays);
                 }
@@ -160,7 +159,7 @@ selfoss.dbOffline = {
             // We need to garbage collect more, as the browser storage limit
             // seems to be exceeded: decrease the amount of days entries are
             // kept offline.
-            var keptDays = Math.floor((new Date() -
+            const keptDays = Math.floor((new Date() -
                                        selfoss.dbOffline.newestGCedEntry) /
                                        86400000);
             selfoss.dbOffline.offlineDays = Math.max(
@@ -181,7 +180,7 @@ selfoss.dbOffline = {
                     if (!stamp || more || (stamp && Date.now() - stamp.datetime > 24 * 3600 * 1000)) {
                         // Cleanup items older than offlineDays days, not of
                         // interest.
-                        var limit = new Date(Date.now() -
+                        const limit = new Date(Date.now() -
                         selfoss.dbOffline.offlineDays * 24 * 3600 * 1000);
 
                         selfoss.db.storage.entries.where('datetime').below(limit)
@@ -211,7 +210,7 @@ selfoss.dbOffline = {
     storeStats: function(stats) {
         return selfoss.dbOffline._tr('rw', selfoss.db.storage.stats,
             function() {
-                for (let [name, value] of Object.entries(stats)) {
+                for (const [name, value] of Object.entries(stats)) {
                     selfoss.db.storage.stats.put({
                         name,
                         value
@@ -238,10 +237,10 @@ selfoss.dbOffline = {
         let hasMore = false;
         return selfoss.dbOffline._tr('r', selfoss.db.storage.entries,
             function() {
-                var howMany = 0;
+                let howMany = 0;
 
-                var ascOrder = selfoss.config.unreadOrder === 'asc' && fetchParams.type === FilterType.UNREAD;
-                var entries = selfoss.db.storage.entries.orderBy('[datetime+id]');
+                const ascOrder = selfoss.config.unreadOrder === 'asc' && fetchParams.type === FilterType.UNREAD;
+                let entries = selfoss.db.storage.entries.orderBy('[datetime+id]');
                 if (!ascOrder) {
                     entries = entries.reverse();
                 }
@@ -253,7 +252,7 @@ selfoss.dbOffline = {
                              || fetchParams.type === FilterType.UNREAD;
 
                 return entries.filter(function(entry) {
-                    var keepEntry = false;
+                    let keepEntry = false;
 
                     if (fetchParams.extraIds.includes(entry.id)) {
                         return true;
@@ -311,7 +310,7 @@ selfoss.dbOffline = {
         return selfoss.dbOffline._tr('r', selfoss.db.storage.stats,
             function() {
                 selfoss.db.storage.stats.toArray(function(stats) {
-                    var newStats = {};
+                    const newStats = {};
                     stats.forEach(function(stat) {
                         newStats[stat.name] = stat.value;
                     });
@@ -325,7 +324,7 @@ selfoss.dbOffline = {
     refreshStats: function() {
         return selfoss.dbOffline._tr('r', selfoss.db.storage.entries,
             function() {
-                var offlineCounts = {newest: 0, unread: 0, starred: 0};
+                const offlineCounts = {newest: 0, unread: 0, starred: 0};
 
                 // IDBKeyRange does not support boolean indexes, so we need to
                 // iterate over all the entries.
@@ -349,8 +348,8 @@ selfoss.dbOffline = {
             selfoss.dbOffline.needsSync = true;
         }
 
-        var d = new Date();
-        let newQueuedStatuses = statuses.map(newStatus => ({
+        const d = new Date();
+        const newQueuedStatuses = statuses.map(newStatus => ({
             entryId: parseInt(newStatus.entryId),
             name: newStatus.name,
             value: newStatus.value,
@@ -377,7 +376,7 @@ selfoss.dbOffline = {
     sendNewStatuses: function() {
         selfoss.db.storage.statusq.toArray().then(statuses => {
             return statuses.map(s => {
-                let statusUpdate = {
+                const statusUpdate = {
                     id: s.entryId,
                     datetime: s.datetime
                 };
@@ -402,11 +401,11 @@ selfoss.dbOffline = {
             selfoss.db.storage.stats,
             selfoss.db.storage.statusq,
             function() {
-                var statsDiff = {};
+                const statsDiff = {};
 
                 // update entries statuses
                 itemStatuses.forEach(function(itemStatus) {
-                    var newStatus = {};
+                    const newStatus = {};
 
                     selfoss.db.entryStatusNames.forEach(function(statusName) {
                         if (statusName in itemStatus) {
@@ -423,7 +422,7 @@ selfoss.dbOffline = {
                         }
                     });
 
-                    var id = parseInt(itemStatus.id);
+                    const id = parseInt(itemStatus.id);
                     selfoss.db.storage.entries.get(id).then(function() {
                         selfoss.db.storage.entries.update(id, newStatus);
                     }, function() {
@@ -441,7 +440,7 @@ selfoss.dbOffline = {
                 });
 
                 if (updateStats) {
-                    for (let [name, value] of Object.entries(statsDiff)) {
+                    for (const [name, value] of Object.entries(statsDiff)) {
                         selfoss.db.storage.stats.get(name, function(stat) {
                             selfoss.db.storage.stats.put({
                                 name,
@@ -456,7 +455,7 @@ selfoss.dbOffline = {
 
     entriesMark: function(itemIds, unread) {
         selfoss.dbOnline.statsDirty = true;
-        var newStatuses = itemIds.map(function(itemId) {
+        const newStatuses = itemIds.map(function(itemId) {
             return {id: itemId, unread: unread};
         });
         return selfoss.dbOffline.storeEntryStatuses(newStatuses);

@@ -21,8 +21,8 @@ selfoss.dbOnline = {
             selfoss.dbOnline.syncing.promise = new Promise(function(resolve, reject) {
                 selfoss.dbOnline.syncing.resolve = resolve;
                 selfoss.dbOnline.syncing.reject = reject;
-                var monitor = window.setInterval(function() {
-                    var stopChecking = false;
+                const monitor = window.setInterval(function() {
+                    let stopChecking = false;
                     if (selfoss.dbOnline.syncing.promise) {
                         if (selfoss.db.userWaiting) {
                             // reject if user has been waiting for more than 10s,
@@ -57,7 +57,7 @@ selfoss.dbOnline = {
             if (success) {
                 selfoss.dbOnline.syncing.resolve();
             } else {
-                let request = selfoss.dbOnline.syncing.request;
+                const request = selfoss.dbOnline.syncing.request;
                 selfoss.dbOnline.syncing.reject();
                 if (request) {
                     request.controller.abort();
@@ -83,15 +83,15 @@ selfoss.dbOnline = {
             }
         }
 
-        var syncing = selfoss.dbOnline._syncBegin();
+        const syncing = selfoss.dbOnline._syncBegin();
 
-        var getStatuses = true;
+        let getStatuses = true;
         if (selfoss.db.lastUpdate === null || selfoss.dbOnline.firstSync) {
             selfoss.db.lastUpdate = new Date(0);
             getStatuses = undefined;
         }
 
-        var syncParams = {
+        const syncParams = {
             since: selfoss.db.lastUpdate,
             tags: true,
             sources: selfoss.app.state.navSourcesExpanded || undefined,
@@ -118,13 +118,13 @@ selfoss.dbOnline = {
             selfoss.db.lastSync = Date.now();
             selfoss.dbOnline.firstSync = false;
 
-            var dataDate = data.lastUpdate;
+            const dataDate = data.lastUpdate;
 
-            var storing = false;
+            let storing = false;
 
             if (selfoss.db.enableOffline.value) {
                 if ('newItems' in data) {
-                    var maxId = 0;
+                    let maxId = 0;
                     data.newItems.forEach(function(item) {
                         maxId = Math.max(item.id, maxId);
                     });

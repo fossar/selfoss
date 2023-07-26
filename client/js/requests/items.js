@@ -94,7 +94,7 @@ export function getItems(filter, abortController) {
  * Synchronize changes between client and server.
  */
 export function sync(updatedStatuses, syncParams) {
-    let params = {
+    const params = {
         ...syncParams,
         updatedStatuses: syncParams.updatedStatuses ? syncParams.updatedStatuses.map((status) => {
             return {

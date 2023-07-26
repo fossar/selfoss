@@ -561,7 +561,7 @@ SourceEditForm.propTypes = {
 
 export default function Source({ source, setSources, spouts, setSpouts, dirty, setDirtySources }) {
     const isNew = !source.title;
-    let classes = {
+    const classes = {
         source: true,
         'source-new': isNew,
         error: source.error && source.error.length > 0
@@ -579,7 +579,7 @@ export default function Source({ source, setSources, spouts, setSpouts, dirty, s
 
     React.useEffect(() => {
         // Prevent timeout from trying to update state after unmount.
-        let oldTimeout = justSavedTimeout;
+        const oldTimeout = justSavedTimeout;
         return () => {
             if (oldTimeout !== null) {
                 clearTimeout(oldTimeout);

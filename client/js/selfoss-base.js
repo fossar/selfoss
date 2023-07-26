@@ -14,7 +14,7 @@ import { createApp } from './templates/App';
  * @copyright  Copyright (c) Tobias Zeising (http://www.aditu.de)
  * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  */
-var selfoss = {
+const selfoss = {
     /**
      * The main App component.
      * @var App
@@ -104,13 +104,13 @@ var selfoss = {
         document.head.appendChild(feedLink);
 
         if (configuration.userCss !== null) {
-            let link = document.createElement('link');
+            const link = document.createElement('link');
             link.setAttribute('rel', 'stylesheet');
             link.setAttribute('href', `user.css?v=${configuration.userCss}`);
             document.head.appendChild(link);
         }
         if (configuration.userJs !== null) {
-            let script = document.createElement('script');
+            const script = document.createElement('script');
             script.setAttribute('src', `user.js?v=${configuration.userJs}`);
             document.body.appendChild(script);
         }

@@ -21,7 +21,7 @@ export function useShouldReload() {
     // We use a separate counter to prevent that.
     const [reloadCounter, setReloadCounter] = useState(0);
     if (forceReload !== undefined && forceReload !== oldForceReload) {
-        let newReloadCounter = reloadCounter + 1;
+        const newReloadCounter = reloadCounter + 1;
 
         setReloadCounter(newReloadCounter);
         return newReloadCounter;

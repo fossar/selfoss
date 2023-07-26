@@ -118,7 +118,7 @@ export function useSharers({ configuration, _ }) {
                 ...map(materializeSharerIcon, selfoss.customSharers ?? {}),
             };
 
-            let enabledSharers = [];
+            const enabledSharers = [];
             for (const letter of configuration.share) {
                 const sharer = availableSharers[letter];
                 if (sharer !== undefined && (sharer.available ?? true)) {

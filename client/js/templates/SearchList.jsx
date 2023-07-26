@@ -14,8 +14,8 @@ function splitTerm(term) {
         return [term];
     }
 
-    var words = term.match(/"[^"]+"|\S+/g);
-    for (var i = 0; i < words.length; i++) {
+    const words = term.match(/"[^"]+"|\S+/g);
+    for (let i = 0; i < words.length; i++) {
         words[i] = words[i].replace(/"/g, '');
     }
     return words;
@@ -26,7 +26,7 @@ function joinTerm(words) {
     if (!words || words.length <= 0) {
         return '';
     }
-    for (var i = 0; i < words.length; i++) {
+    for (let i = 0; i < words.length; i++) {
         if (words[i].indexOf(' ') >= 0) {
             words[i] = '"'  + words[i] + '"';
         }

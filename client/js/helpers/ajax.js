@@ -10,7 +10,7 @@ export const rejectUnless = (pred) => (response) => {
     if (pred(response)) {
         return response;
     } else {
-        let err = new HttpError(response.statusText);
+        const err = new HttpError(response.statusText);
         err.response = response;
         throw err;
     }
@@ -58,8 +58,8 @@ export const header = (name, value) => headers({ [name]: value });
  */
 export const liftToPromiseField = (wrapper) => (f) => (...params) => {
     let rest;
-    let promise = wrapper((...innerParams) => {
-        let {promise, ...innerRest} = f(...innerParams);
+    const promise = wrapper((...innerParams) => {
+        const {promise, ...innerRest} = f(...innerParams);
         rest = innerRest;
         return promise;
     })(...params);
@@ -73,8 +73,8 @@ export const liftToPromiseField = (wrapper) => (f) => (...params) => {
  * @return {controller: AbortController, promise: Promise}
  */
 export const makeAbortableFetch = (fetch) => (url, opts = {}) => {
-    let controller = opts.abortController || new AbortController();
-    let promise = fetch(url, {
+    const controller = opts.abortController || new AbortController();
+    const promise = fetch(url, {
         signal: controller.signal,
         ...opts
     });
@@ -90,11 +90,11 @@ export const makeAbortableFetch = (fetch) => (url, opts = {}) => {
 export const makeFetchWithTimeout = (abortableFetch) => (url, opts = {}) => {
     // offline db consistency requires ajax calls to fail reliably,
     // so we enforce a default timeout on ajax calls
-    let { timeout = 60000, ...rest } = opts;
-    let {controller, promise} = abortableFetch(url, rest);
+    const { timeout = 60000, ...rest } = opts;
+    const {controller, promise} = abortableFetch(url, rest);
 
     if (timeout !== 0) {
-        let newPromise = promise.catch((error) => {
+        const newPromise = promise.catch((error) => {
             // Change error name in case of time out so that we can
             // distinguish it from explicit abort.
             if (error.name === 'AbortError' && promise.timedOut) {
@@ -121,8 +121,8 @@ export const makeFetchWithTimeout = (abortableFetch) => (url, opts = {}) => {
  * @return Promise
  */
 export const makeFetchFailOnHttpErrors = (fetch) => (url, opts = {}) => {
-    let { failOnHttpErrors = true, ...rest } = opts;
-    let promise = fetch(url, rest);
+    const { failOnHttpErrors = true, ...rest } = opts;
+    const promise = fetch(url, rest);
 
     if (failOnHttpErrors) {
         return promise.then(rejectIfNotOkay);
@@ -136,13 +136,13 @@ export const makeFetchFailOnHttpErrors = (fetch) => (url, opts = {}) => {
  * Wrapper for fetch that converts URLSearchParams body of GET requests to query string.
  */
 export const makeFetchSupportGetBody = (fetch) => (url, opts = {}) => {
-    let { body, method, ...rest } = opts;
+    const { body, method, ...rest } = opts;
 
     let newUrl = url;
     let newOpts = opts;
     if (Object.keys(opts).includes('method') && Object.keys(opts).includes('body') && method.toUpperCase() === 'GET' && body instanceof URLSearchParams) {
-        let [main, ...fragments] = newUrl.split('#');
-        let separator = main.includes('?') ? '&' : '?';
+        const [main, ...fragments] = newUrl.split('#');
+        const separator = main.includes('?') ? '&' : '?';
         // append the body to the query string
         newUrl = `${main}${separator}${body.toString()}#${fragments.join('#')}`;
         // remove the body since it has been moved to URL

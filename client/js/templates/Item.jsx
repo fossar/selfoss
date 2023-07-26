@@ -24,7 +24,7 @@ function setupLightbox({
     setSlides,
     setSelectedPhotoIndex,
 }) {
-    let images = element.querySelectorAll('a[href$=".jpg"], a[href$=".jpeg"], a[href$=".png"], a[href$=".gif"], a[href$=".jpg:large"], a[href$=".jpeg:large"], a[href$=".png:large"], a[href$=".gif:large"]');
+    const images = element.querySelectorAll('a[href$=".jpg"], a[href$=".jpeg"], a[href$=".png"], a[href$=".gif"], a[href$=".jpg:large"], a[href$=".jpeg:large"], a[href$=".png:large"], a[href$=".gif:large"]');
 
     setSlides(Array.from(images).map((link, index) => {
         link.addEventListener('click', (event) => {
@@ -295,7 +295,7 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
                 // show fullscreen
                 document.body.classList.add('fullscreen-mode');
 
-                let trap = createFocusTrap(parent);
+                const trap = createFocusTrap(parent);
                 setFullScreenTrap(trap);
                 trap.activate();
 

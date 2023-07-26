@@ -165,7 +165,7 @@ function PureApp({
     }, [history]);
 
     // Prepare path of the homepage for redirecting from /
-    let homePagePath = configuration.homepage.split('/');
+    const homePagePath = configuration.homepage.split('/');
     if (!homePagePath[1]) {
         homePagePath.push('all');
     }
@@ -722,7 +722,7 @@ export default class App extends React.Component {
 
 
     refreshOfflineCounts(offlineCounts) {
-        for (let [kind, newCount] of Object.entries(offlineCounts)) {
+        for (const [kind, newCount] of Object.entries(offlineCounts)) {
             if (newCount === 'keep') {
                 continue;
             }
