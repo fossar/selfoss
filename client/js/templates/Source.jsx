@@ -1,7 +1,8 @@
 import React from 'react';
-import { useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import { Menu, MenuButton, MenuItem } from '@szhsin/react-menu';
 import { useHistory, useLocation } from 'react-router-dom';
+import { ReactTags } from 'react-tag-autocomplete';
 import { fadeOut } from '@siteparts/show-hide-effects';
 import { makeEntriesLinkLocation } from '../helpers/uri';
 import PropTypes from 'prop-types';
@@ -67,10 +68,7 @@ function handleSave({
 
     // Make tags into a list.
     const tagsList = tags
-        ? tags
-            .split(',')
-            .map((tag) => tag.trim())
-            .filter((tag) => tag !== '')
+        ? tags.map((tag) => tag.label)
         : [];
 
     const values = {
@@ -189,15 +187,24 @@ function handleDelete({
 }
 
 // start editing
-function handleEdit({ event, source, setEditedSource }) {
+function handleEdit({ event, source, tagInfo, setEditedSource }) {
     event.preventDefault();
 
     const { id, title, tags, filter, spout, params } = source;
 
+    const newTags =
+        tags
+            ? tags.map(unescape).map((label) => ({
+                value: tagInfo[label]?.id,
+                label,
+                color: tagInfo[label]?.color,
+            }))
+            : [];
+
     setEditedSource({
         id,
         title: title ? unescape(title) : '',
-        tags: tags ? tags.map(unescape).join(',') : '',
+        tags: newTags,
         filter,
         spout,
         params
@@ -264,6 +271,96 @@ function daysAgo(date) {
     return Math.floor((today - old) / MS_PER_DAY);
 }
 
+
+function ColorBox({ color }) {
+    return (
+        <span
+            className="color"
+            style={{
+                backgroundColor: color,
+            }}
+        />
+    );
+}
+
+ColorBox.propTypes = {
+    color: nullable(PropTypes.string).isRequired,
+};
+
+function mkTag(tagInfo) {
+    function Tag({ classNames, tag, ...tagProps }) {
+        return (
+            <button
+                type="button"
+                className={classNames.tag}
+                {...tagProps}
+            >
+                <ColorBox color={tagInfo[tag.label]?.color ?? null} />
+                {' '}
+                <span className={classNames.tagName}>{tag.label}</span>
+            </button>
+        );
+    }
+
+    Tag.propTypes = {
+        classNames: PropTypes.object.isRequired,
+        tag: PropTypes.object.isRequired,
+        tagProps: PropTypes.object.isRequired,
+        'aria-disabled': PropTypes.bool.isRequired,
+        title: PropTypes.string.isRequired,
+        onClick: PropTypes.func.isRequired,
+    };
+
+    return Tag;
+}
+
+
+function mkTagOption(tagInfo) {
+    function TagOption({ children, classNames, option, ...optionProps }) {
+        const classes = [
+            classNames.option,
+            option.active ? 'is-active' : '',
+            option.selected ? 'is-selected' : '',
+        ];
+
+        return (
+            <div className={classes.join(' ')} {...optionProps}>
+                <ColorBox color={tagInfo[option.label]?.color ?? null} />
+                {' '}
+                {children}
+            </div>
+        );
+    }
+
+    TagOption.propTypes = {
+        classNames: PropTypes.object.isRequired,
+        tag: PropTypes.object.isRequired,
+        children: PropTypes.any.isRequired,
+        // TODO: Add extra proptypes.
+    };
+
+    return TagOption;
+}
+
+
+const reactTagsClassNames = {
+    root: 'react-tags',
+    rootIsActive: 'is-active',
+    rootIsDisabled: 'is-disabled',
+    rootIsInvalid: 'is-invalid',
+    label: 'react-tags-label',
+    tagList: 'react-tags-list',
+    tagListItem: 'react-tags-list-item',
+    tag: 'react-tags-tag',
+    tagName: 'react-tags-tag-name',
+    comboBox: 'react-tags-combobox',
+    input: 'react-tags-combobox-input',
+    listBox: 'react-tags-list-box',
+    option: 'react-tags-list-box-option',
+    optionIsActive: 'is-active',
+    highligh: 'react-tags-listbox-option-highlight',
+};
+
 function SourceEditForm({
     source,
     sourceElem,
@@ -271,6 +368,7 @@ function SourceEditForm({
     setSources,
     spouts,
     setSpouts,
+    tagInfo,
     setEditedSource,
     sourceActionLoading,
     setSourceActionLoading,
@@ -302,8 +400,40 @@ function SourceEditForm({
         [updateEditedSource]
     );
 
-    const tagsOnChange = React.useCallback(
-        (event) => updateEditedSource({ tags: event.target.value }),
+    const tagsOnAdd = React.useCallback(
+        (input) => {
+            // TODO: Paste not working,
+            // We need to handle pasting as well.
+            const tagsToAdd =
+                typeof input.value !== 'undefined'
+                    ? [input]
+                    : input.label
+                        .split(',')
+                        .map((tag) => tag.trim())
+                        .filter((tag) => tag !== '')
+                        .map((tag) => ({ label: tag, value: undefined }));
+            updateEditedSource(({ tags }) => {
+                const usedTagLabels = tags.map(({ label }) => label);
+                const freshTagsToAdd = tagsToAdd.filter((tag) => !usedTagLabels.includes(tag.label));
+                if (freshTagsToAdd.length === 0) {
+                    // All tags already included, no change.
+                    return {};
+                }
+
+                return { tags: [...tags, ...freshTagsToAdd] };
+            });
+        },
+        [updateEditedSource]
+    );
+
+    const tagsOnDelete = React.useCallback(
+        (index) => {
+            updateEditedSource(({ tags }) => {
+                let newTags = tags.slice(0);
+                newTags.splice(index, 1);
+                return { tags: newTags};
+            });
+        },
         [updateEditedSource]
     );
 
@@ -363,6 +493,11 @@ function SourceEditForm({
         [source, sourceElem, setSources, setEditedSource, dirty, setDirty]
     );
 
+    const tagSuggestions = useMemo(
+        () => Object.entries(tagInfo).map(([label, { id }]) => ({ value: id, label })),
+        [tagInfo]
+    );
+
     const _ = React.useContext(LocalizationContext);
 
     const sourceParamsContent = (
@@ -400,6 +535,19 @@ function SourceEditForm({
 
     );
 
+    const reactTags = useRef();
+
+    const {
+        tagComponent,
+        tagOptionComponent,
+    } = useMemo(
+        () => ({
+            tagComponent: mkTag(tagInfo),
+            tagOptionComponent: mkTagOption(tagInfo),
+        }),
+        [tagInfo]
+    );
+
     return (
         <form>
             <ul className="source-edit-form">
@@ -428,18 +576,27 @@ function SourceEditForm({
                     <label htmlFor={`tags-${sourceId}`}>
                         {_('source_tags')}
                     </label>
-                    <input
-                        id={`tags-${sourceId}`}
-                        type="text"
-                        name="tags"
-                        accessKey="g"
-                        value={source.tags ?? ''}
-                        onChange={tagsOnChange}
+                    <ReactTags
+                        ref={reactTags}
+                        selected={source.tags}
+                        // inputAttributes={{
+                        //     id: `tags-${sourceId}`,
+                        //     accessKey: 'g',
+                        // }}
+                        suggestions={tagSuggestions}
+                        onDelete={tagsOnDelete}
+                        onAdd={tagsOnAdd}
+                        allowNew={true}
+                        // minQueryLength={1}
+                        // addOnBlur={true}
+                        placeholderText={_('source_tags_placeholder')}
+                        newOptionText={_('source_tags_create_new').replace('{0}', '%value%')}
+                        deleteButtonText={_('source_tag_remove_button_label')}
+                        // classNames={reactTagsClassNames}
+                        delimiterKeys={['Enter', 'Tab', ',']}
+                        renderTag={tagComponent}
+                        renderOption={tagOptionComponent}
                     />
-                    <span className="source-edit-form-help">
-                        {' '}
-                        {_('source_comma')}
-                    </span>
                     {sourceErrors['tags'] ? (
                         <span className="error">{sourceErrors['tags']}</span>
                     ) : null}
@@ -545,6 +702,7 @@ SourceEditForm.propTypes = {
     setSources: PropTypes.func.isRequired,
     spouts: PropTypes.object.isRequired,
     setSpouts: PropTypes.func.isRequired,
+    tagInfo: PropTypes.object.isRequired,
     setEditedSource: PropTypes.func.isRequired,
     sourceActionLoading: PropTypes.bool.isRequired,
     setSourceActionLoading: PropTypes.func.isRequired,
@@ -559,7 +717,15 @@ SourceEditForm.propTypes = {
     setDirty: PropTypes.func.isRequired,
 };
 
-export default function Source({ source, setSources, spouts, setSpouts, dirty, setDirtySources }) {
+export default function Source({
+    source,
+    setSources,
+    spouts,
+    setSpouts,
+    tagInfo,
+    dirty,
+    setDirtySources,
+}) {
     const isNew = !source.title;
     let classes = {
         source: true,
@@ -588,8 +754,8 @@ export default function Source({ source, setSources, spouts, setSpouts, dirty, s
     }, [justSavedTimeout]);
 
     const editOnClick = React.useCallback(
-        (event) => handleEdit({ event, source, setEditedSource }),
-        [source]
+        (event) => handleEdit({ event, source, tagInfo, setEditedSource }),
+        [source, tagInfo]
     );
 
     const setDirty = React.useCallback(
@@ -717,6 +883,7 @@ export default function Source({ source, setSources, spouts, setSpouts, dirty, s
                         setSources,
                         spouts,
                         setSpouts,
+                        tagInfo,
                         setEditedSource,
                         sourceActionLoading,
                         setSourceActionLoading,
@@ -744,6 +911,7 @@ Source.propTypes = {
     setSources: PropTypes.func.isRequired,
     spouts: PropTypes.object.isRequired,
     setSpouts: PropTypes.func.isRequired,
+    tagInfo: PropTypes.object.isRequired,
     dirty: PropTypes.bool.isRequired,
     setDirtySources: PropTypes.func.isRequired,
 };

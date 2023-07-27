@@ -307,7 +307,9 @@ function PureApp({
                                     )}
                                 </Route>
                                 <Route path="/manage/sources">
-                                    <SourcesPage />
+                                    <SourcesPage
+                                        tags={tags}
+                                    />
                                 </Route>
                                 <Route path="*">
                                     <NotFound />

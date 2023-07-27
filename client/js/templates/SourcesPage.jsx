@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { useMemo } from 'react';
 import { Prompt } from 'react-router';
@@ -90,9 +91,28 @@ function loadSources({ abortController, location, setSpouts, setSources, setLoad
     });
 }
 
-export default function SourcesPage() {
+
+export default function SourcesPage({ tags }) {
     const [spouts, setSpouts] = React.useState([]);
     const [sources, setSources] = React.useState([]);
+    const tagInfo = useMemo(
+        () => {
+            let maxTagId = 1;
+            let info = {};
+
+            tags.forEach(({ tag, color }) => {
+                if (typeof info[tag] === 'undefined') {
+                    info[tag] = {
+                        id: maxTagId++,
+                        color,
+                    };
+                }
+            });
+
+            return info;
+        },
+        [tags]
+    );
 
     const [loadingState, setLoadingState] = React.useState(LoadingState.INITIAL);
 
@@ -104,6 +124,11 @@ export default function SourcesPage() {
 
     React.useEffect(() => {
         const abortController = new AbortController();
+
+        if (selfoss.app.state.tags.length === 0) {
+            // Ensure tags are loaded.
+            selfoss.reloadTags();
+        }
 
         loadSources({ abortController, location, setSpouts, setSources, setLoadingState })
             .then(() => {
@@ -183,7 +208,7 @@ export default function SourcesPage() {
                             <Source
                                 key={source.id}
                                 dirty={dirtySources[source.id] ?? false}
-                                {...{ source, setSources, spouts, setSpouts, setDirtySources }}
+                                {...{ source, setSources, spouts, setSpouts, setDirtySources, tagInfo }}
                             />
                         ))}
                     </ul>
@@ -197,3 +222,7 @@ export default function SourcesPage() {
         </React.Fragment>
     );
 }
+
+SourcesPage.propTypes = {
+    tags: PropTypes.array.isRequired,
+};
