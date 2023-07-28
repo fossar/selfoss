@@ -20,11 +20,11 @@ import {
     useAllowedToUpdate,
     useAllowedToWrite,
 } from '../helpers/authorizations';
-import { ConfigurationContext } from '../helpers/configuration';
 import { autoScroll, Direction } from '../helpers/navigation';
 import { LocalizationContext } from '../helpers/i18n';
 import { useShouldReload } from '../helpers/hooks';
 import { forceReload, makeEntriesLinkLocation } from '../helpers/uri';
+import { ConfigurationContext } from '../model/Configuration';
 import { HttpError } from '../errors';
 import { useNavigate } from 'react-router';
 
@@ -1222,7 +1222,7 @@ export class StateHolder extends React.Component<
         }
     }
 
-    throw(direction): void {
+    throw(direction: Direction): void {
         const selected = this.getSelectedEntry();
 
         if (selected !== null) {
@@ -1252,7 +1252,7 @@ export class StateHolder extends React.Component<
 }
 
 type StateHolderOuterProps = {
-    configuration: object;
+    configuration: Configuration;
     setNavExpanded: React.Dispatch<React.SetStateAction<boolean>>;
     navSourcesExpanded: boolean;
     setGlobalUnreadCount: React.Dispatch<React.SetStateAction<number>>;

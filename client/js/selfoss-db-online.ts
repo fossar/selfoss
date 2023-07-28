@@ -2,6 +2,11 @@ import selfoss from './selfoss-base';
 import * as itemsRequests from './requests/items';
 import { LoadingState } from './requests/LoadingState';
 import { FilterType } from './Filter';
+import { ResponseItem } from './requests/items';
+
+export type FetchParams = {
+    type: FilterType;
+};
 
 selfoss.dbOnline = {
     syncing: {
@@ -50,7 +55,7 @@ selfoss.dbOnline = {
         return selfoss.dbOnline.syncing.promise;
     },
 
-    _syncDone(success = true) {
+    _syncDone(success: boolean = true): void {
         if (selfoss.dbOnline.syncing.promise) {
             if (success) {
                 selfoss.dbOnline.syncing.resolve();
@@ -66,10 +71,8 @@ selfoss.dbOnline = {
 
     /**
      * sync server status.
-     *
-     * @return Promise
      */
-    sync(updatedStatuses, chained) {
+    sync(updatedStatuses, chained: boolean): Promise<undefined> {
         if (selfoss.dbOnline.syncing.promise && !chained) {
             if (updatedStatuses) {
                 // Ensure the status queue is not cleared and gets sync'ed at
@@ -256,10 +259,11 @@ selfoss.dbOnline = {
 
     /**
      * refresh current items.
-     *
-     * @return void
      */
-    getEntries(fetchParams, abortController) {
+    getEntries(
+        fetchParams: FetchParams,
+        abortController: AbortController,
+    ): Promise<{ entries: ResponseItem[]; hasMore: boolean }> {
         return itemsRequests
             .getItems(
                 {

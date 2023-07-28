@@ -4,8 +4,9 @@ import { getAllTags } from './requests/tags';
 import * as ajax from './helpers/ajax';
 import { ValueListenable } from './helpers/ValueListenable';
 import { HttpError, TimeoutError } from './errors';
+import { Configuration } from './model/Configuration';
 import { LoadingState } from './requests/LoadingState';
-import { createApp } from './templates/App';
+import { App, createApp } from './templates/App';
 
 /**
  * base javascript application
@@ -36,7 +37,7 @@ const selfoss = {
     /**
      * initialize application
      */
-    async init() {
+    async init(): Promise<void> {
         // Load off-line mode enabledness.
         selfoss.db.enableOffline.update(
             window.localStorage.getItem('enableOffline') === 'true',
@@ -85,7 +86,7 @@ const selfoss = {
         }
     },
 
-    async initMain(configuration) {
+    async initMain(configuration: Configuration): Promise<void> {
         selfoss.config = configuration;
 
         if (selfoss.db.enableOffline.value) {
@@ -136,7 +137,7 @@ const selfoss = {
     /**
      * Create basic DOM structure of the page.
      */
-    attachApp(configuration) {
+    attachApp(configuration: Configuration): void {
         document.getElementById('js-loading-message')?.remove();
 
         const mainUi = document.createElement('div');
@@ -150,7 +151,7 @@ const selfoss = {
         root.render(
             createApp({
                 basePath,
-                appRef: (app) => {
+                appRef: (app: App) => {
                     selfoss.app = app;
                 },
                 configuration,
@@ -160,25 +161,31 @@ const selfoss = {
 
     loggedin: new ValueListenable(false),
 
-    setSession() {
-        window.localStorage.setItem('onlineSession', true);
+    setSession(): void {
+        window.localStorage.setItem('onlineSession', 'true');
         selfoss.loggedin.update(true);
     },
 
-    clearSession() {
+    clearSession(): void {
         window.localStorage.removeItem('onlineSession');
         selfoss.loggedin.update(false);
     },
 
-    hasSession() {
+    hasSession(): boolean {
         return selfoss.loggedin.value;
     },
 
     /**
      * Try to log in using given credentials
-     * @return Promise<undefined>
      */
-    login({ configuration, username, password, enableOffline }) {
+    login(props: {
+        configuration: Configuration;
+        username: string;
+        password: string;
+        enableOffline: boolean;
+    }): Promise<void> {
+        const { configuration, username, password, enableOffline } = props;
+
         selfoss.db.enableOffline.update(enableOffline);
         window.localStorage.setItem(
             'enableOffline',
@@ -228,7 +235,7 @@ const selfoss = {
         });
     },
 
-    setupServiceWorker() {
+    setupServiceWorker(): void {
         if (
             !('serviceWorker' in navigator) ||
             selfoss.serviceWorkerInitialized
@@ -257,7 +264,7 @@ const selfoss = {
             });
     },
 
-    async logout() {
+    async logout(): Promise<void> {
         selfoss.clearSession();
 
         selfoss.db.clear(); // will not work after a failure, since storage is nulled
@@ -292,10 +299,8 @@ const selfoss = {
 
     /**
      * Checks whether the current user is allowed to perform read operations.
-     *
-     * @returns {boolean}
      */
-    isAllowedToRead() {
+    isAllowedToRead(): boolean {
         return (
             selfoss.hasSession() ||
             !selfoss.config.authEnabled ||
@@ -305,10 +310,8 @@ const selfoss = {
 
     /**
      * Checks whether the current user is allowed to perform update-tier operations.
-     *
-     * @returns {boolean}
      */
-    isAllowedToUpdate() {
+    isAllowedToUpdate(): boolean {
         return (
             selfoss.hasSession() ||
             !selfoss.config.authEnabled ||
@@ -318,19 +321,15 @@ const selfoss = {
 
     /**
      * Checks whether the current user is allowed to perform write operations.
-     *
-     * @returns {boolean}
      */
-    isAllowedToWrite() {
+    isAllowedToWrite(): boolean {
         return selfoss.hasSession() || !selfoss.config.authEnabled;
     },
 
     /**
      * Checks whether the current user is allowed to perform write operations.
-     *
-     * @returns {boolean}
      */
-    isOnline() {
+    isOnline(): boolean {
         return selfoss.db.online;
     },
 
@@ -339,7 +338,7 @@ const selfoss = {
      *
      * @return true if device resolution smaller equals 1024
      */
-    isMobile() {
+    isMobile(): boolean {
         // first check useragent
         if (/iPhone|iPod|iPad|Android|BlackBerry/.test(navigator.userAgent)) {
             return true;
@@ -354,7 +353,7 @@ const selfoss = {
      *
      * @return true if device resolution smaller equals 1024
      */
-    isTablet() {
+    isTablet(): boolean {
         if (document.body.clientWidth <= 1024) {
             return true;
         }
@@ -366,7 +365,7 @@ const selfoss = {
      *
      * @return true if device resolution smaller equals 1024
      */
-    isSmartphone() {
+    isSmartphone(): boolean {
         if (document.body.clientWidth <= 640) {
             return true;
         }
@@ -379,20 +378,20 @@ const selfoss = {
     extensionPoints: {
         /**
          * Called when an article is first expanded.
-         * @param {HTMLElement} HTML element containing the article contents
+         * @param _contents HTML element containing the article contents
          */
-        processItemContents() {},
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        processItemContents(_contents: HTMLElement) {},
     },
 
     /**
      * refresh stats.
      *
-     * @return void
-     * @param {Number} new all stats
-     * @param {Number} new unread stats
-     * @param {Number} new starred stats
+     * @param all new all stats
+     * @param unread new unread stats
+     * @param starred new starred stats
      */
-    refreshStats(all, unread, starred) {
+    refreshStats(all: number, unread: number, starred: number): void {
         selfoss.app.setAllItemsCount(all);
         selfoss.app.setStarredItemsCount(starred);
 
@@ -402,19 +401,16 @@ const selfoss = {
     /**
      * refresh unread stats.
      *
-     * @return void
-     * @param {Number} new unread stats
+     * @param unread new unread stats
      */
-    refreshUnread(unread) {
+    refreshUnread(unread: number): void {
         selfoss.app.setUnreadItemsCount(unread);
     },
 
     /**
      * refresh current tags.
-     *
-     * @return void
      */
-    reloadTags() {
+    reloadTags(): void {
         selfoss.app.setTagsState(LoadingState.LOADING);
 
         getAllTags()
@@ -430,7 +426,7 @@ const selfoss = {
             });
     },
 
-    handleAjaxError(error, tryOffline = true) {
+    handleAjaxError(error: Error, tryOffline: boolean = true): Promise<void> {
         if (!(error instanceof HttpError || error instanceof TimeoutError)) {
             return Promise.reject(error);
         }
@@ -444,8 +440,11 @@ const selfoss = {
         }
     },
 
-    listenWaitingSW(reg, callback) {
-        const awaitStateChange = () => {
+    listenWaitingSW(
+        reg: ServiceWorkerRegistration,
+        callback: (reg: ServiceWorkerRegistration) => void,
+    ): void {
+        const awaitStateChange = (): void => {
             reg.installing.addEventListener('statechange', (event) => {
                 if (event.target.state === 'installed') {
                     callback(reg);

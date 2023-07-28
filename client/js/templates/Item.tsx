@@ -18,11 +18,12 @@ import {
     makeEntriesLinkLocation,
 } from '../helpers/uri';
 import * as icons from '../icons';
-import { ConfigurationContext } from '../helpers/configuration';
 import { LocalizationContext } from '../helpers/i18n';
 import { Direction } from '../helpers/navigation';
+import { ConfigurationContext } from '../model/Configuration';
 import { useSharers } from '../sharers';
 import Lightbox from 'yet-another-react-lightbox';
+import { TagColor } from '../requests/items';
 
 // TODO: do the search highlights client-side
 function reHighlight(text) {
@@ -205,7 +206,7 @@ function ShareButton(props: ShareButtonProps) {
 
 type ItemTagProps = {
     tag: string;
-    color: object;
+    color: TagColor;
 };
 
 function ItemTag(props: ItemTagProps) {

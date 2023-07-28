@@ -21,9 +21,9 @@ import SearchList from './SearchList';
 import makeShortcuts from '../shortcuts';
 import * as icons from '../icons';
 import { useAllowedToRead, useAllowedToWrite } from '../helpers/authorizations';
-import { ConfigurationContext } from '../helpers/configuration';
 import { useIsSmartphone, useListenableValue } from '../helpers/hooks';
 import { i18nFormat, LocalizationContext } from '../helpers/i18n';
+import { Configuration, ConfigurationContext } from '../model/Configuration';
 import { LoadingState } from '../requests/LoadingState';
 import * as sourceRequests from '../requests/sources';
 import locales from '../locales';
@@ -41,7 +41,11 @@ type GlobalMessage = {
     isError?: boolean;
 };
 
-function handleNavToggle({ event, setNavExpanded }) {
+function handleNavToggle(args: {
+    event: Event;
+    setNavExpanded: React.Dispatch<React.SetStateAction<boolean>>;
+}): void {
+    const { event, setNavExpanded } = args;
     event.preventDefault();
 
     // show hide navigation for mobile version
@@ -49,7 +53,7 @@ function handleNavToggle({ event, setNavExpanded }) {
     window.scrollTo({ top: 0 });
 }
 
-function dismissMessage(event) {
+function dismissMessage(event: Event): void {
     selfoss.app.setGlobalMessage(null);
     event.stopPropagation();
 }
@@ -63,7 +67,7 @@ type MessageProps = {
  * It watches globalMessage and updates/shows/hides itself as necessary
  * when the value changes.
  */
-function Message(props: MessageProps) {
+function Message(props: MessageProps): JSX.Element | null {
     const { message } = props;
 
     // Whenever message changes, dismiss it after 15 seconds.
@@ -96,7 +100,7 @@ function Message(props: MessageProps) {
     ) : null;
 }
 
-function NotFound() {
+function NotFound(): JSX.Element {
     const location = useLocation();
     const _ = useContext(LocalizationContext);
     return <p>{_('error_invalid_subsection') + location.pathname}</p>;
@@ -106,10 +110,10 @@ type CheckAuthorizationProps = {
     isAllowed: boolean;
     returnLocation?: string;
     _: (translated: string, params?: { [index: string]: string }) => string;
-    children?: any;
+    children: React.ReactNode;
 };
 
-function CheckAuthorization(props: CheckAuthorizationProps) {
+function CheckAuthorization(props: CheckAuthorizationProps): React.ReactNode {
     const { isAllowed, returnLocation, _, children } = props;
 
     const navigate = useNavigate();
@@ -136,7 +140,7 @@ function CheckAuthorization(props: CheckAuthorizationProps) {
 type EntriesFilterProps = {
     entriesRef: React.RefCallback<EntriesPageStateful>;
     setNavExpanded: React.Dispatch<React.SetStateAction<boolean>>;
-    configuration: object;
+    configuration: Configuration;
     navSourcesExpanded: boolean;
     unreadItemsCount: number;
     setGlobalUnreadCount: React.Dispatch<React.SetStateAction<number>>;
@@ -191,7 +195,7 @@ type PureAppProps = {
     reloadAll: () => void;
 };
 
-function PureApp(props: PureAppProps) {
+function PureApp(props: PureAppProps): JSX.Element {
     const {
         navSourcesExpanded,
         setNavSourcesExpanded,
@@ -441,7 +445,7 @@ function PureApp(props: PureAppProps) {
 }
 
 type AppProps = {
-    configuration: object;
+    configuration: Configuration;
 };
 
 type AppState = {
@@ -542,7 +546,7 @@ export class App extends React.Component<AppProps, AppState> {
         this.reloadAll = this.reloadAll.bind(this);
     }
 
-    setTags(tags) {
+    setTags(tags: React.SetStateAction<Array<Tag>>): void {
         if (typeof tags === 'function') {
             this.setState((state) => ({
                 tags: tags(state.tags),
@@ -552,7 +556,7 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    setTagsState(tagsState) {
+    setTagsState(tagsState: React.SetStateAction<LoadingState>): void {
         if (typeof tagsState === 'function') {
             this.setState((state) => ({
                 tagsState: tagsState(state.tagsState),
@@ -562,7 +566,7 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    setSources(sources) {
+    setSources(sources: React.SetStateAction<Array<Source>>): void {
         if (typeof sources === 'function') {
             this.setState((state) => ({
                 sources: sources(state.sources),
@@ -572,7 +576,7 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    setSourcesState(sourcesState) {
+    setSourcesState(sourcesState: React.SetStateAction<LoadingState>): void {
         if (typeof sourcesState === 'function') {
             this.setState((state) => ({
                 sourcesState: sourcesState(state.sourcesState),
@@ -582,7 +586,7 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    setOfflineState(offlineState) {
+    setOfflineState(offlineState: React.SetStateAction<boolean>): void {
         if (typeof offlineState === 'function') {
             this.setState((state) => ({
                 offlineState: offlineState(state.offlineState),
@@ -592,7 +596,9 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    setNavSourcesExpanded(navSourcesExpanded) {
+    setNavSourcesExpanded(
+        navSourcesExpanded: React.SetStateAction<boolean>,
+    ): void {
         if (typeof navSourcesExpanded === 'function') {
             this.setState((state) => ({
                 navSourcesExpanded: navSourcesExpanded(
@@ -604,7 +610,7 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    setUnreadItemsCount(unreadItemsCount) {
+    setUnreadItemsCount(unreadItemsCount: React.SetStateAction<number>): void {
         if (typeof unreadItemsCount === 'function') {
             this.setState((state) => ({
                 unreadItemsCount: unreadItemsCount(state.unreadItemsCount),
@@ -614,7 +620,9 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    setUnreadItemsOfflineCount(unreadItemsOfflineCount) {
+    setUnreadItemsOfflineCount(
+        unreadItemsOfflineCount: React.SetStateAction<number>,
+    ): void {
         if (typeof unreadItemsOfflineCount === 'function') {
             this.setState((state) => ({
                 unreadItemsOfflineCount: unreadItemsOfflineCount(
@@ -626,7 +634,9 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    setStarredItemsCount(starredItemsCount) {
+    setStarredItemsCount(
+        starredItemsCount: React.SetStateAction<number>,
+    ): void {
         if (typeof starredItemsCount === 'function') {
             this.setState((state) => ({
                 starredItemsCount: starredItemsCount(state.starredItemsCount),
@@ -636,7 +646,9 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    setStarredItemsOfflineCount(starredItemsOfflineCount) {
+    setStarredItemsOfflineCount(
+        starredItemsOfflineCount: React.SetStateAction<number>,
+    ): void {
         if (typeof starredItemsOfflineCount === 'function') {
             this.setState((state) => ({
                 starredItemsOfflineCount: starredItemsOfflineCount(
@@ -648,7 +660,7 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    setAllItemsCount(allItemsCount) {
+    setAllItemsCount(allItemsCount: React.SetStateAction<number>): void {
         if (typeof allItemsCount === 'function') {
             this.setState((state) => ({
                 allItemsCount: allItemsCount(state.allItemsCount),
@@ -658,7 +670,9 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    setAllItemsOfflineCount(allItemsOfflineCount) {
+    setAllItemsOfflineCount(
+        allItemsOfflineCount: React.SetStateAction<number>,
+    ): void {
         if (typeof allItemsOfflineCount === 'function') {
             this.setState((state) => ({
                 allItemsOfflineCount: allItemsOfflineCount(
@@ -672,7 +686,7 @@ export class App extends React.Component<AppProps, AppState> {
 
     setGlobalMessage(
         globalMessage: React.SetStateAction<GlobalMessage | null>,
-    ) {
+    ): void {
         if (typeof globalMessage === 'function') {
             this.setState((state) => ({
                 globalMessage: globalMessage(state.globalMessage),
@@ -685,7 +699,7 @@ export class App extends React.Component<AppProps, AppState> {
     /**
      * Triggers fetching news from all sources.
      */
-    reloadAll(): Promise<undefined> {
+    reloadAll(): Promise<void> {
         if (!selfoss.isOnline()) {
             return Promise.resolve();
         }
@@ -783,7 +797,11 @@ export class App extends React.Component<AppProps, AppState> {
         ]);
     }
 
-    refreshTagSourceUnread(tagCounts, sourceCounts, diff = true) {
+    refreshTagSourceUnread(
+        tagCounts: { [index: string]: number },
+        sourceCounts: { [index: number]: number },
+        diff: boolean = true,
+    ): void {
         this.setTags((tags) =>
             tags.map((tag) => {
                 if (!(tag.tag in tagCounts)) {
@@ -825,7 +843,9 @@ export class App extends React.Component<AppProps, AppState> {
         );
     }
 
-    refreshOfflineCounts(offlineCounts) {
+    refreshOfflineCounts(offlineCounts: {
+        [index in 'unread' | 'starred' | 'newest']: number | 'keep';
+    }): void {
         for (const [kind, newCount] of Object.entries(offlineCounts)) {
             if (newCount === 'keep') {
                 continue;
@@ -841,7 +861,7 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    render() {
+    render(): JSX.Element {
         return (
             <ConfigurationContext.Provider value={this.props.configuration}>
                 <LocalizationContext.Provider value={this._}>
@@ -877,7 +897,13 @@ export class App extends React.Component<AppProps, AppState> {
  * Creates the selfoss single-page application
  * with the required contexts.
  */
-export function createApp({ basePath, appRef, configuration }) {
+export function createApp(args: {
+    basePath: string;
+    appRef: React.Ref<App>;
+    configuration: Configuration;
+}): JSX.Element {
+    const { basePath, appRef, configuration } = args;
+
     return (
         <Router basename={basePath}>
             <App ref={appRef} configuration={configuration} />

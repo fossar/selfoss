@@ -11,6 +11,7 @@ import * as icons from '../icons';
 import { LoadingState } from '../requests/LoadingState';
 import { useAllowedToWrite } from '../helpers/authorizations';
 import { LocalizationContext } from '../helpers/i18n';
+import { NavSource, NavTag } from '../requests/items';
 
 type NavigationProps = {
     entriesPage: EntriesPage | null;
@@ -26,13 +27,13 @@ type NavigationProps = {
     starredItemsOfflineCount: number;
     sourcesState: LoadingState;
     setSourcesState: React.Dispatch<React.SetStateAction<LoadingState>>;
-    sources: Array<object>;
-    setSources: React.Dispatch<React.SetStateAction<Array<object>>>;
-    tags: Array<object>;
-    reloadAll: React.Dispatch<React.SetStateAction<Array<object>>>;
+    sources: Array<NavSource>;
+    setSources: React.Dispatch<React.SetStateAction<Array<NavSource>>>;
+    tags: Array<NavTag>;
+    reloadAll: React.Dispatch<React.SetStateAction<Array<NavTag>>>;
 };
 
-export default function Navigation(props: NavigationProps) {
+export default function Navigation(props: NavigationProps): JSX.Element {
     const {
         entriesPage,
         setNavExpanded,
