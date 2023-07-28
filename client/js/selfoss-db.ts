@@ -38,11 +38,11 @@ selfoss.db = {
         }
     },
 
-    tryOnline() {
+    tryOnline(): Promise<undefined> {
         return selfoss.db.sync(true);
     },
 
-    setOffline() {
+    setOffline(): Promise<undefined> {
         if (selfoss.db.storage && !selfoss.db.broken) {
             selfoss.dbOnline._syncDone(false);
             selfoss.db.online = false;

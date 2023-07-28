@@ -1,15 +1,18 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useMediaMatch } from 'rooks';
+import { ValueListenable } from './ValueListenable';
 
 /**
  * Changes its return value whenever the value of forceReload field
  * in the location state increases.
  */
-export function useShouldReload() {
+export function useShouldReload(): number {
     const location = useLocation();
     const forceReload = location?.state?.forceReload;
-    const [oldForceReload, setOldForceReload] = useState(forceReload);
+    const [oldForceReload, setOldForceReload] = useState<number | undefined>(
+        forceReload,
+    );
 
     if (oldForceReload !== forceReload) {
         setOldForceReload(forceReload);
@@ -30,18 +33,15 @@ export function useShouldReload() {
     return reloadCounter;
 }
 
-export function useIsSmartphone() {
+export function useIsSmartphone(): boolean {
     return useMediaMatch('(max-width: 641px)');
 }
 
-/**
- * @param {ValueListenable}
- */
-export function useListenableValue(valueListenable) {
-    const [value, setValue] = useState(valueListenable.value);
+export function useListenableValue<T>(valueListenable: ValueListenable<T>): T {
+    const [value, setValue] = useState<T>(valueListenable.value);
 
     useEffect(() => {
-        const listener = (event) => {
+        const listener = (event: { value: T }) => {
             setValue(event.value);
         };
 
