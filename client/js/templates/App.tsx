@@ -26,10 +26,10 @@ import SearchList from './SearchList';
 import makeShortcuts from '../shortcuts';
 import * as icons from '../icons';
 import { useAllowedToRead, useAllowedToWrite } from '../helpers/authorizations';
-import { ConfigurationContext } from '../helpers/configuration';
 import { useIsSmartphone, useListenableValue } from '../helpers/hooks';
 import { ENTRIES_ROUTE_PATTERN } from '../helpers/uri';
 import { i18nFormat, LocalizationContext } from '../helpers/i18n';
+import { Configuration, ConfigurationContext } from '../model/Configuration';
 import { LoadingState } from '../requests/LoadingState';
 import * as sourceRequests from '../requests/sources';
 import locales from '../locales';
@@ -466,7 +466,7 @@ export class App extends React.Component<AppProps, AppState> {
         this.reloadAll = this.reloadAll.bind(this);
     }
 
-    setTags(tags) {
+    setTags(tags: React.SetStateAction<Array<Tag>>): void {
         if (typeof tags === 'function') {
             this.setState(
                 (state) => ({
@@ -478,7 +478,7 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    setTagsState(tagsState) {
+    setTagsState(tagsState: React.SetStateAction<LoadingState>): void {
         if (typeof tagsState === 'function') {
             this.setState(
                 (state) => ({
@@ -490,7 +490,7 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    setSources(sources) {
+    setSources(sources: React.SetStateAction<Array<Source>>): void {
         if (typeof sources === 'function') {
             this.setState(
                 (state) => ({
@@ -502,7 +502,7 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    setSourcesState(sourcesState) {
+    setSourcesState(sourcesState: React.SetStateAction<LoadingState>): void {
         if (typeof sourcesState === 'function') {
             this.setState(
                 (state) => ({
@@ -514,7 +514,7 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    setOfflineState(offlineState) {
+    setOfflineState(offlineState: React.SetStateAction<boolean>): void {
         if (typeof offlineState === 'function') {
             this.setState(
                 (state) => ({
@@ -526,7 +526,7 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    setNavSourcesExpanded(navSourcesExpanded) {
+    setNavSourcesExpanded(navSourcesExpanded: React.SetStateAction<boolean>): void {
         if (typeof navSourcesExpanded === 'function') {
             this.setState(
                 (state) => ({
@@ -538,7 +538,7 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    setUnreadItemsCount(unreadItemsCount) {
+    setUnreadItemsCount(unreadItemsCount: React.SetStateAction<number>): void {
         if (typeof unreadItemsCount === 'function') {
             this.setState(
                 (state) => ({
@@ -550,7 +550,7 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    setUnreadItemsOfflineCount(unreadItemsOfflineCount) {
+    setUnreadItemsOfflineCount(unreadItemsOfflineCount: React.SetStateAction<number>): void {
         if (typeof unreadItemsOfflineCount === 'function') {
             this.setState(
                 (state) => ({
@@ -562,7 +562,7 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    setStarredItemsCount(starredItemsCount) {
+    setStarredItemsCount(starredItemsCount: React.SetStateAction<number>): void {
         if (typeof starredItemsCount === 'function') {
             this.setState(
                 (state) => ({
@@ -574,7 +574,7 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    setStarredItemsOfflineCount(starredItemsOfflineCount) {
+    setStarredItemsOfflineCount(starredItemsOfflineCount: React.SetStateAction<number>): void {
         if (typeof starredItemsOfflineCount === 'function') {
             this.setState(
                 (state) => ({
@@ -586,7 +586,7 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    setAllItemsCount(allItemsCount) {
+    setAllItemsCount(allItemsCount: React.SetStateAction<number>): void {
         if (typeof allItemsCount === 'function') {
             this.setState(
                 (state) => ({
@@ -598,7 +598,7 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    setAllItemsOfflineCount(allItemsOfflineCount) {
+    setAllItemsOfflineCount(allItemsOfflineCount: React.SetStateAction<number>): void {
         if (typeof allItemsOfflineCount === 'function') {
             this.setState(
                 (state) => ({
@@ -610,7 +610,7 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    setGlobalMessage(globalMessage: React.SetStateAction<GlobalMessage | null>) {
+    setGlobalMessage(globalMessage: React.SetStateAction<GlobalMessage | null>): void {
         if (typeof globalMessage === 'function') {
             this.setState(
                 (state) => ({
@@ -711,7 +711,7 @@ export class App extends React.Component<AppProps, AppState> {
     }
 
 
-    refreshTagSourceUnread(tagCounts, sourceCounts, diff = true) {
+    refreshTagSourceUnread(tagCounts: {[index: string]: number}, sourceCounts: {[index: number]: number}, diff: boolean = true): void {
         this.setTags((tags) =>
             tags.map((tag) => {
                 if (!(tag.tag in tagCounts)) {
@@ -754,7 +754,7 @@ export class App extends React.Component<AppProps, AppState> {
     }
 
 
-    refreshOfflineCounts(offlineCounts) {
+    refreshOfflineCounts(offlineCounts: {[index: 'unread'|'starred'|'newest']: number|'keep'}): void {
         for (const [kind, newCount] of Object.entries(offlineCounts)) {
             if (newCount === 'keep') {
                 continue;
@@ -771,7 +771,7 @@ export class App extends React.Component<AppProps, AppState> {
     }
 
 
-    render() {
+    render(): JSX.Element {
         return (
             <ConfigurationContext.Provider value={this.props.configuration}>
                 <LocalizationContext.Provider value={this._}>
@@ -807,6 +807,10 @@ export function createApp({
     basePath,
     appRef,
     configuration,
+}: {
+    basePath: string;
+    appRef: React.RefObject<App>;
+    configuration: Configuration;
 }) {
     return (
         <Router basename={basePath}>

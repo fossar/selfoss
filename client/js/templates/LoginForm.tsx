@@ -4,11 +4,13 @@ import React, {
     useState,
 } from 'react';
 import classNames from 'classnames';
+import { History } from '@types/history';
 import { SpinnerBig } from './Spinner';
+import { Configuration } from '../model/Configuration';
 import { useHistory, useLocation } from 'react-router-dom';
 import { HttpError, LoginError } from '../errors';
-import { ConfigurationContext } from '../helpers/configuration';
 import { LocalizationContext } from '../helpers/i18n';
+import { ConfigurationContext } from '../model/Configuration';
 
 function handleLogIn({
     event,
@@ -19,6 +21,15 @@ function handleLogIn({
     password,
     enableOffline,
     returnLocation,
+}: {
+    event: React.FormEvent;
+    configuration: Configuration;
+    history: History;
+    setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+    username: string;
+    password: string;
+    enableOffline: boolean;
+    returnLocation: string;
 }) {
     event.preventDefault();
 
@@ -26,7 +37,7 @@ function handleLogIn({
 
     selfoss.login({ configuration, username, password, enableOffline }).then(() => {
         history.push(returnLocation);
-    }).catch((err) => {
+    }).catch((err: Error) => {
         const message =
             err instanceof LoginError
                 ? selfoss.app._('login_invalid_credentials')
@@ -67,7 +78,7 @@ export default function LoginForm(
     const returnLocation = location?.state?.returnLocation ?? '/';
 
     const formOnSubmit = useCallback(
-        (event) =>
+        (event: React.FormEvent) =>
             handleLogIn({
                 event,
                 configuration,
@@ -82,17 +93,17 @@ export default function LoginForm(
     );
 
     const usernameOnChange = useCallback(
-        (event) => setUsername(event.target.value),
+        (event: React.ChangeEvent<HTMLInputElement>) => setUsername(event.target.value),
         []
     );
 
     const passwordOnChange = useCallback(
-        (event) => setPassword(event.target.value),
+        (event: React.ChangeEvent<HTMLInputElement>) => setPassword(event.target.value),
         []
     );
 
     const offlineOnChange = useCallback(
-        (event) => setEnableOffline(event.target.checked),
+        (event: React.ChangeEvent<HTMLInputElement>) => setEnableOffline(event.target.checked),
         [setEnableOffline]
     );
 

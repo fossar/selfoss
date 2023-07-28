@@ -36,7 +36,7 @@ type NavigationProps = {
 
 export default function Navigation(
     props: NavigationProps,
-) {
+): JSX.Element {
     const {
         entriesPage,
         setNavExpanded,

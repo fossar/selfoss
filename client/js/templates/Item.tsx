@@ -14,9 +14,9 @@ import { createFocusTrap } from 'focus-trap';
 import { useAllowedToWrite } from '../helpers/authorizations';
 import { forceReload, makeEntriesLink, makeEntriesLinkLocation } from '../helpers/uri';
 import * as icons from '../icons';
-import { ConfigurationContext } from '../helpers/configuration';
 import { LocalizationContext } from '../helpers/i18n';
 import { Direction } from '../helpers/navigation';
+import { ConfigurationContext } from '../model/Configuration';
 import { useSharers } from '../sharers';
 import Lightbox from 'yet-another-react-lightbox';
 

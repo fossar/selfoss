@@ -52,7 +52,7 @@ selfoss.dbOnline = {
     },
 
 
-    _syncDone(success = true) {
+    _syncDone(success: boolean = true): Promise<undefined> {
         if (selfoss.dbOnline.syncing.promise) {
             if (success) {
                 selfoss.dbOnline.syncing.resolve();
@@ -69,10 +69,8 @@ selfoss.dbOnline = {
 
     /**
      * sync server status.
-     *
-     * @return Promise
      */
-    sync(updatedStatuses, chained) {
+    sync(updatedStatuses, chained: boolean): Promise<undefined> {
         if (selfoss.dbOnline.syncing.promise && !chained) {
             if (updatedStatuses) {
                 // Ensure the status queue is not cleared and gets sync'ed at

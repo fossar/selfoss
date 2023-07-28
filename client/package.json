@@ -9,6 +9,7 @@
     "@parcel/service-worker": "^2.5.0",
     "@siteparts/show-hide-effects": "^1.0.0",
     "@szhsin/react-menu": "^4.0.0",
+    "@types/history": "^4.7.11",
     "classnames": "^2.2.6",
     "core-js": "^3.2.1",
     "dexie": "^3.0.0",

@@ -16,7 +16,7 @@ type SourceParamProps = {
 
 export default function SourceParam(
     props: SourceParamProps,
-) {
+): JSX.Element {
     const {
         spoutParamName,
         spoutParam,

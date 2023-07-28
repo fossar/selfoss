@@ -16,11 +16,11 @@ import { LoadingState } from '../requests/LoadingState';
 import { Spinner, SpinnerBig } from './Spinner';
 import classNames from 'classnames';
 import { useAllowedToUpdate, useAllowedToWrite } from '../helpers/authorizations';
-import { ConfigurationContext } from '../helpers/configuration';
 import { autoScroll, Direction } from '../helpers/navigation';
 import { LocalizationContext } from '../helpers/i18n';
 import { useShouldReload } from '../helpers/hooks';
 import { forceReload, makeEntriesLinkLocation } from '../helpers/uri';
+import { ConfigurationContext } from '../model/Configuration';
 import { HttpError } from '../errors';
 
 function reloadList({
@@ -1076,7 +1076,7 @@ export default class StateHolder extends React.Component<StateHolderProps, State
         }
     }
 
-    throw(direction): void {
+    throw(direction: Direction): void {
         const selected = this.getSelectedEntry();
 
         if (selected !== null) {

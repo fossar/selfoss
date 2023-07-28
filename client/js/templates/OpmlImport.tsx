@@ -8,7 +8,7 @@ import { useOnline } from 'rooks';
 import { Link, useHistory } from 'react-router-dom';
 import { LoadingState } from '../requests/LoadingState';
 import { HttpError, UnexpectedStateError } from '../errors';
-import { importOpml } from '../requests/common';
+import { importOpml, OpmlImportData } from '../requests/common';
 
 type OpmlImportProps = {
     setTitle: (title: string | null) => void,
@@ -16,23 +16,23 @@ type OpmlImportProps = {
 
 export default function OpmlImport(
     props: OpmlImportProps,
-) {
+): JSX.Element {
     const {
         setTitle,
     } = props;
 
-    const [state, setState] = useState(LoadingState.INITIAL);
-    const [message, setMessage] = useState(null);
-    const fileEntry = useRef();
+    const [state, setState] = useState<LoadingState>(LoadingState.INITIAL);
+    const [message, setMessage] = useState<JSX.Element | null>(null);
+    const fileEntry = useRef<HTMLInputElement>(null);
 
     const history = useHistory();
 
-    const submit = useCallback((event) => {
+    const submit = useCallback((event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
         setState(LoadingState.LOADING);
         const file = fileEntry.current.files[0];
-        importOpml(file).then(({ response, data }) => {
+        importOpml(file).then(({ response, data }: { response: Response, data: OpmlImportData }) => {
             const { messages } = data;
 
             if (response.status === 200) {

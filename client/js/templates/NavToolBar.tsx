@@ -7,9 +7,9 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as icons from '../icons';
 import { useAllowedToUpdate, useAllowedToWrite, useLoggedIn } from '../helpers/authorizations';
-import { ConfigurationContext } from '../helpers/configuration';
 import { LocalizationContext } from '../helpers/i18n';
 import { forceReload } from '../helpers/uri';
+import { ConfigurationContext } from '../model/Configuration';
 
 function handleReloadAll({ reloadAll, setReloading, setNavExpanded }) {
     setReloading(true);
