@@ -217,7 +217,7 @@ function handleSpoutChange({
             const defaults = Object.fromEntries(
                 Object.entries(spout.params).map(([param, props]) => [
                     param,
-                    props['default'] ?? '',
+                    props.default ?? '',
                 ]),
             );
             updateEditedSource((source) => {
@@ -417,8 +417,8 @@ function SourceEditForm({
                         onChange={titleOnChange}
                         autoFocus
                     />
-                    {sourceErrors['title'] ? (
-                        <span className="error">{sourceErrors['title']}</span>
+                    {sourceErrors.title ? (
+                        <span className="error">{sourceErrors.title}</span>
                     ) : null}
                 </li>
 
@@ -439,8 +439,8 @@ function SourceEditForm({
                         {' '}
                         {_('source_comma')}
                     </span>
-                    {sourceErrors['tags'] ? (
-                        <span className="error">{sourceErrors['tags']}</span>
+                    {sourceErrors.tags ? (
+                        <span className="error">{sourceErrors.tags}</span>
                     ) : null}
                 </li>
 
@@ -457,8 +457,8 @@ function SourceEditForm({
                         value={source.filter ?? ''}
                         onChange={filterOnChange}
                     />
-                    {sourceErrors['filter'] ? (
-                        <span className="error">{sourceErrors['filter']}</span>
+                    {sourceErrors.filter ? (
+                        <span className="error">{sourceErrors.filter}</span>
                     ) : null}
                 </li>
 
@@ -486,8 +486,8 @@ function SourceEditForm({
                             </option>
                         ))}
                     </select>
-                    {sourceErrors['spout'] ? (
-                        <span className="error">{sourceErrors['spout']}</span>
+                    {sourceErrors.spout ? (
+                        <span className="error">{sourceErrors.spout}</span>
                     ) : null}
                 </li>
 

@@ -42,7 +42,7 @@ export default function SourceParam({
     const _ = useContext(LocalizationContext);
 
     if (['text', 'checkbox', 'url'].includes(spoutParam.type)) {
-        let checked = undefined;
+        let checked;
 
         if (spoutParam.type === 'checkbox') {
             checked = value == '1';

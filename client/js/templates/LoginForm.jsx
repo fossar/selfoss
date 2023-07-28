@@ -104,7 +104,7 @@ export default function LoginForm({ offlineEnabled }) {
             {loading ? <SpinnerBig label={_('login_in_progress')} /> : null}
             <form
                 action=""
-                className={classNames({ loading: loading })}
+                className={classNames({ loading })}
                 method="post"
                 onSubmit={formOnSubmit}
             >
