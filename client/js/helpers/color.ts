@@ -1,19 +1,19 @@
 /**
  * Get dark OR bright color depending the color contrast.
  *
- * @param string hexColor color (hex) value
- * @param string darkColor dark color value
- * @param string brightColor bright color value
+ * @param hexColor color (hex) value
+ * @param darkColor dark color value
+ * @param brightColor bright color value
  *
- * @return string dark OR bright color value
+ * @return dark OR bright color value
  *
  * @see https://24ways.org/2010/calculating-color-contrast/
  */
 export function colorByBrightness(
-    hexColor,
-    darkColor = '#555',
-    brightColor = '#EEE',
-) {
+    hexColor: string,
+    darkColor: string = '#555',
+    brightColor: string = '#EEE',
+): string {
     // Strip hash sign.
     const color = hexColor.substr(1);
     const r = parseInt(color.substr(0, 2), 16);

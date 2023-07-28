@@ -3,77 +3,86 @@ import { useOnline } from 'rooks';
 import { Link, useNavigate } from 'react-router';
 import { LoadingState } from '../requests/LoadingState';
 import { HttpError, UnexpectedStateError } from '../errors';
-import { importOpml } from '../requests/common';
+import { importOpml, OpmlImportData } from '../requests/common';
 
 type OpmlImportProps = {
     setTitle: (title: string | null) => void;
 };
 
-export default function OpmlImport(props: OpmlImportProps) {
+export default function OpmlImport(props: OpmlImportProps): JSX.Element {
     const { setTitle } = props;
 
-    const [state, setState] = useState(LoadingState.INITIAL);
-    const [message, setMessage] = useState(null);
-    const fileEntry = useRef();
+    const [state, setState] = useState<LoadingState>(LoadingState.INITIAL);
+    const [message, setMessage] = useState<JSX.Element | null>(null);
+    const fileEntry = useRef<HTMLInputElement>(null);
 
     const navigate = useNavigate();
 
     const submit = useCallback(
-        (event) => {
+        (event: React.FormEvent<HTMLFormElement>) => {
             event.preventDefault();
 
             setState(LoadingState.LOADING);
             const file = fileEntry.current.files[0];
             importOpml(file)
-                .then(({ response, data }) => {
-                    const { messages } = data;
+                .then(
+                    ({
+                        response,
+                        data,
+                    }: {
+                        response: Response;
+                        data: OpmlImportData;
+                    }) => {
+                        const { messages } = data;
 
-                    if (response.status === 200) {
-                        setState(LoadingState.SUCCESS);
-                        setMessage(
-                            <p className="msg success">
-                                <ul>
-                                    {messages.map((msg, i) => (
-                                        <li key={i}>{msg}</li>
-                                    ))}
-                                </ul>
-                                You might want to{' '}
-                                <a href="update">update now</a> or{' '}
-                                <Link to="/">view your feeds</Link>.
-                            </p>,
-                        );
-                    } else if (response.status === 202) {
-                        setState(LoadingState.FAILURE);
-                        setMessage(
-                            <p className="msg error">
-                                The following feeds could not be imported:
-                                <br />
-                                <ul>
-                                    {messages.map((msg, i) => (
-                                        <li key={i}>{msg}</li>
-                                    ))}
-                                </ul>
-                            </p>,
-                        );
-                    } else if (response.status === 400) {
-                        setState(LoadingState.FAILURE);
-                        setMessage(
-                            <p className="msg error">
-                                There was a problem importing your OPML file:
-                                <br />
-                                <ul>
-                                    {messages.map((msg, i) => (
-                                        <li key={i}>{msg}</li>
-                                    ))}
-                                </ul>
-                            </p>,
-                        );
-                    } else {
-                        throw new UnexpectedStateError(
-                            `OPML import handler received status ${response.status}. This should not happen.`,
-                        );
-                    }
-                })
+                        if (response.status === 200) {
+                            setState(LoadingState.SUCCESS);
+                            setMessage(
+                                <p className="msg success">
+                                    <ul>
+                                        {messages.map((msg, i) => (
+                                            <li key={i}>{msg}</li>
+                                        ))}
+                                    </ul>
+                                    You might want to{' '}
+                                    <a href="update">update now</a> or{' '}
+                                    <Link to="/">view your feeds</Link>.
+                                </p>,
+                            );
+                        } else if (response.status === 202) {
+                            setState(LoadingState.FAILURE);
+                            setMessage(
+                                <p className="msg error">
+                                    The following feeds could not be imported:
+                                    <br />
+                                    <ul>
+                                        {messages.map((msg, i) => (
+                                            <li key={i}>{msg}</li>
+                                        ))}
+                                    </ul>
+                                </p>,
+                            );
+                        } else if (response.status === 400) {
+                            setState(LoadingState.FAILURE);
+                            setMessage(
+                                <p className="msg error">
+                                    There was a problem importing your OPML
+                                    file:
+                                    <br />
+                                    <ul>
+                                        {messages.map((msg, i) => (
+                                            <li key={i}>{msg}</li>
+                                        ))}
+                                    </ul>
+                                </p>,
+                            );
+                        } else {
+                            throw new UnexpectedStateError(
+                                `OPML import handler received status ${response.status}. This should not happen.`,
+                            );
+                        }
+                    },
+                )
                 .catch((error) => {
                     if (
                         error instanceof HttpError &&

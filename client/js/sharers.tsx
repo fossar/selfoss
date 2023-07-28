@@ -3,11 +3,20 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import map from 'ramda/src/map.js';
 import selfoss from './selfoss-base';
 import * as icons from './icons';
+import { Configuration } from './model/Configuration';
 
-function materializeSharerIcon(sharer) {
+type Sharer = {
+    label: string;
+    icon: string | JSX.Element;
+    action: (params: { url: string; title: string }) => void;
+    available?: boolean;
+};
+
+function materializeSharerIcon(sharer: Sharer): Sharer {
     const { icon } = sharer;
     return {
         ...sharer,
+        // We want to allow people to use <svg> or <img> in user.js
         icon:
             typeof icon === 'string' && icon.includes('<') ? (
                 <span dangerouslySetInnerHTML={{ __html: icon }} />
@@ -17,9 +26,14 @@ function materializeSharerIcon(sharer) {
     };
 }
 
-export function useSharers({ configuration, _ }) {
-    return useMemo(() => {
-        const availableSharers = {
+export function useSharers(args: {
+    configuration: Configuration;
+    _: (identifier: string, params?: { [index: string]: string }) => string;
+}): Array<Sharer> {
+    const { configuration, _ } = args;
+
+    return useMemo((): Array<Sharer> => {
+        const availableSharers: { [key: string]: Sharer } = {
             a: {
                 label: _('share_native_label'),
                 icon: <FontAwesomeIcon icon={icons.share} />,

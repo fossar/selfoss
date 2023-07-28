@@ -13,9 +13,10 @@ import { Collapse } from '@kunukn/react-collapse';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as icons from '../icons';
 import { LocalizationContext } from '../helpers/i18n';
+import { NavTag } from '../requests/items';
 
 type TagProps = {
-    tag: object | null;
+    tag: NavTag | null;
     active: boolean;
     collapseNav: () => void;
 };
@@ -82,7 +83,7 @@ function Tag(props: TagProps) {
 
 type NavTagsProps = {
     setNavExpanded: React.Dispatch<React.SetStateAction<boolean>>;
-    tags: Array<object>;
+    tags: Array<NavTag>;
 };
 
 export default function NavTags(props: NavTagsProps) {

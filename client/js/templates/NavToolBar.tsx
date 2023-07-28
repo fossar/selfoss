@@ -7,9 +7,9 @@ import {
     useAllowedToWrite,
     useLoggedIn,
 } from '../helpers/authorizations';
-import { ConfigurationContext } from '../helpers/configuration';
 import { LocalizationContext } from '../helpers/i18n';
 import { useForceReload } from '../helpers/uri';
+import { ConfigurationContext } from '../model/Configuration';
 
 function handleReloadAll({ reloadAll, setReloading, setNavExpanded }) {
     setReloading(true);

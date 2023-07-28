@@ -14,6 +14,7 @@ import { LoadingState } from '../requests/LoadingState';
 import * as sourceRequests from '../requests/sources';
 import * as icons from '../icons';
 import { LocalizationContext } from '../helpers/i18n';
+import { NavSource } from '../requests/items';
 
 function handleTitleClick({
     setExpanded,
@@ -49,7 +50,7 @@ function handleTitleClick({
 }
 
 type SourceProps = {
-    source: object;
+    source: NavSource;
     active: boolean;
     collapseNav: () => void;
 };
@@ -91,8 +92,8 @@ type NavSourcesProps = {
     setNavSourcesExpanded: React.Dispatch<React.SetStateAction<boolean>>;
     sourcesState: LoadingState;
     setSourcesState: React.Dispatch<React.SetStateAction<LoadingState>>;
-    sources: Array<object>;
-    setSources: React.Dispatch<React.SetStateAction<Array<object>>>;
+    sources: Array<NavSource>;
+    setSources: React.Dispatch<React.SetStateAction<Array<NavSource>>>;
 };
 
 export default function NavSources(props: NavSourcesProps) {
