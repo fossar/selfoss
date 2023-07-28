@@ -18,6 +18,7 @@ export class TimeoutError extends Error {
 
 export class HttpError extends Error {
     public name: any;
+    public response: Response;
 
     constructor(message) {
         super(message);
