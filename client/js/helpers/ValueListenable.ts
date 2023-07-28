@@ -1,7 +1,7 @@
-export class ValueChangeEvent extends Event {
-    public value: any;
+export class ValueChangeEvent<T> extends Event {
+    public value: T;
 
-    constructor(value) {
+    constructor(value: T) {
         super('change');
         this.value = value;
     }
@@ -10,17 +10,16 @@ export class ValueChangeEvent extends Event {
 /**
  * Object storing a value and allowing subscribing to its changes.
  */
-export class ValueListenable extends EventTarget {
-    public value: any;
-    public dispatchEvent: any;
+export class ValueListenable<T> extends EventTarget {
+    public value: T;
 
-    constructor(value) {
+    constructor(value: T) {
         super();
 
         this.value = value;
     }
 
-    update(value) {
+    update(value: T) {
         if (this.value !== value) {
             this.value = value;
 
