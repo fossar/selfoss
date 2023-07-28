@@ -6,7 +6,10 @@ import React from 'react';
  * The full spec is at https://fatfreeframework.com/3.6/base#format and is
  * not fully implemented.
  */
-export function i18nFormat(translated, params) {
+export function i18nFormat(
+    translated: string,
+    params?: { [index: string]: string },
+): string {
     let formatted = '';
 
     let curChar;

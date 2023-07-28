@@ -3,50 +3,82 @@ import mergeDeepLeft from 'ramda/src/mergeDeepLeft.js';
 import pipe from 'ramda/src/pipe.js';
 import { HttpError, TimeoutError } from '../errors';
 
+type Headers = {
+    [index: string]: string;
+};
+
+type FetchOptions = {
+    body?: BodyInit | null;
+    method?: 'GET' | 'POST' | 'DELETE';
+    headers?: Headers;
+    abortController?: AbortController;
+    timeout?: number;
+    failOnHttpErrors?: boolean;
+    signal?: AbortSignal;
+};
+
+interface Fetch {
+    (url: RequestInfo | URL, opts?: RequestInit): Promise<Response>;
+}
+
+type AbortableFetchResult = {
+    controller: AbortController;
+    promise: Promise<Response>;
+};
+
+interface AbortableFetch {
+    (url: RequestInfo | URL, opts?: FetchOptions): AbortableFetchResult;
+}
+
 /**
  * Passing this function as a Promise handler will make the promise fail when the predicate is not true.
  */
-export const rejectUnless = (pred) => (response) => {
-    if (pred(response)) {
-        return response;
-    } else {
-        const err = new HttpError(response.statusText);
-        err.response = response;
-        throw err;
-    }
-};
+export function rejectUnless(
+    pred: (response: Response) => boolean,
+): (Response) => Response {
+    return (response: Response) => {
+        if (pred(response)) {
+            return response;
+        } else {
+            const err = new HttpError(response.statusText);
+            err.response = response;
+            throw err;
+        }
+    };
+}
 
 /**
  * fetch API considers a HTTP error a successful state.
  * Passing this function as a Promise handler will make the promise fail when HTTP error occurs.
  */
-export const rejectIfNotOkay = (response) => {
-    return rejectUnless((response) => response.ok)(response);
-};
+export function rejectIfNotOkay(response: Response): Response {
+    return rejectUnless((response: Response) => response.ok)(response);
+}
 
 /**
  * Override fetch options.
  */
 export const options =
-    (newOpts) =>
+    (newOpts: FetchOptions) =>
     (fetch) =>
-    (url, opts = {}) =>
+    (url: string, opts: FetchOptions = {}) =>
         fetch(url, mergeDeepLeft(opts, newOpts));
 
 /**
  * Override just a single fetch option.
  */
-export const option = (name, value) => options({ [name]: value });
+export const option = (name: string, value) => options({ [name]: value });
 
 /**
  * Override just headers in fetch.
  */
-export const headers = (value) => option('headers', value);
+export const headers = (value: Headers) => option('headers', value);
 
 /**
  * Override just a single header in fetch.
  */
-export const header = (name, value) => headers({ [name]: value });
+export const header = (name: string, value: string) =>
+    headers({ [name]: value });
 
 /**
  * Lift a wrapper function so that it can wrap a function returning more than just a Promise.
@@ -76,9 +108,8 @@ export const liftToPromiseField =
  * Wrapper for fetch that makes it cancellable using AbortController.
  * @return {controller: AbortController, promise: Promise}
  */
-export const makeAbortableFetch =
-    (fetch) =>
-    (url, opts = {}) => {
+export function makeAbortableFetch(fetch: Fetch): AbortableFetch {
+    return (url: string, opts: FetchOptions = {}) => {
         const controller = opts.abortController || new AbortController();
         const promise = fetch(url, {
             signal: controller.signal,
@@ -87,14 +118,16 @@ export const makeAbortableFetch =
 
         return { controller, promise };
     };
+}
 
 /**
  * Wrapper for abortable fetch that adds timeout support.
- * @return {controller: AbortController, promise: Promise}
+ * @return
  */
-export const makeFetchWithTimeout =
-    (abortableFetch) =>
-    (url, opts = {}) => {
+export function makeFetchWithTimeout(
+    abortableFetch: AbortableFetch,
+): AbortableFetch {
+    return (url: string, opts: FetchOptions = {}): AbortableFetchResult => {
         // offline db consistency requires ajax calls to fail reliably,
         // so we enforce a default timeout on ajax calls
         const { timeout = 60000, ...rest } = opts;
@@ -104,7 +137,7 @@ export const makeFetchWithTimeout =
             const newPromise = promise.catch((error) => {
                 // Change error name in case of time out so that we can
                 // distinguish it from explicit abort.
-                if (error.name === 'AbortError' && promise.timedOut) {
+                if (error.name === 'AbortError' && 'timedOut' in promise) {
                     error = new TimeoutError(
                         `Request timed out after ${timeout / 1000} seconds`,
                     );
@@ -114,7 +147,7 @@ export const makeFetchWithTimeout =
             });
 
             setTimeout(() => {
-                promise.timedOut = true;
+                (promise as { timedOut?: boolean }).timedOut = true;
                 controller.abort();
             }, timeout);
 
@@ -123,14 +156,13 @@ export const makeFetchWithTimeout =
 
         return { controller, promise };
     };
+}
 
 /**
  * Wrapper for fetch that makes it fail on HTTP errors.
- * @return Promise
  */
-export const makeFetchFailOnHttpErrors =
-    (fetch) =>
-    (url, opts = {}) => {
+export function makeFetchFailOnHttpErrors(fetch: Fetch): Fetch {
+    return (url: string, opts: FetchOptions = {}): Promise<Response> => {
         const { failOnHttpErrors = true, ...rest } = opts;
         const promise = fetch(url, rest);
 
@@ -140,13 +172,13 @@ export const makeFetchFailOnHttpErrors =
 
         return promise;
     };
+}
 
 /**
  * Wrapper for fetch that converts URLSearchParams body of GET requests to query string.
  */
-export const makeFetchSupportGetBody =
-    (fetch) =>
-    (url, opts = {}) => {
+export function makeFetchSupportGetBody(fetch: Fetch): Fetch {
+    return (url: string, opts: FetchOptions = {}) => {
         const { body, method, ...rest } = opts;
 
         let newUrl = url;
@@ -162,18 +194,18 @@ export const makeFetchSupportGetBody =
             // append the body to the query string
             newUrl = `${main}${separator}${body.toString()}#${fragments.join('#')}`;
             // remove the body since it has been moved to URL
-            newOpts = { method, rest };
+            newOpts = { method, ...rest };
         }
 
         return fetch(newUrl, newOpts);
     };
+}
 
 /**
  * Cancellable fetch with timeout support that rejects on HTTP errors.
  * In such case, the `response` will be member of the Error object.
- * @return {controller: AbortController, promise: Promise}
  */
-export const fetch = pipe(
+export const fetch: AbortableFetch = pipe(
     // Same as jQuery.ajax
     option('credentials', 'same-origin'),
     header('X-Requested-With', 'XMLHttpRequest'),
@@ -184,19 +216,26 @@ export const fetch = pipe(
     makeFetchWithTimeout,
 )(window.fetch);
 
-export const get = liftToPromiseField(option('method', 'GET'))(fetch);
+export const get: AbortableFetch = liftToPromiseField(option('method', 'GET'))(
+    fetch,
+);
 
-export const post = liftToPromiseField(option('method', 'POST'))(fetch);
+export const post: AbortableFetch = liftToPromiseField(
+    option('method', 'POST'),
+)(fetch);
 
-export const delete_ = liftToPromiseField(option('method', 'DELETE'))(fetch);
+export const delete_: AbortableFetch = liftToPromiseField(
+    option('method', 'DELETE'),
+)(fetch);
 
 /**
  * Using URLSearchParams directly handles dictionaries inconveniently.
  * For example, it joins arrays with commas or includes undefined keys.
  */
-export const makeSearchParams = (data) =>
-    new URLSearchParams(
+export function makeSearchParams(data: object): URLSearchParams {
+    return new URLSearchParams(
         formurlencoded(data, {
             ignorenull: true,
         }),
     );
+}
