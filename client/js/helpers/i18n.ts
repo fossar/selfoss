@@ -12,14 +12,14 @@ export function i18nFormat(
 ): string {
     let formatted = '';
 
-    let curChar = undefined;
+    let curChar;
     let buffer = '';
 
     let state = 'out';
-    let placeholder = undefined;
-    let plural = undefined;
-    let pluralKeyword = undefined;
-    let pluralValue = undefined;
+    let placeholder;
+    let plural;
+    let pluralKeyword;
+    let pluralValue;
 
     for (let i = 0, len = translated.length; i < len; i++) {
         curChar = translated.charAt(i);
