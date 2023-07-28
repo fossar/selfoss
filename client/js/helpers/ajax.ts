@@ -3,10 +3,23 @@ import mergeDeepLeft from 'ramda/src/mergeDeepLeft.js';
 import pipe from 'ramda/src/pipe.js';
 import { HttpError, TimeoutError } from '../errors';
 
+type Headers = {
+    [index: string]: string
+};
+
+type FetchOptions = {
+    body?: string,
+    method?: 'GET' | 'POST' | 'DELETE',
+    headers?: Headers,
+    abortController?: AbortController,
+    timeout?: number,
+    failOnHttpErrors?: boolean,
+};
+
 /**
  * Passing this function as a Promise handler will make the promise fail when the predicate is not true.
  */
-export const rejectUnless = (pred) => (response) => {
+export const rejectUnless = (pred: (response: Response) => boolean) => (response: Response) => {
     if (pred(response)) {
         return response;
     } else {
@@ -21,29 +34,29 @@ export const rejectUnless = (pred) => (response) => {
  * fetch API considers a HTTP error a successful state.
  * Passing this function as a Promise handler will make the promise fail when HTTP error occurs.
  */
-export const rejectIfNotOkay = (response) => {
-    return rejectUnless(response => response.ok)(response);
+export const rejectIfNotOkay = (response: Response) => {
+    return rejectUnless((response: Response) => response.ok)(response);
 };
 
 /**
  * Override fetch options.
  */
-export const options = (newOpts) => (fetch) => (url, opts = {}) => fetch(url, mergeDeepLeft(opts, newOpts));
+export const options = (newOpts: FetchOptions) => (fetch) => (url: string, opts: FetchOptions = {}) => fetch(url, mergeDeepLeft(opts, newOpts));
 
 /**
  * Override just a single fetch option.
  */
-export const option = (name, value) => options({ [name]: value });
+export const option = (name: string, value) => options({ [name]: value });
 
 /**
  * Override just headers in fetch.
  */
-export const headers = (value) => option('headers', value);
+export const headers = (value: Headers) => option('headers', value);
 
 /**
  * Override just a single header in fetch.
  */
-export const header = (name, value) => headers({ [name]: value });
+export const header = (name: string, value: string) => headers({ [name]: value });
 
 
 /**
@@ -72,7 +85,7 @@ export const liftToPromiseField = (wrapper) => (f) => (...params) => {
  * Wrapper for fetch that makes it cancellable using AbortController.
  * @return {controller: AbortController, promise: Promise}
  */
-export const makeAbortableFetch = (fetch) => (url, opts = {}) => {
+export const makeAbortableFetch = (fetch) => (url: string, opts: FetchOptions = {}) => {
     const controller = opts.abortController || new AbortController();
     const promise = fetch(url, {
         signal: controller.signal,
@@ -87,7 +100,7 @@ export const makeAbortableFetch = (fetch) => (url, opts = {}) => {
  * Wrapper for abortable fetch that adds timeout support.
  * @return {controller: AbortController, promise: Promise}
  */
-export const makeFetchWithTimeout = (abortableFetch) => (url, opts = {}) => {
+export const makeFetchWithTimeout = (abortableFetch) => (url: string, opts: FetchOptions = {}) => {
     // offline db consistency requires ajax calls to fail reliably,
     // so we enforce a default timeout on ajax calls
     const { timeout = 60000, ...rest } = opts;
@@ -120,7 +133,7 @@ export const makeFetchWithTimeout = (abortableFetch) => (url, opts = {}) => {
  * Wrapper for fetch that makes it fail on HTTP errors.
  * @return Promise
  */
-export const makeFetchFailOnHttpErrors = (fetch) => (url, opts = {}) => {
+export const makeFetchFailOnHttpErrors = (fetch) => (url: string, opts: FetchOptions = {}) => {
     const { failOnHttpErrors = true, ...rest } = opts;
     const promise = fetch(url, rest);
 
@@ -135,7 +148,7 @@ export const makeFetchFailOnHttpErrors = (fetch) => (url, opts = {}) => {
 /**
  * Wrapper for fetch that converts URLSearchParams body of GET requests to query string.
  */
-export const makeFetchSupportGetBody = (fetch) => (url, opts = {}) => {
+export const makeFetchSupportGetBody = (fetch) => (url: string, opts: FetchOptions = {}) => {
     const { body, method, ...rest } = opts;
 
     let newUrl = url;
@@ -146,7 +159,7 @@ export const makeFetchSupportGetBody = (fetch) => (url, opts = {}) => {
         // append the body to the query string
         newUrl = `${main}${separator}${body.toString()}#${fragments.join('#')}`;
         // remove the body since it has been moved to URL
-        newOpts = { method, rest };
+        newOpts = { method, ...rest };
     }
 
     return fetch(newUrl, newOpts);
