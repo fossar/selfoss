@@ -529,11 +529,6 @@ export function EntriesPage(props: EntriesPageProps) {
 const initialState = {
     entries: [],
     hasMore: false,
-    /**
-     * Currently selected entry.
-     * The id in the location.hash should imply the selected entry.
-     * It will also be used for keyboard navigation (for finding previous/next).
-     */
     selectedEntry: null,
     expandedEntries: {},
     loadingState: LoadingState.INITIAL,
@@ -549,7 +544,25 @@ type StateHolderProps = {
     unreadItemsCount: number;
 };
 
-export default class StateHolder extends React.Component {
+type StateHolderState = {
+    entries: Array<object>;
+    hasMore: boolean;
+    /**
+     * Currently selected entry.
+     * The id in the location.hash should imply the selected entry.
+     * It will also be used for keyboard navigation (for finding previous/next).
+     */
+    selectedEntry: number | null;
+    expandedEntries: {
+        [index: number]: boolean;
+    };
+    loadingState: LoadingState;
+};
+
+export default class StateHolder extends React.Component<
+    StateHolderProps,
+    StateHolderState
+> {
     constructor(props: StateHolderProps) {
         super(props);
         this.state = initialState;
@@ -589,9 +602,8 @@ export default class StateHolder extends React.Component {
 
     /**
      * Make the given entry currently selected one.
-     * @param {number|function(number): number} id of entry to select, or a function that transforms a previous id into a new one
      */
-    setSelectedEntry(selectedEntry) {
+    setSelectedEntry(selectedEntry: React.SetStateAction<number>): void {
         if (typeof selectedEntry === 'function') {
             this.setState((state) => ({
                 selectedEntry: selectedEntry(state.selectedEntry),
@@ -603,13 +615,14 @@ export default class StateHolder extends React.Component {
 
     /**
      * Get the currently selected entry.
-     * @return {number}
      */
-    getSelectedEntry() {
+    getSelectedEntry(): number {
         return this.state.selectedEntry;
     }
 
-    setExpandedEntries(expandedEntries) {
+    setExpandedEntries(
+        expandedEntries: React.SetStateAction<{ [index: number]: boolean }>,
+    ): void {
         if (typeof expandedEntries === 'function') {
             this.setState((state) => ({
                 expandedEntries: expandedEntries(state.expandedEntries),
@@ -619,7 +632,7 @@ export default class StateHolder extends React.Component {
         }
     }
 
-    setEntryExpanded(id, expand) {
+    setEntryExpanded(id: number, expand: React.SetStateAction<boolean>): void {
         if (typeof expand === 'function') {
             this.setExpandedEntries((oldEntries) => ({
                 ...oldEntries,
@@ -636,37 +649,33 @@ export default class StateHolder extends React.Component {
     /**
      * Collapse all expanded entries.
      */
-    collapseAllEntries() {
+    collapseAllEntries(): void {
         this.setExpandedEntries({});
     }
 
     /**
-     * Is given entry expanded?
-     * @param {number} id of entry to check
-     * @return {bool} whether it is expanded
+     * Is entry with given id expanded?
      */
-    isEntryExpanded(entry) {
-        return this.state.expandedEntries[entry] ?? false;
+    isEntryExpanded(id: number): boolean {
+        return this.state.expandedEntries[id] ?? false;
     }
 
     /**
-     * Toggle expanded state of given entry.
-     * @param {number} id of entry to toggle
+     * Toggle expanded state of entry with given id.
      */
-    toggleEntryExpanded(entry) {
-        if (!entry) {
+    toggleEntryExpanded(id: number): void {
+        if (!id) {
             return;
         }
 
-        this.setEntryExpanded(entry, (expanded) => !(expanded ?? false));
+        this.setEntryExpanded(id, (expanded) => !(expanded ?? false));
     }
 
     /**
      * Activate entry as if it were clicked.
      * This will open it, focus it and based on the settings, mark it as read.
-     * @param {number} id of entry
      */
-    activateEntry(id) {
+    activateEntry(id: number): void {
         if (this.props.configuration.autoCollapse) {
             this.collapseAllEntries();
         }
@@ -690,13 +699,12 @@ export default class StateHolder extends React.Component {
     /**
      * Deactivate entry, as if it were clicked.
      * This will close it and maybe something more.
-     * @param {number} id of entry
      */
-    deactivateEntry(id) {
+    deactivateEntry(id: number): void {
         this.setEntryExpanded(id, false);
     }
 
-    starEntryInView(id, starred) {
+    starEntryInView(id: number, starred: boolean): void {
         this.setEntries((entries) =>
             entries.map((entry) => {
                 if (entry.id === id) {
@@ -711,7 +719,7 @@ export default class StateHolder extends React.Component {
         );
     }
 
-    markEntryInView(id, unread) {
+    markEntryInView(id: number, unread: boolean): void {
         this.setEntries((entries) =>
             entries.map((entry) => {
                 if (entry.id === id) {
@@ -743,7 +751,7 @@ export default class StateHolder extends React.Component {
         });
     }
 
-    setHasMore(hasMore) {
+    setHasMore(hasMore: React.SetStateAction<boolean>): void {
         if (typeof hasMore === 'function') {
             this.setState((state) => ({
                 hasMore: hasMore(state.hasMore),
@@ -753,7 +761,7 @@ export default class StateHolder extends React.Component {
         }
     }
 
-    setLoadingState(loadingState) {
+    setLoadingState(loadingState: React.SetStateAction<LoadingState>): void {
         if (typeof loadingState === 'function') {
             this.setState((state) => ({
                 loadingState: loadingState(state.loadingState),
@@ -763,7 +771,7 @@ export default class StateHolder extends React.Component {
         }
     }
 
-    getActiveTag() {
+    getActiveTag(): string | null {
         if (!this.props.match) {
             return null;
         }
@@ -773,7 +781,7 @@ export default class StateHolder extends React.Component {
             : null;
     }
 
-    getActiveSource() {
+    getActiveSource(): number | null {
         if (!this.props.match) {
             return null;
         }
@@ -783,7 +791,7 @@ export default class StateHolder extends React.Component {
             : null;
     }
 
-    getActiveFilter() {
+    getActiveFilter(): string | null {
         if (!this.props.match) {
             return null;
         }
@@ -793,7 +801,7 @@ export default class StateHolder extends React.Component {
     /**
      * Mark all visible items as read
      */
-    markVisibleRead() {
+    markVisibleRead(): void {
         const ids = [];
         const tagUnreadDiff = {};
         const sourceUnreadDiff = {};
@@ -921,10 +929,8 @@ export default class StateHolder extends React.Component {
 
     /**
      * Requests for an entry to be marked read/unread in the model.
-     * @param {number} id of entry to mark
-     * @param {bool|'toggle'} true to mark read, false to mark unread
      */
-    markEntryRead(id, markRead?) {
+    markEntryRead(id: number, markRead: boolean | 'toggle'): void {
         // only loggedin users
         if (!selfoss.isAllowedToWrite()) {
             console.log('User not allowed to mark an entry (un)read.');
@@ -1001,10 +1007,8 @@ export default class StateHolder extends React.Component {
 
     /**
      * Requests for an entry to be marked (un)starred in the model.
-     * @param {number} id of entry to mark
-     * @param {bool|'toggle'} true to mark starred, false to mark unstarred
      */
-    markEntryStarred(id, markStarred?) {
+    markEntryStarred(id: number, markStarred: boolean | 'toggle'): void {
         // only loggedin users
         if (!selfoss.isAllowedToWrite()) {
             console.log('User not allowed to (un)star an entry.');
@@ -1068,7 +1072,7 @@ export default class StateHolder extends React.Component {
             });
     }
 
-    reload() {
+    reload(): void {
         /**
          * HACK: A counter that is increased every time reload action (r key) is triggered.
          */
@@ -1081,9 +1085,8 @@ export default class StateHolder extends React.Component {
 
     /**
      * get next/prev item
-     * @param direction
      */
-    nextPrev(direction, open = true) {
+    nextPrev(direction: Direction, open: boolean = true): void {
         if (direction != Direction.NEXT && direction != Direction.PREV) {
             throw new Error('direction must be one of Direction.{PREV,NEXT}');
         }
@@ -1153,9 +1156,8 @@ export default class StateHolder extends React.Component {
 
     /**
      * entry navigation (next/prev) with keys
-     * @param direction
      */
-    entryNav(direction) {
+    entryNav(direction: Direction): void {
         if (direction != Direction.NEXT && direction != Direction.PREV) {
             throw new Error('direction must be one of Direction.{PREV,NEXT}');
         }
@@ -1164,7 +1166,7 @@ export default class StateHolder extends React.Component {
         this.nextPrev(direction, open);
     }
 
-    jumpToNext() {
+    jumpToNext(): void {
         const selected = this.getSelectedEntry();
         if (selected !== null && !this.isEntryExpanded(selected)) {
             this.activateEntry(selected);
@@ -1173,7 +1175,7 @@ export default class StateHolder extends React.Component {
         }
     }
 
-    toggleSelectedStarred() {
+    toggleSelectedStarred(): void {
         const selected = this.getSelectedEntry();
 
         if (selected !== null) {
@@ -1181,7 +1183,7 @@ export default class StateHolder extends React.Component {
         }
     }
 
-    toggleSelectedRead() {
+    toggleSelectedRead(): void {
         const selected = this.getSelectedEntry();
 
         if (selected !== null) {
@@ -1189,11 +1191,11 @@ export default class StateHolder extends React.Component {
         }
     }
 
-    toggleSelectedExpanded() {
+    toggleSelectedExpanded(): void {
         this.toggleEntryExpanded(this.getSelectedEntry());
     }
 
-    openSelectedTarget() {
+    openSelectedTarget(): void {
         const selected = this.getSelectedEntry();
 
         if (selected !== null) {
@@ -1201,7 +1203,7 @@ export default class StateHolder extends React.Component {
         }
     }
 
-    openSelectedTargetAndMarkRead() {
+    openSelectedTargetAndMarkRead(): void {
         const selected = this.getSelectedEntry();
 
         if (selected !== null) {
@@ -1210,7 +1212,7 @@ export default class StateHolder extends React.Component {
         }
     }
 
-    throw(direction) {
+    throw(direction): void {
         const selected = this.getSelectedEntry();
 
         if (selected !== null) {
