@@ -1,12 +1,12 @@
-export const Direction = {
-    PREV: 'prev',
-    NEXT: 'next',
-};
+export enum Direction {
+    PREV = 'prev',
+    NEXT = 'next',
+}
 
 /**
  * autoscroll
  */
-export function autoScroll(target) {
+export function autoScroll(target: HTMLElement): void {
     const viewportHeight = document.body.clientHeight;
     const viewportScrollTop = window.scrollY;
     const targetBb = target.getBoundingClientRect();

@@ -256,7 +256,7 @@ selfoss.dbOffline = {
         });
     },
 
-    storeLastUpdate(lastUpdate) {
+    storeLastUpdate(lastUpdate: Date): Promise<void> {
         return selfoss.dbOffline._tr('rw', [selfoss.db.storage.stamps], () => {
             if (lastUpdate) {
                 selfoss.db.storage.stamps.put({
@@ -267,7 +267,7 @@ selfoss.dbOffline = {
         });
     },
 
-    getEntries(fetchParams) {
+    getEntries(fetchParams: FetchParams) {
         let hasMore = false;
         return selfoss.dbOffline
             ._tr('r', [selfoss.db.storage.entries], () => {

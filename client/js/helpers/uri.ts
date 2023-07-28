@@ -1,14 +1,11 @@
 import { useLocation, useMatch } from 'react-router';
+import { Location } from 'history';
 import { FilterType } from '../Filter';
 
 /**
  * Converts URL segment to FilterType value.
- *
- * @param {string}
- *
- * @returns {FilterType.*}
  */
-export function filterTypeFromString(type) {
+export function filterTypeFromString(type: string): FilterType {
     if (type == 'newest') {
         return FilterType.NEWEST;
     } else if (type == 'unread') {
@@ -22,12 +19,8 @@ export function filterTypeFromString(type) {
 
 /**
  * Converts FilterType value to string usable in URL.
- *
- * @param {FilterType.*}
- *
- * @returns {string}
  */
-export function filterTypeToString(type) {
+export function filterTypeToString(type: FilterType): string {
     if (type == FilterType.NEWEST) {
         return 'newest';
     } else if (type == FilterType.UNREAD) {
@@ -59,10 +52,17 @@ export function useEntriesParams() {
     return params;
 }
 
+type EntriesLinkParams = {
+    filter?: FilterType;
+    category?: string;
+    id?: number;
+    search?: string;
+};
+
 export function makeEntriesLinkLocation(
-    location,
-    { filter, category, id, search },
-) {
+    location: Location,
+    { filter, category, id, search }: EntriesLinkParams,
+): { pathname: string; search: string } {
     const queryString = new URLSearchParams(location.search);
 
     let path;
@@ -97,13 +97,16 @@ export function makeEntriesLinkLocation(
     };
 }
 
-export function makeEntriesLink(location, params) {
+export function makeEntriesLink(
+    location: Location,
+    params: EntriesLinkParams,
+): string {
     const { pathname, search } = makeEntriesLinkLocation(location, params);
 
     return pathname + (search !== '' ? `?${search}` : '');
 }
 
-export function forceReload(location) {
+export function forceReload(location: Location): LocationState {
     const state = location.state ?? {};
 
     return {
@@ -112,7 +115,7 @@ export function forceReload(location) {
     };
 }
 
-export function useForceReload() {
+export function useForceReload(): LocationState {
     const location = useLocation();
     return forceReload(location);
 }
