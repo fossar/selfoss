@@ -29,6 +29,7 @@ import { LoadingState } from '../requests/LoadingState';
 import * as sourceRequests from '../requests/sources';
 import locales from '../locales';
 import { useEntriesParams } from '../helpers/uri';
+import { NavSource, NavTag } from '../requests/items';
 
 type MessageAction = {
     label: string;
@@ -454,71 +455,82 @@ type AppProps = {
     configuration: object;
 };
 
-export class App extends React.Component {
-    public state: any;
-    public setState: React.Dispatch<React.SetStateAction<any>>;
-    public props: AppProps;
+type AppState = {
+    /**
+     * tag repository
+     */
+    tags: Array<NavTag>;
+    tagsState: LoadingState;
 
+    /**
+     * source repository
+     */
+    sources: Array<NavSource>;
+    sourcesState: LoadingState;
+
+    /**
+     * true when sources in the sidebar are expanded
+     * and we should fetch info about them in API requests.
+     */
+    navSourcesExpanded: boolean;
+
+    /**
+     * whether off-line mode is enabled
+     */
+    offlineState: boolean;
+
+    /**
+     * number of unread items
+     */
+    unreadItemsCount: number;
+
+    /**
+     * number of unread items available offline
+     */
+    unreadItemsOfflineCount: number;
+
+    /**
+     * number of starred items
+     */
+    starredItemsCount: number;
+
+    /**
+     * number of starred items available offline
+     */
+    starredItemsOfflineCount: number;
+
+    /**
+     * number of all items
+     */
+    allItemsCount: number;
+
+    /**
+     * number of all items available offline
+     */
+    allItemsOfflineCount: number;
+
+    /**
+     * Global message popup.
+     */
+    globalMessage: GlobalMessage | null;
+};
+
+export class App extends React.Component<AppProps, AppState> {
     constructor(props: AppProps) {
         super(props);
         this.state = {
-            /**
-             * tag repository
-             */
             tags: [],
             tagsState: LoadingState.INITIAL,
-
-            /**
-             * source repository
-             */
             sources: [],
             sourcesState: LoadingState.INITIAL,
-
-            /**
-             * true when sources in the sidebar are expanded
-             * and we should fetch info about them in API requests.
-             */
             navSourcesExpanded: false,
-
-            /**
-             * whether off-line mode is enabled
-             */
             offlineState: false,
-
-            /**
-             * number of unread items
-             */
             unreadItemsCount: 0,
-
-            /**
-             * number of unread items available offline
-             */
             unreadItemsOfflineCount: 0,
-
-            /**
-             * number of starred items
-             */
             starredItemsCount: 0,
-
-            /**
-             * number of starred items available offline
-             */
             starredItemsOfflineCount: 0,
-
-            /**
-             * number of all items
-             */
             allItemsCount: 0,
-
-            /**
-             * number of all items available offline
-             */
             allItemsOfflineCount: 0,
-
-            /**
-             * Global message popup.
-             * @var ?Object.{message: string, actions: Array.<Object.{label: string, callback: function>}, isError: bool}
-             */
             globalMessage: null,
         };
 
@@ -669,7 +681,9 @@ export class App extends React.Component {
         }
     }
 
-    setGlobalMessage(globalMessage) {
+    setGlobalMessage(
+        globalMessage: React.SetStateAction<GlobalMessage | null>,
+    ) {
         if (typeof globalMessage === 'function') {
             this.setState((state) => ({
                 globalMessage: globalMessage(state.globalMessage),
@@ -681,9 +695,8 @@ export class App extends React.Component {
 
     /**
      * Triggers fetching news from all sources.
-     * @return Promise<undefined>
      */
-    reloadAll() {
+    reloadAll(): Promise<undefined> {
         if (!selfoss.isOnline()) {
             return Promise.resolve();
         }
@@ -716,11 +729,8 @@ export class App extends React.Component {
 
     /**
      * Obtain a localized message for given key, substituting placeholders for values, when given.
-     * @param string key
-     * @param ?array parameters
-     * @return string
      */
-    _(identifier, params?) {
+    _(identifier: string, params?: { [index: string]: string }): string {
         const fallbackLanguage = 'en';
         const langKey = `lang_${identifier}`;
 
@@ -753,27 +763,23 @@ export class App extends React.Component {
 
     /**
      * Show error message in the message bar in the UI.
-     *
-     * @param {string} message
-     * @return void
      */
-    showError(message) {
+    showError(message: string): void {
         this.showMessage(message, [], true);
     }
 
     /**
      * Show message in the message bar in the UI.
-     *
-     * @param {string} message
-     * @param {Array.<Object.{label: string, callback: function>} actions
-     * @param {bool} isError
-     * @return void
      */
-    showMessage(message, actions = [], isError = false) {
+    showMessage(
+        message: string,
+        actions: Array<MessageAction> = [],
+        isError: boolean = false,
+    ): void {
         this.setGlobalMessage({ message, actions, isError });
     }
 
-    notifyNewVersion(cb) {
+    notifyNewVersion(cb: () => void): void {
         if (!cb) {
             cb = () => {
                 window.location.reload();
