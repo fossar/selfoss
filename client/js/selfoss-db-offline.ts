@@ -371,7 +371,7 @@ selfoss.dbOffline = {
 
     enqueueStatus(entryId, statusName, statusValue) {
         return selfoss.dbOffline.enqueueStatuses([{
-            entryId: entryId,
+            entryId,
             name: statusName,
             value: statusValue
         }]);
@@ -466,7 +466,7 @@ selfoss.dbOffline = {
     entriesMark(itemIds, unread) {
         selfoss.dbOnline.statsDirty = true;
         const newStatuses = itemIds.map((itemId) => {
-            return {id: itemId, unread: unread};
+            return {id: itemId, unread};
         });
         return selfoss.dbOffline.storeEntryStatuses(newStatuses);
     },
@@ -480,7 +480,7 @@ selfoss.dbOffline = {
     entryStar(itemId, starred) {
         return selfoss.dbOffline.storeEntryStatuses([{
             id: itemId,
-            starred: starred
+            starred
         }]);
     }
 
