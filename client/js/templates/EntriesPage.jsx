@@ -843,12 +843,15 @@ export default class StateHolder extends React.Component {
         itemsRequests.markAll(ids).then(() => {
             this.setLoadingState(LoadingState.SUCCESS);
 
-            this.dispatchEntries({
-                type: LOAD_MORE,
-                payload: {
-                    entries: oldEntries,
-                },
-            });
+            if (this.props.match.params.filter === FilterType.UNREAD) {
+                // We cleared out the entries page, load more.
+                this.dispatchEntries({
+                    type: LOAD_MORE,
+                    payload: {
+                        entries: oldEntries,
+                    },
+                });
+            }
         }).catch((error) => {
             selfoss.handleAjaxError(error).then(() => {
                 const statuses = ids.map((id) => ({
