@@ -3,7 +3,7 @@ import * as itemsRequests from './requests/items';
 import { LoadingState } from './requests/LoadingState';
 import { FilterType } from './Filter';
 
-selfoss.dbOnline = {
+const dbOnline = {
     syncing: {
         promise: null,
         request: null,
@@ -304,3 +304,5 @@ selfoss.dbOnline = {
             });
     },
 };
+
+export default dbOnline;

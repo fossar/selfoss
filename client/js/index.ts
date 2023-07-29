@@ -1,10 +1,7 @@
 import 'regenerator-runtime/runtime';
-import selfoss from './selfoss-base';
-import './selfoss-db-online';
-import './selfoss-db-offline';
-import './selfoss-db';
+import base from './selfoss-base';
 
-selfoss.init();
+base.init();
 
 declare global {
     interface Window {
@@ -13,4 +10,4 @@ declare global {
 }
 
 // make selfoss available in console for debugging
-window.selfoss = selfoss;
+window.selfoss = base;
