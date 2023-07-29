@@ -100,7 +100,7 @@ export default function LoginForm({ offlineEnabled }) {
     const _ = useContext(LocalizationContext);
 
     return (
-        <React.Fragment>
+        <>
             {loading ? <SpinnerBig label={_('login_in_progress')} /> : null}
             <form
                 action=""
@@ -165,7 +165,7 @@ export default function LoginForm({ offlineEnabled }) {
                     </li>
                 </ul>
             </form>
-        </React.Fragment>
+        </>
     );
 }
 

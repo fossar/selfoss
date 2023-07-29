@@ -61,13 +61,13 @@ function Tag({ tag, active, collapseNav }) {
                 {tag === null ? (
                     _('alltags')
                 ) : (
-                    <React.Fragment>
+                    <>
                         <span className="tag">{unescape(tag.tag)}</span>
                         <span className="unread">
                             {tag.unread > 0 ? tag.unread : ''}
                         </span>
                         <ColorChooser tag={tag} onChange={colorChanged} />
-                    </React.Fragment>
+                    </>
                 )}
             </Link>
         </li>
@@ -103,7 +103,7 @@ export default function NavTags({ setNavExpanded, tags }) {
     const _ = useContext(LocalizationContext);
 
     return (
-        <React.Fragment>
+        <>
             <h2>
                 <button
                     type="button"
@@ -145,7 +145,7 @@ export default function NavTags({ setNavExpanded, tags }) {
                     ))}
                 </ul>
             </Collapse>
-        </React.Fragment>
+        </>
     );
 }
 

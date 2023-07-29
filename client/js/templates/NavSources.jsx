@@ -130,7 +130,7 @@ export default function NavSources({
     const _ = useContext(LocalizationContext);
 
     return (
-        <React.Fragment>
+        <>
             <h2>
                 <button
                     type="button"
@@ -170,7 +170,7 @@ export default function NavSources({
                     ))}
                 </ul>
             </Collapse>
-        </React.Fragment>
+        </>
     );
 }
 

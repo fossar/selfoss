@@ -535,10 +535,10 @@ export default function Item({
 
             {/* author */}
             {author !== null ? (
-                <React.Fragment>
+                <>
                     <span className="entry-author">{author}</span>
                     <span className="entry-separator">•</span>
-                </React.Fragment>
+                </>
             ) : null}
 
             {/* datetime */}
@@ -557,7 +557,7 @@ export default function Item({
 
             {/* read time */}
             {configuration.readingSpeed !== null ? (
-                <React.Fragment>
+                <>
                     <span className="entry-separator">•</span>
                     <span className="entry-readtime">
                         {_('article_reading_time', [
@@ -566,7 +566,7 @@ export default function Item({
                             ),
                         ])}
                     </span>
-                </React.Fragment>
+                </>
             ) : null}
 
             {/* thumbnail */}

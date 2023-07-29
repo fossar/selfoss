@@ -191,7 +191,7 @@ export default function SourcesPage() {
     }
 
     return (
-        <React.Fragment>
+        <>
             <button className="source-add" onClick={addOnClick}>
                 {_('source_add')}
             </button>
@@ -220,6 +220,6 @@ export default function SourcesPage() {
             ) : (
                 <p>{_('no_sources')}</p>
             )}
-        </React.Fragment>
+        </>
     );
 }

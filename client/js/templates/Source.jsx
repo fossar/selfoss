@@ -514,10 +514,10 @@ function SourceEditForm({
                         {_('source_save')}
 
                         {sourceActionLoading && (
-                            <React.Fragment>
+                            <>
                                 {' '}
                                 <Spinner label={_('source_saving')} />
-                            </React.Fragment>
+                            </>
                         )}
                     </button>
                     {' • '}
@@ -655,7 +655,7 @@ export default function Source({
             </h2>{' '}
             <div className="source-edit-delete">
                 {!editedSource && (
-                    <React.Fragment>
+                    <>
                         <button
                             type="button"
                             accessKey="e"
@@ -673,7 +673,7 @@ export default function Source({
                             )}
                         </button>
                         {' • '}
-                    </React.Fragment>
+                    </>
                 )}
                 <Menu
                     onItemClick={extraMenuOnSelection}
@@ -681,10 +681,10 @@ export default function Source({
                         <MenuButton className="source-menu-button">
                             {_('source_menu')}
                             {sourceBeingDeleted && (
-                                <React.Fragment>
+                                <>
                                     {' '}
                                     <Spinner label={_('source_deleting')} />
-                                </React.Fragment>
+                                </>
                             )}
                         </MenuButton>
                     }

@@ -435,7 +435,7 @@ export function EntriesPage({
     }
 
     return (
-        <React.Fragment>
+        <>
             {currentSource !== null && allowedToUpdate && isOnline ? (
                 <button
                     type="button"
@@ -514,7 +514,7 @@ export function EntriesPage({
                     </button>
                 ) : null}
             </div>
-        </React.Fragment>
+        </>
     );
 }
 

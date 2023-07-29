@@ -5,7 +5,7 @@ import * as icons from '../icons';
 
 export function Spinner({ label, size }) {
     return (
-        <React.Fragment>
+        <>
             <FontAwesomeIcon
                 icon={icons.spinner}
                 size={size}
@@ -16,7 +16,7 @@ export function Spinner({ label, size }) {
             <span className="visually-hidden" role="alert">
                 {label}
             </span>
-        </React.Fragment>
+        </>
     );
 }
 
