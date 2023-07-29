@@ -1,4 +1,9 @@
-import React from 'react';
+import React, {
+    useCallback,
+    useContext,
+    useEffect,
+    useState,
+} from 'react';
 import { useMemo } from 'react';
 import { Prompt } from 'react-router';
 import { Link, useHistory, useLocation, useRouteMatch } from 'react-router-dom';
@@ -91,10 +96,10 @@ function loadSources({ abortController, location, setSpouts, setSources, setLoad
 }
 
 export default function SourcesPage() {
-    const [spouts, setSpouts] = React.useState([]);
-    const [sources, setSources] = React.useState([]);
+    const [spouts, setSpouts] = useState([]);
+    const [sources, setSources] = useState([]);
 
-    const [loadingState, setLoadingState] = React.useState(LoadingState.INITIAL);
+    const [loadingState, setLoadingState] = useState(LoadingState.INITIAL);
 
     const forceReload = useShouldReload();
 
@@ -102,7 +107,7 @@ export default function SourcesPage() {
     const location = useLocation();
     const isAdding = useRouteMatch('/manage/sources/add');
 
-    React.useEffect(() => {
+    useEffect(() => {
         const abortController = new AbortController();
 
         loadSources({ abortController, location, setSpouts, setSources, setLoadingState })
@@ -134,14 +139,14 @@ export default function SourcesPage() {
         // to prevent reloading when the presets are cleaned from the URL.
     ]);
 
-    const addOnClick = React.useCallback(
+    const addOnClick = useCallback(
         (event) => handleAddSource({ event, setSources, setSpouts }),
         []
     );
 
-    const _ = React.useContext(LocalizationContext);
+    const _ = useContext(LocalizationContext);
 
-    const [dirtySources, setDirtySources] = React.useState({});
+    const [dirtySources, setDirtySources] = useState({});
     const isDirty = useMemo(
         () => Object.values(dirtySources).includes(true),
         [dirtySources]

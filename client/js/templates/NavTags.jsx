@@ -1,4 +1,8 @@
-import React from 'react';
+import React, {
+    useContext,
+    useCallback,
+    useState,
+} from 'react';
 import PropTypes from 'prop-types';
 import nullable from 'prop-types-nullable';
 import { Link, useRouteMatch } from 'react-router-dom';
@@ -13,10 +17,10 @@ import * as icons from '../icons';
 import { LocalizationContext } from '../helpers/i18n';
 
 function Tag({ tag, active, collapseNav }) {
-    const _ = React.useContext(LocalizationContext);
+    const _ = useContext(LocalizationContext);
     const tagName = tag !== null ? tag.tag : null;
 
-    const colorChanged = React.useCallback(
+    const colorChanged = useCallback(
         ({ value }) => {
             updateTag(
                 tagName,
@@ -31,7 +35,7 @@ function Tag({ tag, active, collapseNav }) {
     );
 
     const category = tag === null ? 'all' : `tag-${tag.tag}`;
-    const link = React.useCallback(
+    const link = useCallback(
         (location) => ({
             ...location,
             ...makeEntriesLinkLocation(location, {
@@ -75,7 +79,7 @@ Tag.propTypes = {
 };
 
 export default function NavTags({ setNavExpanded, tags }) {
-    const [expanded, setExpanded] = React.useState(true);
+    const [expanded, setExpanded] = useState(true);
 
     // useParams does not seem to work.
     const match = useRouteMatch(ENTRIES_ROUTE_PATTERN);
@@ -84,17 +88,17 @@ export default function NavTags({ setNavExpanded, tags }) {
     const currentAllTags = params.category === 'all';
     const currentTag = params.category?.startsWith('tag-') ? params.category.replace(/^tag-/, '') : null;
 
-    const toggleExpanded = React.useCallback(
+    const toggleExpanded = useCallback(
         () => setExpanded((expanded) => !expanded),
         []
     );
 
-    const collapseNav = React.useCallback(
+    const collapseNav = useCallback(
         () => setNavExpanded(false),
         [setNavExpanded]
     );
 
-    const _ = React.useContext(LocalizationContext);
+    const _ = useContext(LocalizationContext);
 
     return (
         <React.Fragment>

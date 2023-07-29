@@ -1,5 +1,9 @@
 import PropTypes from 'prop-types';
-import React, { useCallback, useState } from 'react';
+import React, {
+    useCallback,
+    useEffect,
+    useState,
+} from 'react';
 import { useHistory } from 'react-router-dom';
 import { useInput } from 'rooks';
 import { LoadingState } from '../requests/LoadingState';
@@ -36,7 +40,7 @@ export default function HashPassword({
         });
     }, [history, passwordEntry.value]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         setTitle('selfoss password hash generator');
 
         return () => {

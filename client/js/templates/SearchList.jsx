@@ -1,4 +1,7 @@
-import React from 'react';
+import React, {
+    useCallback,
+    useMemo,
+} from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useLocation, useHistory } from 'react-router-dom';
@@ -57,7 +60,7 @@ function SearchWord({ regexSearch, index, item }) {
     const location = useLocation();
     const history = useHistory();
 
-    const removeOnClick = React.useCallback(
+    const removeOnClick = useCallback(
         () => handleRemove({ index, location, history, regexSearch }),
         [index, location, history, regexSearch]
     );
@@ -82,7 +85,7 @@ SearchWord.propTypes = {
 export default function SearchList() {
     const location = useLocation();
 
-    const searchText = React.useMemo(() => {
+    const searchText = useMemo(() => {
         const queryString = new URLSearchParams(location.search);
 
         return queryString.get('search') ?? '';

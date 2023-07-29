@@ -1,4 +1,11 @@
-import React, { useState } from 'react';
+import React, {
+    useCallback,
+    useContext,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+} from 'react';
 import PropTypes from 'prop-types';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import { usePreviousImmediate } from 'rooks';
@@ -142,7 +149,7 @@ function ShareButton({
     action,
     showLabel = true,
 }) {
-    const shareOnClick = React.useCallback(
+    const shareOnClick = useCallback(
         (event) => {
             event.preventDefault();
             event.stopPropagation();
@@ -182,12 +189,12 @@ ShareButton.propTypes = {
 };
 
 function ItemTag({tag, color}) {
-    const style = React.useMemo(
+    const style = useMemo(
         () => ({ color: color.foreColor, backgroundColor: color.backColor }),
         [color]
     );
 
-    const link = React.useCallback(
+    const link = useCallback(
         (location) => ({
             ...location,
             ...makeEntriesLinkLocation(location, { category: `tag-${tag}`, id: null }),
@@ -238,25 +245,25 @@ function datetimeRelative(currentTime, datetime) {
 export default function Item({ currentTime, item, selected, expanded, setNavExpanded }) {
     const { title, author, sourcetitle } = item;
 
-    const [fullScreenTrap, setFullScreenTrap] = React.useState(null);
-    const [imagesLoaded, setImagesLoaded] = React.useState(false);
-    const contentBlock = React.useRef(null);
+    const [fullScreenTrap, setFullScreenTrap] = useState(null);
+    const [imagesLoaded, setImagesLoaded] = useState(false);
+    const contentBlock = useRef(null);
 
     const location = useLocation();
     const history = useHistory();
 
-    const relDate = React.useMemo(
+    const relDate = useMemo(
         () => datetimeRelative(currentTime, item.datetime),
         [currentTime, item.datetime]
     );
 
     const previouslyExpanded = usePreviousImmediate(expanded);
-    const configuration = React.useContext(ConfigurationContext);
+    const configuration = useContext(ConfigurationContext);
 
     const [slides, setSlides] = useState([]);
     const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(null);
 
-    React.useEffect(() => {
+    useEffect(() => {
         // Handle entry becoming/ceasing to be expanded.
         const parent = document.querySelector(`.entry[data-entry-id="${item.id}"]`);
         if (expanded) {
@@ -342,7 +349,7 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
         }
     }, [configuration, expanded, item.content, item.id, setNavExpanded]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         // Handle autoHideReadOnMobile setting.
         if (selfoss.isSmartphone() && !expanded && previouslyExpanded) {
             const autoHideReadOnMobile = configuration.autoHideReadOnMobile && item.unread == 1;
@@ -352,17 +359,17 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
         }
     }, [configuration, expanded, item.id, item.unread, previouslyExpanded]);
 
-    const entryOnClick = React.useCallback(
+    const entryOnClick = useCallback(
         (event) => handleClick({ event, history, location, expanded, id: item.id, target: '.entry' }),
         [history, location, expanded, item.id]
     );
 
-    const titleOnClick = React.useCallback(
+    const titleOnClick = useCallback(
         (event) => handleClick({ event, history, location, expanded, id: item.id, target: '.entry-title' }),
         [history, location, expanded, item.id]
     );
 
-    const starOnClick = React.useCallback(
+    const starOnClick = useCallback(
         (event) => {
             event.preventDefault();
             event.stopPropagation();
@@ -371,7 +378,7 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
         [item]
     );
 
-    const markReadOnClick = React.useCallback(
+    const markReadOnClick = useCallback(
         (event) => {
             event.preventDefault();
             event.stopPropagation();
@@ -380,22 +387,22 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
         [item]
     );
 
-    const loadImagesOnClick = React.useCallback(
+    const loadImagesOnClick = useCallback(
         (event) => loadImages({ event, setImagesLoaded, contentBlock }),
         []
     );
 
-    const closeOnClick = React.useCallback(
+    const closeOnClick = useCallback(
         (event) => closeFullScreen({ event, history, location, entryId: item.id }),
         [history, location, item.id]
     );
 
-    const titleHtml = React.useMemo(
+    const titleHtml = useMemo(
         () => ({ __html: title ? title : selfoss.app._('no_title') }),
         [title]
     );
 
-    const sourceLink = React.useCallback(
+    const sourceLink = useCallback(
         (location) => ({
             ...location,
             ...makeEntriesLinkLocation(location, { category: `source-${item.source}`, id: null }),
@@ -406,7 +413,7 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
 
     const canWrite = useAllowedToWrite();
 
-    const _ = React.useContext(LocalizationContext);
+    const _ = useContext(LocalizationContext);
 
     const sharers = useSharers({ configuration, _ });
 

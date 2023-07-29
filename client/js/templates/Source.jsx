@@ -1,4 +1,9 @@
-import React from 'react';
+import React, {
+    useCallback,
+    useContext,
+    useEffect,
+    useState,
+} from 'react';
 import { useRef } from 'react';
 import { Menu, MenuButton, MenuItem } from '@szhsin/react-menu';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -285,7 +290,7 @@ function SourceEditForm({
     setDirty,
 }) {
     const sourceId = source.id;
-    const updateEditedSource = React.useCallback(
+    const updateEditedSource = useCallback(
         (changes) => {
             setDirty(true);
             if (typeof changes === 'function') {
@@ -297,22 +302,22 @@ function SourceEditForm({
         [setEditedSource, setDirty]
     );
 
-    const titleOnChange = React.useCallback(
+    const titleOnChange = useCallback(
         (event) => updateEditedSource({ title: event.target.value }),
         [updateEditedSource]
     );
 
-    const tagsOnChange = React.useCallback(
+    const tagsOnChange = useCallback(
         (event) => updateEditedSource({ tags: event.target.value }),
         [updateEditedSource]
     );
 
-    const filterOnChange = React.useCallback(
+    const filterOnChange = useCallback(
         (event) => updateEditedSource({ filter: event.target.value }),
         [updateEditedSource]
     );
 
-    const spoutOnChange = React.useCallback(
+    const spoutOnChange = useCallback(
         (event) =>
             handleSpoutChange({
                 event,
@@ -324,7 +329,7 @@ function SourceEditForm({
         [setSpouts, updateEditedSource, setSourceParamsLoading, setSourceParamsError]
     );
 
-    const saveOnClick = React.useCallback(
+    const saveOnClick = useCallback(
         (event) => {
             setDirty(false);
             handleSave({
@@ -340,7 +345,7 @@ function SourceEditForm({
         [setSources, source, setEditedSource, setSourceActionLoading, setJustSavedTimeout, setSourceErrors, setDirty]
     );
 
-    const cancelOnClick = React.useCallback(
+    const cancelOnClick = useCallback(
         (event) => {
             event.preventDefault();
 
@@ -363,7 +368,7 @@ function SourceEditForm({
         [source, sourceElem, setSources, setEditedSource, dirty, setDirty]
     );
 
-    const _ = React.useContext(LocalizationContext);
+    const _ = useContext(LocalizationContext);
 
     const sourceParamsContent = (
         sourceParamsLoading ? (
@@ -567,17 +572,17 @@ export default function Source({ source, setSources, spouts, setSpouts, dirty, s
         error: source.error && source.error.length > 0
     };
 
-    const [editedSource, setEditedSource] = React.useState(
+    const [editedSource, setEditedSource] = useState(
         isNew ? { ...source } : null
     );
-    const [sourceActionLoading, setSourceActionLoading] = React.useState(false);
-    const [sourceBeingDeleted, setSourceBeingDeleted] = React.useState(false);
-    const [sourceParamsLoading, setSourceParamsLoading] = React.useState(false);
-    const [justSavedTimeout, setJustSavedTimeout] = React.useState(null);
-    const [sourceParamsError, setSourceParamsError] = React.useState(null);
-    const [sourceErrors, setSourceErrors] = React.useState({});
+    const [sourceActionLoading, setSourceActionLoading] = useState(false);
+    const [sourceBeingDeleted, setSourceBeingDeleted] = useState(false);
+    const [sourceParamsLoading, setSourceParamsLoading] = useState(false);
+    const [justSavedTimeout, setJustSavedTimeout] = useState(null);
+    const [sourceParamsError, setSourceParamsError] = useState(null);
+    const [sourceErrors, setSourceErrors] = useState({});
 
-    React.useEffect(() => {
+    useEffect(() => {
         // Prevent timeout from trying to update state after unmount.
         const oldTimeout = justSavedTimeout;
         return () => {
@@ -587,12 +592,12 @@ export default function Source({ source, setSources, spouts, setSpouts, dirty, s
         };
     }, [justSavedTimeout]);
 
-    const editOnClick = React.useCallback(
+    const editOnClick = useCallback(
         (event) => handleEdit({ event, source, setEditedSource }),
         [source]
     );
 
-    const setDirty = React.useCallback(
+    const setDirty = useCallback(
         (dirty) => {
             setDirtySources((dirtySources) => ({
                 ...dirtySources,
@@ -607,7 +612,7 @@ export default function Source({ source, setSources, spouts, setSpouts, dirty, s
 
     const sourceElem = useRef(null);
 
-    const extraMenuOnSelection = React.useCallback(
+    const extraMenuOnSelection = useCallback(
         ({ value }) => {
             if (value === 'delete') {
                 handleDelete({
@@ -624,7 +629,7 @@ export default function Source({ source, setSources, spouts, setSpouts, dirty, s
         [source, sourceElem, setSources, setDirty, location, history]
     );
 
-    const _ = React.useContext(LocalizationContext);
+    const _ = useContext(LocalizationContext);
 
     return (
         <li

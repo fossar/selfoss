@@ -1,4 +1,10 @@
-import React from 'react';
+import React, {
+    useCallback,
+    useContext,
+    useEffect,
+    useMemo,
+    useState,
+} from 'react';
 import PropTypes from 'prop-types';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { useOnline } from 'rooks';
@@ -192,11 +198,11 @@ export function EntriesPage({
 }) {
     const allowedToUpdate = useAllowedToUpdate();
     const allowedToWrite = useAllowedToWrite();
-    const configuration = React.useContext(ConfigurationContext);
+    const configuration = useContext(ConfigurationContext);
 
     const location = useLocation();
     const forceReload = useShouldReload();
-    const searchText = React.useMemo(() => {
+    const searchText = useMemo(() => {
         const queryString = new URLSearchParams(location.search);
 
         return queryString.get('search') ?? '';
@@ -220,20 +226,20 @@ export function EntriesPage({
     // Cache the item id from initial URL so that we can fetch it
     // but do not re-fetch when the id in the URI changes later
     // since that happens when reading.
-    const initialItemId = React.useMemo(() => {
+    const initialItemId = useMemo(() => {
         return parseInt(params.id, 10);
     }, [params.filter, currentTag, currentSource, searchText, forceReload]);
     // Same for the state of navigation being expanded.
     // It is only passed to the API request as a part of optimization scheme
     // so there is no need for it to trigger refresh of the entries.
-    const initialNavSourcesExpanded = React.useMemo(() => {
+    const initialNavSourcesExpanded = useMemo(() => {
         return navSourcesExpanded;
     }, [params.filter, currentTag, currentSource, searchText]);
 
-    const [moreLoadingState, setMoreLoadingState] = React.useState(LoadingState.INITIAL);
+    const [moreLoadingState, setMoreLoadingState] = useState(LoadingState.INITIAL);
 
     // Perform the scheduled reload.
-    React.useEffect(() => {
+    useEffect(() => {
         const append = fromId !== undefined || fromDatetime !== undefined;
         const abortController = new AbortController();
 
@@ -271,7 +277,7 @@ export function EntriesPage({
         };
     }, [configuration, params.filter, currentTag, currentSource, initialNavSourcesExpanded, searchText, fromDatetime, fromId, initialItemId, setLoadingState, forceReload]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         // scroll load more
         function onScroll() {
             const streamMoreButton = document.querySelector('.stream-more');
@@ -296,7 +302,7 @@ export function EntriesPage({
         }
     }, [configuration, hasMore, moreLoadingState]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         // setup periodic server status sync
         const interval = window.setInterval(selfoss.db.sync, 60 * 1000);
 
@@ -305,7 +311,7 @@ export function EntriesPage({
         };
     }, []);
 
-    React.useEffect(() => {
+    useEffect(() => {
         setGlobalUnreadCount(unreadItemsCount);
 
         return () => {
@@ -315,12 +321,12 @@ export function EntriesPage({
 
     const isOnline = useOnline();
 
-    const refreshOnClick = React.useCallback(
+    const refreshOnClick = useCallback(
         (event) => handleRefreshSource({ event, source: currentSource, setLoadingState, setNavExpanded, reload }),
         [currentSource, setLoadingState, setNavExpanded, reload]
     );
 
-    const moreOnClick = React.useCallback(
+    const moreOnClick = useCallback(
         (event) => {
             event.preventDefault();
             const lastEntry = entries[entries.length - 1];
@@ -333,8 +339,8 @@ export function EntriesPage({
     );
 
     // Current time for calculating relative dates in items.
-    const [currentTime, setCurrentTime] = React.useState(null);
-    React.useEffect(() => {
+    const [currentTime, setCurrentTime] = useState(null);
+    useEffect(() => {
         setCurrentTime(new Date());
 
         const tick = window.setInterval(() => {
@@ -346,7 +352,7 @@ export function EntriesPage({
         };
     }, []);
 
-    const _ = React.useContext(LocalizationContext);
+    const _ = useContext(LocalizationContext);
 
     if (loadingState === LoadingState.LOADING) {
         return (

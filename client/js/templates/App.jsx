@@ -1,4 +1,7 @@
 import React, {
+    useCallback,
+    useContext,
+    useEffect,
     useState,
 } from 'react';
 import PropTypes from 'prop-types';
@@ -54,7 +57,7 @@ function dismissMessage(event) {
  */
 function Message({ message }) {
     // Whenever message changes, dismiss it after 15 seconds.
-    React.useEffect(() => {
+    useEffect(() => {
         if (message !== null) {
             const dismissTimeout = window.setTimeout(function() {
                 selfoss.app.setGlobalMessage(null);
@@ -87,7 +90,7 @@ Message.propTypes = {
 
 function NotFound() {
     const location = useLocation();
-    const _ = React.useContext(LocalizationContext);
+    const _ = useContext(LocalizationContext);
     return (
         <p>
             {_('error_invalid_subsection') + location.pathname}
@@ -143,13 +146,13 @@ function PureApp({
     tags,
     reloadAll,
 }) {
-    const [navExpanded, setNavExpanded] = React.useState(false);
+    const [navExpanded, setNavExpanded] = useState(false);
     const smartphone = useIsSmartphone();
     const offlineEnabled = useListenableValue(selfoss.db.enableOffline);
-    const [entriesPage, setEntriesPage] = React.useState(null);
-    const configuration = React.useContext(ConfigurationContext);
+    const [entriesPage, setEntriesPage] = useState(null);
+    const configuration = useContext(ConfigurationContext);
 
-    React.useEffect(() => {
+    useEffect(() => {
         // init shortcut handler
         const destroyShortcuts = makeShortcuts();
 
@@ -160,7 +163,7 @@ function PureApp({
 
     // TODO: move stuff that depends on this to the App.
     const history = useHistory();
-    React.useEffect(() => {
+    useEffect(() => {
         selfoss.history = history;
     }, [history]);
 
@@ -170,12 +173,12 @@ function PureApp({
         homePagePath.push('all');
     }
 
-    const menuButtonOnClick = React.useCallback(
+    const menuButtonOnClick = useCallback(
         (event) => handleNavToggle({ event, setNavExpanded }),
         []
     );
 
-    const entriesRef = React.useCallback(
+    const entriesRef = useCallback(
         (entriesPage) => {
             setEntriesPage(entriesPage);
             selfoss.entriesPage = entriesPage;
@@ -185,11 +188,11 @@ function PureApp({
 
     const [title, setTitle] = useState(null);
     const [globalUnreadCount, setGlobalUnreadCount] = useState(null);
-    React.useEffect(() => {
+    useEffect(() => {
         document.title = (title ?? configuration.htmlTitle) + ((globalUnreadCount ?? 0) > 0 ? ` (${globalUnreadCount})` : '');
     }, [configuration, title, globalUnreadCount]);
 
-    const _ = React.useContext(LocalizationContext);
+    const _ = useContext(LocalizationContext);
 
     const isAllowedToRead = useAllowedToRead();
     const isAllowedToWrite = useAllowedToWrite();

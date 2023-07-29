@@ -1,4 +1,8 @@
-import React from 'react';
+import React, {
+    useCallback,
+    useContext,
+    useState,
+} from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -28,21 +32,21 @@ function handleLogOut({ setNavExpanded }) {
 }
 
 export default function NavToolBar({ reloadAll, setNavExpanded }) {
-    const [reloading, setReloading] = React.useState(false);
+    const [reloading, setReloading] = useState(false);
 
-    const refreshOnClick = React.useCallback(
+    const refreshOnClick = useCallback(
         () => handleReloadAll({ reloadAll, setReloading, setNavExpanded }),
         [reloadAll, setNavExpanded]
     );
 
-    const settingsOnClick = React.useCallback(
+    const settingsOnClick = useCallback(
         () => {
             setNavExpanded(false);
         },
         [setNavExpanded]
     );
 
-    const settingsLink = React.useCallback(
+    const settingsLink = useCallback(
         (location) => ({
             ...location,
             pathname: '/manage/sources',
@@ -51,7 +55,7 @@ export default function NavToolBar({ reloadAll, setNavExpanded }) {
         []
     );
 
-    const logoutOnClick = React.useCallback(
+    const logoutOnClick = useCallback(
         () => handleLogOut({ setNavExpanded }),
         [setNavExpanded]
     );
@@ -60,10 +64,10 @@ export default function NavToolBar({ reloadAll, setNavExpanded }) {
     const canRefreshAll = useAllowedToUpdate();
     const canVisitSettings = useAllowedToWrite();
     const canLogOut = isLoggedIn;
-    const configuration = React.useContext(ConfigurationContext);
+    const configuration = useContext(ConfigurationContext);
     const canLogIn = !isLoggedIn && configuration.authEnabled;
 
-    const _ = React.useContext(LocalizationContext);
+    const _ = useContext(LocalizationContext);
 
     return (
         <div className="nav-toolbar">

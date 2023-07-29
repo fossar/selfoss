@@ -1,4 +1,8 @@
-import React from 'react';
+import React, {
+    useCallback,
+    useContext,
+    useEffect,
+} from 'react';
 import PropTypes from 'prop-types';
 import { Link, useRouteMatch } from 'react-router-dom';
 import { usePreviousImmediate } from 'rooks';
@@ -34,7 +38,7 @@ function handleTitleClick({ setExpanded, sourcesState, setSourcesState, setSourc
 }
 
 function Source({ source, active, collapseNav }) {
-    const link = React.useCallback(
+    const link = useCallback(
         (location) => ({
             ...location,
             ...makeEntriesLinkLocation(location, { category: `source-${source.id}`, id: null }),
@@ -77,24 +81,24 @@ export default function NavSources({
     const params = match !== null ? match.params : {};
     const currentSource = params.category?.startsWith('source-') ? parseInt(params.category.replace(/^source-/, ''), 10) : null;
 
-    const toggleExpanded = React.useCallback(
+    const toggleExpanded = useCallback(
         () => handleTitleClick({ setExpanded: setNavSourcesExpanded, sourcesState, setSourcesState, setSources }),
         [setNavSourcesExpanded, sourcesState, setSourcesState, setSources]
     );
 
-    const collapseNav = React.useCallback(
+    const collapseNav = useCallback(
         () => setNavExpanded(false),
         [setNavExpanded]
     );
 
     const previousSourcesState = usePreviousImmediate(sourcesState);
-    React.useEffect(() => {
+    useEffect(() => {
         if (previousSourcesState === LoadingState.INITIAL && sourcesState === LoadingState.SUCCESS) {
             setNavSourcesExpanded(true);
         }
     }, [previousSourcesState, sourcesState, setNavSourcesExpanded]);
 
-    const _ = React.useContext(LocalizationContext);
+    const _ = useContext(LocalizationContext);
 
     return (
         <React.Fragment>

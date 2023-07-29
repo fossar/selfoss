@@ -1,3 +1,3 @@
-import React from 'react';
+import { createContext } from 'react';
 
-export const ConfigurationContext = React.createContext();
+export const ConfigurationContext = createContext();

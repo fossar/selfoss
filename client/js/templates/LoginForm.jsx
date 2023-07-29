@@ -1,4 +1,8 @@
-import React from 'react';
+import React, {
+    useCallback,
+    useContext,
+    useState,
+} from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { SpinnerBig } from './Spinner';
@@ -44,18 +48,18 @@ function handleLogIn({
 export default function LoginForm({
     offlineEnabled,
 }) {
-    const [username, setUsername] = React.useState('');
-    const [password, setPassword] = React.useState('');
-    const [loading, setLoading] = React.useState(false);
-    const [enableOffline, setEnableOffline] = React.useState(offlineEnabled);
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [enableOffline, setEnableOffline] = useState(offlineEnabled);
 
-    const configuration = React.useContext(ConfigurationContext);
+    const configuration = useContext(ConfigurationContext);
     const history = useHistory();
     const location = useLocation();
     const error = location?.state?.error;
     const returnLocation = location?.state?.returnLocation ?? '/';
 
-    const formOnSubmit = React.useCallback(
+    const formOnSubmit = useCallback(
         (event) =>
             handleLogIn({
                 event,
@@ -70,22 +74,22 @@ export default function LoginForm({
         [configuration, history, username, password, enableOffline, returnLocation]
     );
 
-    const usernameOnChange = React.useCallback(
+    const usernameOnChange = useCallback(
         (event) => setUsername(event.target.value),
         []
     );
 
-    const passwordOnChange = React.useCallback(
+    const passwordOnChange = useCallback(
         (event) => setPassword(event.target.value),
         []
     );
 
-    const offlineOnChange = React.useCallback(
+    const offlineOnChange = useCallback(
         (event) => setEnableOffline(event.target.checked),
         [setEnableOffline]
     );
 
-    const _ = React.useContext(LocalizationContext);
+    const _ = useContext(LocalizationContext);
 
     return (
         <React.Fragment>

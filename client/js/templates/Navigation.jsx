@@ -1,4 +1,6 @@
-import React from 'react';
+import React, {
+    useContext,
+} from 'react';
 import PropTypes from 'prop-types';
 import nullable from 'prop-types-nullable';
 import classNames from 'classnames';
@@ -33,7 +35,7 @@ export default function Navigation({
     tags,
     reloadAll,
 }) {
-    const _ = React.useContext(LocalizationContext);
+    const _ = useContext(LocalizationContext);
 
     const canWrite = useAllowedToWrite();
 

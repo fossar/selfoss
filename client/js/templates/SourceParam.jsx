@@ -1,4 +1,7 @@
-import React from 'react';
+import React, {
+    useCallback,
+    useContext,
+} from 'react';
 import PropTypes from 'prop-types';
 import { LocalizationContext } from '../helpers/i18n';
 
@@ -11,7 +14,7 @@ export default function SourceParam({
     setEditedSource,
     setDirty,
 }) {
-    const updateSourceParam = React.useCallback(
+    const updateSourceParam = useCallback(
         (event) => {
             setDirty(true);
             setEditedSource(({ params, ...restSource }) => ({
@@ -25,7 +28,7 @@ export default function SourceParam({
         [setEditedSource, setDirty, spoutParamName]
     );
 
-    const updateSourceParamBool = React.useCallback(
+    const updateSourceParamBool = useCallback(
         (event) =>
             updateSourceParam({
                 target: {
@@ -41,7 +44,7 @@ export default function SourceParam({
         spoutParamName in params ? params[spoutParamName] : spoutParam.default;
     let control = null;
 
-    const _ = React.useContext(LocalizationContext);
+    const _ = useContext(LocalizationContext);
 
     if (['text', 'checkbox', 'url'].includes(spoutParam.type)) {
         let checked = undefined;

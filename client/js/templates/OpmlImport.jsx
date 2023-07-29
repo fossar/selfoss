@@ -1,5 +1,10 @@
+import React, {
+    useCallback,
+    useEffect,
+    useRef,
+    useState,
+} from 'react';
 import PropTypes from 'prop-types';
-import React, { useCallback, useRef, useState } from 'react';
 import { useOnline } from 'rooks';
 import { Link, useHistory } from 'react-router-dom';
 import { LoadingState } from '../requests/LoadingState';
@@ -75,7 +80,7 @@ export default function OpmlImport({
         });
     }, [history]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         setTitle('selfoss OPML importer');
 
         return () => {

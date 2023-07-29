@@ -1,4 +1,8 @@
-import React from 'react';
+import React, {
+    useCallback,
+    useContext,
+    useState,
+} from 'react';
 import PropTypes from 'prop-types';
 import { Link, useRouteMatch } from 'react-router-dom';
 import classNames from 'classnames';
@@ -19,23 +23,23 @@ export default function NavFilters({
     starredItemsCount,
     starredItemsOfflineCount,
 }) {
-    const [expanded, setExpanded] = React.useState(true);
+    const [expanded, setExpanded] = useState(true);
 
     // useParams does not seem to work.
     const match = useRouteMatch(ENTRIES_ROUTE_PATTERN);
     const params = match !== null ? match.params : {};
 
-    const toggleExpanded = React.useCallback(
+    const toggleExpanded = useCallback(
         () => setExpanded((expanded) => !expanded),
         []
     );
 
-    const collapseNav = React.useCallback(
+    const collapseNav = useCallback(
         () => setNavExpanded(false),
         [setNavExpanded]
     );
 
-    const newestLink = React.useCallback(
+    const newestLink = useCallback(
         (location) => ({
             ...location,
             ...makeEntriesLinkLocation(location, { filter: FilterType.NEWEST, id: null }),
@@ -44,7 +48,7 @@ export default function NavFilters({
         []
     );
 
-    const unreadLink = React.useCallback(
+    const unreadLink = useCallback(
         (location) => ({
             ...location,
             ...makeEntriesLinkLocation(location, { filter: FilterType.UNREAD, id: null }),
@@ -53,7 +57,7 @@ export default function NavFilters({
         []
     );
 
-    const starredLink = React.useCallback(
+    const starredLink = useCallback(
         (location) => ({
             ...location,
             ...makeEntriesLinkLocation(location, { filter: FilterType.STARRED, id: null }),
@@ -62,7 +66,7 @@ export default function NavFilters({
         []
     );
 
-    const _ = React.useContext(LocalizationContext);
+    const _ = useContext(LocalizationContext);
 
     return (
         <div id="nav-filter-wrapper">

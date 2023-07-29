@@ -1,4 +1,10 @@
-import React from 'react';
+import React, {
+    useCallback,
+    useContext,
+    useEffect,
+    useRef,
+    useState,
+} from 'react';
 import PropTypes from 'prop-types';
 import { useLocation, useHistory } from 'react-router-dom';
 import classNames from 'classnames';
@@ -49,25 +55,25 @@ function handleRemove({ setActive, searchField, history, location }) {
 }
 
 export default function NavSearch({ setNavExpanded, offlineState }) {
-    const [active, setActive] = React.useState(false);
+    const [active, setActive] = useState(false);
 
-    const searchField = React.useRef(null);
-    const searchButton = React.useRef(null);
-    const searchRemoveButton = React.useRef(null);
+    const searchField = useRef(null);
+    const searchButton = useRef(null);
+    const searchRemoveButton = useRef(null);
 
     const location = useLocation();
     const history = useHistory();
 
     const queryString = new URLSearchParams(location.search);
     const oldTerm = queryString.get('search') ?? '';
-    const [searchText, setSearchText] = React.useState('');
+    const [searchText, setSearchText] = useState('');
 
-    React.useEffect(() => {
+    useEffect(() => {
         // Update the search term when the query string changes.
         setSearchText(oldTerm);
     }, [oldTerm]);
 
-    const termOnKeyUp = React.useCallback(
+    const termOnKeyUp = useCallback(
         (event) =>
             handleFieldKeyUp({
                 event,
@@ -77,22 +83,22 @@ export default function NavSearch({ setNavExpanded, offlineState }) {
         []
     );
 
-    const termOnChange = React.useCallback(
+    const termOnChange = useCallback(
         (event) => setSearchText(event.target.value),
         []
     );
 
-    const removeOnClick = React.useCallback(
+    const removeOnClick = useCallback(
         () => handleRemove({ setActive, searchField, history, location }),
         [history, location]
     );
 
-    const searchOnClick = React.useCallback(
+    const searchOnClick = useCallback(
         () => handleSubmit({ active, setActive, searchField, searchText, history, location, setNavExpanded }),
         [active, searchText, history, location, setNavExpanded]
     );
 
-    const _ = React.useContext(LocalizationContext);
+    const _ = useContext(LocalizationContext);
 
     return (
         <div
