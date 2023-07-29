@@ -329,6 +329,14 @@ export function EntriesPage({
     const moreOnClick = useCallback(
         (event) => {
             event.preventDefault();
+
+            if (entries.length === 0) {
+                // If there are no entries (e.g. after clicking “Mark as read” button in “Unread” filter mode),
+                // keep the old offsets. This can also happen when switching to an empty source/tag but
+                // then `hasMore` should be false so the offset from wrong source/tag are moot.
+                return;
+            }
+
             const lastEntry = entries[entries.length - 1];
 
             // Calculate offset.
@@ -753,8 +761,8 @@ export default class StateHolder extends React.Component {
         this.setExpandedEntries({});
         this.props.setNavExpanded(false);
 
-        if (ids.length !== 0 && this.props.match.params.filter === FilterType.UNREAD) {
-            markedEntries = markedEntries.filter(({ id }) => !ids.includes(id));
+        if (this.props.match.params.filter === FilterType.UNREAD) {
+            markedEntries = markedEntries.filter(({ id }) => parseInt(this.props.match.params.id ?? null, 10) === id);
         }
 
         this.setLoadingState(LoadingState.LOADING);
@@ -790,6 +798,11 @@ export default class StateHolder extends React.Component {
 
         itemsRequests.markAll(ids).then(() => {
             this.setLoadingState(LoadingState.SUCCESS);
+
+            requestAnimationFrame(() => {
+                // attempt to load more
+                document.querySelector('.stream-more')?.click();
+            });
         }).catch((error) => {
             selfoss.handleAjaxError(error).then(() => {
                 const statuses = ids.map((id) => ({
