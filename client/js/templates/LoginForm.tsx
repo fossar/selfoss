@@ -116,7 +116,7 @@ export default function LoginForm(props: LoginFormProps) {
     const _ = useContext(LocalizationContext);
 
     return (
-        <React.Fragment>
+        <>
             {loading ? <SpinnerBig label={_('login_in_progress')} /> : null}
             <form
                 action=""
@@ -181,6 +181,6 @@ export default function LoginForm(props: LoginFormProps) {
                     </li>
                 </ul>
             </form>
-        </React.Fragment>
+        </>
     );
 }
