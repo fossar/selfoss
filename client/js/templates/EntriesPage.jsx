@@ -843,9 +843,11 @@ export default class StateHolder extends React.Component {
         itemsRequests.markAll(ids).then(() => {
             this.setLoadingState(LoadingState.SUCCESS);
 
-            requestAnimationFrame(() => {
-                // attempt to load more
-                document.querySelector('.stream-more')?.click();
+            this.dispatchEntries({
+                type: LOAD_MORE,
+                payload: {
+                    entries: oldEntries,
+                },
             });
         }).catch((error) => {
             selfoss.handleAjaxError(error).then(() => {
