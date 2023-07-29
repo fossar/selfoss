@@ -4,7 +4,7 @@ import Dexie from 'dexie';
 import { OfflineDb } from './model/OfflineDb';
 import { FilterType } from './Filter';
 
-selfoss.dbOffline = {
+const dbOffline = {
     /** @var Date the datetime of the newest garbage collected entry, i.e. deleted because not of interest. */
     newestGCedEntry: null,
     offlineDays: 10,
@@ -533,3 +533,5 @@ selfoss.dbOffline = {
         ]);
     },
 };
+
+export default dbOffline;

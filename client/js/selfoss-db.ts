@@ -13,7 +13,7 @@ import selfoss from './selfoss-base';
 import { OfflineStorageNotAvailableError } from './errors';
 import { ValueListenable } from './helpers/ValueListenable';
 
-selfoss.db = {
+const db = {
     /** When an error occurs we disable the offline mode and mark the database as broken so it can be retried. */
     broken: false,
     storage: null,
@@ -102,3 +102,5 @@ selfoss.db = {
         }
     },
 };
+
+export default db;
