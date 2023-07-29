@@ -207,15 +207,15 @@ const selfoss = {
 
         navigator.serviceWorker.addEventListener(
             'controllerchange',
-            function() {
+            () => {
                 window.location.reload();
             },
         );
 
         navigator.serviceWorker.register(new URL('../selfoss-sw-offline.js', import.meta.url), { type: 'module' })
-            .then(function(reg) {
-                selfoss.listenWaitingSW(reg, function(reg) {
-                    selfoss.app.notifyNewVersion(function() {
+            .then((reg) => {
+                selfoss.listenWaitingSW(reg, (reg) => {
+                    selfoss.app.notifyNewVersion(() => {
                         if (reg.waiting) {
                             reg.waiting.postMessage('skipWaiting');
                         }
@@ -234,8 +234,8 @@ const selfoss = {
                 caches.keys().then(keys => keys.forEach(key => caches.delete(key)));
             }
 
-            navigator.serviceWorker.getRegistrations().then(function(registrations) {
-                registrations.forEach(function(reg) {
+            navigator.serviceWorker.getRegistrations().then((registrations) => {
+                registrations.forEach((reg) => {
                     reg.unregister();
                 });
             });
@@ -404,13 +404,13 @@ const selfoss = {
 
 
     listenWaitingSW: function(reg, callback) {
-        function awaitStateChange() {
-            reg.installing.addEventListener('statechange', function() {
-                if (this.state === 'installed') {
+        const awaitStateChange = () => {
+            reg.installing.addEventListener('statechange', (event) => {
+                if (event.target.state === 'installed') {
                     callback(reg);
                 }
             });
-        }
+        };
 
         if (!reg) {
             return;
