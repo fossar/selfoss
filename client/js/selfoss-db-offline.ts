@@ -1,6 +1,7 @@
 import selfoss from './selfoss-base';
 import { OfflineStorageNotAvailableError } from './errors';
 import Dexie from 'dexie';
+import { OfflineDb } from './model/OfflineDb';
 import { FilterType } from './Filter';
 
 const ENTRY_STATUS_NAMES = ['unread', 'starred'];
@@ -40,15 +41,7 @@ selfoss.dbOffline = {
         }
 
         selfoss.db.broken = false;
-        selfoss.db.storage = new Dexie('selfoss');
-        selfoss.db.storage.version(1).stores({
-            entries: '&id,*datetime,[datetime+id]',
-            statusq: '++id,*entryId',
-            stamps: '&name,datetime',
-            stats: '&name',
-            tags: '&name',
-            sources: '&id',
-        });
+        selfoss.db.storage = new OfflineDb();
 
         selfoss.db.storage.on('populate', () => {
             selfoss.db.storage.stats.add({ name: 'unread', value: 0 });
