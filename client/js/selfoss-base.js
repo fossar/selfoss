@@ -22,11 +22,6 @@ const selfoss = {
     app: null,
 
     /**
-     * the html title configured
-     */
-    htmlTitle: 'selfoss',
-
-    /**
      * React component for entries page.
      */
     entriesPage: null,
@@ -37,10 +32,6 @@ const selfoss = {
      * Whether lightbox is open.
      */
     lightboxActive: new ValueListenable(false),
-
-    windowLoaded: new Promise((resolve) => {
-        window.addEventListener('load', () => resolve());
-    }),
 
     /**
      * initialize application
