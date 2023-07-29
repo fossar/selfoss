@@ -329,14 +329,6 @@ export function EntriesPage({
     const moreOnClick = useCallback(
         (event) => {
             event.preventDefault();
-
-            if (entries.length === 0) {
-                // If there are no entries (e.g. after clicking “Mark as read” button in “Unread” filter mode),
-                // keep the old offsets. This can also happen when switching to an empty source/tag but
-                // then `hasMore` should be false so the offset from wrong source/tag are moot.
-                return;
-            }
-
             const lastEntry = entries[entries.length - 1];
 
             // Calculate offset.
