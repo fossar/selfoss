@@ -12,20 +12,6 @@ function safeDate(datetimeString) {
 }
 
 /**
- * Get list of entries.
- */
-export function getEntries(params) {
-    const { controller, promise } = ajax.get('', {
-        body: ajax.makeSearchParams({
-            ...params,
-            fromDatetime: params.fromDatetime ? params.fromDatetime.toISOString() : params.fromDatetime
-        })
-    });
-
-    return { controller, promise };
-}
-
-/**
  * Mark items with given ids as read.
  */
 export function markAll(ids) {
