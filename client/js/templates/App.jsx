@@ -423,9 +423,11 @@ export default class App extends React.Component {
 
     setTags(tags) {
         if (typeof tags === 'function') {
-            this.setState({
-                tags: tags(this.state.tags)
-            });
+            this.setState(
+                (state) => ({
+                    tags: tags(state.tags),
+                })
+            );
         } else {
             this.setState({ tags });
         }
@@ -433,9 +435,11 @@ export default class App extends React.Component {
 
     setTagsState(tagsState) {
         if (typeof tagsState === 'function') {
-            this.setState({
-                tagsState: tagsState(this.state.tagsState)
-            });
+            this.setState(
+                (state) => ({
+                    tagsState: tagsState(state.tagsState),
+                })
+            );
         } else {
             this.setState({ tagsState });
         }
@@ -443,9 +447,11 @@ export default class App extends React.Component {
 
     setSources(sources) {
         if (typeof sources === 'function') {
-            this.setState({
-                sources: sources(this.state.sources)
-            });
+            this.setState(
+                (state) => ({
+                    sources: sources(state.sources),
+                })
+            );
         } else {
             this.setState({ sources });
         }
@@ -453,9 +459,11 @@ export default class App extends React.Component {
 
     setSourcesState(sourcesState) {
         if (typeof sourcesState === 'function') {
-            this.setState({
-                sourcesState: sourcesState(this.state.sourcesState)
-            });
+            this.setState(
+                (state) => ({
+                    sourcesState: sourcesState(state.sourcesState),
+                })
+            );
         } else {
             this.setState({ sourcesState });
         }
@@ -463,9 +471,11 @@ export default class App extends React.Component {
 
     setOfflineState(offlineState) {
         if (typeof offlineState === 'function') {
-            this.setState({
-                offlineState: offlineState(this.state.offlineState)
-            });
+            this.setState(
+                (state) => ({
+                    offlineState: offlineState(state.offlineState),
+                })
+            );
         } else {
             this.setState({ offlineState });
         }
@@ -473,9 +483,11 @@ export default class App extends React.Component {
 
     setNavSourcesExpanded(navSourcesExpanded) {
         if (typeof navSourcesExpanded === 'function') {
-            this.setState({
-                navSourcesExpanded: navSourcesExpanded(this.state.navSourcesExpanded)
-            });
+            this.setState(
+                (state) => ({
+                    navSourcesExpanded: navSourcesExpanded(state.navSourcesExpanded),
+                })
+            );
         } else {
             this.setState({ navSourcesExpanded });
         }
@@ -483,9 +495,11 @@ export default class App extends React.Component {
 
     setUnreadItemsCount(unreadItemsCount) {
         if (typeof unreadItemsCount === 'function') {
-            this.setState({
-                unreadItemsCount: unreadItemsCount(this.state.unreadItemsCount)
-            });
+            this.setState(
+                (state) => ({
+                    unreadItemsCount: unreadItemsCount(state.unreadItemsCount),
+                })
+            );
         } else {
             this.setState({ unreadItemsCount });
         }
@@ -493,9 +507,11 @@ export default class App extends React.Component {
 
     setUnreadItemsOfflineCount(unreadItemsOfflineCount) {
         if (typeof unreadItemsOfflineCount === 'function') {
-            this.setState({
-                unreadItemsOfflineCount: unreadItemsOfflineCount(this.state.unreadItemsOfflineCount)
-            });
+            this.setState(
+                (state) => ({
+                    unreadItemsOfflineCount: unreadItemsOfflineCount(state.unreadItemsOfflineCount),
+                })
+            );
         } else {
             this.setState({ unreadItemsOfflineCount });
         }
@@ -503,9 +519,11 @@ export default class App extends React.Component {
 
     setStarredItemsCount(starredItemsCount) {
         if (typeof starredItemsCount === 'function') {
-            this.setState({
-                starredItemsCount: starredItemsCount(this.state.starredItemsCount)
-            });
+            this.setState(
+                (state) => ({
+                    starredItemsCount: starredItemsCount(state.starredItemsCount),
+                })
+            );
         } else {
             this.setState({ starredItemsCount });
         }
@@ -513,9 +531,11 @@ export default class App extends React.Component {
 
     setStarredItemsOfflineCount(starredItemsOfflineCount) {
         if (typeof starredItemsOfflineCount === 'function') {
-            this.setState({
-                starredItemsOfflineCount: starredItemsOfflineCount(this.state.starredItemsOfflineCount)
-            });
+            this.setState(
+                (state) => ({
+                    starredItemsOfflineCount: starredItemsOfflineCount(state.starredItemsOfflineCount),
+                })
+            );
         } else {
             this.setState({ starredItemsOfflineCount });
         }
@@ -523,9 +543,11 @@ export default class App extends React.Component {
 
     setAllItemsCount(allItemsCount) {
         if (typeof allItemsCount === 'function') {
-            this.setState({
-                allItemsCount: allItemsCount(this.state.allItemsCount)
-            });
+            this.setState(
+                (state) => ({
+                    allItemsCount: allItemsCount(state.allItemsCount),
+                })
+            );
         } else {
             this.setState({ allItemsCount });
         }
@@ -533,9 +555,11 @@ export default class App extends React.Component {
 
     setAllItemsOfflineCount(allItemsOfflineCount) {
         if (typeof allItemsOfflineCount === 'function') {
-            this.setState({
-                allItemsOfflineCount: allItemsOfflineCount(this.state.allItemsOfflineCount)
-            });
+            this.setState(
+                (state) => ({
+                    allItemsOfflineCount: allItemsOfflineCount(state.allItemsOfflineCount),
+                })
+            );
         } else {
             this.setState({ allItemsOfflineCount });
         }
@@ -543,9 +567,11 @@ export default class App extends React.Component {
 
     setGlobalMessage(globalMessage) {
         if (typeof globalMessage === 'function') {
-            this.setState({
-                globalMessage: globalMessage(this.state.globalMessage)
-            });
+            this.setState(
+                (state) => ({
+                    globalMessage: globalMessage(state.globalMessage),
+                })
+            );
         } else {
             this.setState({ globalMessage });
         }

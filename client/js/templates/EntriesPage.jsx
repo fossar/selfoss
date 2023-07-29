@@ -479,7 +479,11 @@ export default class StateHolder extends React.Component {
 
     setEntries(entries) {
         if (typeof entries === 'function') {
-            this.setState({ entries: entries(this.state.entries) });
+            this.setState(
+                (state) => ({
+                    entries: entries(state.entries),
+                })
+            );
         } else {
             this.setState({ entries });
         }
@@ -495,7 +499,11 @@ export default class StateHolder extends React.Component {
      */
     setSelectedEntry(selectedEntry) {
         if (typeof selectedEntry === 'function') {
-            this.setState({ selectedEntry: selectedEntry(this.state.selectedEntry) });
+            this.setState(
+                (state) => ({
+                    selectedEntry: selectedEntry(state.selectedEntry),
+                })
+            );
         } else {
             this.setState({ selectedEntry });
         }
@@ -511,9 +519,11 @@ export default class StateHolder extends React.Component {
 
     setExpandedEntries(expandedEntries) {
         if (typeof expandedEntries === 'function') {
-            this.setState({
-                expandedEntries: expandedEntries(this.state.expandedEntries)
-            });
+            this.setState(
+                (state) => ({
+                    expandedEntries: expandedEntries(state.expandedEntries)
+                })
+            );
         } else {
             this.setState({ expandedEntries });
         }
@@ -650,7 +660,11 @@ export default class StateHolder extends React.Component {
 
     setHasMore(hasMore) {
         if (typeof hasMore === 'function') {
-            this.setState({ hasMore: hasMore(this.state.hasMore) });
+            this.setState(
+                (state) => ({
+                    hasMore: hasMore(state.hasMore),
+                })
+            );
         } else {
             this.setState({ hasMore });
         }
@@ -658,7 +672,11 @@ export default class StateHolder extends React.Component {
 
     setLoadingState(loadingState) {
         if (typeof loadingState === 'function') {
-            this.setState({ loadingState: loadingState(this.state.loadingState) });
+            this.setState(
+                (state) => ({
+                    loadingState: loadingState(state.loadingState),
+                })
+            );
         } else {
             this.setState({ loadingState });
         }
