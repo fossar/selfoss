@@ -58,7 +58,7 @@ export default function Navigation(props: NavigationProps): JSX.Element {
     const canWrite = useAllowedToWrite();
 
     return (
-        <React.Fragment>
+        <>
             <div id="nav-logo"></div>
             {canWrite && (
                 <button
@@ -133,6 +133,6 @@ export default function Navigation(props: NavigationProps): JSX.Element {
             />
 
             <NavToolBar reloadAll={reloadAll} setNavExpanded={setNavExpanded} />
-        </React.Fragment>
+        </>
     );
 }
