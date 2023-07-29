@@ -7,6 +7,9 @@ import { HttpError, TimeoutError } from './errors';
 import { Configuration } from './model/Configuration';
 import { LoadingState } from './requests/LoadingState';
 import { App, createApp } from './templates/App';
+import dbOnline from './selfoss-db-online';
+import dbOffline from './selfoss-db-offline';
+import db from './selfoss-db';
 
 /**
  * base javascript application
@@ -15,29 +18,32 @@ import { App, createApp } from './templates/App';
  * @copyright  Copyright (c) Tobias Zeising (http://www.aditu.de)
  * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  */
-const selfoss = {
+class selfoss {
     /**
      * The main App component.
-     * @var App
      */
-    app: null,
+    public static app: App | null = null;
 
     /**
      * React component for entries page.
      */
-    entriesPage: null,
+    public static entriesPage = null;
 
-    serviceWorkerInitialized: false,
+    private static serviceWorkerInitialized = false;
 
     /**
      * Whether lightbox is open.
      */
-    lightboxActive: new ValueListenable(false),
+    private static lightboxActive = new ValueListenable(false);
+
+    public static db = db;
+    public static dbOnline = dbOnline;
+    public static dbOffline = dbOffline;
 
     /**
      * initialize application
      */
-    async init(): void {
+    static async init(): void {
         // Load off-line mode enabledness.
         selfoss.db.enableOffline.update(window.localStorage.getItem('enableOffline') === 'true');
 
@@ -73,10 +79,10 @@ const selfoss = {
                 document.body.innerHTML = selfoss.app._('error_configuration');
             }
         }
-    },
+    }
 
 
-    async initMain(configuration: Configuration): void {
+    static async initMain(configuration: Configuration): void {
         selfoss.config = configuration;
 
         if (selfoss.db.enableOffline.value) {
@@ -115,13 +121,13 @@ const selfoss = {
         }
 
         selfoss.attachApp(configuration);
-    },
+    }
 
 
     /**
      * Create basic DOM structure of the page.
      */
-    attachApp(configuration: Configuration): void {
+    static attachApp(configuration: Configuration): void {
         document.getElementById('js-loading-message')?.remove();
 
         const mainUi = document.createElement('div');
@@ -141,31 +147,31 @@ const selfoss = {
                 configuration,
             })
         );
-    },
+    }
 
-    loggedin: new ValueListenable(false),
+    public static loggedin = new ValueListenable(false);
 
 
-    setSession(): void {
+    static setSession(): void {
         window.localStorage.setItem('onlineSession', 'true');
         selfoss.loggedin.update(true);
-    },
+    }
 
 
-    clearSession(): void {
+    static clearSession(): void {
         window.localStorage.removeItem('onlineSession');
         selfoss.loggedin.update(false);
-    },
+    }
 
 
-    hasSession(): boolean {
+    static hasSession(): boolean {
         return selfoss.loggedin.value;
-    },
+    }
 
     /**
      * Try to log in using given credentials
      */
-    login({ configuration, username, password, enableOffline }: { configuration: Configuration, username: string, password: string, enableOffline: boolean }): Promise<undefined> {
+    static login({ configuration, username, password, enableOffline }: { configuration: Configuration, username: string, password: string, enableOffline: boolean }): Promise<undefined> {
         selfoss.db.enableOffline.update(enableOffline);
         window.localStorage.setItem('enableOffline', selfoss.db.enableOffline.value);
         if (!selfoss.db.enableOffline.value) {
@@ -196,9 +202,9 @@ const selfoss = {
                 selfoss.setupServiceWorker();
             }
         });
-    },
+    }
 
-    setupServiceWorker(): void {
+    static setupServiceWorker(): void {
         if (!('serviceWorker' in navigator) || selfoss.serviceWorkerInitialized) {
             return;
         }
@@ -222,9 +228,9 @@ const selfoss = {
                     });
                 });
             });
-    },
+    }
 
-    async logout(): void {
+    static async logout(): void {
         selfoss.clearSession();
 
         selfoss.db.clear(); // will not work after a failure, since storage is nulled
@@ -251,35 +257,35 @@ const selfoss = {
         } catch (error) {
             selfoss.app.showError(selfoss.app._('error_logout') + ' ' + error.message);
         }
-    },
+    }
 
     /**
      * Checks whether the current user is allowed to perform read operations.
      */
-    isAllowedToRead(): boolean {
+    static isAllowedToRead(): boolean {
         return selfoss.hasSession() || !selfoss.config.authEnabled || selfoss.config.publicMode;
-    },
+    }
 
     /**
      * Checks whether the current user is allowed to perform update-tier operations.
      */
-    isAllowedToUpdate(): boolean {
+    static isAllowedToUpdate(): boolean {
         return selfoss.hasSession() || !selfoss.config.authEnabled || selfoss.config.allowPublicUpdate;
-    },
+    }
 
     /**
      * Checks whether the current user is allowed to perform write operations.
      */
-    isAllowedToWrite(): boolean {
+    static isAllowedToWrite(): boolean {
         return selfoss.hasSession() || !selfoss.config.authEnabled;
-    },
+    }
 
     /**
      * Checks whether the current user is allowed to perform write operations.
      */
-    isOnline(): boolean {
+    static isOnline(): boolean {
         return selfoss.db.online;
-    },
+    }
 
 
     /**
@@ -287,7 +293,7 @@ const selfoss = {
      *
      * @return true if device resolution smaller equals 1024
      */
-    isMobile(): boolean {
+    static isMobile(): boolean {
         // first check useragent
         if ((/iPhone|iPod|iPad|Android|BlackBerry/).test(navigator.userAgent)) {
             return true;
@@ -295,7 +301,7 @@ const selfoss = {
 
         // otherwise check resolution
         return selfoss.isTablet() || selfoss.isSmartphone();
-    },
+    }
 
 
     /**
@@ -303,12 +309,12 @@ const selfoss = {
      *
      * @return true if device resolution smaller equals 1024
      */
-    isTablet(): boolean {
+    static isTablet(): boolean {
         if (document.body.clientWidth <= 1024) {
             return true;
         }
         return false;
-    },
+    }
 
 
     /**
@@ -316,24 +322,24 @@ const selfoss = {
      *
      * @return true if device resolution smaller equals 1024
      */
-    isSmartphone(): boolean {
+    static isSmartphone(): boolean {
         if (document.body.clientWidth <= 640) {
             return true;
         }
         return false;
-    },
+    }
 
 
     /**
      * Override these functions to customize selfoss behaviour.
      */
-    extensionPoints: {
+    public static extensionPoints = {
         /**
          * Called when an article is first expanded.
          * @param _contents HTML element containing the article contents
          */
         processItemContents(_contents: HTMLElement) {},
-    },
+    };
 
     /**
      * refresh stats.
@@ -342,12 +348,12 @@ const selfoss = {
      * @param unread new unread stats
      * @param starred new starred stats
      */
-    refreshStats(all: number, unread: number, starred: number): void {
+    static refreshStats(all: number, unread: number, starred: number): void {
         selfoss.app.setAllItemsCount(all);
         selfoss.app.setStarredItemsCount(starred);
 
         selfoss.refreshUnread(unread);
-    },
+    }
 
 
     /**
@@ -355,15 +361,15 @@ const selfoss = {
      *
      * @param unread new unread stats
      */
-    refreshUnread(unread: number): void {
+    static refreshUnread(unread: number): void {
         selfoss.app.setUnreadItemsCount(unread);
-    },
+    }
 
 
     /**
      * refresh current tags.
      */
-    reloadTags(): void {
+    static reloadTags(): void {
         selfoss.app.setTagsState(LoadingState.LOADING);
 
         getAllTags().then((data) => {
@@ -373,10 +379,10 @@ const selfoss = {
             selfoss.app.setTagsState(LoadingState.FAILURE);
             selfoss.app.showError(selfoss.app._('error_load_tags') + ' ' + error.message);
         });
-    },
+    }
 
 
-    handleAjaxError(error: Error, tryOffline: boolean = true): Promise<undefined> {
+    static handleAjaxError(error: Error, tryOffline: boolean = true): Promise<undefined> {
         if (!(error instanceof HttpError || error instanceof TimeoutError)) {
             return Promise.reject(error);
         }
@@ -388,10 +394,10 @@ const selfoss = {
         } else {
             return Promise.reject(error);
         }
-    },
+    }
 
 
-    listenWaitingSW(reg: ServiceWorkerRegistration, callback: (reg: ServiceWorkerRegistration) => void): void {
+    static listenWaitingSW(reg: ServiceWorkerRegistration, callback: (reg: ServiceWorkerRegistration) => void): void {
         const awaitStateChange = (): void => {
             reg.installing.addEventListener('statechange', (event) => {
                 if (event.target.state === 'installed') {
@@ -408,11 +414,11 @@ const selfoss = {
             awaitStateChange();
             reg.addEventListener('updatefound', awaitStateChange);
         }
-    },
+    }
 
     // Include helpers for user scripts.
-    ajax
+    public static ajax = ajax;
 
-};
+}
 
 export default selfoss;
