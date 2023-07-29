@@ -4,6 +4,7 @@ import React, {
     useEffect,
     useMemo,
     useState,
+    useReducer,
 } from 'react';
 import PropTypes from 'prop-types';
 import { Link, useLocation, useParams } from 'react-router-dom';
@@ -24,6 +25,38 @@ import { LocalizationContext } from '../helpers/i18n';
 import { useShouldReload } from '../helpers/hooks';
 import { forceReload, makeEntriesLinkLocation } from '../helpers/uri';
 import { HttpError } from '../errors';
+
+const LOAD_MORE = 'load-more';
+const RESET_OFFSET = 'reset-offset';
+
+function entriesReducer(
+    state,
+    action,
+) {
+    switch (action.type) {
+    case LOAD_MORE:
+        const { entries } = action.payload;
+        const lastEntry = entries[entries.length - 1];
+
+        return {
+            ...state,
+            // Calculate offset.
+            fromDatetime: lastEntry ? lastEntry.datetime : undefined,
+            fromId: lastEntry ? lastEntry.id : undefined,
+        };
+
+    case RESET_OFFSET:
+        return {
+            ...state,
+            // Calculate offset.
+            fromDatetime: undefined,
+            fromId: undefined,
+        };
+
+    default:
+        throw new Error('Unknown action.');
+    }
+}
 
 function reloadList({
     fetchParams,
@@ -195,6 +228,7 @@ export function EntriesPage({
     reload,
     setGlobalUnreadCount,
     unreadItemsCount,
+    setDispatchEntries,
 }) {
     const allowedToUpdate = useAllowedToUpdate();
     const allowedToWrite = useAllowedToWrite();
@@ -212,14 +246,28 @@ export function EntriesPage({
     const currentTag = params.category?.startsWith('tag-') ? params.category.replace(/^tag-/, '') : null;
     const currentSource = params.category?.startsWith('source-') ? parseInt(params.category.replace(/^source-/, ''), 10) : null;
 
-    // The offsets for pagination.
-    // Clear them when URL changes, except for when only id changes since that happens when reading.
-    const [fromDatetime, setFromDatetime] = useStateWithDeps(
-        undefined,
-        [params.filter, currentTag, currentSource, searchText]
+    const [entriesState, dispatchEntries] = useReducer(
+        entriesReducer,
+        {
+            // The offsets for pagination.
+            // Clear them when URL changes, except for when only id changes since that happens when reading.
+            fromDatetime: undefined,
+            fromId: undefined,
+        }
     );
-    const [fromId, setFromId] = useStateWithDeps(
-        undefined,
+
+    // Propagate the dispatcher to stateful class component.
+    setDispatchEntries(dispatchEntries);
+
+    const {
+        fromDatetime,
+        fromId,
+    } = entriesState;
+
+    useEffect(
+        () => dispatchEntries({
+            type: RESET_OFFSET,
+        }),
         [params.filter, currentTag, currentSource, searchText]
     );
 
@@ -329,13 +377,14 @@ export function EntriesPage({
     const moreOnClick = useCallback(
         (event) => {
             event.preventDefault();
-            const lastEntry = entries[entries.length - 1];
-
-            // Calculate offset.
-            setFromDatetime(lastEntry ? lastEntry.datetime : undefined);
-            setFromId(lastEntry ? lastEntry.id : undefined);
+            dispatchEntries({
+                type: LOAD_MORE,
+                payload: {
+                    entries,
+                },
+            });
         },
-        [entries, setFromDatetime, setFromId]
+        [entries]
     );
 
     // Current time for calculating relative dates in items.
@@ -445,6 +494,7 @@ EntriesPage.propTypes = {
     reload: PropTypes.func.isRequired,
     setGlobalUnreadCount: PropTypes.func.isRequired,
     unreadItemsCount: PropTypes.number.isRequired,
+    setDispatchEntries: PropTypes.func.isRequired,
 };
 
 const initialState = {
@@ -461,6 +511,8 @@ const initialState = {
 };
 
 export default class StateHolder extends React.Component {
+    dispatchEntries = () => {};
+
     constructor(props) {
         super(props);
         this.state = initialState;
@@ -1081,6 +1133,10 @@ export default class StateHolder extends React.Component {
     }
 
     render() {
+        const setDispatchEntries = (dispatchEntries) => {
+            this.dispatchEntries = dispatchEntries;
+        };
+
         return (
             <EntriesPage
                 entries={this.state.entries}
@@ -1094,6 +1150,7 @@ export default class StateHolder extends React.Component {
                 reload={this.reload}
                 setGlobalUnreadCount={this.props.setGlobalUnreadCount}
                 unreadItemsCount={this.props.unreadItemsCount}
+                setDispatchEntries={setDispatchEntries}
             />
         );
     }
