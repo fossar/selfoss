@@ -1,5 +1,6 @@
 import { useListenableValue } from './hooks';
 import { useMemo } from 'react';
+import selfoss from '../selfoss-base';
 
 export function useLoggedIn(): boolean {
     return useListenableValue(selfoss.loggedin);
