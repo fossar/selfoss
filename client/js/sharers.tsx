@@ -7,7 +7,7 @@ import { Configuration } from './model/Configuration';
 
 type Sharer = {
     label: string;
-    icon: string | JSX.Element;
+    icon: string | React.JSX.Element;
     action: (params: { url: string; title: string }) => void;
     available?: boolean;
 };
