@@ -32,7 +32,7 @@ type NavigationProps = {
     reloadAll: React.Dispatch<React.SetStateAction<Array<object>>>;
 };
 
-export default function Navigation(props: NavigationProps): JSX.Element {
+export default function Navigation(props: NavigationProps): React.JSX.Element {
     const {
         entriesPage,
         setNavExpanded,

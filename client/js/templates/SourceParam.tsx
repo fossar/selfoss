@@ -11,7 +11,9 @@ type SourceParamProps = {
     setDirty: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function SourceParam(props: SourceParamProps): JSX.Element {
+export default function SourceParam(
+    props: SourceParamProps,
+): React.JSX.Element {
     const {
         spoutParamName,
         spoutParam,

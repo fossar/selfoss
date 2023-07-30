@@ -7,7 +7,7 @@ import { manifest, version } from '@parcel/service-worker';
 // https://github.com/microsoft/TypeScript/issues/14877
 declare const self: ServiceWorkerGlobalScope;
 
-async function install(): Promise<undefined> {
+async function install(): Promise<void> {
     const cache = await caches.open(version);
 
     const entriesToCache: string[] = manifest
@@ -20,7 +20,7 @@ self.addEventListener('install', (event: ExtendableEvent) =>
     event.waitUntil(install()),
 );
 
-async function activate(): Promise<Array<boolean>> {
+async function activate(): Promise<void> {
     const keys = await caches.keys();
     await Promise.all(
         keys
