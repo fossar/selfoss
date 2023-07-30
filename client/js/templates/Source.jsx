@@ -370,6 +370,18 @@ function SourceEditForm({
 
     const _ = useContext(LocalizationContext);
 
+    const [showAdvanced, setShowAdvanced] = useState(false);
+    const [filterUsed, setFilterUsed] = useState(source.filter !== '');
+
+    const toggleShowAdvanced = useCallback(
+        () => {
+            setShowAdvanced((advanced) => !advanced);
+            console.log(source.filter);
+            setFilterUsed(source.filter !== '');
+        },
+        [source.filter]
+    );
+
     const sourceParamsContent = (
         sourceParamsLoading ? (
             <Spinner size="3x" label={_('source_params_loading')} />
@@ -451,22 +463,24 @@ function SourceEditForm({
                 </li>
 
                 {/* filter */}
-                <li>
-                    <label htmlFor={`filter-${sourceId}`}>
-                        {_('source_filter')}
-                    </label>
-                    <input
-                        id={`filter-${sourceId}`}
-                        type="text"
-                        name="filter"
-                        accessKey="f"
-                        value={source.filter ?? ''}
-                        onChange={filterOnChange}
-                    />
-                    {sourceErrors['filter'] ? (
-                        <span className="error">{sourceErrors['filter']}</span>
-                    ) : null}
-                </li>
+                {showAdvanced || filterUsed ? (
+                    <li>
+                        <label htmlFor={`filter-${sourceId}`}>
+                            {_('source_filter')}
+                        </label>
+                        <input
+                            id={`filter-${sourceId}`}
+                            type="text"
+                            name="filter"
+                            accessKey="f"
+                            value={source.filter ?? ''}
+                            onChange={filterOnChange}
+                        />
+                        {sourceErrors['filter'] ? (
+                            <span className="error">{sourceErrors['filter']}</span>
+                        ) : null}
+                    </li>
+                ) : null}
 
                 {/* type */}
                 <li>
@@ -513,6 +527,16 @@ function SourceEditForm({
 
                 {/* save/delete */}
                 <li className="source-action">
+                    <button
+                        type="button"
+                        className="source-toggle-advanced source-save"
+                        accessKey="a"
+                        onClick={toggleShowAdvanced}
+                    >
+                        {(showAdvanced ? 'Hide advanced' : 'Show advanced')}
+                        {/*{_(showAdvanced ? 'source_hide_advanced' : 'source_show_advanced')}*/}
+                    </button>
+                    {' • '}
                     <button
                         type="submit"
                         className="source-save"
