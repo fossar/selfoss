@@ -8,7 +8,7 @@ type SpinnerProps = {
     size?: SizeProp;
 };
 
-export function Spinner(props: SpinnerProps): JSX.Element {
+export function Spinner(props: SpinnerProps): React.JSX.Element {
     const { label, size } = props;
 
     return (
@@ -31,7 +31,7 @@ type SpinnerBigProps = {
     label: string;
 };
 
-export function SpinnerBig(props: SpinnerBigProps): JSX.Element {
+export function SpinnerBig(props: SpinnerBigProps): React.JSX.Element {
     const { label } = props;
 
     return (
