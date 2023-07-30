@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { Dispatch, SetStateAction, useContext } from 'react';
 import classNames from 'classnames';
 import { StateHolder as EntriesPage } from './EntriesPage';
 import NavFilters from './NavFilters';
@@ -15,9 +15,9 @@ import { NavSource, NavTag } from '../requests/items';
 
 type NavigationProps = {
     entriesPage: EntriesPage | null;
-    setNavExpanded: React.Dispatch<React.SetStateAction<boolean>>;
+    setNavExpanded: Dispatch<SetStateAction<boolean>>;
     navSourcesExpanded: boolean;
-    setNavSourcesExpanded: React.Dispatch<React.SetStateAction<boolean>>;
+    setNavSourcesExpanded: Dispatch<SetStateAction<boolean>>;
     offlineState: boolean;
     allItemsCount: number;
     allItemsOfflineCount: number;
@@ -26,14 +26,14 @@ type NavigationProps = {
     starredItemsCount: number;
     starredItemsOfflineCount: number;
     sourcesState: LoadingState;
-    setSourcesState: React.Dispatch<React.SetStateAction<LoadingState>>;
+    setSourcesState: Dispatch<SetStateAction<LoadingState>>;
     sources: Array<NavSource>;
-    setSources: React.Dispatch<React.SetStateAction<Array<NavSource>>>;
+    setSources: Dispatch<SetStateAction<Array<NavSource>>>;
     tags: Array<NavTag>;
-    reloadAll: React.Dispatch<React.SetStateAction<Array<NavTag>>>;
+    reloadAll: () => void;
 };
 
-export default function Navigation(props: NavigationProps): JSX.Element {
+export default function Navigation(props: NavigationProps): React.JSX.Element {
     const {
         entriesPage,
         setNavExpanded,
