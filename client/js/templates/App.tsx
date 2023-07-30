@@ -46,7 +46,13 @@ type GlobalMessage = {
     isError?: boolean,
 };
 
-function handleNavToggle({ event, setNavExpanded }) {
+function handleNavToggle(
+    args: {
+        event: Event,
+        setNavExpanded: React.Dispatch<React.SetStateAction<boolean>>,
+    },
+): void {
+    const { event, setNavExpanded } = args;
     event.preventDefault();
 
     // show hide navigation for mobile version
@@ -54,7 +60,7 @@ function handleNavToggle({ event, setNavExpanded }) {
     window.scrollTo({ top: 0 });
 }
 
-function dismissMessage(event) {
+function dismissMessage(event: Event): void {
     selfoss.app.setGlobalMessage(null);
     event.stopPropagation();
 }
@@ -70,7 +76,7 @@ type MessageProps = {
  */
 function Message(
     props: MessageProps,
-) {
+): JSX.Element | null {
     const {
         message,
     } = props;
@@ -103,7 +109,7 @@ function Message(
     );
 }
 
-function NotFound() {
+function NotFound(): JSX.Element {
     const location = useLocation();
     const _ = useContext(LocalizationContext);
     return (
@@ -117,12 +123,12 @@ type CheckAuthorizationProps = {
     isAllowed: boolean,
     returnLocation?: string,
     _: (translated: string, params?: {[index: string]: string}) => string,
-    children?: any,
+    children: React.ReactNode,
 };
 
 function CheckAuthorization(
     props: CheckAuthorizationProps,
-) {
+): React.ReactNode {
     const {
         isAllowed,
         returnLocation,
@@ -168,7 +174,7 @@ type PureAppProps = {
 
 function PureApp(
     props: PureAppProps,
-) {
+): JSX.Element {
     const {
         navSourcesExpanded,
         setNavSourcesExpanded,
@@ -803,15 +809,19 @@ export class App extends React.Component<AppProps, AppState> {
  * Creates the selfoss single-page application
  * with the required contexts.
  */
-export function createApp({
-    basePath,
-    appRef,
-    configuration,
-}: {
-    basePath: string;
-    appRef: React.RefObject<App>;
-    configuration: Configuration;
-}) {
+export function createApp(
+    args: {
+        basePath: string,
+        appRef: React.RefObject<App>,
+        configuration: Configuration,
+    },
+): JSX.Element {
+    const {
+        basePath,
+        appRef,
+        configuration,
+    } = args;
+
     return (
         <Router basename={basePath}>
             <App
