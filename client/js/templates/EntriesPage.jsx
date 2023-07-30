@@ -111,12 +111,12 @@ function reloadList({
 
         setLoadingState(LoadingState.LOADING);
         return reloader(fetchParams, abortController).then(({ entries, hasMore }) => {
+            setLoadingState(LoadingState.SUCCESS);
+            selfoss.entriesPage.setHasMore(hasMore);
+
             if (abortController.signal.aborted) {
                 return;
             }
-
-            setLoadingState(LoadingState.SUCCESS);
-            selfoss.entriesPage.setHasMore(hasMore);
 
             if (append) {
                 selfoss.entriesPage.appendEntries(entries);
