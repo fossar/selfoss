@@ -317,6 +317,11 @@ function SourceEditForm({
         [updateEditedSource]
     );
 
+    const iconOnChange = useCallback(
+        (event) => updateEditedSource({ icon: event.target.value }),
+        [updateEditedSource]
+    );
+
     const spoutOnChange = useCallback(
         (event) =>
             handleSpoutChange({
@@ -372,14 +377,18 @@ function SourceEditForm({
 
     const [showAdvanced, setShowAdvanced] = useState(false);
     const [filterUsed, setFilterUsed] = useState(source.filter !== '');
+    // TODO: Remove undefined check once we implement it server side.
+    const [iconUsed, setIconUsed] = useState(source.icon !== '' && source.icon !== undefined);
 
     const toggleShowAdvanced = useCallback(
         () => {
             setShowAdvanced((advanced) => !advanced);
             console.log(source.filter);
             setFilterUsed(source.filter !== '');
+            // TODO: Remove undefined check once we implement it server side.
+            setIconUsed(source.icon !== '' && source.icon !== undefined);
         },
-        [source.filter]
+        [source.filter, source.icon]
     );
 
     const sourceParamsContent = (
@@ -510,6 +519,26 @@ function SourceEditForm({
                         <span className="error">{sourceErrors['spout']}</span>
                     ) : null}
                 </li>
+
+                {showAdvanced || iconUsed ? (
+                    <li>
+                        <label htmlFor={`icon-${sourceId}`}>
+                            {/*_('source_icon')*/}
+                            {'Icon:'}
+                        </label>
+                        <input
+                            id={`icon-${sourceId}`}
+                            type="text"
+                            name="icon"
+                            accessKey="f"
+                            value={source.icon ?? ''}
+                            onChange={iconOnChange}
+                        />
+                        {sourceErrors['icon'] ? (
+                            <span className="error">{sourceErrors['icon']}</span>
+                        ) : null}
+                    </li>
+                ) : null}
 
                 {/* settings */}
                 {sourceParamsContent ? (
