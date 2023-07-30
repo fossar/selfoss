@@ -33,6 +33,7 @@ function entriesReducer(
     state,
     action,
 ) {
+    console.log(state, action)
     switch (action.type) {
     case LOAD_MORE:
         const { entries } = action.payload;
@@ -109,14 +110,25 @@ function reloadList({
             selfoss.entriesPage.setSelectedEntry(null);
         }
 
+        const reloader_ = reloader;
+
+        reloader = (...args) => {
+            const r = reloader_(...args);
+            console.trace('reloader', r);
+            return r;
+        }
+
         setLoadingState(LoadingState.LOADING);
         return reloader(fetchParams, abortController).then(({ entries, hasMore }) => {
             setLoadingState(LoadingState.SUCCESS);
-            selfoss.entriesPage.setHasMore(hasMore);
 
+            console.trace('reloader-then', abortController.signal, abortController.signal.aborted);
             if (abortController.signal.aborted) {
                 return;
             }
+            console.log('after')
+
+            selfoss.entriesPage.setHasMore(hasMore);
 
             if (append) {
                 selfoss.entriesPage.appendEntries(entries);
@@ -284,7 +296,11 @@ export function EntriesPage({
         return navSourcesExpanded;
     }, [params.filter, currentTag, currentSource, searchText]);
 
-    const [moreLoadingState, setMoreLoadingState] = useState(LoadingState.INITIAL);
+    const [moreLoadingState, setMoreLoadingState_] = useState(LoadingState.INITIAL);
+    const setMoreLoadingState = (...args) => {
+        console.trace('moreState', ...args);
+        setMoreLoadingState_(...args);
+    };
 
     // Perform the scheduled reload.
     useEffect(() => {
