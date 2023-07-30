@@ -68,7 +68,7 @@ type MessageProps = {
  * It watches globalMessage and updates/shows/hides itself as necessary
  * when the value changes.
  */
-function Message(props: MessageProps): JSX.Element | null {
+function Message(props: MessageProps): React.JSX.Element | null {
     const { message } = props;
 
     // Whenever message changes, dismiss it after 15 seconds.
@@ -101,7 +101,7 @@ function Message(props: MessageProps): JSX.Element | null {
     ) : null;
 }
 
-function NotFound(): JSX.Element {
+function NotFound(): React.JSX.Element {
     const location = useLocation();
     const _ = useContext(LocalizationContext);
     return <p>{_('error_invalid_subsection') + location.pathname}</p>;
@@ -206,7 +206,7 @@ type PureAppProps = {
     reloadAll: () => void;
 };
 
-function PureApp(props: PureAppProps): JSX.Element {
+function PureApp(props: PureAppProps): React.JSX.Element {
     const {
         navSourcesExpanded,
         setNavSourcesExpanded,
@@ -872,7 +872,7 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    render(): JSX.Element {
+    render(): React.JSX.Element {
         return (
             <ConfigurationContext.Provider value={this.props.configuration}>
                 <LocalizationContext.Provider value={this._}>
@@ -912,7 +912,7 @@ export function createApp(args: {
     basePath: string;
     appRef: React.Ref<App>;
     configuration: Configuration;
-}): JSX.Element {
+}): React.JSX.Element {
     const { basePath, appRef, configuration } = args;
 
     return (

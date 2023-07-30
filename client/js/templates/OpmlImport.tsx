@@ -9,11 +9,11 @@ type OpmlImportProps = {
     setTitle: (title: string | null) => void;
 };
 
-export default function OpmlImport(props: OpmlImportProps): JSX.Element {
+export default function OpmlImport(props: OpmlImportProps): React.JSX.Element {
     const { setTitle } = props;
 
     const [state, setState] = useState<LoadingState>(LoadingState.INITIAL);
-    const [message, setMessage] = useState<JSX.Element | null>(null);
+    const [message, setMessage] = useState<React.JSX.Element | null>(null);
     const fileEntry = useRef<HTMLInputElement>(null);
 
     const navigate = useNavigate();
