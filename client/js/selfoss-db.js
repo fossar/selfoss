@@ -30,7 +30,7 @@ selfoss.db = {
     lastUpdate: null,
 
 
-    setOnline: function() {
+    setOnline() {
         if (!selfoss.db.online) {
             selfoss.db.online = true;
             selfoss.db.sync();
@@ -40,12 +40,12 @@ selfoss.db = {
     },
 
 
-    tryOnline: function() {
+    tryOnline() {
         return selfoss.db.sync(true);
     },
 
 
-    setOffline: function() {
+    setOffline() {
         if (selfoss.db.storage && !selfoss.db.broken) {
             selfoss.dbOnline._syncDone(false);
             selfoss.db.online = false;
@@ -59,7 +59,7 @@ selfoss.db = {
     },
 
 
-    clear: function() {
+    clear() {
         if (selfoss.db.storage) {
             window.localStorage.removeItem('offlineDays');
             const clearing = selfoss.db.storage.delete();
@@ -72,12 +72,12 @@ selfoss.db = {
     },
 
 
-    isValidTag: function(name) {
+    isValidTag(name) {
         return selfoss.app.state.tags.length === 0 || selfoss.app.state.tags.find((tag) => tag.tag === name) !== undefined;
     },
 
 
-    isValidSource: function(id) {
+    isValidSource(id) {
         return selfoss.app.state.sources.length === 0 || selfoss.app.state.sources.find((source) => source.id === id) !== undefined;
     },
 
@@ -85,7 +85,7 @@ selfoss.db = {
     lastSync: null,
 
 
-    sync: function(force = false) {
+    sync(force = false) {
         const lastUpdateIsOld = selfoss.db.lastUpdate === null || selfoss.db.lastSync === null || Date.now() - selfoss.db.lastSync > 5 * 60 * 1000;
         const shouldSync = force || selfoss.dbOffline.needsSync || lastUpdateIsOld;
         if (selfoss.isAllowedToRead() && selfoss.isOnline() && shouldSync) {

@@ -16,7 +16,7 @@ selfoss.dbOnline = {
     firstSync: true,
 
 
-    _syncBegin: function() {
+    _syncBegin() {
         if (!selfoss.dbOnline.syncing.promise) {
             selfoss.dbOnline.syncing.promise = new Promise((resolve, reject) => {
                 selfoss.dbOnline.syncing.resolve = resolve;
@@ -52,7 +52,7 @@ selfoss.dbOnline = {
     },
 
 
-    _syncDone: function(success = true) {
+    _syncDone(success = true) {
         if (selfoss.dbOnline.syncing.promise) {
             if (success) {
                 selfoss.dbOnline.syncing.resolve();
@@ -72,7 +72,7 @@ selfoss.dbOnline = {
      *
      * @return Promise
      */
-    sync: function(updatedStatuses, chained) {
+    sync(updatedStatuses, chained) {
         if (selfoss.dbOnline.syncing.promise && !chained) {
             if (updatedStatuses) {
                 // Ensure the status queue is not cleared and gets sync'ed at
@@ -230,7 +230,7 @@ selfoss.dbOnline = {
      *
      * @return void
      */
-    getEntries: function(fetchParams, abortController) {
+    getEntries(fetchParams, abortController) {
         return itemsRequests.getItems({
             ...fetchParams,
             itemsPerPage: selfoss.config.itemsPerPage

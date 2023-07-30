@@ -36,7 +36,7 @@ const selfoss = {
     /**
      * initialize application
      */
-    init: async function() {
+    async init() {
         // Load off-line mode enabledness.
         selfoss.db.enableOffline.update(window.localStorage.getItem('enableOffline') === 'true');
 
@@ -75,7 +75,7 @@ const selfoss = {
     },
 
 
-    initMain: async function(configuration) {
+    async initMain(configuration) {
         selfoss.config = configuration;
 
         if (selfoss.db.enableOffline.value) {
@@ -120,7 +120,7 @@ const selfoss = {
     /**
      * Create basic DOM structure of the page.
      */
-    attachApp: function(configuration) {
+    attachApp(configuration) {
         document.getElementById('js-loading-message')?.remove();
 
         const mainUi = document.createElement('div');
@@ -145,19 +145,19 @@ const selfoss = {
     loggedin: new ValueListenable(false),
 
 
-    setSession: function() {
+    setSession() {
         window.localStorage.setItem('onlineSession', true);
         selfoss.loggedin.update(true);
     },
 
 
-    clearSession: function() {
+    clearSession() {
         window.localStorage.removeItem('onlineSession');
         selfoss.loggedin.update(false);
     },
 
 
-    hasSession: function() {
+    hasSession() {
         return selfoss.loggedin.value;
     },
 
@@ -165,7 +165,7 @@ const selfoss = {
      * Try to log in using given credentials
      * @return Promise<undefined>
      */
-    login: function({ configuration, username, password, enableOffline }) {
+    login({ configuration, username, password, enableOffline }) {
         selfoss.db.enableOffline.update(enableOffline);
         window.localStorage.setItem('enableOffline', selfoss.db.enableOffline.value);
         if (!selfoss.db.enableOffline.value) {
@@ -198,7 +198,7 @@ const selfoss = {
         });
     },
 
-    setupServiceWorker: function() {
+    setupServiceWorker() {
         if (!('serviceWorker' in navigator) || selfoss.serviceWorkerInitialized) {
             return;
         }
@@ -224,7 +224,7 @@ const selfoss = {
             });
     },
 
-    logout: async function() {
+    async logout() {
         selfoss.clearSession();
 
         selfoss.db.clear(); // will not work after a failure, since storage is nulled
@@ -295,7 +295,7 @@ const selfoss = {
      *
      * @return true if device resolution smaller equals 1024
      */
-    isMobile: function() {
+    isMobile() {
         // first check useragent
         if ((/iPhone|iPod|iPad|Android|BlackBerry/).test(navigator.userAgent)) {
             return true;
@@ -311,7 +311,7 @@ const selfoss = {
      *
      * @return true if device resolution smaller equals 1024
      */
-    isTablet: function() {
+    isTablet() {
         if (document.body.clientWidth <= 1024) {
             return true;
         }
@@ -324,7 +324,7 @@ const selfoss = {
      *
      * @return true if device resolution smaller equals 1024
      */
-    isSmartphone: function() {
+    isSmartphone() {
         if (document.body.clientWidth <= 640) {
             return true;
         }
@@ -351,7 +351,7 @@ const selfoss = {
      * @param {Number} new unread stats
      * @param {Number} new starred stats
      */
-    refreshStats: function(all, unread, starred) {
+    refreshStats(all, unread, starred) {
         selfoss.app.setAllItemsCount(all);
         selfoss.app.setStarredItemsCount(starred);
 
@@ -365,7 +365,7 @@ const selfoss = {
      * @return void
      * @param {Number} new unread stats
      */
-    refreshUnread: function(unread) {
+    refreshUnread(unread) {
         selfoss.app.setUnreadItemsCount(unread);
     },
 
@@ -375,7 +375,7 @@ const selfoss = {
      *
      * @return void
      */
-    reloadTags: function() {
+    reloadTags() {
         selfoss.app.setTagsState(LoadingState.LOADING);
 
         getAllTags().then((data) => {
@@ -388,7 +388,7 @@ const selfoss = {
     },
 
 
-    handleAjaxError: function(error, tryOffline = true) {
+    handleAjaxError(error, tryOffline = true) {
         if (!(error instanceof HttpError || error instanceof TimeoutError)) {
             return Promise.reject(error);
         }
@@ -403,7 +403,7 @@ const selfoss = {
     },
 
 
-    listenWaitingSW: function(reg, callback) {
+    listenWaitingSW(reg, callback) {
         const awaitStateChange = () => {
             reg.installing.addEventListener('statechange', (event) => {
                 if (event.target.state === 'installed') {

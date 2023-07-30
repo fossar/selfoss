@@ -16,7 +16,7 @@ selfoss.dbOffline = {
     shouldLoadEntriesOnline: false,
     olderEntriesOnline: false,
 
-    _tr: function(...args) {
+    _tr(...args) {
         return selfoss.db.storage.transaction(...args)
             .catch((error) => {
                 selfoss.app.showError(
@@ -37,7 +37,7 @@ selfoss.dbOffline = {
     },
 
 
-    init: function() {
+    init() {
         if (!selfoss.db.enableOffline.value || selfoss.db.storage) {
             return;
         }
@@ -129,7 +129,7 @@ selfoss.dbOffline = {
     },
 
 
-    _memLastItemId: function() {
+    _memLastItemId() {
         return selfoss.db.storage.entries.orderBy('id').reverse().first((entry) => {
             if (entry) {
                 selfoss.dbOffline.lastItemId = entry.id;
@@ -140,7 +140,7 @@ selfoss.dbOffline = {
     },
 
 
-    storeEntries: function(entries) {
+    storeEntries(entries) {
         return selfoss.dbOffline._tr(
             'rw',
             selfoss.db.storage.entries,
@@ -158,7 +158,7 @@ selfoss.dbOffline = {
     },
 
 
-    GCEntries: function(more = false) {
+    GCEntries(more = false) {
         if (more) {
             // We need to garbage collect more, as the browser storage limit
             // seems to be exceeded: decrease the amount of days entries are
@@ -211,7 +211,7 @@ selfoss.dbOffline = {
     },
 
 
-    storeStats: function(stats) {
+    storeStats(stats) {
         return selfoss.dbOffline._tr('rw', selfoss.db.storage.stats, () => {
             for (const [name, value] of Object.entries(stats)) {
                 selfoss.db.storage.stats.put({
@@ -223,7 +223,7 @@ selfoss.dbOffline = {
     },
 
 
-    storeLastUpdate: function(lastUpdate) {
+    storeLastUpdate(lastUpdate) {
         return selfoss.dbOffline._tr('rw', selfoss.db.storage.stamps, () => {
             if (lastUpdate) {
                 selfoss.db.storage.stamps.put({
@@ -235,7 +235,7 @@ selfoss.dbOffline = {
     },
 
 
-    getEntries: function(fetchParams) {
+    getEntries(fetchParams) {
         let hasMore = false;
         return selfoss.dbOffline._tr(
             'r',
@@ -310,7 +310,7 @@ selfoss.dbOffline = {
     },
 
 
-    reloadOnlineStats: function() {
+    reloadOnlineStats() {
         return selfoss.dbOffline._tr(
             'r',
             selfoss.db.storage.stats,
@@ -328,7 +328,7 @@ selfoss.dbOffline = {
     },
 
 
-    refreshStats: function() {
+    refreshStats() {
         return selfoss.dbOffline._tr(
             'r',
             selfoss.db.storage.entries,
@@ -353,7 +353,7 @@ selfoss.dbOffline = {
     },
 
 
-    enqueueStatuses: function(statuses) {
+    enqueueStatuses(statuses) {
         if (statuses) {
             selfoss.dbOffline.needsSync = true;
         }
@@ -376,7 +376,7 @@ selfoss.dbOffline = {
     },
 
 
-    enqueueStatus: function(entryId, statusName, statusValue) {
+    enqueueStatus(entryId, statusName, statusValue) {
         return selfoss.dbOffline.enqueueStatuses([{
             entryId: entryId,
             name: statusName,
@@ -385,7 +385,7 @@ selfoss.dbOffline = {
     },
 
 
-    sendNewStatuses: function() {
+    sendNewStatuses() {
         selfoss.db.storage.statusq.toArray().then(statuses => {
             return statuses.map(s => {
                 const statusUpdate = {
@@ -407,7 +407,7 @@ selfoss.dbOffline = {
     },
 
 
-    storeEntryStatuses: function(itemStatuses, dequeue = false, updateStats = true) {
+    storeEntryStatuses(itemStatuses, dequeue = false, updateStats = true) {
         return selfoss.dbOffline._tr(
             'rw',
             selfoss.db.storage.entries,
@@ -470,7 +470,7 @@ selfoss.dbOffline = {
     },
 
 
-    entriesMark: function(itemIds, unread) {
+    entriesMark(itemIds, unread) {
         selfoss.dbOnline.statsDirty = true;
         const newStatuses = itemIds.map((itemId) => {
             return {id: itemId, unread: unread};
@@ -479,12 +479,12 @@ selfoss.dbOffline = {
     },
 
 
-    entryMark: function(itemId, unread) {
+    entryMark(itemId, unread) {
         return selfoss.dbOffline.entriesMark([itemId], unread);
     },
 
 
-    entryStar: function(itemId, starred) {
+    entryStar(itemId, starred) {
         return selfoss.dbOffline.storeEntryStatuses([{
             id: itemId,
             starred: starred
