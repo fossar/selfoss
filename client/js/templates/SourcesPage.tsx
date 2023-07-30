@@ -95,7 +95,7 @@ function loadSources({ abortController, location, setSpouts, setSources, setLoad
     });
 }
 
-export default function SourcesPage(): JSX.Element {
+export default function SourcesPage(): React.JSX.Element {
     const [spouts, setSpouts] = useState([]);
     const [sources, setSources] = useState([]);
 

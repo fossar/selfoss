@@ -16,13 +16,13 @@ type OpmlImportProps = {
 
 export default function OpmlImport(
     props: OpmlImportProps,
-): JSX.Element {
+): React.JSX.Element {
     const {
         setTitle,
     } = props;
 
     const [state, setState] = useState<LoadingState>(LoadingState.INITIAL);
-    const [message, setMessage] = useState<JSX.Element | null>(null);
+    const [message, setMessage] = useState<React.JSX.Element | null>(null);
     const fileEntry = useRef<HTMLInputElement>(null);
 
     const history = useHistory();

@@ -76,7 +76,7 @@ type MessageProps = {
  */
 function Message(
     props: MessageProps,
-): JSX.Element | null {
+): React.JSX.Element | null {
     const {
         message,
     } = props;
@@ -109,7 +109,7 @@ function Message(
     );
 }
 
-function NotFound(): JSX.Element {
+function NotFound(): React.JSX.Element {
     const location = useLocation();
     const _ = useContext(LocalizationContext);
     return (
@@ -174,7 +174,7 @@ type PureAppProps = {
 
 function PureApp(
     props: PureAppProps,
-): JSX.Element {
+): React.JSX.Element {
     const {
         navSourcesExpanded,
         setNavSourcesExpanded,
@@ -777,7 +777,7 @@ export class App extends React.Component<AppProps, AppState> {
     }
 
 
-    render(): JSX.Element {
+    render(): React.JSX.Element {
         return (
             <ConfigurationContext.Provider value={this.props.configuration}>
                 <LocalizationContext.Provider value={this._}>
@@ -815,7 +815,7 @@ export function createApp(
         appRef: React.RefObject<App>,
         configuration: Configuration,
     },
-): JSX.Element {
+): React.JSX.Element {
     const {
         basePath,
         appRef,
