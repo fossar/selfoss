@@ -26,7 +26,7 @@ async function activate() {
 self.addEventListener('activate', (event) => event.waitUntil(activate()));
 
 
-self.addEventListener('fetch', function(event) {
+self.addEventListener('fetch', (event) => {
     if (event.request.method !== 'GET' || event.request.headers.get('X-Requested-With') === 'XMLHttpRequest') {
         return;
     }
@@ -39,7 +39,7 @@ self.addEventListener('fetch', function(event) {
 });
 
 
-self.addEventListener('message', function(messageEvent) {
+self.addEventListener('message', (messageEvent) => {
     if (messageEvent.data === 'skipWaiting') {
         return self.skipWaiting();
     }

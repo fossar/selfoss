@@ -27,7 +27,7 @@ function handleTitleClick({ setExpanded, sourcesState, setSourcesState, setSourc
             sourceRequests.getStats().then((data) => {
                 setSources(data);
                 setSourcesState(LoadingState.SUCCESS);
-            }).catch(function(error) {
+            }).catch((error) => {
                 setSourcesState(LoadingState.FAILURE);
                 selfoss.app.showError(selfoss.app._('error_loading_stats') + ' ' + error.message);
             });

@@ -27,134 +27,134 @@ function ignoreWhenInteracting(handler) {
 export default function makeShortcuts() {
     return tinykeys(document, {
         // 'space': next article
-        'Space': ignoreWhenInteracting(function(e) {
-            e.preventDefault();
+        'Space': ignoreWhenInteracting((event) => {
+            event.preventDefault();
             selfoss.entriesPage?.jumpToNext();
         }),
 
         // 'n': next article
-        'n': ignoreWhenInteracting(function(e) {
-            e.preventDefault();
+        'n': ignoreWhenInteracting((event) => {
+            event.preventDefault();
             selfoss.entriesPage?.nextPrev(Direction.NEXT, false);
         }),
 
         // 'right cursor': next article
-        'ArrowRight': ignoreWhenInteracting(function(e) {
-            e.preventDefault();
+        'ArrowRight': ignoreWhenInteracting((event) => {
+            event.preventDefault();
             selfoss.entriesPage?.entryNav(Direction.NEXT);
         }),
 
         // 'j': next article
-        'j': ignoreWhenInteracting(function(e) {
-            e.preventDefault();
+        'j': ignoreWhenInteracting((event) => {
+            event.preventDefault();
             selfoss.entriesPage?.nextPrev(Direction.NEXT, true);
         }),
 
         // 'shift+space': previous article
-        'Shift+Space': ignoreWhenInteracting(function(e) {
-            e.preventDefault();
+        'Shift+Space': ignoreWhenInteracting((event) => {
+            event.preventDefault();
             selfoss.entriesPage?.nextPrev(Direction.PREV, true);
         }),
 
         // 'p': previous article
-        'p': ignoreWhenInteracting(function(e) {
-            e.preventDefault();
+        'p': ignoreWhenInteracting((event) => {
+            event.preventDefault();
             selfoss.entriesPage?.nextPrev(Direction.PREV, false);
         }),
 
         // 'left': previous article
-        'ArrowLeft': ignoreWhenInteracting(function(e) {
-            e.preventDefault();
+        'ArrowLeft': ignoreWhenInteracting((event) => {
+            event.preventDefault();
             selfoss.entriesPage?.entryNav(Direction.PREV);
         }),
 
         // 'k': previous article
-        'k': ignoreWhenInteracting(function(e) {
-            e.preventDefault();
+        'k': ignoreWhenInteracting((event) => {
+            event.preventDefault();
             selfoss.entriesPage?.nextPrev(Direction.PREV, true);
         }),
 
         // 's': star/unstar
-        's': ignoreWhenInteracting(function(e) {
-            e.preventDefault();
+        's': ignoreWhenInteracting((event) => {
+            event.preventDefault();
             selfoss.entriesPage?.toggleSelectedStarred();
         }),
 
         // 'm': mark/unmark
-        'm': ignoreWhenInteracting(function(e) {
-            e.preventDefault();
+        'm': ignoreWhenInteracting((event) => {
+            event.preventDefault();
             selfoss.entriesPage?.toggleSelectedRead();
         }),
 
         // 'o': open/close entry
-        'o': ignoreWhenInteracting(function(e) {
-            e.preventDefault();
+        'o': ignoreWhenInteracting((event) => {
+            event.preventDefault();
             selfoss.entriesPage?.toggleSelectedExpanded();
         }),
 
         // 'Shift + o': close open entries
-        'Shift+o': ignoreWhenInteracting(function(e) {
-            e.preventDefault();
+        'Shift+o': ignoreWhenInteracting((event) => {
+            event.preventDefault();
             selfoss.entriesPage?.collapseAllEntries();
         }),
 
         // 'v': open target
-        'v': ignoreWhenInteracting(function(e) {
-            e.preventDefault();
+        'v': ignoreWhenInteracting((event) => {
+            event.preventDefault();
             selfoss.entriesPage?.openSelectedTarget();
         }),
 
         // 'Shift + v': open target and mark read
-        'Shift+v': ignoreWhenInteracting(function(e) {
-            e.preventDefault();
+        'Shift+v': ignoreWhenInteracting((event) => {
+            event.preventDefault();
             selfoss.entriesPage?.openSelectedTargetAndMarkRead();
         }),
 
         // 'r': Reload the current view
-        'r': ignoreWhenInteracting(function(e) {
-            e.preventDefault();
+        'r': ignoreWhenInteracting((event) => {
+            event.preventDefault();
             selfoss.entriesPage?.reload();
         }),
 
         // 'Shift + r': Refresh sources
-        'Shift+r': ignoreWhenInteracting(function(e) {
-            e.preventDefault();
+        'Shift+r': ignoreWhenInteracting((event) => {
+            event.preventDefault();
             document.querySelector('#nav-refresh').click();
         }),
 
         // 'Control+m': mark all as read
-        'Control+m': ignoreWhenInteracting(function(e) {
-            e.preventDefault();
+        'Control+m': ignoreWhenInteracting((event) => {
+            event.preventDefault();
             document.querySelector('#nav-mark').click();
         }),
 
         // 't': throw (mark as read & open next)
-        't': ignoreWhenInteracting(function(e) {
-            e.preventDefault();
+        't': ignoreWhenInteracting((event) => {
+            event.preventDefault();
             selfoss.entriesPage?.throw(Direction.NEXT);
         }),
 
         // throw (mark as read & open previous)
-        'Shift+t': ignoreWhenInteracting(function(e) {
-            e.preventDefault();
+        'Shift+t': ignoreWhenInteracting((event) => {
+            event.preventDefault();
             selfoss.entriesPage?.throw(Direction.PREV);
         }),
 
         // 'Shift+n': switch to newest items overview / menu item
-        'Shift+n': ignoreWhenInteracting(function(e) {
-            e.preventDefault();
+        'Shift+n': ignoreWhenInteracting((event) => {
+            event.preventDefault();
             document.querySelector('#nav-filter-newest').click();
         }),
 
         // 'Shift+u': switch to unread items overview / menu item
-        'Shift+u': ignoreWhenInteracting(function(e) {
-            e.preventDefault();
+        'Shift+u': ignoreWhenInteracting((event) => {
+            event.preventDefault();
             document.querySelector('#nav-filter-unread').click();
         }),
 
         // 'Shift+s': switch to starred items overview / menu item
-        'Shift+s': ignoreWhenInteracting(function(e) {
-            e.preventDefault();
+        'Shift+s': ignoreWhenInteracting((event) => {
+            event.preventDefault();
             document.querySelector('#nav-filter-starred').click();
         })
     });

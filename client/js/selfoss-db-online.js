@@ -18,10 +18,10 @@ selfoss.dbOnline = {
 
     _syncBegin: function() {
         if (!selfoss.dbOnline.syncing.promise) {
-            selfoss.dbOnline.syncing.promise = new Promise(function(resolve, reject) {
+            selfoss.dbOnline.syncing.promise = new Promise((resolve, reject) => {
                 selfoss.dbOnline.syncing.resolve = resolve;
                 selfoss.dbOnline.syncing.reject = reject;
-                const monitor = window.setInterval(function() {
+                const monitor = window.setInterval(() => {
                     let stopChecking = false;
                     if (selfoss.dbOnline.syncing.promise) {
                         if (selfoss.db.userWaiting) {
@@ -42,7 +42,7 @@ selfoss.dbOnline = {
                 }, 10000);
             });
 
-            selfoss.dbOnline.syncing.promise.finally(function() {
+            selfoss.dbOnline.syncing.promise.finally(() => {
                 selfoss.dbOnline.syncing.promise = null;
                 selfoss.db.userWaiting = false;
             });
@@ -125,7 +125,7 @@ selfoss.dbOnline = {
             if (selfoss.db.enableOffline.value) {
                 if ('newItems' in data) {
                     let maxId = 0;
-                    data.newItems.forEach(function(item) {
+                    data.newItems.forEach((item) => {
                         maxId = Math.max(item.id, maxId);
                     });
 
@@ -140,7 +140,7 @@ selfoss.dbOnline = {
                         2 * selfoss.config.itemsPerPage;
 
                     selfoss.dbOffline.storeEntries(data.newItems)
-                        .then(function() {
+                        .then(() => {
                             selfoss.dbOffline.storeLastUpdate(dataDate);
                             selfoss.dbOnline._syncDone();
                         });
@@ -150,7 +150,7 @@ selfoss.dbOnline = {
                     || selfoss.dbOffline.needsSync) {
                     // There are still new items to fetch
                     // or statuses to send
-                    syncing.then(function() {
+                    syncing.then(() => {
                         selfoss.dbOffline.sendNewStatuses();
                     });
                 }
@@ -161,7 +161,7 @@ selfoss.dbOnline = {
                     // directly from the server as provided.
                     selfoss.dbOffline
                         .storeEntryStatuses(data.itemUpdates, true, false)
-                        .then(function() {
+                        .then(() => {
                             selfoss.dbOffline.storeLastUpdate(dataDate);
                         });
                 }
@@ -210,12 +210,12 @@ selfoss.dbOnline = {
             if (!storing) {
                 selfoss.dbOnline._syncDone();
             }
-        }).catch(function(error) {
+        }).catch((error) => {
             selfoss.dbOnline._syncDone(false);
-            selfoss.handleAjaxError(error).catch(function(error) {
+            selfoss.handleAjaxError(error).catch((error) => {
                 selfoss.app.showError(selfoss.app._('error_sync') + ' ' + error.message);
             });
-        }).finally(function() {
+        }).finally(() => {
             if (selfoss.dbOnline.syncing.promise) {
                 selfoss.dbOnline.syncing.request = null;
             }
@@ -262,7 +262,7 @@ selfoss.dbOnline = {
                 return;
             }
 
-            return selfoss.handleAjaxError(error).then(function() {
+            return selfoss.handleAjaxError(error).then(() => {
                 return selfoss.dbOffline.getEntries(fetchParams);
             });
         });

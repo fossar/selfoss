@@ -279,7 +279,7 @@ export function EntriesPage({
 
     useEffect(() => {
         // scroll load more
-        function onScroll() {
+        const onScroll = () => {
             const streamMoreButton = document.querySelector('.stream-more');
             if (!streamMoreButton) {
                 return;
@@ -291,7 +291,7 @@ export function EntriesPage({
             if (streamMoreButtonTop < document.body.clientHeight + window.scrollY) {
                 streamMoreButton.click();
             }
-        }
+        };
 
         if (hasMore && moreLoadingState !== LoadingState.LOADING && configuration.autoStreamMore) {
             window.addEventListener('scroll', onScroll);
@@ -651,7 +651,7 @@ export default class StateHolder extends React.Component {
         this.state.entries.forEach((entry) => {
             const { id } = entry;
             let newStatus = false;
-            entryStatuses.some(function(entryStatus) {
+            entryStatuses.some((entryStatus) => {
                 if (entryStatus.id == id) {
                     newStatus = entryStatus;
                 }
@@ -761,7 +761,7 @@ export default class StateHolder extends React.Component {
         this.setEntries(markedEntries);
 
         // update statistics in main menu
-        function updateStats(markRead) {
+        const updateStats = (markRead) => {
             // update all unread counters
             const unreadstats = selfoss.app.state.unreadItemsCount;
             const diff = markRead ? -1 : 1;
@@ -781,7 +781,7 @@ export default class StateHolder extends React.Component {
                     Object.fromEntries(Object.entries(sourceUnreadDiff).map(([source, diff]) => [source, -1 * diff])),
                 );
             }
-        }
+        };
         updateStats(true);
 
         if (selfoss.db.enableOffline.value) {
@@ -835,7 +835,7 @@ export default class StateHolder extends React.Component {
         this.markEntryInView(id, !markRead);
 
         // update statistics in main menue and the currently active tag
-        function updateStats(markRead) {
+        const updateStats = (markRead) => {
             // update all unread counters
             const unreadstats = selfoss.app.state.unreadItemsCount;
             const diff = markRead ? -1 : 1;
@@ -849,7 +849,7 @@ export default class StateHolder extends React.Component {
                 entryTags,
                 {[entry.source]: diff}
             );
-        }
+        };
         updateStats(markRead);
 
         if (selfoss.db.enableOffline.value) {
@@ -858,10 +858,10 @@ export default class StateHolder extends React.Component {
 
         itemsRequests.mark(id, !markRead).then(() => {
             selfoss.db.setOnline();
-        }).catch(function(error) {
-            selfoss.handleAjaxError(error).then(function() {
+        }).catch((error) => {
+            selfoss.handleAjaxError(error).then(() => {
                 selfoss.dbOffline.enqueueStatus(id, 'unread', !markRead);
-            }).catch(function(error) {
+            }).catch((error) => {
                 if (error instanceof HttpError && error.response.status === 403) {
                     selfoss.history.push('/sign/in', {
                         error: selfoss.app._('error_session_expired')
@@ -897,9 +897,9 @@ export default class StateHolder extends React.Component {
         this.starEntryInView(id, markStarred);
 
         // update statistics in main menu
-        function updateStats(markStarred) {
+        const updateStats = (markStarred) => {
             selfoss.app.setStarredItemsCount((starred) => starred + (markStarred ? 1 : -1));
-        }
+        };
         updateStats(markStarred);
 
         if (selfoss.db.enableOffline.value) {
@@ -908,10 +908,10 @@ export default class StateHolder extends React.Component {
 
         itemsRequests.starr(id, markStarred).then(() => {
             selfoss.db.setOnline();
-        }).catch(function(error) {
-            selfoss.handleAjaxError(error).then(function() {
+        }).catch((error) => {
+            selfoss.handleAjaxError(error).then(() => {
                 selfoss.dbOffline.enqueueStatus(id, 'starred', markStarred);
-            }).catch(function(error) {
+            }).catch((error) => {
                 if (error instanceof HttpError && error.response.status === 403) {
                     selfoss.history.push('/sign/in', {
                         error: selfoss.app._('error_session_expired')

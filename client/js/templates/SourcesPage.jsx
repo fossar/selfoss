@@ -80,7 +80,7 @@ function loadSources({ abortController, location, setSpouts, setSources, setLoad
             return;
         }
 
-        selfoss.handleAjaxError(error, false).catch(function(error) {
+        selfoss.handleAjaxError(error, false).catch((error) => {
             if (error instanceof HttpError && error.response.status === 403) {
                 selfoss.history.push('/sign/in', {
                     error: selfoss.app._('error_session_expired'),

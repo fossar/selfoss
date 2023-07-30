@@ -59,7 +59,7 @@ function Message({ message }) {
     // Whenever message changes, dismiss it after 15 seconds.
     useEffect(() => {
         if (message !== null) {
-            const dismissTimeout = window.setTimeout(function() {
+            const dismissTimeout = window.setTimeout(() => {
                 selfoss.app.setGlobalMessage(null);
             }, 15000);
 
@@ -667,7 +667,7 @@ export default class App extends React.Component {
 
     notifyNewVersion(cb) {
         if (!cb) {
-            cb = function() {
+            cb = () => {
                 window.location.reload();
             };
         }
