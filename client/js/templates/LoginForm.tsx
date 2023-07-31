@@ -1,6 +1,7 @@
 import React, { useCallback, useContext, useState } from 'react';
 import classNames from 'classnames';
 import { History } from 'history';
+import selfoss from '../selfoss-base';
 import { SpinnerBig } from './Spinner';
 import { useLocation, useNavigate } from 'react-router';
 import { Configuration } from '../model/Configuration';

@@ -2,6 +2,7 @@ import React, { useContext, useMemo, useCallback, useState } from 'react';
 import { Link, useLocation } from 'react-router';
 import classNames from 'classnames';
 import { unescape } from 'html-escaper';
+import selfoss from '../selfoss-base';
 import {
     useForceReload,
     makeEntriesLinkLocation,
@@ -14,6 +15,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as icons from '../icons';
 import { LocalizationContext } from '../helpers/i18n';
 import { NavTag } from '../requests/items';
+import { ClickEvent } from '@szhsin/react-menu';
 
 type TagProps = {
     tag: NavTag | null;
@@ -28,7 +30,7 @@ function Tag(props: TagProps) {
     const tagName = tag !== null ? tag.tag : null;
 
     const colorChanged = useCallback(
-        ({ value }) => {
+        ({ value }: ClickEvent) => {
             updateTag(tagName, value)
                 .then(() => {
                     selfoss.entriesPage?.reload();

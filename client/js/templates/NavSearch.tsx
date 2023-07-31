@@ -8,6 +8,7 @@ import React, {
 import { useLocation, useNavigate } from 'react-router';
 import classNames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import selfoss from '../selfoss-base';
 import { makeEntriesLink } from '../helpers/uri';
 import * as icons from '../icons';
 import { LocalizationContext } from '../helpers/i18n';

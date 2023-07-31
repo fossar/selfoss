@@ -11,6 +11,7 @@ import { usePreviousImmediate } from 'rooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
 import { createFocusTrap } from 'focus-trap';
+import selfoss from '../selfoss-base';
 import { useAllowedToWrite } from '../helpers/authorizations';
 import {
     useForceReload,
