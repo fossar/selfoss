@@ -1,4 +1,5 @@
 import { tinykeys } from 'tinykeys';
+import selfoss from './selfoss-base';
 import { Direction } from './helpers/navigation';
 
 type KeyboardEventHandler = (event: KeyboardEvent) => void;
