@@ -1,17 +1,20 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as icons from '../icons';
+import { SizeProp } from '@fortawesome/fontawesome-svg-core';
+
 
 type SpinnerProps = {
     label: string,
-    size?: string,
+    size?: SizeProp,
 };
 
 export function Spinner(
     props: SpinnerProps,
 ): React.JSX.Element {
     const {
-        label, size,
+        label,
+        size,
     } = props;
 
     return (
