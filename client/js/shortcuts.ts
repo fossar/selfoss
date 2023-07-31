@@ -1,4 +1,5 @@
 import { tinykeys } from 'tinykeys';
+import selfoss from './selfoss-base';
 import { Direction } from './helpers/navigation';
 
 type KeyboardEventHandler = (event: KeyboardEvent) => void;
@@ -127,13 +128,13 @@ export default function makeShortcuts(): () => void {
         // 'Shift + r': Refresh sources
         'Shift+r': ignoreWhenInteracting((event: KeyboardEvent): void => {
             event.preventDefault();
-            document.querySelector('#nav-refresh').click();
+            document.querySelector<HTMLButtonElement>('#nav-refresh').click();
         }),
 
         // 'Control+m': mark all as read
         'Control+m': ignoreWhenInteracting((event: KeyboardEvent): void => {
             event.preventDefault();
-            document.querySelector('#nav-mark').click();
+            document.querySelector<HTMLButtonElement>('#nav-mark').click();
         }),
 
         // 't': throw (mark as read & open next)
@@ -151,19 +152,25 @@ export default function makeShortcuts(): () => void {
         // 'Shift+n': switch to newest items overview / menu item
         'Shift+n': ignoreWhenInteracting((event: KeyboardEvent): void => {
             event.preventDefault();
-            document.querySelector('#nav-filter-newest').click();
+            document
+                .querySelector<HTMLAnchorElement>('#nav-filter-newest')
+                .click();
         }),
 
         // 'Shift+u': switch to unread items overview / menu item
         'Shift+u': ignoreWhenInteracting((event: KeyboardEvent): void => {
             event.preventDefault();
-            document.querySelector('#nav-filter-unread').click();
+            document
+                .querySelector<HTMLAnchorElement>('#nav-filter-unread')
+                .click();
         }),
 
         // 'Shift+s': switch to starred items overview / menu item
         'Shift+s': ignoreWhenInteracting((event: KeyboardEvent): void => {
             event.preventDefault();
-            document.querySelector('#nav-filter-starred').click();
+            document
+                .querySelector<HTMLAnchorElement>('#nav-filter-starred')
+                .click();
         }),
     });
 }

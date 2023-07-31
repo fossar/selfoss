@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import { usePreviousImmediate } from 'rooks';
 import classNames from 'classnames';
 import { unescape } from 'html-escaper';
+import selfoss from '../selfoss-base';
 import {
     useForceReload,
     makeEntriesLinkLocation,

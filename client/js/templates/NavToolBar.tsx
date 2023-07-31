@@ -1,6 +1,7 @@
 import React, { useCallback, useContext, useState } from 'react';
 import { Link } from 'react-router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import selfoss from '../selfoss-base';
 import * as icons from '../icons';
 import {
     useAllowedToUpdate,

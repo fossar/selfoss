@@ -12,6 +12,7 @@ import { useEffectEvent } from 'use-effect-event';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Collapse } from '@kunukn/react-collapse';
 import classNames from 'classnames';
+import selfoss from '../selfoss-base';
 import HashPassword from './HashPassword';
 import OpmlImport from './OpmlImport';
 import LoginForm from './LoginForm';
