@@ -1,6 +1,6 @@
 import { LoginError } from '../errors';
 import * as ajax from '../helpers/ajax';
-import { Configuration } from '../models/Configuration';
+import { Configuration } from '../model/Configuration';
 
 export class PasswordHashingError extends Error {
     public name: string;
