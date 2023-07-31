@@ -1,6 +1,8 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useMemo } from 'react';
 import { Link, useNavigate, useLocation, useMatch } from 'react-router';
+import { Link, useHistory, useLocation, useRouteMatch } from 'react-router-dom';
+import selfoss from '../selfoss-base';
 import Source from './Source';
 import { SpinnerBig } from './Spinner';
 import { LoadingState } from '../requests/LoadingState';

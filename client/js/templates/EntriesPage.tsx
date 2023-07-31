@@ -9,6 +9,7 @@ import React, {
 import { Link, NavigateFunction, useLocation, useParams } from 'react-router';
 import { useOnline } from 'rooks';
 import { useStateWithDeps } from 'use-state-with-deps';
+import selfoss from '../selfoss-base';
 import Item from './Item';
 import { FilterType } from '../Filter';
 import * as itemsRequests from '../requests/items';
