@@ -12,6 +12,7 @@ import { makeEntriesLinkLocation } from '../helpers/uri';
 import { unescape } from 'html-escaper';
 import classNames from 'classnames';
 import pick from 'lodash.pick';
+import selfoss from '../selfoss-base';
 import SourceParam from './SourceParam';
 import { Spinner } from './Spinner';
 import * as sourceRequests from '../requests/sources';

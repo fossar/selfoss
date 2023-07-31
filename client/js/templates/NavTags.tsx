@@ -6,6 +6,7 @@ import React, {
 import { Link, useRouteMatch } from 'react-router-dom';
 import classNames from 'classnames';
 import { unescape } from 'html-escaper';
+import selfoss from '../selfoss-base';
 import { forceReload, makeEntriesLinkLocation, ENTRIES_ROUTE_PATTERN } from '../helpers/uri';
 import ColorChooser from './ColorChooser';
 import { updateTag } from '../requests/tags';

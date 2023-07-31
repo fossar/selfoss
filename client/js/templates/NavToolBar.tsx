@@ -5,6 +5,7 @@ import React, {
 } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import selfoss from '../selfoss-base';
 import * as icons from '../icons';
 import { useAllowedToUpdate, useAllowedToWrite, useLoggedIn } from '../helpers/authorizations';
 import { LocalizationContext } from '../helpers/i18n';

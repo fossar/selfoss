@@ -7,6 +7,7 @@ import { Link, useRouteMatch } from 'react-router-dom';
 import { usePreviousImmediate } from 'rooks';
 import classNames from 'classnames';
 import { unescape } from 'html-escaper';
+import selfoss from '../selfoss-base';
 import { forceReload, makeEntriesLinkLocation, ENTRIES_ROUTE_PATTERN } from '../helpers/uri';
 import Collapse from '@kunukn/react-collapse';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
