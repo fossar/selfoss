@@ -2,6 +2,7 @@ import React, { useContext, useCallback, useState } from 'react';
 import { Link, useRouteMatch } from 'react-router-dom';
 import classNames from 'classnames';
 import { unescape } from 'html-escaper';
+import selfoss from '../selfoss-base';
 import {
     forceReload,
     makeEntriesLinkLocation,
