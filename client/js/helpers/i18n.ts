@@ -99,4 +99,4 @@ export function i18nFormat(translated: string, params?: {[index: string]: string
     return formatted;
 }
 
-export const LocalizationContext = React.createContext();
+export const LocalizationContext = React.createContext(undefined);

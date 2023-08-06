@@ -98,7 +98,7 @@ export default function SourceParam(
             <select
                 id={`${spoutParamName}-${sourceId}`}
                 name={spoutParamName}
-                size="1"
+                size={1}
                 value={value}
                 onChange={updateSourceParam}
             >
