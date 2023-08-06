@@ -252,12 +252,43 @@ function daysAgo(date) {
     return Math.floor((today - old) / MS_PER_DAY);
 }
 
+export type SpoutParam = {
+    title: string;
+    default: string;
+} & (
+    | {
+          type: 'text' | 'url' | 'password' | 'checkbox';
+      }
+    | {
+          type: 'select';
+          values: { [s: string]: string };
+      }
+);
+
+type Spout = {
+    name: string;
+    description: string;
+    params: { [name: string]: SpoutParam };
+};
+
+export type Source = {
+    id: number;
+    title: string;
+    spout: string;
+    tags: string;
+    filter: string;
+    params: { [name: string]: string };
+    icon: string;
+    lastentry: number;
+    error: string;
+};
+
 type SourceEditFormProps = {
-    source: object;
+    source: Source;
     sourceElem: object;
     sourceError?: string;
     setSources: React.Dispatch<React.SetStateAction<Array<object>>>;
-    spouts: object;
+    spouts: { [className: string]: Spout };
     setSpouts: React.Dispatch<React.SetStateAction<Array<object>>>;
     setEditedSource: React.Dispatch<React.SetStateAction<object>>;
     sourceActionLoading: boolean;
@@ -560,12 +591,14 @@ function SourceEditForm(props: SourceEditFormProps) {
 }
 
 type SourceProps = {
-    source: object;
-    setSources: React.Dispatch<React.SetStateAction<Array<object>>>;
-    spouts: object;
+    source: Source;
+    setSources: React.Dispatch<React.SetStateAction<Array<Source>>>;
+    spouts: { [className: string]: Spout };
     setSpouts: React.Dispatch<React.SetStateAction<object>>;
     dirty: boolean;
-    setDirtySources: React.Dispatch<React.SetStateAction<boolean>>;
+    setDirtySources: React.Dispatch<
+        React.SetStateAction<{ [id: number]: boolean }>
+    >;
 };
 
 export default function Source(props: SourceProps) {
@@ -620,7 +653,7 @@ export default function Source(props: SourceProps) {
     const sourceElem = useRef(null);
 
     const extraMenuOnSelection = useCallback(
-        ({ value }) => {
+        ({ value }: { value?: string }) => {
             if (value === 'delete') {
                 handleDelete({
                     source,

@@ -36,6 +36,7 @@
     "@parcel/transformer-sass": "^2.0.0",
     "@parcel/transformer-webmanifest": "^2.0.0",
     "@types/history": "^4.7.11",
+    "@types/react": "^18.2.17",
     "autoprefixer": "^10.4.0",
     "eslint": "^9.0.0",
     "eslint-config-prettier": "^10.0.0",

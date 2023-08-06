@@ -107,4 +107,4 @@ export function i18nFormat(
     return formatted;
 }
 
-export const LocalizationContext = React.createContext();
+export const LocalizationContext = React.createContext(undefined);

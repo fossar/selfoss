@@ -1,14 +1,20 @@
-import React, { useCallback, useContext } from 'react';
+import React, {
+    Dispatch,
+    SetStateAction,
+    useCallback,
+    useContext,
+} from 'react';
 import { LocalizationContext } from '../helpers/i18n';
+import { Source, SpoutParam } from './Source';
 
 type SourceParamProps = {
     spoutParamName: string;
-    spoutParam: object;
-    params: object;
+    spoutParam: SpoutParam;
+    params: { [index: string]: string };
     sourceErrors: { [index: string]: string };
     sourceId: number;
-    setEditedSource: React.Dispatch<React.SetStateAction<object | null>>;
-    setDirty: React.Dispatch<React.SetStateAction<boolean>>;
+    setEditedSource: Dispatch<SetStateAction<Source | null>>;
+    setDirty: Dispatch<SetStateAction<boolean>>;
 };
 
 export default function SourceParam(
@@ -93,7 +99,7 @@ export default function SourceParam(
             <select
                 id={`${spoutParamName}-${sourceId}`}
                 name={spoutParamName}
-                size="1"
+                size={1}
                 value={value}
                 onChange={updateSourceParam}
             >
