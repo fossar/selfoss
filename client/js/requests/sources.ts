@@ -3,9 +3,9 @@ import { TagWithUnread } from './tags';
 import * as ajax from '../helpers/ajax';
 
 type SourceWithUnread = {
-    id: int,
+    id: number,
     title: string,
-    unread: int,
+    unread: number,
 };
 
 type UpdateResponse = {
@@ -110,14 +110,14 @@ type Spout = {
 };
 
 type SourceWithIcon = {
-    id: int,
+    id: number,
     title: string,
     tags: Array<string>,
     spout: string,
     params: object,
     filter: string | null,
     error: string | null,
-    lastentry: int | null,
+    lastentry: number | null,
     icon: string | null
 };
 

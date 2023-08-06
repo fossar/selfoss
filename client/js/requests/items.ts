@@ -110,7 +110,7 @@ export function getItems(filter: QueryFilter, abortController?: AbortController)
 }
 
 type StatusUpdate = {
-    id: int,
+    id: number,
     unread?: boolean,
     starred?: boolean,
     datetime: Date,

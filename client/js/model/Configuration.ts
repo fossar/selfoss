@@ -1,7 +1,5 @@
 import { createContext } from 'react';
 
-export const ConfigurationContext = createContext();
-
 export type Configuration = {
 	homepage: string,
 	share: string,
@@ -27,3 +25,5 @@ export type Configuration = {
 	userCss: number | null,
 	userJs: number | null,
 };
+
+export const ConfigurationContext: React.Context<Configuration> = createContext(undefined);
