@@ -167,7 +167,9 @@ export default function SourcesPage(): React.JSX.Element {
 
     const _ = useContext(LocalizationContext);
 
-    const [dirtySources, setDirtySources] = useState({});
+    const [dirtySources, setDirtySources] = useState<{ [id: number]: boolean }>(
+        {},
+    );
     const isDirty = useMemo(
         () => Object.values(dirtySources).includes(true),
         [dirtySources],
