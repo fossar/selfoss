@@ -101,5 +101,21 @@
   "lang_unread": "Belum Dibaca",
   "lang_newest": "Terbaru",
   "lang_filter": "Saring",
-  "lang_markread": "Tandai sebagai telah dibaca"
+  "lang_markread": "Tandai sebagai telah dibaca",
+  "lang_entries_loading": "Memuat entri…",
+  "lang_source_deleting": "Menghapus sumber…",
+  "lang_source_saving": "Menyimpan perubahan sumber…",
+  "lang_sources_leaving_unsaved_prompt": "Tinggalkan setelan dengan perubahan sumber yang belum disimpan?",
+  "lang_source_go_to_settings": "Buka pengaturan",
+  "lang_source_menu": "Tindakan lainnya",
+  "lang_login_in_progress": "Mencoba masuk…",
+  "lang_source_browse": "Telusuri",
+  "lang_login_error_generic": "Tidak bisa masuk: {errorMessage}",
+  "lang_source_params_loading": "Memuat parameter…",
+  "lang_share_mastodon_label": "Bagikan di Mastodon",
+  "lang_sources_loading": "Memuat sumber…",
+  "lang_no_sources": "Tidak ada sumber yang dikonfigurasi.",
+  "lang_error_unauthorized": "Silakan {link_begin}masuk{link_end} untuk melanjutkan.",
+  "lang_source_warn_cancel_dirty": "Buang perubahan yang belum disimpan?",
+  "lang_tag_change_color_button_title": "Ubah warna"
 }
