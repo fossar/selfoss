@@ -124,7 +124,7 @@ class Configuration {
 
     public string $wallabag = '';
 
-    public string $wallabagVersion = '2';
+    public int $wallabagVersion = 2;
 
     public ?string $wordpress = null;
 
