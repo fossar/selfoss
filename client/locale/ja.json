@@ -94,7 +94,7 @@
   "lang_error_share_native_abort": "アイテムを共有できません—共有先がないか、キャンセルしました。",
   "lang_share_pocket_label": "Pocket に保存",
   "lang_share_twitter_label": "Twitter でシェア",
-  "lang_close_entry": "開いたアイテムを閉じてアイテムのリストに戻るためのボタンのラベル (アイテムが全画面表示されるモバイルで使用されます)。",
+  "lang_close_entry": "閉じる",
   "lang_share_facebook_label": "Facebook でシェア",
   "lang_offline_navigation_unavailable": "現在、オフラインモードではタグとソースの切り替えができません。",
   "lang_share_diaspora_label": "Diaspora でシェア",
@@ -105,5 +105,6 @@
   "lang_share_mail_label": "メールを使用して共有",
   "lang_share_native_label": "共有",
   "lang_share_wordpress_label": "WordPress でシェア",
-  "lang_error_offline_storage_not_available": "オフラインストレージは利用できません。 Webブラウザ {0} がIndexedDBAPI {1} をサポートしていること、および Google Chrome ベースのブラウザを使用している場合は、シークレットモードで selfoss を実行していないことを確認してください。"
+  "lang_error_offline_storage_not_available": "オフラインストレージは利用できません。 Webブラウザ {0} がIndexedDBAPI {1} をサポートしていること、および Google Chrome ベースのブラウザを使用している場合は、シークレットモードで selfoss を実行していないことを確認してください。",
+  "lang_share_mastodon_label": "Mastodon でシェア"
 }
