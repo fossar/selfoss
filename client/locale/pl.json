@@ -53,5 +53,15 @@
   "lang_login_invalid_credentials": "nieprawidłowy login lub hasło.",
   "lang_no_title": "bez tytułu",
   "lang_error": "wystąpił błąd",
-  "lang_streamerror": "Nie załadowano żadnych elementów, odświeżyć?"
+  "lang_streamerror": "Nie załadowano żadnych elementów, odświeżyć?",
+  "lang_error_loading": "Błąd podczas ładowania:",
+  "lang_experimental": "Eksperymentalny",
+  "lang_article_actions": "Działania",
+  "lang_share_native_label": "Udostępnij",
+  "lang_source_browse": "Przeglądaj",
+  "lang_app_reload": "Załaduj ponownie",
+  "lang_error_session_expired": "Sesja wygasła",
+  "lang_close_entry": "Zamknij",
+  "lang_sources_refreshed": "Odświeżono źródła",
+  "lang_error_unknown_tag": "Nieznany tag:"
 }
