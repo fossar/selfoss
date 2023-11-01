@@ -74,6 +74,16 @@ class Statements extends \daos\mysql\Statements {
     }
 
     /**
+     * Convert a date into a representation suitable for storage or comparison.
+     *
+     * @return string representation of datetime
+     */
+    public static function datetime(\DateTimeImmutable $date): string {
+        // We are using `TIMESTAMP WITH TIME ZONE` in PostgreSQL, which supports ISO8601 datetime.
+        return $date->format(\DateTimeImmutable::ATOM);
+    }
+
+    /**
      * Ensure row values have the appropriate PHP type. This assumes we are
      * using buffered queries (sql results are in PHP memory).
      *
@@ -104,7 +114,8 @@ class Statements extends \daos\mysql\Statements {
                             }
                             break;
                         case DatabaseInterface::PARAM_DATETIME:
-                            $value = new \DateTime($row[$columnIndex]);
+                            // PostgreSQL will include the timezone offset as the part of the returned value.
+                            $value = new \DateTimeImmutable($row[$columnIndex]);
                             break;
                         default:
                             $value = null;

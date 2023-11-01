@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace daos;
 
-use DateTime;
+use DateTimeImmutable;
 
 /**
  * Object holding parameters for querying items.
@@ -24,13 +24,13 @@ final class ItemOptions {
     public ?int $pageSize = null;
 
     /** @readonly */
-    public ?DateTime $fromDatetime = null;
+    public ?DateTimeImmutable $fromDatetime = null;
 
     /** @readonly */
     public ?int $fromId = null;
 
     /** @readonly */
-    public ?DateTime $updatedSince = null;
+    public ?DateTimeImmutable $updatedSince = null;
 
     /** @readonly */
     public ?string $tag = null;
@@ -71,7 +71,8 @@ final class ItemOptions {
         }
 
         if (isset($data['fromDatetime']) && is_string($data['fromDatetime']) && strlen($data['fromDatetime']) > 0) {
-            $options->fromDatetime = new \DateTime($data['fromDatetime']);
+            // The client should include a timezone offset but let’s default to UTC in case it does not.
+            $options->fromDatetime = new \DateTimeImmutable($data['fromDatetime'], new \DateTimeZone('UTC'));
         }
 
         if (isset($data['fromId']) && is_numeric($data['fromId'])) {
@@ -79,7 +80,8 @@ final class ItemOptions {
         }
 
         if (isset($data['updatedsince']) && is_string($data['updatedsince']) && strlen($data['updatedsince']) > 0) {
-            $options->updatedSince = new \DateTime($data['updatedsince']);
+            // The client should include a timezone offset but let’s default to UTC in case it does not.
+            $options->updatedSince = new \DateTimeImmutable($data['updatedsince'], new \DateTimeZone('UTC'));
         }
 
         if (isset($data['tag']) && is_string($data['tag']) && strlen($tag = trim($data['tag'])) > 0) {

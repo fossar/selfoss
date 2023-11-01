@@ -121,8 +121,8 @@ class ContentLoader {
             // current date
             $minDate = null;
             if ($this->configuration->itemsLifetime !== 0) {
-                $minDate = new \DateTime();
-                $minDate->sub(new \DateInterval('P' . $this->configuration->itemsLifetime . 'D'));
+                $minDate = new \DateTimeImmutable();
+                $minDate = $minDate->sub(new \DateInterval('P' . $this->configuration->itemsLifetime . 'D'));
                 $this->logger->debug('minimum date: ' . $minDate->format('Y-m-d H:i:s'));
             }
 
@@ -168,7 +168,7 @@ class ContentLoader {
                     $itemDate = new \DateTimeImmutable();
                 }
                 if ($minDate !== null && $itemDate < $minDate) {
-                    $this->logger->debug('item "' . $titlePlainText . '" (' . $itemDate->format(\DateTime::ATOM) . ') older than ' . $this->configuration->itemsLifetime . ' days');
+                    $this->logger->debug('item "' . $titlePlainText . '" (' . $itemDate->format(\DateTimeImmutable::ATOM) . ') older than ' . $this->configuration->itemsLifetime . ' days');
                     continue;
                 }
 
@@ -426,8 +426,8 @@ class ContentLoader {
         $this->logger->debug('cleanup orphaned and old items');
         $minDate = null;
         if ($this->configuration->itemsLifetime !== 0) {
-            $minDate = new \DateTime();
-            $minDate->sub(new \DateInterval('P' . $this->configuration->itemsLifetime . 'D'));
+            $minDate = new \DateTimeImmutable();
+            $minDate = $minDate->sub(new \DateInterval('P' . $this->configuration->itemsLifetime . 'D'));
         }
         $this->itemsDao->cleanup($minDate);
         $this->logger->debug('cleanup orphaned and old items finished');

@@ -49,26 +49,24 @@ class Sync {
             $this->view->jsonError(['sync' => 'missing since argument']);
         }
 
-        $since = new \DateTime($params['since']);
-        $since->setTimeZone(new \DateTimeZone(date_default_timezone_get()));
+        // The client should include a timezone offset but let’s default to UTC in case it does not.
+        $since = new \DateTimeImmutable($params['since'], new \DateTimeZone('UTC'));
 
         $lastUpdate = $this->itemsDao->lastUpdate();
 
         $sync = [
-            'lastUpdate' => $lastUpdate !== null ? $lastUpdate->format(\DateTime::ATOM) : null,
+            'lastUpdate' => $lastUpdate !== null ? $lastUpdate->format(\DateTimeImmutable::ATOM) : null,
         ];
 
         if (array_key_exists('itemsSinceId', $params)) {
             $sinceId = (int) $params['itemsSinceId'];
             if ($sinceId >= 0) {
-                $notBefore = isset($params['itemsNotBefore']) ? new \DateTime($params['itemsNotBefore']) : null;
+                $notBefore = isset($params['itemsNotBefore']) ? new \DateTimeImmutable($params['itemsNotBefore']) : null;
                 if ($sinceId === 0 || !$notBefore) {
                     $sinceId = $this->itemsDao->lowestIdOfInterest() - 1;
                     // only send 1 day worth of items
-                    $notBefore = new \DateTime();
-                    $notBefore->setTimeZone(new \DateTimeZone(date_default_timezone_get()));
-                    $notBefore->sub(new \DateInterval('P1D'));
-                    $notBefore->setTimeZone(new \DateTimeZone(date_default_timezone_get()));
+                    $notBefore = new \DateTimeImmutable();
+                    $notBefore = $notBefore->sub(new \DateInterval('P1D'));
                 }
 
                 $itemsHowMany = $this->configuration->itemsPerpage;

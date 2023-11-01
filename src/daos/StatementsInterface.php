@@ -90,14 +90,11 @@ interface StatementsInterface {
     public static function bool(bool $bool): string;
 
     /**
-     * Convert a date into a representation suitable for comparison by
-     * the database engine.
-     *
-     * @param \DateTime $date datetime
+     * Convert a date into a representation suitable for storage or comparison.
      *
      * @return string representation of datetime
      */
-    public static function datetime(\DateTime $date): string;
+    public static function datetime(\DateTimeImmutable $date): string;
 
     /**
      * Ensure row values have the appropriate PHP type. This assumes we are

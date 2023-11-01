@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace daos;
 
-use DateTime;
 use DateTimeImmutable;
 use helpers\Authentication;
 
@@ -60,7 +59,7 @@ class Items implements ItemsInterface {
         $this->backend->updateLastSeen($itemIds);
     }
 
-    public function cleanup(?DateTime $minDate): void {
+    public function cleanup(?DateTimeImmutable $minDate): void {
         $this->backend->cleanup($minDate);
     }
 
@@ -69,7 +68,7 @@ class Items implements ItemsInterface {
      *
      * @param ItemOptions $options search, offset and filter params
      *
-     * @return array<array{id: int, datetime: DateTime, title: string, content: string, unread: bool, starred: bool, source: int, thumbnail: string, icon: string, uid: string, link: string, updatetime: DateTime, author: string, sourcetitle: string, tags: string[]}> items as array
+     * @return array<array{id: int, datetime: DateTimeImmutable, title: string, content: string, unread: bool, starred: bool, source: int, thumbnail: string, icon: string, uid: string, link: string, updatetime: DateTimeImmutable, author: string, sourcetitle: string, tags: string[]}> items as array
      */
     public function get(ItemOptions $options): array {
         $items = $this->backend->get($options);
@@ -107,7 +106,7 @@ class Items implements ItemsInterface {
         return $this->backend->hasMore();
     }
 
-    public function sync(int $sinceId, DateTime $notBefore, DateTime $since, int $howMany): array {
+    public function sync(int $sinceId, DateTimeImmutable $notBefore, DateTimeImmutable $since, int $howMany): array {
         return $this->backend->sync($sinceId, $notBefore, $since, $howMany);
     }
 
@@ -147,7 +146,7 @@ class Items implements ItemsInterface {
         return $this->backend->lastUpdate();
     }
 
-    public function statuses(DateTime $since): array {
+    public function statuses(DateTimeImmutable $since): array {
         return $this->backend->statuses($since);
     }
 

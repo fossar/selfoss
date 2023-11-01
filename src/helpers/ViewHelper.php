@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace helpers;
 
-use DateTime;
+use DateTimeImmutable;
 
 /**
  * Helper class for loading extern items
@@ -122,7 +122,7 @@ class ViewHelper {
     /**
      * Prepare entry as expected by the client.
      *
-     * @param array{title: string, content: string, datetime: DateTime, updatetime: DateTime, sourcetitle: string, tags: string[]} $item item to modify
+     * @param array{title: string, content: string, datetime: DateTimeImmutable, updatetime: DateTimeImmutable, sourcetitle: string, tags: string[]} $item item to modify
      * @param \controllers\Tags $tagsController tags controller
      * @param ?array<array{tag: string, color: string}> $tags list of tags
      * @param ?string $search search query
@@ -151,8 +151,8 @@ class ViewHelper {
         $item['content'] = ViewHelper::lazyimg($item['content']);
         $contentWithoutTags = strip_tags($item['content']);
         $item['wordCount'] = str_word_count($contentWithoutTags);
-        $item['datetime'] = $item['datetime']->format(\DateTime::ATOM);
-        $item['updatetime'] = $item['updatetime']->format(\DateTime::ATOM);
+        $item['datetime'] = $item['datetime']->format(\DateTimeImmutable::ATOM);
+        $item['updatetime'] = $item['updatetime']->format(\DateTimeImmutable::ATOM);
         $item['lengthWithoutTags'] = strlen($contentWithoutTags);
 
         return $item;
