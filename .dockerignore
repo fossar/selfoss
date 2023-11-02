@@ -1,50 +1,28 @@
-documentation
+# Taken from .gitignore
+/assets/.parcel-cache
+/data/favicons/*.png
+/data/favicons/*.jpg
+/data/thumbnails/*.png
+/data/thumbnails/*.jpg
+/data/cache/*.spc
+/data/logs/*.log
+/data/sqlite/*.db
+/public
+docs/public/
+docs/static/processed_images/
+user.css
+user.js
+*.ini
+node_modules
+.env
+vendor/
+.php_cs.cache
+__pycache__
+
+# Regular docker ignore
 .dockerignore
 Dockerfile
 .git
-.git*
+.github
+.gitignore
 *.md
-
-# compiled output
-/dist
-/tmp
-/out-tsc
-# Only exists if Bazel was run
-/bazel-out
-
-# dependencies
-/node_modules
-
-# profiling files
-chrome-profiler-events.json
-speed-measure-plugin.json
-
-# IDEs and editors
-/.idea
-.project
-.classpath
-.c9/
-*.launch
-.settings/
-*.sublime-workspace
-
-# IDE - VSCode
-.vscode/*
-.history/*
-
-# misc
-/.sass-cache
-/connect.lock
-/coverage
-/libpeerconnection.log
-npm-debug.log
-yarn-error.log
-testem.log
-/typings
-
-# System Files
-.DS_Store
-Thumbs.db
-
-# testing
-junit.xml
