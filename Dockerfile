@@ -1,5 +1,7 @@
+# syntax=docker/dockerfile:1
+
 ### Stage 1: build client
-FROM node:18 as client-builder
+FROM node:20 as client-builder
 WORKDIR /client-builder
 
 # Install node packages
@@ -15,41 +17,39 @@ RUN npm run build
 
 ### Stage 2: final container
 FROM php:8.2-apache
-RUN apt-get update \
-    && apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y cron unzip libjpeg62-turbo-dev libpng-dev libpq-dev libonig-dev libtidy-dev \
+# Install runtime & development package dependencies & php extensions
+# then clean-up dev package dependencies
+RUN export DEBIAN_FRONTEND=noninteractive \
+    && apt update \
+    && apt install -y --no-install-recommends \
+      unzip \
+      libjpeg62-turbo libpng16-16 libpq5 libonig5 libtidy5deb1 \
+      libjpeg62-turbo-dev libpng-dev libpq-dev libonig-dev libtidy-dev \
     && update-ca-certificates --fresh \
+    && docker-php-ext-configure gd --with-jpeg \
+    && docker-php-ext-install gd mbstring pdo_pgsql pdo_mysql tidy \
+    && apt remove -y libjpeg62-turbo-dev libpng-dev libpq-dev libonig-dev libtidy-dev \
+    && apt autoremove -y \
     && apt clean \
     && rm -rf /var/lib/apt/lists/*
 
-RUN docker-php-ext-configure gd \
-    && docker-php-ext-install gd mbstring pdo_pgsql pdo_mysql tidy
-
+# Install Apache modules
 RUN a2enmod headers rewrite
 
-RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
-    && php composer-setup.php \
-    && php -r "unlink('composer-setup.php');" \
-    && mv composer.phar /usr/local/bin/composer
-
-# Install dependencies
+# Install Selfoss PHP dependencies
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 COPY composer.json .
 COPY composer.lock .
 RUN COMPOSER_ALLOW_SUPERUSER=1 composer install --optimize-autoloader --no-dev
+RUN rm /usr/bin/composer
 
-# Setup cron
-RUN echo '* * * * * curl http://localhost/update' | tee /etc/cron.d/selfoss \
-    && chmod 0644 /etc/cron.d/selfoss \
-    && crontab /etc/cron.d/selfoss
-
+# Install Selfoss and copy frontend from the first stage
 WORKDIR /var/www/html
-
 COPY . .
-
 COPY --from=client-builder /client-builder/public /var/www/html/public
 
+# Use www-data user as owner and drop root user
 RUN chown -R www-data:www-data /var/www/html/data
-
-# Overload default command to run cron in the background
-RUN sed -i 's/^exec /service cron start\n\nexec /' /usr/local/bin/apache2-foreground
+USER www-data
 
 VOLUME /var/www/html/data
