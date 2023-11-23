@@ -46,10 +46,6 @@ function setupLightbox({
     }));
 }
 
-function stopPropagation(event) {
-    event.stopPropagation();
-}
-
 function lazyLoadImages(content) {
     content.querySelectorAll('img').forEach((img) => {
         img.setAttribute('src', img.getAttribute('data-selfoss-src'));
@@ -389,6 +385,17 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
         [item]
     );
 
+    const externalLinkOnClick = useCallback(
+        (event) => {
+            event.stopPropagation();
+
+            if (canWrite) {
+                selfoss.entriesPage.markEntryRead(item.id, true);
+            }
+        },
+        [canWrite, item.id]
+    );
+
     const loadImagesOnClick = useCallback(
         (event) => loadImages({ event, setImagesLoaded, contentBlock }),
         []
@@ -544,7 +551,7 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
                                 target="_blank"
                                 rel="noreferrer"
                                 accessKey="o"
-                                onClick={stopPropagation}
+                                onClick={externalLinkOnClick}
                             >
                                 <FontAwesomeIcon icon={icons.openWindow} /> {_('open_window')}
                             </a>
@@ -599,7 +606,7 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
                         target="_blank"
                         rel="noreferrer"
                         accessKey="o"
-                        onClick={stopPropagation}
+                        onClick={externalLinkOnClick}
                     >
                         <FontAwesomeIcon icon={icons.openWindow} /> {_('open_window')}
                     </a>
