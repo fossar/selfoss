@@ -257,6 +257,8 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
         [currentTime, item.datetime]
     );
 
+    const canWrite = useAllowedToWrite();
+
     const previouslyExpanded = usePreviousImmediate(expanded);
     const configuration = useContext(ConfigurationContext);
 
@@ -410,8 +412,6 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
         }),
         [item.source]
     );
-
-    const canWrite = useAllowedToWrite();
 
     const _ = useContext(LocalizationContext);
 
