@@ -144,18 +144,13 @@ function reloadList({
  * @param {number} selected
  */
 function openSelectedArticle(selected) {
-    const link = document.querySelector(`.entry[data-entry-id="${selected}"] .entry-datetime`);
+    const link = document.querySelector(`.entry[data-entry-id="${selected}"] .entry-newwindow`);
     if (selfoss.config.openInBackgroundTab) {
         // In Chromium, this will just cause the tab to open in the foreground.
         // Appears to be disallowed by the pop-under prevention:
         // https://crbug.com/431335
         // https://crbug.com/487919
-        const event = new MouseEvent(
-            'click',
-            {
-                ctrlKey: true,
-            }
-        );
+        const event = new MouseEvent('click', { ctrlKey: true, bubbles: true});
         link.dispatchEvent(event);
     } else {
         // open item in new window
