@@ -406,7 +406,6 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
     const titleOnMultiClick = useMultiClickHandler({
         0: (event) => {
             event.preventDefault();
-            event.stopPropagation();
         },
         1: titleOnClick,
         2: useCallback(
