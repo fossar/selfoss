@@ -367,6 +367,15 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
         [history, location, expanded, item.id]
     );
 
+    const titleOnAuxClick = useCallback(
+        (event) => {
+            if (event.button === 1 && canWrite) {
+                selfoss.entriesPage.markEntryRead(item.id, true);
+            }
+        },
+        [canWrite, item.id]
+    );
+
     const starOnClick = useCallback(
         (event) => {
             event.preventDefault();
@@ -459,6 +468,7 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
                     aria-expanded={expanded}
                     aria-current={selected}
                     tabIndex="0"
+                    onAuxClick={titleOnAuxClick}
                     onKeyUp={handleKeyUp}
                     dangerouslySetInnerHTML={titleHtml}
                 />
