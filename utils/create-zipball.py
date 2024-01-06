@@ -165,6 +165,7 @@ def main() -> None:
             source_dir / filename,
             mode="w",
             compression=zipfile.ZIP_DEFLATED,
+            strict_timestamps=False,
         ) as archive:
             archive.prefix = Path("selfoss")
 
