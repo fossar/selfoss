@@ -71,7 +71,7 @@ final class ItemOptions {
         }
 
         if (isset($data['fromDatetime']) && is_string($data['fromDatetime']) && strlen($data['fromDatetime']) > 0) {
-            $options->fromDatetime = new \DateTime($data['fromDatetime']);
+            $options->fromDatetime = new DateTime($data['fromDatetime']);
         }
 
         if (isset($data['fromId']) && is_numeric($data['fromId'])) {
@@ -79,7 +79,7 @@ final class ItemOptions {
         }
 
         if (isset($data['updatedsince']) && is_string($data['updatedsince']) && strlen($data['updatedsince']) > 0) {
-            $options->updatedSince = new \DateTime($data['updatedsince']);
+            $options->updatedSince = new DateTime($data['updatedsince']);
         }
 
         if (isset($data['tag']) && is_string($data['tag']) && strlen($tag = trim($data['tag'])) > 0) {

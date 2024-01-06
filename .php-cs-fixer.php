@@ -9,7 +9,7 @@ $finder = PhpCsFixer\Finder::create()
 $rules = [
     '@Symfony' => true,
     // why would anyone put braces on different line
-    'curly_braces_position' => [
+    'braces_position' => [
         'functions_opening_brace' => 'same_line',
         'classes_opening_brace' => 'same_line',
     ],

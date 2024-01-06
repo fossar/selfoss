@@ -70,7 +70,7 @@ class Misc {
      *
      * @param mixed $value
      *
-     * @throws \InvalidArgumentException when argument is not a numberic value
+     * @throws InvalidArgumentException when argument is not a numberic value
      */
     public static function forceId($value): int {
         if (is_numeric($value)) {
@@ -85,7 +85,7 @@ class Misc {
      *
      * @param array<numeric>|numeric $value
      *
-     * @throws \InvalidArgumentException when argument is not a numeric value or a list thereof
+     * @throws InvalidArgumentException when argument is not a numeric value or a list thereof
      *
      * @return int[]
      */

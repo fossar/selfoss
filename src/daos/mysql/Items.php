@@ -627,7 +627,7 @@ class Items implements \daos\ItemsInterface {
 
                     // sanitize update time
                     if (array_key_exists('datetime', $status)) {
-                        $updateDate = new \DateTime($status['datetime']);
+                        $updateDate = new DateTime($status['datetime']);
                     } else {
                         $updateDate = null;
                     }

@@ -42,7 +42,7 @@ class ViewHelper {
             return $content;
         }
 
-        $searchWords = \helpers\Search::splitTerms($searchWords);
+        $searchWords = Search::splitTerms($searchWords);
 
         foreach ($searchWords as $word) {
             $content = @preg_replace('/(?!<[^<>])(' . preg_quote($word, '/') . ')(?![^<>]*>)/i', '<span class="found">$0</span>', $content);
@@ -151,8 +151,8 @@ class ViewHelper {
         $item['content'] = ViewHelper::lazyimg($item['content']);
         $contentWithoutTags = strip_tags($item['content']);
         $item['wordCount'] = str_word_count($contentWithoutTags);
-        $item['datetime'] = $item['datetime']->format(\DateTime::ATOM);
-        $item['updatetime'] = $item['updatetime']->format(\DateTime::ATOM);
+        $item['datetime'] = $item['datetime']->format(DateTime::ATOM);
+        $item['updatetime'] = $item['updatetime']->format(DateTime::ATOM);
         $item['lengthWithoutTags'] = strlen($contentWithoutTags);
 
         return $item;
