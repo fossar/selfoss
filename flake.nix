@@ -64,7 +64,6 @@
               php.packages.composer
 
               # Back-end code validation.
-              php.packages.psalm
               php.packages.phpstan
 
               # npm for front-end.
