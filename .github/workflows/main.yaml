@@ -40,10 +40,10 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install Nix
-        uses: cachix/install-nix-action@v24
+        uses: cachix/install-nix-action@v26
 
       - name: Set up Nix cache
-        uses: cachix/cachix-action@v12
+        uses: cachix/cachix-action@v14
         with:
           name: fossar
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
@@ -54,7 +54,7 @@ jobs:
           sed -i 's/matrix.storage = "all";/matrix.storage = "${{ matrix.storage }}";/' flake.nix
 
       - name: Cache Node modules
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
@@ -66,7 +66,7 @@ jobs:
         run: |
           echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
 
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -106,16 +106,16 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install Nix
-        uses: cachix/install-nix-action@v24
+        uses: cachix/install-nix-action@v26
 
       - name: Set up Nix cache
-        uses: cachix/cachix-action@v12
+        uses: cachix/cachix-action@v14
         with:
           name: fossar
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
 
       - name: Cache Node modules
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
@@ -127,7 +127,7 @@ jobs:
         run: |
           echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
 
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -169,7 +169,7 @@ jobs:
           echo "CHANGES_EOF" >> $GITHUB_ENV
 
       - name: Create a release
-        uses: softprops/action-gh-release@v0.1.15
+        uses: softprops/action-gh-release@v2
         if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
