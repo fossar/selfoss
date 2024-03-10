@@ -148,6 +148,8 @@ class Configuration {
 
     public bool $showThumbnails = true;
 
+    public bool $doubleClickMarkAsRead = false;
+
     public int $readingSpeedWpm = 0;
 
     /**
