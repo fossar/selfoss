@@ -526,7 +526,8 @@ span.offline-count.diff {
 }
 
 .entry-title a {
-    color: var(--primary);
+    color: inherit;
+    text-decoration: none;
 }
 
 .entry.unread .entry-title {
