@@ -39,6 +39,7 @@
 - Content Extraction spout will no longer try to extract content we have already extracted. ([#1413](https://github.com/fossar/selfoss/pull/1413))
 - Source filters are stricter, they need to start and end with a `/`. ([#1423](https://github.com/fossar/selfoss/pull/1423))
 - OPML importer has been merged into the React client. ([#1442](https://github.com/fossar/selfoss/pull/1442))
+- **`cliupdate.php` program has been replaced with `bin/selfossctl update`**. Do not forget to update cron scripts. ([#1440](https://github.com/fossar/selfoss/pull/1440))
 
 ## 2.19 – 2022-10-12
 **This version requires PHP ~~5.6~~ 7.2 (see known regressions section) or newer. It is also the last version to support PHP 7.**

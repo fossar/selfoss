@@ -17,7 +17,7 @@ For more information visit our [web site](https://selfoss.aditu.de).
 2. Make the directories `data/cache`, `data/favicons`, `data/logs`, `data/thumbnails` and `data/sqlite` writeable.
 3. Insert database access data in `config.ini` (see below). You do not need to change anything if you want to use SQLite.
 4. You do not need to create the database tables, they will be created automatically (ensure that your database user is allowed to create triggers).
-5. Create cronjob or systemd timer for updating feeds and point it to https://yourselfossurl.com/update via wget or curl. You can also execute the `cliupdate.php` from command line.
+5. Create cronjob or systemd timer for updating feeds and point it to https://yourselfossurl.com/update via wget or curl. You can also execute `bin/selfossctl update` from command line.
 
 If you obtained selfoss using Git, some more steps will be required. See the [development](#development) section.
 
