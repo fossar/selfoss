@@ -102,7 +102,7 @@ class Sources implements \daos\SourcesInterface {
         if (strlen($error) === 0) {
             $arr = [
                 ':id' => $id,
-                ];
+            ];
             $setarg = 'NULL';
         } else {
             $arr = [

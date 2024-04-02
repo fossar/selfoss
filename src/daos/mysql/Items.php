@@ -136,17 +136,17 @@ class Items implements \daos\ItemsInterface {
                 :author
             )',
             [
-               ':datetime' => $values['datetime']->format('Y-m-d H:i:s'),
-               ':title' => $values['title']->getRaw(),
-               ':content' => $values['content']->getRaw(),
-               ':thumbnail' => $values['thumbnail'],
-               ':icon' => $values['icon'],
-               ':unread' => 1,
-               ':starred' => 0,
-               ':source' => $values['source'],
-               ':uid' => $values['uid'],
-               ':link' => $values['link'],
-               ':author' => $values['author'],
+                ':datetime' => $values['datetime']->format('Y-m-d H:i:s'),
+                ':title' => $values['title']->getRaw(),
+                ':content' => $values['content']->getRaw(),
+                ':thumbnail' => $values['thumbnail'],
+                ':icon' => $values['icon'],
+                ':unread' => 1,
+                ':starred' => 0,
+                ':source' => $values['source'],
+                ':uid' => $values['uid'],
+                ':link' => $values['link'],
+                ':author' => $values['author'],
             ]
         );
     }

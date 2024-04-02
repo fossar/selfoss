@@ -120,7 +120,7 @@ class WebClient {
      */
     public static function getEffectiveUrl(string $url, ResponseInterface $response): string {
         // Sequence of fetched URLs
-        $urlStack = array_merge([$url], $response->getHeader(\GuzzleHttp\RedirectMiddleware::HISTORY_HEADER));
+        $urlStack = array_merge([$url], $response->getHeader(GuzzleHttp\RedirectMiddleware::HISTORY_HEADER));
 
         return $urlStack[count($urlStack) - 1];
     }

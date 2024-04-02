@@ -20,7 +20,7 @@ use spouts\Parameter;
 class Write {
     private Authentication $authentication;
     private ContentLoader $contentLoader;
-    private \helpers\Request $request;
+    private Request $request;
     private \daos\Sources $sourcesDao;
     private SpoutLoader $spoutLoader;
     private \daos\Tags $tagsDao;

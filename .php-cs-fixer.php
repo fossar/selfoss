@@ -26,10 +26,6 @@ $rules = [
     'no_superfluous_phpdoc_tags' => [
         'allow_mixed' => true,
     ],
-    // Inconsistent with arguments without default value.
-    'nullable_type_declaration_for_default_null_value' => [
-        'use_nullable_type_declaration' => true,
-    ],
     'phpdoc_align' => false,
     'phpdoc_no_empty_return' => false,
     'phpdoc_summary' => false,
