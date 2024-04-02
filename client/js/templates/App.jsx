@@ -16,7 +16,7 @@ import {
     useLocation,
 } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Collapse from '@kunukn/react-collapse';
+import { Collapse } from '@kunukn/react-collapse';
 import classNames from 'classnames';
 import HashPassword from './HashPassword';
 import OpmlImport from './OpmlImport';

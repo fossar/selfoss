@@ -11,7 +11,7 @@ import { unescape } from 'html-escaper';
 import { forceReload, makeEntriesLinkLocation, ENTRIES_ROUTE_PATTERN } from '../helpers/uri';
 import ColorChooser from './ColorChooser';
 import { updateTag } from '../requests/tags';
-import Collapse from '@kunukn/react-collapse';
+import { Collapse } from '@kunukn/react-collapse';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as icons from '../icons';
 import { LocalizationContext } from '../helpers/i18n';

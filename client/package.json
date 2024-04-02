@@ -5,7 +5,7 @@
     "@fortawesome/free-regular-svg-icons": "^6.2.0",
     "@fortawesome/free-solid-svg-icons": "^6.2.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
-    "@kunukn/react-collapse": "^2.2.9",
+    "@kunukn/react-collapse": "^3.0.0",
     "@parcel/service-worker": "^2.5.0",
     "@siteparts/show-hide-effects": "^1.0.0",
     "@szhsin/react-menu": "^4.0.0",
@@ -40,7 +40,7 @@
     "eslint-plugin-react-hooks": "^4.2.0",
     "parcel": "^2.0.0",
     "postcss": "^8.4.4",
-    "prettier": "^2.0.0",
+    "prettier": "^3.0.0",
     "process": "^0.11.10",
     "stylelint": "^16.0.0",
     "stylelint-config-standard-scss": "^13.0.0"

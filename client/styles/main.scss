@@ -37,7 +37,10 @@ body {
 }
 
 body {
-    font: lighter 18px/27px 'Open Sans', Arial, sans-serif;
+    font:
+        lighter 18px/27px 'Open Sans',
+        Arial,
+        sans-serif;
     color: var(--text-color);
     background: url('../images/bg.gif') repeat;
 }
@@ -101,7 +104,10 @@ button::-moz-focus-inner {
 }
 
 #message button {
-    font: lighter 18px/27px 'Open Sans', Arial, sans-serif;
+    font:
+        lighter 18px/27px 'Open Sans',
+        Arial,
+        sans-serif;
     text-align: center;
     border-radius: 2px;
     cursor: pointer;

@@ -9,7 +9,7 @@ import { usePreviousImmediate } from 'rooks';
 import classNames from 'classnames';
 import { unescape } from 'html-escaper';
 import { forceReload, makeEntriesLinkLocation, ENTRIES_ROUTE_PATTERN } from '../helpers/uri';
-import Collapse from '@kunukn/react-collapse';
+import { Collapse } from '@kunukn/react-collapse';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { LoadingState } from '../requests/LoadingState';
 import * as sourceRequests from '../requests/sources';

@@ -8,7 +8,7 @@ import { Link, useRouteMatch } from 'react-router-dom';
 import classNames from 'classnames';
 import { FilterType } from '../Filter';
 import { forceReload, makeEntriesLinkLocation, ENTRIES_ROUTE_PATTERN } from '../helpers/uri';
-import Collapse from '@kunukn/react-collapse';
+import { Collapse } from '@kunukn/react-collapse';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as icons from '../icons';
 import { LocalizationContext } from '../helpers/i18n';
