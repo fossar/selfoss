@@ -13,7 +13,7 @@ import PropTypes from 'prop-types';
 import nullable from 'prop-types-nullable';
 import { unescape } from 'html-escaper';
 import classNames from 'classnames';
-import pick from 'lodash.pick';
+import { pick } from 'lodash-es';
 import SourceParam from './SourceParam';
 import { Spinner } from './Spinner';
 import * as sourceRequests from '../requests/sources';

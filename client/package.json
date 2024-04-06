@@ -15,7 +15,7 @@
     "focus-trap": "^7.0.0",
     "form-urlencoded": "^6.0.0",
     "html-escaper": "^3.0.0",
-    "lodash.pick": "^4.4.0",
+    "lodash-es": "^4.17.21",
     "prop-types": "^15.7.2",
     "prop-types-nullable": "^1.0.1",
     "ramda": "^0.29.0",
