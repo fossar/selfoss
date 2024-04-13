@@ -62,6 +62,12 @@ class WebClient {
                 ],
                 'handler' => $stack,
                 'timeout' => 60, // seconds
+                'curl' => [
+                    // Guzzle will not send Accept-Encoding by default.
+                    // https://github.com/guzzle/guzzle/pull/3215
+                    // Delegate choosing compression method to curl.
+                    \CURLOPT_ENCODING => '',
+                ],
             ]);
 
             $this->httpClient = $httpClient;
