@@ -33,7 +33,7 @@
         "friendsofphp/php-cs-fixer": "^3.0",
         "php-parallel-lint/php-parallel-lint": "^1.0",
         "phpstan/phpstan": "^1.9",
-        "symfony/phpunit-bridge": "^6.0"
+        "symfony/phpunit-bridge": "^7.0"
     },
     "license": "GPL-3.0",
     "authors": [
