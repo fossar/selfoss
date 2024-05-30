@@ -36,7 +36,7 @@ export default function HashPassword({ setTitle }) {
                         return;
                     }
                     setError(error);
-                    setState(LoadingState.ERROR);
+                    setState(LoadingState.FAILURE);
                 });
         },
         [navigate, passwordEntry.value],
@@ -58,7 +58,7 @@ export default function HashPassword({ setTitle }) {
                     <input type="text" value={hashedPassword} readOnly />
                 </label>
             </p>
-        ) : state === LoadingState.ERROR ? (
+        ) : state === LoadingState.FAILURE ? (
             <p className="error">
                 Unexpected happened.
                 <details>

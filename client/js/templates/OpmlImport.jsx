@@ -38,7 +38,7 @@ export default function OpmlImport({ setTitle }) {
                             </p>,
                         );
                     } else if (response.status === 202) {
-                        setState(LoadingState.ERROR);
+                        setState(LoadingState.FAILURE);
                         setMessage(
                             <p className="msg error">
                                 The following feeds could not be imported:
@@ -51,7 +51,7 @@ export default function OpmlImport({ setTitle }) {
                             </p>,
                         );
                     } else if (response.status === 400) {
-                        setState(LoadingState.ERROR);
+                        setState(LoadingState.FAILURE);
                         setMessage(
                             <p className="msg error">
                                 There was a problem importing your OPML file:
@@ -80,7 +80,7 @@ export default function OpmlImport({ setTitle }) {
                         });
                         return;
                     } else {
-                        setState(LoadingState.ERROR);
+                        setState(LoadingState.FAILURE);
                         setMessage(
                             <div className="msg error">
                                 Unexpected error occurred.
