@@ -41,7 +41,7 @@ export default function HashPassword(props: HashPasswordProps) {
                         return;
                     }
                     setError(error);
-                    setState(LoadingState.ERROR);
+                    setState(LoadingState.FAILURE);
                 });
         },
         [history, passwordEntry.value],
@@ -63,7 +63,7 @@ export default function HashPassword(props: HashPasswordProps) {
                     <input type="text" value={hashedPassword} readOnly />
                 </label>
             </p>
-        ) : state === LoadingState.ERROR ? (
+        ) : state === LoadingState.FAILURE ? (
             <p className="error">
                 Unexpected happened.
                 <details>

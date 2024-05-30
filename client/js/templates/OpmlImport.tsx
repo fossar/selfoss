@@ -50,7 +50,7 @@ export default function OpmlImport(props: OpmlImportProps): React.JSX.Element {
                                 </p>,
                             );
                         } else if (response.status === 202) {
-                            setState(LoadingState.ERROR);
+                            setState(LoadingState.FAILURE);
                             setMessage(
                                 <p className="msg error">
                                     The following feeds could not be imported:
@@ -63,7 +63,7 @@ export default function OpmlImport(props: OpmlImportProps): React.JSX.Element {
                                 </p>,
                             );
                         } else if (response.status === 400) {
-                            setState(LoadingState.ERROR);
+                            setState(LoadingState.FAILURE);
                             setMessage(
                                 <p className="msg error">
                                     There was a problem importing your OPML
@@ -94,7 +94,7 @@ export default function OpmlImport(props: OpmlImportProps): React.JSX.Element {
                         });
                         return;
                     } else {
-                        setState(LoadingState.ERROR);
+                        setState(LoadingState.FAILURE);
                         setMessage(
                             <div className="msg error">
                                 Unexpected error occurred.
