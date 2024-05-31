@@ -6,7 +6,6 @@ import {
     Link,
     Navigate,
     useNavigate,
-    useLocation,
 } from 'react-router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Collapse } from '@kunukn/react-collapse';
@@ -28,7 +27,7 @@ import { Configuration, ConfigurationContext } from '../model/Configuration';
 import { LoadingState } from '../requests/LoadingState';
 import * as sourceRequests from '../requests/sources';
 import locales from '../locales';
-import { useEntriesParams } from '../helpers/uri';
+import { useEntriesParams, useLocation } from '../helpers/uri';
 import { NavSource, NavTag } from '../requests/items';
 
 type MessageAction = {

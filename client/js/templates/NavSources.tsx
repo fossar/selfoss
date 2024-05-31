@@ -8,6 +8,7 @@ import {
     useForceReload,
     makeEntriesLinkLocation,
     useEntriesParams,
+    useLocation,
 } from '../helpers/uri';
 import { Collapse } from '@kunukn/react-collapse';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
