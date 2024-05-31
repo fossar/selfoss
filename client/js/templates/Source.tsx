@@ -1,4 +1,11 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, {
+    Dispatch,
+    SetStateAction,
+    useCallback,
+    useContext,
+    useEffect,
+    useState,
+} from 'react';
 import { useRef } from 'react';
 import { Menu, MenuButton, MenuItem } from '@szhsin/react-menu';
 import { useNavigate, useLocation } from 'react-router';
@@ -214,7 +221,7 @@ function handleEdit(args: { event: any; source: any; setEditedSource: any }) {
 // select new source spout type
 function handleSpoutChange(args: {
     event: any;
-    setSpouts: any;
+    setSpouts: Dispatch<SetStateAction<{ [key: string]: Spout }>>;
     updateEditedSource: any;
     setSourceParamsLoading: any;
     setSourceParamsError: any;
@@ -265,7 +272,7 @@ function handleSpoutChange(args: {
 // Taken from https://stackoverflow.com/a/15289883/160386
 const MS_PER_DAY = 1000 * 60 * 60 * 24;
 
-function daysAgo(date) {
+function daysAgo(date: Date): number {
     // Get number of days between now and when the last entry was seen
     // Note: The time of the two dates is set to midnight
     // to get the difference of the two dates in calendar days
@@ -291,7 +298,7 @@ export type SpoutParam = {
       }
 );
 
-type Spout = {
+export type Spout = {
     name: string;
     description: string;
     params: { [name: string]: SpoutParam };
@@ -301,7 +308,7 @@ export type Source = {
     id: number;
     title: string;
     spout: string;
-    tags: string;
+    tags: string[];
     filter: string;
     params: { [name: string]: string };
     icon: string;
@@ -313,23 +320,21 @@ type SourceEditFormProps = {
     source: Source;
     sourceElem: object;
     sourceError?: string;
-    setSources: React.Dispatch<React.SetStateAction<Array<object>>>;
+    setSources: Dispatch<SetStateAction<Array<object>>>;
     spouts: { [className: string]: Spout };
-    setSpouts: React.Dispatch<React.SetStateAction<Array<object>>>;
-    setEditedSource: React.Dispatch<React.SetStateAction<object>>;
+    setSpouts: Dispatch<SetStateAction<{ [key: string]: Spout }>>;
+    setEditedSource: Dispatch<SetStateAction<object>>;
     sourceActionLoading: boolean;
-    setSourceActionLoading: React.Dispatch<React.SetStateAction<boolean>>;
+    setSourceActionLoading: Dispatch<SetStateAction<boolean>>;
     sourceParamsLoading: boolean;
-    setSourceParamsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+    setSourceParamsLoading: Dispatch<SetStateAction<boolean>>;
     sourceParamsError: string | null;
-    setSourceParamsError: React.Dispatch<React.SetStateAction<string | null>>;
-    setJustSavedTimeout: React.Dispatch<React.SetStateAction<number>>;
+    setSourceParamsError: Dispatch<SetStateAction<string | null>>;
+    setJustSavedTimeout: Dispatch<SetStateAction<number>>;
     sourceErrors: { [index: string]: string };
-    setSourceErrors: React.Dispatch<
-        React.SetStateAction<{ [index: string]: string }>
-    >;
+    setSourceErrors: Dispatch<SetStateAction<{ [index: string]: string }>>;
     dirty: boolean;
-    setDirty: React.Dispatch<React.SetStateAction<boolean>>;
+    setDirty: Dispatch<SetStateAction<boolean>>;
 };
 
 function SourceEditForm(props: SourceEditFormProps) {
@@ -618,13 +623,11 @@ function SourceEditForm(props: SourceEditFormProps) {
 
 type SourceProps = {
     source: Source;
-    setSources: React.Dispatch<React.SetStateAction<Array<Source>>>;
+    setSources: Dispatch<SetStateAction<Array<Source>>>;
     spouts: { [className: string]: Spout };
-    setSpouts: React.Dispatch<React.SetStateAction<object>>;
+    setSpouts: Dispatch<SetStateAction<{ [key: string]: Spout }>>;
     dirty: boolean;
-    setDirtySources: React.Dispatch<
-        React.SetStateAction<{ [id: number]: boolean }>
-    >;
+    setDirtySources: Dispatch<SetStateAction<{ [id: number]: boolean }>>;
 };
 
 export default function Source(props: SourceProps) {

@@ -1,4 +1,11 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, {
+    Dispatch,
+    SetStateAction,
+    useCallback,
+    useContext,
+    useEffect,
+    useState,
+} from 'react';
 import {
     BrowserRouter as Router,
     Routes,
@@ -6,7 +13,6 @@ import {
     Link,
     Navigate,
     useNavigate,
-    useLocation,
 } from 'react-router';
 import { useEffectEvent } from 'use-effect-event';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -29,12 +35,12 @@ import { Configuration, ConfigurationContext } from '../model/Configuration';
 import { LoadingState } from '../requests/LoadingState';
 import * as sourceRequests from '../requests/sources';
 import locales from '../locales';
-import { useEntriesParams } from '../helpers/uri';
+import { useEntriesParams, useLocation } from '../helpers/uri';
 import { NavSource, NavTag } from '../requests/items';
 
 type MessageAction = {
     label: string;
-    callback: (event: React.MouseEvent<HTMLButtonElement>) => null;
+    callback: (event: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
 type GlobalMessage = {
@@ -45,7 +51,7 @@ type GlobalMessage = {
 
 function handleNavToggle(args: {
     event: Event;
-    setNavExpanded: React.Dispatch<React.SetStateAction<boolean>>;
+    setNavExpanded: Dispatch<SetStateAction<boolean>>;
 }): void {
     const { event, setNavExpanded } = args;
     event.preventDefault();
@@ -55,7 +61,7 @@ function handleNavToggle(args: {
     window.scrollTo({ top: 0 });
 }
 
-function dismissMessage(event: Event): void {
+function dismissMessage(event: React.MouseEvent<HTMLDivElement>): void {
     selfoss.app.setGlobalMessage(null);
     event.stopPropagation();
 }
@@ -151,11 +157,11 @@ function CheckAuthorization(props: CheckAuthorizationProps): React.ReactNode {
 
 type EntriesFilterProps = {
     entriesRef: React.RefCallback<EntriesPageStateful>;
-    setNavExpanded: React.Dispatch<React.SetStateAction<boolean>>;
+    setNavExpanded: Dispatch<SetStateAction<boolean>>;
     configuration: Configuration;
     navSourcesExpanded: boolean;
     unreadItemsCount: number;
-    setGlobalUnreadCount: React.Dispatch<React.SetStateAction<number>>;
+    setGlobalUnreadCount: Dispatch<SetStateAction<number>>;
 };
 
 // Work around for regex patterns not being supported
@@ -190,7 +196,7 @@ function EntriesFilter(props: EntriesFilterProps) {
 
 type PureAppProps = {
     navSourcesExpanded: boolean;
-    setNavSourcesExpanded: React.Dispatch<React.SetStateAction<boolean>>;
+    setNavSourcesExpanded: Dispatch<SetStateAction<boolean>>;
     offlineState: boolean;
     allItemsCount: number;
     allItemsOfflineCount: number;
@@ -198,12 +204,12 @@ type PureAppProps = {
     unreadItemsOfflineCount: number;
     starredItemsCount: number;
     starredItemsOfflineCount: number;
-    globalMessage: object | null;
+    globalMessage: GlobalMessage | null;
     sourcesState: LoadingState;
-    setSourcesState: React.Dispatch<React.SetStateAction<LoadingState>>;
-    sources: Array<object>;
-    setSources: React.Dispatch<React.SetStateAction<Array<object>>>;
-    tags: Array<object>;
+    setSourcesState: Dispatch<SetStateAction<LoadingState>>;
+    sources: Array<NavSource>;
+    setSources: Dispatch<SetStateAction<Array<NavSource>>>;
+    tags: Array<NavTag>;
     reloadAll: () => void;
 };
 
@@ -558,7 +564,7 @@ export class App extends React.Component<AppProps, AppState> {
         this.reloadAll = this.reloadAll.bind(this);
     }
 
-    setTags(tags: React.SetStateAction<Array<Tag>>): void {
+    setTags(tags: SetStateAction<Array<NavTag>>): void {
         if (typeof tags === 'function') {
             this.setState((state) => ({
                 tags: tags(state.tags),
@@ -568,7 +574,7 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    setTagsState(tagsState: React.SetStateAction<LoadingState>): void {
+    setTagsState(tagsState: SetStateAction<LoadingState>): void {
         if (typeof tagsState === 'function') {
             this.setState((state) => ({
                 tagsState: tagsState(state.tagsState),
@@ -578,7 +584,7 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    setSources(sources: React.SetStateAction<Array<Source>>): void {
+    setSources(sources: SetStateAction<Array<NavSource>>): void {
         if (typeof sources === 'function') {
             this.setState((state) => ({
                 sources: sources(state.sources),
@@ -588,7 +594,7 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    setSourcesState(sourcesState: React.SetStateAction<LoadingState>): void {
+    setSourcesState(sourcesState: SetStateAction<LoadingState>): void {
         if (typeof sourcesState === 'function') {
             this.setState((state) => ({
                 sourcesState: sourcesState(state.sourcesState),
@@ -598,7 +604,7 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    setOfflineState(offlineState: React.SetStateAction<boolean>): void {
+    setOfflineState(offlineState: SetStateAction<boolean>): void {
         if (typeof offlineState === 'function') {
             this.setState((state) => ({
                 offlineState: offlineState(state.offlineState),
@@ -608,9 +614,7 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    setNavSourcesExpanded(
-        navSourcesExpanded: React.SetStateAction<boolean>,
-    ): void {
+    setNavSourcesExpanded(navSourcesExpanded: SetStateAction<boolean>): void {
         if (typeof navSourcesExpanded === 'function') {
             this.setState((state) => ({
                 navSourcesExpanded: navSourcesExpanded(
@@ -622,7 +626,7 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    setUnreadItemsCount(unreadItemsCount: React.SetStateAction<number>): void {
+    setUnreadItemsCount(unreadItemsCount: SetStateAction<number>): void {
         if (typeof unreadItemsCount === 'function') {
             this.setState((state) => ({
                 unreadItemsCount: unreadItemsCount(state.unreadItemsCount),
@@ -633,7 +637,7 @@ export class App extends React.Component<AppProps, AppState> {
     }
 
     setUnreadItemsOfflineCount(
-        unreadItemsOfflineCount: React.SetStateAction<number>,
+        unreadItemsOfflineCount: SetStateAction<number>,
     ): void {
         if (typeof unreadItemsOfflineCount === 'function') {
             this.setState((state) => ({
@@ -646,9 +650,7 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    setStarredItemsCount(
-        starredItemsCount: React.SetStateAction<number>,
-    ): void {
+    setStarredItemsCount(starredItemsCount: SetStateAction<number>): void {
         if (typeof starredItemsCount === 'function') {
             this.setState((state) => ({
                 starredItemsCount: starredItemsCount(state.starredItemsCount),
@@ -659,7 +661,7 @@ export class App extends React.Component<AppProps, AppState> {
     }
 
     setStarredItemsOfflineCount(
-        starredItemsOfflineCount: React.SetStateAction<number>,
+        starredItemsOfflineCount: SetStateAction<number>,
     ): void {
         if (typeof starredItemsOfflineCount === 'function') {
             this.setState((state) => ({
@@ -672,7 +674,7 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    setAllItemsCount(allItemsCount: React.SetStateAction<number>): void {
+    setAllItemsCount(allItemsCount: SetStateAction<number>): void {
         if (typeof allItemsCount === 'function') {
             this.setState((state) => ({
                 allItemsCount: allItemsCount(state.allItemsCount),
@@ -683,7 +685,7 @@ export class App extends React.Component<AppProps, AppState> {
     }
 
     setAllItemsOfflineCount(
-        allItemsOfflineCount: React.SetStateAction<number>,
+        allItemsOfflineCount: SetStateAction<number>,
     ): void {
         if (typeof allItemsOfflineCount === 'function') {
             this.setState((state) => ({
@@ -697,7 +699,7 @@ export class App extends React.Component<AppProps, AppState> {
     }
 
     setGlobalMessage(
-        globalMessage: React.SetStateAction<GlobalMessage | null>,
+        globalMessage: SetStateAction<GlobalMessage | null>,
     ): void {
         if (typeof globalMessage === 'function') {
             this.setState((state) => ({
@@ -727,7 +729,9 @@ export class App extends React.Component<AppProps, AppState> {
                                 label: this._('reload_list'),
                                 callback() {
                                     document
-                                        .querySelector('#nav-filter-unread')
+                                        .querySelector<HTMLAnchorElement>(
+                                            '#nav-filter-unread',
+                                        )
                                         .click();
                                 },
                             },

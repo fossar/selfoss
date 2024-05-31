@@ -1,6 +1,28 @@
-import { useLocation, useMatch } from 'react-router';
-import { Location } from 'history';
+import { Location as LocationGeneric } from 'history';
+import {
+    useLocation as useLocationGeneric,
+    useParams as useParamsGeneric,
+    useMatch,
+} from 'react-router';
 import { FilterType } from '../Filter';
+
+export type LocationState = {
+    error?: string;
+    returnLocation?: string;
+    forceReload?: number;
+};
+export type Params = {
+    filter?: FilterType;
+    category?: string;
+    id?: string;
+};
+
+export type Location = LocationGeneric<LocationState>;
+
+export const useParams = useParamsGeneric<Params>;
+export function useLocation(): Location {
+    return useLocationGeneric();
+}
 
 /**
  * Converts URL segment to FilterType value.

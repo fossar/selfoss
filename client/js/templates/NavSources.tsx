@@ -1,4 +1,11 @@
-import React, { useCallback, useMemo, useContext, useEffect } from 'react';
+import React, {
+    useCallback,
+    useMemo,
+    useContext,
+    useEffect,
+    Dispatch,
+    SetStateAction,
+} from 'react';
 import { Link } from 'react-router';
 import { usePreviousImmediate } from 'rooks';
 import classNames from 'classnames';
@@ -8,6 +15,7 @@ import {
     useForceReload,
     makeEntriesLinkLocation,
     useEntriesParams,
+    useLocation,
 } from '../helpers/uri';
 import { Collapse } from '@kunukn/react-collapse';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -88,13 +96,13 @@ function Source(props: SourceProps) {
 }
 
 type NavSourcesProps = {
-    setNavExpanded: React.Dispatch<React.SetStateAction<boolean>>;
+    setNavExpanded: Dispatch<SetStateAction<boolean>>;
     navSourcesExpanded: boolean;
-    setNavSourcesExpanded: React.Dispatch<React.SetStateAction<boolean>>;
+    setNavSourcesExpanded: Dispatch<SetStateAction<boolean>>;
     sourcesState: LoadingState;
-    setSourcesState: React.Dispatch<React.SetStateAction<LoadingState>>;
+    setSourcesState: Dispatch<SetStateAction<LoadingState>>;
     sources: Array<NavSource>;
-    setSources: React.Dispatch<React.SetStateAction<Array<NavSource>>>;
+    setSources: Dispatch<SetStateAction<Array<NavSource>>>;
 };
 
 export default function NavSources(props: NavSourcesProps) {

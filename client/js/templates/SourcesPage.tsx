@@ -1,12 +1,21 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, {
+    Dispatch,
+    MouseEvent,
+    SetStateAction,
+    useCallback,
+    useContext,
+    useEffect,
+    useState,
+} from 'react';
 import { useMemo } from 'react';
-import { Link, useNavigate, useLocation, useMatch } from 'react-router';
+import { Link, useNavigate, useMatch, NavigateFunction } from 'react-router';
+import { useLocation, Location } from '../helpers/uri';
 import selfoss from '../selfoss-base';
-import Source from './Source';
+import Source, { Spout } from './Source';
 import { SpinnerBig } from './Spinner';
 import { LoadingState } from '../requests/LoadingState';
 import * as sourceRequests from '../requests/sources';
-import { getAllSources } from '../requests/sources';
+import { getAllSources, SourceWithIcon } from '../requests/sources';
 import { useShouldReload } from '../helpers/hooks';
 import { LocalizationContext } from '../helpers/i18n';
 import { HttpError } from '../errors';
@@ -17,10 +26,10 @@ function rand() {
 }
 
 function handleAddSource(args: {
-    setSources: any;
-    setSpouts: any;
+    setSpouts: Dispatch<SetStateAction<{ [key: string]: Spout }>>;
+    setSources: Dispatch<SetStateAction<SourceWithIcon[]>>;
     extraInitialData?: any;
-    event?: any;
+    event?: MouseEvent;
 }): void {
     const { event = null, setSources, setSpouts, extraInitialData = {} } = args;
     if (event) {
@@ -49,12 +58,12 @@ function handleAddSource(args: {
 
 // load sources
 function loadSources(args: {
-    abortController: any;
-    location: any;
-    navigate: any;
-    setSpouts: any;
-    setSources: any;
-    setLoadingState: any;
+    abortController: AbortController;
+    location: Location;
+    navigate: NavigateFunction;
+    setSpouts: Dispatch<SetStateAction<{ [key: string]: Spout }>>;
+    setSources: Dispatch<SetStateAction<SourceWithIcon[]>>;
+    setLoadingState: Dispatch<SetStateAction<LoadingState>>;
 }): Promise<void> {
     const {
         abortController,
@@ -123,8 +132,8 @@ function loadSources(args: {
 }
 
 export default function SourcesPage(): React.JSX.Element {
-    const [spouts, setSpouts] = useState([]);
-    const [sources, setSources] = useState([]);
+    const [spouts, setSpouts] = useState<{ [key: string]: Spout }>({});
+    const [sources, setSources] = useState<SourceWithIcon[]>([]);
 
     const [loadingState, setLoadingState] = useState(LoadingState.INITIAL);
 
@@ -173,7 +182,8 @@ export default function SourcesPage(): React.JSX.Element {
     ]);
 
     const addOnClick = useCallback(
-        (event) => handleAddSource({ event, setSources, setSpouts }),
+        (event: MouseEvent) =>
+            handleAddSource({ event, setSources, setSpouts }),
         [],
     );
 

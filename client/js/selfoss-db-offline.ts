@@ -19,7 +19,9 @@ export default class DbOffline {
     _tr(...args) {
         return selfoss.db.storage.transaction(...args).catch((error) => {
             selfoss.app.showError(
-                selfoss.app._('error_offline_storage', [error.message]),
+                selfoss.app._('error_offline_storage', {
+                    '0': error.message,
+                }),
             );
             selfoss.db.broken = true;
             selfoss.db.enableOffline.update(false);
@@ -110,10 +112,10 @@ export default class DbOffline {
                             selfoss.app.showError(
                                 selfoss.app._(
                                     'error_offline_storage_not_available',
-                                    [
-                                        '<a href="https://caniuse.com/#feat=indexeddb">',
-                                        '</a>',
-                                    ],
+                                    {
+                                        '0': '<a href="https://caniuse.com/#feat=indexeddb">',
+                                        '1': '</a>',
+                                    },
                                 ),
                             );
                         } else {
