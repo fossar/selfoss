@@ -17,7 +17,14 @@ import { LocalizationContext } from '../helpers/i18n';
 const FAST_DURATION_MS = 200;
 
 // cancel source editing
-function handleCancel({ source, sourceElem, setSources, setEditedSource }) {
+function handleCancel(args: {
+    event?: any;
+    source: any;
+    sourceElem: any;
+    setSources: any;
+    setEditedSource: any;
+}) {
+    const { source, sourceElem, setSources, setEditedSource } = args;
     const id = source.id;
 
     if (id.toString().startsWith('new-')) {
@@ -37,15 +44,24 @@ function handleCancel({ source, sourceElem, setSources, setEditedSource }) {
 }
 
 // save source
-function handleSave({
-    event,
-    setSources,
-    source,
-    setEditedSource,
-    setSourceActionLoading,
-    setJustSavedTimeout,
-    setSourceErrors,
+function handleSave(args: {
+    event: any;
+    setSources: any;
+    source: any;
+    setEditedSource: any;
+    setSourceActionLoading: any;
+    setJustSavedTimeout: any;
+    setSourceErrors: any;
 }) {
+    const {
+        event,
+        setSources,
+        source,
+        setEditedSource,
+        setSourceActionLoading,
+        setJustSavedTimeout,
+        setSourceErrors,
+    } = args;
     event.preventDefault();
 
     // remove old errors
@@ -128,13 +144,15 @@ function handleSave({
 }
 
 // delete source
-function handleDelete({
-    source,
-    sourceElem,
-    setSources,
-    setSourceBeingDeleted,
-    setDirty,
+function handleDelete(args: {
+    source: any;
+    sourceElem: any;
+    setSources: any;
+    setSourceBeingDeleted: any;
+    setDirty: any;
 }) {
+    const { source, sourceElem, setSources, setSourceBeingDeleted, setDirty } =
+        args;
     const answer = confirm(selfoss.app._('source_warn'));
     if (answer == false) {
         return;
@@ -177,7 +195,8 @@ function handleDelete({
 }
 
 // start editing
-function handleEdit({ event, source, setEditedSource }) {
+function handleEdit(args: { event: any; source: any; setEditedSource: any }) {
+    const { event, source, setEditedSource } = args;
     event.preventDefault();
 
     const { id, title, tags, filter, spout, params } = source;
@@ -193,13 +212,20 @@ function handleEdit({ event, source, setEditedSource }) {
 }
 
 // select new source spout type
-function handleSpoutChange({
-    event,
-    setSpouts,
-    updateEditedSource,
-    setSourceParamsLoading,
-    setSourceParamsError,
+function handleSpoutChange(args: {
+    event: any;
+    setSpouts: any;
+    updateEditedSource: any;
+    setSourceParamsLoading: any;
+    setSourceParamsError: any;
 }) {
+    const {
+        event,
+        setSpouts,
+        updateEditedSource,
+        setSourceParamsLoading,
+        setSourceParamsError,
+    } = args;
     const spoutClass = event.target.value;
     updateEditedSource({ spout: spoutClass });
 
