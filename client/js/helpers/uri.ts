@@ -1,5 +1,5 @@
 import { generatePath } from 'react-router-dom';
-import { Location } from 'history';
+import { Location } from '../templates/App';
 import { FilterType } from '../Filter';
 
 /**

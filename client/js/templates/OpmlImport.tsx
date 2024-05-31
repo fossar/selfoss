@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useOnline } from 'rooks';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { useHistory } from './App';
 import { LoadingState } from '../requests/LoadingState';
 import { HttpError, UnexpectedStateError } from '../errors';
 import { importOpml, OpmlImportData } from '../requests/common';

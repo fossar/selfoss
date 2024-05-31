@@ -6,7 +6,7 @@ import { ValueListenable } from './helpers/ValueListenable';
 import { HttpError, TimeoutError } from './errors';
 import { Configuration } from './model/Configuration';
 import { LoadingState } from './requests/LoadingState';
-import { App, createApp } from './templates/App';
+import { App, History, createApp } from './templates/App';
 import dbOnline from './selfoss-db-online';
 import dbOffline from './selfoss-db-offline';
 import db from './selfoss-db';
@@ -39,6 +39,7 @@ class selfoss {
     public static db = db;
     public static dbOnline = dbOnline;
     public static dbOffline = dbOffline;
+    static history: History;
 
     /**
      * initialize application

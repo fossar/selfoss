@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory } from './App';
 import { useInput } from 'rooks';
 import { LoadingState } from '../requests/LoadingState';
 import { HttpError } from '../errors';
