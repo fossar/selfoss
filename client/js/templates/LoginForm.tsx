@@ -1,9 +1,9 @@
 import React, { useCallback, useContext, useState } from 'react';
 import classNames from 'classnames';
-import { History } from 'history';
+import { useLocation } from '../helpers/uri';
 import selfoss from '../selfoss-base';
 import { SpinnerBig } from './Spinner';
-import { useLocation, useNavigate } from 'react-router';
+import { NavigateFunction, useNavigate } from 'react-router';
 import { Configuration } from '../model/Configuration';
 import { HttpError, LoginError } from '../errors';
 import { LocalizationContext } from '../helpers/i18n';
@@ -21,7 +21,7 @@ function handleLogIn({
 }: {
     event: React.FormEvent;
     configuration: Configuration;
-    history: History;
+    navigate: NavigateFunction;
     setLoading: React.Dispatch<React.SetStateAction<boolean>>;
     username: string;
     password: string;

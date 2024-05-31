@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router';
 import { useMediaMatch } from 'rooks';
+import { useLocation } from '../helpers/uri';
 import { ValueChangeEvent, ValueListenable } from './ValueListenable';
 
 /**

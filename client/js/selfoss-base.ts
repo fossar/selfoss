@@ -10,6 +10,7 @@ import { App, createApp } from './templates/App';
 import DbOnline from './selfoss-db-online';
 import DbOffline from './selfoss-db-offline';
 import Db from './selfoss-db';
+import { NavigateFunction } from 'react-router';
 
 /**
  * base javascript application
@@ -39,6 +40,9 @@ class selfoss {
     public static db: Db = new Db();
     public static dbOnline: DbOnline = new DbOnline();
     public static dbOffline: DbOffline = new DbOffline();
+
+    static navigate: NavigateFunction | undefined = undefined;
+    static config: Configuration;
 
     /**
      * initialize application

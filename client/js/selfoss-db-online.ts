@@ -2,7 +2,12 @@ import selfoss from './selfoss-base';
 import * as itemsRequests from './requests/items';
 import { LoadingState } from './requests/LoadingState';
 import { FilterType } from './Filter';
-import { ResponseItem } from './requests/items';
+import {
+    ResponseItem,
+    StatusUpdate,
+    SyncParams,
+    SyncResponse,
+} from './requests/items';
 
 export type FetchParams = {
     type: FilterType;
@@ -100,7 +105,7 @@ export default class DbOnline {
             getStatuses = undefined;
         }
 
-        const syncParams = {
+        const syncParams: SyncParams = {
             since: selfoss.db.lastUpdate,
             tags: true,
             sources: selfoss.app.state.navSourcesExpanded || undefined,
