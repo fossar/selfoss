@@ -16,12 +16,13 @@ function rand() {
     return Math.floor(Math.random() * 2147483647);
 }
 
-function handleAddSource({
-    event = null,
-    setSources,
-    setSpouts,
-    extraInitialData = {},
-}) {
+function handleAddSource(args: {
+    setSources: any;
+    setSpouts: any;
+    extraInitialData?: any;
+    event?: any;
+}): void {
+    const { event = null, setSources, setSpouts, extraInitialData = {} } = args;
     if (event) {
         event.preventDefault();
     }
@@ -47,14 +48,22 @@ function handleAddSource({
 }
 
 // load sources
-function loadSources({
-    abortController,
-    location,
-    navigate,
-    setSpouts,
-    setSources,
-    setLoadingState,
-}) {
+function loadSources(args: {
+    abortController: any;
+    location: any;
+    navigate: any;
+    setSpouts: any;
+    setSources: any;
+    setLoadingState: any;
+}): Promise<void> {
+    const {
+        abortController,
+        location,
+        navigate,
+        setSpouts,
+        setSources,
+        setLoadingState,
+    } = args;
     if (abortController.signal.aborted) {
         return Promise.resolve();
     }
