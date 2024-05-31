@@ -725,14 +725,10 @@ class StateHolder extends React.Component {
     refreshEntryStatuses(entryStatuses) {
         this.state.entries.forEach((entry) => {
             const { id } = entry;
-            let newStatus = false;
-            entryStatuses.some((entryStatus) => {
-                if (entryStatus.id == id) {
-                    newStatus = entryStatus;
-                }
-                return newStatus;
-            });
-            if (newStatus) {
+            const newStatus = entryStatuses.find(
+                (entryStatus) => entryStatus.id == id,
+            );
+            if (newStatus !== null) {
                 this.starEntryInView(id, newStatus.starred);
                 this.markEntryInView(id, newStatus.unread);
             }
