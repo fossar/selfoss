@@ -1,10 +1,9 @@
 import React, { useCallback, useContext, useState } from 'react';
 import classNames from 'classnames';
-import { History } from 'history';
+import { History, useHistory, useLocation } from './App';
 import selfoss from '../selfoss-base';
 import { SpinnerBig } from './Spinner';
 import { Configuration } from '../model/Configuration';
-import { useHistory, useLocation } from 'react-router-dom';
 import { HttpError, LoginError } from '../errors';
 import { LocalizationContext } from '../helpers/i18n';
 import { ConfigurationContext } from '../model/Configuration';

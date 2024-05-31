@@ -132,6 +132,28 @@ type StatusUpdate = {
 
 type SyncParams = {
     updatedStatuses: Array<StatusUpdate>;
+    since?: Date;
+    itemsNotBefore?: Date;
+};
+
+export type EntryStatus = {
+    id: number;
+    unread: boolean;
+    starred: boolean;
+};
+
+export type NavTag = { tag: string; unread: number };
+
+export type NavSource = { id: number; unread: number };
+
+export type Stats = { all: number; unread: number; starred: number };
+
+type SyncResponse = {
+    entries: Array<EnrichedResponseItem>;
+    stats?: Stats;
+    tags?: NavTag[];
+    sources?: NavSource[];
+    itemUpdates?: EntryStatus[];
 };
 
 /**
@@ -140,7 +162,7 @@ type SyncParams = {
 export function sync(
     updatedStatuses: Array<StatusUpdate>,
     syncParams: SyncParams,
-): { controller: AbortController; promise: Promise<GetItemsResponse> } {
+): { controller: AbortController; promise: Promise<SyncResponse> } {
     const params = {
         ...syncParams,
         updatedStatuses: syncParams.updatedStatuses

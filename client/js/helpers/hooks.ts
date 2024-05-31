@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import { useMediaMatch } from 'rooks';
+import { useLocation } from '../templates/App';
 import { ValueListenable } from './ValueListenable';
 
 /**

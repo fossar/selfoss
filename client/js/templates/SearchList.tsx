@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
 import classNames from 'classnames';
-import { useLocation, useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useHistory, useLocation } from './App';
 import { makeEntriesLink } from '../helpers/uri';
 import * as icons from '../icons';
 

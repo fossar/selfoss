@@ -5,13 +5,15 @@ import React, {
     useMemo,
     useState,
 } from 'react';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useOnline } from 'rooks';
 import { useStateWithDeps } from 'use-state-with-deps';
+import { Location, useLocation, useParams } from './App';
 import selfoss from '../selfoss-base';
 import Item from './Item';
 import { FilterType } from '../Filter';
 import * as itemsRequests from '../requests/items';
+import { EntryStatus } from '../requests/items';
 import * as sourceRequests from '../requests/sources';
 import { LoadingState } from '../requests/LoadingState';
 import { Spinner, SpinnerBig } from './Spinner';
@@ -24,7 +26,7 @@ import { autoScroll, Direction } from '../helpers/navigation';
 import { LocalizationContext } from '../helpers/i18n';
 import { useShouldReload } from '../helpers/hooks';
 import { forceReload, makeEntriesLinkLocation } from '../helpers/uri';
-import { ConfigurationContext } from '../model/Configuration';
+import { Configuration, ConfigurationContext } from '../model/Configuration';
 import { HttpError } from '../errors';
 
 function reloadList({
@@ -535,18 +537,33 @@ const initialState = {
     loadingState: LoadingState.INITIAL,
 };
 
+type Match = {
+    params: {
+        category?: string;
+        filter: FilterType;
+    };
+};
+
 type StateHolderProps = {
-    configuration: object;
-    location: object;
-    match: object;
+    configuration: Configuration;
+    location: Location;
+    match: Match;
     setNavExpanded: React.Dispatch<React.SetStateAction<boolean>>;
     navSourcesExpanded: boolean;
     setGlobalUnreadCount: React.Dispatch<React.SetStateAction<number>>;
     unreadItemsCount: number;
 };
 
+type Entry = {
+    id: number;
+    unread: boolean;
+    starred: boolean;
+    tags: string[];
+    source: number;
+};
+
 type StateHolderState = {
-    entries: Array<object>;
+    entries: Array<Entry>;
     hasMore: boolean;
     /**
      * Currently selected entry.
@@ -691,7 +708,7 @@ export default class StateHolder extends React.Component<
         const autoMarkAsRead =
             selfoss.isAllowedToWrite() &&
             this.props.configuration.autoMarkAsRead &&
-            entry.unread == 1;
+            entry.unread;
         if (autoMarkAsRead) {
             this.markEntryRead(id, true);
         }
@@ -735,7 +752,7 @@ export default class StateHolder extends React.Component<
         );
     }
 
-    refreshEntryStatuses(entryStatuses) {
+    refreshEntryStatuses(entryStatuses: EntryStatus[]) {
         this.state.entries.forEach((entry) => {
             const { id } = entry;
             const newStatus = entryStatuses.find(
@@ -799,9 +816,9 @@ export default class StateHolder extends React.Component<
      * Mark all visible items as read
      */
     markVisibleRead(): void {
-        const ids = [];
-        const tagUnreadDiff = {};
-        const sourceUnreadDiff = {};
+        const ids: number[] = [];
+        const tagUnreadDiff: { [index: string]: number } = {};
+        const sourceUnreadDiff: { [index: string]: number } = {};
 
         let markedEntries = this.state.entries.map((entry) => {
             if (!entry.unread) {

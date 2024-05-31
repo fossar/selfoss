@@ -6,11 +6,12 @@ import React, {
     useRef,
     useState,
 } from 'react';
-import { Link, useHistory, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { usePreviousImmediate } from 'rooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
-import { createFocusTrap } from 'focus-trap';
+import { FocusTrap, createFocusTrap } from 'focus-trap';
+import { useHistory, useLocation } from './App';
 import selfoss from '../selfoss-base';
 import { useAllowedToWrite } from '../helpers/authorizations';
 import {
@@ -26,7 +27,7 @@ import { useSharers } from '../sharers';
 import Lightbox from 'yet-another-react-lightbox';
 
 // TODO: do the search highlights client-side
-function reHighlight(text) {
+function reHighlight(text: string) {
     return text.split(/<span class="found">(.+?)<\/span>/).map((n, i) =>
         i % 2 == 0 ? (
             n
@@ -160,7 +161,7 @@ type ShareAction = ({ id: string, url: string, title: string }) => void;
 type ShareButtonProps = {
     label: string;
     icon: string | HTMLElement;
-    item: object;
+    item: Item;
     action: ShareAction;
     showLabel?: boolean;
 };
@@ -236,28 +237,49 @@ function ItemTag(props: ItemTagProps) {
 /**
  * Converts Date to a relative string.
  * When the date is too old, null is returned instead.
- * @param {Date} currentTime
- * @param {Date} datetime
  * @return {?String} relative time reference
  */
-function datetimeRelative(currentTime, datetime) {
-    const ageInseconds = (currentTime - datetime) / 1000;
+function datetimeRelative(currentTime: Date, datetime: Date): string | null {
+    const ageInseconds = (currentTime.getTime() - datetime.getTime()) / 1000;
     const ageInMinutes = ageInseconds / 60;
     const ageInHours = ageInMinutes / 60;
     const ageInDays = ageInHours / 24;
 
     if (ageInHours < 1) {
-        return selfoss.app._('minutes', [Math.round(ageInMinutes)]);
+        return selfoss.app._('minutes', {
+            '0': Math.round(ageInMinutes).toString(),
+        });
     } else if (ageInDays < 1) {
-        return selfoss.app._('hours', [Math.round(ageInHours)]);
+        return selfoss.app._('hours', {
+            '0': Math.round(ageInHours).toString(),
+        });
     } else {
         return null;
     }
 }
 
+type Item = {
+    id: number;
+    title: string;
+    strippedTitle: string;
+    link: string;
+    source: number;
+    tags: { [tag: string]: string };
+    author: string;
+    sourcetitle: string;
+    datetime: Date;
+    unread: boolean;
+    starred: boolean;
+    content: string;
+    wordCount: number;
+    lengthWithoutTags: number;
+    icon: string | null;
+    thumbnail: string;
+};
+
 type ItemProps = {
     currentTime: Date;
-    item: object;
+    item: Item;
     selected: boolean;
     expanded: boolean;
     setNavExpanded: React.Dispatch<React.SetStateAction<boolean>>;
@@ -268,7 +290,9 @@ export default function Item(props: ItemProps) {
 
     const { title, author, sourcetitle } = item;
 
-    const [fullScreenTrap, setFullScreenTrap] = useState(null);
+    const [fullScreenTrap, setFullScreenTrap] = useState<FocusTrap | null>(
+        null,
+    );
     const [imagesLoaded, setImagesLoaded] = useState(false);
     const contentBlock = useRef(null);
 
@@ -392,8 +416,8 @@ export default function Item(props: ItemProps) {
         // Handle autoHideReadOnMobile setting.
         if (selfoss.isSmartphone() && !expanded && previouslyExpanded) {
             const autoHideReadOnMobile =
-                configuration.autoHideReadOnMobile && item.unread == 1;
-            if (autoHideReadOnMobile && item.unread != 1) {
+                configuration.autoHideReadOnMobile && item.unread;
+            if (autoHideReadOnMobile && !item.unread) {
                 selfoss.entriesPage.setEntries((entries) =>
                     entries.filter(({ id }) => id !== item.id),
                 );
@@ -431,7 +455,7 @@ export default function Item(props: ItemProps) {
         (event) => {
             event.preventDefault();
             event.stopPropagation();
-            selfoss.entriesPage.markEntryStarred(item.id, item.starred != 1);
+            selfoss.entriesPage.markEntryStarred(item.id, !item.starred);
         },
         [item],
     );
@@ -440,7 +464,7 @@ export default function Item(props: ItemProps) {
         (event) => {
             event.preventDefault();
             event.stopPropagation();
-            selfoss.entriesPage.markEntryRead(item.id, item.unread == 1);
+            selfoss.entriesPage.markEntryRead(item.id, item.unread);
         },
         [item],
     );
@@ -486,7 +510,7 @@ export default function Item(props: ItemProps) {
             data-entry-url={item.link}
             className={classNames({
                 entry: true,
-                unread: item.unread == 1,
+                unread: item.unread,
                 expanded,
                 selected,
             })}
@@ -674,18 +698,14 @@ export default function Item(props: ItemProps) {
                             accessKey="a"
                             className={classNames({
                                 'entry-starr': true,
-                                active: item.starred == 1,
+                                active: item.starred,
                             })}
                             onClick={starOnClick}
                         >
                             <FontAwesomeIcon
-                                icon={
-                                    item.starred == 1
-                                        ? icons.unstar
-                                        : icons.star
-                                }
+                                icon={item.starred ? icons.unstar : icons.star}
                             />{' '}
-                            {item.starred == 1 ? _('unstar') : _('star')}
+                            {item.starred ? _('unstar') : _('star')}
                         </button>
                     </li>
                 )}
@@ -695,18 +715,18 @@ export default function Item(props: ItemProps) {
                             accessKey="u"
                             className={classNames({
                                 'entry-unread': true,
-                                active: item.unread == 1,
+                                active: item.unread,
                             })}
                             onClick={markReadOnClick}
                         >
                             <FontAwesomeIcon
                                 icon={
-                                    item.unread == 1
+                                    item.unread
                                         ? icons.markRead
                                         : icons.markUnread
                                 }
                             />{' '}
-                            {item.unread == 1 ? _('mark') : _('unmark')}
+                            {item.unread ? _('mark') : _('unmark')}
                         </button>
                     </li>
                 )}

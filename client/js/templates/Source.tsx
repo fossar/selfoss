@@ -1,8 +1,8 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useRef } from 'react';
 import { Menu, MenuButton, MenuItem } from '@szhsin/react-menu';
-import { useHistory, useLocation } from 'react-router-dom';
 import { fadeOut } from '@siteparts/show-hide-effects';
+import { useHistory, useLocation } from './App';
 import { makeEntriesLinkLocation } from '../helpers/uri';
 import { unescape } from 'html-escaper';
 import classNames from 'classnames';
@@ -265,7 +265,7 @@ function handleSpoutChange(args: {
 // Taken from https://stackoverflow.com/a/15289883/160386
 const MS_PER_DAY = 1000 * 60 * 60 * 24;
 
-function daysAgo(date) {
+function daysAgo(date: Date): number {
     // Get number of days between now and when the last entry was seen
     // Note: The time of the two dates is set to midnight
     // to get the difference of the two dates in calendar days

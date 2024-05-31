@@ -1,3 +1,7 @@
+import {
+    History as HistoryGeneric,
+    Location as LocationGeneric,
+} from 'history';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import {
     BrowserRouter as Router,
@@ -5,8 +9,9 @@ import {
     Route,
     Link,
     Redirect,
-    useHistory,
-    useLocation,
+    useHistory as useHistoryGeneric,
+    useLocation as useLocationGeneric,
+    useParams as useParamsGeneric,
 } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Collapse } from '@kunukn/react-collapse';
@@ -29,6 +34,26 @@ import { Configuration, ConfigurationContext } from '../model/Configuration';
 import { LoadingState } from '../requests/LoadingState';
 import * as sourceRequests from '../requests/sources';
 import locales from '../locales';
+import { NavSource, NavTag } from '../requests/items';
+import { FilterType } from '../Filter';
+
+export type LocationState = {
+    error?: string;
+    returnLocation?: string;
+    forceReload?: number;
+};
+export type Params = {
+    filter?: FilterType;
+    category?: string;
+    id?: string;
+};
+
+export type History = HistoryGeneric<LocationState>;
+export type Location = LocationGeneric<LocationState>;
+
+export const useHistory = useHistoryGeneric<LocationState>;
+export const useParams = useParamsGeneric<Params>;
+export const useLocation = useLocationGeneric<LocationState>;
 
 type MessageAction = {
     label: string;
@@ -391,13 +416,13 @@ type AppState = {
     /**
      * tag repository
      */
-    tags: Array<Tag>;
+    tags: Array<NavTag>;
     tagsState: LoadingState;
 
     /**
      * source repository
      */
-    sources: Array<Source>;
+    sources: Array<NavSource>;
     sourcesState: LoadingState;
 
     /**

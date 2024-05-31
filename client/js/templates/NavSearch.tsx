@@ -5,9 +5,9 @@ import React, {
     useRef,
     useState,
 } from 'react';
-import { useLocation, useHistory } from 'react-router-dom';
 import classNames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useHistory, useLocation } from './App';
 import selfoss from '../selfoss-base';
 import { makeEntriesLink } from '../helpers/uri';
 import * as icons from '../icons';
