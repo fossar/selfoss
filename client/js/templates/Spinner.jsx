@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as icons from '../icons';
 
-
 export function Spinner({ label, size }) {
     return (
         <React.Fragment>
@@ -14,7 +13,9 @@ export function Spinner({ label, size }) {
                 aria-hidden="true"
                 title={label}
             />
-            <span className="visually-hidden" role="alert">{label}</span>
+            <span className="visually-hidden" role="alert">
+                {label}
+            </span>
         </React.Fragment>
     );
 }

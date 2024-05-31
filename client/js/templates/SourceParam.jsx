@@ -1,7 +1,4 @@
-import React, {
-    useCallback,
-    useContext,
-} from 'react';
+import React, { useCallback, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { LocalizationContext } from '../helpers/i18n';
 
@@ -21,23 +18,21 @@ export default function SourceParam({
                 ...restSource,
                 params: {
                     ...params,
-                    [spoutParamName]: event.target.value
-                }
+                    [spoutParamName]: event.target.value,
+                },
             }));
         },
-        [setEditedSource, setDirty, spoutParamName]
+        [setEditedSource, setDirty, spoutParamName],
     );
 
     const updateSourceParamBool = useCallback(
         (event) =>
             updateSourceParam({
                 target: {
-                    value: event.target.checked
-                        ? '1'
-                        : undefined
-                }
+                    value: event.target.checked ? '1' : undefined,
+                },
             }),
-        [updateSourceParam]
+        [updateSourceParam],
     );
 
     let value =
@@ -94,7 +89,7 @@ export default function SourceParam({
                         <option key={optionName} value={optionName}>
                             {optionTitle}
                         </option>
-                    )
+                    ),
                 )}
             </select>
         );

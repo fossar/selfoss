@@ -5,5 +5,5 @@
 export const FilterType = {
     NEWEST: 'newest',
     UNREAD: 'unread',
-    STARRED: 'starred'
+    STARRED: 'starred',
 };

@@ -1,8 +1,7 @@
 export const Direction = {
     PREV: 'prev',
-    NEXT: 'next'
+    NEXT: 'next',
 };
-
 
 /**
  * autoscroll
@@ -30,4 +29,3 @@ export function autoScroll(target) {
         window.scrollTo({ top: targetTop });
     }
 }
-

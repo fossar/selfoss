@@ -14,7 +14,11 @@ function ignoreWhenInteracting(handler) {
         // Ignore shortcuts when on input elements.
         // https://github.com/jamiebuilds/tinykeys/issues/17
         const active = document.activeElement;
-        const enteringText = active instanceof HTMLElement && (active.isContentEditable || active.tagName === 'INPUT' || active.tagName === 'TEXTAREA');
+        const enteringText =
+            active instanceof HTMLElement &&
+            (active.isContentEditable ||
+                active.tagName === 'INPUT' ||
+                active.tagName === 'TEXTAREA');
         if (!enteringText) {
             return handler(event);
         }
@@ -27,25 +31,25 @@ function ignoreWhenInteracting(handler) {
 export default function makeShortcuts() {
     return tinykeys(document, {
         // 'space': next article
-        'Space': ignoreWhenInteracting((event) => {
+        Space: ignoreWhenInteracting((event) => {
             event.preventDefault();
             selfoss.entriesPage?.jumpToNext();
         }),
 
         // 'n': next article
-        'n': ignoreWhenInteracting((event) => {
+        n: ignoreWhenInteracting((event) => {
             event.preventDefault();
             selfoss.entriesPage?.nextPrev(Direction.NEXT, false);
         }),
 
         // 'right cursor': next article
-        'ArrowRight': ignoreWhenInteracting((event) => {
+        ArrowRight: ignoreWhenInteracting((event) => {
             event.preventDefault();
             selfoss.entriesPage?.entryNav(Direction.NEXT);
         }),
 
         // 'j': next article
-        'j': ignoreWhenInteracting((event) => {
+        j: ignoreWhenInteracting((event) => {
             event.preventDefault();
             selfoss.entriesPage?.nextPrev(Direction.NEXT, true);
         }),
@@ -57,37 +61,37 @@ export default function makeShortcuts() {
         }),
 
         // 'p': previous article
-        'p': ignoreWhenInteracting((event) => {
+        p: ignoreWhenInteracting((event) => {
             event.preventDefault();
             selfoss.entriesPage?.nextPrev(Direction.PREV, false);
         }),
 
         // 'left': previous article
-        'ArrowLeft': ignoreWhenInteracting((event) => {
+        ArrowLeft: ignoreWhenInteracting((event) => {
             event.preventDefault();
             selfoss.entriesPage?.entryNav(Direction.PREV);
         }),
 
         // 'k': previous article
-        'k': ignoreWhenInteracting((event) => {
+        k: ignoreWhenInteracting((event) => {
             event.preventDefault();
             selfoss.entriesPage?.nextPrev(Direction.PREV, true);
         }),
 
         // 's': star/unstar
-        's': ignoreWhenInteracting((event) => {
+        s: ignoreWhenInteracting((event) => {
             event.preventDefault();
             selfoss.entriesPage?.toggleSelectedStarred();
         }),
 
         // 'm': mark/unmark
-        'm': ignoreWhenInteracting((event) => {
+        m: ignoreWhenInteracting((event) => {
             event.preventDefault();
             selfoss.entriesPage?.toggleSelectedRead();
         }),
 
         // 'o': open/close entry
-        'o': ignoreWhenInteracting((event) => {
+        o: ignoreWhenInteracting((event) => {
             event.preventDefault();
             selfoss.entriesPage?.toggleSelectedExpanded();
         }),
@@ -99,7 +103,7 @@ export default function makeShortcuts() {
         }),
 
         // 'v': open target
-        'v': ignoreWhenInteracting((event) => {
+        v: ignoreWhenInteracting((event) => {
             event.preventDefault();
             selfoss.entriesPage?.openSelectedTarget();
         }),
@@ -111,7 +115,7 @@ export default function makeShortcuts() {
         }),
 
         // 'r': Reload the current view
-        'r': ignoreWhenInteracting((event) => {
+        r: ignoreWhenInteracting((event) => {
             event.preventDefault();
             selfoss.entriesPage?.reload();
         }),
@@ -129,7 +133,7 @@ export default function makeShortcuts() {
         }),
 
         // 't': throw (mark as read & open next)
-        't': ignoreWhenInteracting((event) => {
+        t: ignoreWhenInteracting((event) => {
             event.preventDefault();
             selfoss.entriesPage?.throw(Direction.NEXT);
         }),
@@ -156,6 +160,6 @@ export default function makeShortcuts() {
         'Shift+s': ignoreWhenInteracting((event) => {
             event.preventDefault();
             document.querySelector('#nav-filter-starred').click();
-        })
+        }),
     });
 }

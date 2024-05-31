@@ -1,6 +1,4 @@
-import React, {
-    useContext,
-} from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import nullable from 'prop-types-nullable';
 import classNames from 'classnames';
@@ -42,16 +40,20 @@ export default function Navigation({
     return (
         <React.Fragment>
             <div id="nav-logo"></div>
-            {canWrite &&
+            {canWrite && (
                 <button
                     accessKey="a"
                     id="nav-mark"
-                    onClick={entriesPage !== null ? entriesPage.markVisibleRead : null}
+                    onClick={
+                        entriesPage !== null
+                            ? entriesPage.markVisibleRead
+                            : null
+                    }
                     disabled={entriesPage === null}
                 >
                     {_('markread')}
                 </button>
-            }
+            )}
 
             <NavFilters
                 setNavExpanded={setNavExpanded}
@@ -64,9 +66,17 @@ export default function Navigation({
                 starredItemsOfflineCount={starredItemsOfflineCount}
             />
 
-            <div className="separator"><hr /></div>
+            <div className="separator">
+                <hr />
+            </div>
 
-            <div className={classNames({'nav-ts-wrapper': true, offline: offlineState, online: !offlineState})}>
+            <div
+                className={classNames({
+                    'nav-ts-wrapper': true,
+                    offline: offlineState,
+                    online: !offlineState,
+                })}
+            >
                 <NavTags tags={tags} setNavExpanded={setNavExpanded} />
                 <NavSources
                     setNavExpanded={setNavExpanded}
@@ -79,7 +89,13 @@ export default function Navigation({
                 />
             </div>
 
-            <div className={classNames({'nav-unavailable': true, offline: offlineState, online: !offlineState})}>
+            <div
+                className={classNames({
+                    'nav-unavailable': true,
+                    offline: offlineState,
+                    online: !offlineState,
+                })}
+            >
                 <span className="fa-layers fa-2x">
                     <FontAwesomeIcon icon={icons.connection} />
                     <FontAwesomeIcon icon={icons.slash} />
@@ -87,17 +103,16 @@ export default function Navigation({
                 <p>{_('offline_navigation_unavailable')}</p>
             </div>
 
-            <div className="separator"><hr /></div>
+            <div className="separator">
+                <hr />
+            </div>
 
             <NavSearch
                 setNavExpanded={setNavExpanded}
                 offlineState={offlineState}
             />
 
-            <NavToolBar
-                reloadAll={reloadAll}
-                setNavExpanded={setNavExpanded}
-            />
+            <NavToolBar reloadAll={reloadAll} setNavExpanded={setNavExpanded} />
         </React.Fragment>
     );
 }
@@ -119,5 +134,5 @@ Navigation.propTypes = {
     sources: PropTypes.arrayOf(PropTypes.object).isRequired,
     setSources: PropTypes.func.isRequired,
     tags: PropTypes.arrayOf(PropTypes.object).isRequired,
-    reloadAll: PropTypes.func.isRequired
+    reloadAll: PropTypes.func.isRequired,
 };

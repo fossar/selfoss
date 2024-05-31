@@ -1,8 +1,4 @@
-import React, {
-    useCallback,
-    useContext,
-    useState,
-} from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { SpinnerBig } from './Spinner';
@@ -25,29 +21,31 @@ function handleLogIn({
 
     setLoading(true);
 
-    selfoss.login({ configuration, username, password, enableOffline }).then(() => {
-        history.push(returnLocation);
-    }).catch((err) => {
-        const message =
-            err instanceof LoginError
-                ? selfoss.app._('login_invalid_credentials')
-                : selfoss.app._('login_error_generic', {
-                    errorMessage:
-                        err instanceof HttpError
-                            ? `HTTP ${err.response.status} ${err.message}`
-                            : err.message,
-                });
-        history.replace('/sign/in', {
-            error: message,
+    selfoss
+        .login({ configuration, username, password, enableOffline })
+        .then(() => {
+            history.push(returnLocation);
+        })
+        .catch((err) => {
+            const message =
+                err instanceof LoginError
+                    ? selfoss.app._('login_invalid_credentials')
+                    : selfoss.app._('login_error_generic', {
+                          errorMessage:
+                              err instanceof HttpError
+                                  ? `HTTP ${err.response.status} ${err.message}`
+                                  : err.message,
+                      });
+            history.replace('/sign/in', {
+                error: message,
+            });
+        })
+        .finally(() => {
+            setLoading(false);
         });
-    }).finally(() => {
-        setLoading(false);
-    });
 }
 
-export default function LoginForm({
-    offlineEnabled,
-}) {
+export default function LoginForm({ offlineEnabled }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
@@ -71,22 +69,29 @@ export default function LoginForm({
                 enableOffline,
                 returnLocation,
             }),
-        [configuration, history, username, password, enableOffline, returnLocation]
+        [
+            configuration,
+            history,
+            username,
+            password,
+            enableOffline,
+            returnLocation,
+        ],
     );
 
     const usernameOnChange = useCallback(
         (event) => setUsername(event.target.value),
-        []
+        [],
     );
 
     const passwordOnChange = useCallback(
         (event) => setPassword(event.target.value),
-        []
+        [],
     );
 
     const offlineOnChange = useCallback(
         (event) => setEnableOffline(event.target.checked),
-        [setEnableOffline]
+        [setEnableOffline],
     );
 
     const _ = useContext(LocalizationContext);
@@ -105,9 +110,7 @@ export default function LoginForm({
                         <h1>{configuration.htmlTitle} login</h1>
                     </li>
                     <li>
-                        <label htmlFor="username">
-                            {_('login_username')}
-                        </label>{' '}
+                        <label htmlFor="username">{_('login_username')}</label>{' '}
                         <input
                             type="text"
                             name="username"
@@ -121,9 +124,7 @@ export default function LoginForm({
                         />
                     </li>
                     <li>
-                        <label htmlFor="password">
-                            {_('login_password')}
-                        </label>{' '}
+                        <label htmlFor="password">{_('login_password')}</label>{' '}
                         <input
                             type="password"
                             name="password"
@@ -157,11 +158,7 @@ export default function LoginForm({
                     </li>
                     <li className="button">
                         <label>{' '}</label>
-                        <input
-                            type="submit"
-                            accessKey="l"
-                            value={_('login')}
-                        />
+                        <input type="submit" accessKey="l" value={_('login')} />
                     </li>
                 </ul>
             </form>

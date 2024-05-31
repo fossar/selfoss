@@ -38,13 +38,18 @@ const selfoss = {
      */
     async init() {
         // Load off-line mode enabledness.
-        selfoss.db.enableOffline.update(window.localStorage.getItem('enableOffline') === 'true');
+        selfoss.db.enableOffline.update(
+            window.localStorage.getItem('enableOffline') === 'true',
+        );
 
         // Ignore stored config when off-line mode is disabled, since it is likely stale.
-        const storedConfig = selfoss.db.enableOffline.value ? localStorage.getItem('configuration') : null;
+        const storedConfig = selfoss.db.enableOffline.value
+            ? localStorage.getItem('configuration')
+            : null;
         let oldConfiguration = null;
         try {
-            oldConfiguration = storedConfig !== null ? JSON.parse(storedConfig) : null;
+            oldConfiguration =
+                storedConfig !== null ? JSON.parse(storedConfig) : null;
         } catch {
             // We will try to obtain a new configuration anyway.
         }
@@ -57,10 +62,16 @@ const selfoss = {
 
             // We are on-line, prune the user files when changed.
             if ('caches' in window && 'serviceWorker' in navigator) {
-                if (oldConfiguration === null || oldConfiguration.userCss !== configuration.userCss) {
+                if (
+                    oldConfiguration === null ||
+                    oldConfiguration.userCss !== configuration.userCss
+                ) {
                     await caches.delete('userCss');
                 }
-                if (oldConfiguration === null || oldConfiguration.userJs !== configuration.userJs) {
+                if (
+                    oldConfiguration === null ||
+                    oldConfiguration.userJs !== configuration.userJs
+                ) {
                     await caches.delete('userJs');
                 }
             }
@@ -74,7 +85,6 @@ const selfoss = {
         }
     },
 
-
     async initMain(configuration) {
         selfoss.config = configuration;
 
@@ -83,9 +93,14 @@ const selfoss = {
         }
 
         if (configuration.language !== null) {
-            document.documentElement.setAttribute('lang', configuration.language);
+            document.documentElement.setAttribute(
+                'lang',
+                configuration.language,
+            );
         }
-        document.querySelector('meta[name="application-name"]').setAttribute('content', configuration.htmlTitle);
+        document
+            .querySelector('meta[name="application-name"]')
+            .setAttribute('content', configuration.htmlTitle);
 
         const feedLink = document.createElement('link');
         feedLink.setAttribute('rel', 'alternate');
@@ -110,12 +125,13 @@ const selfoss = {
         selfoss.dbOffline.init();
 
         if (configuration.authEnabled) {
-            selfoss.loggedin.update(window.localStorage.getItem('onlineSession') == 'true');
+            selfoss.loggedin.update(
+                window.localStorage.getItem('onlineSession') == 'true',
+            );
         }
 
         selfoss.attachApp(configuration);
     },
-
 
     /**
      * Create basic DOM structure of the page.
@@ -128,7 +144,7 @@ const selfoss = {
         mainUi.classList.add('app-toplevel');
 
         // BrowserRouter expects no slash at the end.
-        const basePath = (new URL(document.baseURI)).pathname.replace(/\/$/, '');
+        const basePath = new URL(document.baseURI).pathname.replace(/\/$/, '');
 
         const root = createRoot(mainUi);
         root.render(
@@ -138,24 +154,21 @@ const selfoss = {
                     selfoss.app = app;
                 },
                 configuration,
-            })
+            }),
         );
     },
 
     loggedin: new ValueListenable(false),
-
 
     setSession() {
         window.localStorage.setItem('onlineSession', true);
         selfoss.loggedin.update(true);
     },
 
-
     clearSession() {
         window.localStorage.removeItem('onlineSession');
         selfoss.loggedin.update(false);
     },
-
 
     hasSession() {
         return selfoss.loggedin.value;
@@ -167,30 +180,47 @@ const selfoss = {
      */
     login({ configuration, username, password, enableOffline }) {
         selfoss.db.enableOffline.update(enableOffline);
-        window.localStorage.setItem('enableOffline', selfoss.db.enableOffline.value);
+        window.localStorage.setItem(
+            'enableOffline',
+            selfoss.db.enableOffline.value,
+        );
         if (!selfoss.db.enableOffline.value) {
             selfoss.db.clear();
         }
 
         const credentials = {
             username,
-            password
+            password,
         };
         return login(credentials).then(() => {
             selfoss.setSession();
             // init offline if supported and not inited yet
             selfoss.dbOffline.init();
-            if ((!selfoss.db.storage || selfoss.db.broken) && selfoss.db.enableOffline.value) {
+            if (
+                (!selfoss.db.storage || selfoss.db.broken) &&
+                selfoss.db.enableOffline.value
+            ) {
                 // Initialize database in offline mode when it has not been initialized yet or it got broken.
                 selfoss.dbOffline.init();
 
                 // Store config for off-line use.
-                localStorage.setItem('configuration', JSON.stringify(configuration));
+                localStorage.setItem(
+                    'configuration',
+                    JSON.stringify(configuration),
+                );
 
                 // Cache user files manually since service worker is not aware of them.
                 if ('caches' in window && 'serviceWorker' in navigator) {
-                    caches.open('userCss').then((cache) => cache.add(`user.css?v=${configuration.userCss}`));
-                    caches.open('userJs').then((cache) => cache.add(`user.js?v=${configuration.userJs}`));
+                    caches
+                        .open('userCss')
+                        .then((cache) =>
+                            cache.add(`user.css?v=${configuration.userCss}`),
+                        );
+                    caches
+                        .open('userJs')
+                        .then((cache) =>
+                            cache.add(`user.js?v=${configuration.userJs}`),
+                        );
                 }
 
                 selfoss.setupServiceWorker();
@@ -199,20 +229,23 @@ const selfoss = {
     },
 
     setupServiceWorker() {
-        if (!('serviceWorker' in navigator) || selfoss.serviceWorkerInitialized) {
+        if (
+            !('serviceWorker' in navigator) ||
+            selfoss.serviceWorkerInitialized
+        ) {
             return;
         }
 
         selfoss.serviceWorkerInitialized = true;
 
-        navigator.serviceWorker.addEventListener(
-            'controllerchange',
-            () => {
-                window.location.reload();
-            },
-        );
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+            window.location.reload();
+        });
 
-        navigator.serviceWorker.register(new URL('../selfoss-sw-offline.js', import.meta.url), { type: 'module' })
+        navigator.serviceWorker
+            .register(new URL('../selfoss-sw-offline.js', import.meta.url), {
+                type: 'module',
+            })
             .then((reg) => {
                 selfoss.listenWaitingSW(reg, (reg) => {
                     selfoss.app.notifyNewVersion(() => {
@@ -231,7 +264,9 @@ const selfoss = {
         window.localStorage.clear();
         if ('serviceWorker' in navigator) {
             if ('caches' in window) {
-                caches.keys().then(keys => keys.forEach(key => caches.delete(key)));
+                caches
+                    .keys()
+                    .then((keys) => keys.forEach((key) => caches.delete(key)));
             }
 
             navigator.serviceWorker.getRegistrations().then((registrations) => {
@@ -249,7 +284,9 @@ const selfoss = {
                 selfoss.history.push('/sign/in');
             }
         } catch (error) {
-            selfoss.app.showError(selfoss.app._('error_logout') + ' ' + error.message);
+            selfoss.app.showError(
+                selfoss.app._('error_logout') + ' ' + error.message,
+            );
         }
     },
 
@@ -259,7 +296,11 @@ const selfoss = {
      * @returns {boolean}
      */
     isAllowedToRead() {
-        return selfoss.hasSession() || !selfoss.config.authEnabled || selfoss.config.publicMode;
+        return (
+            selfoss.hasSession() ||
+            !selfoss.config.authEnabled ||
+            selfoss.config.publicMode
+        );
     },
 
     /**
@@ -268,7 +309,11 @@ const selfoss = {
      * @returns {boolean}
      */
     isAllowedToUpdate() {
-        return selfoss.hasSession() || !selfoss.config.authEnabled || selfoss.config.allowPublicUpdate;
+        return (
+            selfoss.hasSession() ||
+            !selfoss.config.authEnabled ||
+            selfoss.config.allowPublicUpdate
+        );
     },
 
     /**
@@ -289,7 +334,6 @@ const selfoss = {
         return selfoss.db.online;
     },
 
-
     /**
      * indicates whether a mobile device is host
      *
@@ -297,14 +341,13 @@ const selfoss = {
      */
     isMobile() {
         // first check useragent
-        if ((/iPhone|iPod|iPad|Android|BlackBerry/).test(navigator.userAgent)) {
+        if (/iPhone|iPod|iPad|Android|BlackBerry/.test(navigator.userAgent)) {
             return true;
         }
 
         // otherwise check resolution
         return selfoss.isTablet() || selfoss.isSmartphone();
     },
-
 
     /**
      * indicates whether a tablet is the device or not
@@ -318,7 +361,6 @@ const selfoss = {
         return false;
     },
 
-
     /**
      * indicates whether a tablet is the device or not
      *
@@ -330,7 +372,6 @@ const selfoss = {
         }
         return false;
     },
-
 
     /**
      * Override these functions to customize selfoss behaviour.
@@ -358,7 +399,6 @@ const selfoss = {
         selfoss.refreshUnread(unread);
     },
 
-
     /**
      * refresh unread stats.
      *
@@ -369,7 +409,6 @@ const selfoss = {
         selfoss.app.setUnreadItemsCount(unread);
     },
 
-
     /**
      * refresh current tags.
      *
@@ -378,15 +417,18 @@ const selfoss = {
     reloadTags() {
         selfoss.app.setTagsState(LoadingState.LOADING);
 
-        getAllTags().then((data) => {
-            selfoss.app.setTags(data);
-            selfoss.app.setTagsState(LoadingState.SUCCESS);
-        }).catch((error) => {
-            selfoss.app.setTagsState(LoadingState.FAILURE);
-            selfoss.app.showError(selfoss.app._('error_load_tags') + ' ' + error.message);
-        });
+        getAllTags()
+            .then((data) => {
+                selfoss.app.setTags(data);
+                selfoss.app.setTagsState(LoadingState.SUCCESS);
+            })
+            .catch((error) => {
+                selfoss.app.setTagsState(LoadingState.FAILURE);
+                selfoss.app.showError(
+                    selfoss.app._('error_load_tags') + ' ' + error.message,
+                );
+            });
     },
-
 
     handleAjaxError(error, tryOffline = true) {
         if (!(error instanceof HttpError || error instanceof TimeoutError)) {
@@ -401,7 +443,6 @@ const selfoss = {
             return Promise.reject(error);
         }
     },
-
 
     listenWaitingSW(reg, callback) {
         const awaitStateChange = () => {
@@ -423,8 +464,7 @@ const selfoss = {
     },
 
     // Include helpers for user scripts.
-    ajax
-
+    ajax,
 };
 
 export default selfoss;

@@ -6,5 +6,5 @@ export const LoadingState = {
     INITIAL: 'initial',
     LOADING: 'loading',
     SUCCESS: 'success',
-    FAILURE: 'failure'
+    FAILURE: 'failure',
 };
