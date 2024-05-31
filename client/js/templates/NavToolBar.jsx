@@ -1,13 +1,13 @@
-import React, {
-    useCallback,
-    useContext,
-    useState,
-} from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as icons from '../icons';
-import { useAllowedToUpdate, useAllowedToWrite, useLoggedIn } from '../helpers/authorizations';
+import {
+    useAllowedToUpdate,
+    useAllowedToWrite,
+    useLoggedIn,
+} from '../helpers/authorizations';
 import { ConfigurationContext } from '../helpers/configuration';
 import { LocalizationContext } from '../helpers/i18n';
 import { forceReload } from '../helpers/uri';
@@ -36,15 +36,12 @@ export default function NavToolBar({ reloadAll, setNavExpanded }) {
 
     const refreshOnClick = useCallback(
         () => handleReloadAll({ reloadAll, setReloading, setNavExpanded }),
-        [reloadAll, setNavExpanded]
+        [reloadAll, setNavExpanded],
     );
 
-    const settingsOnClick = useCallback(
-        () => {
-            setNavExpanded(false);
-        },
-        [setNavExpanded]
-    );
+    const settingsOnClick = useCallback(() => {
+        setNavExpanded(false);
+    }, [setNavExpanded]);
 
     const settingsLink = useCallback(
         (location) => ({
@@ -52,12 +49,12 @@ export default function NavToolBar({ reloadAll, setNavExpanded }) {
             pathname: '/manage/sources',
             state: forceReload(location),
         }),
-        []
+        [],
     );
 
     const logoutOnClick = useCallback(
         () => handleLogOut({ setNavExpanded }),
-        [setNavExpanded]
+        [setNavExpanded],
     );
 
     const isLoggedIn = useLoggedIn();
@@ -71,7 +68,7 @@ export default function NavToolBar({ reloadAll, setNavExpanded }) {
 
     return (
         <div className="nav-toolbar">
-            {canRefreshAll &&
+            {canRefreshAll && (
                 <button
                     id="nav-refresh"
                     title={_('refreshbutton')}
@@ -85,8 +82,8 @@ export default function NavToolBar({ reloadAll, setNavExpanded }) {
                         spin={reloading}
                     />
                 </button>
-            }
-            {canVisitSettings &&
+            )}
+            {canVisitSettings && (
                 <Link
                     id="nav-settings"
                     title={_('settingsbutton')}
@@ -95,13 +92,10 @@ export default function NavToolBar({ reloadAll, setNavExpanded }) {
                     to={settingsLink}
                     onClick={settingsOnClick}
                 >
-                    <FontAwesomeIcon
-                        icon={icons.settings}
-                        fixedWidth
-                    />
+                    <FontAwesomeIcon icon={icons.settings} fixedWidth />
                 </Link>
-            }
-            {canLogOut &&
+            )}
+            {canLogOut && (
                 <button
                     id="nav-logout"
                     title={_('logoutbutton')}
@@ -111,8 +105,8 @@ export default function NavToolBar({ reloadAll, setNavExpanded }) {
                 >
                     <FontAwesomeIcon icon={icons.signOut} fixedWidth />
                 </button>
-            }
-            {canLogIn &&
+            )}
+            {canLogIn && (
                 <Link
                     id="nav-login"
                     title={_('loginbutton')}
@@ -122,7 +116,7 @@ export default function NavToolBar({ reloadAll, setNavExpanded }) {
                 >
                     <FontAwesomeIcon icon={icons.logIn} fixedWidth />
                 </Link>
-            }
+            )}
         </div>
     );
 }

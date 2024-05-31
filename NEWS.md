@@ -36,11 +36,14 @@
 ### Other changes
 - `tidy` PHP extension is now required if you want to use “Content extractor” spout. ([#1392](https://github.com/fossar/selfoss/pull/1392))
 - Password hashing helper page will delegate the hashing to server again. ([#1401](https://github.com/fossar/selfoss/pull/1401))
-- Back-end source code is now checked using [PHPStan](https://phpstan.org/). ([#1409](https://github.com/fossar/selfoss/pull/1409))
 - Content Extraction spout will no longer try to extract content we have already extracted. ([#1413](https://github.com/fossar/selfoss/pull/1413))
 - Source filters are stricter, they need to start and end with a `/`. ([#1423](https://github.com/fossar/selfoss/pull/1423))
 - OPML importer has been merged into the React client. ([#1442](https://github.com/fossar/selfoss/pull/1442))
 - Web requests will send `Accept-Encoding` header. ([#1482](https://github.com/fossar/selfoss/pull/1482))
+
+#### For developers
+- Back-end source code is now checked using [PHPStan](https://phpstan.org/). ([#1409](https://github.com/fossar/selfoss/pull/1409))
+- [Prettier](https://prettier.io/) is now used for code formatting. ([#1493](https://github.com/fossar/selfoss/pull/1493))
 
 ## 2.19 – 2022-10-12
 **This version requires PHP ~~5.6~~ 7.2 (see known regressions section) or newer. It is also the last version to support PHP 7.**

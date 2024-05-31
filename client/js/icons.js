@@ -36,7 +36,7 @@ import wallabagIcon from '../images/wallabag';
 export const wallabag = {
     prefix: 'fac',
     iconName: 'wallabag',
-    icon: wallabagIcon
+    icon: wallabagIcon,
 };
 
 /**
@@ -73,5 +73,5 @@ export {
     faStar as unstar,
     faSyncAlt as reload,
     faTimes as remove,
-    faWifi as connection
+    faWifi as connection,
 };

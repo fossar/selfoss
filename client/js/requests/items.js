@@ -15,12 +15,14 @@ function safeDate(datetimeString) {
  * Mark items with given ids as read.
  */
 export function markAll(ids) {
-    return ajax.post('mark', {
-        headers: {
-            'content-type': 'application/json; charset=utf-8'
-        },
-        body: JSON.stringify(ids)
-    }).promise.then(response => response.json());
+    return ajax
+        .post('mark', {
+            headers: {
+                'content-type': 'application/json; charset=utf-8',
+            },
+            body: JSON.stringify(ids),
+        })
+        .promise.then((response) => response.json());
 }
 
 /**
@@ -45,7 +47,9 @@ function enrichEntry(entry) {
         ...entry,
         link: unescape(entry.link),
         datetime: safeDate(entry.datetime),
-        updatetime: entry.updatetime ? safeDate(entry.updatetime) : entry.updatetime
+        updatetime: entry.updatetime
+            ? safeDate(entry.updatetime)
+            : entry.updatetime,
     };
 }
 
@@ -55,11 +59,13 @@ function enrichEntry(entry) {
 function enrichItemsResponse(data) {
     return {
         ...data,
-        lastUpdate: data.lastUpdate ? safeDate(data.lastUpdate) : data.lastUpdate,
+        lastUpdate: data.lastUpdate
+            ? safeDate(data.lastUpdate)
+            : data.lastUpdate,
         // in getItems
         entries: data.entries?.map(enrichEntry),
         // in sync
-        newItems: data.newItems?.map(enrichEntry)
+        newItems: data.newItems?.map(enrichEntry),
     };
 }
 
@@ -67,13 +73,18 @@ function enrichItemsResponse(data) {
  * Get all items matching given filter.
  */
 export function getItems(filter, abortController) {
-    return ajax.get('', {
-        body: ajax.makeSearchParams({
-            ...filter,
-            fromDatetime: filter.fromDatetime ? filter.fromDatetime.toISOString() : filter.fromDatetime
-        }),
-        abortController,
-    }).promise.then(response => response.json()).then(enrichItemsResponse);
+    return ajax
+        .get('', {
+            body: ajax.makeSearchParams({
+                ...filter,
+                fromDatetime: filter.fromDatetime
+                    ? filter.fromDatetime.toISOString()
+                    : filter.fromDatetime,
+            }),
+            abortController,
+        })
+        .promise.then((response) => response.json())
+        .then(enrichItemsResponse);
 }
 
 /**
@@ -82,12 +93,14 @@ export function getItems(filter, abortController) {
 export function sync(updatedStatuses, syncParams) {
     const params = {
         ...syncParams,
-        updatedStatuses: syncParams.updatedStatuses ? syncParams.updatedStatuses.map((status) => {
-            return {
-                ...status,
-                datetime: status.datetime.toISOString()
-            };
-        }) : syncParams.updatedStatuses
+        updatedStatuses: syncParams.updatedStatuses
+            ? syncParams.updatedStatuses.map((status) => {
+                  return {
+                      ...status,
+                      datetime: status.datetime.toISOString(),
+                  };
+              })
+            : syncParams.updatedStatuses,
     };
 
     if ('since' in params) {
@@ -99,11 +112,13 @@ export function sync(updatedStatuses, syncParams) {
 
     const { controller, promise } = ajax.fetch('items/sync', {
         method: updatedStatuses ? 'POST' : 'GET',
-        body: ajax.makeSearchParams(params)
+        body: ajax.makeSearchParams(params),
     });
 
     return {
         controller,
-        promise: promise.then(response => response.json()).then(enrichItemsResponse)
+        promise: promise
+            .then((response) => response.json())
+            .then(enrichItemsResponse),
     };
 }

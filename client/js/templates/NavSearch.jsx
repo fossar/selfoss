@@ -14,7 +14,15 @@ import * as icons from '../icons';
 import { LocalizationContext } from '../helpers/i18n';
 
 // search button shows search input or executes search
-function handleSubmit({ active, setActive, searchField, searchText, history, location, setNavExpanded }) {
+function handleSubmit({
+    active,
+    setActive,
+    searchField,
+    searchText,
+    history,
+    location,
+    setNavExpanded,
+}) {
     if (!selfoss.isSmartphone() && !active) {
         setActive(true);
         searchField.current.focus();
@@ -78,24 +86,33 @@ export default function NavSearch({ setNavExpanded, offlineState }) {
             handleFieldKeyUp({
                 event,
                 searchButton,
-                searchRemoveButton
+                searchRemoveButton,
             }),
-        []
+        [],
     );
 
     const termOnChange = useCallback(
         (event) => setSearchText(event.target.value),
-        []
+        [],
     );
 
     const removeOnClick = useCallback(
         () => handleRemove({ setActive, searchField, history, location }),
-        [history, location]
+        [history, location],
     );
 
     const searchOnClick = useCallback(
-        () => handleSubmit({ active, setActive, searchField, searchText, history, location, setNavExpanded }),
-        [active, searchText, history, location, setNavExpanded]
+        () =>
+            handleSubmit({
+                active,
+                setActive,
+                searchField,
+                searchText,
+                history,
+                location,
+                setNavExpanded,
+            }),
+        [active, searchText, history, location, setNavExpanded],
     );
 
     const _ = useContext(LocalizationContext);
@@ -106,7 +123,7 @@ export default function NavSearch({ setNavExpanded, offlineState }) {
             className={classNames({
                 offline: offlineState,
                 online: !offlineState,
-                active
+                active,
             })}
             role="search"
         >
@@ -135,14 +152,11 @@ export default function NavSearch({ setNavExpanded, offlineState }) {
                 title={_('searchbutton')}
                 aria-label={_('searchbutton')}
                 accessKey="e"
-                onClick={searchOnClick
-                }
+                onClick={searchOnClick}
                 ref={searchButton}
             >
                 <FontAwesomeIcon icon={icons.search} />{' '}
-                <span className="search-button-label">
-                    {_('searchbutton')}
-                </span>
+                <span className="search-button-label">{_('searchbutton')}</span>
             </button>
             <hr />
         </div>

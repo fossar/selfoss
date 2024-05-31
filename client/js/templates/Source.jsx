@@ -1,9 +1,4 @@
-import React, {
-    useCallback,
-    useContext,
-    useEffect,
-    useState,
-} from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useRef } from 'react';
 import { Menu, MenuButton, MenuItem } from '@szhsin/react-menu';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -23,27 +18,19 @@ import { LocalizationContext } from '../helpers/i18n';
 const FAST_DURATION_MS = 200;
 
 // cancel source editing
-function handleCancel({
-    source,
-    sourceElem,
-    setSources,
-    setEditedSource
-}) {
+function handleCancel({ source, sourceElem, setSources, setEditedSource }) {
     const id = source.id;
 
     if (id.toString().startsWith('new-')) {
-        fadeOut(
-            sourceElem.current,
-            {
-                duration: FAST_DURATION_MS,
-                complete: () => {
-                    // Remove the source from this page’s model.
-                    setSources((sources) =>
-                        sources.filter((source) => source.id !== id)
-                    );
-                }
+        fadeOut(sourceElem.current, {
+            duration: FAST_DURATION_MS,
+            complete: () => {
+                // Remove the source from this page’s model.
+                setSources((sources) =>
+                    sources.filter((source) => source.id !== id),
+                );
             },
-        );
+        });
     } else {
         // Hide the input form.
         setEditedSource(null);
@@ -58,7 +45,7 @@ function handleSave({
     setEditedSource,
     setSourceActionLoading,
     setJustSavedTimeout,
-    setSourceErrors
+    setSourceErrors,
 }) {
     event.preventDefault();
 
@@ -73,9 +60,9 @@ function handleSave({
     // Make tags into a list.
     const tagsList = tags
         ? tags
-            .split(',')
-            .map((tag) => tag.trim())
-            .filter((tag) => tag !== '')
+              .split(',')
+              .map((tag) => tag.trim())
+              .filter((tag) => tag !== '')
         : [];
 
     const values = {
@@ -122,18 +109,18 @@ function handleSave({
                                 id: response.id,
                                 tags: tagsList,
                                 // Use fetched title.
-                                title: response.title
+                                title: response.title,
                             };
                         } else {
                             return source;
                         }
-                    })
+                    }),
                 );
             }
         })
         .catch((error) => {
             selfoss.app.showError(
-                selfoss.app._('error_edit_source') + ' ' + error.message
+                selfoss.app._('error_edit_source') + ' ' + error.message,
             );
         })
         .finally(() => {
@@ -166,29 +153,26 @@ function handleDelete({
     sourceRequests
         .remove(id)
         .then(() => {
-            fadeOut(
-                sourceElem.current,
-                {
-                    duration: FAST_DURATION_MS,
-                    complete: () => {
-                        // Remove the source from this page’s model.
-                        setSources((sources) =>
-                            sources.filter((source) => source.id !== id)
-                        );
-                    }
+            fadeOut(sourceElem.current, {
+                duration: FAST_DURATION_MS,
+                complete: () => {
+                    // Remove the source from this page’s model.
+                    setSources((sources) =>
+                        sources.filter((source) => source.id !== id),
+                    );
                 },
-            );
+            });
 
             // Reload tags and remove source from navigation.
             selfoss.reloadTags();
             selfoss.app.setSources((sources) =>
-                sources.filter((source) => source.id !== id)
+                sources.filter((source) => source.id !== id),
             );
         })
         .catch((error) => {
             setSourceBeingDeleted(false);
             selfoss.app.showError(
-                selfoss.app._('error_delete_source') + ' ' + error.message
+                selfoss.app._('error_delete_source') + ' ' + error.message,
             );
         });
 }
@@ -205,7 +189,7 @@ function handleEdit({ event, source, setEditedSource }) {
         tags: tags ? tags.map(unescape).join(',') : '',
         filter,
         spout,
-        params
+        params,
     });
 }
 
@@ -215,7 +199,7 @@ function handleSpoutChange({
     setSpouts,
     updateEditedSource,
     setSourceParamsLoading,
-    setSourceParamsError
+    setSourceParamsError,
 }) {
     const spoutClass = event.target.value;
     updateEditedSource({ spout: spoutClass });
@@ -233,17 +217,17 @@ function handleSpoutChange({
             const defaults = Object.fromEntries(
                 Object.entries(spout.params).map(([param, props]) => [
                     param,
-                    props['default'] ?? ''
-                ])
+                    props['default'] ?? '',
+                ]),
             );
             updateEditedSource((source) => {
                 const oldCompatibleParams = pick(
                     source.params,
-                    Object.keys(spout.params)
+                    Object.keys(spout.params),
                 );
 
                 return {
-                    params: { ...defaults, ...oldCompatibleParams }
+                    params: { ...defaults, ...oldCompatibleParams },
                 };
             });
         })
@@ -294,27 +278,30 @@ function SourceEditForm({
         (changes) => {
             setDirty(true);
             if (typeof changes === 'function') {
-                setEditedSource((source) => ({ ...source, ...changes(source) }));
+                setEditedSource((source) => ({
+                    ...source,
+                    ...changes(source),
+                }));
             } else {
                 setEditedSource((source) => ({ ...source, ...changes }));
             }
         },
-        [setEditedSource, setDirty]
+        [setEditedSource, setDirty],
     );
 
     const titleOnChange = useCallback(
         (event) => updateEditedSource({ title: event.target.value }),
-        [updateEditedSource]
+        [updateEditedSource],
     );
 
     const tagsOnChange = useCallback(
         (event) => updateEditedSource({ tags: event.target.value }),
-        [updateEditedSource]
+        [updateEditedSource],
     );
 
     const filterOnChange = useCallback(
         (event) => updateEditedSource({ filter: event.target.value }),
-        [updateEditedSource]
+        [updateEditedSource],
     );
 
     const spoutOnChange = useCallback(
@@ -324,9 +311,14 @@ function SourceEditForm({
                 setSpouts,
                 updateEditedSource,
                 setSourceParamsLoading,
-                setSourceParamsError
+                setSourceParamsError,
             }),
-        [setSpouts, updateEditedSource, setSourceParamsLoading, setSourceParamsError]
+        [
+            setSpouts,
+            updateEditedSource,
+            setSourceParamsLoading,
+            setSourceParamsError,
+        ],
     );
 
     const saveOnClick = useCallback(
@@ -339,10 +331,18 @@ function SourceEditForm({
                 setEditedSource,
                 setSourceActionLoading,
                 setJustSavedTimeout,
-                setSourceErrors
+                setSourceErrors,
             });
         },
-        [setSources, source, setEditedSource, setSourceActionLoading, setJustSavedTimeout, setSourceErrors, setDirty]
+        [
+            setSources,
+            source,
+            setEditedSource,
+            setSourceActionLoading,
+            setJustSavedTimeout,
+            setSourceErrors,
+            setDirty,
+        ],
     );
 
     const cancelOnClick = useCallback(
@@ -350,7 +350,9 @@ function SourceEditForm({
             event.preventDefault();
 
             if (dirty) {
-                const answer = confirm(selfoss.app._('source_warn_cancel_dirty'));
+                const answer = confirm(
+                    selfoss.app._('source_warn_cancel_dirty'),
+                );
                 if (answer === false) {
                     return;
                 }
@@ -362,47 +364,39 @@ function SourceEditForm({
                 source,
                 sourceElem,
                 setSources,
-                setEditedSource
+                setEditedSource,
             });
         },
-        [source, sourceElem, setSources, setEditedSource, dirty, setDirty]
+        [source, sourceElem, setSources, setEditedSource, dirty, setDirty],
     );
 
     const _ = useContext(LocalizationContext);
 
-    const sourceParamsContent = (
-        sourceParamsLoading ? (
-            <Spinner size="3x" label={_('source_params_loading')} />
-        ) : (
-            sourceParamsError ?? (
-                (
-                    Object.keys(spouts).includes(source.spout)
-                    && Object.keys(spouts[source.spout].params).length > 0
-                )
-                    ? (
-                        <ul>
-                            {Object.entries(spouts[source.spout].params).map(
-                                ([spoutParamName, spoutParam]) => (
-                                    <SourceParam
-                                        key={spoutParamName}
-                                        params={source.params}
-                                        {...{
-                                            spoutParamName,
-                                            spoutParam,
-                                            sourceErrors,
-                                            sourceId,
-                                            setEditedSource,
-                                            setDirty,
-                                        }}
-                                    />
-                                )
-                            )}
-                        </ul>
-                    )
-                    : null
-            )
-        )
-
+    const sourceParamsContent = sourceParamsLoading ? (
+        <Spinner size="3x" label={_('source_params_loading')} />
+    ) : (
+        sourceParamsError ??
+        (Object.keys(spouts).includes(source.spout) &&
+        Object.keys(spouts[source.spout].params).length > 0 ? (
+            <ul>
+                {Object.entries(spouts[source.spout].params).map(
+                    ([spoutParamName, spoutParam]) => (
+                        <SourceParam
+                            key={spoutParamName}
+                            params={source.params}
+                            {...{
+                                spoutParamName,
+                                spoutParam,
+                                sourceErrors,
+                                sourceId,
+                                setEditedSource,
+                                setDirty,
+                            }}
+                        />
+                    ),
+                )}
+            </ul>
+        ) : null)
     );
 
     return (
@@ -499,9 +493,7 @@ function SourceEditForm({
 
                 {/* settings */}
                 {sourceParamsContent ? (
-                    <li className="source-params">
-                        {sourceParamsContent}
-                    </li>
+                    <li className="source-params">{sourceParamsContent}</li>
                 ) : null}
 
                 {/* error messages */}
@@ -521,12 +513,12 @@ function SourceEditForm({
                     >
                         {_('source_save')}
 
-                        {sourceActionLoading &&
+                        {sourceActionLoading && (
                             <React.Fragment>
                                 {' '}
                                 <Spinner label={_('source_saving')} />
                             </React.Fragment>
-                        }
+                        )}
                     </button>
                     {' • '}
                     <button
@@ -564,16 +556,23 @@ SourceEditForm.propTypes = {
     setDirty: PropTypes.func.isRequired,
 };
 
-export default function Source({ source, setSources, spouts, setSpouts, dirty, setDirtySources }) {
+export default function Source({
+    source,
+    setSources,
+    spouts,
+    setSpouts,
+    dirty,
+    setDirtySources,
+}) {
     const isNew = !source.title;
     const classes = {
         source: true,
         'source-new': isNew,
-        error: source.error && source.error.length > 0
+        error: source.error && source.error.length > 0,
     };
 
     const [editedSource, setEditedSource] = useState(
-        isNew ? { ...source } : null
+        isNew ? { ...source } : null,
     );
     const [sourceActionLoading, setSourceActionLoading] = useState(false);
     const [sourceBeingDeleted, setSourceBeingDeleted] = useState(false);
@@ -594,7 +593,7 @@ export default function Source({ source, setSources, spouts, setSpouts, dirty, s
 
     const editOnClick = useCallback(
         (event) => handleEdit({ event, source, setEditedSource }),
-        [source]
+        [source],
     );
 
     const setDirty = useCallback(
@@ -604,11 +603,11 @@ export default function Source({ source, setSources, spouts, setSpouts, dirty, s
                 [source.id]: dirty,
             }));
         },
-        [source.id, setDirtySources]
+        [source.id, setDirtySources],
     );
 
-    const history  = useHistory();
-    const location  = useLocation();
+    const history = useHistory();
+    const location = useLocation();
 
     const sourceElem = useRef(null);
 
@@ -623,10 +622,14 @@ export default function Source({ source, setSources, spouts, setSpouts, dirty, s
                     setDirty,
                 });
             } else if (value === 'browse') {
-                history.push(makeEntriesLinkLocation(location, { category: `source-${source.id}` }));
+                history.push(
+                    makeEntriesLinkLocation(location, {
+                        category: `source-${source.id}`,
+                    }),
+                );
             }
         },
-        [source, sourceElem, setSources, setDirty, location, history]
+        [source, sourceElem, setSources, setDirty, location, history],
     );
 
     const _ = useContext(LocalizationContext);
@@ -648,44 +651,41 @@ export default function Source({ source, setSources, spouts, setSpouts, dirty, s
                 ) : null}
             </div>
             <h2 className="source-title">
-                {source.title
-                    ? unescape(source.title)
-                    : _('source_new')}
+                {source.title ? unescape(source.title) : _('source_new')}
             </h2>{' '}
             <div className="source-edit-delete">
-
-                {!editedSource &&
+                {!editedSource && (
                     <React.Fragment>
                         <button
                             type="button"
                             accessKey="e"
                             className={classNames({
                                 'source-showparams': true,
-                                saved: justSavedTimeout !== null
+                                saved: justSavedTimeout !== null,
                             })}
                             onClick={editOnClick}
                             aria-expanded={!!editedSource}
                         >
                             {_(
-                                justSavedTimeout !== null ? 'source_saved' : 'source_edit'
+                                justSavedTimeout !== null
+                                    ? 'source_saved'
+                                    : 'source_edit',
                             )}
                         </button>
                         {' • '}
                     </React.Fragment>
-                }
+                )}
                 <Menu
                     onItemClick={extraMenuOnSelection}
                     menuButton={
-                        <MenuButton
-                            className="source-menu-button"
-                        >
+                        <MenuButton className="source-menu-button">
                             {_('source_menu')}
-                            {sourceBeingDeleted &&
+                            {sourceBeingDeleted && (
                                 <React.Fragment>
                                     {' '}
                                     <Spinner label={_('source_deleting')} />
                                 </React.Fragment>
-                            }
+                            )}
                         </MenuButton>
                     }
                     menuClassName="popup-menu"
@@ -708,11 +708,7 @@ export default function Source({ source, setSources, spouts, setSpouts, dirty, s
             </div>
             <div className="source-days">
                 {source.lastentry
-                    ? ` • ${_(
-                        'source_last_post'
-                    )} ${_('days', [
-                        daysAgo(new Date(source.lastentry * 1000))
-                    ])}`
+                    ? ` • ${_('source_last_post')} ${_('days', [daysAgo(new Date(source.lastentry * 1000))])}`
                     : null}
             </div>
             {/* edit */}

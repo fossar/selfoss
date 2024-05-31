@@ -17,7 +17,10 @@ import * as sourceRequests from '../requests/sources';
 import { LoadingState } from '../requests/LoadingState';
 import { Spinner, SpinnerBig } from './Spinner';
 import classNames from 'classnames';
-import { useAllowedToUpdate, useAllowedToWrite } from '../helpers/authorizations';
+import {
+    useAllowedToUpdate,
+    useAllowedToWrite,
+} from '../helpers/authorizations';
 import { ConfigurationContext } from '../helpers/configuration';
 import { autoScroll, Direction } from '../helpers/navigation';
 import { LocalizationContext } from '../helpers/i18n';
@@ -41,7 +44,7 @@ function reloadList({
     if (entryId && fetchParams.fromId === undefined) {
         fetchParams = {
             ...fetchParams,
-            extraIds: [...fetchParams.extraIds, entryId]
+            extraIds: [...fetchParams.extraIds, entryId],
         };
     }
 
@@ -63,8 +66,13 @@ function reloadList({
             reloader = selfoss.dbOnline.getEntries;
         }
 
-        const forceLoadOnline = selfoss.dbOffline.olderEntriesOnline || selfoss.dbOffline.shouldLoadEntriesOnline;
-        if (!selfoss.db.enableOffline.value || (selfoss.isOnline() && forceLoadOnline)) {
+        const forceLoadOnline =
+            selfoss.dbOffline.olderEntriesOnline ||
+            selfoss.dbOffline.shouldLoadEntriesOnline;
+        if (
+            !selfoss.db.enableOffline.value ||
+            (selfoss.isOnline() && forceLoadOnline)
+        ) {
             reloader = selfoss.dbOnline.getEntries;
         }
 
@@ -77,58 +85,66 @@ function reloadList({
         }
 
         setLoadingState(LoadingState.LOADING);
-        return reloader(fetchParams, abortController).then(({ entries, hasMore }) => {
-            if (abortController.signal.aborted) {
-                return;
-            }
-
-            setLoadingState(LoadingState.SUCCESS);
-            selfoss.entriesPage.setHasMore(hasMore);
-
-            if (append) {
-                selfoss.entriesPage.appendEntries(entries);
-            } else {
-                selfoss.entriesPage.setExpandedEntries({});
-                selfoss.entriesPage.setEntries(entries);
-
-                // open selected entry only if entry was requested (i.e. if not streaming
-                // more)
-                if (entryId && fetchParams.fromId === undefined) {
-                    const entry = document.querySelector(`.entry[data-entry-id="${entryId}"]`);
-
-                    if (!entry) {
-                        return;
-                    }
-
-                    selfoss.entriesPage.activateEntry(entryId);
-                    // ensure scrolling to requested entry even if scrolling to article
-                    // header is disabled
-                    if (!configuration.scrollToArticleHeader) {
-                        // needs to be delayed for some reason
-                        requestAnimationFrame(() => {
-                            entry.scrollIntoView();
-                        });
-                    }
-                } else {
-                    window.scrollTo({ top: 0 });
+        return reloader(fetchParams, abortController)
+            .then(({ entries, hasMore }) => {
+                if (abortController.signal.aborted) {
+                    return;
                 }
-            }
 
-        }).catch((error) => {
-            if (abortController.signal.aborted) {
-                return;
-            }
+                setLoadingState(LoadingState.SUCCESS);
+                selfoss.entriesPage.setHasMore(hasMore);
 
-            if (error instanceof HttpError && error.response.status === 403) {
-                selfoss.history.push('/sign/in', {
-                    error: selfoss.app._('error_session_expired')
-                });
-                return;
-            }
+                if (append) {
+                    selfoss.entriesPage.appendEntries(entries);
+                } else {
+                    selfoss.entriesPage.setExpandedEntries({});
+                    selfoss.entriesPage.setEntries(entries);
 
-            setLoadingState(LoadingState.FAILURE);
-            selfoss.app.showError(selfoss.app._('error_loading') + ' ' + error.message);
-        });
+                    // open selected entry only if entry was requested (i.e. if not streaming
+                    // more)
+                    if (entryId && fetchParams.fromId === undefined) {
+                        const entry = document.querySelector(
+                            `.entry[data-entry-id="${entryId}"]`,
+                        );
+
+                        if (!entry) {
+                            return;
+                        }
+
+                        selfoss.entriesPage.activateEntry(entryId);
+                        // ensure scrolling to requested entry even if scrolling to article
+                        // header is disabled
+                        if (!configuration.scrollToArticleHeader) {
+                            // needs to be delayed for some reason
+                            requestAnimationFrame(() => {
+                                entry.scrollIntoView();
+                            });
+                        }
+                    } else {
+                        window.scrollTo({ top: 0 });
+                    }
+                }
+            })
+            .catch((error) => {
+                if (abortController.signal.aborted) {
+                    return;
+                }
+
+                if (
+                    error instanceof HttpError &&
+                    error.response.status === 403
+                ) {
+                    selfoss.history.push('/sign/in', {
+                        error: selfoss.app._('error_session_expired'),
+                    });
+                    return;
+                }
+
+                setLoadingState(LoadingState.FAILURE);
+                selfoss.app.showError(
+                    selfoss.app._('error_loading') + ' ' + error.message,
+                );
+            });
     };
 
     if (waitForSync && selfoss.dbOnline.syncing.promise) {
@@ -144,18 +160,17 @@ function reloadList({
  * @param {number} selected
  */
 function openSelectedArticle(selected) {
-    const link = document.querySelector(`.entry[data-entry-id="${selected}"] .entry-datetime`);
+    const link = document.querySelector(
+        `.entry[data-entry-id="${selected}"] .entry-datetime`,
+    );
     if (selfoss.config.openInBackgroundTab) {
         // In Chromium, this will just cause the tab to open in the foreground.
         // Appears to be disallowed by the pop-under prevention:
         // https://crbug.com/431335
         // https://crbug.com/487919
-        const event = new MouseEvent(
-            'click',
-            {
-                ctrlKey: true,
-            }
-        );
+        const event = new MouseEvent('click', {
+            ctrlKey: true,
+        });
         link.dispatchEvent(event);
     } else {
         // open item in new window
@@ -164,23 +179,34 @@ function openSelectedArticle(selected) {
 }
 
 // updates a source
-function handleRefreshSource({ event, source, setLoadingState, setNavExpanded, reload }) {
+function handleRefreshSource({
+    event,
+    source,
+    setLoadingState,
+    setNavExpanded,
+    reload,
+}) {
     event.preventDefault();
 
     // show loading
     setLoadingState(LoadingState.LOADING);
 
-    return sourceRequests.refreshSingle(source).then(() => {
-        // hide nav on smartphone
-        setNavExpanded(false);
+    return sourceRequests
+        .refreshSingle(source)
+        .then(() => {
+            // hide nav on smartphone
+            setNavExpanded(false);
 
-        // Fetch the new items and reload the list.
-        // Will also clear the loading status.
-        reload();
-    }).catch((error) => {
-        setLoadingState(LoadingState.FAILURE);
-        alert(selfoss.app._('error_refreshing_source') + ' ' + error.message);
-    });
+            // Fetch the new items and reload the list.
+            // Will also clear the loading status.
+            reload();
+        })
+        .catch((error) => {
+            setLoadingState(LoadingState.FAILURE);
+            alert(
+                selfoss.app._('error_refreshing_source') + ' ' + error.message,
+            );
+        });
 }
 
 export function EntriesPage({
@@ -209,19 +235,27 @@ export function EntriesPage({
     }, [location.search]);
 
     const params = useParams();
-    const currentTag = params.category?.startsWith('tag-') ? params.category.replace(/^tag-/, '') : null;
-    const currentSource = params.category?.startsWith('source-') ? parseInt(params.category.replace(/^source-/, ''), 10) : null;
+    const currentTag = params.category?.startsWith('tag-')
+        ? params.category.replace(/^tag-/, '')
+        : null;
+    const currentSource = params.category?.startsWith('source-')
+        ? parseInt(params.category.replace(/^source-/, ''), 10)
+        : null;
 
     // The offsets for pagination.
     // Clear them when URL changes, except for when only id changes since that happens when reading.
-    const [fromDatetime, setFromDatetime] = useStateWithDeps(
-        undefined,
-        [params.filter, currentTag, currentSource, searchText]
-    );
-    const [fromId, setFromId] = useStateWithDeps(
-        undefined,
-        [params.filter, currentTag, currentSource, searchText]
-    );
+    const [fromDatetime, setFromDatetime] = useStateWithDeps(undefined, [
+        params.filter,
+        currentTag,
+        currentSource,
+        searchText,
+    ]);
+    const [fromId, setFromId] = useStateWithDeps(undefined, [
+        params.filter,
+        currentTag,
+        currentSource,
+        searchText,
+    ]);
 
     // Cache the item id from initial URL so that we can fetch it
     // but do not re-fetch when the id in the URI changes later
@@ -236,7 +270,9 @@ export function EntriesPage({
         return navSourcesExpanded;
     }, [params.filter, currentTag, currentSource, searchText]);
 
-    const [moreLoadingState, setMoreLoadingState] = useState(LoadingState.INITIAL);
+    const [moreLoadingState, setMoreLoadingState] = useState(
+        LoadingState.INITIAL,
+    );
 
     // Perform the scheduled reload.
     useEffect(() => {
@@ -264,18 +300,37 @@ export function EntriesPage({
             setLoadingState: append ? setMoreLoadingState : setLoadingState,
         }).then(() => {
             if (currentTag !== null && !selfoss.db.isValidTag(currentTag)) {
-                selfoss.app.showError(selfoss.app._('error_unknown_tag') + ' ' + currentTag);
+                selfoss.app.showError(
+                    selfoss.app._('error_unknown_tag') + ' ' + currentTag,
+                );
             }
 
-            if (currentSource !== null && !selfoss.db.isValidSource(currentSource)) {
-                selfoss.app.showError(selfoss.app._('error_unknown_source') + ' ' + currentSource);
+            if (
+                currentSource !== null &&
+                !selfoss.db.isValidSource(currentSource)
+            ) {
+                selfoss.app.showError(
+                    selfoss.app._('error_unknown_source') + ' ' + currentSource,
+                );
             }
         });
 
         return () => {
             abortController.abort();
         };
-    }, [configuration, params.filter, currentTag, currentSource, initialNavSourcesExpanded, searchText, fromDatetime, fromId, initialItemId, setLoadingState, forceReload]);
+    }, [
+        configuration,
+        params.filter,
+        currentTag,
+        currentSource,
+        initialNavSourcesExpanded,
+        searchText,
+        fromDatetime,
+        fromId,
+        initialItemId,
+        setLoadingState,
+        forceReload,
+    ]);
 
     useEffect(() => {
         // scroll load more
@@ -285,15 +340,23 @@ export function EntriesPage({
                 return;
             }
 
-            const streamMoreButtonTop = window.scrollY + streamMoreButton.getBoundingClientRect().top;
+            const streamMoreButtonTop =
+                window.scrollY + streamMoreButton.getBoundingClientRect().top;
 
             // When “More” button appears on the screen, click it.
-            if (streamMoreButtonTop < document.body.clientHeight + window.scrollY) {
+            if (
+                streamMoreButtonTop <
+                document.body.clientHeight + window.scrollY
+            ) {
                 streamMoreButton.click();
             }
         };
 
-        if (hasMore && moreLoadingState !== LoadingState.LOADING && configuration.autoStreamMore) {
+        if (
+            hasMore &&
+            moreLoadingState !== LoadingState.LOADING &&
+            configuration.autoStreamMore
+        ) {
             window.addEventListener('scroll', onScroll);
 
             return () => {
@@ -322,8 +385,15 @@ export function EntriesPage({
     const isOnline = useOnline();
 
     const refreshOnClick = useCallback(
-        (event) => handleRefreshSource({ event, source: currentSource, setLoadingState, setNavExpanded, reload }),
-        [currentSource, setLoadingState, setNavExpanded, reload]
+        (event) =>
+            handleRefreshSource({
+                event,
+                source: currentSource,
+                setLoadingState,
+                setNavExpanded,
+                reload,
+            }),
+        [currentSource, setLoadingState, setNavExpanded, reload],
     );
 
     const moreOnClick = useCallback(
@@ -335,7 +405,7 @@ export function EntriesPage({
             setFromDatetime(lastEntry ? lastEntry.datetime : undefined);
             setFromId(lastEntry ? lastEntry.id : undefined);
         },
-        [entries, setFromDatetime, setFromId]
+        [entries, setFromDatetime, setFromId],
     );
 
     // Current time for calculating relative dates in items.
@@ -355,14 +425,12 @@ export function EntriesPage({
     const _ = useContext(LocalizationContext);
 
     if (loadingState === LoadingState.LOADING) {
-        return (
-            <SpinnerBig label={_('entries_loading')} />
-        );
+        return <SpinnerBig label={_('entries_loading')} />;
     }
 
     return (
         <React.Fragment>
-            {currentSource !== null && allowedToUpdate && isOnline ?
+            {currentSource !== null && allowedToUpdate && isOnline ? (
                 <button
                     type="button"
                     className="refresh-source"
@@ -370,20 +438,18 @@ export function EntriesPage({
                 >
                     {_('source_refresh')}
                 </button>
-                : null
-            }
-            {currentSource !== null && allowedToWrite && isOnline ?
+            ) : null}
+            {currentSource !== null && allowedToWrite && isOnline ? (
                 <Link
                     to={{
                         pathname: '/manage/sources',
-                        hash: `#source-${currentSource}`
+                        hash: `#source-${currentSource}`,
                     }}
                     className="entries-go-to-settings"
                 >
                     {_('source_go_to_settings')}
                 </Link>
-                : null
-            }
+            ) : null}
             {entries.map((entry) => (
                 <Item
                     key={entry.id}
@@ -395,20 +461,34 @@ export function EntriesPage({
                 />
             ))}
             <div id="stream-buttons">
-                {loadingState === LoadingState.SUCCESS && entries.length === 0 ?
-                    <p aria-live="assertive" className="stream-empty">{_('no_entries')}</p>
-                    : null}
-                {hasMore ?
+                {loadingState === LoadingState.SUCCESS &&
+                entries.length === 0 ? (
+                    <p aria-live="assertive" className="stream-empty">
+                        {_('no_entries')}
+                    </p>
+                ) : null}
+                {hasMore ? (
                     <button
-                        className={classNames({'stream-button': true, 'stream-more': true})}
+                        className={classNames({
+                            'stream-button': true,
+                            'stream-more': true,
+                        })}
                         accessKey="m"
                         aria-label={_('more')}
-                        onClick={moreLoadingState !== LoadingState.LOADING ? moreOnClick : null}
+                        onClick={
+                            moreLoadingState !== LoadingState.LOADING
+                                ? moreOnClick
+                                : null
+                        }
                     >
-                        {moreLoadingState !== LoadingState.LOADING ? <span>{_('more')}</span> : <Spinner size="3x" label={_('entries_loading')} />}
+                        {moreLoadingState !== LoadingState.LOADING ? (
+                            <span>{_('more')}</span>
+                        ) : (
+                            <Spinner size="3x" label={_('entries_loading')} />
+                        )}
                     </button>
-                    : null}
-                {entries.length > 0 ?
+                ) : null}
+                {entries.length > 0 ? (
                     <button
                         className="stream-button mark-these-read"
                         aria-label={_('markread')}
@@ -416,9 +496,8 @@ export function EntriesPage({
                     >
                         <span>{_('markread')}</span>
                     </button>
-                    : null
-                }
-                {loadingState == LoadingState.FAILURE ?
+                ) : null}
+                {loadingState == LoadingState.FAILURE ? (
                     <button
                         className="stream-button stream-error"
                         aria-live="assertive"
@@ -427,7 +506,7 @@ export function EntriesPage({
                     >
                         {_('streamerror')}
                     </button>
-                    : null}
+                ) : null}
             </div>
         </React.Fragment>
     );
@@ -479,17 +558,16 @@ export default class StateHolder extends React.Component {
         this.toggleSelectedRead = this.toggleSelectedRead.bind(this);
         this.toggleSelectedExpanded = this.toggleSelectedExpanded.bind(this);
         this.openSelectedTarget = this.openSelectedTarget.bind(this);
-        this.openSelectedTargetAndMarkRead = this.openSelectedTargetAndMarkRead.bind(this);
+        this.openSelectedTargetAndMarkRead =
+            this.openSelectedTargetAndMarkRead.bind(this);
         this.throw = this.throw.bind(this);
     }
 
     setEntries(entries) {
         if (typeof entries === 'function') {
-            this.setState(
-                (state) => ({
-                    entries: entries(state.entries),
-                })
-            );
+            this.setState((state) => ({
+                entries: entries(state.entries),
+            }));
         } else {
             this.setState({ entries });
         }
@@ -505,11 +583,9 @@ export default class StateHolder extends React.Component {
      */
     setSelectedEntry(selectedEntry) {
         if (typeof selectedEntry === 'function') {
-            this.setState(
-                (state) => ({
-                    selectedEntry: selectedEntry(state.selectedEntry),
-                })
-            );
+            this.setState((state) => ({
+                selectedEntry: selectedEntry(state.selectedEntry),
+            }));
         } else {
             this.setState({ selectedEntry });
         }
@@ -525,11 +601,9 @@ export default class StateHolder extends React.Component {
 
     setExpandedEntries(expandedEntries) {
         if (typeof expandedEntries === 'function') {
-            this.setState(
-                (state) => ({
-                    expandedEntries: expandedEntries(state.expandedEntries)
-                })
-            );
+            this.setState((state) => ({
+                expandedEntries: expandedEntries(state.expandedEntries),
+            }));
         } else {
             this.setState({ expandedEntries });
         }
@@ -539,16 +613,15 @@ export default class StateHolder extends React.Component {
         if (typeof expand === 'function') {
             this.setExpandedEntries((oldEntries) => ({
                 ...oldEntries,
-                [id]: expand(oldEntries[id] ?? false)
+                [id]: expand(oldEntries[id] ?? false),
             }));
         } else {
             this.setExpandedEntries((oldEntries) => ({
                 ...oldEntries,
-                [id]: expand
+                [id]: expand,
             }));
         }
     }
-
 
     /**
      * Collapse all expanded entries.
@@ -556,7 +629,6 @@ export default class StateHolder extends React.Component {
     collapseAllEntries() {
         this.setExpandedEntries({});
     }
-
 
     /**
      * Is given entry expanded?
@@ -566,7 +638,6 @@ export default class StateHolder extends React.Component {
     isEntryExpanded(entry) {
         return this.state.expandedEntries[entry] ?? false;
     }
-
 
     /**
      * Toggle expanded state of given entry.
@@ -579,7 +650,6 @@ export default class StateHolder extends React.Component {
 
         this.setEntryExpanded(entry, (expanded) => !(expanded ?? false));
     }
-
 
     /**
      * Activate entry as if it were clicked.
@@ -598,12 +668,14 @@ export default class StateHolder extends React.Component {
 
         // automark as read
         const entry = this.state.entries.find((entry) => id === entry.id);
-        const autoMarkAsRead = selfoss.isAllowedToWrite() && this.props.configuration.autoMarkAsRead && entry.unread == 1;
+        const autoMarkAsRead =
+            selfoss.isAllowedToWrite() &&
+            this.props.configuration.autoMarkAsRead &&
+            entry.unread == 1;
         if (autoMarkAsRead) {
             this.markEntryRead(id, true);
         }
     }
-
 
     /**
      * Deactivate entry, as if it were clicked.
@@ -614,22 +686,20 @@ export default class StateHolder extends React.Component {
         this.setEntryExpanded(id, false);
     }
 
-
     starEntryInView(id, starred) {
         this.setEntries((entries) =>
             entries.map((entry) => {
                 if (entry.id === id) {
                     return {
                         ...entry,
-                        starred
+                        starred,
                     };
                 } else {
                     return entry;
                 }
-            })
+            }),
         );
     }
-
 
     markEntryInView(id, unread) {
         this.setEntries((entries) =>
@@ -637,15 +707,14 @@ export default class StateHolder extends React.Component {
                 if (entry.id === id) {
                     return {
                         ...entry,
-                        unread
+                        unread,
                     };
                 } else {
                     return entry;
                 }
-            })
+            }),
         );
     }
-
 
     refreshEntryStatuses(entryStatuses) {
         this.state.entries.forEach((entry) => {
@@ -666,11 +735,9 @@ export default class StateHolder extends React.Component {
 
     setHasMore(hasMore) {
         if (typeof hasMore === 'function') {
-            this.setState(
-                (state) => ({
-                    hasMore: hasMore(state.hasMore),
-                })
-            );
+            this.setState((state) => ({
+                hasMore: hasMore(state.hasMore),
+            }));
         } else {
             this.setState({ hasMore });
         }
@@ -678,11 +745,9 @@ export default class StateHolder extends React.Component {
 
     setLoadingState(loadingState) {
         if (typeof loadingState === 'function') {
-            this.setState(
-                (state) => ({
-                    loadingState: loadingState(state.loadingState),
-                })
-            );
+            this.setState((state) => ({
+                loadingState: loadingState(state.loadingState),
+            }));
         } else {
             this.setState({ loadingState });
         }
@@ -693,7 +758,9 @@ export default class StateHolder extends React.Component {
             return null;
         }
         const { params } = this.props.match;
-        return params.category?.startsWith('tag-') ? params.category.replace(/^tag-/, '') : null;
+        return params.category?.startsWith('tag-')
+            ? params.category.replace(/^tag-/, '')
+            : null;
     }
 
     getActiveSource() {
@@ -701,7 +768,9 @@ export default class StateHolder extends React.Component {
             return null;
         }
         const { params } = this.props.match;
-        return params.category?.startsWith('source-') ? parseInt(params.category.replace(/^source-/, ''), 10) : null;
+        return params.category?.startsWith('source-')
+            ? parseInt(params.category.replace(/^source-/, ''), 10)
+            : null;
     }
 
     getActiveFilter() {
@@ -743,7 +812,7 @@ export default class StateHolder extends React.Component {
 
             return {
                 ...entry,
-                unread: false
+                unread: false,
             };
         });
         const oldEntries = this.state.entries;
@@ -753,7 +822,10 @@ export default class StateHolder extends React.Component {
         this.setExpandedEntries({});
         this.props.setNavExpanded(false);
 
-        if (ids.length !== 0 && this.props.match.params.filter === FilterType.UNREAD) {
+        if (
+            ids.length !== 0 &&
+            this.props.match.params.filter === FilterType.UNREAD
+        ) {
             markedEntries = markedEntries.filter(({ id }) => !ids.includes(id));
         }
 
@@ -777,8 +849,17 @@ export default class StateHolder extends React.Component {
             } else {
                 // Diffs are negative by default.
                 selfoss.app.refreshTagSourceUnread(
-                    Object.fromEntries(Object.entries(tagUnreadDiff).map(([tag, diff]) => [tag, -1 * diff])),
-                    Object.fromEntries(Object.entries(sourceUnreadDiff).map(([source, diff]) => [source, -1 * diff])),
+                    Object.fromEntries(
+                        Object.entries(tagUnreadDiff).map(([tag, diff]) => [
+                            tag,
+                            -1 * diff,
+                        ]),
+                    ),
+                    Object.fromEntries(
+                        Object.entries(sourceUnreadDiff).map(
+                            ([source, diff]) => [source, -1 * diff],
+                        ),
+                    ),
                 );
             }
         };
@@ -788,31 +869,44 @@ export default class StateHolder extends React.Component {
             selfoss.dbOffline.entriesMark(ids, false);
         }
 
-        itemsRequests.markAll(ids).then(() => {
-            this.setLoadingState(LoadingState.SUCCESS);
-        }).catch((error) => {
-            selfoss.handleAjaxError(error).then(() => {
-                const statuses = ids.map((id) => ({
-                    entryId: id,
-                    name: 'unread',
-                    value: false
-                }));
-                selfoss.dbOffline.enqueueStatuses(statuses);
-            }).catch((error) => {
-                if (error instanceof HttpError && error.response.status === 403) {
-                    selfoss.history.push('/sign/in', {
-                        error: selfoss.app._('error_session_expired')
-                    });
-                    return;
-                }
-
+        itemsRequests
+            .markAll(ids)
+            .then(() => {
                 this.setLoadingState(LoadingState.SUCCESS);
-                this.setEntries(oldEntries);
-                updateStats(false);
-                this.setHasMore(hadMore);
-                selfoss.app.showError(selfoss.app._('error_mark_items') + ' ' + error.message);
+            })
+            .catch((error) => {
+                selfoss
+                    .handleAjaxError(error)
+                    .then(() => {
+                        const statuses = ids.map((id) => ({
+                            entryId: id,
+                            name: 'unread',
+                            value: false,
+                        }));
+                        selfoss.dbOffline.enqueueStatuses(statuses);
+                    })
+                    .catch((error) => {
+                        if (
+                            error instanceof HttpError &&
+                            error.response.status === 403
+                        ) {
+                            selfoss.history.push('/sign/in', {
+                                error: selfoss.app._('error_session_expired'),
+                            });
+                            return;
+                        }
+
+                        this.setLoadingState(LoadingState.SUCCESS);
+                        this.setEntries(oldEntries);
+                        updateStats(false);
+                        this.setHasMore(hadMore);
+                        selfoss.app.showError(
+                            selfoss.app._('error_mark_items') +
+                                ' ' +
+                                error.message,
+                        );
+                    });
             });
-        });
     }
 
     /**
@@ -844,11 +938,12 @@ export default class StateHolder extends React.Component {
 
             // update unread on tags and sources
             // Only a single instance of each tag per entry so we can just assign.
-            const entryTags = Object.fromEntries(Object.keys(entry.tags).map((tag) => [tag, diff]));
-            selfoss.app.refreshTagSourceUnread(
-                entryTags,
-                {[entry.source]: diff}
+            const entryTags = Object.fromEntries(
+                Object.keys(entry.tags).map((tag) => [tag, diff]),
             );
+            selfoss.app.refreshTagSourceUnread(entryTags, {
+                [entry.source]: diff,
+            });
         };
         updateStats(markRead);
 
@@ -856,25 +951,42 @@ export default class StateHolder extends React.Component {
             selfoss.dbOffline.entryMark(id, !markRead);
         }
 
-        itemsRequests.mark(id, !markRead).then(() => {
-            selfoss.db.setOnline();
-        }).catch((error) => {
-            selfoss.handleAjaxError(error).then(() => {
-                selfoss.dbOffline.enqueueStatus(id, 'unread', !markRead);
-            }).catch((error) => {
-                if (error instanceof HttpError && error.response.status === 403) {
-                    selfoss.history.push('/sign/in', {
-                        error: selfoss.app._('error_session_expired')
-                    });
-                    return;
-                }
+        itemsRequests
+            .mark(id, !markRead)
+            .then(() => {
+                selfoss.db.setOnline();
+            })
+            .catch((error) => {
+                selfoss
+                    .handleAjaxError(error)
+                    .then(() => {
+                        selfoss.dbOffline.enqueueStatus(
+                            id,
+                            'unread',
+                            !markRead,
+                        );
+                    })
+                    .catch((error) => {
+                        if (
+                            error instanceof HttpError &&
+                            error.response.status === 403
+                        ) {
+                            selfoss.history.push('/sign/in', {
+                                error: selfoss.app._('error_session_expired'),
+                            });
+                            return;
+                        }
 
-                // rollback ui changes
-                this.markEntryInView(id, markRead);
-                updateStats(!markRead);
-                selfoss.app.showError(selfoss.app._('error_mark_item') + ' ' + error.message);
+                        // rollback ui changes
+                        this.markEntryInView(id, markRead);
+                        updateStats(!markRead);
+                        selfoss.app.showError(
+                            selfoss.app._('error_mark_item') +
+                                ' ' +
+                                error.message,
+                        );
+                    });
             });
-        });
     }
 
     /**
@@ -898,7 +1010,9 @@ export default class StateHolder extends React.Component {
 
         // update statistics in main menu
         const updateStats = (markStarred) => {
-            selfoss.app.setStarredItemsCount((starred) => starred + (markStarred ? 1 : -1));
+            selfoss.app.setStarredItemsCount(
+                (starred) => starred + (markStarred ? 1 : -1),
+            );
         };
         updateStats(markStarred);
 
@@ -906,25 +1020,42 @@ export default class StateHolder extends React.Component {
             selfoss.dbOffline.entryStar(id, markStarred);
         }
 
-        itemsRequests.starr(id, markStarred).then(() => {
-            selfoss.db.setOnline();
-        }).catch((error) => {
-            selfoss.handleAjaxError(error).then(() => {
-                selfoss.dbOffline.enqueueStatus(id, 'starred', markStarred);
-            }).catch((error) => {
-                if (error instanceof HttpError && error.response.status === 403) {
-                    selfoss.history.push('/sign/in', {
-                        error: selfoss.app._('error_session_expired')
-                    });
-                    return;
-                }
+        itemsRequests
+            .starr(id, markStarred)
+            .then(() => {
+                selfoss.db.setOnline();
+            })
+            .catch((error) => {
+                selfoss
+                    .handleAjaxError(error)
+                    .then(() => {
+                        selfoss.dbOffline.enqueueStatus(
+                            id,
+                            'starred',
+                            markStarred,
+                        );
+                    })
+                    .catch((error) => {
+                        if (
+                            error instanceof HttpError &&
+                            error.response.status === 403
+                        ) {
+                            selfoss.history.push('/sign/in', {
+                                error: selfoss.app._('error_session_expired'),
+                            });
+                            return;
+                        }
 
-                // rollback ui changes
-                this.starEntryInView(id, !markStarred);
-                updateStats(!markStarred);
-                selfoss.app.showError(selfoss.app._('error_star_item') + ' ' + error.message);
+                        // rollback ui changes
+                        this.starEntryInView(id, !markStarred);
+                        updateStats(!markStarred);
+                        selfoss.app.showError(
+                            selfoss.app._('error_star_item') +
+                                ' ' +
+                                error.message,
+                        );
+                    });
             });
-        });
     }
 
     reload() {
@@ -954,7 +1085,10 @@ export default class StateHolder extends React.Component {
 
         // select current
         const old = this.getSelectedEntry();
-        const oldIndex = old !== null ? this.state.entries.findIndex(({ id }) => id === old) : null;
+        const oldIndex =
+            old !== null
+                ? this.state.entries.findIndex(({ id }) => id === old)
+                : null;
         let current = null;
 
         // select next/prev entry and save it to "current"
@@ -995,7 +1129,9 @@ export default class StateHolder extends React.Component {
                 this.setSelectedEntry(current);
             }
 
-            const currentElement = document.querySelector(`.entry[data-entry-id="${current}"]`);
+            const currentElement = document.querySelector(
+                `.entry[data-entry-id="${current}"]`,
+            );
 
             // scroll to element
             autoScroll(currentElement);
@@ -1041,7 +1177,6 @@ export default class StateHolder extends React.Component {
         if (selected !== null) {
             this.markEntryRead(selected, 'toggle');
         }
-
     }
 
     toggleSelectedExpanded() {

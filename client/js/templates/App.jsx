@@ -1,9 +1,4 @@
-import React, {
-    useCallback,
-    useContext,
-    useEffect,
-    useState,
-} from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import nullable from 'prop-types-nullable';
 import {
@@ -35,7 +30,6 @@ import { i18nFormat, LocalizationContext } from '../helpers/i18n';
 import { LoadingState } from '../requests/LoadingState';
 import * as sourceRequests from '../requests/sources';
 import locales from '../locales';
-
 
 function handleNavToggle({ event, setNavExpanded }) {
     event.preventDefault();
@@ -70,18 +64,20 @@ function Message({ message }) {
         }
     }, [message]);
 
-    return (
-        message !== null ?
-            <div id="message" className={classNames({ error: message.isError })} onClick={dismissMessage}>
-                {message.message}
-                {message.actions.map(({ label, callback }, index) => (
-                    <button key={index} type="button" onClick={callback}>
-                        {label}
-                    </button>
-                ))}
-            </div>
-            : null
-    );
+    return message !== null ? (
+        <div
+            id="message"
+            className={classNames({ error: message.isError })}
+            onClick={dismissMessage}
+        >
+            {message.message}
+            {message.actions.map(({ label, callback }, index) => (
+                <button key={index} type="button" onClick={callback}>
+                    {label}
+                </button>
+            ))}
+        </div>
+    ) : null;
 }
 
 Message.propTypes = {
@@ -91,29 +87,24 @@ Message.propTypes = {
 function NotFound() {
     const location = useLocation();
     const _ = useContext(LocalizationContext);
-    return (
-        <p>
-            {_('error_invalid_subsection') + location.pathname}
-        </p>
-    );
+    return <p>{_('error_invalid_subsection') + location.pathname}</p>;
 }
 
-function CheckAuthorization({
-    isAllowed,
-    returnLocation,
-    _,
-    children,
-}) {
+function CheckAuthorization({ isAllowed, returnLocation, _, children }) {
     const history = useHistory();
     if (!isAllowed) {
-        const [preLink, inLink, postLink] = _('error_unauthorized').split(/\{(?:link_begin|link_end)\}/);
+        const [preLink, inLink, postLink] = _('error_unauthorized').split(
+            /\{(?:link_begin|link_end)\}/,
+        );
         history.push('/sign/in', {
             returnLocation,
         });
 
         return (
             <p>
-                {preLink}<Link to="/sign/in">{inLink}</Link>{postLink}
+                {preLink}
+                <Link to="/sign/in">{inLink}</Link>
+                {postLink}
             </p>
         );
     } else {
@@ -175,21 +166,20 @@ function PureApp({
 
     const menuButtonOnClick = useCallback(
         (event) => handleNavToggle({ event, setNavExpanded }),
-        []
+        [],
     );
 
-    const entriesRef = useCallback(
-        (entriesPage) => {
-            setEntriesPage(entriesPage);
-            selfoss.entriesPage = entriesPage;
-        },
-        []
-    );
+    const entriesRef = useCallback((entriesPage) => {
+        setEntriesPage(entriesPage);
+        selfoss.entriesPage = entriesPage;
+    }, []);
 
     const [title, setTitle] = useState(null);
     const [globalUnreadCount, setGlobalUnreadCount] = useState(null);
     useEffect(() => {
-        document.title = (title ?? configuration.htmlTitle) + ((globalUnreadCount ?? 0) > 0 ? ` (${globalUnreadCount})` : '');
+        document.title =
+            (title ?? configuration.htmlTitle) +
+            ((globalUnreadCount ?? 0) > 0 ? ` (${globalUnreadCount})` : '');
     }, [configuration, title, globalUnreadCount]);
 
     const _ = useContext(LocalizationContext);
@@ -205,9 +195,7 @@ function PureApp({
                 <Route path="/sign/in">
                     {/* menu open for smartphone */}
                     <div id="loginform" role="main">
-                        <LoginForm
-                            {...{offlineEnabled}}
-                        />
+                        <LoginForm {...{ offlineEnabled }} />
                     </div>
                 </Route>
 
@@ -218,9 +206,7 @@ function PureApp({
                         _={_}
                     >
                         <div id="hashpasswordbody" role="main">
-                            <HashPassword
-                                setTitle={setTitle}
-                            />
+                            <HashPassword setTitle={setTitle} />
                         </div>
                     </CheckAuthorization>
                 </Route>
@@ -232,23 +218,42 @@ function PureApp({
                         _={_}
                     >
                         <main id="opmlbody">
-                            <OpmlImport
-                                setTitle={setTitle}
-                            />
+                            <OpmlImport setTitle={setTitle} />
                         </main>
                     </CheckAuthorization>
                 </Route>
 
                 <Route path="/">
-                    <CheckAuthorization
-                        isAllowed={isAllowedToRead}
-                        _={_}
-                    >
+                    <CheckAuthorization isAllowed={isAllowedToRead} _={_}>
                         <div id="nav-mobile" role="navigation">
                             <div id="nav-mobile-logo">
-                                <div id="nav-mobile-count" className={classNames({'unread-count': true, offline: offlineState, online: !offlineState, unread: unreadItemsCount > 0})}>
-                                    <span className={classNames({'offline-count': true, offline: offlineState, online: !offlineState, diff: unreadItemsCount !== unreadItemsOfflineCount && unreadItemsOfflineCount})}>{unreadItemsOfflineCount > 0 ? unreadItemsOfflineCount : ''}</span>
-                                    <span className="count">{unreadItemsCount}</span>
+                                <div
+                                    id="nav-mobile-count"
+                                    className={classNames({
+                                        'unread-count': true,
+                                        offline: offlineState,
+                                        online: !offlineState,
+                                        unread: unreadItemsCount > 0,
+                                    })}
+                                >
+                                    <span
+                                        className={classNames({
+                                            'offline-count': true,
+                                            offline: offlineState,
+                                            online: !offlineState,
+                                            diff:
+                                                unreadItemsCount !==
+                                                    unreadItemsOfflineCount &&
+                                                unreadItemsOfflineCount,
+                                        })}
+                                    >
+                                        {unreadItemsOfflineCount > 0
+                                            ? unreadItemsOfflineCount
+                                            : ''}
+                                    </span>
+                                    <span className="count">
+                                        {unreadItemsCount}
+                                    </span>
                                 </div>
                             </div>
                             <button
@@ -262,20 +267,29 @@ function PureApp({
                         </div>
 
                         {/* navigation */}
-                        <Collapse isOpen={!smartphone || navExpanded} className="collapse-css-transition">
+                        <Collapse
+                            isOpen={!smartphone || navExpanded}
+                            className="collapse-css-transition"
+                        >
                             <div id="nav" role="navigation">
                                 <Navigation
                                     entriesPage={entriesPage}
                                     setNavExpanded={setNavExpanded}
                                     navSourcesExpanded={navSourcesExpanded}
-                                    setNavSourcesExpanded={setNavSourcesExpanded}
+                                    setNavSourcesExpanded={
+                                        setNavSourcesExpanded
+                                    }
                                     offlineState={offlineState}
                                     allItemsCount={allItemsCount}
                                     allItemsOfflineCount={allItemsOfflineCount}
                                     unreadItemsCount={unreadItemsCount}
-                                    unreadItemsOfflineCount={unreadItemsOfflineCount}
+                                    unreadItemsOfflineCount={
+                                        unreadItemsOfflineCount
+                                    }
                                     starredItemsCount={starredItemsCount}
-                                    starredItemsOfflineCount={starredItemsOfflineCount}
+                                    starredItemsOfflineCount={
+                                        starredItemsOfflineCount
+                                    }
                                     sourcesState={sourcesState}
                                     setSourcesState={setSourcesState}
                                     sources={sources}
@@ -294,7 +308,9 @@ function PureApp({
                         <div id="content" role="main">
                             <Switch>
                                 <Route exact path="/">
-                                    <Redirect to={`/${homePagePath.join('/')}`} />
+                                    <Redirect
+                                        to={`/${homePagePath.join('/')}`}
+                                    />
                                 </Route>
                                 <Route path={ENTRIES_ROUTE_PATTERN}>
                                     {(routeProps) => (
@@ -303,9 +319,13 @@ function PureApp({
                                             ref={entriesRef}
                                             setNavExpanded={setNavExpanded}
                                             configuration={configuration}
-                                            navSourcesExpanded={navSourcesExpanded}
+                                            navSourcesExpanded={
+                                                navSourcesExpanded
+                                            }
                                             unreadItemsCount={unreadItemsCount}
-                                            setGlobalUnreadCount={setGlobalUnreadCount}
+                                            setGlobalUnreadCount={
+                                                setGlobalUnreadCount
+                                            }
                                         />
                                     )}
                                 </Route>
@@ -415,9 +435,11 @@ export default class App extends React.Component {
         this.setOfflineState = this.setOfflineState.bind(this);
         this.setNavSourcesExpanded = this.setNavSourcesExpanded.bind(this);
         this.setUnreadItemsCount = this.setUnreadItemsCount.bind(this);
-        this.setUnreadItemsOfflineCount = this.setUnreadItemsOfflineCount.bind(this);
+        this.setUnreadItemsOfflineCount =
+            this.setUnreadItemsOfflineCount.bind(this);
         this.setStarredItemsCount = this.setStarredItemsCount.bind(this);
-        this.setStarredItemsOfflineCount = this.setStarredItemsOfflineCount.bind(this);
+        this.setStarredItemsOfflineCount =
+            this.setStarredItemsOfflineCount.bind(this);
         this.setAllItemsCount = this.setAllItemsCount.bind(this);
         this.setAllItemsOfflineCount = this.setAllItemsOfflineCount.bind(this);
         this.setGlobalMessage = this.setGlobalMessage.bind(this);
@@ -426,11 +448,9 @@ export default class App extends React.Component {
 
     setTags(tags) {
         if (typeof tags === 'function') {
-            this.setState(
-                (state) => ({
-                    tags: tags(state.tags),
-                })
-            );
+            this.setState((state) => ({
+                tags: tags(state.tags),
+            }));
         } else {
             this.setState({ tags });
         }
@@ -438,11 +458,9 @@ export default class App extends React.Component {
 
     setTagsState(tagsState) {
         if (typeof tagsState === 'function') {
-            this.setState(
-                (state) => ({
-                    tagsState: tagsState(state.tagsState),
-                })
-            );
+            this.setState((state) => ({
+                tagsState: tagsState(state.tagsState),
+            }));
         } else {
             this.setState({ tagsState });
         }
@@ -450,11 +468,9 @@ export default class App extends React.Component {
 
     setSources(sources) {
         if (typeof sources === 'function') {
-            this.setState(
-                (state) => ({
-                    sources: sources(state.sources),
-                })
-            );
+            this.setState((state) => ({
+                sources: sources(state.sources),
+            }));
         } else {
             this.setState({ sources });
         }
@@ -462,11 +478,9 @@ export default class App extends React.Component {
 
     setSourcesState(sourcesState) {
         if (typeof sourcesState === 'function') {
-            this.setState(
-                (state) => ({
-                    sourcesState: sourcesState(state.sourcesState),
-                })
-            );
+            this.setState((state) => ({
+                sourcesState: sourcesState(state.sourcesState),
+            }));
         } else {
             this.setState({ sourcesState });
         }
@@ -474,11 +488,9 @@ export default class App extends React.Component {
 
     setOfflineState(offlineState) {
         if (typeof offlineState === 'function') {
-            this.setState(
-                (state) => ({
-                    offlineState: offlineState(state.offlineState),
-                })
-            );
+            this.setState((state) => ({
+                offlineState: offlineState(state.offlineState),
+            }));
         } else {
             this.setState({ offlineState });
         }
@@ -486,11 +498,11 @@ export default class App extends React.Component {
 
     setNavSourcesExpanded(navSourcesExpanded) {
         if (typeof navSourcesExpanded === 'function') {
-            this.setState(
-                (state) => ({
-                    navSourcesExpanded: navSourcesExpanded(state.navSourcesExpanded),
-                })
-            );
+            this.setState((state) => ({
+                navSourcesExpanded: navSourcesExpanded(
+                    state.navSourcesExpanded,
+                ),
+            }));
         } else {
             this.setState({ navSourcesExpanded });
         }
@@ -498,11 +510,9 @@ export default class App extends React.Component {
 
     setUnreadItemsCount(unreadItemsCount) {
         if (typeof unreadItemsCount === 'function') {
-            this.setState(
-                (state) => ({
-                    unreadItemsCount: unreadItemsCount(state.unreadItemsCount),
-                })
-            );
+            this.setState((state) => ({
+                unreadItemsCount: unreadItemsCount(state.unreadItemsCount),
+            }));
         } else {
             this.setState({ unreadItemsCount });
         }
@@ -510,11 +520,11 @@ export default class App extends React.Component {
 
     setUnreadItemsOfflineCount(unreadItemsOfflineCount) {
         if (typeof unreadItemsOfflineCount === 'function') {
-            this.setState(
-                (state) => ({
-                    unreadItemsOfflineCount: unreadItemsOfflineCount(state.unreadItemsOfflineCount),
-                })
-            );
+            this.setState((state) => ({
+                unreadItemsOfflineCount: unreadItemsOfflineCount(
+                    state.unreadItemsOfflineCount,
+                ),
+            }));
         } else {
             this.setState({ unreadItemsOfflineCount });
         }
@@ -522,11 +532,9 @@ export default class App extends React.Component {
 
     setStarredItemsCount(starredItemsCount) {
         if (typeof starredItemsCount === 'function') {
-            this.setState(
-                (state) => ({
-                    starredItemsCount: starredItemsCount(state.starredItemsCount),
-                })
-            );
+            this.setState((state) => ({
+                starredItemsCount: starredItemsCount(state.starredItemsCount),
+            }));
         } else {
             this.setState({ starredItemsCount });
         }
@@ -534,11 +542,11 @@ export default class App extends React.Component {
 
     setStarredItemsOfflineCount(starredItemsOfflineCount) {
         if (typeof starredItemsOfflineCount === 'function') {
-            this.setState(
-                (state) => ({
-                    starredItemsOfflineCount: starredItemsOfflineCount(state.starredItemsOfflineCount),
-                })
-            );
+            this.setState((state) => ({
+                starredItemsOfflineCount: starredItemsOfflineCount(
+                    state.starredItemsOfflineCount,
+                ),
+            }));
         } else {
             this.setState({ starredItemsOfflineCount });
         }
@@ -546,11 +554,9 @@ export default class App extends React.Component {
 
     setAllItemsCount(allItemsCount) {
         if (typeof allItemsCount === 'function') {
-            this.setState(
-                (state) => ({
-                    allItemsCount: allItemsCount(state.allItemsCount),
-                })
-            );
+            this.setState((state) => ({
+                allItemsCount: allItemsCount(state.allItemsCount),
+            }));
         } else {
             this.setState({ allItemsCount });
         }
@@ -558,11 +564,11 @@ export default class App extends React.Component {
 
     setAllItemsOfflineCount(allItemsOfflineCount) {
         if (typeof allItemsOfflineCount === 'function') {
-            this.setState(
-                (state) => ({
-                    allItemsOfflineCount: allItemsOfflineCount(state.allItemsOfflineCount),
-                })
-            );
+            this.setState((state) => ({
+                allItemsOfflineCount: allItemsOfflineCount(
+                    state.allItemsOfflineCount,
+                ),
+            }));
         } else {
             this.setState({ allItemsOfflineCount });
         }
@@ -570,11 +576,9 @@ export default class App extends React.Component {
 
     setGlobalMessage(globalMessage) {
         if (typeof globalMessage === 'function') {
-            this.setState(
-                (state) => ({
-                    globalMessage: globalMessage(state.globalMessage),
-                })
-            );
+            this.setState((state) => ({
+                globalMessage: globalMessage(state.globalMessage),
+            }));
         } else {
             this.setState({ globalMessage });
         }
@@ -589,31 +593,38 @@ export default class App extends React.Component {
             return Promise.resolve();
         }
 
-        return sourceRequests.refreshAll().then(() => {
-            // probe stats and prompt reload to the user
-            selfoss.dbOnline.sync().then(() => {
-                if (this.state.unreadItemsCount > 0) {
-                    this.showMessage(this._('sources_refreshed'), [
-                        {
-                            label: this._('reload_list'),
-                            callback() {
-                                document.querySelector('#nav-filter-unread').click();
-                            }
-                        }
-                    ]);
-                }
+        return sourceRequests
+            .refreshAll()
+            .then(() => {
+                // probe stats and prompt reload to the user
+                selfoss.dbOnline.sync().then(() => {
+                    if (this.state.unreadItemsCount > 0) {
+                        this.showMessage(this._('sources_refreshed'), [
+                            {
+                                label: this._('reload_list'),
+                                callback() {
+                                    document
+                                        .querySelector('#nav-filter-unread')
+                                        .click();
+                                },
+                            },
+                        ]);
+                    }
+                });
+            })
+            .catch((error) => {
+                this.showError(
+                    this._('error_refreshing_source') + ' ' + error.message,
+                );
             });
-        }).catch((error) => {
-            this.showError(this._('error_refreshing_source') + ' ' + error.message);
-        });
     }
 
     /**
-    * Obtain a localized message for given key, substituting placeholders for values, when given.
-    * @param string key
-    * @param ?array parameters
-    * @return string
-    */
+     * Obtain a localized message for given key, substituting placeholders for values, when given.
+     * @param string key
+     * @param ?array parameters
+     * @return string
+     */
     _(identifier, params) {
         const fallbackLanguage = 'en';
         const langKey = `lang_${identifier}`;
@@ -623,7 +634,9 @@ export default class App extends React.Component {
         // locale auto-detection
         if (preferredLanguage === null) {
             if ('languages' in navigator) {
-                preferredLanguage = navigator.languages.find(lang => Object.keys(locales).includes(lang));
+                preferredLanguage = navigator.languages.find((lang) =>
+                    Object.keys(locales).includes(lang),
+                );
             }
         }
 
@@ -631,7 +644,10 @@ export default class App extends React.Component {
             preferredLanguage = fallbackLanguage;
         }
 
-        let translated = locales[preferredLanguage][langKey] || locales[fallbackLanguage][langKey] || `#untranslated:${identifier}`;
+        let translated =
+            locales[preferredLanguage][langKey] ||
+            locales[fallbackLanguage][langKey] ||
+            `#untranslated:${identifier}`;
 
         if (params) {
             translated = i18nFormat(translated, params);
@@ -639,7 +655,6 @@ export default class App extends React.Component {
 
         return translated;
     }
-
 
     /**
      * Show error message in the message bar in the UI.
@@ -650,7 +665,6 @@ export default class App extends React.Component {
     showError(message) {
         this.showMessage(message, [], true);
     }
-
 
     /**
      * Show message in the message bar in the UI.
@@ -664,7 +678,6 @@ export default class App extends React.Component {
         this.setGlobalMessage({ message, actions, isError });
     }
 
-
     notifyNewVersion(cb) {
         if (!cb) {
             cb = () => {
@@ -675,11 +688,10 @@ export default class App extends React.Component {
         this.showMessage(this._('app_update'), [
             {
                 label: this._('app_reload'),
-                callback: cb
-            }
+                callback: cb,
+            },
         ]);
     }
-
 
     refreshTagSourceUnread(tagCounts, sourceCounts, diff = true) {
         this.setTags((tags) =>
@@ -697,9 +709,9 @@ export default class App extends React.Component {
 
                 return {
                     ...tag,
-                    unread
+                    unread,
                 };
-            })
+            }),
         );
 
         this.setSources((sources) =>
@@ -717,12 +729,11 @@ export default class App extends React.Component {
 
                 return {
                     ...source,
-                    unread
+                    unread,
                 };
-            })
+            }),
         );
     }
-
 
     refreshOfflineCounts(offlineCounts) {
         for (const [kind, newCount] of Object.entries(offlineCounts)) {
@@ -740,7 +751,6 @@ export default class App extends React.Component {
         }
     }
 
-
     render() {
         return (
             <ConfigurationContext.Provider value={this.props.configuration}>
@@ -752,9 +762,13 @@ export default class App extends React.Component {
                         allItemsCount={this.state.allItemsCount}
                         allItemsOfflineCount={this.state.allItemsOfflineCount}
                         unreadItemsCount={this.state.unreadItemsCount}
-                        unreadItemsOfflineCount={this.state.unreadItemsOfflineCount}
+                        unreadItemsOfflineCount={
+                            this.state.unreadItemsOfflineCount
+                        }
                         starredItemsCount={this.state.starredItemsCount}
-                        starredItemsOfflineCount={this.state.starredItemsOfflineCount}
+                        starredItemsOfflineCount={
+                            this.state.starredItemsOfflineCount
+                        }
                         globalMessage={this.state.globalMessage}
                         sourcesState={this.state.sourcesState}
                         setSourcesState={this.setSourcesState}
@@ -777,17 +791,10 @@ App.propTypes = {
  * Creates the selfoss single-page application
  * with the required contexts.
  */
-export function createApp({
-    basePath,
-    appRef,
-    configuration,
-}) {
+export function createApp({ basePath, appRef, configuration }) {
     return (
         <Router basename={basePath}>
-            <App
-                ref={appRef}
-                configuration={configuration}
-            />
+            <App ref={appRef} configuration={configuration} />
         </Router>
     );
 }

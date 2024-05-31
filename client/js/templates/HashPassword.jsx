@@ -1,18 +1,12 @@
 import PropTypes from 'prop-types';
-import React, {
-    useCallback,
-    useEffect,
-    useState,
-} from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useInput } from 'rooks';
 import { LoadingState } from '../requests/LoadingState';
 import { HttpError } from '../errors';
 import { hashPassword } from '../requests/common';
 
-export default function HashPassword({
-    setTitle,
-}) {
+export default function HashPassword({ setTitle }) {
     const [state, setState] = useState(LoadingState.INITIAL);
     const [hashedPassword, setHashedPassword] = useState('');
     const [error, setError] = useState(null);
@@ -20,25 +14,33 @@ export default function HashPassword({
 
     const history = useHistory();
 
-    const submit = useCallback((event) => {
-        event.preventDefault();
+    const submit = useCallback(
+        (event) => {
+            event.preventDefault();
 
-        setState(LoadingState.LOADING);
-        hashPassword(passwordEntry.value.trim()).then(hashedPassword => {
-            setHashedPassword(hashedPassword);
-            setState(LoadingState.SUCCESS);
-        }).catch(error => {
-            if (error instanceof HttpError && error.response.status === 403) {
-                history.push('/sign/in', {
-                    error: 'Generating a new password hash requires being logged in or not setting “password” in selfoss configuration.',
-                    returnLocation: '/password',
+            setState(LoadingState.LOADING);
+            hashPassword(passwordEntry.value.trim())
+                .then((hashedPassword) => {
+                    setHashedPassword(hashedPassword);
+                    setState(LoadingState.SUCCESS);
+                })
+                .catch((error) => {
+                    if (
+                        error instanceof HttpError &&
+                        error.response.status === 403
+                    ) {
+                        history.push('/sign/in', {
+                            error: 'Generating a new password hash requires being logged in or not setting “password” in selfoss configuration.',
+                            returnLocation: '/password',
+                        });
+                        return;
+                    }
+                    setError(error);
+                    setState(LoadingState.ERROR);
                 });
-                return;
-            }
-            setError(error);
-            setState(LoadingState.ERROR);
-        });
-    }, [history, passwordEntry.value]);
+        },
+        [history, passwordEntry.value],
+    );
 
     useEffect(() => {
         setTitle('selfoss password hash generator');
@@ -53,26 +55,20 @@ export default function HashPassword({
             <p className="error">
                 <label>
                     Generated Password (insert this into config.ini):
-                    <input
-                        type="text"
-                        value={hashedPassword}
-                        readOnly
-                    />
+                    <input type="text" value={hashedPassword} readOnly />
                 </label>
             </p>
         ) : state === LoadingState.ERROR ? (
             <p className="error">
                 Unexpected happened.
-                <details><pre>${JSON.stringify(error)}</pre></details>
+                <details>
+                    <pre>${JSON.stringify(error)}</pre>
+                </details>
             </p>
         ) : null;
 
     return (
-        <form
-            action=""
-            method="post"
-            onSubmit={submit}
-        >
+        <form action="" method="post" onSubmit={submit}>
             <ul id="login">
                 <li>
                     <h1>hash generator</h1>
@@ -95,7 +91,11 @@ export default function HashPassword({
                     <input
                         className="button"
                         type="submit"
-                        value={state === LoadingState.LOADING ? 'Hashing password…' : 'Compute hash'}
+                        value={
+                            state === LoadingState.LOADING
+                                ? 'Hashing password…'
+                                : 'Compute hash'
+                        }
                         accessKey="g"
                         disabled={state === LoadingState.LOADING}
                     />

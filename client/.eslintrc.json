@@ -3,7 +3,8 @@
     "extends": [
         "eslint:recommended",
         "plugin:react/recommended",
-        "plugin:react-hooks/recommended"
+        "plugin:react-hooks/recommended",
+        "prettier"
     ],
     "parserOptions": {
         "ecmaVersion": "latest",
@@ -11,38 +12,12 @@
     },
     "rules": {
         "no-eval": "error",
-        "array-bracket-spacing": "error",
         "no-array-constructor": "error",
-        "block-spacing": "error",
-        "brace-style": "error",
         "camelcase": "error",
-        "comma-dangle": ["error", "only-multiline"],
-        "comma-spacing": "error",
-        "comma-style": "error",
-        "curly": "error",
-        "eol-last": "error",
-        "func-call-spacing": "error",
-        "indent": ["error", 4],
-        "key-spacing": "error",
-        "keyword-spacing": "error",
-        "linebreak-style": ["error", "unix"],
-        "max-statements-per-line": ["error", {"max": 1}],
-        "no-multiple-empty-lines": "error",
-        "no-trailing-spaces": "error",
         "no-use-before-define": "error",
-        "no-whitespace-before-property": "error",
-        "object-curly-newline": ["error", {"multiline": true, "consistent": true}],
-        "one-var-declaration-per-line": "error",
-        "quotes": ["error", "single", {"avoidEscape": true}],
         "react-hooks/exhaustive-deps": ["warn", {
           "additionalHooks": "(useStateWithDeps)"
         }],
-        "semi": "error",
-        "semi-spacing": "error",
-        "space-before-blocks": "error",
-        "space-before-function-paren": ["error", "never"],
-        "space-in-parens": "error",
-        "space-infix-ops": "error",
         "unicode-bom": "error"
     },
     "env": {

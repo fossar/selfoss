@@ -1,9 +1,4 @@
-import React, {
-    useCallback,
-    useContext,
-    useEffect,
-    useState,
-} from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useMemo } from 'react';
 import { Prompt } from 'react-router';
 import { Link, useHistory, useLocation, useRouteMatch } from 'react-router-dom';
@@ -32,7 +27,10 @@ function handleAddSource({
     }
 
     // Add new empty source.
-    setSources((sources) => [{ id: 'new-' + rand(), ...extraInitialData }, ...sources]);
+    setSources((sources) => [
+        { id: 'new-' + rand(), ...extraInitialData },
+        ...sources,
+    ]);
 
     // Refresh the spout datea
     sourceRequests
@@ -42,57 +40,74 @@ function handleAddSource({
             setSpouts(spouts);
         })
         .catch(() => {
-            console.error('Unable to update spouts, falling back to previously fetched list.');
+            console.error(
+                'Unable to update spouts, falling back to previously fetched list.',
+            );
         });
 }
 
 // load sources
-function loadSources({ abortController, location, setSpouts, setSources, setLoadingState }) {
+function loadSources({
+    abortController,
+    location,
+    setSpouts,
+    setSources,
+    setLoadingState,
+}) {
     if (abortController.signal.aborted) {
         return Promise.resolve();
     }
 
     setLoadingState(LoadingState.LOADING);
 
-    return getAllSources(abortController).then(({sources, spouts}) => {
-        if (abortController.signal.aborted) {
-            return;
-        }
-
-        setSpouts(spouts);
-        setSources(sources);
-        setLoadingState(LoadingState.SUCCESS);
-
-        if (location.hash.startsWith('#source-')) {
-            const source = document.querySelector(`.source[data-id="${location.hash.replace(/^#source-/, '')}"]`);
-
-            if (!source) {
+    return getAllSources(abortController)
+        .then(({ sources, spouts }) => {
+            if (abortController.signal.aborted) {
                 return;
             }
 
-            // needs to be delayed for some reason
-            requestAnimationFrame(() => {
-                source.scrollIntoView();
-            });
-        }
-    }).catch((error) => {
-        if (error.name === 'AbortError' || abortController.signal.aborted) {
-            return;
-        }
+            setSpouts(spouts);
+            setSources(sources);
+            setLoadingState(LoadingState.SUCCESS);
 
-        selfoss.handleAjaxError(error, false).catch((error) => {
-            if (error instanceof HttpError && error.response.status === 403) {
-                selfoss.history.push('/sign/in', {
-                    error: selfoss.app._('error_session_expired'),
+            if (location.hash.startsWith('#source-')) {
+                const source = document.querySelector(
+                    `.source[data-id="${location.hash.replace(/^#source-/, '')}"]`,
+                );
+
+                if (!source) {
+                    return;
+                }
+
+                // needs to be delayed for some reason
+                requestAnimationFrame(() => {
+                    source.scrollIntoView();
                 });
+            }
+        })
+        .catch((error) => {
+            if (error.name === 'AbortError' || abortController.signal.aborted) {
                 return;
             }
 
-            selfoss.app.showError(selfoss.app._('error_loading') + ' ' + error.message);
-        });
+            selfoss.handleAjaxError(error, false).catch((error) => {
+                if (
+                    error instanceof HttpError &&
+                    error.response.status === 403
+                ) {
+                    selfoss.history.push('/sign/in', {
+                        error: selfoss.app._('error_session_expired'),
+                    });
+                    return;
+                }
 
-        setLoadingState(LoadingState.FAILURE);
-    });
+                selfoss.app.showError(
+                    selfoss.app._('error_loading') + ' ' + error.message,
+                );
+            });
+
+            setLoadingState(LoadingState.FAILURE);
+        });
 }
 
 export default function SourcesPage() {
@@ -110,25 +125,30 @@ export default function SourcesPage() {
     useEffect(() => {
         const abortController = new AbortController();
 
-        loadSources({ abortController, location, setSpouts, setSources, setLoadingState })
-            .then(() => {
-                if (isAdding) {
-                    const params = new URLSearchParams(location.search);
-                    handleAddSource({
-                        setSources,
-                        setSpouts,
-                        extraInitialData: {
-                            spout: 'spouts\\rss\\feed',
-                            params: {
-                                url: params.get('url') ?? '',
-                            }
+        loadSources({
+            abortController,
+            location,
+            setSpouts,
+            setSources,
+            setLoadingState,
+        }).then(() => {
+            if (isAdding) {
+                const params = new URLSearchParams(location.search);
+                handleAddSource({
+                    setSources,
+                    setSpouts,
+                    extraInitialData: {
+                        spout: 'spouts\\rss\\feed',
+                        params: {
+                            url: params.get('url') ?? '',
                         },
-                    });
+                    },
+                });
 
-                    // Clear the value from the state so it does not bug us forever.
-                    history.replace('/manage/sources');
-                }
-            });
+                // Clear the value from the state so it does not bug us forever.
+                history.replace('/manage/sources');
+            }
+        });
 
         return () => {
             abortController.abort();
@@ -141,7 +161,7 @@ export default function SourcesPage() {
 
     const addOnClick = useCallback(
         (event) => handleAddSource({ event, setSources, setSpouts }),
-        []
+        [],
     );
 
     const _ = useContext(LocalizationContext);
@@ -149,13 +169,11 @@ export default function SourcesPage() {
     const [dirtySources, setDirtySources] = useState({});
     const isDirty = useMemo(
         () => Object.values(dirtySources).includes(true),
-        [dirtySources]
+        [dirtySources],
     );
 
     if (loadingState === LoadingState.LOADING) {
-        return (
-            <SpinnerBig label={_('sources_loading')} />
-        );
+        return <SpinnerBig label={_('sources_loading')} />;
     }
 
     if (loadingState !== LoadingState.SUCCESS) {
@@ -169,10 +187,7 @@ export default function SourcesPage() {
                 message={_('sources_leaving_unsaved_prompt')}
             />
 
-            <button
-                className="source-add"
-                onClick={addOnClick}
-            >
+            <button className="source-add" onClick={addOnClick}>
                 {_('source_add')}
             </button>
             <a className="source-export" href="opmlexport">
@@ -181,24 +196,25 @@ export default function SourcesPage() {
             <Link className="source-opml" to="/opml">
                 {_('source_opml')}
             </Link>
-            {sources
-                ? (
-                    <ul>
-                        {sources.map((source) => (
-                            <Source
-                                key={source.id}
-                                dirty={dirtySources[source.id] ?? false}
-                                {...{ source, setSources, spouts, setSpouts, setDirtySources }}
-                            />
-                        ))}
-                    </ul>
-                )
-                : (
-                    <p>
-                        {_('no_sources')}
-                    </p>
-                )
-            }
+            {sources ? (
+                <ul>
+                    {sources.map((source) => (
+                        <Source
+                            key={source.id}
+                            dirty={dirtySources[source.id] ?? false}
+                            {...{
+                                source,
+                                setSources,
+                                spouts,
+                                setSpouts,
+                                setDirtySources,
+                            }}
+                        />
+                    ))}
+                </ul>
+            ) : (
+                <p>{_('no_sources')}</p>
+            )}
         </React.Fragment>
     );
 }
