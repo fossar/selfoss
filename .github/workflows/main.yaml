@@ -139,7 +139,7 @@ jobs:
         run: |
           nix-shell --run 'npm run dist'
           echo "file_name=$(echo selfoss-*.zip)" >> "$GITHUB_OUTPUT"
-          echo "version=$(echo selfoss-*.zip | sed -e 's/^selfoss-//' -e 's/\.zip$//' -e 's/-/-pre+/')" >> "$GITHUB_OUTPUT"
+          echo "version=$(echo selfoss-*.zip | sed -e 's/^selfoss-//' -e 's/\.zip$//')" >> "$GITHUB_OUTPUT"
 
       - name: Upload the zipball to GitHub
         uses: actions/upload-artifact@v4
