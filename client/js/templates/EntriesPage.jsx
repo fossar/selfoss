@@ -598,8 +598,7 @@ export default class StateHolder extends React.Component {
 
         // automark as read
         const entry = this.state.entries.find((entry) => id === entry.id);
-        const autoMarkAsRead = selfoss.isAllowedToWrite() && this.props.configuration.autoMarkAsRead && entry.unread == 1;
-        if (autoMarkAsRead) {
+        if (selfoss.isAllowedToWrite() && this.props.configuration.autoMarkAsRead && entry.unread == 1) {
             this.markEntryRead(id, true);
         }
     }
@@ -995,13 +994,15 @@ export default class StateHolder extends React.Component {
                 this.setSelectedEntry(current);
             }
 
-            const currentElement = document.querySelector(`.entry[data-entry-id="${current}"]`);
+            window.requestAnimationFrame(() => {
+                const currentElement = document.querySelector(`.entry[data-entry-id="${current}"]`);
 
-            // scroll to element
-            autoScroll(currentElement);
+                // scroll to element
+                autoScroll(currentElement);
 
-            // focus the title link for better keyboard navigation
-            currentElement.querySelector('.entry-title-link').focus();
+                // focus the title link for better keyboard navigation
+                currentElement.querySelector('.entry-title-link').focus();
+            });
         }
     }
 
