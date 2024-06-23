@@ -277,6 +277,12 @@ Hide read articles on mobile devices.
 Set to `0` to stop the interface from scrolling to the article header when an article is opened.
 </div>
 
+### `double_click_mark_as_read`
+<div class="config-option">
+
+set this to `1` to mark an item as read when double clicking on it.
+</div>
+
 ### `env_prefix`
 <div class="config-option">
 

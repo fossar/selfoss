@@ -46,6 +46,30 @@ function setupLightbox({
     }));
 }
 
+function useMultiClickHandler(handler, delay = 400) {
+    const [state, setState] = useState({ clicks: 0, args: [] });
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setState({ clicks: 0, args: [] });
+
+            if (state.clicks > 0 && typeof handler[state.clicks] === 'function') {
+                handler[state.clicks](...state.args);
+            }
+        }, delay);
+
+        return () => clearTimeout(timer);
+    }, [handler, delay, state.clicks, state.args]);
+
+    return (...args) => {
+        setState((prevState) => ({ clicks: prevState.clicks + 1, args }));
+
+        if (typeof handler[0] === 'function') {
+            handler[0](...args);
+        }
+    };
+}
+
 function stopPropagation(event) {
     event.stopPropagation();
 }
@@ -104,7 +128,7 @@ function closeFullScreen({ event, history, location, entryId }) {
 }
 
 // show/hide entry
-function handleClick({ event, history, location, expanded, id, target }) {
+function handleToggleOpenClick({ event, history, location, expanded, id, target }) {
     const expected = selfoss.isMobile() ? '.entry' : '.entry-title';
     if (target !== expected) {
         return;
@@ -121,6 +145,14 @@ function handleClick({ event, history, location, expanded, id, target }) {
         selfoss.entriesPage.activateEntry(id);
         history.replace(makeEntriesLink(location, { id }));
     }
+}
+
+// mark entry read/unread
+function handleToggleReadClick({ event, unread, id }) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    selfoss.entriesPage.markEntryRead(id, unread == 1);
 }
 
 // load images
@@ -257,6 +289,8 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
         [currentTime, item.datetime]
     );
 
+    const canWrite = useAllowedToWrite();
+
     const previouslyExpanded = usePreviousImmediate(expanded);
     const configuration = useContext(ConfigurationContext);
 
@@ -360,14 +394,29 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
     }, [configuration, expanded, item.id, item.unread, previouslyExpanded]);
 
     const entryOnClick = useCallback(
-        (event) => handleClick({ event, history, location, expanded, id: item.id, target: '.entry' }),
+        (event) => handleToggleOpenClick({ event, history, location, expanded, id: item.id, target: '.entry' }),
         [history, location, expanded, item.id]
     );
 
     const titleOnClick = useCallback(
-        (event) => handleClick({ event, history, location, expanded, id: item.id, target: '.entry-title' }),
+        (event) => handleToggleOpenClick({ event, history, location, expanded, id: item.id, target: '.entry-title' }),
         [history, location, expanded, item.id]
     );
+
+    const titleOnMultiClick = useMultiClickHandler({
+        0: (event) => {
+            event.preventDefault();
+        },
+        1: titleOnClick,
+        2: useCallback(
+            (event) => {
+                if (canWrite && !selfoss.isSmartphone()) {
+                    handleToggleReadClick({ event, unread: item.unread, id: item.id });
+                }
+            },
+            [canWrite, item.unread, item.id]
+        )
+    });
 
     const starOnClick = useCallback(
         (event) => {
@@ -379,12 +428,8 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
     );
 
     const markReadOnClick = useCallback(
-        (event) => {
-            event.preventDefault();
-            event.stopPropagation();
-            selfoss.entriesPage.markEntryRead(item.id, item.unread == 1);
-        },
-        [item]
+        (event) => handleToggleReadClick({ event, unread: item.unread, id: item.id }),
+        [item.unread, item.id]
     );
 
     const loadImagesOnClick = useCallback(
@@ -410,8 +455,6 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
         }),
         [item.source]
     );
-
-    const canWrite = useAllowedToWrite();
 
     const _ = useContext(LocalizationContext);
 
@@ -444,7 +487,7 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
             {/* title */}
             <h3
                 className="entry-title"
-                onClick={titleOnClick}
+                onClick={configuration.doubleClickMarkAsRead ? titleOnMultiClick : titleOnClick}
             >
                 <span
                     className="entry-title-link"
