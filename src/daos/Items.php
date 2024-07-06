@@ -119,14 +119,6 @@ class Items implements ItemsInterface {
         return $this->backend->lastId();
     }
 
-    public function getThumbnails(): array {
-        return $this->backend->getThumbnails();
-    }
-
-    public function getIcons(): array {
-        return $this->backend->getIcons();
-    }
-
     public function hasThumbnail(string $thumbnail): bool {
         return $this->backend->hasThumbnail($thumbnail);
     }

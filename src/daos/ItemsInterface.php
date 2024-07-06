@@ -120,20 +120,6 @@ interface ItemsInterface {
     /**
      * return all thumbnails
      *
-     * @return string[] array with thumbnails
-     */
-    public function getThumbnails(): array;
-
-    /**
-     * return all icons
-     *
-     * @return string[] array with all icons
-     */
-    public function getIcons(): array;
-
-    /**
-     * return all thumbnails
-     *
      * @param string $thumbnail name
      *
      * @return bool true if thumbnail is still in use

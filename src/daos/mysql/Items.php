@@ -456,40 +456,6 @@ class Items implements \daos\ItemsInterface {
     /**
      * return all thumbnails
      *
-     * @return string[] array with thumbnails
-     */
-    public function getThumbnails(): array {
-        $thumbnails = [];
-        $result = $this->database->exec('SELECT thumbnail
-                   FROM ' . $this->configuration->dbPrefix . 'items
-                   WHERE thumbnail!=""');
-        foreach ($result as $thumb) {
-            $thumbnails[] = $thumb['thumbnail'];
-        }
-
-        return $thumbnails;
-    }
-
-    /**
-     * return all icons
-     *
-     * @return string[] array with all icons
-     */
-    public function getIcons(): array {
-        $icons = [];
-        $result = $this->database->exec('SELECT icon
-                   FROM ' . $this->configuration->dbPrefix . 'items
-                   WHERE icon!=""');
-        foreach ($result as $icon) {
-            $icons[] = $icon['icon'];
-        }
-
-        return $icons;
-    }
-
-    /**
-     * return all thumbnails
-     *
      * @param string $thumbnail name
      *
      * @return bool true if thumbnail is still in use
