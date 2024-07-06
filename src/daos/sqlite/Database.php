@@ -38,7 +38,7 @@ class Database implements \daos\DatabaseInterface {
 
     private function migrate(): void {
         // create tables if necessary
-        $result = @$this->exec('SELECT name FROM sqlite_master WHERE type = "table"');
+        $result = @$this->exec('SELECT "name" FROM "sqlite_master" WHERE "type" = \'table\'');
         $tables = [];
         foreach ($result as $table) {
             foreach ($table as $key => $value) {

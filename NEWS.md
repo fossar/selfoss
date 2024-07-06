@@ -24,6 +24,7 @@
 - Fix exporting OPML when there are tags that look like numbers ([#1439](https://github.com/fossar/selfoss/pull/1439))
 - Fix incorrect handling of tags in MySQL backend, which could result in OPML export being broken ([#1439](https://github.com/fossar/selfoss/pull/1439))
 - Fix sharing to Wallabag 2. ([#1465](https://github.com/fossar/selfoss/pull/1465))
+- Fix DB migration with SQLite that has double-quote string literals disabled (like on FreeBSD). ([#1489](https://github.com/fossar/selfoss/pull/1489))
 
 ### Customization changes
 - Custom spouts must explicitly pass `null` to `Item::__construct()` when they do not need the `extraData` argument. ([#1415](https://github.com/fossar/selfoss/pull/1415))
