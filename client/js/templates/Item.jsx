@@ -46,10 +46,6 @@ function setupLightbox({
     }));
 }
 
-function stopPropagation(event) {
-    event.stopPropagation();
-}
-
 function lazyLoadImages(content) {
     content.querySelectorAll('img').forEach((img) => {
         img.setAttribute('src', img.getAttribute('data-selfoss-src'));
@@ -257,6 +253,8 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
         [currentTime, item.datetime]
     );
 
+    const canWrite = useAllowedToWrite();
+
     const previouslyExpanded = usePreviousImmediate(expanded);
     const configuration = useContext(ConfigurationContext);
 
@@ -369,6 +367,15 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
         [history, location, expanded, item.id]
     );
 
+    const titleOnAuxClick = useCallback(
+        (event) => {
+            if (event.button === 1 && canWrite) {
+                selfoss.entriesPage.markEntryRead(item.id, true);
+            }
+        },
+        [canWrite, item.id]
+    );
+
     const starOnClick = useCallback(
         (event) => {
             event.preventDefault();
@@ -385,6 +392,17 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
             selfoss.entriesPage.markEntryRead(item.id, item.unread == 1);
         },
         [item]
+    );
+
+    const externalLinkOnClick = useCallback(
+        (event) => {
+            event.stopPropagation();
+
+            if (canWrite) {
+                selfoss.entriesPage.markEntryRead(item.id, true);
+            }
+        },
+        [canWrite, item.id]
     );
 
     const loadImagesOnClick = useCallback(
@@ -410,8 +428,6 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
         }),
         [item.source]
     );
-
-    const canWrite = useAllowedToWrite();
 
     const _ = useContext(LocalizationContext);
 
@@ -446,12 +462,13 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
                 className="entry-title"
                 onClick={titleOnClick}
             >
-                <span
+                <a
+                    href={item.link}
                     className="entry-title-link"
                     aria-expanded={expanded}
                     aria-current={selected}
-                    role="link"
                     tabIndex="0"
+                    onAuxClick={titleOnAuxClick}
                     onKeyUp={handleKeyUp}
                     dangerouslySetInnerHTML={titleHtml}
                 />
@@ -544,7 +561,7 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
                                 target="_blank"
                                 rel="noreferrer"
                                 accessKey="o"
-                                onClick={stopPropagation}
+                                onClick={externalLinkOnClick}
                             >
                                 <FontAwesomeIcon icon={icons.openWindow} /> {_('open_window')}
                             </a>
@@ -599,7 +616,7 @@ export default function Item({ currentTime, item, selected, expanded, setNavExpa
                         target="_blank"
                         rel="noreferrer"
                         accessKey="o"
-                        onClick={stopPropagation}
+                        onClick={externalLinkOnClick}
                     >
                         <FontAwesomeIcon icon={icons.openWindow} /> {_('open_window')}
                     </a>
