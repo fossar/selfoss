@@ -51,6 +51,7 @@ class About {
                 'autoHideReadOnMobile' => $this->configuration->autoHideReadOnMobile, // bool
                 'scrollToArticleHeader' => $this->configuration->scrollToArticleHeader, // bool
                 'showThumbnails' => $this->configuration->showThumbnails, // bool
+                'doubleClickMarkAsRead' => $this->configuration->doubleClickMarkAsRead, // bool
                 'htmlTitle' => trim($this->configuration->htmlTitle), // string
                 'allowPublicUpdate' => $this->configuration->allowPublicUpdateAccess, // bool
                 'publicMode' => $this->configuration->public, // bool
