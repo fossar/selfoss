@@ -21,7 +21,7 @@ use Psr\Http\Message\ResponseInterface;
  */
 class View {
     /** Current base url */
-    public string $base = '';
+    private ?string $baseUrl = null;
 
     private Configuration $configuration;
 
@@ -30,7 +30,6 @@ class View {
      */
     public function __construct(Configuration $configuration) {
         $this->configuration = $configuration;
-        $this->base = $this->getBaseUrl();
     }
 
     /**
@@ -39,6 +38,14 @@ class View {
      * globale server variables ($_SERVER).
      */
     public function getBaseUrl(): string {
+        if ($this->baseUrl === null) {
+            $this->baseUrl = $this->makeBaseUrl();
+        }
+
+        return $this->baseUrl;
+    }
+
+    private function makeBaseUrl(): string {
         // base url in config.ini file
         $base = $this->configuration->baseUrl;
         if ($base !== '') {
