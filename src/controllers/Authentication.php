@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace controllers;
 
-use helpers;
+use helpers\Authentication\AuthenticationService;
 use helpers\View;
 
 /**
  * Controller for user related tasks
  */
 class Authentication {
-    private helpers\Authentication $authentication;
+    private AuthenticationService $authenticationService;
     private View $view;
 
-    public function __construct(helpers\Authentication $authentication, View $view) {
-        $this->authentication = $authentication;
+    public function __construct(AuthenticationService $authenticationService, View $view) {
+        $this->authenticationService = $authenticationService;
         $this->view = $view;
     }
 
@@ -26,17 +26,11 @@ class Authentication {
     public function login(): void {
         $error = null;
 
-        if (isset($_REQUEST['username'])) {
-            $username = $_REQUEST['username'];
-        } else {
-            $username = '';
+        if (!isset($_REQUEST['username'])) {
             $error = 'no username given';
         }
 
-        if (isset($_REQUEST['password'])) {
-            $password = $_REQUEST['password'];
-        } else {
-            $password = '';
+        if (!isset($_REQUEST['password'])) {
             $error = 'no password given';
         }
 
@@ -47,7 +41,8 @@ class Authentication {
             ]);
         }
 
-        if ($this->authentication->login($username, $password)) {
+        // The function automatically checks the request for credentials.
+        if ($this->authenticationService->isPrivileged()) {
             $this->view->jsonSuccess([
                 'success' => true,
             ]);
@@ -64,7 +59,7 @@ class Authentication {
      * json
      */
     public function logout(): void {
-        $this->authentication->logout();
+        $this->authenticationService->destroy();
         $this->view->jsonSuccess([
             'success' => true,
         ]);

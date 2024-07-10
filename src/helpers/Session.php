@@ -62,17 +62,17 @@ class Session {
         }
     }
 
-    public function getBool(string $name, bool $default): bool {
+    public function getString(string $name): ?string {
         $this->start();
 
-        if (array_key_exists($name, $_SESSION) && is_bool($_SESSION[$name])) {
+        if (array_key_exists($name, $_SESSION) && is_string($_SESSION[$name])) {
             return $_SESSION[$name];
         }
 
-        return $default;
+        return null;
     }
 
-    public function setBool(string $name, bool $value): void {
+    public function setString(string $name, ?string $value): void {
         $this->start();
 
         $_SESSION[$name] = $value;

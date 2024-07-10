@@ -54,7 +54,7 @@ class About {
                 'htmlTitle' => trim($this->configuration->htmlTitle), // string
                 'allowPublicUpdate' => $this->configuration->allowPublicUpdateAccess, // bool
                 'publicMode' => $this->configuration->public, // bool
-                'authEnabled' => $this->authentication->enabled() === true, // bool
+                'authEnabled' => $this->authentication->enabled(), // bool
                 'readingSpeed' => $this->configuration->readingSpeedWpm > 0 ? $this->configuration->readingSpeedWpm : null, // ?int
                 'language' => $this->configuration->language === '0' ? null : $this->configuration->language, // ?string
                 'userCss' => file_exists(BASEDIR . '/user.css') ? filemtime(BASEDIR . '/user.css') : null, // ?int
