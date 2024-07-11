@@ -1,0 +1,31 @@
+fix: fix-js fix-styles
+
+fix-styles: fix-styles-lint fix-styles-prettify
+
+fix-styles-lint:
+	npm exec -- stylelint styles/*.scss --fix
+
+fix-styles-prettify:
+	npm exec -- prettier styles/*.scss --check --write
+
+fix-js:
+	npm exec -- eslint --ext .jsx,.js . --fix
+
+check: lint-js check-styles
+
+lint-js:
+	npm exec -- eslint --ext .jsx,.js .
+
+check-styles: check-styles-lint check-styles-prettify
+
+check-styles-lint:
+	npm exec -- stylelint styles/*.scss
+
+check-styles-prettify:
+	npm exec -- prettier styles/*.scss --check
+
+dev:
+	npm exec -- parcel watch index.html --dist-dir ../public/ --public-url ./
+
+build:
+	npm exec -- parcel build index.html --dist-dir ../public/ --public-url ./

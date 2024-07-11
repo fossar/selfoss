@@ -67,15 +67,17 @@ We recommend [Reader For Selfoss](https://f-droid.org/packages/bou.amine.apps.re
 
 ## Development
 
-Selfoss uses [composer](https://getcomposer.org/) and [npm](https://www.npmjs.com/get-npm) for installing external libraries. When you clone the repository you have to issue `composer install` to retrieve the external sources.
+Selfoss uses [composer](https://getcomposer.org/) and [npm](https://www.npmjs.com/get-npm) for installing external libraries.
 
-For the client side, you will also need JavaScript dependencies installed by calling `npm install` in the `client/` directory. You can use `npm run install-dependencies` as a shortcut for installing both sets of dependencies.
+For convenience, we use [`just`](https://github.com/casey/just) command runner (like a modern `make`) to run common development tasks.
 
-We use [Parcel](https://parceljs.org/) (installed by the command above) to build the client side of selfoss. Every time anything in `client/` directory changes, you will need to run `npm run build` for the client to be built and installed into the `public` directory. When developing, you can also use `npm run dev`; it will watch for asset changes, rebuild the bundles as needed, and reload selfoss automatically. Upon switching between `npm run dev` and `npm run build`, you may need to delete `client/.cache`.
+When you clone the repository, you have to issue `composer install` to retrieve the external sources. For the client side, you will also need JavaScript dependencies installed by calling `npm install` in the `client/` directory. You can use `just install-dependencies` as a shortcut for installing both sets of dependencies.
 
-If you want to create a package with all the dependencies bundled, you can run `npm run dist` command to produce a zipball.
+We use [Parcel](https://parceljs.org/) (installed by the command above) to build the client side of selfoss. Every time anything in `client/` directory changes, you will need to run `just build` for the client to be built and installed into the `public` directory. When developing, you can also use `just dev`; it will watch for asset changes, rebuild the bundles as needed, and reload selfoss automatically. Upon switching between `just dev` and `just build`, you may need to delete `client/.cache`.
 
-Every patch is expected to adhere to our coding style, which is checked automatically by CI. You can install the checkers locally using `npm run install-dependencies`, and then run the checks using `npm run check` before submitting a pull request. There is also `npm run fix`, that will attempt to fix the formatting.
+If you want to create a package with all the dependencies bundled, you can run `just dist` command to produce a zipball.
+
+Every patch is expected to adhere to our coding style, which is checked automatically by CI. You can install the checkers locally using `just install-dependencies`, and then run the checks using `just check` before submitting a pull request. There is also `just fix`, that will attempt to fix the formatting.
 
 ## Credits
 

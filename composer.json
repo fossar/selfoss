@@ -57,12 +57,5 @@
         },
         "allow-plugins": false,
         "sort-packages": true
-    },
-    "scripts": {
-        "cs": "php-cs-fixer fix --verbose --dry-run --diff",
-        "fix": "php-cs-fixer fix --verbose --diff",
-        "lint": "parallel-lint src tests",
-        "phpstan": "phpstan analyse --memory-limit 512M",
-        "test": "simple-phpunit --bootstrap tests/bootstrap.php tests"
     }
 }
