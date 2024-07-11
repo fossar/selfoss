@@ -63,6 +63,9 @@
               php
               php.packages.composer
 
+              # Command runner.
+              pkgs.just
+
               # Back-end code validation.
               php.packages.phpstan
 

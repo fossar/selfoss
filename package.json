@@ -11,25 +11,7 @@
     "npm": ">=7"
   },
   "scripts": {
-    "analyse:server": "composer run-script phpstan",
-    "bump-version": "$NODE utils/bump-version.js",
-    "check": "npm run check:client && npm run check:server",
-    "check:client": "npm run --prefix client/ check",
-    "check:server": "npm run lint:server && npm run cs:server && npm run test:server && npm run analyse:server",
-    "cs:server": "composer run-script cs",
-    "dev": "npm run --prefix client/ dev",
-    "build": "npm run --prefix client/ build",
-    "dist": "python3 utils/create-zipball.py",
-    "fix": "npm run fix:client && npm run fix:server",
-    "fix:client": "npm run --prefix client/ fix",
-    "fix:server": "composer run-script fix",
-    "install-dependencies": "npm run install-dependencies:client && npm run install-dependencies:server",
-    "install-dependencies:client": "npm install --production=false --prefix client/",
-    "install-dependencies:server": "composer install --dev",
-    "lint:server": "composer run-script lint",
-    "test:server": "composer run-script test",
-    "test:integration": "python3 tests/integration/run.py",
-    "postinstall": "npm run install-dependencies"
+    "postinstall": "just install-dependencies"
   },
   "cacheDirectories": [
     "client/node_modules"
