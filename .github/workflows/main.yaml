@@ -81,18 +81,18 @@ jobs:
         run: nix-shell --run 'npm run check:client'
 
       - name: Check syntax of back-end code
-        run: nix-shell --run 'npm run lint:server'
+        run: nix-shell --run 'npm run check:server:lint'
 
       - name: Lint back-end code
         if: matrix.cs_fixer
-        run: nix-shell --run 'npm run cs:server'
+        run: nix-shell --run 'npm run check:server:cs'
 
       - name: Run unit tests
         run: nix-shell --run 'npm run test:server'
 
       - name: Analyse back-end code
         if: matrix.phpstan
-        run: nix-shell --run 'npm run analyse:server'
+        run: nix-shell --run 'npm run check:server:phpstan'
 
       - name: Run integration tests
         run: SELFOSS_TEST_STORAGE_BACKEND=${{ matrix.storage }} nix-shell --run 'npm run test:integration'

@@ -44,6 +44,8 @@
 #### For developers
 - Back-end source code is now checked using [PHPStan](https://phpstan.org/). ([#1409](https://github.com/fossar/selfoss/pull/1409))
 - [Prettier](https://prettier.io/) is now used for code formatting. ([#1493](https://github.com/fossar/selfoss/pull/1493))
+- Several `npm run` scripts were renamed for consistency: `analyse:server` → `check:server:phpstan`, `cs:server` → `check:server:cs`, `lint:server` → `check:server:lint`. ([#1494](https://github.com/fossar/selfoss/pull/1494))
+
 
 ## 2.19 – 2022-10-12
 **This version requires PHP ~~5.6~~ 7.2 (see known regressions section) or newer. It is also the last version to support PHP 7.**
