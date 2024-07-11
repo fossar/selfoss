@@ -36,7 +36,6 @@ class Authentication {
             return;
         }
 
-        $this->session->start();
         if ($this->session->getBool('loggedin', false)) {
             $this->loggedin = true;
             $this->logger->debug('logged in using valid session');

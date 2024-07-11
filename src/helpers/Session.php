@@ -16,6 +16,8 @@ use Monolog\Logger;
 
 /**
  * Helper class for session management.
+ *
+ * This must be the only place to call `session_start()`.
  */
 class Session {
     private bool $started = false;
@@ -61,6 +63,8 @@ class Session {
     }
 
     public function getBool(string $name, bool $default): bool {
+        $this->start();
+
         if (array_key_exists($name, $_SESSION) && is_bool($_SESSION[$name])) {
             return $_SESSION[$name];
         }
@@ -69,10 +73,16 @@ class Session {
     }
 
     public function setBool(string $name, bool $value): void {
+        $this->start();
+
         $_SESSION[$name] = $value;
     }
 
     public function destroy(): void {
+        if (!$this->started) {
+            return;
+        }
+
         session_destroy();
     }
 }
