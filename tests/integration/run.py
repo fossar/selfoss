@@ -13,20 +13,33 @@ class BasicWorkflowTest(SelfossIntegration):
         items = selfoss_api.get_items()
         assert len(items) == 0, "New selfoss instance should have no items."
 
-        fibonacci_feed_uri = f"http://{self.data_host_name}:{self.data_port}/fibonacci.xml"
+        fibonacci_feed_uri = (
+            f"http://{self.data_host_name}:{self.data_port}/fibonacci.xml"
+        )
 
         try:
-            add_feed = selfoss_api.add_source("spouts\\rss\\feed", url=fibonacci_feed_uri)
-            assert "Adding source is privileged operation and should fail without login."
+            add_feed = selfoss_api.add_source(
+                "spouts\\rss\\feed",
+                url=fibonacci_feed_uri,
+            )
+            assert (
+                "Adding source is privileged operation and should fail without login."
+            )
         except requests.exceptions.HTTPError as e:
-            assert e.response.status_code == 403, "Adding source should require authentication."
+            assert (
+                e.response.status_code == 403
+            ), "Adding source should require authentication."
 
         login = selfoss_api.login(self.selfoss_username, self.selfoss_password)
-        assert login["success"], f'Authentication should succeed but it failed with {login["error"]}.'
+        assert login[
+            "success"
+        ], f'Authentication should succeed but it failed with {login["error"]}.'
 
         add_feed = selfoss_api.add_source("spouts\\rss\\feed", url=fibonacci_feed_uri)
         assert add_feed["success"], "Adding source should succeed."
-        assert add_feed["title"] == "20 numbers", "Source should auto-detect feed title."
+        assert (
+            add_feed["title"] == "20 numbers"
+        ), "Source should auto-detect feed title."
 
         refresh = selfoss_api.refresh_all()
         assert refresh == "finished", "Refreshing sources should succeed."

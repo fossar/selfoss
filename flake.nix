@@ -72,6 +72,9 @@
               # For building zip archive and integration tests.
               python
 
+              # Python code linting.
+              pkgs.black
+
               # Website generator.
               pkgs.zola
             ] ++ dbServers.${matrix.storage};

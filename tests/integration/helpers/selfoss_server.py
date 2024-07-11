@@ -37,7 +37,10 @@ class SelfossServerThread(threading.Thread):
             (data_dir / "thumbnails").mkdir(parents=True)
             (data_dir / "favicons").mkdir(parents=True)
 
-            hashed_password = bcrypt.hashpw(self.password.encode("utf-8"), bcrypt.gensalt())
+            hashed_password = bcrypt.hashpw(
+                self.password.encode("utf-8"),
+                bcrypt.gensalt(),
+            )
 
             # Configure selfoss using environment variables for convenience.
             test_env = {

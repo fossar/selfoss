@@ -48,6 +48,8 @@ def numbers_feed(n: int) -> str:
         d = od + datetime.timedelta(minutes=k)
         item_pubdate = doc.createElement("pubDate")
         item.appendChild(item_pubdate)
-        item_pubdate.appendChild(doc.createTextNode(d.strftime("%a, %d %b %Y %H:%M:%S %z")))
+        item_pubdate.appendChild(
+            doc.createTextNode(d.strftime("%a, %d %b %Y %H:%M:%S %z"))
+        )
 
     return doc.toprettyxml(indent=" " * 4)

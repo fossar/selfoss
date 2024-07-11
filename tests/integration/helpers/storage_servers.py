@@ -80,7 +80,9 @@ class MySQL(Storage):
         )
 
     def stop(self):
-        subprocess.check_call(["mysqladmin", f"--socket={self.socket_path}", "shutdown"])
+        subprocess.check_call(
+            ["mysqladmin", f"--socket={self.socket_path}", "shutdown"]
+        )
         self.temp_dir.cleanup()
 
     def get_config(self):
