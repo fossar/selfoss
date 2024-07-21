@@ -1,0 +1,34 @@
+version: 2
+updates:
+  - package-ecosystem: "composer"
+    directory: "/"
+    versioning-strategy: increase-if-necessary
+    commit-message:
+      prefix: "Composer"
+      include: "scope"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "npm"
+    directory: "/"
+    versioning-strategy: increase-if-necessary
+    commit-message:
+      prefix: "NPM"
+      include: "scope"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "npm"
+    directory: "/client"
+    versioning-strategy: increase-if-necessary
+    commit-message:
+      prefix: "NPM"
+      include: "scope"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "docker"
+    directory: "/"
+    versioning-strategy: increase-if-necessary
+    commit-message:
+      prefix: "Docker"
+      include: "scope"
+    schedule:
+      interval: "daily"
