@@ -2,12 +2,16 @@
 
 ## Reporting an issue
 
-If you discover a bug or wish to have a feature added, [report it to the issue tracker](https://github.com/fossar/selfoss/issues/new). Try to describe the problem in as much detail as possible.
+If you discover a bug, please [report it to the issue tracker](https://github.com/fossar/selfoss/issues/new). Try to describe the problem in as much detail as possible.
+
+You can also ask for a new feature but unless I would personally use it, I will probably not find time to implement it.
 
 
 ## Contributing code
 
 We accept [pull requests](https://github.com/fossar/selfoss/compare) with your changes.
+
+For larger changes, please discuss it in an issue first, to avoid potentially wasting effort.
 
 Every patch is expected to adhere to our coding style, which is checked automatically by CI. You can install the checkers locally using `npm run install-dependencies`, and then run the checks using `npm run check` before submitting a pull request. There is also `npm run fix`, that will attempt to fix the formatting.
 

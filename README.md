@@ -4,6 +4,12 @@ selfoss is a multipurpose RSS reader and feed aggregation web application. It al
 
 For more information visit our [web site](https://selfoss.aditu.de).
 
+
+## Status
+
+selfoss is currently maintained by Jan Tojnar in his free time. Due to the [limited capacity](https://github.com/jtojnar/jtojnar), maintenance is prioritized over new features. Pull requests are welcome, see the [Contributing](CONTRIBUTING.md) guide.
+
+
 ## Download
 
 * [Stable releases](https://github.com/fossar/selfoss/releases) – if you just want to use selfoss.
