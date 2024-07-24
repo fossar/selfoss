@@ -6,7 +6,7 @@ namespace controllers;
 
 use daos\ItemOptions;
 use FeedWriter\RSS2;
-use helpers\Authentication;
+use helpers\Authentication\AuthenticationService;
 use helpers\Configuration;
 use helpers\View;
 
@@ -18,15 +18,15 @@ use helpers\View;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class Rss {
-    private Authentication $authentication;
+    private AuthenticationService $authenticationService;
     private Configuration $configuration;
     private RSS2 $feedWriter;
     private \daos\Items $itemsDao;
     private \daos\Sources $sourcesDao;
     private View $view;
 
-    public function __construct(Authentication $authentication, Configuration $configuration, RSS2 $feedWriter, \daos\Items $itemsDao, \daos\Sources $sourcesDao, View $view) {
-        $this->authentication = $authentication;
+    public function __construct(AuthenticationService $authenticationService, Configuration $configuration, RSS2 $feedWriter, \daos\Items $itemsDao, \daos\Sources $sourcesDao, View $view) {
+        $this->authenticationService = $authenticationService;
         $this->configuration = $configuration;
         $this->feedWriter = $feedWriter;
         $this->itemsDao = $itemsDao;
@@ -38,13 +38,13 @@ class Rss {
      * rss feed
      */
     public function rss(): void {
-        $this->authentication->needsLoggedInOrPublicMode();
+        $this->authenticationService->ensureCanRead();
 
         $this->feedWriter->setTitle($this->configuration->rssTitle);
         $this->feedWriter->setChannelElement('description', '');
-        $this->feedWriter->setSelfLink($this->view->base . 'feed');
+        $this->feedWriter->setSelfLink($this->view->getBaseUrl() . 'feed');
 
-        $this->feedWriter->setLink($this->view->base);
+        $this->feedWriter->setLink($this->view->getBaseUrl());
 
         // get sources
         $lastSourceId = 0;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace controllers\Opml;
 
-use helpers\Authentication;
+use helpers\Authentication\AuthenticationService;
 use helpers\Configuration;
 use helpers\SpoutLoader;
 use helpers\StringKeyedArray;
@@ -19,7 +19,7 @@ use Monolog\Logger;
  * @author     Sean Rand <asanernd@gmail.com>
  */
 class Export {
-    private Authentication $authentication;
+    private AuthenticationService $authenticationService;
     private Configuration $configuration;
     private Logger $logger;
     private SpoutLoader $spoutLoader;
@@ -27,8 +27,8 @@ class Export {
     private \daos\Sources $sourcesDao;
     private \daos\Tags $tagsDao;
 
-    public function __construct(Authentication $authentication, Configuration $configuration, Logger $logger, \daos\Sources $sourcesDao, SpoutLoader $spoutLoader, \daos\Tags $tagsDao, \XMLWriter $writer) {
-        $this->authentication = $authentication;
+    public function __construct(AuthenticationService $authenticationService, Configuration $configuration, Logger $logger, \daos\Sources $sourcesDao, SpoutLoader $spoutLoader, \daos\Tags $tagsDao, \XMLWriter $writer) {
+        $this->authenticationService = $authenticationService;
         $this->configuration = $configuration;
         $this->logger = $logger;
         $this->sourcesDao = $sourcesDao;
@@ -79,7 +79,7 @@ class Export {
      * @note Uses the selfoss namespace to store selfoss-specific information
      */
     public function export(): void {
-        $this->authentication->needsLoggedIn();
+        $this->authenticationService->ensureIsPrivileged();
 
         $this->logger->debug('start OPML export');
         $this->writer->openMemory();

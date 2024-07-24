@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace controllers;
 
-use helpers\Authentication;
+use helpers\Authentication\AuthenticationService;
 use helpers\Request;
 use helpers\StringKeyedArray;
 use helpers\View;
@@ -20,18 +20,18 @@ class Tags {
     /** @var ?StringKeyedArray<array{backColor: string, foreColor: string}> cache of tags and associated colors */
     protected ?StringKeyedArray $tagsColors = null;
 
-    private Authentication $authentication;
+    private AuthenticationService $authenticationService;
     private Request $request;
     private \daos\Tags $tagsDao;
     private View $view;
 
     public function __construct(
-        Authentication $authentication,
+        AuthenticationService $authenticationService,
         Request $request,
         \daos\Tags $tagsDao,
         View $view
     ) {
-        $this->authentication = $authentication;
+        $this->authenticationService = $authenticationService;
         $this->request = $request;
         $this->tagsDao = $tagsDao;
         $this->view = $view;
@@ -70,7 +70,7 @@ class Tags {
      * set tag color
      */
     public function color(): void {
-        $this->authentication->needsLoggedIn();
+        $this->authenticationService->ensureIsPrivileged();
 
         $data = $this->request->getData();
 
@@ -101,7 +101,7 @@ class Tags {
      * html
      */
     public function listTags(): void {
-        $this->authentication->needsLoggedInOrPublicMode();
+        $this->authenticationService->ensureCanRead();
 
         $tags = $this->tagsDao->getWithUnread();
 

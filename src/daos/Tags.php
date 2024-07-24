@@ -8,21 +8,21 @@ declare(strict_types=1);
 
 namespace daos;
 
-use helpers\Authentication;
+use helpers\Authentication\AuthenticationService;
 
 /**
  * Proxy for accessing tag colors.
  */
 class Tags implements TagsInterface {
-    private Authentication $authentication;
+    private AuthenticationService $authenticationService;
     /** Instance of backend-specific Tags class */
     private TagsInterface $backend;
 
     public function __construct(
-        Authentication $authentication,
+        AuthenticationService $authenticationService,
         TagsInterface $backend
     ) {
-        $this->authentication = $authentication;
+        $this->authenticationService = $authenticationService;
         $this->backend = $backend;
     }
 
@@ -37,7 +37,7 @@ class Tags implements TagsInterface {
     public function get(): array {
         $tags = $this->backend->get();
         // remove items with private tags
-        if (!$this->authentication->showPrivateTags()) {
+        if (!$this->authenticationService->isPrivileged()) {
             foreach ($tags as $idx => $tag) {
                 if (str_starts_with($tag['tag'], '@')) {
                     unset($tags[$idx]);

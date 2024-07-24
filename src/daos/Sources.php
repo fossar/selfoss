@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace daos;
 
-use helpers\Authentication;
+use helpers\Authentication\AuthenticationService;
 use helpers\SpoutLoader;
 use spouts\Parameter;
 
@@ -18,16 +18,16 @@ use spouts\Parameter;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class Sources implements SourcesInterface {
-    private Authentication $authentication;
+    private AuthenticationService $authenticationService;
     private SourcesInterface $backend;
     private SpoutLoader $spoutLoader;
 
     public function __construct(
-        Authentication $authentication,
+        AuthenticationService $authenticationService,
         SourcesInterface $backend,
         SpoutLoader $spoutLoader
     ) {
-        $this->authentication = $authentication;
+        $this->authenticationService = $authenticationService;
         $this->backend = $backend;
         $this->spoutLoader = $spoutLoader;
     }
@@ -68,7 +68,7 @@ class Sources implements SourcesInterface {
         $sources = $this->backend->getAll();
 
         // remove items with private tags
-        if (!$this->authentication->showPrivateTags()) {
+        if (!$this->authenticationService->isPrivileged()) {
             foreach ($sources as $idx => $source) {
                 foreach ($source['tags'] as $tag) {
                     if (str_starts_with(trim($tag), '@')) {

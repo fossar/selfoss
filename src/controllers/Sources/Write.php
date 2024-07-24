@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace controllers\Sources;
 
-use helpers\Authentication;
+use helpers\Authentication\AuthenticationService;
 use helpers\ContentLoader;
 use helpers\Filters\FilterFactory;
 use helpers\Filters\FilterSyntaxError;
@@ -18,7 +18,7 @@ use spouts\Parameter;
  * Controller for creating and editing sources
  */
 class Write {
-    private Authentication $authentication;
+    private AuthenticationService $authenticationService;
     private ContentLoader $contentLoader;
     private Request $request;
     private \daos\Sources $sourcesDao;
@@ -27,7 +27,7 @@ class Write {
     private View $view;
 
     public function __construct(
-        Authentication $authentication,
+        AuthenticationService $authenticationService,
         ContentLoader $contentLoader,
         Request $request,
         \daos\Sources $sourcesDao,
@@ -35,7 +35,7 @@ class Write {
         \daos\Tags $tagsDao,
         View $view
     ) {
-        $this->authentication = $authentication;
+        $this->authenticationService = $authenticationService;
         $this->contentLoader = $contentLoader;
         $this->request = $request;
         $this->sourcesDao = $sourcesDao;
@@ -51,7 +51,7 @@ class Write {
      * @param ?string $id ID of source to update, or null to create a new one
      */
     public function write(?string $id = null): void {
-        $this->authentication->needsLoggedIn();
+        $this->authenticationService->ensureIsPrivileged();
 
         $data = $this->request->getData();
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace controllers\Opml;
 
-use helpers\Authentication;
+use helpers\Authentication\AuthenticationService;
 use helpers\View;
 use Monolog\Logger;
 use SimpleXMLElement;
@@ -21,14 +21,14 @@ class Import {
     /** @var array<string, array{id: int, tags: string[]}> Sources that have been imported from the OPML file */
     private array $imported = [];
 
-    private Authentication $authentication;
+    private AuthenticationService $authenticationService;
     private Logger $logger;
     private \daos\Sources $sourcesDao;
     private \daos\Tags $tagsDao;
     private View $view;
 
-    public function __construct(Authentication $authentication, Logger $logger, \daos\Sources $sourcesDao, \daos\Tags $tagsDao, View $view) {
-        $this->authentication = $authentication;
+    public function __construct(AuthenticationService $authenticationService, Logger $logger, \daos\Sources $sourcesDao, \daos\Tags $tagsDao, View $view) {
+        $this->authenticationService = $authenticationService;
         $this->logger = $logger;
         $this->sourcesDao = $sourcesDao;
         $this->tagsDao = $tagsDao;
@@ -42,7 +42,7 @@ class Import {
      * @note Borrows from controllers/Sources.php:write
      */
     public function add(): void {
-        $this->authentication->needsLoggedIn();
+        $this->authenticationService->ensureIsPrivileged();
 
         http_response_code(400);
 

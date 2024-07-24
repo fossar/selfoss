@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace controllers\Sources;
 
-use helpers\Authentication;
+use helpers\Authentication\AuthenticationService;
 use helpers\ContentLoader;
 use helpers\Misc;
 use helpers\UpdateVisitor;
@@ -15,16 +15,16 @@ use InvalidArgumentException;
  * Controller updating sources
  */
 class Update {
-    private Authentication $authentication;
+    private AuthenticationService $authenticationService;
     private ContentLoader $contentLoader;
     private View $view;
 
     public function __construct(
-        Authentication $authentication,
+        AuthenticationService $authenticationService,
         ContentLoader $contentLoader,
         View $view
     ) {
-        $this->authentication = $authentication;
+        $this->authenticationService = $authenticationService;
         $this->contentLoader = $contentLoader;
         $this->view = $view;
     }
@@ -35,7 +35,7 @@ class Update {
      */
     public function updateAll(): void {
         // only allow access for localhost and loggedin users
-        if (!$this->authentication->allowedToUpdate()) {
+        if (!$this->authenticationService->canUpdate()) {
             header('HTTP/1.0 403 Forbidden');
             exit('unallowed access');
         }
@@ -111,7 +111,7 @@ class Update {
      */
     public function update(string $id): void {
         // only allow access for localhost and authenticated users
-        if (!$this->authentication->allowedToUpdate()) {
+        if (!$this->authenticationService->canUpdate()) {
             header('HTTP/1.0 403 Forbidden');
             exit('unallowed access');
         }
