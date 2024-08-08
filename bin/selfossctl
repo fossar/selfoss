@@ -1,0 +1,38 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+// SPDX-FileCopyrightText: 2023 Jan Tojnar <jtojnar@gmail.com>
+// SPDX-License-Identifier: GPL-3.0-or-later
+
+use Commands\UpdateCommand;
+use Psr\Container\ContainerInterface;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Command\LazyCommand;
+
+require __DIR__ . '/../src/common.php';
+
+/** @var ContainerInterface $container */
+$commands = [
+    UpdateCommand::class,
+];
+
+$application = new Application();
+
+// We cannot use ContainerCommandLoader because it does not support lazy loading.
+foreach ($commands as $command) {
+    $name = $command::$defaultName;
+    $description = $command::$defaultDescription;
+
+    $lazyCommand = new LazyCommand(
+        /* name: */ $name,
+        /* aliases: */ [],
+        /* description: */ $description,
+        /* isHidden: */ false,
+        fn() => $container->get($command)
+    );
+    $application->add($lazyCommand);
+}
+
+$application->run();
