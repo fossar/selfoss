@@ -116,5 +116,6 @@
   "lang_entries_loading": "S'estan carregant les entrades…",
   "lang_login_in_progress": "S'està intentant iniciar sessió…",
   "lang_login_error_generic": "No s'ha pogut iniciar sessió: {errorMessage}",
-  "lang_error_unauthorized": "Si us plau, {link_begin}inicieu sessió{link_end} per a continuar."
+  "lang_error_unauthorized": "Si us plau, {link_begin}inicieu sessió{link_end} per a continuar.",
+  "lang_share_mastodon_label": "Comparteix a Mastodon"
 }
