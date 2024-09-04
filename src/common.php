@@ -65,10 +65,15 @@ $container
     ->register(Bramus\Router\Router::class)
     ->setShared(true)
 ;
+
 $container
-    ->register(helpers\Authentication::class)
+    ->register(
+        helpers\Authentication\AuthenticationService::class,
+        [new Slince\Di\Reference(helpers\Authentication\AuthenticationFactory::class), 'create']
+    )
     ->setShared(true)
 ;
+
 $container
     ->register(helpers\Session::class)
     ->setShared(true)

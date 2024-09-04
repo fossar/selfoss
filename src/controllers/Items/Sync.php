@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace controllers\Items;
 
-use helpers\Authentication;
+use helpers\Authentication\AuthenticationService;
 use helpers\Configuration;
 use function helpers\json_response;
 use helpers\View;
@@ -14,7 +14,7 @@ use helpers\ViewHelper;
  * Controller for synchronizing item statuses
  */
 class Sync {
-    private Authentication $authentication;
+    private AuthenticationService $authenticationService;
     private Configuration $configuration;
     private \daos\Items $itemsDao;
     private \daos\Sources $sourcesDao;
@@ -23,8 +23,8 @@ class Sync {
     private View $view;
     private ViewHelper $viewHelper;
 
-    public function __construct(Authentication $authentication, Configuration $configuration, \daos\Items $itemsDao, \daos\Sources $sourcesDao, \controllers\Tags $tagsController, \daos\Tags $tagsDao, View $view, ViewHelper $viewHelper) {
-        $this->authentication = $authentication;
+    public function __construct(AuthenticationService $authenticationService, Configuration $configuration, \daos\Items $itemsDao, \daos\Sources $sourcesDao, \controllers\Tags $tagsController, \daos\Tags $tagsDao, View $view, ViewHelper $viewHelper) {
+        $this->authenticationService = $authenticationService;
         $this->configuration = $configuration;
         $this->itemsDao = $itemsDao;
         $this->sourcesDao = $sourcesDao;
@@ -39,7 +39,7 @@ class Sync {
      * json
      */
     public function sync(): void {
-        $this->authentication->needsLoggedInOrPublicMode();
+        $this->authenticationService->ensureCanRead();
 
         if (isset($_GET['since'])) {
             $params = $_GET;
@@ -113,7 +113,7 @@ class Sync {
      * Items statuses bulk update.
      */
     public function updateStatuses(): void {
-        $this->authentication->needsLoggedIn();
+        $this->authenticationService->ensureIsPrivileged();
 
         if (isset($_POST['updatedStatuses'])
             && is_array($_POST['updatedStatuses'])) {

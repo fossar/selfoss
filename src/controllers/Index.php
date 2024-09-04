@@ -6,7 +6,7 @@ namespace controllers;
 
 use Bramus\Router\Router;
 use daos\ItemOptions;
-use helpers\Authentication;
+use helpers\Authentication\AuthenticationService;
 use helpers\StringKeyedArray;
 use helpers\View;
 use helpers\ViewHelper;
@@ -19,7 +19,7 @@ use helpers\ViewHelper;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class Index {
-    private Authentication $authentication;
+    private AuthenticationService $authenticationService;
     private \daos\Items $itemsDao;
     private Router $router;
     private \daos\Sources $sourcesDao;
@@ -28,8 +28,8 @@ class Index {
     private View $view;
     private ViewHelper $viewHelper;
 
-    public function __construct(Authentication $authentication, \daos\Items $itemsDao, Router $router, \daos\Sources $sourcesDao, Tags $tagsController, \daos\Tags $tagsDao, View $view, ViewHelper $viewHelper) {
-        $this->authentication = $authentication;
+    public function __construct(AuthenticationService $authenticationService, \daos\Items $itemsDao, Router $router, \daos\Sources $sourcesDao, Tags $tagsController, \daos\Tags $tagsDao, View $view, ViewHelper $viewHelper) {
+        $this->authenticationService = $authenticationService;
         $this->itemsDao = $itemsDao;
         $this->router = $router;
         $this->sourcesDao = $sourcesDao;
@@ -60,7 +60,7 @@ class Index {
             return;
         }
 
-        $this->authentication->needsLoggedInOrPublicMode();
+        $this->authenticationService->ensureCanRead();
 
         // load tags
         $tags = $this->tagsDao->getWithUnread();

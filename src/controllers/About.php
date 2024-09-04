@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace controllers;
 
 use helpers\Authentication;
+use helpers\Authentication\AuthenticationService;
 use helpers\Configuration;
 use helpers\View;
 
@@ -12,12 +13,12 @@ use helpers\View;
  * Controller for instance information API
  */
 class About {
-    private Authentication $authentication;
+    private bool $authenticationEnabled;
     private Configuration $configuration;
     private View $view;
 
-    public function __construct(Authentication $authentication, Configuration $configuration, View $view) {
-        $this->authentication = $authentication;
+    public function __construct(AuthenticationService $authenticationService, Configuration $configuration, View $view) {
+        $this->authenticationEnabled = !$authenticationService instanceof Authentication\Services\Trust;
         $this->configuration = $configuration;
         $this->view = $view;
     }
@@ -54,7 +55,7 @@ class About {
                 'htmlTitle' => trim($this->configuration->htmlTitle), // string
                 'allowPublicUpdate' => $this->configuration->allowPublicUpdateAccess, // bool
                 'publicMode' => $this->configuration->public, // bool
-                'authEnabled' => $this->authentication->enabled() === true, // bool
+                'authEnabled' => $this->authenticationEnabled, // bool
                 'readingSpeed' => $this->configuration->readingSpeedWpm > 0 ? $this->configuration->readingSpeedWpm : null, // ?int
                 'language' => $this->configuration->language === '0' ? null : $this->configuration->language, // ?string
                 'userCss' => file_exists(BASEDIR . '/user.css') ? filemtime(BASEDIR . '/user.css') : null, // ?int

@@ -6,7 +6,7 @@ namespace daos;
 
 use DateTime;
 use DateTimeImmutable;
-use helpers\Authentication;
+use helpers\Authentication\AuthenticationService;
 
 /**
  * Class for accessing persistent saved items
@@ -17,14 +17,14 @@ use helpers\Authentication;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class Items implements ItemsInterface {
-    private Authentication $authentication;
+    private AuthenticationService $authenticationService;
     private ItemsInterface $backend;
 
     public function __construct(
-        Authentication $authentication,
+        AuthenticationService $authenticationService,
         ItemsInterface $backend
     ) {
-        $this->authentication = $authentication;
+        $this->authenticationService = $authenticationService;
         $this->backend = $backend;
     }
 
@@ -75,7 +75,7 @@ class Items implements ItemsInterface {
         $items = $this->backend->get($options);
 
         // remove private posts with private tags
-        if (!$this->authentication->showPrivateTags()) {
+        if (!$this->authenticationService->isPrivileged()) {
             foreach ($items as $idx => $item) {
                 foreach ($item['tags'] as $tag) {
                     if (str_starts_with(trim($tag), '@')) {

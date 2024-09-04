@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace controllers\Helpers;
 
-use helpers\Authentication;
+use helpers\Authentication\AuthenticationService;
 use helpers\View;
 
 /**
  * Controller for user related tasks
  */
 final class HashPassword {
-    private Authentication $authentication;
+    private AuthenticationService $authenticationService;
     private View $view;
 
-    public function __construct(Authentication $authentication, View $view) {
-        $this->authentication = $authentication;
+    public function __construct(AuthenticationService $authenticationService, View $view) {
+        $this->authenticationService = $authenticationService;
         $this->view = $view;
     }
 
@@ -24,7 +24,7 @@ final class HashPassword {
      * json
      */
     public function hash(): void {
-        $this->authentication->needsLoggedIn();
+        $this->authenticationService->ensureIsPrivileged();
 
         if (!isset($_POST['password'])) {
             $this->view->jsonError([

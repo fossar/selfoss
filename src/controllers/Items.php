@@ -6,7 +6,7 @@ namespace controllers;
 
 use daos\ItemOptions;
 use DateTimeInterface;
-use helpers\Authentication;
+use helpers\Authentication\AuthenticationService;
 use helpers\Misc;
 use helpers\Request;
 use helpers\View;
@@ -20,18 +20,18 @@ use InvalidArgumentException;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class Items {
-    private Authentication $authentication;
+    private AuthenticationService $authenticationService;
     private \daos\Items $itemsDao;
     private Request $request;
     private View $view;
 
     public function __construct(
-        Authentication $authentication,
+        AuthenticationService $authenticationService,
         \daos\Items $itemsDao,
         Request $request,
         View $view
     ) {
-        $this->authentication = $authentication;
+        $this->authenticationService = $authenticationService;
         $this->itemsDao = $itemsDao;
         $this->request = $request;
         $this->view = $view;
@@ -44,7 +44,7 @@ class Items {
      * @param ?string $itemId ID of item to mark as read
      */
     public function mark(?string $itemId = null): void {
-        $this->authentication->needsLoggedIn();
+        $this->authenticationService->ensureIsPrivileged();
 
         $ids = null;
         if ($itemId !== null) {
@@ -84,7 +84,7 @@ class Items {
      * @param string $itemId id of an item to mark as unread
      */
     public function unmark(string $itemId): void {
-        $this->authentication->needsLoggedIn();
+        $this->authenticationService->ensureIsPrivileged();
 
         try {
             $itemId = Misc::forceId($itemId);
@@ -106,7 +106,7 @@ class Items {
      * @param string $itemId id of an item to starr
      */
     public function starr(string $itemId): void {
-        $this->authentication->needsLoggedIn();
+        $this->authenticationService->ensureIsPrivileged();
 
         try {
             $itemId = Misc::forceId($itemId);
@@ -127,7 +127,7 @@ class Items {
      * @param string $itemId id of an item to unstarr
      */
     public function unstarr(string $itemId): void {
-        $this->authentication->needsLoggedIn();
+        $this->authenticationService->ensureIsPrivileged();
 
         try {
             $itemId = Misc::forceId($itemId);
@@ -146,7 +146,7 @@ class Items {
      * json
      */
     public function listItems(): void {
-        $this->authentication->needsLoggedInOrPublicMode();
+        $this->authenticationService->ensureCanRead();
 
         // parse params
         $options = ItemOptions::fromUser($_GET);

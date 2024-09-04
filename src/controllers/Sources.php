@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace controllers;
 
-use helpers\Authentication;
+use helpers\Authentication\AuthenticationService;
 use helpers\Misc;
 use helpers\SpoutLoader;
 use helpers\View;
@@ -18,14 +18,14 @@ use InvalidArgumentException;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class Sources {
-    private Authentication $authentication;
+    private AuthenticationService $authenticationService;
     private \daos\Sources $sourcesDao;
     private SpoutLoader $spoutLoader;
     private \daos\Tags $tagsDao;
     private View $view;
 
-    public function __construct(Authentication $authentication, \daos\Sources $sourcesDao, SpoutLoader $spoutLoader, \daos\Tags $tagsDao, View $view) {
-        $this->authentication = $authentication;
+    public function __construct(AuthenticationService $authenticationService, \daos\Sources $sourcesDao, SpoutLoader $spoutLoader, \daos\Tags $tagsDao, View $view) {
+        $this->authenticationService = $authenticationService;
         $this->sourcesDao = $sourcesDao;
         $this->spoutLoader = $spoutLoader;
         $this->tagsDao = $tagsDao;
@@ -37,7 +37,7 @@ class Sources {
      * json
      */
     public function show(): void {
-        $this->authentication->needsLoggedIn();
+        $this->authenticationService->ensureIsPrivileged();
 
         // get available spouts
         $spouts = $this->spoutLoader->all();
@@ -61,7 +61,7 @@ class Sources {
      * json
      */
     public function add(): void {
-        $this->authentication->needsLoggedIn();
+        $this->authenticationService->ensureIsPrivileged();
 
         $spouts = $this->spoutLoader->all();
 
@@ -75,7 +75,7 @@ class Sources {
      * json
      */
     public function params(): void {
-        $this->authentication->needsLoggedIn();
+        $this->authenticationService->ensureIsPrivileged();
 
         if (!isset($_GET['spout'])) {
             $this->view->error('no spout type given');
@@ -102,7 +102,7 @@ class Sources {
      * @param string $id ID of source to remove
      */
     public function remove(string $id): void {
-        $this->authentication->needsLoggedIn();
+        $this->authenticationService->ensureIsPrivileged();
 
         try {
             $id = Misc::forceId($id);
@@ -126,7 +126,7 @@ class Sources {
      * json
      */
     public function listSources(): void {
-        $this->authentication->needsLoggedIn();
+        $this->authenticationService->ensureIsPrivileged();
 
         // load sources
         $sources = $this->sourcesDao->getWithIcon();
@@ -145,7 +145,7 @@ class Sources {
      * json
      */
     public function spouts(): void {
-        $this->authentication->needsLoggedIn();
+        $this->authenticationService->ensureIsPrivileged();
 
         $spouts = $this->spoutLoader->all();
         $this->view->jsonSuccess($spouts);
@@ -156,7 +156,7 @@ class Sources {
      * json
      */
     public function stats(): void {
-        $this->authentication->needsLoggedInOrPublicMode();
+        $this->authenticationService->ensureCanRead();
 
         // load sources
         $sources = $this->sourcesDao->getWithUnread();
