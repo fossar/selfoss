@@ -40,6 +40,7 @@
 - Source filters are stricter, they need to start and end with a `/`. ([#1423](https://github.com/fossar/selfoss/pull/1423))
 - OPML importer has been merged into the React client. ([#1442](https://github.com/fossar/selfoss/pull/1442))
 - Web requests will send `Accept-Encoding` header. ([#1482](https://github.com/fossar/selfoss/pull/1482))
+- **`cliupdate.php` program has been replaced with `bin/selfossctl update`**. Do not forget to update cron scripts. ([#1440](https://github.com/fossar/selfoss/pull/1440))
 
 #### For developers
 - Back-end source code is now checked using [PHPStan](https://phpstan.org/). ([#1409](https://github.com/fossar/selfoss/pull/1409))

@@ -171,6 +171,7 @@ def main() -> None:
 
             archive.create_directory_entry("")
 
+            archive.directory("bin/")
             archive.directory("src/")
             archive.directory("vendor/", is_not_unimportant)
 
@@ -186,7 +187,6 @@ def main() -> None:
             archive.file("config-example.ini")
             archive.file("index.php")
             archive.file("run.php")
-            archive.file("cliupdate.php")
 
             logger.info(f"Zipball ‘{filename}’ was successfully generated.")
 
