@@ -13,7 +13,7 @@ selfoss is currently maintained by Jan Tojnar in his free time. Due to the [limi
 ## Download
 
 * [Stable releases](https://github.com/fossar/selfoss/releases) – if you just want to use selfoss.
-* [Development builds](https://cloudsmith.io/~fossar/repos/selfoss-git/packages/) ([latest](https://cloudsmith.io/~fossar/repos/selfoss-git/packages/?q=version%3Alatest)) – if you want to try unreleased features or bug fixes, or help testing them. Hosted by [Cloudsmith](https://cloudsmith.com)
+* [Development builds](https://cloudsmith.io/~fossar/repos/selfoss-git/packages/) – if you want to try unreleased features or bug fixes, or help testing them. Hosted by [Cloudsmith](https://cloudsmith.com)
 * [Git-tracked source code](https://github.com/fossar/selfoss) – if you want to join selfoss development. Some [assembly](#development) required.
 
 
