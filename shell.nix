@@ -7,5 +7,8 @@ let
   self = import flake-compat {
     src = ./.;
   };
+
+  devShells = self.shellNix.outputs.devShells.${builtins.currentSystem};
 in
-self.shellNix
+# Add rest of the devShells for the current system so that we can easily access them with nix-shell.
+devShells.default // devShells

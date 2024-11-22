@@ -74,32 +74,32 @@ jobs:
             ${{ runner.os }}-composer-
 
       - name: Install dependencies
-        run: nix-shell --run 'npm run install-dependencies'
+        run: nix-shell -A ci --run 'npm run install-dependencies'
 
       - name: Check front-end code
         if: matrix.lint
-        run: nix-shell --run 'npm run check:client'
+        run: nix-shell -A ci --run 'npm run check:client'
 
       - name: Check syntax of back-end code
-        run: nix-shell --run 'npm run check:server:lint'
+        run: nix-shell -A ci --run 'npm run check:server:lint'
 
       - name: Lint back-end code
         if: matrix.lint
-        run: nix-shell --run 'npm run check:server:cs'
+        run: nix-shell -A ci --run 'npm run check:server:cs'
 
       - name: Lint helper code
         if: matrix.lint
-        run: nix-shell --run 'npm run check:helpers:cs'
+        run: nix-shell -A ci --run 'npm run check:helpers:cs'
 
       - name: Run unit tests
-        run: nix-shell --run 'npm run test:server'
+        run: nix-shell -A ci --run 'npm run test:server'
 
       - name: Analyse back-end code
         if: matrix.phpstan
-        run: nix-shell --run 'npm run check:server:phpstan'
+        run: nix-shell -A ci --run 'npm run check:server:phpstan'
 
       - name: Run integration tests
-        run: SELFOSS_TEST_STORAGE_BACKEND=${{ matrix.storage }} nix-shell --run 'npm run test:integration'
+        run: SELFOSS_TEST_STORAGE_BACKEND=${{ matrix.storage }} nix-shell -A ci --run 'npm run test:integration'
 
   deploy:
     name: 'Upload artefacts'
@@ -141,7 +141,7 @@ jobs:
       - name: Build a zipball
         id: zipball
         run: |
-          nix-shell --run 'npm run dist'
+          nix-shell -A ci --run 'npm run dist'
           echo "file_name=$(echo selfoss-*.zip)" >> "$GITHUB_OUTPUT"
           echo "version=$(echo selfoss-*.zip | sed -e 's/^selfoss-//' -e 's/\.zip$//')" >> "$GITHUB_OUTPUT"
 

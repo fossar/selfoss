@@ -88,6 +88,13 @@
           };
         };
 
+        developmentSupport = {
+          nativeBuildInputs = [
+            # PHP LSP
+            pkgs.phpactor
+          ];
+        };
+
         qaTools = {
           nativeBuildInputs = [
             # Back-end code validation.
@@ -112,6 +119,16 @@
         # Expose shell environment for development.
         devShells = {
           default = pkgs.mkShell (
+            mergeEnvs [
+              languageEnv
+              developmentSupport
+              qaTools
+              websiteTools
+              dbServers.${matrix.storage}
+            ]
+          );
+
+          ci = pkgs.mkShell (
             mergeEnvs [
               languageEnv
               qaTools
