@@ -33,6 +33,20 @@
         # Get Nixpkgs packages for current platform.
         pkgs = nixpkgs.legacyPackages.${system};
 
+        inherit (pkgs) lib;
+
+        mergeAttribute =
+          l:
+          r:
+          if builtins.isAttrs l && builtins.isAttrs r then
+            l // r
+          else if builtins.isList l && builtins.isList r then
+            l ++ r
+          else
+            throw "Unsupported combination of types: ${builtins.typeOf l} and ${builtins.typeOf r}";
+
+        mergeEnvs = lib.fold (lib.mergeAttrsWithFunc mergeAttribute) {};
+
         # Create a PHP package from the selected PHP package, with some extra extensions enabled.
         php = phps.packages.${system}.${matrix.phpPackage}.withExtensions ({ enabled, all }: with all; enabled ++ [
           imagick
@@ -48,46 +62,69 @@
 
         # Database servers for testing.
         dbServers = {
-          mysql = [ pkgs.mariadb ];
-          postgresql = [ pkgs.postgresql ];
-          sqlite = [ ];
-          all = builtins.concatLists (builtins.attrValues (builtins.removeAttrs dbServers [ "all" ]));
+          mysql = {
+            nativeBuildInputs = [ pkgs.mariadb ];
+          };
+          postgresql = {
+            nativeBuildInputs = [ pkgs.postgresql ];
+          };
+          sqlite = { };
+          all = mergeEnvs (builtins.attrValues (builtins.removeAttrs dbServers [ "all" ]));
+        };
+
+        languageEnv = {
+          nativeBuildInputs = [
+            # Composer and PHP for back-end.
+            php
+            php.packages.composer
+
+            # npm for front-end.
+            pkgs.nodejs_latest
+          ];
+
+          env = {
+            # node-gyp wants some locales, let’s make them available through an environment variable.
+            LOCALE_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
+          };
+        };
+
+        qaTools = {
+          nativeBuildInputs = [
+            # Back-end code validation.
+            php.packages.phpstan
+
+            # For building zip archive and integration tests.
+            python
+
+            # Python code linting.
+            pkgs.black
+          ];
+        };
+
+        websiteTools = {
+          nativeBuildInputs = [
+            # Website generator.
+            pkgs.zola
+          ];
         };
       in
       {
         # Expose shell environment for development.
         devShells = {
-          default = pkgs.mkShell {
-            nativeBuildInputs = [
-              # Composer and PHP for back-end.
-              php
-              php.packages.composer
+          default = pkgs.mkShell (
+            mergeEnvs [
+              languageEnv
+              qaTools
+              websiteTools
+              dbServers.${matrix.storage}
+            ]
+          );
 
-              # Back-end code validation.
-              php.packages.phpstan
-
-              # npm for front-end.
-              pkgs.nodejs_latest
-
-              # For building zip archive and integration tests.
-              python
-
-              # Python code linting.
-              pkgs.black
-
-              # Website generator.
-              pkgs.zola
-            ] ++ dbServers.${matrix.storage};
-
-            # node-gyp wants some locales, let’s make them available through an environment variable.
-            LOCALE_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
-          };
-
-          website = pkgs.mkShell {
-            nativeBuildInputs = [
-              pkgs.zola
-            ];
-          };
+          website = pkgs.mkShell (
+            mergeEnvs [
+              websiteTools
+            ]
+          );
         };
       }
     );
