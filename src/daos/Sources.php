@@ -152,6 +152,7 @@ class Sources implements SourcesInterface {
                 }
 
                 $validation = $spout->params[$id]['validation'];
+                // @phpstan-ignore-next-line function.alreadyNarrowedType (User can create their own spouts so we cannot necessarily trust PHPDoc.)
                 if (!is_array($validation)) {
                     $validation = [$validation];
                 }
