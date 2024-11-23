@@ -24,6 +24,7 @@
         "slince/di": "^3.2",
         "smottt/wideimage": "^1.1",
         "symfony/cache": "^5.4",
+        "symfony/console": "^5.4",
         "symfony/polyfill-php80": "^1.26",
         "violet/streaming-json-encoder": "^1.1",
         "vstelmakh/url-highlight": "^3.0",
@@ -44,6 +45,7 @@
     ],
     "autoload": {
         "psr-4": {
+            "Commands\\": "src/Commands/",
             "controllers\\": "src/controllers/",
             "daos\\": "src/daos/",
             "helpers\\": "src/helpers/",
@@ -51,6 +53,9 @@
             "Tests\\": "tests/"
         }
     },
+    "bin": [
+        "bin/selfossctl"
+    ],
     "config": {
         "platform": {
             "php": "7.4.0"

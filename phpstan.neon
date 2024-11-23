@@ -2,9 +2,9 @@ parameters:
     level: 8
 
     paths:
+        - bin/selfossctl
         - src/
         - tests/
-        - cliupdate.php
         - index.php
         - run.php
 
