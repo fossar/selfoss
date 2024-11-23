@@ -27,3 +27,6 @@ parameters:
     typeAliases:
         SpoutParameterInfo: 'array{title: string, type: spouts\Parameter::TYPE_*, default: string, required: bool, validation: array<spouts\Parameter::VALIDATION_*>, values?: array<string, string>}'
         SpoutParameters: 'array<string, SpoutParameterInfo>'
+
+includes:
+    - vendor/phpstan/phpstan-deprecation-rules/rules.neon
