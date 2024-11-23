@@ -23,8 +23,8 @@ class BasicWorkflowTest(SelfossIntegration):
                 url=fibonacci_feed_uri,
             )
             assert (
-                "Adding source is privileged operation and should fail without login."
-            )
+                False
+            ), "Adding source is privileged operation and should fail without login."
         except requests.exceptions.HTTPError as e:
             assert (
                 e.response.status_code == 403
