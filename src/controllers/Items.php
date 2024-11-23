@@ -149,7 +149,7 @@ class Items {
         $this->authentication->needsLoggedInOrPublicMode();
 
         // parse params
-        $options = ItemOptions::fromUser($_GET);
+        $options = new ItemOptions($_GET);
 
         // get items
         $items = $this->itemsDao->get($options);

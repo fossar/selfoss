@@ -11,96 +11,114 @@ use DateTime;
  */
 final class ItemOptions {
     /** @readonly */
-    public ?int $offset = 0;
+    public ?int $offset;
 
     /** @readonly */
-    public ?string $search = null;
+    public ?string $search;
 
     /**
      * Maximum number of items to fetch from the database (unbounded)
      *
      * @readonly
      */
-    public ?int $pageSize = null;
+    public ?int $pageSize;
 
     /** @readonly */
-    public ?DateTime $fromDatetime = null;
+    public ?DateTime $fromDatetime;
 
     /** @readonly */
-    public ?int $fromId = null;
+    public ?int $fromId;
 
     /** @readonly */
-    public ?DateTime $updatedSince = null;
+    public ?DateTime $updatedSince;
 
     /** @readonly */
-    public ?string $tag = null;
+    public ?string $tag;
 
     /**
      * @var 'starred'|'unread'|null
      *
      * @readonly
      */
-    public ?string $filter = null;
+    public ?string $filter;
 
     /** @readonly */
-    public ?int $source = null;
+    public ?int $source;
 
-    /** @var int[] @readonly */
-    public array $extraIds = [];
+    /**
+     * @var int[]
+     *
+     * @readonly
+     */
+    public array $extraIds;
 
     /**
      * Creates new ItemOptions object ensuring the values are proper types.
      *
      * @param array<string, mixed> $data
-     *
-     * @return static
      */
-    public static function fromUser(array $data): self {
-        $options = new static();
-
+    public function __construct(array $data) {
         if (isset($data['offset']) && is_numeric($data['offset'])) {
-            $options->offset = (int) $data['offset'];
+            $this->offset = (int) $data['offset'];
+        } else {
+            $this->offset = 0;
         }
 
         if (isset($data['search']) && is_string($data['search']) && strlen($search = trim($data['search'])) > 0) {
-            $options->search = $search;
+            $this->search = $search;
+        } else {
+            $this->search = null;
         }
 
         if (isset($data['items']) && is_numeric($data['items'])) {
-            $options->pageSize = (int) $data['items'];
+            $this->pageSize = (int) $data['items'];
+        } else {
+            $this->pageSize = null;
         }
 
         if (isset($data['fromDatetime']) && is_string($data['fromDatetime']) && strlen($data['fromDatetime']) > 0) {
-            $options->fromDatetime = new DateTime($data['fromDatetime']);
+            $this->fromDatetime = new DateTime($data['fromDatetime']);
+        } else {
+            $this->fromDatetime = null;
         }
 
         if (isset($data['fromId']) && is_numeric($data['fromId'])) {
-            $options->fromId = (int) $data['fromId'];
+            $this->fromId = (int) $data['fromId'];
+        } else {
+            $this->fromId = null;
         }
 
         if (isset($data['updatedsince']) && is_string($data['updatedsince']) && strlen($data['updatedsince']) > 0) {
-            $options->updatedSince = new DateTime($data['updatedsince']);
+            $this->updatedSince = new DateTime($data['updatedsince']);
+        } else {
+            $this->updatedSince = null;
         }
 
         if (isset($data['tag']) && is_string($data['tag']) && strlen($tag = trim($data['tag'])) > 0) {
-            $options->tag = $tag;
+            $this->tag = $tag;
+        } else {
+            $this->tag = null;
         }
 
         if (isset($data['type']) && is_string($data['type']) && in_array($filter = trim($data['type']), ['starred', 'unread'], true)) {
-            $options->filter = $filter;
+            $this->filter = $filter;
+        } else {
+            $this->filter = null;
         }
 
         if (isset($data['source']) && is_numeric($data['source'])) {
-            $options->source = (int) $data['source'];
+            $this->source = (int) $data['source'];
+        } else {
+            $this->source = null;
         }
 
         if (isset($data['extraIds']) && is_array($data['extraIds'])) {
-            $options->extraIds = array_map(
+            $this->extraIds = array_map(
                 fn($val) => (int) $val,
                 $data['extraIds']
             );
+        } else {
+            $this->extraIds = [];
         }
-
-        return $options;
     }
 }

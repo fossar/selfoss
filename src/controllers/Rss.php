@@ -50,7 +50,7 @@ class Rss {
         $lastSourceId = 0;
         $lastSourceName = '';
 
-        $options = ItemOptions::fromUser($_GET);
+        $options = new ItemOptions($_GET);
 
         // get items
         $newestEntryDate = null;

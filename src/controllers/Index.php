@@ -109,7 +109,7 @@ class Index {
      * @return array{entries: array<array{title: string, strippedTitle: string, content: string, wordCount: int, lengthWithoutTags: int, datetime: string, updatetime: string, sourcetitle: string, tags: StringKeyedArray<array{backColor: string, foreColor: string}>}>, hasMore: bool} html with items
      */
     private function loadItems(array $params, array $tags) {
-        $options = ItemOptions::fromUser($params);
+        $options = new ItemOptions($params);
         $entries = [];
         foreach ($this->itemsDao->get($options) as $item) {
             $entries[] = $this->viewHelper->preprocessEntry($item, $this->tagsController, $tags, $options->search);
