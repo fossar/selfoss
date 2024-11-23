@@ -115,9 +115,29 @@ class Sync {
     public function updateStatuses(): void {
         $this->authentication->needsLoggedIn();
 
-        if (isset($_POST['updatedStatuses'])
-            && is_array($_POST['updatedStatuses'])) {
-            $this->itemsDao->bulkStatusUpdate($_POST['updatedStatuses']);
+        if (isset($_POST['updatedStatuses'])) {
+            $updatedStatuses = $_POST['updatedStatuses'];
+            if (!is_array($updatedStatuses)) {
+                $this->view->jsonError(['updatedStatuses' => 'not an array']);
+            }
+
+            foreach ($updatedStatuses as $index => $status) {
+                if (!is_array($status)) {
+                    $this->view->jsonError(["updatedStatuses[$index]" => 'not an array']);
+                }
+
+                if (!array_key_exists('id', $status)) {
+                    $this->view->jsonError(["updatedStatuses[$index]" => 'missing id argument']);
+                }
+
+                $id = (int) $status['id'];
+                if ((string) $id !== $status['id']) {
+                    $this->view->jsonError(["updatedStatuses[$index]['id']" => 'not a number']);
+                }
+                $status['id'] = $id;
+            }
+
+            $this->itemsDao->bulkStatusUpdate($updatedStatuses);
         }
 
         $this->sync();

@@ -569,55 +569,53 @@ class Items implements \daos\ItemsInterface {
     public function bulkStatusUpdate(array $statuses): void {
         $sql = [];
         foreach ($statuses as $status) {
-            if (array_key_exists('id', $status)) {
-                $id = (int) $status['id'];
-                if ($id > 0) {
-                    $statusUpdate = null;
+            $id = (int) $status['id'];
+            if ($id > 0) {
+                $statusUpdate = null;
 
-                    // sanitize statuses
-                    foreach (['unread', 'starred'] as $sk) {
-                        if (array_key_exists($sk, $status)) {
-                            if ($status[$sk] == 'true') {
-                                $statusUpdate = [
-                                    'sk' => $sk,
-                                    'sql' => static::$stmt::isTrue($sk),
-                                ];
-                            } elseif ($status[$sk] == 'false') {
-                                $statusUpdate = [
-                                    'sk' => $sk,
-                                    'sql' => static::$stmt::isFalse($sk),
-                                ];
-                            }
-                        }
-                    }
-
-                    // sanitize update time
-                    if (array_key_exists('datetime', $status)) {
-                        $updateDate = new DateTime($status['datetime']);
-                    } else {
-                        $updateDate = null;
-                    }
-
-                    if ($statusUpdate !== null && $updateDate !== null) {
-                        $sk = $statusUpdate['sk'];
-                        if (array_key_exists($id, $sql)) {
-                            // merge status updates for the same entry and
-                            // ensure all saved status updates have been made
-                            // after the last server update for this entry.
-                            if (!array_key_exists($sk, $sql[$id]['updates'])
-                                || $updateDate > $sql[$id]['datetime']) {
-                                $sql[$id]['updates'][$sk] = $statusUpdate['sql'];
-                            }
-                            if ($updateDate < $sql[$id]['datetime']) {
-                                $sql[$id]['datetime'] = $updateDate;
-                            }
-                        } else {
-                            // create new status update
-                            $sql[$id] = [
-                                'updates' => [$sk => $statusUpdate['sql']],
-                                'datetime' => $updateDate->format('Y-m-d H:i:s'),
+                // sanitize statuses
+                foreach (['unread', 'starred'] as $sk) {
+                    if (array_key_exists($sk, $status)) {
+                        if ($status[$sk] == 'true') {
+                            $statusUpdate = [
+                                'sk' => $sk,
+                                'sql' => static::$stmt::isTrue($sk),
+                            ];
+                        } elseif ($status[$sk] == 'false') {
+                            $statusUpdate = [
+                                'sk' => $sk,
+                                'sql' => static::$stmt::isFalse($sk),
                             ];
                         }
+                    }
+                }
+
+                // sanitize update time
+                if (array_key_exists('datetime', $status)) {
+                    $updateDate = new DateTime($status['datetime']);
+                } else {
+                    $updateDate = null;
+                }
+
+                if ($statusUpdate !== null && $updateDate !== null) {
+                    $sk = $statusUpdate['sk'];
+                    if (array_key_exists($id, $sql)) {
+                        // merge status updates for the same entry and
+                        // ensure all saved status updates have been made
+                        // after the last server update for this entry.
+                        if (!array_key_exists($sk, $sql[$id]['updates'])
+                            || $updateDate > $sql[$id]['datetime']) {
+                            $sql[$id]['updates'][$sk] = $statusUpdate['sql'];
+                        }
+                        if ($updateDate < $sql[$id]['datetime']) {
+                            $sql[$id]['datetime'] = $updateDate;
+                        }
+                    } else {
+                        // create new status update
+                        $sql[$id] = [
+                            'updates' => [$sk => $statusUpdate['sql']],
+                            'datetime' => $updateDate->format('Y-m-d H:i:s'),
+                        ];
                     }
                 }
             }
