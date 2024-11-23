@@ -24,7 +24,7 @@ final class FilterFactory {
             return new AcceptingFilter();
         }
 
-        if (@preg_match('/^(?P<negated>!)?(?:(?P<field>[^:]*):)?(?P<regex>.+)$/', $expression, $match) === 0) {
+        if (preg_match('/^(?P<negated>!)?(?:(?P<field>[^:]*):)?(?P<regex>.+)$/', $expression, $match) !== 1) {
             throw new FilterSyntaxError("Invalid filter expression {$expression}, see https://selfoss.aditu.de/docs/usage/filters/");
         }
 

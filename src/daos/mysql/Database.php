@@ -324,6 +324,8 @@ class Database implements \daos\DatabaseInterface {
                 $shouldUpdateSourceTags = false;
 
                 $sourceTags = explode(',', $source['tags']);
+                // For PHPStan: the lengths of the two arrays should be same, so there will be no nulls.
+                /** @var array<array{string, string}> */
                 $sourceTagPairs = array_map(
                     null,
                     $sourceTags,
