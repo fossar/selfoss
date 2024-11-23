@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Spouts;
 
-use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
@@ -32,9 +31,9 @@ final class TwitterTest extends TestCase {
     private function makeSpout($spout, array $responses): spout {
         $mock = new MockHandler($responses);
         $stack = HandlerStack::create($mock);
-        $httpClient = new Client([
+        $httpClientConfig = [
             'handler' => $stack,
-        ]);
+        ];
 
         $container = new Container();
         $container->setDefaults(['shared' => false]);
@@ -45,9 +44,9 @@ final class TwitterTest extends TestCase {
             ->setShared(true)
         ;
         $container
-            ->register(WebClient::class, function() use ($httpClient) {
+            ->register(WebClient::class, function() use ($httpClientConfig) {
                 $stub = $this->createMock(WebClient::class);
-                $stub->method('getHttpClient')->willReturn($httpClient);
+                $stub->method('createHttpClientConfig')->willReturn($httpClientConfig);
 
                 return $stub;
             })

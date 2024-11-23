@@ -32,8 +32,7 @@ class TwitterV1ApiClientFactory {
     ): TwitterV1ApiClient {
         $access_token_used = !empty($accessToken) && !empty($accessTokenSecret);
 
-        $oldClient = $this->webClient->getHttpClient();
-        $config = $oldClient->getConfig();
+        $config = $this->webClient->createHttpClientConfig();
 
         $config['base_uri'] = 'https://api.twitter.com/1.1/';
         $config['auth'] = 'oauth';
@@ -43,7 +42,6 @@ class TwitterV1ApiClientFactory {
             'token' => $access_token_used ? $accessToken : '',
             'token_secret' => $access_token_used ? $accessTokenSecret : '',
         ]);
-        $config['handler'] = clone $config['handler']; // we do not want to contaminate other spouts
         $config['handler']->push($middleware);
 
         $httpClient = new GuzzleHttp\Client($config);

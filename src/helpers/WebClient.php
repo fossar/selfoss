@@ -33,47 +33,56 @@ class WebClient {
      */
     public function getHttpClient(): GuzzleHttp\Client {
         if ($this->httpClient === null) {
-            $stack = HandlerStack::create();
-            $stack->push(new GuzzleTranscoder());
-
-            if ($this->configuration->loggerLevel === Configuration::LOGGER_LEVEL_DEBUG) {
-                if ($this->configuration->debug === 0) {
-                    $logFormat = GuzzleHttp\MessageFormatter::SHORT;
-                } elseif ($this->configuration->debug === 1) {
-                    $logFormat = ">>>>>>>>\n{req_headers}\n<<<<<<<<\n{res_headers}\n--------\n{error}";
-                } else {
-                    $logFormat = GuzzleHttp\MessageFormatter::DEBUG;
-                }
-
-                $logger = GuzzleHttp\Middleware::log(
-                    $this->logger,
-                    new GuzzleHttp\MessageFormatter($logFormat),
-                    \Psr\Log\LogLevel::DEBUG
-                );
-                $stack->push($logger);
-            }
-
-            $httpClient = new GuzzleHttp\Client([
-                'allow_redirects' => [
-                    'track_redirects' => true,
-                ],
-                'headers' => [
-                    'User-Agent' => self::getUserAgent(),
-                ],
-                'handler' => $stack,
-                'timeout' => 60, // seconds
-                'curl' => [
-                    // Guzzle will not send Accept-Encoding by default.
-                    // https://github.com/guzzle/guzzle/pull/3215
-                    // Delegate choosing compression method to curl.
-                    \CURLOPT_ENCODING => '',
-                ],
-            ]);
+            $httpClient = new GuzzleHttp\Client($this->createHttpClientConfig());
 
             $this->httpClient = $httpClient;
         }
 
         return $this->httpClient;
+    }
+
+    /**
+     * Create a config for HTTP client for use by spouts.
+     *
+     * @return array<string, mixed> $config
+     */
+    public function createHttpClientConfig(): array {
+        $stack = HandlerStack::create();
+        $stack->push(new GuzzleTranscoder());
+
+        if ($this->configuration->loggerLevel === Configuration::LOGGER_LEVEL_DEBUG) {
+            if ($this->configuration->debug === 0) {
+                $logFormat = GuzzleHttp\MessageFormatter::SHORT;
+            } elseif ($this->configuration->debug === 1) {
+                $logFormat = ">>>>>>>>\n{req_headers}\n<<<<<<<<\n{res_headers}\n--------\n{error}";
+            } else {
+                $logFormat = GuzzleHttp\MessageFormatter::DEBUG;
+            }
+
+            $logger = GuzzleHttp\Middleware::log(
+                $this->logger,
+                new GuzzleHttp\MessageFormatter($logFormat),
+                \Psr\Log\LogLevel::DEBUG
+            );
+            $stack->push($logger);
+        }
+
+        return [
+            'allow_redirects' => [
+                'track_redirects' => true,
+            ],
+            'headers' => [
+                'User-Agent' => self::getUserAgent(),
+            ],
+            'handler' => $stack,
+            'timeout' => 60, // seconds
+            'curl' => [
+                // Guzzle will not send Accept-Encoding by default.
+                // https://github.com/guzzle/guzzle/pull/3215
+                // Delegate choosing compression method to curl.
+                \CURLOPT_ENCODING => '',
+            ],
+        ];
     }
 
     /**
