@@ -237,30 +237,36 @@ class TwitterV1ApiClient {
                 /** @var int $start */
                 $start = $entity->indices[0];
                 $end = $entity->indices[1];
-                if ($type === 'hashtags') {
-                    $result[$start] = [
-                        'text' => '#' . $entity->text,
-                        'url' => 'https://twitter.com/hashtag/' . urlencode($entity->text),
-                        'end' => $end,
-                    ];
-                } elseif ($type === 'symbols') {
-                    $result[$start] = [
-                        'text' => '$' . $entity->text,
-                        'url' => 'https://twitter.com/search?q=%24' . urlencode($entity->text),
-                        'end' => $end,
-                    ];
-                } elseif ($type === 'user_mentions') {
-                    $result[$start] = [
-                        'text' => '@' . $entity->screen_name,
-                        'url' => 'https://twitter.com/' . urlencode($entity->screen_name),
-                        'end' => $end,
-                    ];
-                } elseif ($type === 'urls' || $type === 'media') {
-                    $result[$start] = [
-                        'text' => $entity->display_url,
-                        'url' => $entity->expanded_url,
-                        'end' => $end,
-                    ];
+                switch ($type) {
+                    case 'hashtags':
+                        $result[$start] = [
+                            'text' => '#' . $entity->text,
+                            'url' => 'https://twitter.com/hashtag/' . urlencode($entity->text),
+                            'end' => $end,
+                        ];
+                        break;
+                    case 'symbols':
+                        $result[$start] = [
+                            'text' => '$' . $entity->text,
+                            'url' => 'https://twitter.com/search?q=%24' . urlencode($entity->text),
+                            'end' => $end,
+                        ];
+                        break;
+                    case 'user_mentions':
+                        $result[$start] = [
+                            'text' => '@' . $entity->screen_name,
+                            'url' => 'https://twitter.com/' . urlencode($entity->screen_name),
+                            'end' => $end,
+                        ];
+                        break;
+                    case 'urls':
+                    case 'media':
+                        $result[$start] = [
+                            'text' => $entity->display_url,
+                            'url' => $entity->expanded_url,
+                            'end' => $end,
+                        ];
+                        break;
                 }
             }
         }
