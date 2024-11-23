@@ -10,7 +10,7 @@ require __DIR__ . '/src/common.php';
 
 /** @var ContainerInterface $container */
 $loader = $container->get(helpers\ContentLoader::class);
-$updateVisitor = new class() implements UpdateVisitor {
+$updateVisitor = new class implements UpdateVisitor {
     public function started(int $count): void {
     }
 

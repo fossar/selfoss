@@ -64,7 +64,7 @@ class Update {
             // Server-sent events inspired response format.
             header('Content-Type: text/event-stream');
 
-            $updateVisitor = new class() implements UpdateVisitor {
+            $updateVisitor = new class implements UpdateVisitor {
                 private int $finishedCount = 0;
 
                 private function sendEvent(string $type, string $data = '{}'): void {
@@ -86,7 +86,7 @@ class Update {
                 }
             };
         } else {
-            $updateVisitor = new class() implements UpdateVisitor {
+            $updateVisitor = new class implements UpdateVisitor {
                 public function started(int $count): void {
                 }
 
