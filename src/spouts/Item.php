@@ -243,10 +243,17 @@ class Item {
      * @return Item<NewExtra>
      */
     public function withExtraData($extraData): Item {
-        /** @var Item<NewExtra> */ // For PHPStan
-        $modified = clone $this;
-        $modified->extraData = $extraData;
-
-        return $modified;
+        return new self(
+            $this->id,
+            $this->title,
+            $this->content,
+            $this->thumbnail,
+            $this->icon,
+            $this->link,
+            $this->date,
+            $this->author,
+            // Replace with a new value (possibly using a different type).
+            $extraData
+        );
     }
 }
