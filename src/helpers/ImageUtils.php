@@ -64,11 +64,12 @@ class ImageUtils {
         $icons = [];
         $i = 0;
         foreach ($links as $link) {
-            if (preg_match('#\shref=(?:("|\')(?P<url>.+)\1|(?P<uq_url>[^\s"\'=><`]+?))#iU', $link[0], $href)) {
+            if (preg_match('#\shref=(?:("|\')(?P<url>.+)\1|(?P<uq_url>[^\s"\'=><`]+?))#iU', $link[0], $href, PREG_UNMATCHED_AS_NULL)) {
+                // For PHPStan: The capture groups are all the alternatives so it cannot be null.
+                /** @var non-empty-string */
+                $url = $href['uq_url'] ?? $href['url'];
                 $icons[] = [
-                    // Unmatched group should return an empty string but they are missing.
-                    // https://bugs.php.net/bug.php?id=50887
-                    'url' => isset($href['uq_url']) && $href['uq_url'] !== '' ? $href['uq_url'] : $href['url'],
+                    'url' => $url,
                     // Sizes are only used by Apple.
                     // https://developer.apple.com/library/archive/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html
                     'sizes' => preg_match('#\ssizes=("|\'|)(?P<sizes>[0-9\.]+)x\2\1#i', $link[0], $sizes)
