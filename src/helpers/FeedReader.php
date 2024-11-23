@@ -30,7 +30,7 @@ class FeedReader {
             WebClient::class => $webClient,
         ]);
 
-        $this->simplepie->set_file_class(SimplePieFileGuzzle::class);
+        $this->simplepie->get_registry()->register(\SimplePie\File::class, SimplePieFileGuzzle::class, true);
         $this->simplepie->set_autodiscovery_level(SimplePie::LOCATOR_AUTODISCOVERY | SimplePie::LOCATOR_LOCAL_EXTENSION | SimplePie::LOCATOR_LOCAL_BODY);
         $this->simplepie->set_useragent($webClient->getUserAgent());
     }
