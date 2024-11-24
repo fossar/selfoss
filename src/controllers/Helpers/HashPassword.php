@@ -24,7 +24,7 @@ final class HashPassword {
      * json
      */
     public function hash(): void {
-        $this->authentication->needsLoggedIn();
+        $this->authentication->ensureIsPrivileged();
 
         if (!isset($_POST['password'])) {
             $this->view->jsonError([

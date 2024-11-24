@@ -42,7 +42,7 @@ class Import {
      * @note Borrows from controllers/Sources.php:write
      */
     public function add(): void {
-        $this->authentication->needsLoggedIn();
+        $this->authentication->ensureIsPrivileged();
 
         http_response_code(400);
 

@@ -16,6 +16,12 @@ use Monolog\Logger;
 
 /**
  * Helper class for user authentication.
+ *
+ * selfoss currently has three kinds of controlled resources that user can be authorized to access:
+ *
+ *  - **Read**: Read-only access available to unauthenticated users if *public mode* is enabled.
+ *  - **Update**: Allows triggering source updates when *public update mode* is enabled.
+ *  - **Privileged**: Any other operation (admin) user, full access without any limitations.
  */
 class Authentication {
     private bool $loggedin = false;
@@ -88,10 +94,7 @@ class Authentication {
         return true;
     }
 
-    /**
-     * isloggedin
-     */
-    public function isLoggedin(): bool {
+    private function isPrivileged(): bool {
         if ($this->enabled() === false) {
             return true;
         }
@@ -103,7 +106,7 @@ class Authentication {
      * showPrivateTags
      */
     public function showPrivateTags(): bool {
-        return $this->isLoggedin();
+        return $this->isPrivileged();
     }
 
     /**
@@ -117,19 +120,19 @@ class Authentication {
     }
 
     /**
-     * send 403 if not logged in and not public mode
+     * If user is not authorized to read, force them to authenticate.
      */
-    public function needsLoggedInOrPublicMode(): void {
-        if ($this->isLoggedin() !== true && !$this->configuration->public) {
+    public function ensureCanRead(): void {
+        if ($this->isPrivileged() !== true && !$this->configuration->public) {
             $this->forbidden();
         }
     }
 
     /**
-     * send 403 if not logged in
+     * If user is not authorized to privileged operations, force them to authenticate.
      */
-    public function needsLoggedIn(): void {
-        if ($this->isLoggedin() !== true) {
+    public function ensureIsPrivileged(): void {
+        if ($this->isPrivileged() !== true) {
             $this->forbidden();
         }
     }
@@ -151,7 +154,7 @@ class Authentication {
      * or public update must be allowed in the config.
      */
     public function allowedToUpdate(): bool {
-        return $this->isLoggedin() === true
+        return $this->isPrivileged() === true
             || $_SERVER['REMOTE_ADDR'] === $_SERVER['SERVER_ADDR']
             || $_SERVER['REMOTE_ADDR'] === '127.0.0.1'
             || $this->configuration->allowPublicUpdateAccess;

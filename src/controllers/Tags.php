@@ -70,7 +70,7 @@ class Tags {
      * set tag color
      */
     public function color(): void {
-        $this->authentication->needsLoggedIn();
+        $this->authentication->ensureIsPrivileged();
 
         $data = $this->request->getData();
 
@@ -101,7 +101,7 @@ class Tags {
      * html
      */
     public function listTags(): void {
-        $this->authentication->needsLoggedInOrPublicMode();
+        $this->authentication->ensureCanRead();
 
         $tags = $this->tagsDao->getWithUnread();
 

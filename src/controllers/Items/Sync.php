@@ -39,7 +39,7 @@ class Sync {
      * json
      */
     public function sync(): void {
-        $this->authentication->needsLoggedInOrPublicMode();
+        $this->authentication->ensureCanRead();
 
         if (isset($_GET['since'])) {
             $params = $_GET;
@@ -113,7 +113,7 @@ class Sync {
      * Items statuses bulk update.
      */
     public function updateStatuses(): void {
-        $this->authentication->needsLoggedIn();
+        $this->authentication->ensureIsPrivileged();
 
         if (isset($_POST['updatedStatuses'])) {
             $updatedStatuses = $_POST['updatedStatuses'];

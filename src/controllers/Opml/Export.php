@@ -79,7 +79,7 @@ class Export {
      * @note Uses the selfoss namespace to store selfoss-specific information
      */
     public function export(): void {
-        $this->authentication->needsLoggedIn();
+        $this->authentication->ensureIsPrivileged();
 
         $this->logger->debug('start OPML export');
         $this->writer->openMemory();

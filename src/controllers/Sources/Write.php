@@ -51,7 +51,7 @@ class Write {
      * @param ?string $id ID of source to update, or null to create a new one
      */
     public function write(?string $id = null): void {
-        $this->authentication->needsLoggedIn();
+        $this->authentication->ensureIsPrivileged();
 
         $data = $this->request->getData();
 

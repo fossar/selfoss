@@ -37,7 +37,7 @@ class Sources {
      * json
      */
     public function show(): void {
-        $this->authentication->needsLoggedIn();
+        $this->authentication->ensureIsPrivileged();
 
         // get available spouts
         $spouts = $this->spoutLoader->all();
@@ -61,7 +61,7 @@ class Sources {
      * json
      */
     public function add(): void {
-        $this->authentication->needsLoggedIn();
+        $this->authentication->ensureIsPrivileged();
 
         $spouts = $this->spoutLoader->all();
 
@@ -75,7 +75,7 @@ class Sources {
      * json
      */
     public function params(): void {
-        $this->authentication->needsLoggedIn();
+        $this->authentication->ensureIsPrivileged();
 
         if (!isset($_GET['spout'])) {
             $this->view->error('no spout type given');
@@ -102,7 +102,7 @@ class Sources {
      * @param string $id ID of source to remove
      */
     public function remove(string $id): void {
-        $this->authentication->needsLoggedIn();
+        $this->authentication->ensureIsPrivileged();
 
         try {
             $id = Misc::forceId($id);
@@ -126,7 +126,7 @@ class Sources {
      * json
      */
     public function listSources(): void {
-        $this->authentication->needsLoggedIn();
+        $this->authentication->ensureIsPrivileged();
 
         // load sources
         $sources = $this->sourcesDao->getWithIcon();
@@ -145,7 +145,7 @@ class Sources {
      * json
      */
     public function spouts(): void {
-        $this->authentication->needsLoggedIn();
+        $this->authentication->ensureIsPrivileged();
 
         $spouts = $this->spoutLoader->all();
         $this->view->jsonSuccess($spouts);
@@ -156,7 +156,7 @@ class Sources {
      * json
      */
     public function stats(): void {
-        $this->authentication->needsLoggedInOrPublicMode();
+        $this->authentication->ensureCanRead();
 
         // load sources
         $sources = $this->sourcesDao->getWithUnread();

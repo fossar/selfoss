@@ -30,7 +30,7 @@ class Stats {
      * json
      */
     public function stats(): void {
-        $this->authentication->needsLoggedInOrPublicMode();
+        $this->authentication->ensureCanRead();
 
         $stats = $this->itemsDao->stats();
 

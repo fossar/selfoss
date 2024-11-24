@@ -60,7 +60,7 @@ class Index {
             return;
         }
 
-        $this->authentication->needsLoggedInOrPublicMode();
+        $this->authentication->ensureCanRead();
 
         // load tags
         $tags = $this->tagsDao->getWithUnread();

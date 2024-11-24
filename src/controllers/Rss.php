@@ -38,7 +38,7 @@ class Rss {
      * rss feed
      */
     public function rss(): void {
-        $this->authentication->needsLoggedInOrPublicMode();
+        $this->authentication->ensureCanRead();
 
         $this->feedWriter->setTitle($this->configuration->rssTitle);
         $this->feedWriter->setChannelElement('description', '');
