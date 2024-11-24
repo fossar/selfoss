@@ -375,7 +375,7 @@ function SourceEditForm({
     const sourceParamsContent = sourceParamsLoading ? (
         <Spinner size="3x" label={_('source_params_loading')} />
     ) : (
-        sourceParamsError ??
+        (sourceParamsError ??
         (Object.keys(spouts).includes(source.spout) &&
         Object.keys(spouts[source.spout].params).length > 0 ? (
             <ul>
@@ -396,7 +396,7 @@ function SourceEditForm({
                     ),
                 )}
             </ul>
-        ) : null)
+        ) : null))
     );
 
     return (
