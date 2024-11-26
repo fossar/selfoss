@@ -16,6 +16,12 @@ const config = {
         sourceType: 'module',
     },
 
+    settings: {
+        react: {
+            version: 'detect',
+        },
+    },
+
     files: ['**/*.js', '**/*.jsx'],
 
     rules: {
