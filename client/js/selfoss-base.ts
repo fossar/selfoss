@@ -199,7 +199,7 @@ class selfoss {
         this.db.enableOffline.update(enableOffline);
         window.localStorage.setItem(
             'enableOffline',
-            this.db.enableOffline.value,
+            this.db.enableOffline.value.toString(),
         );
         if (!this.db.enableOffline.value) {
             this.db.clear();
@@ -441,7 +441,7 @@ class selfoss {
             return Promise.reject(error);
         }
 
-        const httpCode = error?.response?.status || 0;
+        const httpCode = 'response' in error ? error.response.status : 0;
 
         if (tryOffline && httpCode != 403) {
             return this.db.setOffline();

@@ -15,6 +15,7 @@ export default class DbOffline {
     public newerEntriesMissing: boolean = false;
     public shouldLoadEntriesOnline: boolean = false;
     public olderEntriesOnline: boolean = false;
+    public needsSync: boolean;
 
     _tr(...args) {
         return selfoss.db.storage.transaction(...args).catch((error) => {
@@ -342,7 +343,11 @@ export default class DbOffline {
     reloadOnlineStats() {
         return this._tr('r', [selfoss.db.storage.stats], () => {
             selfoss.db.storage.stats.toArray((stats) => {
-                const newStats = {};
+                const newStats = {
+                    unread: 0,
+                    starred: 0,
+                    total: 0,
+                };
                 stats.forEach((stat) => {
                     newStats[stat.name] = stat.value;
                 });
