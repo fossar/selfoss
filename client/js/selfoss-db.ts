@@ -12,39 +12,42 @@
 import selfoss from './selfoss-base';
 import { OfflineStorageNotAvailableError } from './errors';
 import { ValueListenable } from './helpers/ValueListenable';
+import { OfflineDb } from './model/OfflineDb';
 
-selfoss.db = {
+export default class Db {
     /** When an error occurs we disable the offline mode and mark the database as broken so it can be retried. */
-    broken: false,
-    storage: null,
-    online: true,
-    enableOffline: new ValueListenable(
+    public broken: boolean = false;
+    public storage: OfflineDb | null = null;
+    public online: boolean = true;
+    public enableOffline: ValueListenable<boolean> = new ValueListenable(
         window.localStorage.getItem('enableOffline') === 'true',
-    ),
-    userWaiting: true,
+    );
+    public userWaiting: boolean = true;
 
     /**
      * last db timestamp known client side
      */
-    lastUpdate: null,
+    public lastUpdate: Date | null = null;
+
+    public lastSync: number | null = null;
 
     setOnline() {
-        if (!selfoss.db.online) {
-            selfoss.db.online = true;
-            selfoss.db.sync();
+        if (!this.online) {
+            this.online = true;
+            this.sync();
             selfoss.reloadTags();
             selfoss.app.setOfflineState(false);
         }
-    },
+    }
 
-    tryOnline(): Promise<undefined> {
-        return selfoss.db.sync(true);
-    },
+    tryOnline(): Promise<void> {
+        return this.sync(true);
+    }
 
     setOffline(): Promise<void> {
-        if (selfoss.db.storage && !selfoss.db.broken) {
+        if (this.storage && !this.broken) {
             selfoss.dbOnline._syncDone(false);
-            selfoss.db.online = false;
+            this.online = false;
             selfoss.app.setOfflineState(true);
 
             return Promise.resolve();
@@ -52,26 +55,26 @@ selfoss.db = {
             const err = new OfflineStorageNotAvailableError();
             return Promise.reject(err);
         }
-    },
+    }
 
     clear() {
-        if (selfoss.db.storage) {
+        if (this.storage) {
             window.localStorage.removeItem('offlineDays');
-            const clearing = selfoss.db.storage.delete();
-            selfoss.db.storage = null;
-            selfoss.db.lastUpdate = null;
+            const clearing = this.storage.delete();
+            this.storage = null;
+            this.lastUpdate = null;
             return clearing;
         } else {
             return Promise.resolve();
         }
-    },
+    }
 
     isValidTag(name) {
         return (
             selfoss.app.state.tags.length === 0 ||
             selfoss.app.state.tags.find((tag) => tag.tag === name) !== undefined
         );
-    },
+    }
 
     isValidSource(id) {
         return (
@@ -79,19 +82,17 @@ selfoss.db = {
             selfoss.app.state.sources.find((source) => source.id === id) !==
                 undefined
         );
-    },
-
-    lastSync: null,
+    }
 
     sync(force = false) {
         const lastUpdateIsOld =
-            selfoss.db.lastUpdate === null ||
-            selfoss.db.lastSync === null ||
-            Date.now() - selfoss.db.lastSync > 5 * 60 * 1000;
+            this.lastUpdate === null ||
+            this.lastSync === null ||
+            Date.now() - this.lastSync > 5 * 60 * 1000;
         const shouldSync =
             force || selfoss.dbOffline.needsSync || lastUpdateIsOld;
         if (selfoss.isAllowedToRead() && selfoss.isOnline() && shouldSync) {
-            if (selfoss.db.enableOffline.value) {
+            if (this.enableOffline.value) {
                 return selfoss.dbOffline.sendNewStatuses();
             } else {
                 return selfoss.dbOnline.sync();
@@ -99,5 +100,5 @@ selfoss.db = {
         } else {
             return Promise.resolve(); // ensure any chained function runs
         }
-    },
-};
+    }
+}

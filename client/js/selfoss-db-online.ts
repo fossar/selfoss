@@ -8,85 +8,94 @@ export type FetchParams = {
     type: FilterType;
 };
 
-selfoss.dbOnline = {
-    syncing: {
+export default class DbOnline {
+    public syncing: {
+        promise: Promise<void> | null;
+        request: {
+            promise: Promise<SyncResponse>;
+            controller: AbortController;
+        } | null;
+        resolve: () => void | null;
+        reject: () => void | null;
+    } = {
         promise: null,
         request: null,
         resolve: null,
         reject: null,
-    },
-    statsDirty: false,
-    firstSync: true,
+    };
+    public statsDirty: boolean = false;
+    public firstSync: boolean = true;
 
     _syncBegin() {
-        if (!selfoss.dbOnline.syncing.promise) {
-            selfoss.dbOnline.syncing.promise = new Promise(
-                (resolve, reject) => {
-                    selfoss.dbOnline.syncing.resolve = resolve;
-                    selfoss.dbOnline.syncing.reject = reject;
-                    const monitor = window.setInterval(() => {
-                        let stopChecking = false;
-                        if (selfoss.dbOnline.syncing.promise) {
-                            if (selfoss.db.userWaiting) {
-                                // reject if user has been waiting for more than 10s,
-                                // this means that connectivity is bad: user will get
-                                // local content and server request will continue in
-                                // the background.
-                                reject();
-                                stopChecking = true;
-                            }
-                        } else {
+        if (!this.syncing.promise) {
+            this.syncing.promise = new Promise((resolve, reject) => {
+                this.syncing.resolve = resolve;
+                this.syncing.reject = reject;
+                const monitor = window.setInterval(() => {
+                    let stopChecking = false;
+                    if (this.syncing.promise) {
+                        if (selfoss.db.userWaiting) {
+                            // reject if user has been waiting for more than 10s,
+                            // this means that connectivity is bad: user will get
+                            // local content and server request will continue in
+                            // the background.
+                            reject();
                             stopChecking = true;
                         }
+                    } else {
+                        stopChecking = true;
+                    }
 
-                        if (stopChecking) {
-                            window.clearInterval(monitor);
-                        }
-                    }, 10000);
-                },
-            );
+                    if (stopChecking) {
+                        window.clearInterval(monitor);
+                    }
+                }, 10000);
+            });
 
-            selfoss.dbOnline.syncing.promise.finally(() => {
-                selfoss.dbOnline.syncing.promise = null;
+            this.syncing.promise.finally(() => {
+                this.syncing.promise = null;
                 selfoss.db.userWaiting = false;
             });
         }
 
-        return selfoss.dbOnline.syncing.promise;
-    },
+        return this.syncing.promise;
+    }
 
     _syncDone(success: boolean = true): void {
-        if (selfoss.dbOnline.syncing.promise) {
+        if (this.syncing.promise) {
             if (success) {
-                selfoss.dbOnline.syncing.resolve();
+                this.syncing.resolve();
             } else {
-                const request = selfoss.dbOnline.syncing.request;
-                selfoss.dbOnline.syncing.reject();
+                const request = this.syncing.request;
+                this.syncing.reject();
                 if (request) {
                     request.controller.abort();
                 }
             }
         }
-    },
+    }
 
     /**
      * sync server status.
      */
-    sync(updatedStatuses, chained: boolean): Promise<undefined> {
-        if (selfoss.dbOnline.syncing.promise && !chained) {
+    sync(
+        updatedStatuses: Array<StatusUpdate> | undefined = undefined,
+        chained: boolean = false,
+    ): Promise<void> {
+        if (this.syncing.promise && !chained) {
             if (updatedStatuses) {
                 // Ensure the status queue is not cleared and gets sync'ed at
                 // next sync.
                 return Promise.reject();
             } else {
-                return selfoss.dbOnline.syncing.promise;
+                return this.syncing.promise;
             }
         }
 
-        const syncing = selfoss.dbOnline._syncBegin();
+        const syncing = this._syncBegin();
 
         let getStatuses = true;
-        if (selfoss.db.lastUpdate === null || selfoss.dbOnline.firstSync) {
+        if (selfoss.db.lastUpdate === null || this.firstSync) {
             selfoss.db.lastUpdate = new Date(0);
             getStatuses = undefined;
         }
@@ -108,19 +117,16 @@ selfoss.dbOnline = {
             syncParams.itemsHowMany = selfoss.config.itemsPerPage;
         }
 
-        selfoss.dbOnline.statsDirty = false;
+        this.statsDirty = false;
 
-        selfoss.dbOnline.syncing.request = itemsRequests.sync(
-            updatedStatuses,
-            syncParams,
-        );
+        this.syncing.request = itemsRequests.sync(updatedStatuses, syncParams);
 
-        selfoss.dbOnline.syncing.request.promise
+        this.syncing.request.promise
             .then((data) => {
                 selfoss.db.setOnline();
 
                 selfoss.db.lastSync = Date.now();
-                selfoss.dbOnline.firstSync = false;
+                this.firstSync = false;
 
                 const dataDate = data.lastUpdate;
 
@@ -148,7 +154,7 @@ selfoss.dbOnline = {
                             .storeEntries(data.newItems)
                             .then(() => {
                                 selfoss.dbOffline.storeLastUpdate(dataDate);
-                                selfoss.dbOnline._syncDone();
+                                this._syncDone();
                             });
                     }
 
@@ -179,7 +185,7 @@ selfoss.dbOnline = {
                     }
                 }
 
-                if (!selfoss.dbOnline.statsDirty && 'stats' in data) {
+                if (!this.statsDirty && 'stats' in data) {
                     selfoss.refreshStats(
                         data.stats.total,
                         data.stats.unread,
@@ -237,11 +243,11 @@ selfoss.dbOnline = {
                 selfoss.db.lastUpdate = dataDate;
 
                 if (!storing) {
-                    selfoss.dbOnline._syncDone();
+                    this._syncDone();
                 }
             })
             .catch((error) => {
-                selfoss.dbOnline._syncDone(false);
+                this._syncDone(false);
                 selfoss.handleAjaxError(error).catch((error) => {
                     selfoss.app.showError(
                         selfoss.app._('error_sync') + ' ' + error.message,
@@ -249,13 +255,13 @@ selfoss.dbOnline = {
                 });
             })
             .finally(() => {
-                if (selfoss.dbOnline.syncing.promise) {
-                    selfoss.dbOnline.syncing.request = null;
+                if (this.syncing.promise) {
+                    this.syncing.request = null;
                 }
             });
 
         return syncing;
-    },
+    }
 
     /**
      * refresh current items.
@@ -308,5 +314,5 @@ selfoss.dbOnline = {
                     return selfoss.dbOffline.getEntries(fetchParams);
                 });
             });
-    },
-};
+    }
+}
