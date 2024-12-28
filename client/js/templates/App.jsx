@@ -213,7 +213,7 @@ function PureApp({
 
                 <Route path="/opml">
                     <CheckAuthorization
-                        isAllowed={selfoss.isAllowedToWrite()}
+                        isAllowed={isAllowedToWrite}
                         returnLocation="/opml"
                         _={_}
                     >
