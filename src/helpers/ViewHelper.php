@@ -122,12 +122,47 @@ class ViewHelper {
     /**
      * Prepare entry as expected by the client.
      *
-     * @param array{title: string, content: string, datetime: DateTime, updatetime: DateTime, sourcetitle: string, tags: string[]} $item item to modify
+     * @param array{
+     *     id: int,
+     *     title: string,
+     *     content: string,
+     *     unread: bool,
+     *     starred: bool,
+     *     source: int,
+     *     thumbnail: string,
+     *     icon: string,
+     *     uid: string,
+     *     link: string,
+     *     datetime: DateTime,
+     *     updatetime: DateTime,
+     *     sourcetitle: string,
+     *     author: string,
+     *     tags: string[],
+     * } $item item to modify
      * @param \controllers\Tags $tagsController tags controller
      * @param ?array<array{tag: string, color: string}> $tags list of tags
      * @param ?string $search search query
      *
-     * @return array{title: string, strippedTitle: string, content: string, wordCount: int, lengthWithoutTags: int, datetime: string, updatetime: string, sourcetitle: string, tags: StringKeyedArray<array{backColor: string, foreColor: string}>} modified item
+     * @return array{
+     *     id: int,
+     *     title: string,
+     *     strippedTitle: string,
+     *     content: string,
+     *     unread: bool,
+     *     starred: bool,
+     *     source: int,
+     *     thumbnail: string,
+     *     icon: string,
+     *     uid: string,
+     *     link: string,
+     *     wordCount: int,
+     *     lengthWithoutTags: int,
+     *     datetime: string,
+     *     updatetime: string,
+     *     sourcetitle: string,
+     *     author: string,
+     *     tags: StringKeyedArray<array{backColor: string, foreColor: string}>,
+     * } modified item
      */
     public function preprocessEntry(array $item, \controllers\Tags $tagsController, ?array $tags = null, ?string $search = null): array {
         // parse tags and assign tag colors
