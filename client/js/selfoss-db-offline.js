@@ -3,6 +3,8 @@ import { OfflineStorageNotAvailableError } from './errors';
 import Dexie from 'dexie';
 import { FilterType } from './Filter';
 
+const ENTRY_STATUS_NAMES = ['unread', 'starred'];
+
 selfoss.dbOffline = {
     /** @var Date the datetime of the newest garbage collected entry, i.e. deleted because not of interest. */
     newestGCedEntry: null,
@@ -464,7 +466,7 @@ selfoss.dbOffline = {
                     itemStatuses.forEach((itemStatus) => {
                         const newStatus = {};
 
-                        selfoss.db.entryStatusNames.forEach((statusName) => {
+                        ENTRY_STATUS_NAMES.forEach((statusName) => {
                             if (statusName in itemStatus) {
                                 statsDiff[statusName] = 0;
                                 newStatus[statusName] = itemStatus[statusName];

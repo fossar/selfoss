@@ -21,7 +21,6 @@ selfoss.db = {
     enableOffline: new ValueListenable(
         window.localStorage.getItem('enableOffline') === 'true',
     ),
-    entryStatusNames: ['unread', 'starred'],
     userWaiting: true,
 
     /**
