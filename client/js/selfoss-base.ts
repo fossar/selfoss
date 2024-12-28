@@ -7,6 +7,9 @@ import { HttpError, TimeoutError } from './errors';
 import { Configuration } from './model/Configuration';
 import { LoadingState } from './requests/LoadingState';
 import { App, createApp } from './templates/App';
+import DbOnline from './selfoss-db-online';
+import DbOffline from './selfoss-db-offline';
+import Db from './selfoss-db';
 
 /**
  * base javascript application
@@ -33,6 +36,10 @@ const selfoss = {
      * Whether lightbox is open.
      */
     lightboxActive: new ValueListenable(false),
+
+    db: new Db(),
+    dbOnline: new DbOnline(),
+    dbOffline: new DbOffline(),
 
     /**
      * initialize application
