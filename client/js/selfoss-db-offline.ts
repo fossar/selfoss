@@ -1,10 +1,15 @@
 import selfoss from './selfoss-base';
 import { OfflineStorageNotAvailableError } from './errors';
-import Dexie from 'dexie';
+import Dexie, {
+    PromiseExtended,
+    Table,
+    Transaction,
+    TransactionMode,
+} from 'dexie';
 import { OfflineDb } from './model/OfflineDb';
 import { FilterType } from './Filter';
 
-const ENTRY_STATUS_NAMES = ['unread', 'starred'];
+const ENTRY_STATUS_NAMES: Array<'unread' | 'starred'> = ['unread', 'starred'];
 
 export default class DbOffline {
     /** @var Date the datetime of the newest garbage collected entry, i.e. deleted because not of interest. */
@@ -17,25 +22,31 @@ export default class DbOffline {
     public olderEntriesOnline: boolean = false;
     public needsSync: boolean;
 
-    _tr(...args) {
-        return selfoss.db.storage.transaction(...args).catch((error) => {
-            selfoss.app.showError(
-                selfoss.app._('error_offline_storage', {
-                    '0': error.message,
-                }),
-            );
-            selfoss.db.broken = true;
-            selfoss.db.enableOffline.update(false);
-            selfoss.entries?.reload();
+    _tr<U>(
+        mode: TransactionMode,
+        tables: Table[],
+        scope: (trans: Transaction) => PromiseLike<U> | U,
+    ): PromiseExtended<U> {
+        return selfoss.db.storage
+            .transaction(mode, tables, scope)
+            .catch((error) => {
+                selfoss.app.showError(
+                    selfoss.app._('error_offline_storage', {
+                        '0': error.message,
+                    }),
+                );
+                selfoss.db.broken = true;
+                selfoss.db.enableOffline.update(false);
+                selfoss.entries?.reload();
 
-            // If this is a QuotaExceededError, garbage collect more
-            // entries and hope it helps.
-            if (error.name === Dexie.errnames.QuotaExceeded) {
-                this.GCEntries(true);
-            }
+                // If this is a QuotaExceededError, garbage collect more
+                // entries and hope it helps.
+                if (error.name === Dexie.errnames.QuotaExceeded) {
+                    this.GCEntries(true);
+                }
 
-            return Promise.reject(error);
-        });
+                return Promise.reject(error);
+            });
     }
 
     init() {

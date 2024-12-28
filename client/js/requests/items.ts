@@ -141,6 +141,7 @@ function enrichItemsResponse(data: RawItemsResponse): ItemsResponse {
 
 type QueryFilter = {
     fromDatetime?: Date;
+    itemsPerPage?: number;
 };
 
 /**
