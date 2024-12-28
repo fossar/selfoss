@@ -12,7 +12,7 @@
     "@szhsin/react-menu": "^4.0.0",
     "classnames": "^2.2.6",
     "core-js": "^3.2.1",
-    "dexie": "^3.0.0",
+    "dexie": "^4.0.0",
     "focus-trap": "^7.0.0",
     "form-urlencoded": "^6.0.0",
     "html-escaper": "^3.0.0",
