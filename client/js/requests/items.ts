@@ -160,7 +160,7 @@ export function getItems(
             }),
             abortController,
         })
-        .promise.then((response) => response.json())
+        .promise.then((response: Response) => response.json())
         .then(enrichItemsResponse);
 }
 
