@@ -334,9 +334,8 @@ function PureApp({
                                     />
                                     <Route
                                         path={ENTRIES_ROUTE_PATTERN}
-                                        render={(routeProps) => (
+                                        render={() => (
                                             <EntriesPage
-                                                {...routeProps}
                                                 ref={entriesRef}
                                                 setNavExpanded={setNavExpanded}
                                                 configuration={configuration}

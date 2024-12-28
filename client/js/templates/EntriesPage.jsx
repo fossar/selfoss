@@ -4,9 +4,10 @@ import React, {
     useEffect,
     useMemo,
     useState,
+    forwardRef,
 } from 'react';
 import PropTypes from 'prop-types';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams, useRouteMatch } from 'react-router-dom';
 import { useOnline } from 'rooks';
 import { useStateWithDeps } from 'use-state-with-deps';
 import nullable from 'prop-types-nullable';
@@ -25,7 +26,11 @@ import { ConfigurationContext } from '../helpers/configuration';
 import { autoScroll, Direction } from '../helpers/navigation';
 import { LocalizationContext } from '../helpers/i18n';
 import { useShouldReload } from '../helpers/hooks';
-import { forceReload, makeEntriesLinkLocation } from '../helpers/uri';
+import {
+    ENTRIES_ROUTE_PATTERN,
+    forceReload,
+    makeEntriesLinkLocation,
+} from '../helpers/uri';
 import { HttpError } from '../errors';
 
 function reloadList({
@@ -539,7 +544,7 @@ const initialState = {
     loadingState: LoadingState.INITIAL,
 };
 
-export default class StateHolder extends React.Component {
+class StateHolder extends React.Component {
     constructor(props) {
         super(props);
         this.state = initialState;
@@ -1238,3 +1243,40 @@ StateHolder.propTypes = {
     setGlobalUnreadCount: PropTypes.func.isRequired,
     unreadItemsCount: PropTypes.number.isRequired,
 };
+
+const StateHolderOuter = forwardRef(function StateHolderOuter(
+    {
+        configuration,
+        setNavExpanded,
+        navSourcesExpanded,
+        setGlobalUnreadCount,
+        unreadItemsCount,
+    },
+    ref,
+) {
+    const location = useLocation();
+    const match = useRouteMatch(ENTRIES_ROUTE_PATTERN);
+
+    return (
+        <StateHolder
+            ref={ref}
+            location={location}
+            match={match}
+            configuration={configuration}
+            setNavExpanded={setNavExpanded}
+            navSourcesExpanded={navSourcesExpanded}
+            setGlobalUnreadCount={setGlobalUnreadCount}
+            unreadItemsCount={unreadItemsCount}
+        />
+    );
+});
+
+StateHolderOuter.propTypes = {
+    configuration: PropTypes.object.isRequired,
+    setNavExpanded: PropTypes.func.isRequired,
+    navSourcesExpanded: PropTypes.bool.isRequired,
+    setGlobalUnreadCount: PropTypes.func.isRequired,
+    unreadItemsCount: PropTypes.number.isRequired,
+};
+
+export default StateHolderOuter;
