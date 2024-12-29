@@ -33,8 +33,8 @@ interface AbortableFetch {
 /**
  * Passing this function as a Promise handler will make the promise fail when the predicate is not true.
  */
-export const rejectUnless =
-    (pred: (response: Response) => boolean) => (response: Response) => {
+export function rejectUnless(pred: (response: Response) => boolean): ((Response) => Response) {
+    return (response: Response) => {
         if (pred(response)) {
             return response;
         } else {
@@ -43,12 +43,13 @@ export const rejectUnless =
             throw err;
         }
     };
+}
 
 /**
  * fetch API considers a HTTP error a successful state.
  * Passing this function as a Promise handler will make the promise fail when HTTP error occurs.
  */
-export const rejectIfNotOkay = (response: Response) => {
+export function rejectIfNotOkay(response: Response): Response {
     return rejectUnless((response: Response) => response.ok)(response);
 };
 
