@@ -827,11 +827,8 @@ class StateHolder extends React.Component {
         this.setExpandedEntries({});
         this.props.setNavExpanded(false);
 
-        if (
-            ids.length !== 0 &&
-            this.props.match.params.filter === FilterType.UNREAD
-        ) {
-            markedEntries = markedEntries.filter(({ id }) => !ids.includes(id));
+        if (this.props.match.params.filter === FilterType.UNREAD) {
+            markedEntries = [];
         }
 
         this.setLoadingState(LoadingState.LOADING);
