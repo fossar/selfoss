@@ -172,6 +172,11 @@ function PureApp({
     const entriesRef = useCallback((entriesPage) => {
         setEntriesPage(entriesPage);
         selfoss.entriesPage = entriesPage;
+
+        return () => {
+            setEntriesPage(null);
+            selfoss.entriesPage = null;
+        };
     }, []);
 
     const [title, setTitle] = useState(null);
