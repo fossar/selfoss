@@ -1,6 +1,6 @@
 import formurlencoded from 'form-urlencoded';
-import mergeDeepLeft from 'ramda/src/mergeDeepLeft.js';
-import pipe from 'ramda/src/pipe.js';
+import mergeDeepLeft from 'ramda/src/mergeDeepLeft';
+import pipe from 'ramda/src/pipe';
 import { HttpError, TimeoutError } from '../errors';
 
 type Headers = {

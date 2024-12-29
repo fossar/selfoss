@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import map from 'ramda/src/map.js';
+import map from 'ramda/src/map';
 import selfoss from './selfoss-base';
 import * as icons from './icons';
 import { Configuration } from './model/Configuration';
