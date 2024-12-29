@@ -1,9 +1,14 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+    startTransition,
+    useActionState,
+    useCallback,
+    useEffect,
+    useRef,
+} from 'react';
 import { useOnline } from 'rooks';
 import { Link, useNavigate } from 'react-router';
-import { LoadingState } from '../requests/LoadingState';
 import { HttpError, UnexpectedStateError } from '../errors';
-import { importOpml, OpmlImportData } from '../requests/common';
+import { importOpml } from '../requests/common';
 
 type OpmlImportProps = {
     setTitle: (title: string | null) => void;
@@ -12,103 +17,86 @@ type OpmlImportProps = {
 export default function OpmlImport(props: OpmlImportProps): React.JSX.Element {
     const { setTitle } = props;
 
-    const [state, setState] = useState<LoadingState>(LoadingState.INITIAL);
-    const [message, setMessage] = useState<React.JSX.Element | null>(null);
     const fileEntry = useRef<HTMLInputElement>(null);
 
     const navigate = useNavigate();
 
+    const [message, submitAction, isPending] = useActionState(async () => {
+        const file = fileEntry.current.files[0];
+        try {
+            const { response, data } = await importOpml(file);
+            const { messages } = data;
+
+            if (response.status === 200) {
+                return (
+                    <p className="msg success">
+                        <ul>
+                            {messages.map((msg, i) => (
+                                <li key={i}>{msg}</li>
+                            ))}
+                        </ul>
+                        You might want to <a href="update">update now</a> or{' '}
+                        <Link to="/">view your feeds</Link>.
+                    </p>
+                );
+            } else if (response.status === 202) {
+                return (
+                    <p className="msg error">
+                        The following feeds could not be imported:
+                        <br />
+                        <ul>
+                            {messages.map((msg, i) => (
+                                <li key={i}>{msg}</li>
+                            ))}
+                        </ul>
+                    </p>
+                );
+            } else if (response.status === 400) {
+                return (
+                    <p className="msg error">
+                        There was a problem importing your OPML file:
+                        <br />
+                        <ul>
+                            {messages.map((msg, i) => (
+                                <li key={i}>{msg}</li>
+                            ))}
+                        </ul>
+                    </p>
+                );
+            } else {
+                throw new UnexpectedStateError(
+                    `OPML import handler received status ${response.status}. This should not happen.`,
+                );
+            }
+        } catch (error) {
+            if (error instanceof HttpError && error.response.status === 403) {
+                navigate('/sign/in', {
+                    state: {
+                        error: 'Importing OPML file requires being logged in or not setting “password” in selfoss configuration.',
+                        returnLocation: '/opml',
+                    },
+                });
+                return null;
+            } else {
+                return (
+                    <div className="msg error">
+                        Unexpected error occurred.
+                        <details>
+                            <pre>{error.message}</pre>
+                        </details>
+                    </div>
+                );
+            }
+        }
+    }, null);
+
     const submit = useCallback(
         (event: React.FormEvent<HTMLFormElement>) => {
+            // We cannot use `action` prop with `enctype`.
             event.preventDefault();
-
-            setState(LoadingState.LOADING);
-            const file = fileEntry.current.files[0];
-            importOpml(file)
-                .then(
-                    ({
-                        response,
-                        data,
-                    }: {
-                        response: Response;
-                        data: OpmlImportData;
-                    }) => {
-                        const { messages } = data;
-
-                        if (response.status === 200) {
-                            setState(LoadingState.SUCCESS);
-                            setMessage(
-                                <p className="msg success">
-                                    <ul>
-                                        {messages.map((msg, i) => (
-                                            <li key={i}>{msg}</li>
-                                        ))}
-                                    </ul>
-                                    You might want to{' '}
-                                    <a href="update">update now</a> or{' '}
-                                    <Link to="/">view your feeds</Link>.
-                                </p>,
-                            );
-                        } else if (response.status === 202) {
-                            setState(LoadingState.FAILURE);
-                            setMessage(
-                                <p className="msg error">
-                                    The following feeds could not be imported:
-                                    <br />
-                                    <ul>
-                                        {messages.map((msg, i) => (
-                                            <li key={i}>{msg}</li>
-                                        ))}
-                                    </ul>
-                                </p>,
-                            );
-                        } else if (response.status === 400) {
-                            setState(LoadingState.FAILURE);
-                            setMessage(
-                                <p className="msg error">
-                                    There was a problem importing your OPML
-                                    file:
-                                    <br />
-                                    <ul>
-                                        {messages.map((msg, i) => (
-                                            <li key={i}>{msg}</li>
-                                        ))}
-                                    </ul>
-                                </p>,
-                            );
-                        } else {
-                            throw new UnexpectedStateError(
-                                `OPML import handler received status ${response.status}. This should not happen.`,
-                            );
-                        }
-                    },
-                )
-                .catch((error) => {
-                    if (
-                        error instanceof HttpError &&
-                        error.response.status === 403
-                    ) {
-                        navigate('/sign/in', {
-                            state: {
-                                error: 'Importing OPML file requires being logged in or not setting “password” in selfoss configuration.',
-                                returnLocation: '/opml',
-                            },
-                        });
-                        return;
-                    } else {
-                        setState(LoadingState.FAILURE);
-                        setMessage(
-                            <div className="msg error">
-                                Unexpected error occurred.
-                                <details>
-                                    <pre>{error.message}</pre>
-                                </details>
-                            </div>,
-                        );
-                    }
-                });
+            startTransition(() => submitAction());
         },
-        [navigate],
+        [submitAction],
     );
 
     useEffect(() => {
@@ -147,7 +135,7 @@ export default function OpmlImport(props: OpmlImportProps): React.JSX.Element {
                             reconnect before proceeding.
                         </li>
                     )}
-                    {message}
+                    {!isPending && message}
                 </li>
                 <li className="center">
                     <label htmlFor="opml">Opml.xml:</label>
@@ -163,13 +151,9 @@ export default function OpmlImport(props: OpmlImportProps): React.JSX.Element {
                     <label>&nbsp;</label>
                     <input
                         type="submit"
-                        value={
-                            state === LoadingState.LOADING
-                                ? 'Importing…'
-                                : 'Deliver my OPML!'
-                        }
+                        value={isPending ? 'Importing…' : 'Deliver my OPML!'}
                         accessKey="d"
-                        disabled={!isOnline || state === LoadingState.LOADING}
+                        disabled={!isOnline || isPending}
                     />
                 </li>
             </ul>
