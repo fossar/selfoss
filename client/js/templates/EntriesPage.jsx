@@ -138,7 +138,9 @@ function reloadList({
                     error.response.status === 403
                 ) {
                     navigate('/sign/in', {
-                        error: selfoss.app._('error_session_expired'),
+                        state: {
+                            error: selfoss.app._('error_session_expired'),
+                        },
                     });
                     return;
                 }

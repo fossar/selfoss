@@ -30,8 +30,10 @@ export default function HashPassword({ setTitle }) {
                         error.response.status === 403
                     ) {
                         navigate('/sign/in', {
-                            error: 'Generating a new password hash requires being logged in or not setting “password” in selfoss configuration.',
-                            returnLocation: '/password',
+                            state: {
+                                error: 'Generating a new password hash requires being logged in or not setting “password” in selfoss configuration.',
+                                returnLocation: '/password',
+                            },
                         });
                         return;
                     }

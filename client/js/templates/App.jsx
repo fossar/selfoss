@@ -97,7 +97,7 @@ function CheckAuthorization({ isAllowed, returnLocation, _, children }) {
             /\{(?:link_begin|link_end)\}/,
         );
         navigate('/sign/in', {
-            returnLocation,
+            state: { returnLocation },
         });
 
         return (
