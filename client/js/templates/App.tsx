@@ -884,8 +884,8 @@ export class App extends React.Component<AppProps, AppState> {
 
     render(): React.JSX.Element {
         return (
-            <ConfigurationContext.Provider value={this.props.configuration}>
-                <LocalizationContext.Provider value={this._}>
+            <ConfigurationContext value={this.props.configuration}>
+                <LocalizationContext value={this._}>
                     <PureApp
                         navSourcesExpanded={this.state.navSourcesExpanded}
                         setNavSourcesExpanded={this.setNavSourcesExpanded}
@@ -908,8 +908,8 @@ export class App extends React.Component<AppProps, AppState> {
                         tags={this.state.tags}
                         reloadAll={this.reloadAll}
                     />
-                </LocalizationContext.Provider>
-            </ConfigurationContext.Provider>
+                </LocalizationContext>
+            </ConfigurationContext>
         );
     }
 }
