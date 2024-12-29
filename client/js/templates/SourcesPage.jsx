@@ -49,6 +49,7 @@ function handleAddSource({
 // load sources
 function loadSources({
     abortController,
+    history,
     location,
     setSpouts,
     setSources,
@@ -95,7 +96,7 @@ function loadSources({
                     error instanceof HttpError &&
                     error.response.status === 403
                 ) {
-                    selfoss.history.push('/sign/in', {
+                    history.push('/sign/in', {
                         error: selfoss.app._('error_session_expired'),
                     });
                     return;
@@ -127,6 +128,7 @@ export default function SourcesPage() {
 
         loadSources({
             abortController,
+            history,
             location,
             setSpouts,
             setSources,

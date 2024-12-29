@@ -7,7 +7,13 @@ import React, {
     forwardRef,
 } from 'react';
 import PropTypes from 'prop-types';
-import { Link, useLocation, useParams, useRouteMatch } from 'react-router-dom';
+import {
+    Link,
+    useHistory,
+    useLocation,
+    useParams,
+    useRouteMatch,
+} from 'react-router-dom';
 import { useOnline } from 'rooks';
 import { useStateWithDeps } from 'use-state-with-deps';
 import nullable from 'prop-types-nullable';
@@ -36,6 +42,7 @@ import { HttpError } from '../errors';
 function reloadList({
     fetchParams,
     abortController,
+    history,
     append = false,
     waitForSync = true,
     configuration,
@@ -139,7 +146,7 @@ function reloadList({
                     error instanceof HttpError &&
                     error.response.status === 403
                 ) {
-                    selfoss.history.push('/sign/in', {
+                    history.push('/sign/in', {
                         error: selfoss.app._('error_session_expired'),
                     });
                     return;
@@ -231,6 +238,7 @@ export function EntriesPage({
     const allowedToWrite = useAllowedToWrite();
     const configuration = useContext(ConfigurationContext);
 
+    const history = useHistory();
     const location = useLocation();
     const forceReload = useShouldReload();
     const searchText = useMemo(() => {
@@ -298,6 +306,7 @@ export function EntriesPage({
                 fromId,
             },
             abortController,
+            history,
             append,
             configuration,
             // We do not want to focus the entry on successive loads.
@@ -325,6 +334,7 @@ export function EntriesPage({
         };
     }, [
         configuration,
+        history,
         params.filter,
         currentTag,
         currentSource,
@@ -892,7 +902,7 @@ class StateHolder extends React.Component {
                             error instanceof HttpError &&
                             error.response.status === 403
                         ) {
-                            selfoss.history.push('/sign/in', {
+                            this.props.history.push('/sign/in', {
                                 error: selfoss.app._('error_session_expired'),
                             });
                             return;
@@ -973,7 +983,7 @@ class StateHolder extends React.Component {
                             error instanceof HttpError &&
                             error.response.status === 403
                         ) {
-                            selfoss.history.push('/sign/in', {
+                            this.props.history.push('/sign/in', {
                                 error: selfoss.app._('error_session_expired'),
                             });
                             return;
@@ -1042,7 +1052,7 @@ class StateHolder extends React.Component {
                             error instanceof HttpError &&
                             error.response.status === 403
                         ) {
-                            selfoss.history.push('/sign/in', {
+                            this.props.history.push('/sign/in', {
                                 error: selfoss.app._('error_session_expired'),
                             });
                             return;
@@ -1064,7 +1074,7 @@ class StateHolder extends React.Component {
         /**
          * HACK: A counter that is increased every time reload action (r key) is triggered.
          */
-        selfoss.history.replace({
+        this.props.history.replace({
             ...this.props.location,
             ...makeEntriesLinkLocation(this.props.location, { id: null }),
             state: forceReload(this.props.location),
@@ -1233,6 +1243,7 @@ class StateHolder extends React.Component {
 
 StateHolder.propTypes = {
     configuration: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
     match: PropTypes.object.isRequired,
     setNavExpanded: PropTypes.func.isRequired,
@@ -1251,12 +1262,14 @@ const StateHolderOuter = forwardRef(function StateHolderOuter(
     },
     ref,
 ) {
+    const history = useHistory();
     const location = useLocation();
     const match = useRouteMatch(ENTRIES_ROUTE_PATTERN);
 
     return (
         <StateHolder
             ref={ref}
+            history={history}
             location={location}
             match={match}
             configuration={configuration}
