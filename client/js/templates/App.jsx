@@ -817,8 +817,8 @@ export default class App extends React.Component {
 
     render() {
         return (
-            <ConfigurationContext.Provider value={this.props.configuration}>
-                <LocalizationContext.Provider value={this._}>
+            <ConfigurationContext value={this.props.configuration}>
+                <LocalizationContext value={this._}>
                     <PureApp
                         navSourcesExpanded={this.state.navSourcesExpanded}
                         setNavSourcesExpanded={this.setNavSourcesExpanded}
@@ -841,8 +841,8 @@ export default class App extends React.Component {
                         tags={this.state.tags}
                         reloadAll={this.reloadAll}
                     />
-                </LocalizationContext.Provider>
-            </ConfigurationContext.Provider>
+                </LocalizationContext>
+            </ConfigurationContext>
         );
     }
 }
