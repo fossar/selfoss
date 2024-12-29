@@ -4,7 +4,6 @@ import React, {
     useEffect,
     useMemo,
     useState,
-    forwardRef,
 } from 'react';
 import PropTypes from 'prop-types';
 import { Link, useLocation, useParams } from 'react-router';
@@ -1255,16 +1254,14 @@ StateHolder.propTypes = {
     unreadItemsCount: PropTypes.number.isRequired,
 };
 
-const StateHolderOuter = forwardRef(function StateHolderOuter(
-    {
-        configuration,
-        setNavExpanded,
-        navSourcesExpanded,
-        setGlobalUnreadCount,
-        unreadItemsCount,
-    },
+export default function StateHolderOuter({
+    configuration,
+    setNavExpanded,
+    navSourcesExpanded,
+    setGlobalUnreadCount,
+    unreadItemsCount,
     ref,
-) {
+}) {
     const location = useLocation();
     const navigate = useNavigate();
     const params = useParams();
@@ -1282,14 +1279,13 @@ const StateHolderOuter = forwardRef(function StateHolderOuter(
             unreadItemsCount={unreadItemsCount}
         />
     );
-});
+}
 
 StateHolderOuter.propTypes = {
+    ref: PropTypes.func.isRequired,
     configuration: PropTypes.object.isRequired,
     setNavExpanded: PropTypes.func.isRequired,
     navSourcesExpanded: PropTypes.bool.isRequired,
     setGlobalUnreadCount: PropTypes.func.isRequired,
     unreadItemsCount: PropTypes.number.isRequired,
 };
-
-export default StateHolderOuter;
