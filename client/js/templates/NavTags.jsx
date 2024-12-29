@@ -1,7 +1,7 @@
 import React, { useContext, useMemo, useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 import nullable from 'prop-types-nullable';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router';
 import classNames from 'classnames';
 import { unescape } from 'html-escaper';
 import {

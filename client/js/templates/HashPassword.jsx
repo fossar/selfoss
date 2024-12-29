@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { useInput } from 'rooks';
 import { LoadingState } from '../requests/LoadingState';
 import { HttpError } from '../errors';

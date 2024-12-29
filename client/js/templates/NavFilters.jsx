@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useEntriesParams } from '../helpers/uri';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router';
 import classNames from 'classnames';
 import { FilterType } from '../Filter';
 import { makeEntriesLinkLocation, useForceReload } from '../helpers/uri';

@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useRef } from 'react';
 import { Menu, MenuButton, MenuItem } from '@szhsin/react-menu';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router';
 import { fadeOut } from '@siteparts/show-hide-effects';
 import { makeEntriesLinkLocation } from '../helpers/uri';
 import PropTypes from 'prop-types';

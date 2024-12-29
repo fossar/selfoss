@@ -7,7 +7,7 @@ import React, {
     forwardRef,
 } from 'react';
 import PropTypes from 'prop-types';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router';
 import { useOnline } from 'rooks';
 import { useStateWithDeps } from 'use-state-with-deps';
 import nullable from 'prop-types-nullable';
@@ -28,7 +28,7 @@ import { LocalizationContext } from '../helpers/i18n';
 import { useShouldReload } from '../helpers/hooks';
 import { forceReload, makeEntriesLinkLocation } from '../helpers/uri';
 import { HttpError } from '../errors';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 function reloadList({
     fetchParams,

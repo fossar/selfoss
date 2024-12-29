@@ -9,7 +9,7 @@ import {
     Navigate,
     useNavigate,
     useLocation,
-} from 'react-router-dom';
+} from 'react-router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Collapse } from '@kunukn/react-collapse';
 import classNames from 'classnames';
@@ -852,15 +852,7 @@ App.propTypes = {
  */
 export function createApp({ basePath, appRef, configuration }) {
     return (
-        <Router
-            basename={basePath}
-            future={{
-                // eslint-disable-next-line camelcase
-                v7_startTransition: true,
-                // eslint-disable-next-line camelcase
-                v7_relativeSplatPath: true,
-            }}
-        >
+        <Router basename={basePath}>
             <App ref={appRef} configuration={configuration} />
         </Router>
     );

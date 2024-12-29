@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useOnline } from 'rooks';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router';
 import { LoadingState } from '../requests/LoadingState';
 import { HttpError, UnexpectedStateError } from '../errors';
 import { importOpml } from '../requests/common';
