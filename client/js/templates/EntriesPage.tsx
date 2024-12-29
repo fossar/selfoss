@@ -4,7 +4,6 @@ import React, {
     useEffect,
     useMemo,
     useState,
-    forwardRef,
     Dispatch,
     SetStateAction,
     ForwardedRef,
@@ -1292,18 +1291,17 @@ type StateHolderOuterProps = {
     navSourcesExpanded: boolean;
     setGlobalUnreadCount: Dispatch<SetStateAction<number>>;
     unreadItemsCount: number;
+    ref: ForwardedRef<StateHolder>;
 };
 
-const StateHolderOuter = forwardRef(function StateHolderOuter(
-    props: StateHolderOuterProps,
-    ref: ForwardedRef<StateHolder>,
-) {
+export function StateHolderOuter(props: StateHolderOuterProps) {
     const {
         configuration,
         setNavExpanded,
         navSourcesExpanded,
         setGlobalUnreadCount,
         unreadItemsCount,
+        ref,
     } = props;
     const location = useLocation();
     const navigate = useNavigate();
@@ -1322,6 +1320,6 @@ const StateHolderOuter = forwardRef(function StateHolderOuter(
             unreadItemsCount={unreadItemsCount}
         />
     );
-});
+}
 
 export default StateHolderOuter;
