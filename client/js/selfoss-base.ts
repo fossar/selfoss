@@ -165,6 +165,10 @@ class selfoss {
                 basePath,
                 appRef: (app: App) => {
                     this.app = app;
+
+                    return () => {
+                        this.app = null;
+                    };
                 },
                 configuration,
             }),

@@ -268,6 +268,11 @@ function PureApp(props: PureAppProps): React.JSX.Element {
     const entriesRef = useCallback((entriesPage) => {
         setEntriesPage(entriesPage);
         selfoss.entriesPage = entriesPage;
+
+        return () => {
+            setEntriesPage(null);
+            selfoss.entriesPage = null;
+        };
     }, []);
 
     const [title, setTitle] = useState(null);
