@@ -8,13 +8,27 @@ type Headers = {
 };
 
 type FetchOptions = {
-    body?: string;
+    body?: BodyInit | null;
     method?: 'GET' | 'POST' | 'DELETE';
     headers?: Headers;
     abortController?: AbortController;
     timeout?: number;
     failOnHttpErrors?: boolean;
+    signal?: AbortSignal;
 };
+
+interface Fetch {
+    (url: RequestInfo | URL, opts?: RequestInit): Promise<Response>;
+}
+
+type AbortableFetchResult = {
+    controller: AbortController;
+    promise: Promise<Response>;
+};
+
+interface AbortableFetch {
+    (url: RequestInfo | URL, opts?: FetchOptions): AbortableFetchResult;
+}
 
 /**
  * Passing this function as a Promise handler will make the promise fail when the predicate is not true.
@@ -91,9 +105,8 @@ export const liftToPromiseField =
  * Wrapper for fetch that makes it cancellable using AbortController.
  * @return {controller: AbortController, promise: Promise}
  */
-export const makeAbortableFetch =
-    (fetch) =>
-    (url: string, opts: FetchOptions = {}) => {
+export function makeAbortableFetch(fetch: Fetch): AbortableFetch {
+    return (url: string, opts: FetchOptions = {}) => {
         const controller = opts.abortController || new AbortController();
         const promise = fetch(url, {
             signal: controller.signal,
@@ -102,14 +115,16 @@ export const makeAbortableFetch =
 
         return { controller, promise };
     };
+}
 
 /**
  * Wrapper for abortable fetch that adds timeout support.
- * @return {controller: AbortController, promise: Promise}
+ * @return
  */
-export const makeFetchWithTimeout =
-    (abortableFetch) =>
-    (url: string, opts: FetchOptions = {}) => {
+export function makeFetchWithTimeout(
+    abortableFetch: AbortableFetch,
+): AbortableFetch {
+    return (url: string, opts: FetchOptions = {}): AbortableFetchResult => {
         // offline db consistency requires ajax calls to fail reliably,
         // so we enforce a default timeout on ajax calls
         const { timeout = 60000, ...rest } = opts;
@@ -119,7 +134,7 @@ export const makeFetchWithTimeout =
             const newPromise = promise.catch((error) => {
                 // Change error name in case of time out so that we can
                 // distinguish it from explicit abort.
-                if (error.name === 'AbortError' && promise.timedOut) {
+                if (error.name === 'AbortError' && 'timedOut' in promise) {
                     error = new TimeoutError(
                         `Request timed out after ${timeout / 1000} seconds`,
                     );
@@ -129,7 +144,7 @@ export const makeFetchWithTimeout =
             });
 
             setTimeout(() => {
-                promise.timedOut = true;
+                (promise as { timedOut?: boolean }).timedOut = true;
                 controller.abort();
             }, timeout);
 
@@ -138,14 +153,13 @@ export const makeFetchWithTimeout =
 
         return { controller, promise };
     };
+}
 
 /**
  * Wrapper for fetch that makes it fail on HTTP errors.
- * @return Promise
  */
-export const makeFetchFailOnHttpErrors =
-    (fetch) =>
-    (url: string, opts: FetchOptions = {}) => {
+export function makeFetchFailOnHttpErrors(fetch: Fetch): Fetch {
+    return (url: string, opts: FetchOptions = {}): Promise<Response> => {
         const { failOnHttpErrors = true, ...rest } = opts;
         const promise = fetch(url, rest);
 
@@ -155,13 +169,13 @@ export const makeFetchFailOnHttpErrors =
 
         return promise;
     };
+}
 
 /**
  * Wrapper for fetch that converts URLSearchParams body of GET requests to query string.
  */
-export const makeFetchSupportGetBody =
-    (fetch) =>
-    (url: string, opts: FetchOptions = {}) => {
+export function makeFetchSupportGetBody(fetch: Fetch): Fetch {
+    return (url: string, opts: FetchOptions = {}) => {
         const { body, method, ...rest } = opts;
 
         let newUrl = url;
@@ -182,13 +196,13 @@ export const makeFetchSupportGetBody =
 
         return fetch(newUrl, newOpts);
     };
+}
 
 /**
  * Cancellable fetch with timeout support that rejects on HTTP errors.
  * In such case, the `response` will be member of the Error object.
- * @return {controller: AbortController, promise: Promise}
  */
-export const fetch = pipe(
+export const fetch: AbortableFetch = pipe(
     // Same as jQuery.ajax
     option('credentials', 'same-origin'),
     header('X-Requested-With', 'XMLHttpRequest'),
@@ -199,19 +213,26 @@ export const fetch = pipe(
     makeFetchWithTimeout,
 )(window.fetch);
 
-export const get = liftToPromiseField(option('method', 'GET'))(fetch);
+export const get: AbortableFetch = liftToPromiseField(option('method', 'GET'))(
+    fetch,
+);
 
-export const post = liftToPromiseField(option('method', 'POST'))(fetch);
+export const post: AbortableFetch = liftToPromiseField(
+    option('method', 'POST'),
+)(fetch);
 
-export const delete_ = liftToPromiseField(option('method', 'DELETE'))(fetch);
+export const delete_: AbortableFetch = liftToPromiseField(
+    option('method', 'DELETE'),
+)(fetch);
 
 /**
  * Using URLSearchParams directly handles dictionaries inconveniently.
  * For example, it joins arrays with commas or includes undefined keys.
  */
-export const makeSearchParams = (data) =>
-    new URLSearchParams(
+export function makeSearchParams(data: object): URLSearchParams {
+    return new URLSearchParams(
         formurlencoded(data, {
             ignorenull: true,
         }),
     );
+}
