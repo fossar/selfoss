@@ -1,4 +1,9 @@
-import React, { useCallback, useContext, useState } from 'react';
+import React, {
+    startTransition,
+    useCallback,
+    useContext,
+    useActionState,
+} from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { SpinnerBig } from './Spinner';
@@ -7,95 +12,73 @@ import { HttpError, LoginError } from '../errors';
 import { ConfigurationContext } from '../helpers/configuration';
 import { LocalizationContext } from '../helpers/i18n';
 
-function handleLogIn({
-    event,
+async function handleLogIn({
     configuration,
     navigate,
-    setLoading,
     username,
     password,
     enableOffline,
     returnLocation,
 }) {
-    event.preventDefault();
-
-    setLoading(true);
-
-    selfoss
-        .login({ configuration, username, password, enableOffline })
-        .then(() => {
-            navigate(returnLocation);
-        })
-        .catch((err) => {
-            const message =
-                err instanceof LoginError
-                    ? selfoss.app._('login_invalid_credentials')
-                    : selfoss.app._('login_error_generic', {
-                          errorMessage:
-                              err instanceof HttpError
-                                  ? `HTTP ${err.response.status} ${err.message}`
-                                  : err.message,
-                      });
-            navigate('/sign/in', {
-                replace: true,
-                state: {
-                    error: message,
-                },
-            });
-        })
-        .finally(() => {
-            setLoading(false);
+    try {
+        await selfoss.login({
+            configuration,
+            username,
+            password,
+            enableOffline,
         });
+        navigate(returnLocation);
+    } catch (err) {
+        const message =
+            err instanceof LoginError
+                ? selfoss.app._('login_invalid_credentials')
+                : selfoss.app._('login_error_generic', {
+                      errorMessage:
+                          err instanceof HttpError
+                              ? `HTTP ${err.response.status} ${err.message}`
+                              : err.message,
+                  });
+        navigate('/sign/in', {
+            replace: true,
+            state: {
+                error: message,
+            },
+        });
+    }
 }
 
 export default function LoginForm({ offlineEnabled }) {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [loading, setLoading] = useState(false);
-    const [enableOffline, setEnableOffline] = useState(offlineEnabled);
-
     const configuration = useContext(ConfigurationContext);
     const navigate = useNavigate();
     const location = useLocation();
     const error = location?.state?.error;
     const returnLocation = location?.state?.returnLocation ?? '/';
 
-    const formOnSubmit = useCallback(
-        (event) =>
-            handleLogIn({
-                event,
+    const [, submitAction, loading] = useActionState(
+        async (_previousState, formData) => {
+            const username = formData.get('username');
+            const password = formData.get('password');
+            const enableOffline = formData.get('enableoffline');
+            await handleLogIn({
                 configuration,
                 navigate,
-                setLoading,
                 username,
                 password,
                 enableOffline,
                 returnLocation,
-            }),
-        [
-            configuration,
-            navigate,
-            username,
-            password,
-            enableOffline,
-            returnLocation,
-        ],
+            });
+            return null;
+        },
+        null,
     );
 
-    const usernameOnChange = useCallback(
-        (event) => setUsername(event.target.value),
-        [],
-    );
-
-    const passwordOnChange = useCallback(
-        (event) => setPassword(event.target.value),
-        [],
-    );
-
-    const offlineOnChange = useCallback(
-        (event) => setEnableOffline(event.target.checked),
-        [setEnableOffline],
-    );
+    const formOnSubmit = useCallback((event) => {
+        // Unlike `action` prop, `onSubmit` avoids clearing the form on submit.
+        // https://github.com/facebook/react/issues/29034#issuecomment-2143595195
+        event.preventDefault();
+        const formData = new FormData(event.target);
+        startTransition(() => submitAction(formData));
+    }, []);
 
     const _ = useContext(LocalizationContext);
 
@@ -120,8 +103,6 @@ export default function LoginForm({ offlineEnabled }) {
                             id="username"
                             accessKey="u"
                             autoComplete="username"
-                            onChange={usernameOnChange}
-                            value={username}
                             autoFocus
                             required
                         />
@@ -134,8 +115,6 @@ export default function LoginForm({ offlineEnabled }) {
                             id="password"
                             accessKey="p"
                             autoComplete="current-password"
-                            onChange={passwordOnChange}
-                            value={password}
                         />
                     </li>
                     <li>
@@ -148,8 +127,7 @@ export default function LoginForm({ offlineEnabled }) {
                                 name="enableoffline"
                                 id="enableoffline"
                                 accessKey="o"
-                                onChange={offlineOnChange}
-                                checked={enableOffline}
+                                defaultChecked={offlineEnabled}
                             />{' '}
                             <span className="badge-experimental">
                                 {_('experimental')}
