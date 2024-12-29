@@ -152,6 +152,10 @@ const selfoss = {
                 basePath,
                 appRef: (app) => {
                     selfoss.app = app;
+
+                    return () => {
+                        selfoss.app = null;
+                    };
                 },
                 configuration,
             }),

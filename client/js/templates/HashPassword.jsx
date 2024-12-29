@@ -1,45 +1,48 @@
 import PropTypes from 'prop-types';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {
+    startTransition,
+    useActionState,
+    useCallback,
+    useEffect,
+} from 'react';
 import { useNavigate } from 'react-router';
-import { useInput } from 'rooks';
-import { LoadingState } from '../requests/LoadingState';
 import { HttpError } from '../errors';
 import { hashPassword } from '../requests/common';
 
 export default function HashPassword({ setTitle }) {
-    const [state, setState] = useState(LoadingState.INITIAL);
-    const [hashedPassword, setHashedPassword] = useState('');
-    const [error, setError] = useState(null);
-    const passwordEntry = useInput('');
-
     const navigate = useNavigate();
+
+    const [
+        /** @type {({} | { hashedPassword: string } | { error: Error })} */
+        state,
+        submitAction,
+        isPending,
+    ] = useActionState(async (_previousState, formData) => {
+        try {
+            const password = formData.get('password').trim();
+            const hashedPassword = await hashPassword(password);
+            return { hashedPassword };
+        } catch (error) {
+            if (error instanceof HttpError && error.response.status === 403) {
+                navigate('/sign/in', {
+                    error: 'Generating a new password hash requires being logged in or not setting “password” in selfoss configuration.',
+                    returnLocation: '/password',
+                });
+                return {};
+            }
+            return { error };
+        }
+    }, {});
 
     const submit = useCallback(
         (event) => {
+            // Unlike `action` prop, `onSubmit` avoids clearing the form on submit.
+            // https://github.com/facebook/react/issues/29034#issuecomment-2143595195
             event.preventDefault();
-
-            setState(LoadingState.LOADING);
-            hashPassword(passwordEntry.value.trim())
-                .then((hashedPassword) => {
-                    setHashedPassword(hashedPassword);
-                    setState(LoadingState.SUCCESS);
-                })
-                .catch((error) => {
-                    if (
-                        error instanceof HttpError &&
-                        error.response.status === 403
-                    ) {
-                        navigate('/sign/in', {
-                            error: 'Generating a new password hash requires being logged in or not setting “password” in selfoss configuration.',
-                            returnLocation: '/password',
-                        });
-                        return;
-                    }
-                    setError(error);
-                    setState(LoadingState.ERROR);
-                });
+            const formData = new FormData(event.target);
+            startTransition(() => submitAction(formData));
         },
-        [navigate, passwordEntry.value],
+        [submitAction],
     );
 
     useEffect(() => {
@@ -50,22 +53,21 @@ export default function HashPassword({ setTitle }) {
         };
     }, [setTitle]);
 
-    const message =
-        state === LoadingState.SUCCESS ? (
-            <p className="error">
-                <label>
-                    Generated Password (insert this into config.ini):
-                    <input type="text" value={hashedPassword} readOnly />
-                </label>
-            </p>
-        ) : state === LoadingState.ERROR ? (
-            <p className="error">
-                Unexpected happened.
-                <details>
-                    <pre>${JSON.stringify(error)}</pre>
-                </details>
-            </p>
-        ) : null;
+    const message = isPending ? null : 'hashedPassword' in state ? (
+        <p className="error">
+            <label>
+                Generated Password (insert this into config.ini):
+                <input type="text" value={state.hashedPassword} readOnly />
+            </label>
+        </p>
+    ) : 'error' in state ? (
+        <p className="error">
+            Unexpected happened.
+            <details>
+                <pre>${JSON.stringify(state.error)}</pre>
+            </details>
+        </p>
+    ) : null;
 
     return (
         <form action="" method="post" onSubmit={submit}>
@@ -80,7 +82,6 @@ export default function HashPassword({ setTitle }) {
                         name="password"
                         autoComplete="new-password"
                         accessKey="p"
-                        {...passwordEntry}
                     />
                 </li>
                 <li className="message-container" aria-live="assertive">
@@ -91,13 +92,9 @@ export default function HashPassword({ setTitle }) {
                     <input
                         className="button"
                         type="submit"
-                        value={
-                            state === LoadingState.LOADING
-                                ? 'Hashing password…'
-                                : 'Compute hash'
-                        }
+                        value={isPending ? 'Hashing password…' : 'Compute hash'}
                         accessKey="g"
-                        disabled={state === LoadingState.LOADING}
+                        disabled={isPending}
                     />
                 </li>
             </ul>
