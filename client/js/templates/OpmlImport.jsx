@@ -9,7 +9,7 @@ import { importOpml } from '../requests/common';
 export default function OpmlImport({ setTitle }) {
     const [state, setState] = useState(LoadingState.INITIAL);
     const [message, setMessage] = useState(null);
-    const fileEntry = useRef();
+    const fileEntry = useRef(undefined);
 
     const navigate = useNavigate();
 
