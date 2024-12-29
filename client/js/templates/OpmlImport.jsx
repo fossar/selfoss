@@ -75,8 +75,10 @@ export default function OpmlImport({ setTitle }) {
                         error.response.status === 403
                     ) {
                         navigate('/sign/in', {
-                            error: 'Importing OPML file requires being logged in or not setting “password” in selfoss configuration.',
-                            returnLocation: '/opml',
+                            state: {
+                                error: 'Importing OPML file requires being logged in or not setting “password” in selfoss configuration.',
+                                returnLocation: '/opml',
+                            },
                         });
                         return;
                     } else {

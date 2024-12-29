@@ -138,7 +138,9 @@ function reloadList({
                     error.response.status === 403
                 ) {
                     navigate('/sign/in', {
-                        error: selfoss.app._('error_session_expired'),
+                        state: {
+                            error: selfoss.app._('error_session_expired'),
+                        },
                     });
                     return;
                 }
@@ -1071,12 +1073,8 @@ class StateHolder extends React.Component {
          * HACK: A counter that is increased every time reload action (r key) is triggered.
          */
         this.props.navigate(
-            {
-                ...this.props.location,
-                ...makeEntriesLinkLocation(this.props.location, { id: null }),
-                state: forceReload(this.props.location),
-            },
-            { replace: true },
+            makeEntriesLinkLocation(this.props.location, { id: null }),
+            { replace: true, state: forceReload(this.props.location) },
         );
     }
 
