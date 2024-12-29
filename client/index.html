@@ -1,47 +1,41 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
-
     <title>selfoss</title>
 
-    <!-- Will be substituted at request time. -->
+    <!-- Dynamic base path -->
     <base href="@basePath@">
 
     <meta name="referrer" content="no-referrer" />
-
-    <!--  Mobile viewport optimized: j.mp/bplateviewport -->
-    <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1" />
-
-    <!--  Add support for fullscreen Webapp on iPhone 5 -->
-    <meta name="viewport" content="initial-scale=1, user-scalable=yes" media="(device-height: 568px)" />
-
-    <!-- Web application behavior -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes" />
+    
+    <!-- Progressive Web App (PWA) Compatibility -->
     <meta name="application-name" content="selfoss" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="mobile-web-app-capable" content="yes" />
-
-    <!-- icons -->
-    <link rel="apple-touch-icon-precomposed" href="images/icon-128x128.png" />
-    <link rel="icon" type="image/png" href="images/icon-32x32.png" />
-    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico" />
-
-    <!-- Toolbar color from Chrome for Android -->
     <meta name="theme-color" content="#191718" />
 
-    <!-- all css definitions -->
-    <link rel="stylesheet" href="styles/main.scss" />
+    <!-- Icons -->
+    <link rel="apple-touch-icon" href="images/icon-128x128.png" />
+    <link rel="icon" type="image/png" href="images/icon-32x32.png" />
+    <link rel="shortcut icon" href="images/favicon.ico" />
+    
+    <!-- CSS Styles -->
+    <link rel="stylesheet" href="styles/main.css" />
 
-    <!-- web application manifest -->
+    <!-- Web Manifest -->
     <link rel="manifest" href="selfoss.webmanifest">
 </head>
 <body>
-    <p id="js-loading-message">selfoss requires JavaScript to run, please enable it on this page.</p>
+    <noscript><p>selfoss requires JavaScript to run. Please enable it to continue.</p></noscript>
+    
+    <p id="js-loading-message" aria-live="polite">selfoss is still loading, please wait.</p>
 
-    <script type="text/javascript">
+    <script>
         document.getElementById('js-loading-message').textContent = 'selfoss is still loading, please wait.';
     </script>
 
-    <script src="js/index.js" onerror="document.getElementById('js-loading-message').textContent = 'Error loading selfoss JavaScript file. Please check the browser console or your web server logs.'" type="module"></script>
+    <script src="js/index.js" type="module" async onerror="document.getElementById('js-loading-message').textContent = 'Error loading selfoss JavaScript. Check console or server logs.'"></script>
 </body>
 </html>
