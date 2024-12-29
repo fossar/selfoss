@@ -130,6 +130,43 @@ CheckAuthorization.propTypes = {
     children: PropTypes.any,
 };
 
+// Work around for regex patterns not being supported
+// https://github.com/remix-run/react-router/issues/8254
+function EntriesFilter({
+    entriesRef,
+    setNavExpanded,
+    configuration,
+    navSourcesExpanded,
+    unreadItemsCount,
+    setGlobalUnreadCount,
+}) {
+    const params = useEntriesParams();
+
+    if (params === null) {
+        return <NotFound />;
+    }
+
+    return (
+        <EntriesPage
+            ref={entriesRef}
+            setNavExpanded={setNavExpanded}
+            configuration={configuration}
+            navSourcesExpanded={navSourcesExpanded}
+            unreadItemsCount={unreadItemsCount}
+            setGlobalUnreadCount={setGlobalUnreadCount}
+        />
+    );
+}
+
+EntriesFilter.propTypes = {
+    entriesRef: PropTypes.func.isRequired,
+    configuration: PropTypes.object.isRequired,
+    setNavExpanded: PropTypes.func.isRequired,
+    navSourcesExpanded: PropTypes.bool.isRequired,
+    setGlobalUnreadCount: PropTypes.func.isRequired,
+    unreadItemsCount: PropTypes.number.isRequired,
+};
+
 function PureApp({
     navSourcesExpanded,
     setNavSourcesExpanded,
@@ -394,43 +431,6 @@ PureApp.propTypes = {
     setSources: PropTypes.func.isRequired,
     tags: PropTypes.arrayOf(PropTypes.object).isRequired,
     reloadAll: PropTypes.func.isRequired,
-};
-
-// Work around for regex patterns not being supported
-// https://github.com/remix-run/react-router/issues/8254
-function EntriesFilter({
-    entriesRef,
-    setNavExpanded,
-    configuration,
-    navSourcesExpanded,
-    unreadItemsCount,
-    setGlobalUnreadCount,
-}) {
-    const params = useEntriesParams();
-
-    if (params === null) {
-        return <NotFound />;
-    }
-
-    return (
-        <EntriesPage
-            ref={entriesRef}
-            setNavExpanded={setNavExpanded}
-            configuration={configuration}
-            navSourcesExpanded={navSourcesExpanded}
-            unreadItemsCount={unreadItemsCount}
-            setGlobalUnreadCount={setGlobalUnreadCount}
-        />
-    );
-}
-
-EntriesFilter.propTypes = {
-    entriesRef: PropTypes.func.isRequired,
-    configuration: PropTypes.object.isRequired,
-    setNavExpanded: PropTypes.func.isRequired,
-    navSourcesExpanded: PropTypes.bool.isRequired,
-    setGlobalUnreadCount: PropTypes.func.isRequired,
-    unreadItemsCount: PropTypes.number.isRequired,
 };
 
 export class App extends React.Component {
