@@ -98,7 +98,7 @@ class Tags {
 
     /**
      * returns all tags
-     * html
+     * json
      */
     public function listTags(): void {
         $this->authentication->ensureCanRead();
