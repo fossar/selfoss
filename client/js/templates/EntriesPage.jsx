@@ -1071,12 +1071,11 @@ class StateHolder extends React.Component {
          * HACK: A counter that is increased every time reload action (r key) is triggered.
          */
         this.props.navigate(
+            makeEntriesLinkLocation(this.props.location, { id: null }),
             {
-                ...this.props.location,
-                ...makeEntriesLinkLocation(this.props.location, { id: null }),
+                replace: true,
                 state: forceReload(this.props.location),
             },
-            { replace: true },
         );
     }
 
