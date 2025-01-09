@@ -149,7 +149,7 @@ export default function SourcesPage() {
                 });
 
                 // Clear the value from the state so it does not bug us forever.
-                navigate('/manage/sources');
+                navigate('/manage/sources', { replace: true });
             }
         });
 
