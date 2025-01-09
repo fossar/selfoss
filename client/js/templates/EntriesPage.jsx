@@ -324,8 +324,9 @@ export function EntriesPage({
             abortController.abort();
         };
     }, [
+        // navigate is intentionally omitted
+        // to prevent reloading when path is replaced
         configuration,
-        navigate,
         params.filter,
         currentTag,
         currentSource,
