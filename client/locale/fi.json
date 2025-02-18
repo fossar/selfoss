@@ -41,5 +41,9 @@
   "lang_error_share_native_abort": "Kohteen jakaminen epäonnistui – joko jakamiskohteita ei ole tai peruutat sen.",
   "lang_close_entry": "Sulje",
   "lang_login_invalid_credentials": "Väärä käyttäjänimi/salasana",
-  "lang_share_mail_label": "Jaa sähköpostitse"
+  "lang_share_mail_label": "Jaa sähköpostitse",
+  "lang_sources_refreshed": "Lähteet virkistetty",
+  "lang_error_refreshing_source": "Lähteitä ei voi virkistää:",
+  "lang_source_refresh": "Virkistä tämä lähde",
+  "lang_refreshbutton": "Virkistä lähteet"
 }
