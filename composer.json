@@ -10,7 +10,7 @@
         "fossar/guzzle-transcoder": "^0.3.0",
         "fossar/htmlawed": "^1.2.4.1",
         "guzzlehttp/guzzle": "^7.0",
-        "guzzlehttp/oauth-subscriber": "^0.6.0",
+        "guzzlehttp/oauth-subscriber": "^0.8.0",
         "guzzlehttp/psr7": "^2.0",
         "http-interop/response-sender": "^1.0",
         "j0k3r/graby": "^2.0",
