@@ -34,9 +34,10 @@ class SelfossApi:
 
         return r.json()
 
-    def get_items(self):
+    def get_items(self, **params):
         r = self.session.get(
             f"{self.base_uri}/items",
+            params=params,
         )
         r.raise_for_status()
 

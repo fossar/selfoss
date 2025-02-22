@@ -24,7 +24,7 @@ class Search {
 
         // Split search terms by space (but save it inside quotes)...
         /** @var string[] */ // For PHPStan: The only case where null appears is array{null} when the $string is empty.
-        $parts = str_getcsv(trim($search), ' ');
+        $parts = str_getcsv(trim($search), ' ', '"', '\\');
 
         return array_filter(
             $parts,
