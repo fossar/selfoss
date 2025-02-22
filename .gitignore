@@ -16,5 +16,5 @@ node_modules
 .env
 phpstan.neon
 vendor/
-.php_cs.cache
+.php-cs-fixer.cache
 __pycache__
