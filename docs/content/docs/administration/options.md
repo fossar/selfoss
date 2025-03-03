@@ -196,6 +196,7 @@ set `0` or leave empty for auto detection (browser language) or use one of the f
 * Slovak: `sk`
 * Spanish: `es`
 * Swedish: `sv`
+* Tamil: `ta`
 * Turkish: `tr`
 * Ukrainian: `uk`
 </div>

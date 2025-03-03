@@ -26,6 +26,7 @@ import rm from '../locale/rm.json';
 import ru from '../locale/ru.json';
 import sk from '../locale/sk.json';
 import sv from '../locale/sv.json';
+import ta from '../locale/ta.json';
 import tr from '../locale/tr.json';
 import uk from '../locale/uk.json';
 import zhCN from '../locale/zh-CN.json';
@@ -58,6 +59,7 @@ export default {
     ru: ru,
     sk: sk,
     sv: sv,
+    ta: ta,
     tr: tr,
     uk: uk,
     'zh-CN': zhCN,
