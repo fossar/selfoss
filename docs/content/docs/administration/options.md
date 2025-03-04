@@ -82,7 +82,7 @@ number of entries per page on your stream
 ### `items_lifetime`
 <div class="config-option">
 
-Number of days since the item has been last seen after which it can be deleted. Set to `0` to disable item deletion. Starred items will never be deleted.
+Number of days since the item has been last seen after which it can be deleted. In the upcoming selfoss 2.20, you can set it to `0` to disable item deletion. Starred items will never be deleted.
 </div>
 
 ### `base_url`
@@ -196,7 +196,7 @@ set `0` or leave empty for auto detection (browser language) or use one of the f
 * Slovak: `sk`
 * Spanish: `es`
 * Swedish: `sv`
-* Tamil: `ta`
+* Tamil: `ta` (will only be available in selfoss 2.20 or later)
 * Turkish: `tr`
 * Ukrainian: `uk`
 </div>
@@ -218,7 +218,7 @@ Set to `1` to allow public access for `/update` (anybody can access and start th
 <dt><code>t</code></dt><dd>Twitter</dd>
 <dt><code>p</code></dt><dd>Pocket</dd>
 <dt><code>d</code></dt><dd>Diaspora</dd>
-<dt><code>m</code></dt><dd>Mastodon (requires <a href="#mastodon"><code>mastodon</code></a> option to be set)</dd>
+<dt><code>m</code></dt><dd>Mastodon (requires <a href="#mastodon"><code>mastodon</code></a> option to be set, will only be available in selfoss 2.20 or later)</dd>
 <dt><code>w</code></dt><dd>Wallabag (requires <a href="#wallabag"><code>wallabag</code></a> option to be set)</dd>
 <dt><code>s</code></dt><dd>Wordpress (requires <a href="#wordpress"><code>wordpress</code></a> option to be set)</dd>
 <dt><code>e</code></dt><dd>E-mail</dd>

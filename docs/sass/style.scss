@@ -451,3 +451,24 @@ kbd {
 .footnote-definition-label {
     margin-right: 0.95rem;
 }
+
+// Admonitions
+.admonition {
+    background: #d4d4d244;
+    border-left: 0.3rem solid #d4d4d2;
+    padding: 1rem;
+    border-radius: 0.3rem;
+}
+
+.admonition h2 {
+    margin: 0;
+}
+
+.admonition.warning {
+    background: #d9770644;
+    border-left-color: #d97706;
+}
+
+.admonition.warning h2 {
+    color: #d97706;
+}

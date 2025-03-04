@@ -19,6 +19,14 @@ If you want to get the newest entries from your own source (e.g. an IMAP e-mail 
 
 Create a new PHP file under `src/spouts/your_spouts/your_spout.php` (choose a name for `your_spouts` and `your_spout`). The easiest way is to copy the [`src/spouts/rss/feed.php`](https://github.com/fossar/selfoss/blob/master/src/spouts/rss/feed.php) and to modify this file.
 
+<div class="admonition warning">
+
+## Warning
+
+The following documentation targets the upcoming selfoss 2.20. You can read about the changes in [NEWS](https://github.com/fossar/selfoss/blob/master/NEWS.md#customization-changes).
+
+</div>
+
 ### Member Variables
 Set the `$name` and `$description` variable with the name and description of your spout. The `$params` contain the definition of the input fields which a user will have to fill to add a new source of your spout (e.g. `username` and `password` for accessing the source data).
 
