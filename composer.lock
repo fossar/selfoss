@@ -245,28 +245,29 @@
         },
         {
             "name": "fossar/guzzle-transcoder",
-            "version": "0.3.0",
+            "version": "v0.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fossar/guzzle-transcoder.git",
-                "reference": "f041a3a98753570b184932a3cda7246751acee80"
+                "reference": "e01b020c7a804cc76cf20739f60f1ae465288af5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fossar/guzzle-transcoder/zipball/f041a3a98753570b184932a3cda7246751acee80",
-                "reference": "f041a3a98753570b184932a3cda7246751acee80",
+                "url": "https://api.github.com/repos/fossar/guzzle-transcoder/zipball/e01b020c7a804cc76cf20739f60f1ae465288af5",
+                "reference": "e01b020c7a804cc76cf20739f60f1ae465288af5",
                 "shasum": ""
             },
             "require": {
-                "fossar/transcoder": "^1.0 || ^2.0",
+                "fossar/transcoder": "^1.0 || ^2.0 || ^3.0",
                 "guzzlehttp/guzzle": "^6.3 || ^7.0",
                 "guzzlehttp/psr7": "^1.7 || ^2.0",
-                "php": ">=7.2.5"
+                "php": ">=7.4.0"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^3.0",
                 "php-parallel-lint/php-parallel-lint": "^1.0",
-                "symfony/phpunit-bridge": "^6.2"
+                "phpstan/phpstan": "^2.1",
+                "symfony/phpunit-bridge": "^6.2 || ^7.0"
             },
             "type": "library",
             "autoload": {
@@ -287,9 +288,9 @@
             "description": "Guzzle plugin that converts responses to UTF-8",
             "support": {
                 "issues": "https://github.com/fossar/guzzle-transcoder/issues",
-                "source": "https://github.com/fossar/guzzle-transcoder/tree/0.3.0"
+                "source": "https://github.com/fossar/guzzle-transcoder/tree/v0.3.1"
             },
-            "time": "2023-03-07T23:13:13+00:00"
+            "time": "2025-03-15T16:32:15+00:00"
         },
         {
             "name": "fossar/htmlawed",
@@ -350,26 +351,28 @@
         },
         {
             "name": "fossar/transcoder",
-            "version": "v2.0.0",
+            "version": "v3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fossar/transcoder.git",
-                "reference": "1864d5ffee96198a47772813406f0425b46fa689"
+                "reference": "3afd5730af47ff548a61241bc0c4d9e3593fe4a6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fossar/transcoder/zipball/1864d5ffee96198a47772813406f0425b46fa689",
-                "reference": "1864d5ffee96198a47772813406f0425b46fa689",
+                "url": "https://api.github.com/repos/fossar/transcoder/zipball/3afd5730af47ff548a61241bc0c4d9e3593fe4a6",
+                "reference": "3afd5730af47ff548a61241bc0c4d9e3593fe4a6",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.2.5"
+                "php": ">=7.4.0"
             },
             "replace": {
                 "ddeboer/transcoder": "self.version"
             },
             "require-dev": {
-                "symfony/phpunit-bridge": "^6.2"
+                "friendsofphp/php-cs-fixer": "^3.4",
+                "phpstan/phpstan": "^2.1",
+                "symfony/phpunit-bridge": "^6.2 || ^7.0"
             },
             "suggest": {
                 "ext-iconv": "For using the IconvTranscoder",
@@ -409,9 +412,9 @@
             ],
             "support": {
                 "issues": "https://github.com/fossar/transcoder/issues",
-                "source": "https://github.com/fossar/transcoder/tree/v2.0.0"
+                "source": "https://github.com/fossar/transcoder/tree/v3.0.0"
             },
-            "time": "2023-03-07T15:33:48+00:00"
+            "time": "2025-03-15T16:22:27+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -4156,16 +4159,16 @@
         },
         {
             "name": "friendsofphp/php-cs-fixer",
-            "version": "v3.70.2",
+            "version": "v3.72.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer.git",
-                "reference": "1ca468270efbb75ce0c7566a79cca8ea2888584d"
+                "reference": "900389362c43d116fee1ffc51f7878145fa61b57"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHP-CS-Fixer/PHP-CS-Fixer/zipball/1ca468270efbb75ce0c7566a79cca8ea2888584d",
-                "reference": "1ca468270efbb75ce0c7566a79cca8ea2888584d",
+                "url": "https://api.github.com/repos/PHP-CS-Fixer/PHP-CS-Fixer/zipball/900389362c43d116fee1ffc51f7878145fa61b57",
+                "reference": "900389362c43d116fee1ffc51f7878145fa61b57",
                 "shasum": ""
             },
             "require": {
@@ -4195,18 +4198,18 @@
                 "symfony/stopwatch": "^5.4 || ^6.4 || ^7.0"
             },
             "require-dev": {
-                "facile-it/paraunit": "^1.3.1 || ^2.5",
-                "infection/infection": "^0.29.10",
-                "justinrainbow/json-schema": "^5.3 || ^6.0",
+                "facile-it/paraunit": "^1.3.1 || ^2.6",
+                "infection/infection": "^0.29.14",
+                "justinrainbow/json-schema": "^5.3 || ^6.2",
                 "keradus/cli-executor": "^2.1",
                 "mikey179/vfsstream": "^1.6.12",
                 "php-coveralls/php-coveralls": "^2.7",
                 "php-cs-fixer/accessible-object": "^1.1",
                 "php-cs-fixer/phpunit-constraint-isidenticalstring": "^1.6",
                 "php-cs-fixer/phpunit-constraint-xmlmatchesxsd": "^1.6",
-                "phpunit/phpunit": "^9.6.22 || ^10.5.45 || ^11.5.7",
-                "symfony/var-dumper": "^5.4.48 || ^6.4.18 || ^7.2.0",
-                "symfony/yaml": "^5.4.45 || ^6.4.18 || ^7.2.0"
+                "phpunit/phpunit": "^9.6.22 || ^10.5.45 || ^11.5.12",
+                "symfony/var-dumper": "^5.4.48 || ^6.4.18 || ^7.2.3",
+                "symfony/yaml": "^5.4.45 || ^6.4.18 || ^7.2.3"
             },
             "suggest": {
                 "ext-dom": "For handling output formats in XML",
@@ -4247,7 +4250,7 @@
             ],
             "support": {
                 "issues": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/issues",
-                "source": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/tree/v3.70.2"
+                "source": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/tree/v3.72.0"
             },
             "funding": [
                 {
@@ -4255,7 +4258,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-03-03T21:07:23+00:00"
+            "time": "2025-03-13T11:25:37+00:00"
         },
         {
             "name": "php-parallel-lint/php-parallel-lint",
@@ -4320,16 +4323,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "2.1.6",
+            "version": "2.1.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "6eaec7c6c9e90dcfe46ad1e1ffa5171e2dab641c"
+                "reference": "f9adff3b87c03b12cc7e46a30a524648e497758f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/6eaec7c6c9e90dcfe46ad1e1ffa5171e2dab641c",
-                "reference": "6eaec7c6c9e90dcfe46ad1e1ffa5171e2dab641c",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/f9adff3b87c03b12cc7e46a30a524648e497758f",
+                "reference": "f9adff3b87c03b12cc7e46a30a524648e497758f",
                 "shasum": ""
             },
             "require": {
@@ -4374,7 +4377,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-02-19T15:46:42+00:00"
+            "time": "2025-03-09T09:30:48+00:00"
         },
         {
             "name": "phpstan/phpstan-deprecation-rules",
