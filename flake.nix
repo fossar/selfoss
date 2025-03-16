@@ -8,17 +8,16 @@
       flake = false;
     };
 
-    # Repository with software packages.
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-
-    utils.url = "github:numtide/flake-utils";
-
     # Package expression for old PHP versions.
     phps.url = "github:fossar/nix-phps";
   };
 
-  outputs = { self, flake-compat, nixpkgs, phps, utils }:
+  outputs = { self, phps, ... }:
     let
+      # nixpkgs is a repository with software packages and some utilities.
+      # From simplicity, we inherit it from the phps flake.
+      inherit (phps.inputs) nixpkgs utils;
+
       # Configure the development shell here (e.g. for CI).
 
       # By default, we use the default PHP version from Nixpkgs.
