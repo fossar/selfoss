@@ -41,19 +41,10 @@ const config = {
     },
 };
 
-// Does not currently support flat config.
-// https://github.com/facebook/react/issues/28313
-const eslintPluginReactHooksConfigsRecommended = {
-    plugins: {
-        'react-hooks': eslintPluginReactHooks,
-    },
-    rules: eslintPluginReactHooks.configs.recommended.rules,
-};
-
 export default [
     js.configs.recommended,
     eslintPluginReact.configs.flat.recommended,
-    eslintPluginReactHooksConfigsRecommended,
+    eslintPluginReactHooks.configs['recommended-latest'],
     eslintConfigPrettier,
     config,
 ];
