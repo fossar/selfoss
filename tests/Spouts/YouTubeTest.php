@@ -10,9 +10,9 @@ use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use helpers\HtmlString;
-use helpers\WebClient;
 use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Client\ClientInterface;
 use Slince\Di\Container;
 use spouts\youtube\youtube;
 
@@ -62,13 +62,7 @@ final class YouTubeTest extends TestCase {
             ->setShared(true)
         ;
         $container
-            ->register(WebClient::class, function() use ($httpClient) {
-                $stub = $this->createMock(WebClient::class);
-                $stub->method('getHttpClient')->willReturn($httpClient);
-
-                return $stub;
-            })
-        ;
+            ->register(ClientInterface::class, $httpClient);
 
         $yt = $container->get(youtube::class);
 

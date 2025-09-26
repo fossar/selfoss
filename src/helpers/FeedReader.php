@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace helpers;
 
+use GuzzleHttp\Psr7\HttpFactory;
+use Psr\Http\Client\ClientInterface;
 use Psr\SimpleCache\CacheInterface;
 use SimplePie\SimplePie;
 
@@ -14,8 +16,9 @@ class FeedReader {
     private SimplePie $simplepie;
 
     public function __construct(
+        HttpFactory $httpFactory,
         SimplePie $simplepie,
-        WebClient $webClient,
+        ClientInterface $webClient,
         ?CacheInterface $cache = null
     ) {
         $this->simplepie = $simplepie;
@@ -25,14 +28,14 @@ class FeedReader {
             $this->simplepie->set_cache($cache);
         }
 
-        // abuse set_curl_options since there is no sane way to pass data to SimplePie\File
-        $this->simplepie->set_curl_options([
-            WebClient::class => $webClient,
-        ]);
+        $this->simplepie->set_http_client(
+            $webClient,
+            $httpFactory,
+            $httpFactory,
+        );
 
-        $this->simplepie->get_registry()->register(\SimplePie\File::class, SimplePieFileGuzzle::class, true);
+        // @phpstan-ignore argument.type (https://github.com/simplepie/simplepie/pull/946)
         $this->simplepie->set_autodiscovery_level(SimplePie::LOCATOR_AUTODISCOVERY | SimplePie::LOCATOR_LOCAL_EXTENSION | SimplePie::LOCATOR_LOCAL_BODY);
-        $this->simplepie->set_useragent($webClient->getUserAgent());
     }
 
     /**
@@ -48,7 +51,6 @@ class FeedReader {
         @$this->simplepie->init();
 
         // on error retry with force_feed
-        // @phpstan-ignore-next-line notIdentical.alwaysTrue (The upstream type is incorrect: https://github.com/simplepie/simplepie/pull/903)
         if ($this->simplepie->error() !== null) {
             @$this->simplepie->set_autodiscovery_level(SimplePie::LOCATOR_NONE);
             @$this->simplepie->force_feed(true);

@@ -18,9 +18,6 @@ parameters:
         - utils/PHPStan/Stubs/IcoFileLoader.stub
 
     ignoreErrors:
-        # The arguments are provided by SimplePie and we want the value of a later one.
-        - '(Constructor of class helpers\\SimplePieFileGuzzle has an unused parameter \$force_fsockopen\.)'
-
         # Bad PHPStan typing rules.
         - '(Parameter #3 \$namespace of method XMLWriter::writeAttributeNs\(\) expects string, null given\.)'
 

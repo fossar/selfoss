@@ -157,6 +157,7 @@ class Image {
         // get image type
         if (extension_loaded('imagick')) {
             // check for svgz or svg
+            // @phpstan-ignore notIdentical.alwaysTrue (fatfree includes gzdecode polyfill which has incorrect phpdoc type)
             if (str_starts_with($data, "\x1f\x8b") && ($d = gzdecode($data)) !== false) {
                 $data = $d;
             }

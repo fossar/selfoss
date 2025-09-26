@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 use helpers\Configuration;
 use helpers\DatabaseConnection;
+use helpers\WebClient;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\ErrorLogHandler;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Psr\Container\ContainerInterface;
+use Psr\Http\Client\ClientInterface;
 use Psr\SimpleCache\CacheInterface;
 use Slince\Di\Container;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
@@ -249,6 +251,11 @@ $container
 $container
     ->register(CacheInterface::class, Psr16Cache::class)
     ->setArgument('pool', new Slince\Di\Reference('$fileStorage'))
+    ->setShared(true)
+;
+
+$container
+    ->register(ClientInterface::class, WebClient::class)
     ->setShared(true)
 ;
 

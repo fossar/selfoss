@@ -8,7 +8,11 @@ use Exception;
 use Fossar\GuzzleTranscoder\GuzzleTranscoder;
 use GuzzleHttp;
 use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Psr7\HttpFactory;
 use Monolog\Logger;
+use Override;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -18,13 +22,19 @@ use Psr\Http\Message\ResponseInterface;
  * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Alexandre Rossi <alexandre.rossi@gmail.com>
  */
-class WebClient {
+class WebClient implements ClientInterface {
     private Configuration $configuration;
     private ?GuzzleHttp\Client $httpClient = null;
+    private HttpFactory $httpFactory;
     private Logger $logger;
 
-    public function __construct(Configuration $configuration, Logger $logger) {
+    public function __construct(
+        Configuration $configuration,
+        HttpFactory $httpFactory,
+        Logger $logger
+    ) {
         $this->configuration = $configuration;
+        $this->httpFactory = $httpFactory;
         $this->logger = $logger;
     }
 
@@ -113,8 +123,7 @@ class WebClient {
      * @throws Exception Unless 200 0K response is received
      */
     public function request(string $url, ?string $agentInfo = null): string {
-        $http = $this->getHttpClient();
-        $response = $http->get($url);
+        $response = $this->sendRequest($this->httpFactory->createRequest('GET', $url));
         $data = (string) $response->getBody();
 
         if ($response->getStatusCode() !== 200) {
@@ -122,6 +131,13 @@ class WebClient {
         }
 
         return $data;
+    }
+
+    #[Override]
+    public function sendRequest(RequestInterface $request): ResponseInterface {
+        $http = $this->getHttpClient();
+
+        return $http->send($request);
     }
 
     /**
