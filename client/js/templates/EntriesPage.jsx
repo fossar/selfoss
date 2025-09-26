@@ -729,7 +729,7 @@ class StateHolder extends React.Component {
             const newStatus = entryStatuses.find(
                 (entryStatus) => entryStatus.id == id,
             );
-            if (newStatus !== null) {
+            if (newStatus) {
                 this.starEntryInView(id, newStatus.starred);
                 this.markEntryInView(id, newStatus.unread);
             }
