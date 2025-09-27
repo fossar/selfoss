@@ -96,9 +96,6 @@
 
         qaTools = {
           nativeBuildInputs = [
-            # Back-end code validation.
-            php.packages.phpstan
-
             # For building zip archive and integration tests.
             python
 
