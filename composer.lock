@@ -1020,16 +1020,16 @@
         },
         {
             "name": "j0k3r/graby-site-config",
-            "version": "1.0.203",
+            "version": "1.0.204",
             "source": {
                 "type": "git",
                 "url": "https://github.com/j0k3r/graby-site-config.git",
-                "reference": "591b5f68a2efeef9e498c3393e32c15d7e7031a0"
+                "reference": "dc73f228de8cd43b791d87c5b63fa2996164475d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/j0k3r/graby-site-config/zipball/591b5f68a2efeef9e498c3393e32c15d7e7031a0",
-                "reference": "591b5f68a2efeef9e498c3393e32c15d7e7031a0",
+                "url": "https://api.github.com/repos/j0k3r/graby-site-config/zipball/dc73f228de8cd43b791d87c5b63fa2996164475d",
+                "reference": "dc73f228de8cd43b791d87c5b63fa2996164475d",
                 "shasum": ""
             },
             "require": {
@@ -1058,9 +1058,9 @@
             "description": "Graby site config files",
             "support": {
                 "issues": "https://github.com/j0k3r/graby-site-config/issues",
-                "source": "https://github.com/j0k3r/graby-site-config/tree/1.0.203"
+                "source": "https://github.com/j0k3r/graby-site-config/tree/1.0.204"
             },
-            "time": "2025-09-01T02:34:35+00:00"
+            "time": "2025-10-01T02:30:19+00:00"
         },
         {
             "name": "j0k3r/httplug-ssrf-plugin",
@@ -4133,16 +4133,16 @@
         },
         {
             "name": "friendsofphp/php-cs-fixer",
-            "version": "v3.88.1",
+            "version": "v3.88.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer.git",
-                "reference": "1c2a98f4d6cd9675cba10c59932692aa01108426"
+                "reference": "a8d15584bafb0f0d9d938827840060fd4a3ebc99"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHP-CS-Fixer/PHP-CS-Fixer/zipball/1c2a98f4d6cd9675cba10c59932692aa01108426",
-                "reference": "1c2a98f4d6cd9675cba10c59932692aa01108426",
+                "url": "https://api.github.com/repos/PHP-CS-Fixer/PHP-CS-Fixer/zipball/a8d15584bafb0f0d9d938827840060fd4a3ebc99",
+                "reference": "a8d15584bafb0f0d9d938827840060fd4a3ebc99",
                 "shasum": ""
             },
             "require": {
@@ -4225,7 +4225,7 @@
             ],
             "support": {
                 "issues": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/issues",
-                "source": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/tree/v3.88.1"
+                "source": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/tree/v3.88.2"
             },
             "funding": [
                 {
@@ -4233,7 +4233,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-09-26T23:39:09+00:00"
+            "time": "2025-09-27T00:24:15+00:00"
         },
         {
             "name": "php-parallel-lint/php-parallel-lint",
@@ -4298,16 +4298,11 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "2.1.29",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/phpstan/phpstan-phar-composer-source.git",
-                "reference": "git"
-            },
+            "version": "2.1.30",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/d618573eed4a1b6b75e37b2e0b65ac65c885d88e",
-                "reference": "d618573eed4a1b6b75e37b2e0b65ac65c885d88e",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/a4a7f159927983dd4f7c8020ed227d80b7f39d7d",
+                "reference": "a4a7f159927983dd4f7c8020ed227d80b7f39d7d",
                 "shasum": ""
             },
             "require": {
@@ -4352,7 +4347,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-09-25T06:58:18+00:00"
+            "time": "2025-10-02T16:07:52+00:00"
         },
         {
             "name": "phpstan/phpstan-deprecation-rules",
@@ -5375,16 +5370,16 @@
         },
         {
             "name": "symfony/phpunit-bridge",
-            "version": "v7.3.3",
+            "version": "v7.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/phpunit-bridge.git",
-                "reference": "7954e563ed14f924593169f6c4645d58d9d9ac77"
+                "reference": "ed77a629c13979e051b7000a317966474d566398"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/7954e563ed14f924593169f6c4645d58d9d9ac77",
-                "reference": "7954e563ed14f924593169f6c4645d58d9d9ac77",
+                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/ed77a629c13979e051b7000a317966474d566398",
+                "reference": "ed77a629c13979e051b7000a317966474d566398",
                 "shasum": ""
             },
             "require": {
@@ -5440,7 +5435,7 @@
                 "testing"
             ],
             "support": {
-                "source": "https://github.com/symfony/phpunit-bridge/tree/v7.3.3"
+                "source": "https://github.com/symfony/phpunit-bridge/tree/v7.3.4"
             },
             "funding": [
                 {
@@ -5460,7 +5455,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-08-04T15:15:28+00:00"
+            "time": "2025-09-12T12:18:52+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
