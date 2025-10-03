@@ -6,14 +6,17 @@ namespace Selfoss;
 
 use Bramus\Router\Router;
 use Psr\Container\ContainerInterface;
+use Selfoss\helpers\Configuration;
 
 final class Routes {
     private Router $router;
     private ContainerInterface $container;
+    private Configuration $configuration;
 
-    public function __construct(Router $router, ContainerInterface $container) {
+    public function __construct(Router $router, ContainerInterface $container, Configuration $configuration) {
         $this->router = $router;
         $this->container = $container;
+        $this->configuration = $configuration;
     }
 
     private function setupRoutes(): void {
@@ -172,6 +175,10 @@ final class Routes {
             header('HTTP/1.1 404 Not Found');
             echo 'Page not found.';
         });
+
+        if ($this->configuration->baseUrl !== null) {
+            $this->router->setBasePath($this->configuration->baseUrl->getPath());
+        }
     }
 
     public function run(): bool {
