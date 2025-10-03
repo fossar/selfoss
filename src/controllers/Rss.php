@@ -39,7 +39,7 @@ final readonly class Rss {
         $this->feedWriter->setChannelElement('description', '');
         $this->feedWriter->setSelfLink($this->view->getBaseUrl() . 'feed');
 
-        $this->feedWriter->setLink($this->view->getBaseUrl());
+        $this->feedWriter->setLink((string) $this->view->getBaseUrl());
 
         // get sources
         $lastSourceId = 0;

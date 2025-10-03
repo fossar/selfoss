@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Selfoss\helpers;
 
 use Exception;
+use GuzzleHttp\Psr7\Uri;
 use ReflectionClass;
 use ReflectionNamedType;
 
@@ -90,7 +91,14 @@ final class Configuration {
 
     public int $itemsLifetime = 30;
 
-    public string $baseUrl = '';
+    /**
+     * URL representing the main selfoss entry.
+     *
+     * Absolute URL or absolute path, with no query string or hash fragment, and path ending with a slash.
+     *
+     * @validator normalizeBaseUrl
+     */
+    public ?Uri $baseUrl = null;
 
     public string $username = '';
 
@@ -214,6 +222,8 @@ final class Configuration {
                 $value = (bool) $value;
             } elseif ($propertyType === 'int') {
                 $value = (int) $value;
+            } elseif ($propertyType === Uri::class) {
+                $value = new Uri($value);
             } elseif ($propertyType === 'string') {
                 // Should already be a string.
             } elseif ($propertyType === 'self::LOGGER_LEVEL_*') {
@@ -222,6 +232,11 @@ final class Configuration {
                 }
             } else {
                 throw new Exception("Unknown type “{$propertyType}” for property “{$propertyName}”.", 1);
+            }
+
+            if ($doc !== false && preg_match('(@validator (?P<validator>[^\s]+))', $doc, $matches) === 1) {
+                $validator = $matches['validator'];
+                $value = $this->$validator($value);
             }
 
             $this->{$propertyName} = $value;
@@ -241,5 +256,31 @@ final class Configuration {
      */
     public function isChanged(string $key): bool {
         return isset($this->modifiedOptions[$key]);
+    }
+
+    private function normalizeBaseUrl(Uri $uri): Uri {
+        if ($uri->getScheme() === '' && $uri->getAuthority() === '' && $uri->getPath() === '') {
+            throw new Exception('base_url cannot be empty');
+        }
+
+        if ($uri->getQuery() !== '') {
+            throw new Exception('base_url cannot contain query string');
+        }
+
+        if ($uri->getFragment() !== '') {
+            throw new Exception('base_url cannot contain hash fragment');
+        }
+
+        if (!Uri::isAbsolute($uri) && !Uri::isAbsolutePathReference($uri)) {
+            throw new Exception('base_url must be absolute or absolute path reference');
+        }
+
+        $path = $uri->getPath();
+
+        if (!str_ends_with($path, '/')) {
+            $uri = $uri->withPath($path . '/');
+        }
+
+        return $uri;
     }
 }
