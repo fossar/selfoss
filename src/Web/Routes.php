@@ -11,6 +11,7 @@ namespace Selfoss\Web;
 use Bramus\Router\Router;
 use Psr\Container\ContainerInterface;
 use Selfoss\controllers;
+use Selfoss\helpers\Configuration;
 
 /**
  * Defines API routes serving as an entry point to the web app.
@@ -18,7 +19,8 @@ use Selfoss\controllers;
 final class Routes {
     public function __construct(
         private Router $router,
-        private ContainerInterface $container
+        private ContainerInterface $container,
+        private Configuration $configuration,
     ) {
     }
 
@@ -174,6 +176,10 @@ final class Routes {
             header('HTTP/1.1 404 Not Found');
             echo 'Page not found.';
         });
+
+        if ($this->configuration->baseUrl !== null) {
+            $this->router->setBasePath($this->configuration->baseUrl->getPath());
+        }
     }
 
     public function run(): bool {
