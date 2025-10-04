@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace helpers\Storage;
+namespace Selfoss\helpers\Storage;
 
 use Monolog\Logger;
 

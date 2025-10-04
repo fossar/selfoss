@@ -46,7 +46,7 @@ class images extends feed {
                 return $firstEnclosure->get_link();
             }
         } else { // no enclosures: search image link in content
-            $image = \helpers\ImageUtils::findFirstImageSource((string) $item->get_content());
+            $image = \Selfoss\helpers\ImageUtils::findFirstImageSource((string) $item->get_content());
             if ($image !== null) {
                 return $image;
             }

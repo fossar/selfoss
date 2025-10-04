@@ -9,10 +9,10 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
-use helpers\HtmlString;
 use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Client\ClientInterface;
+use Selfoss\helpers\HtmlString;
 use Slince\Di\Container;
 use spouts\youtube\youtube;
 
