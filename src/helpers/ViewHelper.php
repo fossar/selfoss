@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace helpers;
+namespace Selfoss\helpers;
 
 use DateTime;
 
@@ -138,7 +138,7 @@ final readonly class ViewHelper {
      *     author: string,
      *     tags: string[],
      * } $item item to modify
-     * @param \controllers\Tags $tagsController tags controller
+     * @param \Selfoss\controllers\Tags $tagsController tags controller
      * @param ?array<array{tag: string, color: string}> $tags list of tags
      * @param ?string $search search query
      *
@@ -163,7 +163,7 @@ final readonly class ViewHelper {
      *     tags: StringKeyedArray<array{backColor: string, foreColor: string}>,
      * } modified item
      */
-    public function preprocessEntry(array $item, \controllers\Tags $tagsController, ?array $tags = null, ?string $search = null): array {
+    public function preprocessEntry(array $item, \Selfoss\controllers\Tags $tagsController, ?array $tags = null, ?string $search = null): array {
         // parse tags and assign tag colors
         $item['tags'] = $tagsController->tagsAddColors($item['tags'], $tags);
 

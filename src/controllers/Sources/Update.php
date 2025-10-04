@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace controllers\Sources;
+namespace Selfoss\controllers\Sources;
 
-use helpers\Authentication;
-use helpers\ContentLoader;
-use helpers\Misc;
-use helpers\UpdateVisitor;
-use helpers\View;
 use InvalidArgumentException;
+use Selfoss\helpers\Authentication;
+use Selfoss\helpers\ContentLoader;
+use Selfoss\helpers\Misc;
+use Selfoss\helpers\UpdateVisitor;
+use Selfoss\helpers\View;
 
 /**
  * Controller updating sources

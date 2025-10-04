@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace daos;
+namespace Selfoss\daos;
 
 /**
  * Interface describing database backend.

@@ -2,9 +2,6 @@
 
 declare(strict_types=1);
 
-use helpers\Configuration;
-use helpers\DatabaseConnection;
-use helpers\WebClient;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\ErrorLogHandler;
 use Monolog\Handler\NullHandler;
@@ -13,6 +10,11 @@ use Monolog\Logger;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\SimpleCache\CacheInterface;
+use Selfoss\daos;
+use Selfoss\helpers;
+use Selfoss\helpers\Configuration;
+use Selfoss\helpers\DatabaseConnection;
+use Selfoss\helpers\WebClient;
 use Slince\Di\Container;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Cache\Psr16Cache;
@@ -97,19 +99,19 @@ $container
 
 // Choose database implementation based on config
 $container
-    ->register(daos\DatabaseInterface::class, 'daos\\' . $configuration->dbType . '\\Database')
+    ->register(daos\DatabaseInterface::class, 'Selfoss\daos\\' . $configuration->dbType . '\\Database')
     ->setShared(true)
 ;
 $container
-    ->register(daos\ItemsInterface::class, 'daos\\' . $configuration->dbType . '\\Items')
+    ->register(daos\ItemsInterface::class, 'Selfoss\daos\\' . $configuration->dbType . '\\Items')
     ->setShared(true)
 ;
 $container
-    ->register(daos\SourcesInterface::class, 'daos\\' . $configuration->dbType . '\\Sources')
+    ->register(daos\SourcesInterface::class, 'Selfoss\daos\\' . $configuration->dbType . '\\Sources')
     ->setShared(true)
 ;
 $container
-    ->register(daos\TagsInterface::class, 'daos\\' . $configuration->dbType . '\\Tags')
+    ->register(daos\TagsInterface::class, 'Selfoss\daos\\' . $configuration->dbType . '\\Tags')
     ->setShared(true)
 ;
 

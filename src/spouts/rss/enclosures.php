@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace spouts\rss;
 
-use helpers\HtmlString;
+use Selfoss\helpers\HtmlString;
 use SimplePie;
 use spouts\Item;
 

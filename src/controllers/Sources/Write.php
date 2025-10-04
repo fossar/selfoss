@@ -2,16 +2,17 @@
 
 declare(strict_types=1);
 
-namespace controllers\Sources;
+namespace Selfoss\controllers\Sources;
 
-use helpers\Authentication;
-use helpers\ContentLoader;
-use helpers\Filters\FilterFactory;
-use helpers\Filters\FilterSyntaxError;
-use helpers\Misc;
-use helpers\Request;
-use helpers\SpoutLoader;
-use helpers\View;
+use Selfoss\daos;
+use Selfoss\helpers\Authentication;
+use Selfoss\helpers\ContentLoader;
+use Selfoss\helpers\Filters\FilterFactory;
+use Selfoss\helpers\Filters\FilterSyntaxError;
+use Selfoss\helpers\Misc;
+use Selfoss\helpers\Request;
+use Selfoss\helpers\SpoutLoader;
+use Selfoss\helpers\View;
 use spouts\Parameter;
 
 /**
@@ -22,9 +23,9 @@ final readonly class Write {
         private Authentication $authentication,
         private ContentLoader $contentLoader,
         private Request $request,
-        private \daos\Sources $sourcesDao,
+        private daos\Sources $sourcesDao,
         private SpoutLoader $spoutLoader,
-        private \daos\Tags $tagsDao,
+        private daos\Tags $tagsDao,
         private View $view
     ) {
     }

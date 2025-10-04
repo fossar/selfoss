@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-namespace controllers\Items;
+namespace Selfoss\controllers\Items;
 
-use helpers\Authentication;
-use helpers\Configuration;
-use function helpers\json_response;
-use helpers\View;
-use helpers\ViewHelper;
+use Selfoss\daos;
+use Selfoss\helpers\Authentication;
+use Selfoss\helpers\Configuration;
+use function Selfoss\helpers\json_response;
+use Selfoss\helpers\View;
+use Selfoss\helpers\ViewHelper;
 
 /**
  * Controller for synchronizing item statuses
@@ -17,10 +18,10 @@ final readonly class Sync {
     public function __construct(
         private Authentication $authentication,
         private Configuration $configuration,
-        private \daos\Items $itemsDao,
-        private \daos\Sources $sourcesDao,
-        private \controllers\Tags $tagsController,
-        private \daos\Tags $tagsDao,
+        private daos\Items $itemsDao,
+        private daos\Sources $sourcesDao,
+        private \Selfoss\controllers\Tags $tagsController,
+        private daos\Tags $tagsDao,
         private View $view,
         private ViewHelper $viewHelper
     ) {

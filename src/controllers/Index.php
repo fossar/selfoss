@@ -2,14 +2,15 @@
 
 declare(strict_types=1);
 
-namespace controllers;
+namespace Selfoss\controllers;
 
 use Bramus\Router\Router;
-use daos\ItemOptions;
-use helpers\Authentication;
-use helpers\StringKeyedArray;
-use helpers\View;
-use helpers\ViewHelper;
+use Selfoss\daos;
+use Selfoss\daos\ItemOptions;
+use Selfoss\helpers\Authentication;
+use Selfoss\helpers\StringKeyedArray;
+use Selfoss\helpers\View;
+use Selfoss\helpers\ViewHelper;
 
 /**
  * Controller for root
@@ -21,11 +22,11 @@ use helpers\ViewHelper;
 final readonly class Index {
     public function __construct(
         private Authentication $authentication,
-        private \daos\Items $itemsDao,
+        private daos\Items $itemsDao,
         private Router $router,
-        private \daos\Sources $sourcesDao,
+        private daos\Sources $sourcesDao,
         private Tags $tagsController,
-        private \daos\Tags $tagsDao,
+        private daos\Tags $tagsDao,
         private View $view,
         private ViewHelper $viewHelper
     ) {

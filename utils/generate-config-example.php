@@ -1,6 +1,6 @@
 <?php
 
-use helpers\Configuration;
+use Selfoss\helpers\Configuration;
 
 require __DIR__ . '/../vendor/autoload.php';
 

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace helpers;
+namespace Selfoss\helpers;
 
-use helpers\Storage\FileStorage;
 use Monolog\Logger;
+use Selfoss\helpers\Storage\FileStorage;
 
 /**
  * Icon storage.

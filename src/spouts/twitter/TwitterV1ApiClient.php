@@ -13,7 +13,7 @@ namespace spouts\twitter;
 
 use GuzzleHttp;
 use GuzzleHttp\Exception\BadResponseException;
-use helpers\HtmlString;
+use Selfoss\helpers\HtmlString;
 use spouts\Item;
 use stdClass;
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace daos\sqlite;
+namespace Selfoss\daos\sqlite;
 
 /**
  * Class for accessing persistent saved sources -- mysql
@@ -12,7 +12,7 @@ namespace daos\sqlite;
  * @author     Harald Lapp <harald.lapp@gmail.com>
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
-final class Sources extends \daos\mysql\Sources {
+final class Sources extends \Selfoss\daos\mysql\Sources {
     /** @var class-string SQL helper */
     protected static string $stmt = Statements::class;
 }

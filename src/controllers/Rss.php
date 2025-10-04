@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-namespace controllers;
+namespace Selfoss\controllers;
 
-use daos\ItemOptions;
 use FeedWriter\RSS2;
-use helpers\Authentication;
-use helpers\Configuration;
-use helpers\View;
+use Selfoss\daos;
+use Selfoss\daos\ItemOptions;
+use Selfoss\helpers\Authentication;
+use Selfoss\helpers\Configuration;
+use Selfoss\helpers\View;
 
 /**
  * Controller for rss access
@@ -22,8 +23,8 @@ final readonly class Rss {
         private Authentication $authentication,
         private Configuration $configuration,
         private RSS2 $feedWriter,
-        private \daos\Items $itemsDao,
-        private \daos\Sources $sourcesDao,
+        private daos\Items $itemsDao,
+        private daos\Sources $sourcesDao,
         private View $view
     ) {
     }

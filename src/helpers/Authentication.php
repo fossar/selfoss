@@ -10,9 +10,9 @@
 
 declare(strict_types=1);
 
-namespace helpers;
+namespace Selfoss\helpers;
 
-use helpers\Authentication\AuthenticationService;
+use Selfoss\helpers\Authentication\AuthenticationService;
 
 /**
  * Helper class for user authentication.

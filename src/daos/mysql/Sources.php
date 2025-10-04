@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace daos\mysql;
+namespace Selfoss\daos\mysql;
 
-use daos\DatabaseInterface;
 use Exception;
-use helpers\Configuration;
 use function json_encode;
 use const JSON_ERROR_NONE;
 use function json_last_error;
 use function json_last_error_msg;
+use Selfoss\daos\DatabaseInterface;
+use Selfoss\helpers\Configuration;
 
 /**
  * Class for accessing persistent saved sources -- mysql
@@ -19,7 +19,7 @@ use function json_last_error_msg;
  * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
-class Sources implements \daos\SourcesInterface {
+class Sources implements \Selfoss\daos\SourcesInterface {
     /** @var class-string SQL helper */
     protected static string $stmt = Statements::class;
 

@@ -5,10 +5,10 @@
 
 declare(strict_types=1);
 
-namespace helpers\Authentication;
+namespace Selfoss\helpers\Authentication;
 
-use helpers\Configuration;
 use Psr\Container\ContainerInterface;
+use Selfoss\helpers\Configuration;
 
 /**
  * Factory that creates `AuthenticationService` based on the configuration.

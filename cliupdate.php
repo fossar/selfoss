@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-use helpers\UpdateVisitor;
 use Psr\Container\ContainerInterface;
+use Selfoss\helpers\UpdateVisitor;
 
 chdir(__DIR__);
 require __DIR__ . '/src/common.php';
 
 /** @var ContainerInterface $container */
-$loader = $container->get(helpers\ContentLoader::class);
+$loader = $container->get(Selfoss\helpers\ContentLoader::class);
 $updateVisitor = new class implements UpdateVisitor {
     public function started(int $count): void {
     }

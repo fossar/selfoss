@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace daos\sqlite;
+namespace Selfoss\daos\sqlite;
 
-use daos\CommonSqlDatabase;
-use helpers\DatabaseConnection;
 use Monolog\Logger;
+use Selfoss\daos\CommonSqlDatabase;
+use Selfoss\helpers\DatabaseConnection;
 
 /**
  * Base class for database access -- sqlite
@@ -16,7 +16,7 @@ use Monolog\Logger;
  * @author      Harald Lapp (harald.lapp@gmail.com)
  * @author      Tobias Zeising <tobias.zeising@aditu.de>
  */
-final class Database implements \daos\DatabaseInterface {
+final class Database implements \Selfoss\daos\DatabaseInterface {
     use CommonSqlDatabase;
 
     /**
@@ -201,7 +201,7 @@ final class Database implements \daos\DatabaseInterface {
             $this->commit();
         }
         // Jump straight from v6 to v8 due to bug in previous version of the code
-        // in \daos\sqlite\Database which
+        // in \Selfoss\daos\sqlite\Database which
         // set the database version to "7" for initial installs.
         if ($version < 8) {
             $this->logger->debug('Upgrading database schema to version 8');

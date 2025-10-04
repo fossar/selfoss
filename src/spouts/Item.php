@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace spouts;
 
 use DateTimeInterface;
-use helpers\HtmlString;
+use Selfoss\helpers\HtmlString;
 
 /**
  * Value object representing a source item (e.g. an article).

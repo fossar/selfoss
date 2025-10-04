@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace daos\pgsql;
+namespace Selfoss\daos\pgsql;
 
-use daos\DatabaseInterface;
+use Selfoss\daos\DatabaseInterface;
 
 /**
  * PostgreSQL specific statements
@@ -13,7 +13,7 @@ use daos\DatabaseInterface;
  * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Alexandre Rossi <alexandre.rossi@gmail.com>
  */
-final class Statements extends \daos\mysql\Statements {
+final class Statements extends \Selfoss\daos\mysql\Statements {
     /**
      * null first for order by clause
      *

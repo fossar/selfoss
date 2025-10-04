@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Helpers;
 
-use helpers\ViewHelper;
 use PHPUnit\Framework\TestCase;
+use Selfoss\helpers\ViewHelper;
 
 final class ImageLazifierTest extends TestCase {
     /**

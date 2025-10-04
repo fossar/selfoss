@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace daos\mysql;
+namespace Selfoss\daos\mysql;
 
-use daos\DatabaseInterface;
+use Selfoss\daos\DatabaseInterface;
 
 /**
  * MySQL specific statements
@@ -13,7 +13,7 @@ use daos\DatabaseInterface;
  * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Alexandre Rossi <alexandre.rossi@gmail.com>
  */
-class Statements implements \daos\StatementsInterface {
+class Statements implements \Selfoss\daos\StatementsInterface {
     /**
      * null first for order by clause
      *

@@ -5,12 +5,12 @@
 
 declare(strict_types=1);
 
-namespace helpers\Authentication\Services;
+namespace Selfoss\helpers\Authentication\Services;
 
-use helpers\Authentication\AuthenticationService;
-use helpers\Configuration;
-use helpers\Session;
 use Monolog\Logger;
+use Selfoss\helpers\Authentication\AuthenticationService;
+use Selfoss\helpers\Configuration;
+use Selfoss\helpers\Session;
 
 /**
  * Authentication method that verifies credentials given using

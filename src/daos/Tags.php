@@ -6,9 +6,9 @@
 
 declare(strict_types=1);
 
-namespace daos;
+namespace Selfoss\daos;
 
-use helpers\Authentication;
+use Selfoss\helpers\Authentication;
 
 /**
  * Proxy for accessing tag colors.

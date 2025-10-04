@@ -46,10 +46,8 @@
     ],
     "autoload": {
         "psr-4": {
-            "controllers\\": "src/controllers/",
-            "daos\\": "src/daos/",
-            "helpers\\": "src/helpers/",
             "spouts\\": "src/spouts/",
+            "Selfoss\\": "src/",
             "Tests\\": "tests/"
         }
     },

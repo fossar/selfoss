@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace daos;
+namespace Selfoss\daos;
 
 use DateTime;
 use DateTimeImmutable;
-use helpers\HtmlString;
+use Selfoss\helpers\HtmlString;
 
 /**
  * Interface describing concrete DAO for working with items.

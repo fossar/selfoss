@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-namespace controllers;
+namespace Selfoss\controllers;
 
-use helpers\Authentication;
-use helpers\Misc;
-use helpers\SpoutLoader;
-use helpers\View;
 use InvalidArgumentException;
+use Selfoss\daos;
+use Selfoss\helpers\Authentication;
+use Selfoss\helpers\Misc;
+use Selfoss\helpers\SpoutLoader;
+use Selfoss\helpers\View;
 
 /**
  * Controller for sources handling
@@ -20,9 +21,9 @@ use InvalidArgumentException;
 final readonly class Sources {
     public function __construct(
         private Authentication $authentication,
-        private \daos\Sources $sourcesDao,
+        private daos\Sources $sourcesDao,
         private SpoutLoader $spoutLoader,
-        private \daos\Tags $tagsDao,
+        private daos\Tags $tagsDao,
         private View $view
     ) {
     }

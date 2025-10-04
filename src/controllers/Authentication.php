@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace controllers;
+namespace Selfoss\controllers;
 
-use helpers\Authentication\AuthenticationService;
-use helpers\View;
+use Selfoss\helpers\Authentication\AuthenticationService;
+use Selfoss\helpers\View;
 
 /**
  * Controller for user related tasks

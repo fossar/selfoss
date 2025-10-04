@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace spouts\facebook;
 
 use GuzzleHttp\Psr7\Uri;
-use helpers\HtmlString;
-use helpers\WebClient;
+use Selfoss\helpers\HtmlString;
+use Selfoss\helpers\WebClient;
 use spouts\Item;
 use spouts\Parameter;
 

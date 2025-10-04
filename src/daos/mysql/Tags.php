@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace daos\mysql;
+namespace Selfoss\daos\mysql;
 
-use daos\DatabaseInterface;
-use helpers\Configuration;
+use Selfoss\daos\DatabaseInterface;
+use Selfoss\helpers\Configuration;
 
 /**
  * Class for accessing persistent saved sources -- mysql
@@ -14,7 +14,7 @@ use helpers\Configuration;
  * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
-class Tags implements \daos\TagsInterface {
+class Tags implements \Selfoss\daos\TagsInterface {
     /** @var class-string SQL helper */
     protected static string $stmt = Statements::class;
 
@@ -56,7 +56,7 @@ class Tags implements \daos\TagsInterface {
 
         // get unused random color
         while (true) {
-            $color = \helpers\Color::randomColor();
+            $color = \Selfoss\helpers\Color::randomColor();
             if ($this->isColorUsed($color) === false) {
                 break;
             }

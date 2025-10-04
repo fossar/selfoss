@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace daos\pgsql;
+namespace Selfoss\daos\pgsql;
 
 /**
  * Class for accessing persistant saved items -- postgresql
@@ -12,7 +12,7 @@ namespace daos\pgsql;
  * @author      Michael Jackson <michael.o.jackson@gmail.com>
  * @author      Tobias Zeising <tobias.zeising@aditu.de>
  */
-final class Items extends \daos\mysql\Items {
+final class Items extends \Selfoss\daos\mysql\Items {
     /** @var class-string SQL helper */
     protected static string $stmt = Statements::class;
 }

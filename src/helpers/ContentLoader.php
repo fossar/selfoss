@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-namespace helpers;
+namespace Selfoss\helpers;
 
-use helpers\Filters\AcceptingFilter;
-use helpers\Filters\FilterFactory;
-use helpers\Filters\FilterSyntaxError;
 use Monolog\Logger;
+use Selfoss\daos;
+use Selfoss\helpers\Filters\AcceptingFilter;
+use Selfoss\helpers\Filters\FilterFactory;
+use Selfoss\helpers\Filters\FilterSyntaxError;
 
 /**
  * Helper class for loading extern items
@@ -22,12 +23,12 @@ final readonly class ContentLoader {
 
     public function __construct(
         private Configuration $configuration,
-        private \daos\DatabaseInterface $database,
+        private daos\DatabaseInterface $database,
         private IconStore $iconStore,
         private Image $imageHelper,
-        private \daos\Items $itemsDao,
+        private daos\Items $itemsDao,
         private Logger $logger,
-        private \daos\Sources $sourcesDao,
+        private daos\Sources $sourcesDao,
         private SpoutLoader $spoutLoader,
         private ThumbnailStore $thumbnailStore,
         private WebClient $webClient

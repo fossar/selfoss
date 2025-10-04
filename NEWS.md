@@ -54,6 +54,7 @@
 - Several `npm run` scripts were renamed for consistency: `analyse:server` → `check:server:phpstan`, `cs:server` → `check:server:cs`, `lint:server` → `check:server:lint`. ([#1494](https://github.com/fossar/selfoss/pull/1494))
 - Front-end code was converted to TypeScript. ([#1457](https://github.com/fossar/selfoss/pull/1457))
 - Last use of [F3 framework](https://fatfreeframework.com) was removed. So long… ([#1298](https://github.com/fossar/selfoss/pull/1298))
+- All non-spout classes were moved to a single PSR-4 namespace: `Selfoss\`. ([#1532](https://github.com/fossar/selfoss/pull/1532))
 
 ### API changes
 

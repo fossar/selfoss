@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace helpers;
+namespace Selfoss\helpers;
 
 use Monolog\Logger;
 use PDO;

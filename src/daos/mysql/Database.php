@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace daos\mysql;
+namespace Selfoss\daos\mysql;
 
-use daos\CommonSqlDatabase;
-use helpers\DatabaseConnection;
-use helpers\StringKeyedArray;
 use Monolog\Logger;
+use Selfoss\daos\CommonSqlDatabase;
+use Selfoss\helpers\DatabaseConnection;
+use Selfoss\helpers\StringKeyedArray;
 
 /**
  * Base class for database access -- mysql
@@ -16,7 +16,7 @@ use Monolog\Logger;
  * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
-final class Database implements \daos\DatabaseInterface {
+final class Database implements \Selfoss\daos\DatabaseInterface {
     use CommonSqlDatabase;
 
     /**
@@ -196,7 +196,7 @@ final class Database implements \daos\DatabaseInterface {
             $this->commit();
         }
         // Jump straight from v6 to v8 due to bug in previous version of the code
-        // in \daos\sqlite\Database which
+        // in \Selfoss\daos\sqlite\Database which
         // set the database version to "7" for initial installs.
         if ($version < 8) {
             $this->logger->debug('Upgrading database schema to version 8');

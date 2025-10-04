@@ -9,7 +9,7 @@ namespace spouts\twitter;
 
 use GuzzleHttp;
 use GuzzleHttp\Subscriber\Oauth\Oauth1;
-use helpers\WebClient;
+use Selfoss\helpers\WebClient;
 
 /**
  * Factory for TwitterV1ApiClient.

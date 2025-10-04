@@ -5,7 +5,7 @@
 
 declare(strict_types=1);
 
-namespace helpers;
+namespace Selfoss\helpers;
 
 final class Request {
     public function getContentType(): string {
