@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace controllers;
+namespace Selfoss\controllers;
 
-use daos\ItemOptions;
 use DateTimeInterface;
-use helpers\Authentication;
-use helpers\Misc;
-use helpers\Request;
-use helpers\View;
 use InvalidArgumentException;
+use Selfoss\daos\ItemOptions;
+use Selfoss\helpers\Authentication;
+use Selfoss\helpers\Misc;
+use Selfoss\helpers\Request;
+use Selfoss\helpers\View;
 
 /**
  * Controller for item handling
@@ -21,13 +21,13 @@ use InvalidArgumentException;
  */
 class Items {
     private Authentication $authentication;
-    private \daos\Items $itemsDao;
+    private \Selfoss\daos\Items $itemsDao;
     private Request $request;
     private View $view;
 
     public function __construct(
         Authentication $authentication,
-        \daos\Items $itemsDao,
+        \Selfoss\daos\Items $itemsDao,
         Request $request,
         View $view
     ) {

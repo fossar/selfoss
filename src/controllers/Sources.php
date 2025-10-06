@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace controllers;
+namespace Selfoss\controllers;
 
-use helpers\Authentication;
-use helpers\Misc;
-use helpers\SpoutLoader;
-use helpers\View;
 use InvalidArgumentException;
+use Selfoss\helpers\Authentication;
+use Selfoss\helpers\Misc;
+use Selfoss\helpers\SpoutLoader;
+use Selfoss\helpers\View;
 
 /**
  * Controller for sources handling
@@ -19,12 +19,12 @@ use InvalidArgumentException;
  */
 class Sources {
     private Authentication $authentication;
-    private \daos\Sources $sourcesDao;
+    private \Selfoss\daos\Sources $sourcesDao;
     private SpoutLoader $spoutLoader;
-    private \daos\Tags $tagsDao;
+    private \Selfoss\daos\Tags $tagsDao;
     private View $view;
 
-    public function __construct(Authentication $authentication, \daos\Sources $sourcesDao, SpoutLoader $spoutLoader, \daos\Tags $tagsDao, View $view) {
+    public function __construct(Authentication $authentication, \Selfoss\daos\Sources $sourcesDao, SpoutLoader $spoutLoader, \Selfoss\daos\Tags $tagsDao, View $view) {
         $this->authentication = $authentication;
         $this->sourcesDao = $sourcesDao;
         $this->spoutLoader = $spoutLoader;

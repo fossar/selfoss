@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace daos;
+namespace Selfoss\daos;
 
 use DateTime;
 use DateTimeImmutable;
-use helpers\Authentication;
+use Selfoss\helpers\Authentication;
 
 /**
  * Class for accessing persistent saved items

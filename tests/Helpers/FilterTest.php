@@ -8,13 +8,13 @@ declare(strict_types=1);
 namespace Tests\Helpers;
 
 use DateTimeImmutable;
-use helpers\Filters\Filter;
-use helpers\Filters\FilterFactory;
-use helpers\Filters\FilterSyntaxError;
-use helpers\Filters\MapFilter;
-use helpers\Filters\RegexFilter;
-use helpers\HtmlString;
 use PHPUnit\Framework\TestCase;
+use Selfoss\helpers\Filters\Filter;
+use Selfoss\helpers\Filters\FilterFactory;
+use Selfoss\helpers\Filters\FilterSyntaxError;
+use Selfoss\helpers\Filters\MapFilter;
+use Selfoss\helpers\Filters\RegexFilter;
+use Selfoss\helpers\HtmlString;
 use spouts\Item;
 
 final class FilterTest extends TestCase {
