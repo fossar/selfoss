@@ -5,7 +5,7 @@
 
 declare(strict_types=1);
 
-namespace helpers\Filters;
+namespace Selfoss\helpers\Filters;
 
 /**
  * Filter that admits a list of items iff the inner filter admits any of them.

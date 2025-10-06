@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace controllers\Items;
+namespace Selfoss\controllers\Items;
 
-use helpers\Authentication;
-use helpers\Configuration;
-use function helpers\json_response;
-use helpers\View;
-use helpers\ViewHelper;
+use Selfoss\helpers\Authentication;
+use Selfoss\helpers\Configuration;
+use function Selfoss\helpers\json_response;
+use Selfoss\helpers\View;
+use Selfoss\helpers\ViewHelper;
 
 /**
  * Controller for synchronizing item statuses
@@ -16,14 +16,14 @@ use helpers\ViewHelper;
 class Sync {
     private Authentication $authentication;
     private Configuration $configuration;
-    private \daos\Items $itemsDao;
-    private \daos\Sources $sourcesDao;
-    private \controllers\Tags $tagsController;
-    private \daos\Tags $tagsDao;
+    private \Selfoss\daos\Items $itemsDao;
+    private \Selfoss\daos\Sources $sourcesDao;
+    private \Selfoss\controllers\Tags $tagsController;
+    private \Selfoss\daos\Tags $tagsDao;
     private View $view;
     private ViewHelper $viewHelper;
 
-    public function __construct(Authentication $authentication, Configuration $configuration, \daos\Items $itemsDao, \daos\Sources $sourcesDao, \controllers\Tags $tagsController, \daos\Tags $tagsDao, View $view, ViewHelper $viewHelper) {
+    public function __construct(Authentication $authentication, Configuration $configuration, \Selfoss\daos\Items $itemsDao, \Selfoss\daos\Sources $sourcesDao, \Selfoss\controllers\Tags $tagsController, \Selfoss\daos\Tags $tagsDao, View $view, ViewHelper $viewHelper) {
         $this->authentication = $authentication;
         $this->configuration = $configuration;
         $this->itemsDao = $itemsDao;

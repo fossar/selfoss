@@ -5,7 +5,7 @@
 
 declare(strict_types=1);
 
-namespace helpers\Authentication;
+namespace Selfoss\helpers\Authentication;
 
 /**
  * Must be implemented by any authentication service.

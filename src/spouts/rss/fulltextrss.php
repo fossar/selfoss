@@ -6,13 +6,13 @@ namespace spouts\rss;
 
 use Graby\Graby;
 use GuzzleHttp\Psr7\Uri;
-use helpers\Configuration;
-use helpers\FeedReader;
-use helpers\HtmlString;
-use helpers\Image;
-use helpers\WebClient;
 use Http\Adapter\Guzzle7\Client as GuzzleAdapter;
 use Monolog\Logger;
+use Selfoss\helpers\Configuration;
+use Selfoss\helpers\FeedReader;
+use Selfoss\helpers\HtmlString;
+use Selfoss\helpers\Image;
+use Selfoss\helpers\WebClient;
 use SimplePie;
 use spouts\Item;
 use spouts\Parameter;

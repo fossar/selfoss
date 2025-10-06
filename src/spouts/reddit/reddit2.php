@@ -8,10 +8,10 @@ use GuzzleHttp;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Uri;
 use GuzzleHttp\Psr7\UriResolver;
-use helpers\HtmlString;
-use helpers\Image;
-use helpers\WebClient;
 use Psr\Http\Message\ResponseInterface;
+use Selfoss\helpers\HtmlString;
+use Selfoss\helpers\Image;
+use Selfoss\helpers\WebClient;
 use spouts\Item;
 use spouts\Parameter;
 

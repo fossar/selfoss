@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace daos;
+namespace Selfoss\daos;
 
-use helpers\Authentication;
-use helpers\SpoutLoader;
+use Selfoss\helpers\Authentication;
+use Selfoss\helpers\SpoutLoader;
 use spouts\Parameter;
 
 /**
