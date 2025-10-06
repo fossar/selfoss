@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace controllers\Sources;
+namespace Selfoss\controllers\Sources;
 
-use helpers\Authentication;
-use helpers\ContentLoader;
-use helpers\Filters\FilterFactory;
-use helpers\Filters\FilterSyntaxError;
-use helpers\Misc;
-use helpers\Request;
-use helpers\SpoutLoader;
-use helpers\View;
+use Selfoss\helpers\Authentication;
+use Selfoss\helpers\ContentLoader;
+use Selfoss\helpers\Filters\FilterFactory;
+use Selfoss\helpers\Filters\FilterSyntaxError;
+use Selfoss\helpers\Misc;
+use Selfoss\helpers\Request;
+use Selfoss\helpers\SpoutLoader;
+use Selfoss\helpers\View;
 use spouts\Parameter;
 
 /**
@@ -21,18 +21,18 @@ class Write {
     private Authentication $authentication;
     private ContentLoader $contentLoader;
     private Request $request;
-    private \daos\Sources $sourcesDao;
+    private \Selfoss\daos\Sources $sourcesDao;
     private SpoutLoader $spoutLoader;
-    private \daos\Tags $tagsDao;
+    private \Selfoss\daos\Tags $tagsDao;
     private View $view;
 
     public function __construct(
         Authentication $authentication,
         ContentLoader $contentLoader,
         Request $request,
-        \daos\Sources $sourcesDao,
+        \Selfoss\daos\Sources $sourcesDao,
         SpoutLoader $spoutLoader,
-        \daos\Tags $tagsDao,
+        \Selfoss\daos\Tags $tagsDao,
         View $view
     ) {
         $this->authentication = $authentication;

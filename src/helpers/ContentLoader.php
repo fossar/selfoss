@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace helpers;
+namespace Selfoss\helpers;
 
-use helpers\Filters\AcceptingFilter;
-use helpers\Filters\FilterFactory;
-use helpers\Filters\FilterSyntaxError;
 use Monolog\Logger;
+use Selfoss\helpers\Filters\AcceptingFilter;
+use Selfoss\helpers\Filters\FilterFactory;
+use Selfoss\helpers\Filters\FilterSyntaxError;
 
 /**
  * Helper class for loading extern items
@@ -21,17 +21,17 @@ class ContentLoader {
     public const THUMBNAIL_FORMAT = Image::FORMAT_JPEG;
 
     private Configuration $configuration;
-    private \daos\DatabaseInterface $database;
+    private \Selfoss\daos\DatabaseInterface $database;
     private IconStore $iconStore;
     private Image $imageHelper;
-    private \daos\Items $itemsDao;
+    private \Selfoss\daos\Items $itemsDao;
     private Logger $logger;
-    private \daos\Sources $sourcesDao;
+    private \Selfoss\daos\Sources $sourcesDao;
     private SpoutLoader $spoutLoader;
     private ThumbnailStore $thumbnailStore;
     private WebClient $webClient;
 
-    public function __construct(Configuration $configuration, \daos\DatabaseInterface $database, IconStore $iconStore, Image $imageHelper, \daos\Items $itemsDao, Logger $logger, \daos\Sources $sourcesDao, SpoutLoader $spoutLoader, ThumbnailStore $thumbnailStore, WebClient $webClient) {
+    public function __construct(Configuration $configuration, \Selfoss\daos\DatabaseInterface $database, IconStore $iconStore, Image $imageHelper, \Selfoss\daos\Items $itemsDao, Logger $logger, \Selfoss\daos\Sources $sourcesDao, SpoutLoader $spoutLoader, ThumbnailStore $thumbnailStore, WebClient $webClient) {
         $this->configuration = $configuration;
         $this->database = $database;
         $this->iconStore = $iconStore;

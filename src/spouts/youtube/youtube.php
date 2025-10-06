@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace spouts\youtube;
 
-use helpers\FeedReader;
-use helpers\HtmlString;
-use helpers\Image;
 use Monolog\Logger;
+use Selfoss\helpers\FeedReader;
+use Selfoss\helpers\HtmlString;
+use Selfoss\helpers\Image;
 use SimplePie;
 use spouts\Item;
 use spouts\Parameter;

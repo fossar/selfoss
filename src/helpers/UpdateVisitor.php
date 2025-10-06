@@ -5,7 +5,7 @@
 
 declare(strict_types=1);
 
-namespace helpers;
+namespace Selfoss\helpers;
 
 interface UpdateVisitor {
     public function started(int $count): void;

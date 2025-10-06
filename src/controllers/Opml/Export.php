@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace controllers\Opml;
+namespace Selfoss\controllers\Opml;
 
-use helpers\Authentication;
-use helpers\Configuration;
-use helpers\SpoutLoader;
-use helpers\StringKeyedArray;
 use Monolog\Logger;
+use Selfoss\helpers\Authentication;
+use Selfoss\helpers\Configuration;
+use Selfoss\helpers\SpoutLoader;
+use Selfoss\helpers\StringKeyedArray;
 
 /**
  * OPML loading and exporting controller
@@ -24,10 +24,10 @@ class Export {
     private Logger $logger;
     private SpoutLoader $spoutLoader;
     private \XMLWriter $writer;
-    private \daos\Sources $sourcesDao;
-    private \daos\Tags $tagsDao;
+    private \Selfoss\daos\Sources $sourcesDao;
+    private \Selfoss\daos\Tags $tagsDao;
 
-    public function __construct(Authentication $authentication, Configuration $configuration, Logger $logger, \daos\Sources $sourcesDao, SpoutLoader $spoutLoader, \daos\Tags $tagsDao, \XMLWriter $writer) {
+    public function __construct(Authentication $authentication, Configuration $configuration, Logger $logger, \Selfoss\daos\Sources $sourcesDao, SpoutLoader $spoutLoader, \Selfoss\daos\Tags $tagsDao, \XMLWriter $writer) {
         $this->authentication = $authentication;
         $this->configuration = $configuration;
         $this->logger = $logger;
