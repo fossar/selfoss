@@ -416,10 +416,8 @@ export function EntriesPage({
     );
 
     // Current time for calculating relative dates in items.
-    const [currentTime, setCurrentTime] = useState(null);
+    const [currentTime, setCurrentTime] = useState(() => new Date());
     useEffect(() => {
-        setCurrentTime(new Date());
-
         const tick = window.setInterval(() => {
             setCurrentTime(new Date());
         }, 60 * 1000);
