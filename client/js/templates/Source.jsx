@@ -593,7 +593,7 @@ export default function Source({
 
     const editOnClick = useCallback(
         (event) => handleEdit({ event, source, setEditedSource }),
-        [source],
+        [source, setEditedSource],
     );
 
     const setDirty = useCallback(
