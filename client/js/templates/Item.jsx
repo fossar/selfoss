@@ -62,7 +62,7 @@ function stopPropagation(event) {
     event.stopPropagation();
 }
 
-function lazyLoadImages(content) {
+function forceLoadImages(content) {
     content.querySelectorAll('img').forEach((img) => {
         img.setAttribute('src', img.getAttribute('data-selfoss-src'));
     });
@@ -140,7 +140,7 @@ function handleClick({ event, navigate, location, expanded, id, target }) {
 function loadImages({ event, setImagesLoaded, contentBlock }) {
     event.preventDefault();
     event.stopPropagation();
-    lazyLoadImages(contentBlock.current);
+    forceLoadImages(contentBlock.current);
     setImagesLoaded(true);
 }
 
@@ -258,8 +258,11 @@ export default function Item({
 }) {
     const { title, author, sourcetitle } = item;
 
+    const configuration = useContext(ConfigurationContext);
     const [fullScreenTrap, setFullScreenTrap] = useState(null);
-    const [imagesLoaded, setImagesLoaded] = useState(false);
+    const shouldAutoLoadImages =
+        !selfoss.isMobile() || configuration.loadImagesOnMobile;
+    const [imagesLoaded, setImagesLoaded] = useState(shouldAutoLoadImages);
     const contentBlock = useRef(null);
 
     const location = useLocation();
@@ -271,7 +274,6 @@ export default function Item({
     );
 
     const previouslyExpanded = usePreviousImmediate(expanded);
-    const configuration = useContext(ConfigurationContext);
 
     const [slides, setSlides] = useState([]);
     const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(null);
@@ -293,12 +295,8 @@ export default function Item({
                 );
 
                 // load images not on mobile devices
-                if (
-                    selfoss.isMobile() == false ||
-                    configuration.loadImagesOnMobile
-                ) {
-                    setImagesLoaded(true);
-                    lazyLoadImages(contentBlock.current);
+                if (shouldAutoLoadImages) {
+                    forceLoadImages(contentBlock.current);
                 }
             }
 
