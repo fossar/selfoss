@@ -473,7 +473,7 @@ export default class DbOffline {
                     selfoss.db.storage.statusq,
                 ],
                 () => {
-                    const statsDiff = {};
+                    const statsDiff = { unread: 0, starred: 0 };
 
                     // update entries statuses
                     itemStatuses.forEach((itemStatus) => {
@@ -481,7 +481,6 @@ export default class DbOffline {
 
                         ENTRY_STATUS_NAMES.forEach((statusName) => {
                             if (statusName in itemStatus) {
-                                statsDiff[statusName] = 0;
                                 newStatus[statusName] = itemStatus[statusName];
 
                                 if (updateStats) {
