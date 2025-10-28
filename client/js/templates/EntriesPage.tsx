@@ -5,6 +5,8 @@ import React, {
     useMemo,
     useState,
     forwardRef,
+    Dispatch,
+    SetStateAction,
 } from 'react';
 import { Link, NavigateFunction } from 'react-router';
 import { useOnline } from 'rooks';
@@ -27,14 +29,15 @@ import { LocalizationContext } from '../helpers/i18n';
 import { useShouldReload } from '../helpers/hooks';
 import {
     Location,
+    useEntriesParams,
     useLocation,
-    useParams,
     forceReload,
     makeEntriesLinkLocation,
 } from '../helpers/uri';
 import { Configuration, ConfigurationContext } from '../model/Configuration';
 import { HttpError } from '../errors';
 import { useNavigate } from 'react-router';
+import { FetchParams } from '../selfoss-db-online';
 
 function reloadList({
     fetchParams,
@@ -45,7 +48,16 @@ function reloadList({
     configuration,
     entryId = null,
     setLoadingState,
-}) {
+}: {
+    fetchParams: FetchParams;
+    abortController: AbortController;
+    navigate: NavigateFunction;
+    append: boolean;
+    waitForSync: boolean;
+    configuration: Configuration;
+    entryId: number | null;
+    setLoadingState: Dispatch<SetStateAction<LoadingState>>;
+}): Promise<void> {
     if (abortController.signal.aborted) {
         return Promise.resolve();
     }
@@ -262,7 +274,7 @@ export function EntriesPage(props: EntriesPageProps) {
         return queryString.get('search') ?? '';
     }, [location.search]);
 
-    const params = useParams();
+    const params = useEntriesParams();
     const currentTag = params.category?.startsWith('tag-')
         ? params.category.replace(/^tag-/, '')
         : null;
@@ -289,7 +301,7 @@ export function EntriesPage(props: EntriesPageProps) {
     // but do not re-fetch when the id in the URI changes later
     // since that happens when reading.
     const initialItemId = useMemo(() => {
-        return parseInt(params.id, 10);
+        return params.id;
     }, [params.filter, currentTag, currentSource, searchText, forceReload]);
     // Same for the state of navigation being expanded.
     // It is only passed to the API request as a part of optimization scheme
@@ -366,8 +378,11 @@ export function EntriesPage(props: EntriesPageProps) {
     useEffect(() => {
         // scroll load more
         const onScroll = () => {
-            const streamMoreButton = document.querySelector('.stream-more');
-            if (!streamMoreButton) {
+            const streamMoreButton =
+                document.querySelector<HTMLButtonElement | null>(
+                    '.stream-more',
+                );
+            if (streamMoreButton === null) {
                 return;
             }
 
@@ -1148,7 +1163,9 @@ export class StateHolder extends React.Component<
                     current = old;
 
                     // attempt to load more
-                    document.querySelector('.stream-more')?.click();
+                    document
+                        .querySelector<HTMLButtonElement | null>('.stream-more')
+                        ?.click();
                 } else {
                     current = this.state.entries[nextIndex].id;
                 }
@@ -1295,7 +1312,7 @@ const StateHolderOuter = forwardRef(function StateHolderOuter(
     } = props;
     const location = useLocation();
     const navigate = useNavigate();
-    const params = useParams();
+    const params = useEntriesParams();
 
     return (
         <StateHolder

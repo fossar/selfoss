@@ -8,6 +8,7 @@ import Dexie, {
 } from 'dexie';
 import { OfflineDb } from './model/OfflineDb';
 import { FilterType } from './Filter';
+import { FetchParams } from './selfoss-db-online';
 
 const ENTRY_STATUS_NAMES: Array<'unread' | 'starred'> = ['unread', 'starred'];
 
@@ -265,7 +266,7 @@ export default class DbOffline {
         });
     }
 
-    getEntries(fetchParams: FetchParams) {
+    getEntries(fetchParams: FetchParams, _abortController: AbortController) {
         let hasMore = false;
         return selfoss.dbOffline
             ._tr('r', [selfoss.db.storage.entries], () => {

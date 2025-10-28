@@ -5,11 +5,18 @@ import selfoss from './selfoss-base';
 import * as icons from './icons';
 import { Configuration } from './model/Configuration';
 
-type Sharer = {
+export type Sharer = {
     label: string;
     icon: string | React.JSX.Element;
     action: (params: { url: string; title: string }) => void;
     available?: boolean;
+};
+
+export type EnabledSharer = {
+    key: string;
+    label: string;
+    icon: string | React.JSX.Element;
+    action: (params: { url: string; title: string }) => void;
 };
 
 function materializeSharerIcon(sharer: Sharer): Sharer {
@@ -29,10 +36,10 @@ function materializeSharerIcon(sharer: Sharer): Sharer {
 export function useSharers(args: {
     configuration: Configuration;
     _: (identifier: string, params?: { [index: string]: string }) => string;
-}): Array<Sharer> {
+}): Array<EnabledSharer> {
     const { configuration, _ } = args;
 
-    return useMemo((): Array<Sharer> => {
+    return useMemo((): Array<EnabledSharer> => {
         const availableSharers: { [key: string]: Sharer } = {
             a: {
                 label: _('share_native_label'),

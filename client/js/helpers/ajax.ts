@@ -15,6 +15,7 @@ type FetchOptions = {
     timeout?: number;
     failOnHttpErrors?: boolean;
     signal?: AbortSignal;
+    cache?: RequestCache;
 };
 
 interface Fetch {

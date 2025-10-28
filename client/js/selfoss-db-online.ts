@@ -11,6 +11,13 @@ import {
 
 export type FetchParams = {
     type: FilterType;
+    tag: string | null;
+    source: number | null;
+    extraIds: number[];
+    sourcesNav: boolean;
+    search: string | null;
+    fromDatetime: Date | null;
+    fromId: number | null;
 };
 
 export default class DbOnline {
