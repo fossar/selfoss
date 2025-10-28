@@ -44,7 +44,7 @@ export default class DbOffline {
                 );
                 selfoss.db.broken = true;
                 selfoss.db.enableOffline.update(false);
-                selfoss.entries?.reload();
+                selfoss.entriesPage?.reload();
 
                 // If this is a QuotaExceededError, garbage collect more
                 // entries and hope it helps.
