@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace controllers;
+namespace Selfoss\controllers;
 
-use daos\ItemOptions;
 use FeedWriter\RSS2;
-use helpers\Authentication;
-use helpers\Configuration;
-use helpers\View;
+use Selfoss\daos\ItemOptions;
+use Selfoss\helpers\Authentication;
+use Selfoss\helpers\Configuration;
+use Selfoss\helpers\View;
 
 /**
  * Controller for rss access
@@ -21,11 +21,11 @@ class Rss {
     private Authentication $authentication;
     private Configuration $configuration;
     private RSS2 $feedWriter;
-    private \daos\Items $itemsDao;
-    private \daos\Sources $sourcesDao;
+    private \Selfoss\daos\Items $itemsDao;
+    private \Selfoss\daos\Sources $sourcesDao;
     private View $view;
 
-    public function __construct(Authentication $authentication, Configuration $configuration, RSS2 $feedWriter, \daos\Items $itemsDao, \daos\Sources $sourcesDao, View $view) {
+    public function __construct(Authentication $authentication, Configuration $configuration, RSS2 $feedWriter, \Selfoss\daos\Items $itemsDao, \Selfoss\daos\Sources $sourcesDao, View $view) {
         $this->authentication = $authentication;
         $this->configuration = $configuration;
         $this->feedWriter = $feedWriter;
@@ -44,7 +44,7 @@ class Rss {
         $this->feedWriter->setChannelElement('description', '');
         $this->feedWriter->setSelfLink($this->view->getBaseUrl() . 'feed');
 
-        $this->feedWriter->setLink($this->view->getBaseUrl());
+        $this->feedWriter->setLink((string) $this->view->getBaseUrl());
 
         // get sources
         $lastSourceId = 0;

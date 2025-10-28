@@ -9,9 +9,8 @@
 
 declare(strict_types=1);
 
-namespace helpers;
+namespace Selfoss\helpers;
 
-use GuzzleHttp\Psr7\Uri;
 use Monolog\Logger;
 
 /**
@@ -37,7 +36,7 @@ class Session {
 
         $this->started = true;
 
-        $base_url = new Uri($this->view->getBaseUrl());
+        $base_url = $this->view->getBaseUrl();
 
         // session cookie will be valid for one month.
         $cookie_expire = 3600 * 24 * 30;

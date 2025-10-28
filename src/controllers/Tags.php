@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace controllers;
+namespace Selfoss\controllers;
 
-use helpers\Authentication;
-use helpers\Request;
-use helpers\StringKeyedArray;
-use helpers\View;
+use Selfoss\helpers\Authentication;
+use Selfoss\helpers\Request;
+use Selfoss\helpers\StringKeyedArray;
+use Selfoss\helpers\View;
 
 /**
  * Controller for tag access
@@ -22,13 +22,13 @@ class Tags {
 
     private Authentication $authentication;
     private Request $request;
-    private \daos\Tags $tagsDao;
+    private \Selfoss\daos\Tags $tagsDao;
     private View $view;
 
     public function __construct(
         Authentication $authentication,
         Request $request,
-        \daos\Tags $tagsDao,
+        \Selfoss\daos\Tags $tagsDao,
         View $view
     ) {
         $this->authentication = $authentication;
@@ -121,7 +121,7 @@ class Tags {
         foreach ($tags as $tag) {
             $assocTags[$tag['tag']] = [
                 'backColor' => $tag['color'],
-                'foreColor' => \helpers\Color::colorByBrightness($tag['color']),
+                'foreColor' => \Selfoss\helpers\Color::colorByBrightness($tag['color']),
             ];
         }
 
