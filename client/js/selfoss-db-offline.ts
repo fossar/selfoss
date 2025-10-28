@@ -6,9 +6,15 @@ import Dexie, {
     Transaction,
     TransactionMode,
 } from 'dexie';
-import { OfflineDb } from './model/OfflineDb';
+import { OfflineDb, Entry } from './model/OfflineDb';
 import { FilterType } from './Filter';
 import { FetchParams } from './selfoss-db-online';
+
+export type ItemStatus = {
+    id: number;
+    unread?: boolean;
+    starred?: boolean;
+};
 
 const ENTRY_STATUS_NAMES: Array<'unread' | 'starred'> = ['unread', 'starred'];
 
@@ -111,7 +117,7 @@ export default class DbOffline {
                 // offlineDays ago.
                 this.newestGCedEntry = new Date(
                     Math.max(
-                        this.newestGCedEntry,
+                        +this.newestGCedEntry,
                         Date.now() - this.offlineDays * 86400000,
                     ),
                 );
@@ -185,13 +191,16 @@ export default class DbOffline {
             // seems to be exceeded: decrease the amount of days entries are
             // kept offline.
             const keptDays = Math.floor(
-                (new Date() - this.newestGCedEntry) / 86400000,
+                (Date.now() - +this.newestGCedEntry) / 86400000,
             );
             this.offlineDays = Math.max(
                 Math.min(keptDays - 1, this.offlineDays - 1),
                 0,
             );
-            window.localStorage.setItem('offlineDays', this.offlineDays);
+            window.localStorage.setItem(
+                'offlineDays',
+                this.offlineDays.toString(),
+            );
         }
 
         return selfoss.db.storage.transaction(
@@ -206,7 +215,7 @@ export default class DbOffline {
                         !stamp ||
                         more ||
                         (stamp &&
-                            Date.now() - stamp.datetime > 24 * 3600 * 1000)
+                            Date.now() - +stamp.datetime > 24 * 3600 * 1000)
                     ) {
                         // Cleanup items older than offlineDays days, not of
                         // interest.
@@ -244,7 +253,7 @@ export default class DbOffline {
         );
     }
 
-    storeStats(stats) {
+    storeStats(stats: { [key: string]: number }): Promise<void> {
         return this._tr('rw', [selfoss.db.storage.stats], () => {
             for (const [name, value] of Object.entries(stats)) {
                 selfoss.db.storage.stats.put({
@@ -266,7 +275,9 @@ export default class DbOffline {
         });
     }
 
-    getEntries(fetchParams: FetchParams, _abortController: AbortController) {
+    getEntries(
+        fetchParams: FetchParams,
+    ): Promise<{ entries: Entry[]; hasMore: boolean }> {
         let hasMore = false;
         return selfoss.dbOffline
             ._tr('r', [selfoss.db.storage.entries], () => {
@@ -394,7 +405,9 @@ export default class DbOffline {
         });
     }
 
-    enqueueStatuses(statuses) {
+    enqueueStatuses(
+        statuses: { entryId: string; name: string; value: string }[],
+    ): Promise<void> {
         if (statuses) {
             this.needsSync = true;
         }
@@ -446,7 +459,11 @@ export default class DbOffline {
         return selfoss.dbOnline._syncBegin();
     }
 
-    storeEntryStatuses(itemStatuses, dequeue = false, updateStats = true) {
+    storeEntryStatuses(
+        itemStatuses: ItemStatus[],
+        dequeue: boolean = false,
+        updateStats: boolean = true,
+    ): Promise<void> {
         return selfoss.dbOffline
             ._tr(
                 'rw',
@@ -477,7 +494,7 @@ export default class DbOffline {
                             }
                         });
 
-                        const id = parseInt(itemStatus.id);
+                        const id = itemStatus.id;
                         selfoss.db.storage.entries.get(id).then(
                             () => {
                                 selfoss.db.storage.entries.update(
@@ -516,7 +533,7 @@ export default class DbOffline {
             .then(this.refreshStats);
     }
 
-    entriesMark(itemIds, unread) {
+    entriesMark(itemIds: number[], unread: boolean): Promise<void> {
         selfoss.dbOnline.statsDirty = true;
         const newStatuses = itemIds.map((itemId) => {
             return { id: itemId, unread };
@@ -524,11 +541,11 @@ export default class DbOffline {
         return this.storeEntryStatuses(newStatuses);
     }
 
-    entryMark(itemId, unread) {
+    entryMark(itemId: number, unread: boolean): Promise<void> {
         return this.entriesMark([itemId], unread);
     }
 
-    entryStar(itemId, starred) {
+    entryStar(itemId: number, starred: boolean): Promise<void> {
         return this.storeEntryStatuses([
             {
                 id: itemId,
