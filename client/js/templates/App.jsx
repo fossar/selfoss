@@ -10,6 +10,7 @@ import {
     useNavigate,
     useLocation,
 } from 'react-router';
+import { useEffectEvent } from 'use-effect-event';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Collapse } from '@kunukn/react-collapse';
 import classNames from 'classnames';
@@ -92,13 +93,23 @@ function NotFound() {
 
 function CheckAuthorization({ isAllowed, returnLocation, _, children }) {
     const navigate = useNavigate();
+
+    const redirect = useEffectEvent(() => {
+        navigate('/sign/in', {
+            state: { returnLocation },
+        });
+    });
+
+    useEffect(() => {
+        if (!isAllowed) {
+            redirect();
+        }
+    }, [isAllowed]);
+
     if (!isAllowed) {
         const [preLink, inLink, postLink] = _('error_unauthorized').split(
             /\{(?:link_begin|link_end)\}/,
         );
-        navigate('/sign/in', {
-            state: { returnLocation },
-        });
 
         return (
             <p>
