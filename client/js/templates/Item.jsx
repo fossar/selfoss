@@ -259,7 +259,6 @@ export default function Item({
     const { title, author, sourcetitle } = item;
 
     const configuration = useContext(ConfigurationContext);
-    const [fullScreenTrap, setFullScreenTrap] = useState(null);
     const shouldAutoLoadImages =
         !selfoss.isMobile() || configuration.loadImagesOnMobile;
     const [imagesLoaded, setImagesLoaded] = useState(shouldAutoLoadImages);
@@ -277,6 +276,10 @@ export default function Item({
 
     const [slides, setSlides] = useState([]);
     const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(null);
+
+    const fullScreenTrap = useRef(null);
+    // This should match scenarios where fullScreenTrap is set.
+    const usingFocusTrap = expanded && selfoss.isSmartphone();
 
     useEffect(() => {
         // Handle entry becoming/ceasing to be expanded.
@@ -325,7 +328,7 @@ export default function Item({
                 document.body.classList.add('fullscreen-mode');
 
                 const trap = createFocusTrap(parent);
-                setFullScreenTrap(trap);
+                fullScreenTrap.current = trap;
                 trap.activate();
 
                 if (firstExpansion) {
@@ -364,13 +367,10 @@ export default function Item({
         } else {
             // No longer expanded.
 
-            setFullScreenTrap((trap) => {
-                if (trap !== null) {
-                    trap.deactivate();
-                }
-
-                return null;
-            });
+            if (fullScreenTrap.current !== null) {
+                fullScreenTrap.current.deactivate();
+                fullScreenTrap.current = null;
+            }
 
             document.body.classList.remove('fullscreen-mode');
         }
@@ -477,7 +477,7 @@ export default function Item({
                 selected,
             })}
             role="article"
-            aria-modal={fullScreenTrap !== null}
+            aria-modal={usingFocusTrap}
             onClick={entryOnClick}
         >
             {/* icon */}
