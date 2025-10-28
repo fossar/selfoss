@@ -16,7 +16,9 @@ export type ItemStatus = {
     starred?: boolean;
 };
 
-const ENTRY_STATUS_NAMES: Array<'unread' | 'starred'> = ['unread', 'starred'];
+function statToNumber(stat: boolean | undefined): number {
+    return stat === undefined ? 0 : stat ? 1 : -1;
+}
 
 export default class DbOffline {
     /** @var Date the datetime of the newest garbage collected entry, i.e. deleted because not of interest. */
@@ -406,7 +408,7 @@ export default class DbOffline {
     }
 
     enqueueStatuses(
-        statuses: { entryId: string; name: string; value: string }[],
+        statuses: { entryId: number; name: string; value: boolean }[],
     ): Promise<void> {
         if (statuses) {
             this.needsSync = true;
@@ -414,7 +416,7 @@ export default class DbOffline {
 
         const d = new Date();
         const newQueuedStatuses = statuses.map((newStatus) => ({
-            entryId: parseInt(newStatus.entryId),
+            entryId: newStatus.entryId,
             name: newStatus.name,
             value: newStatus.value,
             datetime: d,
@@ -459,6 +461,16 @@ export default class DbOffline {
         return selfoss.dbOnline._syncBegin();
     }
 
+    /**
+     * Update `unread` and `starred` statuses of items in the offline database.
+     *
+     * @param dequee - also clear the local status updates queued to upload to server
+     * @param updateStats - also update local statistics
+     *
+     * Note: Do not use `updateStats` with `itemStatuses` obtained from the server.
+     * The server report cannot distinguish which of the status fields was changed
+     * so both will be considered changed.
+     */
     storeEntryStatuses(
         itemStatuses: ItemStatus[],
         dequeue: boolean = false,
@@ -477,21 +489,21 @@ export default class DbOffline {
 
                     // update entries statuses
                     itemStatuses.forEach((itemStatus) => {
-                        const newStatus = {};
+                        const newStatus = {
+                            ...('unread' in itemStatus && {
+                                unread: itemStatus.unread,
+                            }),
+                            ...('starred' in itemStatus && {
+                                starred: itemStatus.starred,
+                            }),
+                        };
 
-                        ENTRY_STATUS_NAMES.forEach((statusName) => {
-                            if (statusName in itemStatus) {
-                                newStatus[statusName] = itemStatus[statusName];
-
-                                if (updateStats) {
-                                    if (itemStatus[statusName]) {
-                                        statsDiff[statusName]++;
-                                    } else {
-                                        statsDiff[statusName]--;
-                                    }
-                                }
-                            }
-                        });
+                        if (updateStats) {
+                            statsDiff.unread += statToNumber(itemStatus.unread);
+                            statsDiff.starred += statToNumber(
+                                itemStatus.starred,
+                            );
+                        }
 
                         const id = itemStatus.id;
                         selfoss.db.storage.entries.get(id).then(
