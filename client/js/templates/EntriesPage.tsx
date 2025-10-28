@@ -7,6 +7,7 @@ import React, {
     forwardRef,
     Dispatch,
     SetStateAction,
+    ForwardedRef,
 } from 'react';
 import { Link, NavigateFunction } from 'react-router';
 import { useOnline } from 'rooks';
@@ -52,10 +53,10 @@ function reloadList({
     fetchParams: FetchParams;
     abortController: AbortController;
     navigate: NavigateFunction;
-    append: boolean;
-    waitForSync: boolean;
+    append?: boolean;
+    waitForSync?: boolean;
     configuration: Configuration;
-    entryId: number | null;
+    entryId?: number | null;
     setLoadingState: Dispatch<SetStateAction<LoadingState>>;
 }): Promise<void> {
     if (abortController.signal.aborted) {
@@ -80,22 +81,21 @@ function reloadList({
             return Promise.resolve();
         }
 
-        let reloader = selfoss.dbOffline.getEntries;
-
-        // tag, source and search filtering not supported offline (yet?)
-        if (fetchParams.tag || fetchParams.source || fetchParams.search) {
-            reloader = selfoss.dbOnline.getEntries;
-        }
-
         const forceLoadOnline =
             selfoss.dbOffline.olderEntriesOnline ||
             selfoss.dbOffline.shouldLoadEntriesOnline;
-        if (
+
+        // tag, source and search filtering not supported offline (yet?)
+        const shouldFetch =
+            fetchParams.tag ||
+            fetchParams.source ||
+            fetchParams.search ||
             !selfoss.db.enableOffline.value ||
-            (selfoss.isOnline() && forceLoadOnline)
-        ) {
-            reloader = selfoss.dbOnline.getEntries;
-        }
+            (selfoss.isOnline() && forceLoadOnline);
+
+        const reloader = shouldFetch
+            ? selfoss.dbOnline.getEntries(fetchParams, abortController)
+            : selfoss.dbOffline.getEntries(fetchParams);
 
         // Clean state when not just adding items.
         if (!append) {
@@ -106,7 +106,7 @@ function reloadList({
         }
 
         setLoadingState(LoadingState.LOADING);
-        return reloader(fetchParams, abortController)
+        return reloader
             .then(({ entries, hasMore }) => {
                 if (abortController.signal.aborted) {
                     return;
@@ -183,7 +183,7 @@ function reloadList({
  * @param {number} selected
  */
 function openSelectedArticle(selected) {
-    const link = document.querySelector(
+    const link = document.querySelector<HTMLDivElement>(
         `.entry[data-entry-id="${selected}"] .entry-datetime`,
     );
     if (selfoss.config.openInBackgroundTab) {
@@ -236,13 +236,13 @@ type EntriesPageProps = {
     entries: Array<any>;
     hasMore: boolean;
     loadingState: LoadingState;
-    setLoadingState: React.Dispatch<React.SetStateAction<LoadingState>>;
+    setLoadingState: Dispatch<SetStateAction<LoadingState>>;
     selectedEntry: number | null;
     expandedEntries: { [index: string]: boolean };
-    setNavExpanded: React.Dispatch<React.SetStateAction<boolean>>;
+    setNavExpanded: Dispatch<SetStateAction<boolean>>;
     navSourcesExpanded: boolean;
     reload: () => void;
-    setGlobalUnreadCount: React.Dispatch<React.SetStateAction<number>>;
+    setGlobalUnreadCount: Dispatch<SetStateAction<number>>;
     unreadItemsCount: number;
 };
 
@@ -574,9 +574,9 @@ type StateHolderProps = {
     location: Location;
     navigate: NavigateFunction;
     params: Params;
-    setNavExpanded: React.Dispatch<React.SetStateAction<boolean>>;
+    setNavExpanded: Dispatch<SetStateAction<boolean>>;
     navSourcesExpanded: boolean;
-    setGlobalUnreadCount: React.Dispatch<React.SetStateAction<number>>;
+    setGlobalUnreadCount: Dispatch<SetStateAction<number>>;
     unreadItemsCount: number;
 };
 
@@ -647,7 +647,7 @@ export class StateHolder extends React.Component<
     /**
      * Make the given entry currently selected one.
      */
-    setSelectedEntry(selectedEntry: React.SetStateAction<number>): void {
+    setSelectedEntry(selectedEntry: SetStateAction<number>): void {
         if (typeof selectedEntry === 'function') {
             this.setState((state) => ({
                 selectedEntry: selectedEntry(state.selectedEntry),
@@ -665,7 +665,7 @@ export class StateHolder extends React.Component<
     }
 
     setExpandedEntries(
-        expandedEntries: React.SetStateAction<{ [index: number]: boolean }>,
+        expandedEntries: SetStateAction<{ [index: number]: boolean }>,
     ): void {
         if (typeof expandedEntries === 'function') {
             this.setState((state) => ({
@@ -676,7 +676,7 @@ export class StateHolder extends React.Component<
         }
     }
 
-    setEntryExpanded(id: number, expand: React.SetStateAction<boolean>): void {
+    setEntryExpanded(id: number, expand: SetStateAction<boolean>): void {
         if (typeof expand === 'function') {
             this.setExpandedEntries((oldEntries) => ({
                 ...oldEntries,
@@ -791,7 +791,7 @@ export class StateHolder extends React.Component<
         });
     }
 
-    setHasMore(hasMore: React.SetStateAction<boolean>): void {
+    setHasMore(hasMore: SetStateAction<boolean>): void {
         if (typeof hasMore === 'function') {
             this.setState((state) => ({
                 hasMore: hasMore(state.hasMore),
@@ -801,7 +801,7 @@ export class StateHolder extends React.Component<
         }
     }
 
-    setLoadingState(loadingState: React.SetStateAction<LoadingState>): void {
+    setLoadingState(loadingState: SetStateAction<LoadingState>): void {
         if (typeof loadingState === 'function') {
             this.setState((state) => ({
                 loadingState: loadingState(state.loadingState),
@@ -1192,7 +1192,7 @@ export class StateHolder extends React.Component<
                 this.setSelectedEntry(current);
             }
 
-            const currentElement = document.querySelector(
+            const currentElement = document.querySelector<HTMLDivElement>(
                 `.entry[data-entry-id="${current}"]`,
             );
 
@@ -1200,7 +1200,9 @@ export class StateHolder extends React.Component<
             autoScroll(currentElement);
 
             // focus the title link for better keyboard navigation
-            currentElement.querySelector('.entry-title-link').focus();
+            currentElement
+                .querySelector<HTMLElement>('.entry-title-link')
+                .focus();
         }
     }
 
@@ -1293,15 +1295,15 @@ export class StateHolder extends React.Component<
 
 type StateHolderOuterProps = {
     configuration: Configuration;
-    setNavExpanded: React.Dispatch<React.SetStateAction<boolean>>;
+    setNavExpanded: Dispatch<SetStateAction<boolean>>;
     navSourcesExpanded: boolean;
-    setGlobalUnreadCount: React.Dispatch<React.SetStateAction<number>>;
+    setGlobalUnreadCount: Dispatch<SetStateAction<number>>;
     unreadItemsCount: number;
 };
 
 const StateHolderOuter = forwardRef(function StateHolderOuter(
     props: StateHolderOuterProps,
-    ref,
+    ref: ForwardedRef<StateHolder>,
 ) {
     const {
         configuration,
