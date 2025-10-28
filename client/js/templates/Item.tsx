@@ -1,4 +1,8 @@
 import React, {
+    Dispatch,
+    MouseEvent,
+    RefObject,
+    SetStateAction,
     useCallback,
     useContext,
     useEffect,
@@ -32,7 +36,7 @@ type Item = {
     strippedTitle: string;
     link: string;
     source: number;
-    tags: { [tag: string]: string };
+    tags: { [tag: string]: TagColor };
     author: string;
     sourcetitle: string;
     datetime: Date;
@@ -58,8 +62,16 @@ function reHighlight(text: string) {
     );
 }
 
-function setupLightbox({ element, setSlides, setSelectedPhotoIndex }) {
-    const images = element.querySelectorAll(
+function setupLightbox({
+    element,
+    setSlides,
+    setSelectedPhotoIndex,
+}: {
+    element: HTMLDivElement;
+    setSlides: (slides: Array<{ src: string }>) => void;
+    setSelectedPhotoIndex: (index: number) => void;
+}) {
+    const images = element.querySelectorAll<HTMLAnchorElement>(
         'a[href$=".jpg"], a[href$=".jpeg"], a[href$=".png"], a[href$=".gif"], a[href$=".jpg:large"], a[href$=".jpeg:large"], a[href$=".png:large"], a[href$=".gif:large"]',
     );
 
@@ -157,7 +169,15 @@ function handleClick({ event, navigate, location, expanded, id, target }) {
 }
 
 // load images
-function loadImages({ event, setImagesLoaded, contentBlock }) {
+function loadImages({
+    event,
+    setImagesLoaded,
+    contentBlock,
+}: {
+    event: MouseEvent;
+    setImagesLoaded: Dispatch<SetStateAction<boolean>>;
+    contentBlock: RefObject<HTMLDivElement>;
+}): void {
     event.preventDefault();
     event.stopPropagation();
     forceLoadImages(contentBlock.current);
@@ -165,7 +185,7 @@ function loadImages({ event, setImagesLoaded, contentBlock }) {
 }
 
 // next item on tablet and smartphone
-function openNext(event) {
+function openNext(event: MouseEvent): void {
     event.preventDefault();
     event.stopPropagation();
 
@@ -187,7 +207,7 @@ type ShareAction = ({
 
 type ShareButtonProps = {
     label: string;
-    icon: string | HTMLElement;
+    icon: string | React.JSX.Element;
     item: Item;
     action: ShareAction;
     showLabel?: boolean;
@@ -197,7 +217,7 @@ function ShareButton(props: ShareButtonProps) {
     const { label, icon, item, action, showLabel = true } = props;
 
     const shareOnClick = useCallback(
-        (event) => {
+        (event: MouseEvent) => {
             event.preventDefault();
             event.stopPropagation();
 
@@ -302,7 +322,7 @@ export default function Item(props: ItemProps) {
     const shouldAutoLoadImages =
         !selfoss.isMobile() || configuration.loadImagesOnMobile;
     const [imagesLoaded, setImagesLoaded] = useState(shouldAutoLoadImages);
-    const contentBlock = useRef(null);
+    const contentBlock = useRef<HTMLDivElement | null>(null);
 
     const location = useLocation();
     const navigate = useNavigate();
@@ -323,7 +343,7 @@ export default function Item(props: ItemProps) {
 
     useEffect(() => {
         // Handle entry becoming/ceasing to be expanded.
-        const parent = document.querySelector(
+        const parent = document.querySelector<HTMLDivElement>(
             `.entry[data-entry-id="${item.id}"]`,
         );
         if (expanded) {
@@ -397,7 +417,9 @@ export default function Item(props: ItemProps) {
                             contentBlock.current.getBoundingClientRect()
                                 .height > document.body.clientHeight
                         ) {
-                            contentBlock.current.parentNode.classList.add(
+                            const entryContent = contentBlock.current
+                                .parentNode as HTMLDivElement;
+                            entryContent.classList.add(
                                 'entry-content-nocolumns',
                             );
                         }
@@ -430,7 +452,7 @@ export default function Item(props: ItemProps) {
     }, [configuration, expanded, item.id, item.unread, previouslyExpanded]);
 
     const entryOnClick = useCallback(
-        (event) =>
+        (event: MouseEvent) =>
             handleClick({
                 event,
                 navigate,
@@ -443,7 +465,7 @@ export default function Item(props: ItemProps) {
     );
 
     const titleOnClick = useCallback(
-        (event) =>
+        (event: MouseEvent) =>
             handleClick({
                 event,
                 navigate,
@@ -456,7 +478,7 @@ export default function Item(props: ItemProps) {
     );
 
     const starOnClick = useCallback(
-        (event) => {
+        (event: MouseEvent) => {
             event.preventDefault();
             event.stopPropagation();
             selfoss.entriesPage.markEntryStarred(item.id, !item.starred);
@@ -465,7 +487,7 @@ export default function Item(props: ItemProps) {
     );
 
     const markReadOnClick = useCallback(
-        (event) => {
+        (event: MouseEvent) => {
             event.preventDefault();
             event.stopPropagation();
             selfoss.entriesPage.markEntryRead(item.id, item.unread);
@@ -474,12 +496,13 @@ export default function Item(props: ItemProps) {
     );
 
     const loadImagesOnClick = useCallback(
-        (event) => loadImages({ event, setImagesLoaded, contentBlock }),
+        (event: MouseEvent) =>
+            loadImages({ event, setImagesLoaded, contentBlock }),
         [],
     );
 
     const closeOnClick = useCallback(
-        (event) =>
+        (event: MouseEvent) =>
             closeFullScreen({ event, navigate, location, entryId: item.id }),
         [navigate, location, item.id],
     );
@@ -524,7 +547,7 @@ export default function Item(props: ItemProps) {
             <a
                 href={item.link}
                 className="entry-icon"
-                tabIndex="-1"
+                tabIndex={-1}
                 rel="noreferrer"
                 aria-hidden="true"
                 onClick={preventDefaultOnSmartphone}
@@ -547,7 +570,7 @@ export default function Item(props: ItemProps) {
                     aria-expanded={expanded}
                     aria-current={selected}
                     role="link"
-                    tabIndex="0"
+                    tabIndex={0}
                     onKeyUp={handleKeyUp}
                     dangerouslySetInnerHTML={titleHtml}
                 />

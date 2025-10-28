@@ -31,11 +31,16 @@ import { faStar } from '@fortawesome/free-solid-svg-icons/faStar';
 import { faSyncAlt } from '@fortawesome/free-solid-svg-icons/faSyncAlt';
 import { faTimes } from '@fortawesome/free-solid-svg-icons/faTimes';
 import { faWifi } from '@fortawesome/free-solid-svg-icons/faWifi';
+import {
+    IconDefinition,
+    IconName,
+    IconPrefix,
+} from '@fortawesome/fontawesome-svg-core';
 import wallabagIcon from '../images/wallabag';
 
-export const wallabag = {
-    prefix: 'fac',
-    iconName: 'wallabag',
+export const wallabag: IconDefinition = {
+    prefix: <IconPrefix>'fac',
+    iconName: <IconName>'wallabag',
     icon: wallabagIcon,
 };
 

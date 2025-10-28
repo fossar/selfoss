@@ -11,6 +11,7 @@ import DbOnline from './selfoss-db-online';
 import DbOffline from './selfoss-db-offline';
 import Db from './selfoss-db';
 import { NavigateFunction } from 'react-router';
+import { Sharer } from './sharers';
 
 /**
  * base javascript application
@@ -43,6 +44,7 @@ class selfoss {
 
     static navigate: NavigateFunction | undefined = undefined;
     static config: Configuration;
+    static customSharers: { [key: string]: Sharer };
 
     /**
      * initialize application

@@ -1,9 +1,5 @@
 import { Location as LocationGeneric } from 'history';
-import {
-    useLocation as useLocationGeneric,
-    useParams as useParamsGeneric,
-    useMatch,
-} from 'react-router';
+import { useLocation as useLocationGeneric, useMatch } from 'react-router';
 import { FilterType } from '../Filter';
 
 export type LocationState = {
@@ -12,14 +8,13 @@ export type LocationState = {
     forceReload?: number;
 };
 export type Params = {
-    filter?: FilterType;
-    category?: string;
-    id?: string;
+    filter: FilterType;
+    category: string;
+    id: number | null;
 };
 
 export type Location = LocationGeneric<LocationState>;
 
-export const useParams = useParamsGeneric<Params>;
 export function useLocation(): Location {
     return useLocationGeneric();
 }
@@ -51,11 +46,20 @@ export function filterTypeToString(type: FilterType): string {
         return 'starred';
     }
 }
-function generatePath({ filter, category, id }) {
+
+function generatePath({
+    filter,
+    category,
+    id,
+}: {
+    filter: string;
+    category: string;
+    id: string | null;
+}): string {
     return `/${filter}/${category}${id ? `/${id}` : ''}`;
 }
 
-export function useEntriesParams() {
+export function useEntriesParams(): Params | null {
     const match = useMatch(':filter/:category/:id?');
 
     if (match === null) {
@@ -71,13 +75,17 @@ export function useEntriesParams() {
         return null;
     }
 
-    return params;
+    return {
+        filter: filterTypeFromString(params.filter),
+        category: params.category,
+        id: params.id === undefined ? null : parseInt(params.id, 10),
+    };
 }
 
 type EntriesLinkParams = {
     filter?: FilterType;
     category?: string;
-    id?: number;
+    id?: string;
     search?: string;
 };
 
@@ -87,7 +95,7 @@ export function makeEntriesLinkLocation(
 ): { pathname: string; search: string } {
     const queryString = new URLSearchParams(location.search);
 
-    let path;
+    let path: string;
     if (location.pathname.match(/^\/(newest|unread|starred)\//) !== null) {
         const [, ...segments] = location.pathname.split('/');
 
