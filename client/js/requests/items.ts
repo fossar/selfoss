@@ -32,14 +32,18 @@ export function markAll(ids: number[]): Promise<TrivialResponse> {
  * Star or unstar item with given id.
  */
 export function starr(id: number, starr: boolean): Promise<TrivialResponse> {
-    return ajax.post(`${starr ? 'starr' : 'unstarr'}/${id}`).promise;
+    return ajax
+        .post(`${starr ? 'starr' : 'unstarr'}/${id}`)
+        .promise.then((response) => response.json());
 }
 
 /**
  * Mark item with given id as (un)read.
  */
 export function mark(id: number, read: boolean): Promise<TrivialResponse> {
-    return ajax.post(`${read ? 'unmark' : 'mark'}/${id}`).promise;
+    return ajax
+        .post(`${read ? 'unmark' : 'mark'}/${id}`)
+        .promise.then((response) => response.json());
 }
 
 export type TagColor = {
@@ -189,7 +193,7 @@ export type EntryStatus = {
     starred: boolean;
 };
 
-export type NavTag = { tag: string; unread: number };
+export type NavTag = { tag: string; unread: number; color: string };
 
 export type NavSource = { id: number; title: string; unread: number };
 

@@ -63,7 +63,9 @@ export function refreshAll(): Promise<string> {
  * Removes source with given ID.
  */
 export function remove(id: number): Promise<TrivialResponse> {
-    return ajax.delete_(`source/${id}`).promise;
+    return ajax
+        .delete_(`source/${id}`)
+        .promise.then((response) => response.json());
 }
 
 enum SpoutParameterTypePlain {
@@ -114,12 +116,12 @@ type Spout = {
     };
 };
 
-type SourceWithIcon = {
+export type SourceWithIcon = {
     id: number;
     title: string;
     tags: Array<string>;
     spout: string;
-    params: object;
+    params: { [name: string]: string };
     filter: string | null;
     error: string | null;
     lastentry: number | null;
@@ -127,7 +129,7 @@ type SourceWithIcon = {
 };
 
 type AllSourcesResponse = {
-    spouts: Array<Spout>;
+    spouts: { [key: string]: Spout };
     sources: Array<SourceWithIcon>;
 };
 
@@ -145,7 +147,7 @@ export function getAllSources(
 }
 
 type SpoutsResponse = {
-    spouts: Array<Spout>;
+    [key: string]: Spout;
 };
 
 /**
