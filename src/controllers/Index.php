@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace controllers;
+namespace Selfoss\controllers;
 
 use Bramus\Router\Router;
-use daos\ItemOptions;
-use helpers\Authentication;
-use helpers\StringKeyedArray;
-use helpers\View;
-use helpers\ViewHelper;
+use Selfoss\daos\ItemOptions;
+use Selfoss\helpers\Authentication;
+use Selfoss\helpers\StringKeyedArray;
+use Selfoss\helpers\View;
+use Selfoss\helpers\ViewHelper;
 
 /**
  * Controller for root
@@ -20,15 +20,15 @@ use helpers\ViewHelper;
  */
 class Index {
     private Authentication $authentication;
-    private \daos\Items $itemsDao;
+    private \Selfoss\daos\Items $itemsDao;
     private Router $router;
-    private \daos\Sources $sourcesDao;
+    private \Selfoss\daos\Sources $sourcesDao;
     private Tags $tagsController;
-    private \daos\Tags $tagsDao;
+    private \Selfoss\daos\Tags $tagsDao;
     private View $view;
     private ViewHelper $viewHelper;
 
-    public function __construct(Authentication $authentication, \daos\Items $itemsDao, Router $router, \daos\Sources $sourcesDao, Tags $tagsController, \daos\Tags $tagsDao, View $view, ViewHelper $viewHelper) {
+    public function __construct(Authentication $authentication, \Selfoss\daos\Items $itemsDao, Router $router, \Selfoss\daos\Sources $sourcesDao, Tags $tagsController, \Selfoss\daos\Tags $tagsDao, View $view, ViewHelper $viewHelper) {
         $this->authentication = $authentication;
         $this->itemsDao = $itemsDao;
         $this->router = $router;

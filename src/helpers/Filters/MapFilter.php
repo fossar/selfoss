@@ -5,7 +5,7 @@
 
 declare(strict_types=1);
 
-namespace helpers\Filters;
+namespace Selfoss\helpers\Filters;
 
 /**
  * Filter that admits an item iff the inner filter admits an item obtained from the original item with the given transform function.

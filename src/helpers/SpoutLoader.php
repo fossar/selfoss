@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace helpers;
+namespace Selfoss\helpers;
 
 use Psr\Container\ContainerInterface;
 use spouts\spout;

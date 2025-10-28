@@ -5,9 +5,9 @@
 
 declare(strict_types=1);
 
-namespace helpers\Authentication\Services;
+namespace Selfoss\helpers\Authentication\Services;
 
-use helpers\Authentication\AuthenticationService;
+use Selfoss\helpers\Authentication\AuthenticationService;
 
 /**
  * Trivial authentication service that allows any access.
