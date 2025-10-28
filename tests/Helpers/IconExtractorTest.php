@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Helpers;
 
-use helpers\ImageUtils;
 use PHPUnit\Framework\TestCase;
+use Selfoss\helpers\ImageUtils;
 
 final class IconExtractorTest extends TestCase {
     /**

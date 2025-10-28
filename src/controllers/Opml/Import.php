@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace controllers\Opml;
+namespace Selfoss\controllers\Opml;
 
-use helpers\Authentication;
-use helpers\View;
 use Monolog\Logger;
+use Selfoss\helpers\Authentication;
+use Selfoss\helpers\View;
 use SimpleXMLElement;
 
 /**
@@ -23,11 +23,11 @@ class Import {
 
     private Authentication $authentication;
     private Logger $logger;
-    private \daos\Sources $sourcesDao;
-    private \daos\Tags $tagsDao;
+    private \Selfoss\daos\Sources $sourcesDao;
+    private \Selfoss\daos\Tags $tagsDao;
     private View $view;
 
-    public function __construct(Authentication $authentication, Logger $logger, \daos\Sources $sourcesDao, \daos\Tags $tagsDao, View $view) {
+    public function __construct(Authentication $authentication, Logger $logger, \Selfoss\daos\Sources $sourcesDao, \Selfoss\daos\Tags $tagsDao, View $view) {
         $this->authentication = $authentication;
         $this->logger = $logger;
         $this->sourcesDao = $sourcesDao;

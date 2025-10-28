@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Psr\Container\ContainerInterface;
+use Selfoss\controllers;
 
 require __DIR__ . '/src/common.php';
 
