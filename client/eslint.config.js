@@ -44,7 +44,7 @@ const config = {
 export default [
     js.configs.recommended,
     eslintPluginReact.configs.flat.recommended,
-    eslintPluginReactHooks.configs['recommended-latest'],
+    eslintPluginReactHooks.configs.flat.recommended,
     eslintConfigPrettier,
     config,
 ];

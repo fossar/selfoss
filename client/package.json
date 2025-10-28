@@ -40,7 +40,7 @@
     "eslint": "^9.0.0",
     "eslint-config-prettier": "^10.0.0",
     "eslint-plugin-react": "^7.20.6",
-    "eslint-plugin-react-hooks": "^5.0.0",
+    "eslint-plugin-react-hooks": "^7.0.0",
     "globals": "^16.0.0",
     "parcel": "^2.0.0",
     "postcss": "^8.4.4",
