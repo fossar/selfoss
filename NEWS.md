@@ -50,6 +50,10 @@
 - [Prettier](https://prettier.io/) is now used for code formatting. ([#1493](https://github.com/fossar/selfoss/pull/1493))
 - Several `npm run` scripts were renamed for consistency: `analyse:server` → `check:server:phpstan`, `cs:server` → `check:server:cs`, `lint:server` → `check:server:lint`. ([#1494](https://github.com/fossar/selfoss/pull/1494))
 
+### API changes
+
+- *API 8.0.0*: Remove `GET /source` API, it was only used by us and was redundant with `GET /sources/spouts` ([#1539](https://github.com/fossar/selfoss/pull/1539))
+
 
 ## 2.19 – 2022-10-12
 **This version requires PHP ~~5.6~~ 7.2 (see known regressions section) or newer. It is also the last version to support PHP 7.**

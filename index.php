@@ -109,10 +109,6 @@ $router->get('/sources', function() use ($container): void {
     // json
     $container->get(controllers\Sources::class)->show();
 });
-$router->get('/source', function() use ($container): void {
-    // json
-    $container->get(controllers\Sources::class)->add();
-});
 $router->get('/sources/list', function() use ($container): void {
     // json
     $container->get(controllers\Sources::class)->listSources();

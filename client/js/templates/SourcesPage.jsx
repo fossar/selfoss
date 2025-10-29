@@ -34,7 +34,7 @@ function handleAddSource({
     // Refresh the spout datea
     sourceRequests
         .getSpouts()
-        .then(({ spouts }) => {
+        .then((spouts) => {
             // Update spout data.
             setSpouts(spouts);
         })

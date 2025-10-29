@@ -65,7 +65,9 @@ export function getAllSources(abortController) {
  * Gets list of supported spouts and their paramaters.
  */
 export function getSpouts() {
-    return ajax.get('source').promise.then((response) => response.json());
+    return ajax
+        .get('sources/spouts')
+        .promise.then((response) => response.json());
 }
 
 /**

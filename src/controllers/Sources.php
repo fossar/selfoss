@@ -57,20 +57,6 @@ class Sources {
     }
 
     /**
-     * add new source
-     * json
-     */
-    public function add(): void {
-        $this->authentication->ensureIsPrivileged();
-
-        $spouts = $this->spoutLoader->all();
-
-        $this->view->jsonSuccess([
-            'spouts' => $spouts,
-        ]);
-    }
-
-    /**
      * render spouts params
      * json
      */
