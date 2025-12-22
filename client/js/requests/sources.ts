@@ -8,13 +8,15 @@ export type SourceWithUnread = {
     unread: number;
 };
 
-type UpdateResponse = {
-    success: true;
-    id: number;
-    title: string;
-    tags: Array<TagWithUnread>;
-    sources: Array<SourceWithUnread>;
-};
+type UpdateResponse =
+    | {
+          success: true;
+          id: number;
+          title: string;
+          tags: Array<TagWithUnread>;
+          sources: Array<SourceWithUnread>;
+      }
+    | { success: false; errors: { [index: string]: string } };
 
 /**
  * Updates source with given ID.
@@ -33,7 +35,13 @@ export function update(id: string, values: object): Promise<UpdateResponse> {
                 (response) => response.ok || response.status === 400,
             ),
         )
-        .then((response) => response.json());
+        .then((response) =>
+            response
+                .json()
+                .then((json) =>
+                    response.ok ? json : { success: false, errors: json },
+                ),
+        );
 }
 
 /**

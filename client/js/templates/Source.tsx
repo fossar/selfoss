@@ -106,8 +106,8 @@ function handleSave(args: {
     sourceRequests
         .update(idString, values)
         .then((response) => {
-            if (!response.success) {
-                setSourceErrors(response);
+            if (response.success === false) {
+                setSourceErrors(response.errors);
             } else {
                 // Set justSavedTimeout state variable to a timeout.
                 // The view will show “saved” text while the timeout runs.
