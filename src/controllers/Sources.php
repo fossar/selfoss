@@ -74,7 +74,7 @@ class Sources {
             $this->view->error('invalid spout type given');
         }
 
-        $id = 'new-' . rand();
+        $id = 'new-' . random_int(0, getrandmax());
         $this->view->jsonSuccess([
             'id' => $id,
             'spout' => $spout,
@@ -120,7 +120,7 @@ class Sources {
         // get last icon
         foreach ($sources as &$source) {
             $source['params'] = json_decode(html_entity_decode($source['params']), true);
-            $source['error'] = $source['error'] ?? '';
+            $source['error'] ??= '';
         }
 
         $this->view->jsonSuccess($sources);

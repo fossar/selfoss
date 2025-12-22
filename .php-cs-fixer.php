@@ -8,6 +8,8 @@ $finder = PhpCsFixer\Finder::create()
 
 $rules = [
     '@Symfony' => true,
+    '@autoPHPMigration' => true,
+    '@autoPHPMigration:risky' => true,
     // why would anyone put braces on different line
     'braces_position' => [
         'functions_opening_brace' => 'same_line',

@@ -80,8 +80,8 @@ class ViewHelper {
                 $height = 600;
             } else {
                 // assume a 4:3 photo
-                $width = $width ?? $height * 4 / 3;
-                $height = $height ?? $width * 3 / 4;
+                $width ??= $height * 4 / 3;
+                $height ??= $width * 3 / 4;
             }
 
             $placeholder = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='$width' height='$height'><rect fill='%2395c9c5' width='100%' height='100%'/></svg>";

@@ -202,9 +202,7 @@ if ($configuration->dbType === 'sqlite') {
         'sqliteCreateFunction',
         [
             'regexp',
-            function(string $pattern, string $text): bool {
-                return preg_match('/' . addcslashes($pattern, '/') . '/', $text) === 1;
-            },
+            fn(string $pattern, string $text): bool => preg_match('/' . addcslashes($pattern, '/') . '/', $text) === 1,
             2,
         ]
     );
