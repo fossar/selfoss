@@ -1,4 +1,3 @@
-/* eslint-env worker, serviceworker */
 /// <reference lib="WebWorker" />
 
 import { manifest, version } from '@parcel/service-worker';
