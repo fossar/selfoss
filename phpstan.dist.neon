@@ -17,10 +17,6 @@ parameters:
         - utils/PHPStan/Stubs/ContainerInterface.stub
         - utils/PHPStan/Stubs/IcoFileLoader.stub
 
-    ignoreErrors:
-        # Bad PHPStan typing rules.
-        - '(Parameter #3 \$namespace of method XMLWriter::writeAttributeNs\(\) expects string, null given\.)'
-
     typeAliases:
         SpoutParameterInfo: 'array{title: string, type: spouts\Parameter::TYPE_*, default: string, required: bool, validation: array<spouts\Parameter::VALIDATION_*>, values?: array<string, string>}'
         SpoutParameters: 'array<string, SpoutParameterInfo>'
