@@ -2,7 +2,7 @@ import React, {
     Dispatch,
     SetStateAction,
     useCallback,
-    useContext,
+    use,
     useEffect,
     useState,
 } from 'react';
@@ -110,7 +110,7 @@ function Message(props: MessageProps): React.JSX.Element | null {
 
 function NotFound(): React.JSX.Element {
     const location = useLocation();
-    const _ = useContext(LocalizationContext);
+    const _ = use(LocalizationContext);
     return <p>{_('error_invalid_subsection') + location.pathname}</p>;
 }
 
@@ -237,7 +237,7 @@ function PureApp(props: PureAppProps): React.JSX.Element {
     const smartphone = useIsSmartphone();
     const offlineEnabled = useListenableValue(selfoss.db.enableOffline);
     const [entriesPage, setEntriesPage] = useState(null);
-    const configuration = useContext(ConfigurationContext);
+    const configuration = use(ConfigurationContext);
 
     useEffect(() => {
         // init shortcut handler
@@ -283,7 +283,7 @@ function PureApp(props: PureAppProps): React.JSX.Element {
             ((globalUnreadCount ?? 0) > 0 ? ` (${globalUnreadCount})` : '');
     }, [configuration, title, globalUnreadCount]);
 
-    const _ = useContext(LocalizationContext);
+    const _ = use(LocalizationContext);
 
     const isAllowedToRead = useAllowedToRead();
     const isAllowedToWrite = useAllowedToWrite();

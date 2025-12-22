@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from 'react';
+import React, { useCallback, use, useState } from 'react';
 import { Link } from 'react-router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import selfoss from '../selfoss-base';
@@ -60,10 +60,10 @@ export default function NavToolBar(props: NavToolBarProps) {
     const canRefreshAll = useAllowedToUpdate();
     const canVisitSettings = useAllowedToWrite();
     const canLogOut = isLoggedIn;
-    const configuration = useContext(ConfigurationContext);
+    const configuration = use(ConfigurationContext);
     const canLogIn = !isLoggedIn && configuration.authEnabled;
 
-    const _ = useContext(LocalizationContext);
+    const _ = use(LocalizationContext);
 
     return (
         <div className="nav-toolbar">

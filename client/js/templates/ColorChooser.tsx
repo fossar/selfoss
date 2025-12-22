@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from 'react';
+import React, { use, useMemo } from 'react';
 import { ClickEvent, Menu, MenuButton, MenuItem } from '@szhsin/react-menu';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { colorByBrightness } from '../helpers/color';
@@ -112,7 +112,7 @@ export default function ColorChooser(props: ColorChooserProps) {
 
     const style = useMemo(() => ({ backgroundColor: tag.color }), [tag.color]);
 
-    const _ = useContext(LocalizationContext);
+    const _ = use(LocalizationContext);
 
     return (
         <div className="color" onClick={preventDefault}>

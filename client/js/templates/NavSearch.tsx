@@ -1,10 +1,4 @@
-import React, {
-    useCallback,
-    useContext,
-    useEffect,
-    useRef,
-    useState,
-} from 'react';
+import React, { useCallback, use, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 import classNames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -123,7 +117,7 @@ export default function NavSearch(props: NavSearchProps) {
         [active, searchText, navigate, location, setNavExpanded],
     );
 
-    const _ = useContext(LocalizationContext);
+    const _ = use(LocalizationContext);
 
     return (
         <div

@@ -1,7 +1,7 @@
 import React, {
     startTransition,
     useCallback,
-    useContext,
+    use,
     useActionState,
 } from 'react';
 import classNames from 'classnames';
@@ -63,7 +63,7 @@ type LoginFormProps = {
 export default function LoginForm(props: LoginFormProps) {
     const { offlineEnabled } = props;
 
-    const configuration = useContext(ConfigurationContext);
+    const configuration = use(ConfigurationContext);
     const navigate = useNavigate();
     const location = useLocation();
     const error = location?.state?.error;
@@ -98,7 +98,7 @@ export default function LoginForm(props: LoginFormProps) {
         [],
     );
 
-    const _ = useContext(LocalizationContext);
+    const _ = use(LocalizationContext);
 
     return (
         <>

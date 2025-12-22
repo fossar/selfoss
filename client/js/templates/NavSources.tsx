@@ -1,7 +1,7 @@
 import React, {
     useCallback,
     useMemo,
-    useContext,
+    use,
     useEffect,
     Dispatch,
     SetStateAction,
@@ -150,7 +150,7 @@ export default function NavSources(props: NavSourcesProps) {
         }
     }, [previousSourcesState, sourcesState, setNavSourcesExpanded]);
 
-    const _ = useContext(LocalizationContext);
+    const _ = use(LocalizationContext);
 
     return (
         <>

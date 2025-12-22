@@ -1,9 +1,4 @@
-import React, {
-    Dispatch,
-    SetStateAction,
-    useCallback,
-    useContext,
-} from 'react';
+import React, { Dispatch, SetStateAction, useCallback, use } from 'react';
 import { LocalizationContext } from '../helpers/i18n';
 import { EditedSource, SpoutParam } from './Source';
 
@@ -58,7 +53,7 @@ export default function SourceParam(
         spoutParamName in params ? params[spoutParamName] : spoutParam.default;
     let control = null;
 
-    const _ = useContext(LocalizationContext);
+    const _ = use(LocalizationContext);
 
     if (['text', 'checkbox', 'url'].includes(spoutParam.type)) {
         let checked;

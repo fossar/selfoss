@@ -4,7 +4,7 @@ import React, {
     RefObject,
     SetStateAction,
     useCallback,
-    useContext,
+    use,
     useEffect,
     useMemo,
     useRef,
@@ -318,7 +318,7 @@ export default function Item(props: ItemProps) {
 
     const { title, author, sourcetitle } = item;
 
-    const configuration = useContext(ConfigurationContext);
+    const configuration = use(ConfigurationContext);
     const shouldAutoLoadImages =
         !selfoss.isMobile() || configuration.loadImagesOnMobile;
     const [imagesLoaded, setImagesLoaded] = useState(shouldAutoLoadImages);
@@ -524,7 +524,7 @@ export default function Item(props: ItemProps) {
 
     const canWrite = useAllowedToWrite();
 
-    const _ = useContext(LocalizationContext);
+    const _ = use(LocalizationContext);
 
     const sharers = useSharers({ configuration, _ });
 

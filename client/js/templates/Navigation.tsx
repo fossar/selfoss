@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useContext } from 'react';
+import React, { Dispatch, SetStateAction, use } from 'react';
 import classNames from 'classnames';
 import { StateHolder as EntriesPage } from './EntriesPage';
 import NavFilters from './NavFilters';
@@ -54,7 +54,7 @@ export default function Navigation(props: NavigationProps): React.JSX.Element {
         reloadAll,
     } = props;
 
-    const _ = useContext(LocalizationContext);
+    const _ = use(LocalizationContext);
 
     const canWrite = useAllowedToWrite();
 

@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState, useMemo } from 'react';
+import React, { useCallback, use, useState, useMemo } from 'react';
 import { Link, useLocation } from 'react-router';
 import classNames from 'classnames';
 import { FilterType } from '../Filter';
@@ -79,7 +79,7 @@ export default function NavFilters(props: NavFiltersProps) {
 
     const forceReload = useForceReload();
 
-    const _ = useContext(LocalizationContext);
+    const _ = use(LocalizationContext);
 
     return (
         <div id="nav-filter-wrapper">

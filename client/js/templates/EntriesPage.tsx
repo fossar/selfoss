@@ -1,6 +1,6 @@
 import React, {
     useCallback,
-    useContext,
+    use,
     useEffect,
     useMemo,
     useState,
@@ -263,7 +263,7 @@ export function EntriesPage(props: EntriesPageProps) {
 
     const allowedToUpdate = useAllowedToUpdate();
     const allowedToWrite = useAllowedToWrite();
-    const configuration = useContext(ConfigurationContext);
+    const configuration = use(ConfigurationContext);
 
     const location = useLocation();
     const navigate = useNavigate();
@@ -466,7 +466,7 @@ export function EntriesPage(props: EntriesPageProps) {
         };
     }, []);
 
-    const _ = useContext(LocalizationContext);
+    const _ = use(LocalizationContext);
 
     if (loadingState === LoadingState.LOADING) {
         return <SpinnerBig label={_('entries_loading')} />;

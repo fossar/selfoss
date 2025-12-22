@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useCallback, useState } from 'react';
+import React, { use, useMemo, useCallback, useState } from 'react';
 import { Link, useLocation } from 'react-router';
 import classNames from 'classnames';
 import { unescape } from 'html-escaper';
@@ -26,7 +26,7 @@ type TagProps = {
 function Tag(props: TagProps) {
     const { tag, active, collapseNav } = props;
 
-    const _ = useContext(LocalizationContext);
+    const _ = use(LocalizationContext);
     const tagName = tag !== null ? tag.tag : null;
 
     const colorChanged = useCallback(
@@ -110,7 +110,7 @@ export default function NavTags(props: NavTagsProps) {
         [setNavExpanded],
     );
 
-    const _ = useContext(LocalizationContext);
+    const _ = use(LocalizationContext);
 
     return (
         <>
