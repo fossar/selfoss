@@ -671,7 +671,16 @@ export default function Source(props: SourceProps) {
     };
 
     const [editedSource, setEditedSource] = useState(
-        isNew ? { ...source } : null,
+        isNew
+            ? {
+                  id: source.id,
+                  title: source.title,
+                  spout: source.spout,
+                  tags: source.tags.join(', '),
+                  filter: source.filter,
+                  params: source.params,
+              }
+            : null,
     );
     const [sourceActionLoading, setSourceActionLoading] = useState(false);
     const [sourceBeingDeleted, setSourceBeingDeleted] = useState(false);

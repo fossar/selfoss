@@ -49,7 +49,18 @@ function handleAddSource(args: {
 
     // Add new empty source.
     setSources((sources) => [
-        { id, ...extraInitialData },
+        {
+            id,
+            title: '',
+            tags: [],
+            spout: '',
+            params: {},
+            filter: null,
+            error: null,
+            lastentry: null,
+            icon: null,
+            ...extraInitialData,
+        },
         ...sources,
     ]);
 
