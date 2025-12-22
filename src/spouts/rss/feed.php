@@ -99,15 +99,15 @@ class feed extends \spouts\spout {
             $author = $this->getAuthorString($item);
 
             yield new Item(
-                $id,
-                $title,
-                $content,
-                $thumbnail,
-                $icon,
-                $link,
-                $date,
-                $author,
-                $item
+                id: $id,
+                title: $title,
+                content: $content,
+                thumbnail: $thumbnail,
+                icon: $icon,
+                link: $link,
+                date: $date,
+                author: $author,
+                extraData: $item,
             );
         }
     }

@@ -86,15 +86,15 @@ final class FilterTest extends TestCase {
      */
     private static function mkItem(string $title, string $content): Item {
         return new Item(
-            /* id: */ '0',
-            /* title: */ HtmlString::fromRaw($title),
-            /* content: */ HtmlString::fromRaw($content),
-            /* thumbnail: */ null,
-            /* icon: */ null,
-            /* link: */ '',
-            /* date: */ new DateTimeImmutable(),
-            /* author: */ null,
-            /* extraData: */ null
+            id: '0',
+            title: HtmlString::fromRaw($title),
+            content: HtmlString::fromRaw($content),
+            thumbnail: null,
+            icon: null,
+            link: '',
+            date: new DateTimeImmutable(),
+            author: null,
+            extraData: null,
         );
     }
 
@@ -105,8 +105,8 @@ final class FilterTest extends TestCase {
         yield 'Item: No match' => [
             '/(?i)reg(ular expression|exp)/',
             self::mkItem(
-                /* title: */ 'foo',
-                /* content: */ 'foo'
+                title: 'foo',
+                content: 'foo',
             ),
             false,
         ];
@@ -114,8 +114,8 @@ final class FilterTest extends TestCase {
         yield 'Item: Title match' => [
             '/(?i)reg(ular expression|exp)/',
             self::mkItem(
-                /* title: */ 'Regexp tips and tricks',
-                /* content: */ 'foo'
+                title: 'Regexp tips and tricks',
+                content: 'foo',
             ),
             true,
         ];
@@ -123,8 +123,8 @@ final class FilterTest extends TestCase {
         yield 'Item: Content match' => [
             '/(?i)reg(ular expression|exp)/',
             self::mkItem(
-                /* title: */ 'foo',
-                /* content: */ 'Regular expressions are great.'
+                title: 'foo',
+                content: 'Regular expressions are great.',
             ),
             true,
         ];
@@ -132,8 +132,8 @@ final class FilterTest extends TestCase {
         yield 'Item: Both match' => [
             '/(?i)reg(ular expression|exp)/',
             self::mkItem(
-                /* title: */ 'Regexp tips and tricks',
-                /* content: */ 'Regular expressions are great.'
+                title: 'Regexp tips and tricks',
+                content: 'Regular expressions are great.',
             ),
             true,
         ];
@@ -141,8 +141,8 @@ final class FilterTest extends TestCase {
         yield 'Not(Item): No match' => [
             '!/(?i)reg(ular expression|exp)/',
             self::mkItem(
-                /* title: */ 'foo',
-                /* content: */ 'foo'
+                title: 'foo',
+                content: 'foo',
             ),
             true,
         ];
@@ -150,8 +150,8 @@ final class FilterTest extends TestCase {
         yield 'Not(Item): Title match' => [
             '!/(?i)reg(ular expression|exp)/',
             self::mkItem(
-                /* title: */ 'Regexp tips and tricks',
-                /* content: */ 'foo'
+                title: 'Regexp tips and tricks',
+                content: 'foo',
             ),
             false,
         ];
@@ -159,8 +159,8 @@ final class FilterTest extends TestCase {
         yield 'Not(Item): Content match' => [
             '!/(?i)reg(ular expression|exp)/',
             self::mkItem(
-                /* title: */ 'foo',
-                /* content: */ 'Regular expressions are great.'
+                title: 'foo',
+                content: 'Regular expressions are great.',
             ),
             false,
         ];
@@ -168,8 +168,8 @@ final class FilterTest extends TestCase {
         yield 'Not(Item): Both match' => [
             '!/(?i)reg(ular expression|exp)/',
             self::mkItem(
-                /* title: */ 'Regexp tips and tricks',
-                /* content: */ 'Regular expressions are great.'
+                title: 'Regexp tips and tricks',
+                content: 'Regular expressions are great.',
             ),
             false,
         ];
@@ -177,8 +177,8 @@ final class FilterTest extends TestCase {
         yield 'Title: No match' => [
             'title:/(?i)reg(ular expression|exp)/',
             self::mkItem(
-                /* title: */ 'foo',
-                /* content: */ 'foo'
+                title: 'foo',
+                content: 'foo',
             ),
             false,
         ];
@@ -186,8 +186,8 @@ final class FilterTest extends TestCase {
         yield 'Title: Title match' => [
             'title:/(?i)reg(ular expression|exp)/',
             self::mkItem(
-                /* title: */ 'Regexp tips and tricks',
-                /* content: */ 'foo'
+                title: 'Regexp tips and tricks',
+                content: 'foo',
             ),
             true,
         ];
@@ -195,8 +195,8 @@ final class FilterTest extends TestCase {
         yield 'Title: Content match' => [
             'title:/(?i)reg(ular expression|exp)/',
             self::mkItem(
-                /* title: */ 'foo',
-                /* content: */ 'Regular expressions are great.'
+                title: 'foo',
+                content: 'Regular expressions are great.',
             ),
             false,
         ];
@@ -204,8 +204,8 @@ final class FilterTest extends TestCase {
         yield 'Title: Both match' => [
             'title:/(?i)reg(ular expression|exp)/',
             self::mkItem(
-                /* title: */ 'Regexp tips and tricks',
-                /* content: */ 'Regular expressions are great.'
+                title: 'Regexp tips and tricks',
+                content: 'Regular expressions are great.',
             ),
             true,
         ];
@@ -213,8 +213,8 @@ final class FilterTest extends TestCase {
         yield 'Not(Title): No match' => [
             '!title:/(?i)reg(ular expression|exp)/',
             self::mkItem(
-                /* title: */ 'foo',
-                /* content: */ 'foo'
+                title: 'foo',
+                content: 'foo',
             ),
             true,
         ];
@@ -222,8 +222,8 @@ final class FilterTest extends TestCase {
         yield 'Not(Title): Title match' => [
             '!title:/(?i)reg(ular expression|exp)/',
             self::mkItem(
-                /* title: */ 'Regexp tips and tricks',
-                /* content: */ 'foo'
+                title: 'Regexp tips and tricks',
+                content: 'foo',
             ),
             false,
         ];
@@ -231,8 +231,8 @@ final class FilterTest extends TestCase {
         yield 'Not(Title): Content match' => [
             '!title:/(?i)reg(ular expression|exp)/',
             self::mkItem(
-                /* title: */ 'foo',
-                /* content: */ 'Regular expressions are great.'
+                title: 'foo',
+                content: 'Regular expressions are great.',
             ),
             true,
         ];
@@ -240,8 +240,8 @@ final class FilterTest extends TestCase {
         yield 'Not(Title): Both match' => [
             '!title:/(?i)reg(ular expression|exp)/',
             self::mkItem(
-                /* title: */ 'Regexp tips and tricks',
-                /* content: */ 'Regular expressions are great.'
+                title: 'Regexp tips and tricks',
+                content: 'Regular expressions are great.',
             ),
             false,
         ];
@@ -249,8 +249,8 @@ final class FilterTest extends TestCase {
         yield 'Content: No match' => [
             'content:/(?i)reg(ular expression|exp)/',
             self::mkItem(
-                /* title: */ 'foo',
-                /* content: */ 'foo'
+                title: 'foo',
+                content: 'foo',
             ),
             false,
         ];
@@ -258,8 +258,8 @@ final class FilterTest extends TestCase {
         yield 'Content: Title match' => [
             'content:/(?i)reg(ular expression|exp)/',
             self::mkItem(
-                /* title: */ 'Regexp tips and tricks',
-                /* content: */ 'foo'
+                title: 'Regexp tips and tricks',
+                content: 'foo',
             ),
             false,
         ];
@@ -267,8 +267,8 @@ final class FilterTest extends TestCase {
         yield 'Content: Content match' => [
             'content:/(?i)reg(ular expression|exp)/',
             self::mkItem(
-                /* title: */ 'foo',
-                /* content: */ 'Regular expressions are great.'
+                title: 'foo',
+                content: 'Regular expressions are great.',
             ),
             true,
         ];
@@ -276,8 +276,8 @@ final class FilterTest extends TestCase {
         yield 'Content: Both match' => [
             'content:/(?i)reg(ular expression|exp)/',
             self::mkItem(
-                /* title: */ 'Regexp tips and tricks',
-                /* content: */ 'Regular expressions are great.'
+                title: 'Regexp tips and tricks',
+                content: 'Regular expressions are great.',
             ),
             true,
         ];
@@ -285,8 +285,8 @@ final class FilterTest extends TestCase {
         yield 'Not(Content): No match' => [
             '!content:/(?i)reg(ular expression|exp)/',
             self::mkItem(
-                /* title: */ 'foo',
-                /* content: */ 'foo'
+                title: 'foo',
+                content: 'foo',
             ),
             true,
         ];
@@ -294,8 +294,8 @@ final class FilterTest extends TestCase {
         yield 'Not(Content): Title match' => [
             '!content:/(?i)reg(ular expression|exp)/',
             self::mkItem(
-                /* title: */ 'Regexp tips and tricks',
-                /* content: */ 'foo'
+                title: 'Regexp tips and tricks',
+                content: 'foo',
             ),
             true,
         ];
@@ -303,8 +303,8 @@ final class FilterTest extends TestCase {
         yield 'Not(Content): Content match' => [
             '!content:/(?i)reg(ular expression|exp)/',
             self::mkItem(
-                /* title: */ 'foo',
-                /* content: */ 'Regular expressions are great.'
+                title: 'foo',
+                content: 'Regular expressions are great.',
             ),
             false,
         ];
@@ -312,8 +312,8 @@ final class FilterTest extends TestCase {
         yield 'Not(Content): Both match' => [
             '!content:/(?i)reg(ular expression|exp)/',
             self::mkItem(
-                /* title: */ 'Regexp tips and tricks',
-                /* content: */ 'Regular expressions are great.'
+                title: 'Regexp tips and tricks',
+                content: 'Regular expressions are great.',
             ),
             false,
         ];
@@ -321,8 +321,8 @@ final class FilterTest extends TestCase {
         yield 'Url: Match' => [
             'url:/^https:\\/\\/www\\.bbc\\.co\\.uk\\/sport\\//',
             self::mkItem(
-                /* title: */ 'Fabio Paratici: Tottenham managing director banned worldwide by Fifa',
-                /* content: */ ''
+                title: 'Fabio Paratici: Tottenham managing director banned worldwide by Fifa',
+                content: '',
             )->withLink('https://www.bbc.co.uk/sport/football/65112730'),
             true,
         ];
@@ -330,8 +330,8 @@ final class FilterTest extends TestCase {
         yield 'Url: No match' => [
             'url:/^https:\\/\\/www\\.bbc\\.co\\.uk\\/sport\\//',
             self::mkItem(
-                /* title: */ 'Arrest warrant issued for Putin over war crime allegations',
-                /* content: */ ''
+                title: 'Arrest warrant issued for Putin over war crime allegations',
+                content: '',
             )->withLink('https://www.bbc.co.uk/news/world-europe-64992727'),
             false,
         ];
@@ -339,8 +339,8 @@ final class FilterTest extends TestCase {
         yield 'Not(Url): Match' => [
             '!url:/^https:\\/\\/www\\.bbc\\.co\\.uk\\/sport\\//',
             self::mkItem(
-                /* title: */ 'Fabio Paratici: Tottenham managing director banned worldwide by Fifa',
-                /* content: */ ''
+                title: 'Fabio Paratici: Tottenham managing director banned worldwide by Fifa',
+                content: '',
             )->withLink('https://www.bbc.co.uk/sport/football/65112730'),
             false,
         ];
@@ -348,8 +348,8 @@ final class FilterTest extends TestCase {
         yield 'Not(Url): No match' => [
             '!url:/^https:\\/\\/www\\.bbc\\.co\\.uk\\/sport\\//',
             self::mkItem(
-                /* title: */ 'Arrest warrant issued for Putin over war crime allegations',
-                /* content: */ ''
+                title: 'Arrest warrant issued for Putin over war crime allegations',
+                content: '',
             )->withLink('https://www.bbc.co.uk/news/world-europe-64992727'),
             true,
         ];
@@ -357,8 +357,8 @@ final class FilterTest extends TestCase {
         yield 'Author: Match' => [
             'author:/John/',
             self::mkItem(
-                /* title: */ 'foo',
-                /* content: */ 'foo'
+                title: 'foo',
+                content: 'foo',
             )->withAuthor('John'),
             true,
         ];
@@ -366,8 +366,8 @@ final class FilterTest extends TestCase {
         yield 'Author: No match' => [
             'author:/John/',
             self::mkItem(
-                /* title: */ 'John’s risotto recipe',
-                /* content: */ 'John recommends using rice.'
+                title: 'John’s risotto recipe',
+                content: 'John recommends using rice.',
             )->withAuthor('Josh'),
             false,
         ];
@@ -375,8 +375,8 @@ final class FilterTest extends TestCase {
         yield 'Author: No author' => [
             'author:/John/',
             self::mkItem(
-                /* title: */ 'John’s risotto recipe',
-                /* content: */ 'John recommends using rice.'
+                title: 'John’s risotto recipe',
+                content: 'John recommends using rice.',
             ),
             false,
         ];
@@ -384,8 +384,8 @@ final class FilterTest extends TestCase {
         yield 'Not(Author): Match' => [
             '!author:/John/',
             self::mkItem(
-                /* title: */ 'foo',
-                /* content: */ 'foo'
+                title: 'foo',
+                content: 'foo',
             )->withAuthor('John'),
             false,
         ];
@@ -393,8 +393,8 @@ final class FilterTest extends TestCase {
         yield 'Not(Author): No match' => [
             '!author:/John/',
             self::mkItem(
-                /* title: */ 'John’s risotto recipe',
-                /* content: */ 'John recommends using rice.'
+                title: 'John’s risotto recipe',
+                content: 'John recommends using rice.',
             )->withAuthor('Josh'),
             true,
         ];
@@ -402,8 +402,8 @@ final class FilterTest extends TestCase {
         yield 'Not(Author): No author' => [
             '!author:/John/',
             self::mkItem(
-                /* title: */ 'John’s risotto recipe',
-                /* content: */ 'John recommends using rice.'
+                title: 'John’s risotto recipe',
+                content: 'John recommends using rice.',
             ),
             true,
         ];
@@ -424,8 +424,8 @@ final class FilterTest extends TestCase {
         yield 'Category: Match' => [
             'category:/sport/',
             self::mkItem(
-                /* title: */ 'Real Milan wins kickball terran bowl',
-                /* content: */ ''
+                title: 'Real Milan wins kickball terran bowl',
+                content: '',
             )->withExtraData($stubItemSport),
             true,
         ];
@@ -433,8 +433,8 @@ final class FilterTest extends TestCase {
         yield 'Category: No match' => [
             'category:/sport/',
             self::mkItem(
-                /* title: */ 'Arrest warrant issued for Putin over war crime allegations',
-                /* content: */ ''
+                title: 'Arrest warrant issued for Putin over war crime allegations',
+                content: '',
             )->withExtraData($stubItemActualNews),
             false,
         ];
@@ -442,8 +442,8 @@ final class FilterTest extends TestCase {
         yield 'Category: No categories' => [
             'category:/sport/',
             self::mkItem(
-                /* title: */ 'Real Milan wins kickball terran bowl',
-                /* content: */ ''
+                title: 'Real Milan wins kickball terran bowl',
+                content: '',
             )->withExtraData($stubItemNoCategories),
             false,
         ];
@@ -451,8 +451,8 @@ final class FilterTest extends TestCase {
         yield 'Category: Not SimplePie' => [
             'category:/sport/',
             self::mkItem(
-                /* title: */ 'Real Milan wins kickball terran bowl',
-                /* content: */ ''
+                title: 'Real Milan wins kickball terran bowl',
+                content: '',
             ),
             false,
         ];
@@ -460,8 +460,8 @@ final class FilterTest extends TestCase {
         yield 'Not(Category): Match' => [
             '!category:/sport/',
             self::mkItem(
-                /* title: */ 'Real Milan wins kickball terran bowl',
-                /* content: */ ''
+                title: 'Real Milan wins kickball terran bowl',
+                content: '',
             )->withExtraData($stubItemSport),
             false,
         ];
@@ -469,8 +469,8 @@ final class FilterTest extends TestCase {
         yield 'Not(Category): No match' => [
             '!category:/sport/',
             self::mkItem(
-                /* title: */ 'Arrest warrant issued for Putin over war crime allegations',
-                /* content: */ ''
+                title: 'Arrest warrant issued for Putin over war crime allegations',
+                content: '',
             )->withExtraData($stubItemActualNews),
             true,
         ];
@@ -478,8 +478,8 @@ final class FilterTest extends TestCase {
         yield 'Not(Category): No categories' => [
             '!category:/sport/',
             self::mkItem(
-                /* title: */ 'Foo',
-                /* content: */ ''
+                title: 'Foo',
+                content: '',
             )->withExtraData($stubItemNoCategories),
             true,
         ];
@@ -487,8 +487,8 @@ final class FilterTest extends TestCase {
         yield 'Not(Category): Not SimplePie' => [
             '!category:/sport/',
             self::mkItem(
-                /* title: */ 'Foo',
-                /* content: */ ''
+                title: 'Foo',
+                content: '',
             ),
             true,
         ];
