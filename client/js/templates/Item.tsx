@@ -30,7 +30,7 @@ import { useSharers } from '../sharers';
 import Lightbox from 'yet-another-react-lightbox';
 import { TagColor } from '../requests/items';
 
-type Item = {
+export type Item = {
     id: number;
     title: string;
     strippedTitle: string;

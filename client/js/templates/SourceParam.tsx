@@ -5,7 +5,7 @@ import React, {
     useContext,
 } from 'react';
 import { LocalizationContext } from '../helpers/i18n';
-import { Source, SpoutParam } from './Source';
+import { EditedSource, SpoutParam } from './Source';
 
 type SourceParamProps = {
     spoutParamName: string;
@@ -13,7 +13,7 @@ type SourceParamProps = {
     params: { [index: string]: string };
     sourceErrors: { [index: string]: string };
     sourceId: number;
-    setEditedSource: Dispatch<SetStateAction<Source | null>>;
+    setEditedSource: Dispatch<SetStateAction<EditedSource>>;
     setDirty: Dispatch<SetStateAction<boolean>>;
 };
 

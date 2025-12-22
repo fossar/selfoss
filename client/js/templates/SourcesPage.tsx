@@ -25,11 +25,18 @@ function rand() {
     return Math.floor(Math.random() * 2147483647);
 }
 
+type ExtraInitialData = {
+    spout?: string;
+    params?: {
+        [key: string]: string;
+    };
+};
+
 function handleAddSource(args: {
     setSpouts: Dispatch<SetStateAction<{ [key: string]: Spout }>>;
     setSources: Dispatch<SetStateAction<SourceWithIcon[]>>;
     setNewIds: Dispatch<SetStateAction<Set<number>>>;
-    extraInitialData?: any;
+    extraInitialData?: ExtraInitialData;
     event?: MouseEvent;
 }): void {
     const {

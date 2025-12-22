@@ -1,5 +1,8 @@
 import React, {
+    ChangeEvent,
     Dispatch,
+    MouseEvent,
+    RefObject,
     SetStateAction,
     useCallback,
     useContext,
@@ -25,11 +28,11 @@ const FAST_DURATION_MS = 200;
 
 // cancel source editing
 function handleCancel(args: {
-    event?: any;
-    source: any;
-    sourceElem: any;
-    setSources: any;
-    setEditedSource: any;
+    event?: MouseEvent<HTMLButtonElement>;
+    source: EditedSource;
+    sourceElem: RefObject<HTMLLIElement>;
+    setSources: Dispatch<SetStateAction<Array<Source>>>;
+    setEditedSource: Dispatch<SetStateAction<EditedSource>>;
 }) {
     const { source, sourceElem, setSources, setEditedSource } = args;
     const id = source.id;
@@ -52,13 +55,13 @@ function handleCancel(args: {
 
 // save source
 function handleSave(args: {
-    event: any;
-    setSources: any;
-    source: any;
-    setEditedSource: any;
-    setSourceActionLoading: any;
-    setJustSavedTimeout: any;
-    setSourceErrors: any;
+    event: MouseEvent<HTMLButtonElement>;
+    setSources: Dispatch<SetStateAction<Array<Source>>>;
+    source: EditedSource;
+    setEditedSource: Dispatch<SetStateAction<EditedSource>>;
+    setSourceActionLoading: Dispatch<SetStateAction<boolean>>;
+    setJustSavedTimeout: Dispatch<SetStateAction<number>>;
+    setSourceErrors: Dispatch<SetStateAction<{ [index: string]: string }>>;
     isNew: boolean;
     setNewIds: Dispatch<SetStateAction<Set<number>>>;
 }) {
@@ -144,6 +147,9 @@ function handleSave(args: {
                                 tags: tagsList,
                                 // Use fetched title.
                                 title: response.title,
+                                icon: null,
+                                lastentry: null,
+                                error: null,
                             };
                         } else {
                             return source;
@@ -164,11 +170,11 @@ function handleSave(args: {
 
 // delete source
 function handleDelete(args: {
-    source: any;
-    sourceElem: any;
-    setSources: any;
-    setSourceBeingDeleted: any;
-    setDirty: any;
+    source: Source;
+    sourceElem: RefObject<HTMLLIElement>;
+    setSources: Dispatch<SetStateAction<Array<Source>>>;
+    setSourceBeingDeleted: Dispatch<SetStateAction<boolean>>;
+    setDirty: Dispatch<SetStateAction<boolean>>;
 }) {
     const { source, sourceElem, setSources, setSourceBeingDeleted, setDirty } =
         args;
@@ -214,7 +220,11 @@ function handleDelete(args: {
 }
 
 // start editing
-function handleEdit(args: { event: any; source: any; setEditedSource: any }) {
+function handleEdit(args: {
+    event: MouseEvent<HTMLButtonElement>;
+    source: Source;
+    setEditedSource: Dispatch<SetStateAction<EditedSource>>;
+}) {
     const { event, source, setEditedSource } = args;
     event.preventDefault();
 
@@ -232,11 +242,11 @@ function handleEdit(args: { event: any; source: any; setEditedSource: any }) {
 
 // select new source spout type
 function handleSpoutChange(args: {
-    event: any;
+    event: ChangeEvent<HTMLSelectElement>;
     setSpouts: Dispatch<SetStateAction<{ [key: string]: Spout }>>;
-    updateEditedSource: any;
-    setSourceParamsLoading: any;
-    setSourceParamsError: any;
+    updateEditedSource: Dispatch<SetStateAction<Partial<EditedSource>>>;
+    setSourceParamsLoading: Dispatch<SetStateAction<boolean>>;
+    setSourceParamsError: Dispatch<SetStateAction<string | null>>;
 }) {
     const {
         event,
@@ -328,14 +338,24 @@ export type Source = {
     error: string;
 };
 
+// Similar to `Source` but fields reflect the values of input elements.
+export type EditedSource = {
+    id: number;
+    title: string;
+    spout: string;
+    tags: string;
+    filter: string;
+    params: { [name: string]: string };
+};
+
 type SourceEditFormProps = {
-    source: Source;
-    sourceElem: object;
+    source: EditedSource;
+    sourceElem: RefObject<HTMLLIElement>;
     sourceError?: string;
-    setSources: Dispatch<SetStateAction<Array<object>>>;
+    setSources: Dispatch<SetStateAction<Array<Source>>>;
     spouts: { [className: string]: Spout };
     setSpouts: Dispatch<SetStateAction<{ [key: string]: Spout }>>;
-    setEditedSource: Dispatch<SetStateAction<object>>;
+    setEditedSource: Dispatch<SetStateAction<EditedSource>>;
     sourceActionLoading: boolean;
     setSourceActionLoading: Dispatch<SetStateAction<boolean>>;
     sourceParamsLoading: boolean;
@@ -407,7 +427,7 @@ function SourceEditForm(props: SourceEditFormProps) {
     );
 
     const spoutOnChange = useCallback(
-        (event) =>
+        (event: ChangeEvent<HTMLSelectElement>) =>
             handleSpoutChange({
                 event,
                 setSpouts,
@@ -424,7 +444,7 @@ function SourceEditForm(props: SourceEditFormProps) {
     );
 
     const saveOnClick = useCallback(
-        (event) => {
+        (event: MouseEvent<HTMLButtonElement>) => {
             setDirty(false);
             handleSave({
                 event,
@@ -452,7 +472,7 @@ function SourceEditForm(props: SourceEditFormProps) {
     );
 
     const cancelOnClick = useCallback(
-        (event) => {
+        (event: MouseEvent<HTMLButtonElement>) => {
             event.preventDefault();
 
             if (dirty) {
@@ -700,12 +720,13 @@ export default function Source(props: SourceProps) {
     }, [justSavedTimeout]);
 
     const editOnClick = useCallback(
-        (event) => handleEdit({ event, source, setEditedSource }),
+        (event: MouseEvent<HTMLButtonElement>) =>
+            handleEdit({ event, source, setEditedSource }),
         [source, setEditedSource],
     );
 
     const setDirty = useCallback(
-        (dirty) => {
+        (dirty: boolean) => {
             setDirtySources((dirtySources) => ({
                 ...dirtySources,
                 [source.id]: dirty,

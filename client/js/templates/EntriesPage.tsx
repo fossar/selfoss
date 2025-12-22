@@ -8,12 +8,13 @@ import React, {
     Dispatch,
     SetStateAction,
     ForwardedRef,
+    MouseEvent,
 } from 'react';
 import { Link, NavigateFunction } from 'react-router';
 import { useOnline } from 'rooks';
 import { useStateWithDeps } from 'use-state-with-deps';
 import selfoss from '../selfoss-base';
-import Item from './Item';
+import Item, { type Item as ItemType } from './Item';
 import { FilterType } from '../Filter';
 import * as itemsRequests from '../requests/items';
 import { EntryStatus } from '../requests/items';
@@ -233,7 +234,7 @@ function handleRefreshSource({
 }
 
 type EntriesPageProps = {
-    entries: Array<any>;
+    entries: Array<ItemType>;
     hasMore: boolean;
     loadingState: LoadingState;
     setLoadingState: Dispatch<SetStateAction<LoadingState>>;
@@ -431,7 +432,7 @@ export function EntriesPage(props: EntriesPageProps) {
     const isOnline = useOnline();
 
     const refreshOnClick = useCallback(
-        (event) =>
+        (event: MouseEvent<HTMLButtonElement>) =>
             handleRefreshSource({
                 event,
                 source: currentSource,
@@ -443,7 +444,7 @@ export function EntriesPage(props: EntriesPageProps) {
     );
 
     const moreOnClick = useCallback(
-        (event) => {
+        (event: MouseEvent<HTMLButtonElement>) => {
             event.preventDefault();
             const lastEntry = entries[entries.length - 1];
 
@@ -580,16 +581,8 @@ type StateHolderProps = {
     unreadItemsCount: number;
 };
 
-type Entry = {
-    id: number;
-    unread: boolean;
-    starred: boolean;
-    tags: string[];
-    source: number;
-};
-
 type StateHolderState = {
-    entries: Array<Entry>;
+    entries: Array<ItemType>;
     hasMore: boolean;
     /**
      * Currently selected entry.

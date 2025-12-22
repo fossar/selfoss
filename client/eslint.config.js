@@ -39,8 +39,6 @@ const config = {
         ],
 
         'unicode-bom': 'error',
-
-        '@typescript-eslint/no-explicit-any': 0,
     },
 };
 
