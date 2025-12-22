@@ -59,6 +59,8 @@ function handleSave(args: {
     setSourceActionLoading: any;
     setJustSavedTimeout: any;
     setSourceErrors: any;
+    isNew: boolean;
+    setNewIds: Dispatch<SetStateAction<Set<number>>>;
 }) {
     const {
         event,
@@ -68,6 +70,8 @@ function handleSave(args: {
         setSourceActionLoading,
         setJustSavedTimeout,
         setSourceErrors,
+        isNew,
+        setNewIds,
     } = args;
     event.preventDefault();
 
@@ -94,8 +98,10 @@ function handleSave(args: {
         filter: filter || null,
     };
 
+    const idString = isNew ? `new-${id}` : `${id}`;
+
     sourceRequests
-        .update(id, values)
+        .update(idString, values)
         .then((response) => {
             if (!response.success) {
                 setSourceErrors(response);
@@ -111,6 +117,12 @@ function handleSave(args: {
                     return window.setTimeout(() => {
                         setJustSavedTimeout(null);
                     }, 10000);
+                });
+
+                setNewIds((newIds) => {
+                    const s = new Set(newIds);
+                    s.delete(id);
+                    return s;
                 });
 
                 // Hide the input form.
@@ -335,6 +347,8 @@ type SourceEditFormProps = {
     setSourceErrors: Dispatch<SetStateAction<{ [index: string]: string }>>;
     dirty: boolean;
     setDirty: Dispatch<SetStateAction<boolean>>;
+    isNew: boolean;
+    setNewIds: Dispatch<SetStateAction<Set<number>>>;
 };
 
 function SourceEditForm(props: SourceEditFormProps) {
@@ -357,6 +371,8 @@ function SourceEditForm(props: SourceEditFormProps) {
         setSourceErrors,
         dirty,
         setDirty,
+        isNew,
+        setNewIds,
     } = props;
 
     const sourceId = source.id;
@@ -418,6 +434,8 @@ function SourceEditForm(props: SourceEditFormProps) {
                 setSourceActionLoading,
                 setJustSavedTimeout,
                 setSourceErrors,
+                isNew,
+                setNewIds,
             });
         },
         [
@@ -428,6 +446,8 @@ function SourceEditForm(props: SourceEditFormProps) {
             setJustSavedTimeout,
             setSourceErrors,
             setDirty,
+            isNew,
+            setNewIds,
         ],
     );
 
@@ -623,18 +643,27 @@ function SourceEditForm(props: SourceEditFormProps) {
 
 type SourceProps = {
     source: Source;
+    isNew: boolean;
     setSources: Dispatch<SetStateAction<Array<Source>>>;
     spouts: { [className: string]: Spout };
     setSpouts: Dispatch<SetStateAction<{ [key: string]: Spout }>>;
     dirty: boolean;
     setDirtySources: Dispatch<SetStateAction<{ [id: number]: boolean }>>;
+    setNewIds: Dispatch<SetStateAction<Set<number>>>;
 };
 
 export default function Source(props: SourceProps) {
-    const { source, setSources, spouts, setSpouts, dirty, setDirtySources } =
-        props;
+    const {
+        source,
+        isNew,
+        setSources,
+        spouts,
+        setSpouts,
+        dirty,
+        setDirtySources,
+        setNewIds,
+    } = props;
 
-    const isNew = !source.title;
     const classes = {
         source: true,
         'source-new': isNew,
@@ -802,6 +831,8 @@ export default function Source(props: SourceProps) {
                         setSourceErrors,
                         dirty,
                         setDirty,
+                        isNew,
+                        setNewIds,
                         sourceElem,
                     }}
                     sourceError={source.error}

@@ -19,7 +19,7 @@ type UpdateResponse = {
 /**
  * Updates source with given ID.
  */
-export function update(id: number, values: object): Promise<UpdateResponse> {
+export function update(id: string, values: object): Promise<UpdateResponse> {
     return ajax
         .post(`source/${id}`, {
             headers: {

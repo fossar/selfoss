@@ -28,17 +28,28 @@ function rand() {
 function handleAddSource(args: {
     setSpouts: Dispatch<SetStateAction<{ [key: string]: Spout }>>;
     setSources: Dispatch<SetStateAction<SourceWithIcon[]>>;
+    setNewIds: Dispatch<SetStateAction<Set<number>>>;
     extraInitialData?: any;
     event?: MouseEvent;
 }): void {
-    const { event = null, setSources, setSpouts, extraInitialData = {} } = args;
+    const {
+        event = null,
+        setSources,
+        setSpouts,
+        setNewIds,
+        extraInitialData = {},
+    } = args;
     if (event) {
         event.preventDefault();
     }
 
+    const id = rand();
+
+    setNewIds((newIds: Set<number>) => new Set([id, ...newIds]));
+
     // Add new empty source.
     setSources((sources) => [
-        { id: 'new-' + rand(), ...extraInitialData },
+        { id, ...extraInitialData },
         ...sources,
     ]);
 
@@ -134,6 +145,7 @@ function loadSources(args: {
 export default function SourcesPage(): React.JSX.Element {
     const [spouts, setSpouts] = useState<{ [key: string]: Spout }>({});
     const [sources, setSources] = useState<SourceWithIcon[]>([]);
+    const [newIds, setNewIds] = useState<Set<number>>(() => new Set());
 
     const [loadingState, setLoadingState] = useState(LoadingState.INITIAL);
 
@@ -159,6 +171,7 @@ export default function SourcesPage(): React.JSX.Element {
                 handleAddSource({
                     setSources,
                     setSpouts,
+                    setNewIds,
                     extraInitialData: {
                         spout: 'spouts\\rss\\feed',
                         params: {
@@ -183,7 +196,7 @@ export default function SourcesPage(): React.JSX.Element {
 
     const addOnClick = useCallback(
         (event: MouseEvent) =>
-            handleAddSource({ event, setSources, setSpouts }),
+            handleAddSource({ event, setSources, setSpouts, setNewIds }),
         [],
     );
 
@@ -228,6 +241,7 @@ export default function SourcesPage(): React.JSX.Element {
                     {sources.map((source) => (
                         <Source
                             key={source.id}
+                            isNew={newIds.has(source.id)}
                             dirty={dirtySources[source.id] ?? false}
                             {...{
                                 source,
@@ -235,6 +249,7 @@ export default function SourcesPage(): React.JSX.Element {
                                 spouts,
                                 setSpouts,
                                 setDirtySources,
+                                setNewIds,
                             }}
                         />
                     ))}
