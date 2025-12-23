@@ -4,6 +4,7 @@ import React, {
     useCallback,
     use,
     useEffect,
+    useEffectEvent,
     useMemo,
     useState,
 } from 'react';
@@ -15,7 +16,6 @@ import {
     Navigate,
     useNavigate,
 } from 'react-router';
-import { useEffectEvent } from 'use-effect-event';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Collapse } from '@kunukn/react-collapse';
 import classNames from 'classnames';
