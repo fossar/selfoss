@@ -425,14 +425,14 @@ class ContentLoader {
         // delete orphaned thumbnails
         $this->logger->debug('delete orphaned thumbnails');
         $this->thumbnailStore->cleanup(
-            fn($file) => $this->itemsDao->hasThumbnail($file)
+            fn(string $file): bool => $this->itemsDao->hasThumbnail($file)
         );
         $this->logger->debug('delete orphaned thumbnails finished');
 
         // delete orphaned icons
         $this->logger->debug('delete orphaned icons');
         $this->iconStore->cleanup(
-            fn($file) => $this->itemsDao->hasIcon($file)
+            fn(string $file): bool => $this->itemsDao->hasIcon($file)
         );
         $this->logger->debug('delete orphaned icons finished');
 

@@ -101,7 +101,7 @@ class View {
      *
      * @return never
      */
-    public function error(string $message) {
+    public function error(string $message): void {
         header('HTTP/1.0 400 Bad Request');
         exit($message);
     }
@@ -111,7 +111,7 @@ class View {
      *
      * @return never
      */
-    public function jsonError(mixed $data) {
+    public function jsonError(mixed $data): void {
         header('Content-type: application/json');
 
         $error = @json_encode($data);
@@ -128,7 +128,7 @@ class View {
      *
      * @return never
      */
-    public function jsonSuccess(mixed $data) {
+    public function jsonSuccess(mixed $data): void {
         header('Content-type: application/json');
 
         $message = @json_encode($data);
@@ -145,7 +145,7 @@ class View {
      *
      * @return never
      */
-    public function sendResponse(ResponseInterface $response) {
+    public function sendResponse(ResponseInterface $response): void {
         send($response);
         exit;
     }

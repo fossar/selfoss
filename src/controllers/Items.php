@@ -55,7 +55,7 @@ class Items {
         // validate id or ids
         try {
             $ids = Misc::forceIds($ids);
-        } catch (InvalidArgumentException $e) {
+        } catch (InvalidArgumentException) {
             $this->view->error('invalid id');
         }
 
@@ -79,7 +79,7 @@ class Items {
 
         try {
             $itemId = Misc::forceId($itemId);
-        } catch (InvalidArgumentException $e) {
+        } catch (InvalidArgumentException) {
             $this->view->error('invalid id');
         }
 
@@ -101,7 +101,7 @@ class Items {
 
         try {
             $itemId = Misc::forceId($itemId);
-        } catch (InvalidArgumentException $e) {
+        } catch (InvalidArgumentException) {
             $this->view->error('invalid id');
         }
 
@@ -122,7 +122,7 @@ class Items {
 
         try {
             $itemId = Misc::forceId($itemId);
-        } catch (InvalidArgumentException $e) {
+        } catch (InvalidArgumentException) {
             $this->view->error('invalid id');
         }
 
@@ -145,7 +145,7 @@ class Items {
         // get items
         $items = $this->itemsDao->get($options);
 
-        $items = array_map(function(array $item) {
+        $items = array_map(function(array $item): array {
             $stringifiedDates = [
                 'datetime' => $item['datetime']->format(DateTimeInterface::ATOM),
                 'updatetime' => $item['updatetime']->format(DateTimeInterface::ATOM),

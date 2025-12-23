@@ -69,7 +69,7 @@ class Sources {
             $this->view->error('invalid spout type given');
         }
 
-        $id = 'new-' . random_int(0, getrandmax());
+        $id = 'new-' . random_int(0, mt_getrandmax());
         $this->view->jsonSuccess([
             'id' => $id,
             'spout' => $spout,
@@ -87,7 +87,7 @@ class Sources {
 
         try {
             $id = Misc::forceId($id);
-        } catch (InvalidArgumentException $e) {
+        } catch (InvalidArgumentException) {
             $this->view->error('invalid id given');
         }
 

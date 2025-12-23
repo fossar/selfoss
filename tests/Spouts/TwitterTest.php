@@ -10,6 +10,7 @@ use GuzzleHttp\Psr7\Response;
 use helpers\HtmlString;
 use helpers\WebClient;
 use Monolog\Logger;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Slince\Di\Container;
 use spouts\spout;
@@ -28,7 +29,7 @@ final class TwitterTest extends TestCase {
      *
      * @return spout<T>
      */
-    private function makeSpout($spout, array $responses): spout {
+    private function makeSpout(string $spout, array $responses): spout {
         $mock = new MockHandler($responses);
         $stack = HandlerStack::create($mock);
         $httpClientConfig = [
@@ -44,7 +45,7 @@ final class TwitterTest extends TestCase {
             ->setShared(true)
         ;
         $container
-            ->register(WebClient::class, function() use ($httpClientConfig) {
+            ->register(WebClient::class, function() use ($httpClientConfig): MockObject {
                 $stub = $this->createMock(WebClient::class);
                 $stub->method('createHttpClientConfig')->willReturn($httpClientConfig);
 

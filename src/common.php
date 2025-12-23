@@ -22,7 +22,7 @@ require __DIR__ . '/constants.php';
 /**
  * @return never
  */
-function boot_error(string $message) {
+function boot_error(string $message): void {
     http_response_code(500);
     header('Content-Type: text/plain');
     echo $message;

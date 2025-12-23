@@ -87,13 +87,13 @@ class ImageUtils {
         usort($icons, Misc::compareBy(
             // largest icons first
             [
-                fn($val) => (int) $val['sizes'],
+                fn($val): int => (int) $val['sizes'],
                 Misc::ORDER_DESC,
             ],
 
             // then by rel priority
             [
-                fn($val) => self::ICON_REL_WEIGHTS[$val['rel']],
+                fn($val): int => self::ICON_REL_WEIGHTS[$val['rel']],
                 Misc::ORDER_DESC,
             ],
 
@@ -102,7 +102,7 @@ class ImageUtils {
         ));
 
         return array_map(
-            fn($i) => $i['url'],
+            fn(array $i): string => $i['url'],
             $icons
         );
     }

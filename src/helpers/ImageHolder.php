@@ -27,7 +27,7 @@ class ImageHolder {
     /**
      * @return Image::FORMAT_JPEG|Image::FORMAT_PNG
      */
-    public function getFormat() {
+    public function getFormat(): string {
         return $this->format;
     }
 

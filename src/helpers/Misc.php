@@ -19,7 +19,7 @@ class Misc {
      *
      * @return self::CMP_* mutual ordering
      */
-    public static function compare(mixed $a, mixed $b) {
+    public static function compare(mixed $a, mixed $b): int {
         return $a <=> $b;
     }
 
@@ -35,7 +35,7 @@ class Misc {
      */
     public static function compareBy(...$transformations): callable {
         if (count($transformations) > 0) {
-            return function($a, $b) use ($transformations) {
+            return function(array $a, array $b) use ($transformations) {
                 foreach ($transformations as $transformation) {
                     $order = self::ORDER_ASC;
                     if (is_array($transformation)) {

@@ -111,7 +111,7 @@ class Update {
 
         try {
             $id = Misc::forceId($id);
-        } catch (InvalidArgumentException $e) {
+        } catch (InvalidArgumentException) {
             $this->view->error('invalid id given');
         }
 

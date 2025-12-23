@@ -88,7 +88,7 @@ class Write {
             if ($id !== null) {
                 $id = Misc::forceId($id);
             }
-        } catch (\InvalidArgumentException $e) {
+        } catch (\InvalidArgumentException) {
             $id = null;
         }
 

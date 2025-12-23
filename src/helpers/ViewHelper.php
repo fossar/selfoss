@@ -61,7 +61,7 @@ class ViewHelper {
      * @return string with replaced img tags
      */
     public static function lazyimg(string $content): string {
-        $content = preg_replace_callback("/<img(?P<pre>[^<]+)src=(?:['\"])(?P<src>[^\"']*)(?:['\"])(?P<post>[^<]*)>/i", function(array $matches) {
+        $content = preg_replace_callback("/<img(?P<pre>[^<]+)src=(?:['\"])(?P<src>[^\"']*)(?:['\"])(?P<post>[^<]*)>/i", function(array $matches): string {
             $width = null;
             $height = null;
 
@@ -109,7 +109,7 @@ class ViewHelper {
 
         $content = preg_replace_callback(
             "/<img([^<]+)src=(['\"])([^\"']*)(['\"])([^<]*)>/i",
-            fn(array $matches) => '<img' . $matches[1] . 'src=' . $matches[2] . $camo->camoHttpOnly($matches[3]) . $matches[4] . $matches[5] . '>',
+            fn(array $matches): string => '<img' . $matches[1] . 'src=' . $matches[2] . $camo->camoHttpOnly($matches[3]) . $matches[4] . $matches[5] . '>',
             $content
         );
 
