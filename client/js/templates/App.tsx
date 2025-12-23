@@ -760,7 +760,6 @@ export class App extends React.Component<AppProps, AppState> {
      */
     _(identifier: string, params?: { [index: string]: string }): string {
         const fallbackLanguage = 'en';
-        const langKey = `lang_${identifier}`;
 
         let preferredLanguage = this.props.configuration.language;
 
@@ -778,8 +777,8 @@ export class App extends React.Component<AppProps, AppState> {
         }
 
         let translated =
-            locales[preferredLanguage][langKey] ||
-            locales[fallbackLanguage][langKey] ||
+            locales[preferredLanguage][identifier] ||
+            locales[fallbackLanguage][identifier] ||
             `#untranslated:${identifier}`;
 
         if (params) {
