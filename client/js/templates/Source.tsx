@@ -33,7 +33,7 @@ function handleCancel(args: {
     sourceElem: RefObject<HTMLLIElement>;
     setSources: Dispatch<SetStateAction<Array<Source>>>;
     setEditedSource: Dispatch<SetStateAction<EditedSource>>;
-}) {
+}): void {
     const { source, sourceElem, setSources, setEditedSource } = args;
     const id = source.id;
 
@@ -64,7 +64,7 @@ function handleSave(args: {
     setSourceErrors: Dispatch<SetStateAction<{ [index: string]: string }>>;
     isNew: boolean;
     setNewIds: Dispatch<SetStateAction<Set<number>>>;
-}) {
+}): void {
     const {
         event,
         setSources,
@@ -175,7 +175,7 @@ function handleDelete(args: {
     setSources: Dispatch<SetStateAction<Array<Source>>>;
     setSourceBeingDeleted: Dispatch<SetStateAction<boolean>>;
     setDirty: Dispatch<SetStateAction<boolean>>;
-}) {
+}): void {
     const { source, sourceElem, setSources, setSourceBeingDeleted, setDirty } =
         args;
     const answer = confirm(selfoss.app._('source_warn'));
@@ -224,7 +224,7 @@ function handleEdit(args: {
     event: MouseEvent<HTMLButtonElement>;
     source: Source;
     setEditedSource: Dispatch<SetStateAction<EditedSource>>;
-}) {
+}): void {
     const { event, source, setEditedSource } = args;
     event.preventDefault();
 
@@ -247,7 +247,7 @@ function handleSpoutChange(args: {
     updateEditedSource: Dispatch<SetStateAction<Partial<EditedSource>>>;
     setSourceParamsLoading: Dispatch<SetStateAction<boolean>>;
     setSourceParamsError: Dispatch<SetStateAction<string | null>>;
-}) {
+}): void {
     const {
         event,
         setSpouts,
@@ -371,7 +371,7 @@ type SourceEditFormProps = {
     setNewIds: Dispatch<SetStateAction<Set<number>>>;
 };
 
-function SourceEditForm(props: SourceEditFormProps) {
+function SourceEditForm(props: SourceEditFormProps): React.JSX.Element {
     const {
         source,
         sourceElem,
@@ -397,7 +397,7 @@ function SourceEditForm(props: SourceEditFormProps) {
 
     const sourceId = source.id;
     const updateEditedSource = useCallback(
-        (changes) => {
+        (changes: SetStateAction<Partial<EditedSource>>) => {
             setDirty(true);
             if (typeof changes === 'function') {
                 setEditedSource((source) => ({
@@ -412,17 +412,20 @@ function SourceEditForm(props: SourceEditFormProps) {
     );
 
     const titleOnChange = useCallback(
-        (event) => updateEditedSource({ title: event.currentTarget.value }),
+        (event: ChangeEvent<HTMLInputElement>) =>
+            updateEditedSource({ title: event.currentTarget.value }),
         [updateEditedSource],
     );
 
     const tagsOnChange = useCallback(
-        (event) => updateEditedSource({ tags: event.currentTarget.value }),
+        (event: ChangeEvent<HTMLInputElement>) =>
+            updateEditedSource({ tags: event.currentTarget.value }),
         [updateEditedSource],
     );
 
     const filterOnChange = useCallback(
-        (event) => updateEditedSource({ filter: event.currentTarget.value }),
+        (event: ChangeEvent<HTMLInputElement>) =>
+            updateEditedSource({ filter: event.currentTarget.value }),
         [updateEditedSource],
     );
 
@@ -672,7 +675,7 @@ type SourceProps = {
     setNewIds: Dispatch<SetStateAction<Set<number>>>;
 };
 
-export default function Source(props: SourceProps) {
+export default function Source(props: SourceProps): React.JSX.Element {
     const {
         source,
         isNew,

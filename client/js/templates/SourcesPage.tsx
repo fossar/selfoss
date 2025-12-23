@@ -21,7 +21,7 @@ import { useShouldReload } from '../helpers/hooks';
 import { LocalizationContext } from '../helpers/i18n';
 import { HttpError } from '../errors';
 
-function rand() {
+function rand(): number {
     // https://www.php.net/manual/en/function.mt-getrandmax.php#117620
     return Math.floor(Math.random() * 2147483647);
 }

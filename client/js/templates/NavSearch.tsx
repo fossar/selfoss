@@ -1,8 +1,19 @@
-import React, { useCallback, use, useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router';
+import React, {
+    useCallback,
+    use,
+    useEffect,
+    useRef,
+    useState,
+    RefObject,
+    ChangeEvent,
+    KeyboardEvent,
+    SetStateAction,
+    Dispatch,
+} from 'react';
+import { NavigateFunction, useNavigate } from 'react-router';
 import classNames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useLocation } from '../helpers/uri';
+import { useLocation, Location } from '../helpers/uri';
 import selfoss from '../selfoss-base';
 import { makeEntriesLink } from '../helpers/uri';
 import * as icons from '../icons';
@@ -17,7 +28,15 @@ function handleSubmit({
     navigate,
     location,
     setNavExpanded,
-}) {
+}: {
+    active: boolean;
+    setActive: Dispatch<SetStateAction<boolean>>;
+    searchField: RefObject<HTMLInputElement>;
+    searchText: string;
+    navigate: NavigateFunction;
+    location: Location;
+    setNavExpanded: Dispatch<SetStateAction<boolean>>;
+}): void {
     if (!selfoss.isSmartphone() && !active) {
         setActive(true);
         searchField.current.focus();
@@ -32,7 +51,15 @@ function handleSubmit({
     setNavExpanded(false);
 }
 
-function handleFieldKeyUp({ event, searchButton, searchRemoveButton }) {
+function handleFieldKeyUp({
+    event,
+    searchButton,
+    searchRemoveButton,
+}: {
+    event: KeyboardEvent<HTMLInputElement>;
+    searchButton: RefObject<HTMLButtonElement>;
+    searchRemoveButton: RefObject<HTMLButtonElement>;
+}): void {
     // keypress enter in search inputfield
     if (event.which == 13) {
         searchButton.current.click();
@@ -43,7 +70,17 @@ function handleFieldKeyUp({ event, searchButton, searchRemoveButton }) {
 }
 
 // remove button of search
-function handleRemove({ setActive, searchField, navigate, location }) {
+function handleRemove({
+    setActive,
+    searchField,
+    navigate,
+    location,
+}: {
+    setActive: Dispatch<SetStateAction<boolean>>;
+    searchField: RefObject<HTMLInputElement>;
+    navigate: NavigateFunction;
+    location: Location;
+}): void {
     const queryString = new URLSearchParams(location.search);
     const oldTerm = queryString.get('search');
 
@@ -62,7 +99,7 @@ type NavSearchProps = {
     offlineState: boolean;
 };
 
-export default function NavSearch(props: NavSearchProps) {
+export default function NavSearch(props: NavSearchProps): React.JSX.Element {
     const { setNavExpanded, offlineState } = props;
 
     const [active, setActive] = useState(false);
@@ -84,7 +121,7 @@ export default function NavSearch(props: NavSearchProps) {
     }, [oldTerm]);
 
     const termOnKeyUp = useCallback(
-        (event) =>
+        (event: KeyboardEvent<HTMLInputElement>) =>
             handleFieldKeyUp({
                 event,
                 searchButton,
@@ -94,7 +131,8 @@ export default function NavSearch(props: NavSearchProps) {
     );
 
     const termOnChange = useCallback(
-        (event) => setSearchText(event.currentTarget.value),
+        (event: ChangeEvent<HTMLInputElement>) =>
+            setSearchText(event.currentTarget.value),
         [],
     );
 

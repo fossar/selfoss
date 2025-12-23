@@ -1,12 +1,12 @@
 import React, { useCallback, useMemo } from 'react';
 import classNames from 'classnames';
-import { useNavigate } from 'react-router';
+import { NavigateFunction, useNavigate } from 'react-router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useLocation } from '../helpers/uri';
+import { Location, useLocation } from '../helpers/uri';
 import { makeEntriesLink } from '../helpers/uri';
 import * as icons from '../icons';
 
-function splitTerm(term) {
+function splitTerm(term: string): string[] {
     if (term == '') {
         return [];
     } else if (term.match(/^\/.+\/$/)) {
@@ -20,7 +20,7 @@ function splitTerm(term) {
     return words;
 }
 
-function joinTerm(words) {
+function joinTerm(words: string[]): string {
     if (!words || words.length <= 0) {
         return '';
     }
@@ -33,7 +33,17 @@ function joinTerm(words) {
 }
 
 // remove search term
-function handleRemove({ index, location, navigate, regexSearch }) {
+function handleRemove({
+    index,
+    location,
+    navigate,
+    regexSearch,
+}: {
+    index: number;
+    location: Location;
+    navigate: NavigateFunction;
+    regexSearch: boolean;
+}): void {
     let newterm;
     if (regexSearch) {
         newterm = '';
@@ -55,7 +65,7 @@ type SearchWordProps = {
     item: string;
 };
 
-function SearchWord(props: SearchWordProps) {
+function SearchWord(props: SearchWordProps): React.JSX.Element {
     const { regexSearch, index, item } = props;
 
     const location = useLocation();
@@ -79,7 +89,7 @@ function SearchWord(props: SearchWordProps) {
 /**
  * Component for showing list of search terms at the top of the page.
  */
-export default function SearchList() {
+export default function SearchList(): React.JSX.Element[] {
     const location = useLocation();
 
     const searchText = useMemo(() => {

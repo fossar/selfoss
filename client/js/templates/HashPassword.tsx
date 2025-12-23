@@ -1,5 +1,6 @@
 import { TypedFormData } from '@k1eu/typed-formdata';
 import React, {
+    FormEvent,
     startTransition,
     useActionState,
     useCallback,
@@ -25,7 +26,9 @@ type HashPasswordProps = {
     setTitle: (title: string | null) => void;
 };
 
-export default function HashPassword(props: HashPasswordProps) {
+export default function HashPassword(
+    props: HashPasswordProps,
+): React.JSX.Element {
     const { setTitle } = props;
 
     const navigate = useNavigate();
@@ -55,7 +58,7 @@ export default function HashPassword(props: HashPasswordProps) {
     }, {});
 
     const submit = useCallback(
-        (event) => {
+        (event: FormEvent<HTMLFormElement>) => {
             // Unlike `action` prop, `onSubmit` avoids clearing the form on submit.
             // https://github.com/facebook/react/issues/29034#issuecomment-2143595195
             event.preventDefault();

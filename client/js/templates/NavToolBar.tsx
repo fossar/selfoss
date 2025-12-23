@@ -1,4 +1,10 @@
-import React, { useCallback, use, useState } from 'react';
+import React, {
+    useCallback,
+    use,
+    useState,
+    Dispatch,
+    SetStateAction,
+} from 'react';
 import { Link } from 'react-router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import selfoss from '../selfoss-base';
@@ -12,7 +18,15 @@ import { LocalizationContext } from '../helpers/i18n';
 import { useForceReload } from '../helpers/uri';
 import { ConfigurationContext } from '../model/Configuration';
 
-function handleReloadAll({ reloadAll, setReloading, setNavExpanded }): void {
+function handleReloadAll({
+    reloadAll,
+    setReloading,
+    setNavExpanded,
+}: {
+    reloadAll: () => Promise<void>;
+    setReloading: Dispatch<SetStateAction<boolean>>;
+    setNavExpanded: Dispatch<SetStateAction<boolean>>;
+}): void {
     setReloading(true);
     reloadAll().finally(() => {
         setNavExpanded(false);
@@ -20,7 +34,11 @@ function handleReloadAll({ reloadAll, setReloading, setNavExpanded }): void {
     });
 }
 
-function handleLogOut({ setNavExpanded }): void {
+function handleLogOut({
+    setNavExpanded,
+}: {
+    setNavExpanded: Dispatch<SetStateAction<boolean>>;
+}): void {
     // only loggedin users
     if (!selfoss.hasSession() || !selfoss.isOnline()) {
         return;

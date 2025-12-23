@@ -10,8 +10,9 @@ import React, {
     useRef,
     useState,
     useEffectEvent,
+    KeyboardEvent,
 } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router';
+import { Link, useNavigate, useLocation, NavigateFunction } from 'react-router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
 import { FocusTrap, createFocusTrap } from 'focus-trap';
@@ -21,6 +22,7 @@ import {
     useForceReload,
     makeEntriesLink,
     makeEntriesLinkLocation,
+    Location,
 } from '../helpers/uri';
 import * as icons from '../icons';
 import { LocalizationContext } from '../helpers/i18n';
@@ -93,7 +95,7 @@ function fixLinkBubbling(content: HTMLDivElement): void {
 }
 
 // Prevent passing referrer info when opening a link.
-function sanitizeContent(content) {
+function sanitizeContent(content: HTMLDivElement): void {
     content.querySelectorAll('a').forEach((a) => {
         const oldRel = a.getAttribute('rel');
         a.setAttribute('rel', 'noreferrer' + (oldRel ? ' ' + oldRel : ''));
@@ -103,7 +105,7 @@ function sanitizeContent(content) {
     });
 }
 
-function handleKeyUp(event) {
+function handleKeyUp(event: KeyboardEvent<HTMLSpanElement>): void {
     // emulate clicking when using keyboard
     if (event.keyCode === 13) {
         // ENTER key
@@ -113,7 +115,7 @@ function handleKeyUp(event) {
     }
 }
 
-function preventDefaultOnSmartphone(event) {
+function preventDefaultOnSmartphone(event: MouseEvent): void {
     // We want to use the whole title as action for opening/closing items
     // and smartphones have separate buttons for opening the article anyway.
     if (selfoss.isSmartphone()) {
@@ -122,7 +124,17 @@ function preventDefaultOnSmartphone(event) {
 }
 
 // Handle closing fullscreen on mobile
-function closeFullScreen({ event, navigate, location, entryId }) {
+function closeFullScreen({
+    event,
+    navigate,
+    location,
+    entryId,
+}: {
+    event: MouseEvent;
+    navigate: NavigateFunction;
+    location: Location;
+    entryId: number;
+}): void {
     event.preventDefault();
     event.stopPropagation();
     selfoss.entriesPage.setEntryExpanded(entryId, false);
@@ -130,7 +142,21 @@ function closeFullScreen({ event, navigate, location, entryId }) {
 }
 
 // show/hide entry
-function handleClick({ event, navigate, location, expanded, id, target }) {
+function handleClick({
+    event,
+    navigate,
+    location,
+    expanded,
+    id,
+    target,
+}: {
+    event: MouseEvent;
+    navigate: NavigateFunction;
+    location: Location;
+    expanded: boolean;
+    id: number;
+    target: string;
+}): void {
     const expected = selfoss.isMobile() ? '.entry' : '.entry-title';
     if (target !== expected) {
         return;
