@@ -17,15 +17,10 @@ use helpers\Authentication;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class Items implements ItemsInterface {
-    private Authentication $authentication;
-    private ItemsInterface $backend;
-
     public function __construct(
-        Authentication $authentication,
-        ItemsInterface $backend
+        private Authentication $authentication,
+        private ItemsInterface $backend
     ) {
-        $this->authentication = $authentication;
-        $this->backend = $backend;
     }
 
     public function mark(array $ids): void {

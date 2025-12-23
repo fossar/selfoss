@@ -39,6 +39,7 @@ $rules = [
     'dir_constant' => true,
     'echo_tag_syntax' => ['format' => 'short'],
     'modernize_types_casting' => true,
+    'multiline_promoted_properties' => true,
     'no_alias_functions' => true,
     'ordered_imports' => true,
     'phpdoc_add_missing_param_annotation' => true,

@@ -14,24 +14,16 @@ use helpers\ViewHelper;
  * Controller for synchronizing item statuses
  */
 class Sync {
-    private Authentication $authentication;
-    private Configuration $configuration;
-    private \daos\Items $itemsDao;
-    private \daos\Sources $sourcesDao;
-    private \controllers\Tags $tagsController;
-    private \daos\Tags $tagsDao;
-    private View $view;
-    private ViewHelper $viewHelper;
-
-    public function __construct(Authentication $authentication, Configuration $configuration, \daos\Items $itemsDao, \daos\Sources $sourcesDao, \controllers\Tags $tagsController, \daos\Tags $tagsDao, View $view, ViewHelper $viewHelper) {
-        $this->authentication = $authentication;
-        $this->configuration = $configuration;
-        $this->itemsDao = $itemsDao;
-        $this->sourcesDao = $sourcesDao;
-        $this->tagsController = $tagsController;
-        $this->tagsDao = $tagsDao;
-        $this->view = $view;
-        $this->viewHelper = $viewHelper;
+    public function __construct(
+        private Authentication $authentication,
+        private Configuration $configuration,
+        private \daos\Items $itemsDao,
+        private \daos\Sources $sourcesDao,
+        private \controllers\Tags $tagsController,
+        private \daos\Tags $tagsDao,
+        private View $view,
+        private ViewHelper $viewHelper
+    ) {
     }
 
     /**

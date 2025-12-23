@@ -20,27 +20,22 @@ class DatabaseConnection {
 
     private PDO $pdo;
 
-    private Logger $logger;
-    private string $tableNamePrefix;
-
     /**
      * Instantiate class
      *
      * @param ?array<string, mixed> $options
      */
     public function __construct(
-        Logger $logger,
+        private Logger $logger,
         string $dsn,
         ?string $user = null,
         ?string $password = null,
         ?array $options = null,
-        string $tableNamePrefix = ''
+        private string $tableNamePrefix = ''
     ) {
-        $this->logger = $logger;
         $this->logger->debug('Creating database connection', ['dsn' => $dsn]);
         $this->pdo = new PDO($dsn, $user, $password, $options);
         $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $this->tableNamePrefix = $tableNamePrefix;
     }
 
     /**

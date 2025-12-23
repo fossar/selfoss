@@ -37,12 +37,13 @@ class youtube extends \spouts\rss\feed {
         ],
     ];
 
-    private UrlHighlight $urlHighlight;
-
-    public function __construct(UrlHighlight $urlHighlight, FeedReader $feed, Image $imageHelper, Logger $logger) {
+    public function __construct(
+        private UrlHighlight $urlHighlight,
+        FeedReader $feed,
+        Image $imageHelper,
+        Logger $logger
+    ) {
         parent::__construct($feed, $imageHelper, $logger);
-
-        $this->urlHighlight = $urlHighlight;
     }
 
     public function load(array $params): void {

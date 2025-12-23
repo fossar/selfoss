@@ -20,21 +20,12 @@ use InvalidArgumentException;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class Items {
-    private Authentication $authentication;
-    private \daos\Items $itemsDao;
-    private Request $request;
-    private View $view;
-
     public function __construct(
-        Authentication $authentication,
-        \daos\Items $itemsDao,
-        Request $request,
-        View $view
+        private Authentication $authentication,
+        private \daos\Items $itemsDao,
+        private Request $request,
+        private View $view
     ) {
-        $this->authentication = $authentication;
-        $this->itemsDao = $itemsDao;
-        $this->request = $request;
-        $this->view = $view;
     }
 
     /**

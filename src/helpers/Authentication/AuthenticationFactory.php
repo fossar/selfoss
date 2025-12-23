@@ -14,12 +14,10 @@ use Psr\Container\ContainerInterface;
  * Factory that creates `AuthenticationService` based on the configuration.
  */
 final class AuthenticationFactory {
-    private Configuration $configuration;
-    private ContainerInterface $container;
-
-    public function __construct(Configuration $configuration, ContainerInterface $container) {
-        $this->configuration = $configuration;
-        $this->container = $container;
+    public function __construct(
+        private Configuration $configuration,
+        private ContainerInterface $container
+    ) {
     }
 
     public function create(): AuthenticationService {

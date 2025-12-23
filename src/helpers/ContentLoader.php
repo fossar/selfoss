@@ -20,28 +20,18 @@ class ContentLoader {
     public const ICON_FORMAT = Image::FORMAT_PNG;
     public const THUMBNAIL_FORMAT = Image::FORMAT_JPEG;
 
-    private Configuration $configuration;
-    private \daos\DatabaseInterface $database;
-    private IconStore $iconStore;
-    private Image $imageHelper;
-    private \daos\Items $itemsDao;
-    private Logger $logger;
-    private \daos\Sources $sourcesDao;
-    private SpoutLoader $spoutLoader;
-    private ThumbnailStore $thumbnailStore;
-    private WebClient $webClient;
-
-    public function __construct(Configuration $configuration, \daos\DatabaseInterface $database, IconStore $iconStore, Image $imageHelper, \daos\Items $itemsDao, Logger $logger, \daos\Sources $sourcesDao, SpoutLoader $spoutLoader, ThumbnailStore $thumbnailStore, WebClient $webClient) {
-        $this->configuration = $configuration;
-        $this->database = $database;
-        $this->iconStore = $iconStore;
-        $this->imageHelper = $imageHelper;
-        $this->itemsDao = $itemsDao;
-        $this->logger = $logger;
-        $this->sourcesDao = $sourcesDao;
-        $this->spoutLoader = $spoutLoader;
-        $this->thumbnailStore = $thumbnailStore;
-        $this->webClient = $webClient;
+    public function __construct(
+        private Configuration $configuration,
+        private \daos\DatabaseInterface $database,
+        private IconStore $iconStore,
+        private Image $imageHelper,
+        private \daos\Items $itemsDao,
+        private Logger $logger,
+        private \daos\Sources $sourcesDao,
+        private SpoutLoader $spoutLoader,
+        private ThumbnailStore $thumbnailStore,
+        private WebClient $webClient
+    ) {
     }
 
     /**

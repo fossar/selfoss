@@ -15,14 +15,13 @@ namespace helpers\Filters;
  * @implements Filter<T>
  */
 final class NegationFilter implements Filter {
-    /** @var Filter<T> */
-    private Filter $filter;
-
     /**
      * @param Filter<T> $filter
      */
-    public function __construct(Filter $filter) {
-        $this->filter = $filter;
+    public function __construct(
+        /** @var Filter<T> */
+        private Filter $filter
+    ) {
     }
 
     /**

@@ -11,12 +11,10 @@ use Monolog\Logger;
  * Thumbnail storage.
  */
 class ThumbnailStore {
-    private Logger $logger;
-    private FileStorage $storage;
-
-    public function __construct(Logger $logger, FileStorage $storage) {
-        $this->storage = $storage;
-        $this->logger = $logger;
+    public function __construct(
+        private Logger $logger,
+        private FileStorage $storage
+    ) {
     }
 
     /**

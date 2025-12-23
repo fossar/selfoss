@@ -18,12 +18,10 @@ class Tags implements \daos\TagsInterface {
     /** @var class-string SQL helper */
     protected static string $stmt = Statements::class;
 
-    private Configuration $configuration;
-    protected DatabaseInterface $database;
-
-    public function __construct(Configuration $configuration, DatabaseInterface $database) {
-        $this->configuration = $configuration;
-        $this->database = $database;
+    public function __construct(
+        private Configuration $configuration,
+        protected DatabaseInterface $database
+    ) {
     }
 
     /**

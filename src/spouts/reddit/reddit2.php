@@ -65,12 +65,10 @@ class reddit2 extends \spouts\spout {
     /** @var RedditItem[] current fetched items */
     private array $items = [];
 
-    private Image $imageHelper;
-    private WebClient $webClient;
-
-    public function __construct(Image $imageHelper, WebClient $webClient) {
-        $this->imageHelper = $imageHelper;
-        $this->webClient = $webClient;
+    public function __construct(
+        private Image $imageHelper,
+        private WebClient $webClient
+    ) {
     }
 
     /**

@@ -15,10 +15,9 @@ use helpers\WebClient;
  * Factory for TwitterV1ApiClient.
  */
 class TwitterV1ApiClientFactory {
-    private WebClient $webClient;
-
-    public function __construct(WebClient $webClient) {
-        $this->webClient = $webClient;
+    public function __construct(
+        private WebClient $webClient
+    ) {
     }
 
     /**

@@ -24,16 +24,13 @@ use Monolog\Logger;
 final class RequestOrSession implements AuthenticationService {
     private const SESSION_KEY = 'authorized';
 
-    private Configuration $configuration;
-    private Logger $logger;
-    private Session $session;
-
     private ?bool $authorized = null;
 
-    public function __construct(Configuration $configuration, Logger $logger, Session $session) {
-        $this->configuration = $configuration;
-        $this->logger = $logger;
-        $this->session = $session;
+    public function __construct(
+        private Configuration $configuration,
+        private Logger $logger,
+        private Session $session
+    ) {
     }
 
     public function canRead(): bool {

@@ -11,18 +11,13 @@ use helpers\View;
  * Controller for viewing item statistics
  */
 class Stats {
-    private Authentication $authentication;
-    private \daos\Items $itemsDao;
-    private \daos\Sources $sourcesDao;
-    private \daos\Tags $tagsDao;
-    private View $view;
-
-    public function __construct(Authentication $authentication, \daos\Items $itemsDao, \daos\Sources $sourcesDao, \daos\Tags $tagsDao, View $view) {
-        $this->authentication = $authentication;
-        $this->itemsDao = $itemsDao;
-        $this->sourcesDao = $sourcesDao;
-        $this->tagsDao = $tagsDao;
-        $this->view = $view;
+    public function __construct(
+        private Authentication $authentication,
+        private \daos\Items $itemsDao,
+        private \daos\Sources $sourcesDao,
+        private \daos\Tags $tagsDao,
+        private View $view
+    ) {
     }
 
     /**

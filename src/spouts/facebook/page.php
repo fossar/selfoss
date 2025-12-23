@@ -65,10 +65,9 @@ class page extends \spouts\spout {
     /** @var FbItem[] current fetched items */
     private array $items = [];
 
-    private WebClient $webClient;
-
-    public function __construct(WebClient $webClient) {
-        $this->webClient = $webClient;
+    public function __construct(
+        private WebClient $webClient
+    ) {
     }
 
     /**

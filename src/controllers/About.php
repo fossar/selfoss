@@ -12,14 +12,11 @@ use helpers\View;
  * Controller for instance information API
  */
 class About {
-    private Authentication $authentication;
-    private Configuration $configuration;
-    private View $view;
-
-    public function __construct(Authentication $authentication, Configuration $configuration, View $view) {
-        $this->authentication = $authentication;
-        $this->configuration = $configuration;
-        $this->view = $view;
+    public function __construct(
+        private Authentication $authentication,
+        private Configuration $configuration,
+        private View $view
+    ) {
     }
 
     /**

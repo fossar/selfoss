@@ -23,19 +23,13 @@ use Psr\Http\Message\ResponseInterface;
  * @author     Alexandre Rossi <alexandre.rossi@gmail.com>
  */
 class WebClient implements ClientInterface {
-    private Configuration $configuration;
     private ?GuzzleHttp\Client $httpClient = null;
-    private HttpFactory $httpFactory;
-    private Logger $logger;
 
     public function __construct(
-        Configuration $configuration,
-        HttpFactory $httpFactory,
-        Logger $logger
+        private Configuration $configuration,
+        private HttpFactory $httpFactory,
+        private Logger $logger
     ) {
-        $this->configuration = $configuration;
-        $this->httpFactory = $httpFactory;
-        $this->logger = $logger;
     }
 
     /**

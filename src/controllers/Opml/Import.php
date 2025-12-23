@@ -21,18 +21,13 @@ class Import {
     /** @var array<string, array{id: int, tags: string[]}> Sources that have been imported from the OPML file */
     private array $imported = [];
 
-    private Authentication $authentication;
-    private Logger $logger;
-    private \daos\Sources $sourcesDao;
-    private \daos\Tags $tagsDao;
-    private View $view;
-
-    public function __construct(Authentication $authentication, Logger $logger, \daos\Sources $sourcesDao, \daos\Tags $tagsDao, View $view) {
-        $this->authentication = $authentication;
-        $this->logger = $logger;
-        $this->sourcesDao = $sourcesDao;
-        $this->tagsDao = $tagsDao;
-        $this->view = $view;
+    public function __construct(
+        private Authentication $authentication,
+        private Logger $logger,
+        private \daos\Sources $sourcesDao,
+        private \daos\Tags $tagsDao,
+        private View $view
+    ) {
     }
 
     /**

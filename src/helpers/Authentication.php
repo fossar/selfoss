@@ -24,10 +24,9 @@ use helpers\Authentication\AuthenticationService;
  *  - **Privileged**: Any other operation (admin) user, full access without any limitations.
  */
 class Authentication {
-    private AuthenticationService $authenticationService;
-
-    public function __construct(AuthenticationService $authenticationService) {
-        $this->authenticationService = $authenticationService;
+    public function __construct(
+        private AuthenticationService $authenticationService
+    ) {
     }
 
     /**

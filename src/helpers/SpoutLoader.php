@@ -19,10 +19,9 @@ class SpoutLoader {
     /** @var ?array<class-string<spout<mixed>>, spout<mixed>> array of available spouts */
     private ?array $spouts = null;
 
-    private ContainerInterface $container;
-
-    public function __construct(ContainerInterface $container) {
-        $this->container = $container;
+    public function __construct(
+        private ContainerInterface $container
+    ) {
     }
 
     /**

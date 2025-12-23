@@ -45,14 +45,11 @@ class feed extends \spouts\spout {
     /** @var SimplePie\Item[] current fetched items */
     private array $items = [];
 
-    private Logger $logger;
-    private FeedReader $feed;
-    private Image $imageHelper;
-
-    public function __construct(FeedReader $feed, Image $imageHelper, Logger $logger) {
-        $this->imageHelper = $imageHelper;
-        $this->logger = $logger;
-        $this->feed = $feed;
+    public function __construct(
+        private FeedReader $feed,
+        private Image $imageHelper,
+        private Logger $logger
+    ) {
     }
 
     //

@@ -29,10 +29,9 @@ class TwitterV1ApiClient {
         'media',
     ];
 
-    private GuzzleHttp\Client $client;
-
-    public function __construct(GuzzleHttp\Client $client) {
-        $this->client = $client;
+    public function __construct(
+        private GuzzleHttp\Client $client
+    ) {
     }
 
     /**

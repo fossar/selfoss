@@ -16,9 +16,6 @@ namespace helpers\Filters;
  * @implements Filter<T>
  */
 final class MapFilter implements Filter {
-    /** @var Filter<InnerT> */
-    private Filter $filter;
-
     /** @var callable(T): InnerT */
     private $transform;
 
@@ -26,8 +23,10 @@ final class MapFilter implements Filter {
      * @param Filter<InnerT> $filter
      * @param callable(T): InnerT $transform
      */
-    public function __construct(Filter $filter, callable $transform) {
-        $this->filter = $filter;
+    public function __construct(
+        private Filter $filter,
+        callable $transform
+    ) {
         $this->transform = $transform;
     }
 

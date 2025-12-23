@@ -11,12 +11,10 @@ use helpers\View;
  * Controller for user related tasks
  */
 class Authentication {
-    private AuthenticationService $authenticationService;
-    private View $view;
-
-    public function __construct(AuthenticationService $authenticationService, View $view) {
-        $this->authenticationService = $authenticationService;
-        $this->view = $view;
+    public function __construct(
+        private AuthenticationService $authenticationService,
+        private View $view
+    ) {
     }
 
     /**

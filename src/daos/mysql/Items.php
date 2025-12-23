@@ -27,14 +27,11 @@ class Items implements \daos\ItemsInterface {
     /** @var class-string SQL helper */
     protected static string $stmt = Statements::class;
 
-    private Logger $logger;
-    private Configuration $configuration;
-    protected DatabaseInterface $database;
-
-    public function __construct(Logger $logger, Configuration $configuration, DatabaseInterface $database) {
-        $this->configuration = $configuration;
-        $this->database = $database;
-        $this->logger = $logger;
+    public function __construct(
+        private Logger $logger,
+        private Configuration $configuration,
+        protected DatabaseInterface $database
+    ) {
     }
 
     /**

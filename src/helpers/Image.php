@@ -45,12 +45,10 @@ class Image {
         'application/ico' => 'ico',
     ];
 
-    private Logger $logger;
-    private WebClient $webClient;
-
-    public function __construct(Logger $logger, WebClient $webClient) {
-        $this->logger = $logger;
-        $this->webClient = $webClient;
+    public function __construct(
+        private Logger $logger,
+        private WebClient $webClient
+    ) {
     }
 
     /**
@@ -238,7 +236,7 @@ class Image {
         // parse image for saving it later
         try {
             $wideImage = WideImage::load($data);
-        } catch (\Throwable $e) {
+        } catch (\Throwable) {
             return null;
         }
 

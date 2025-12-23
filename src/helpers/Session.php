@@ -22,12 +22,10 @@ use Monolog\Logger;
 class Session {
     private bool $started = false;
 
-    private Logger $logger;
-    private View $view;
-
-    public function __construct(Logger $logger, View $view) {
-        $this->logger = $logger;
-        $this->view = $view;
+    public function __construct(
+        private Logger $logger,
+        private View $view
+    ) {
     }
 
     public function start(): void {

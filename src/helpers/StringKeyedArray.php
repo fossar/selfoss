@@ -23,14 +23,13 @@ use OutOfBoundsException;
  * @implements IteratorAggregate<string, T>
  */
 final class StringKeyedArray implements ArrayAccess, IteratorAggregate, JsonSerializable {
-    /** @var array<string|int, T> */
-    private array $data;
-
     /**
      * @param array<string|int, T> $data
      */
-    public function __construct(array $data = []) {
-        $this->data = $data;
+    public function __construct(
+        /** @var array<string|int, T> */
+        private array $data = []
+    ) {
     }
 
     /**

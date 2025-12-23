@@ -14,16 +14,11 @@ use helpers\Authentication;
  * Proxy for accessing tag colors.
  */
 class Tags implements TagsInterface {
-    private Authentication $authentication;
-    /** Instance of backend-specific Tags class */
-    private TagsInterface $backend;
-
     public function __construct(
-        Authentication $authentication,
-        TagsInterface $backend
+        private Authentication $authentication,
+        /** Instance of backend-specific Tags class */
+        private TagsInterface $backend
     ) {
-        $this->authentication = $authentication;
-        $this->backend = $backend;
     }
 
     public function saveTagColor(string $tag, string $color): void {

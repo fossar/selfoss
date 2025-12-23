@@ -15,18 +15,11 @@ use InvalidArgumentException;
  * Controller updating sources
  */
 class Update {
-    private Authentication $authentication;
-    private ContentLoader $contentLoader;
-    private View $view;
-
     public function __construct(
-        Authentication $authentication,
-        ContentLoader $contentLoader,
-        View $view
+        private Authentication $authentication,
+        private ContentLoader $contentLoader,
+        private View $view
     ) {
-        $this->authentication = $authentication;
-        $this->contentLoader = $contentLoader;
-        $this->view = $view;
     }
 
     /**

@@ -76,10 +76,9 @@ class listtimeline extends \spouts\spout {
     /** @var iterable<Item<null>> current fetched items */
     private iterable $items = [];
 
-    private TwitterV1ApiClientFactory $clientFactory;
-
-    public function __construct(TwitterV1ApiClientFactory $clientFactory) {
-        $this->clientFactory = $clientFactory;
+    public function __construct(
+        private TwitterV1ApiClientFactory $clientFactory
+    ) {
     }
 
     /**

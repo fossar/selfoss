@@ -19,17 +19,14 @@ use Monolog\Logger;
 class Database implements \daos\DatabaseInterface {
     use CommonSqlDatabase;
 
-    private DatabaseConnection $connection;
-    private Logger $logger;
-
     /**
      * establish connection and
      * create undefined tables
      */
-    public function __construct(DatabaseConnection $connection, Logger $logger) {
-        $this->connection = $connection;
-        $this->logger = $logger;
-
+    public function __construct(
+        private DatabaseConnection $connection,
+        private Logger $logger
+    ) {
         $this->logger->debug('Establishing MySQL database connection');
 
         $this->migrate();

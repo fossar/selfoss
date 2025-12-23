@@ -23,13 +23,12 @@ class View {
     /** Current base url */
     private ?string $baseUrl = null;
 
-    private Configuration $configuration;
-
     /**
      * set global view vars
      */
-    public function __construct(Configuration $configuration) {
-        $this->configuration = $configuration;
+    public function __construct(
+        private Configuration $configuration
+    ) {
     }
 
     /**

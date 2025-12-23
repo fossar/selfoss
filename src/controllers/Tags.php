@@ -20,21 +20,12 @@ class Tags {
     /** @var ?StringKeyedArray<array{backColor: string, foreColor: string}> cache of tags and associated colors */
     protected ?StringKeyedArray $tagsColors = null;
 
-    private Authentication $authentication;
-    private Request $request;
-    private \daos\Tags $tagsDao;
-    private View $view;
-
     public function __construct(
-        Authentication $authentication,
-        Request $request,
-        \daos\Tags $tagsDao,
-        View $view
+        private Authentication $authentication,
+        private Request $request,
+        private \daos\Tags $tagsDao,
+        private View $view
     ) {
-        $this->authentication = $authentication;
-        $this->request = $request;
-        $this->tagsDao = $tagsDao;
-        $this->view = $view;
     }
 
     /**

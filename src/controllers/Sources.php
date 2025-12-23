@@ -18,18 +18,13 @@ use InvalidArgumentException;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class Sources {
-    private Authentication $authentication;
-    private \daos\Sources $sourcesDao;
-    private SpoutLoader $spoutLoader;
-    private \daos\Tags $tagsDao;
-    private View $view;
-
-    public function __construct(Authentication $authentication, \daos\Sources $sourcesDao, SpoutLoader $spoutLoader, \daos\Tags $tagsDao, View $view) {
-        $this->authentication = $authentication;
-        $this->sourcesDao = $sourcesDao;
-        $this->spoutLoader = $spoutLoader;
-        $this->tagsDao = $tagsDao;
-        $this->view = $view;
+    public function __construct(
+        private Authentication $authentication,
+        private \daos\Sources $sourcesDao,
+        private SpoutLoader $spoutLoader,
+        private \daos\Tags $tagsDao,
+        private View $view
+    ) {
     }
 
     /**

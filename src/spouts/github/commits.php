@@ -63,10 +63,9 @@ class commits extends \spouts\spout {
     /** @var Commit[] current fetched items */
     private array $items = [];
 
-    private WebClient $webClient;
-
-    public function __construct(WebClient $webClient) {
-        $this->webClient = $webClient;
+    public function __construct(
+        private WebClient $webClient
+    ) {
     }
 
     //

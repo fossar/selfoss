@@ -18,18 +18,11 @@ use spouts\Parameter;
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
 class Sources implements SourcesInterface {
-    private Authentication $authentication;
-    private SourcesInterface $backend;
-    private SpoutLoader $spoutLoader;
-
     public function __construct(
-        Authentication $authentication,
-        SourcesInterface $backend,
-        SpoutLoader $spoutLoader
+        private Authentication $authentication,
+        private SourcesInterface $backend,
+        private SpoutLoader $spoutLoader
     ) {
-        $this->authentication = $authentication;
-        $this->backend = $backend;
-        $this->spoutLoader = $spoutLoader;
     }
 
     public function add(string $title, array $tags, ?string $filter, string $spout, array $params): int {

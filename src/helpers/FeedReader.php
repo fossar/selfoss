@@ -13,16 +13,12 @@ use SimplePie\SimplePie;
  * Helper class for obtaining feeds
  */
 class FeedReader {
-    private SimplePie $simplepie;
-
     public function __construct(
         HttpFactory $httpFactory,
-        SimplePie $simplepie,
+        private SimplePie $simplepie,
         ClientInterface $webClient,
         ?CacheInterface $cache = null
     ) {
-        $this->simplepie = $simplepie;
-
         // initialize simplepie feed loader
         if ($cache !== null) {
             $this->simplepie->set_cache($cache);
