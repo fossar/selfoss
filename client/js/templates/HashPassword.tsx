@@ -1,3 +1,4 @@
+import { TypedFormData } from '@k1eu/typed-formdata';
 import React, {
     startTransition,
     useActionState,
@@ -7,6 +8,10 @@ import React, {
 import { useNavigate } from 'react-router';
 import { HttpError } from '../errors';
 import { hashPassword } from '../requests/common';
+
+type HashFormData = {
+    password: string;
+};
 
 type HashPasswordProps = {
     setTitle: (title: string | null) => void;
@@ -48,7 +53,9 @@ export default function HashPassword(props: HashPasswordProps) {
             // Unlike `action` prop, `onSubmit` avoids clearing the form on submit.
             // https://github.com/facebook/react/issues/29034#issuecomment-2143595195
             event.preventDefault();
-            const formData = new FormData(event.currentTarget);
+            const formData = new TypedFormData<HashFormData>(
+                event.currentTarget,
+            );
             startTransition(() => submitAction(formData));
         },
         [submitAction],
