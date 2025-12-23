@@ -73,5 +73,8 @@
     "check:styles:prettify": "prettier styles/*.scss --check",
     "dev": "parcel watch index.html --dist-dir ../public/ --public-url ./",
     "build": "parcel build index.html --dist-dir ../public/ --public-url ./"
+  },
+  "@parcel/resolver-default": {
+    "packageExports": true
   }
 }
