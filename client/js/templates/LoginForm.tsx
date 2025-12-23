@@ -76,22 +76,22 @@ export default function LoginForm(props: LoginFormProps) {
     const error = location?.state?.error;
     const returnLocation = location?.state?.returnLocation ?? '/';
 
-    const [, submitAction, loading] = useActionState(
-        async (_previousState, formData) => {
-            const username = formData.get('username');
-            const password = formData.get('password');
-            const enableOffline = formData.get('enableoffline') === 'on';
-            await handleLogIn({
-                configuration,
-                navigate,
-                username,
-                password,
-                enableOffline,
-                returnLocation,
-            });
-        },
+    const [, submitAction, loading] = useActionState<
         undefined,
-    );
+        TypedFormData<LoginFormData>
+    >(async (_previousState, formData) => {
+        const username = formData.get('username');
+        const password = formData.get('password');
+        const enableOffline = formData.get('enableoffline') === 'on';
+        await handleLogIn({
+            configuration,
+            navigate,
+            username,
+            password,
+            enableOffline,
+            returnLocation,
+        });
+    }, undefined);
 
     const formOnSubmit = useCallback(
         (event: React.FormEvent<HTMLFormElement>) => {

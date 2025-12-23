@@ -13,6 +13,14 @@ type HashFormData = {
     password: string;
 };
 
+type State =
+    | {
+          hashedPassword?: string;
+      }
+    | {
+          error: Error;
+      };
+
 type HashPasswordProps = {
     setTitle: (title: string | null) => void;
 };
@@ -22,12 +30,10 @@ export default function HashPassword(props: HashPasswordProps) {
 
     const navigate = useNavigate();
 
-    const [
-        /** @type {({} | { hashedPassword: string } | { error: Error })} */
-        state,
-        submitAction,
-        isPending,
-    ] = useActionState(async (_previousState, formData) => {
+    const [state, submitAction, isPending] = useActionState<
+        State,
+        TypedFormData<HashFormData>
+    >(async (_previousState, formData) => {
         try {
             const password = formData.get('password').trim();
             const hashedPassword = await hashPassword(password);
