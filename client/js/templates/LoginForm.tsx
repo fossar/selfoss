@@ -12,7 +12,7 @@ import { SpinnerBig } from './Spinner';
 import { NavigateFunction, useNavigate } from 'react-router';
 import { Configuration } from '../model/Configuration';
 import { HttpError, LoginError } from '../errors';
-import { LocalizationContext } from '../helpers/i18n';
+import { LocalizationContext, Translate } from '../helpers/i18n';
 import { ConfigurationContext } from '../model/Configuration';
 
 async function handleLogIn({
@@ -22,6 +22,7 @@ async function handleLogIn({
     password,
     enableOffline,
     returnLocation,
+    _,
 }: {
     configuration: Configuration;
     navigate: NavigateFunction;
@@ -29,6 +30,7 @@ async function handleLogIn({
     password: string;
     enableOffline: boolean;
     returnLocation: string;
+    _: Translate;
 }): Promise<void> {
     try {
         await selfoss.login({
@@ -41,8 +43,8 @@ async function handleLogIn({
     } catch (err) {
         const message =
             err instanceof LoginError
-                ? selfoss.app._('login_invalid_credentials')
-                : selfoss.app._('login_error_generic', {
+                ? _('login_invalid_credentials')
+                : _('login_error_generic', {
                       errorMessage:
                           err instanceof HttpError
                               ? `HTTP ${err.response.status} ${err.message}`
@@ -70,6 +72,7 @@ type LoginFormProps = {
 export default function LoginForm(props: LoginFormProps): React.JSX.Element {
     const { offlineEnabled } = props;
 
+    const _ = use(LocalizationContext);
     const configuration = use(ConfigurationContext);
     const navigate = useNavigate();
     const location = useLocation();
@@ -90,6 +93,7 @@ export default function LoginForm(props: LoginFormProps): React.JSX.Element {
             password,
             enableOffline,
             returnLocation,
+            _,
         });
     }, undefined);
 
@@ -105,8 +109,6 @@ export default function LoginForm(props: LoginFormProps): React.JSX.Element {
         },
         [],
     );
-
-    const _ = use(LocalizationContext);
 
     return (
         <>

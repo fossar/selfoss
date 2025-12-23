@@ -108,3 +108,8 @@ export function i18nFormat(
 }
 
 export const LocalizationContext = React.createContext(undefined);
+
+export type Translate = (
+    translated: string,
+    params?: { [index: string]: string },
+) => string;

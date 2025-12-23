@@ -22,7 +22,7 @@ import SourceParam from './SourceParam';
 import { Spinner } from './Spinner';
 import * as sourceRequests from '../requests/sources';
 import { LoadingState } from '../requests/LoadingState';
-import { LocalizationContext } from '../helpers/i18n';
+import { LocalizationContext, Translate } from '../helpers/i18n';
 
 const FAST_DURATION_MS = 200;
 
@@ -64,6 +64,7 @@ function handleSave(args: {
     setSourceErrors: Dispatch<SetStateAction<{ [index: string]: string }>>;
     isNew: boolean;
     setNewIds: Dispatch<SetStateAction<Set<number>>>;
+    _: Translate;
 }): void {
     const {
         event,
@@ -75,6 +76,7 @@ function handleSave(args: {
         setSourceErrors,
         isNew,
         setNewIds,
+        _,
     } = args;
     event.preventDefault();
 
@@ -159,9 +161,7 @@ function handleSave(args: {
             }
         })
         .catch((error) => {
-            selfoss.app.showError(
-                selfoss.app._('error_edit_source') + ' ' + error.message,
-            );
+            selfoss.app.showError(_('error_edit_source') + ' ' + error.message);
         })
         .finally(() => {
             setSourceActionLoading(false);
@@ -175,10 +175,17 @@ function handleDelete(args: {
     setSources: Dispatch<SetStateAction<Array<Source>>>;
     setSourceBeingDeleted: Dispatch<SetStateAction<boolean>>;
     setDirty: Dispatch<SetStateAction<boolean>>;
+    _: Translate;
 }): void {
-    const { source, sourceElem, setSources, setSourceBeingDeleted, setDirty } =
-        args;
-    const answer = confirm(selfoss.app._('source_warn'));
+    const {
+        source,
+        sourceElem,
+        setSources,
+        setSourceBeingDeleted,
+        setDirty,
+        _,
+    } = args;
+    const answer = confirm(_('source_warn'));
     if (answer == false) {
         return;
     }
@@ -214,7 +221,7 @@ function handleDelete(args: {
         .catch((error) => {
             setSourceBeingDeleted(false);
             selfoss.app.showError(
-                selfoss.app._('error_delete_source') + ' ' + error.message,
+                _('error_delete_source') + ' ' + error.message,
             );
         });
 }
@@ -395,6 +402,8 @@ function SourceEditForm(props: SourceEditFormProps): React.JSX.Element {
         setNewIds,
     } = props;
 
+    const _ = useContext(LocalizationContext);
+
     const sourceId = source.id;
     const updateEditedSource = useCallback(
         (changes: SetStateAction<Partial<EditedSource>>) => {
@@ -459,6 +468,7 @@ function SourceEditForm(props: SourceEditFormProps): React.JSX.Element {
                 setSourceErrors,
                 isNew,
                 setNewIds,
+                _,
             });
         },
         [
@@ -471,6 +481,7 @@ function SourceEditForm(props: SourceEditFormProps): React.JSX.Element {
             setDirty,
             isNew,
             setNewIds,
+            _,
         ],
     );
 
@@ -479,9 +490,7 @@ function SourceEditForm(props: SourceEditFormProps): React.JSX.Element {
             event.preventDefault();
 
             if (dirty) {
-                const answer = confirm(
-                    selfoss.app._('source_warn_cancel_dirty'),
-                );
+                const answer = confirm(_('source_warn_cancel_dirty'));
                 if (answer === false) {
                     return;
                 }
@@ -496,10 +505,8 @@ function SourceEditForm(props: SourceEditFormProps): React.JSX.Element {
                 setEditedSource,
             });
         },
-        [source, sourceElem, setSources, setEditedSource, dirty, setDirty],
+        [source, sourceElem, setSources, setEditedSource, dirty, setDirty, _],
     );
-
-    const _ = useContext(LocalizationContext);
 
     const sourceParamsContent = sourceParamsLoading ? (
         <Spinner size="3x" label={_('source_params_loading')} />
@@ -687,6 +694,8 @@ export default function Source(props: SourceProps): React.JSX.Element {
         setNewIds,
     } = props;
 
+    const _ = useContext(LocalizationContext);
+
     const classes = {
         source: true,
         'source-new': isNew,
@@ -752,6 +761,7 @@ export default function Source(props: SourceProps): React.JSX.Element {
                     setSources,
                     setSourceBeingDeleted,
                     setDirty,
+                    _,
                 });
             } else if (value === 'browse') {
                 navigate(
@@ -761,10 +771,8 @@ export default function Source(props: SourceProps): React.JSX.Element {
                 );
             }
         },
-        [source, sourceElem, setSources, setDirty, location, navigate],
+        [source, sourceElem, setSources, setDirty, location, navigate, _],
     );
-
-    const _ = useContext(LocalizationContext);
 
     return (
         <li

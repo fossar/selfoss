@@ -18,7 +18,7 @@ import { LoadingState } from '../requests/LoadingState';
 import * as sourceRequests from '../requests/sources';
 import { getAllSources, SourceWithIcon } from '../requests/sources';
 import { useShouldReload } from '../helpers/hooks';
-import { LocalizationContext } from '../helpers/i18n';
+import { LocalizationContext, Translate } from '../helpers/i18n';
 import { HttpError } from '../errors';
 
 function rand(): number {
@@ -94,6 +94,7 @@ function loadSources(args: {
     setSpouts: Dispatch<SetStateAction<{ [key: string]: Spout }>>;
     setSources: Dispatch<SetStateAction<SourceWithIcon[]>>;
     setLoadingState: Dispatch<SetStateAction<LoadingState>>;
+    _: Translate;
 }): Promise<void> {
     const {
         abortController,
@@ -102,6 +103,7 @@ function loadSources(args: {
         setSpouts,
         setSources,
         setLoadingState,
+        _,
     } = args;
     if (abortController.signal.aborted) {
         return Promise.resolve();
@@ -146,15 +148,13 @@ function loadSources(args: {
                 ) {
                     navigate('/sign/in', {
                         state: {
-                            error: selfoss.app._('error_session_expired'),
+                            error: _('error_session_expired'),
                         },
                     });
                     return;
                 }
 
-                selfoss.app.showError(
-                    selfoss.app._('error_loading') + ' ' + error.message,
-                );
+                selfoss.app.showError(_('error_loading') + ' ' + error.message);
             });
 
             setLoadingState(LoadingState.FAILURE);
@@ -162,6 +162,8 @@ function loadSources(args: {
 }
 
 export default function SourcesPage(): React.JSX.Element {
+    const _ = useContext(LocalizationContext);
+
     const [spouts, setSpouts] = useState<{ [key: string]: Spout }>({});
     const [sources, setSources] = useState<SourceWithIcon[]>([]);
     const [newIds, setNewIds] = useState<Set<number>>(() => new Set());
@@ -183,6 +185,7 @@ export default function SourcesPage(): React.JSX.Element {
                 setSpouts,
                 setSources,
                 setLoadingState,
+                _,
             });
 
             if (isAdding) {
@@ -220,8 +223,6 @@ export default function SourcesPage(): React.JSX.Element {
             handleAddSource({ event, setSources, setSpouts, setNewIds }),
         [],
     );
-
-    const _ = useContext(LocalizationContext);
 
     const [dirtySources, setDirtySources] = useState<{ [id: number]: boolean }>(
         {},

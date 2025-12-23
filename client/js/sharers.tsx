@@ -4,6 +4,7 @@ import map from 'ramda/src/map';
 import selfoss from './selfoss-base';
 import * as icons from './icons';
 import { Configuration } from './model/Configuration';
+import { Translate } from './helpers/i18n';
 
 export type Sharer = {
     label: string;
@@ -35,7 +36,7 @@ function materializeSharerIcon(sharer: Sharer): Sharer {
 
 export function useSharers(args: {
     configuration: Configuration;
-    _: (identifier: string, params?: { [index: string]: string }) => string;
+    _: Translate;
 }): Array<EnabledSharer> {
     const { configuration, _ } = args;
 

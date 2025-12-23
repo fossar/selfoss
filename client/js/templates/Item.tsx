@@ -25,7 +25,7 @@ import {
     Location,
 } from '../helpers/uri';
 import * as icons from '../icons';
-import { LocalizationContext } from '../helpers/i18n';
+import { LocalizationContext, Translate } from '../helpers/i18n';
 import { Direction } from '../helpers/navigation';
 import { ConfigurationContext } from '../model/Configuration';
 import { useSharers } from '../sharers';
@@ -295,18 +295,22 @@ function ItemTag(props: ItemTagProps): React.JSX.Element {
  * When the date is too old, null is returned instead.
  * @return {?String} relative time reference
  */
-function datetimeRelative(currentTime: Date, datetime: Date): string | null {
+function datetimeRelative(
+    currentTime: Date,
+    datetime: Date,
+    _: Translate,
+): string | null {
     const ageInseconds = (currentTime.getTime() - datetime.getTime()) / 1000;
     const ageInMinutes = ageInseconds / 60;
     const ageInHours = ageInMinutes / 60;
     const ageInDays = ageInHours / 24;
 
     if (ageInHours < 1) {
-        return selfoss.app._('minutes', {
+        return _('minutes', {
             '0': Math.round(ageInMinutes).toString(),
         });
     } else if (ageInDays < 1) {
-        return selfoss.app._('hours', {
+        return _('hours', {
             '0': Math.round(ageInHours).toString(),
         });
     } else {
@@ -325,6 +329,8 @@ type ItemProps = {
 export default function Item(props: ItemProps): React.JSX.Element {
     const { currentTime, item, selected, expanded, setNavExpanded } = props;
 
+    const _ = use(LocalizationContext);
+
     const { title, author, sourcetitle } = item;
 
     const configuration = use(ConfigurationContext);
@@ -337,8 +343,8 @@ export default function Item(props: ItemProps): React.JSX.Element {
     const navigate = useNavigate();
 
     const relDate = useMemo(
-        () => datetimeRelative(currentTime, item.datetime),
-        [currentTime, item.datetime],
+        () => datetimeRelative(currentTime, item.datetime, _),
+        [currentTime, item.datetime, _],
     );
 
     const [slides, setSlides] = useState([]);
@@ -517,8 +523,8 @@ export default function Item(props: ItemProps): React.JSX.Element {
     );
 
     const titleHtml = useMemo(
-        () => ({ __html: title ? title : selfoss.app._('no_title') }),
-        [title],
+        () => ({ __html: title ? title : _('no_title') }),
+        [title, _],
     );
 
     const sourceLink = useMemo(
@@ -532,8 +538,6 @@ export default function Item(props: ItemProps): React.JSX.Element {
     const forceReload = useForceReload();
 
     const canWrite = useAllowedToWrite();
-
-    const _ = use(LocalizationContext);
 
     const sharers = useSharers({ configuration, _ });
 

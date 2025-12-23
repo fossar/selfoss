@@ -37,13 +37,11 @@ function Tag(props: TagProps): React.JSX.Element {
                 })
                 .catch((error) => {
                     selfoss.app.showError(
-                        selfoss.app._('error_saving_color') +
-                            ' ' +
-                            error.message,
+                        _('error_saving_color') + ' ' + error.message,
                     );
                 });
         },
-        [tagName],
+        [tagName, _],
     );
 
     const category = tag === null ? 'all' : `tag-${tag.tag}`;

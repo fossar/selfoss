@@ -32,7 +32,7 @@ import makeShortcuts from '../shortcuts';
 import * as icons from '../icons';
 import { useAllowedToRead, useAllowedToWrite } from '../helpers/authorizations';
 import { useIsSmartphone, useListenableValue } from '../helpers/hooks';
-import { i18nFormat, LocalizationContext } from '../helpers/i18n';
+import { i18nFormat, LocalizationContext, Translate } from '../helpers/i18n';
 import { Configuration, ConfigurationContext } from '../model/Configuration';
 import { LoadingState } from '../requests/LoadingState';
 import * as sourceRequests from '../requests/sources';
@@ -119,7 +119,7 @@ function NotFound(): React.JSX.Element {
 type CheckAuthorizationProps = {
     isAllowed: boolean;
     returnLocation?: string;
-    _: (translated: string, params?: { [index: string]: string }) => string;
+    _: Translate;
     children: React.ReactNode;
 };
 

@@ -27,7 +27,7 @@ import {
     useAllowedToWrite,
 } from '../helpers/authorizations';
 import { autoScroll, Direction } from '../helpers/navigation';
-import { LocalizationContext } from '../helpers/i18n';
+import { LocalizationContext, Translate } from '../helpers/i18n';
 import { useShouldReload } from '../helpers/hooks';
 import {
     Location,
@@ -50,6 +50,7 @@ function reloadList({
     configuration,
     entryId = null,
     setLoadingState,
+    _,
 }: {
     fetchParams: FetchParams;
     abortController: AbortController;
@@ -59,6 +60,7 @@ function reloadList({
     configuration: Configuration;
     entryId?: number | null;
     setLoadingState: Dispatch<SetStateAction<LoadingState>>;
+    _: Translate;
 }): Promise<void> {
     if (abortController.signal.aborted) {
         return Promise.resolve();
@@ -158,16 +160,14 @@ function reloadList({
                 ) {
                     navigate('/sign/in', {
                         state: {
-                            error: selfoss.app._('error_session_expired'),
+                            error: _('error_session_expired'),
                         },
                     });
                     return;
                 }
 
                 setLoadingState(LoadingState.FAILURE);
-                selfoss.app.showError(
-                    selfoss.app._('error_loading') + ' ' + error.message,
-                );
+                selfoss.app.showError(_('error_loading') + ' ' + error.message);
             });
     };
 
@@ -208,12 +208,14 @@ function handleRefreshSource({
     setLoadingState,
     setNavExpanded,
     reload,
+    _,
 }: {
     event: MouseEvent<HTMLButtonElement>;
     source: number;
     setLoadingState: Dispatch<SetStateAction<LoadingState>>;
     setNavExpanded: Dispatch<SetStateAction<boolean>>;
     reload: () => void;
+    _: Translate;
 }): Promise<void> {
     event.preventDefault();
 
@@ -232,9 +234,7 @@ function handleRefreshSource({
         })
         .catch((error) => {
             setLoadingState(LoadingState.FAILURE);
-            alert(
-                selfoss.app._('error_refreshing_source') + ' ' + error.message,
-            );
+            alert(_('error_refreshing_source') + ' ' + error.message);
         });
 }
 
@@ -266,6 +266,8 @@ export function EntriesPage(props: EntriesPageProps): React.JSX.Element {
         setGlobalUnreadCount,
         unreadItemsCount,
     } = props;
+
+    const _ = use(LocalizationContext);
 
     const allowedToUpdate = useAllowedToUpdate();
     const allowedToWrite = useAllowedToWrite();
@@ -337,11 +339,12 @@ export function EntriesPage(props: EntriesPageProps): React.JSX.Element {
                 // We do not want to focus the entry on successive loads.
                 entryId: append ? undefined : initialItemId,
                 setLoadingState: append ? setMoreLoadingState : setLoadingState,
+                _,
             });
 
             if (currentTag !== null && !selfoss.db.isValidTag(currentTag)) {
                 selfoss.app.showError(
-                    selfoss.app._('error_unknown_tag') + ' ' + currentTag,
+                    _('error_unknown_tag') + ' ' + currentTag,
                 );
             }
 
@@ -350,7 +353,7 @@ export function EntriesPage(props: EntriesPageProps): React.JSX.Element {
                 !selfoss.db.isValidSource(currentSource)
             ) {
                 selfoss.app.showError(
-                    selfoss.app._('error_unknown_source') + ' ' + currentSource,
+                    _('error_unknown_source') + ' ' + currentSource,
                 );
             }
         },
@@ -450,8 +453,9 @@ export function EntriesPage(props: EntriesPageProps): React.JSX.Element {
                 setLoadingState,
                 setNavExpanded,
                 reload,
+                _,
             }),
-        [currentSource, setLoadingState, setNavExpanded, reload],
+        [currentSource, setLoadingState, setNavExpanded, reload, _],
     );
 
     const moreOnClick = useCallback(
@@ -477,8 +481,6 @@ export function EntriesPage(props: EntriesPageProps): React.JSX.Element {
             clearInterval(tick);
         };
     }, []);
-
-    const _ = use(LocalizationContext);
 
     if (loadingState === LoadingState.LOADING) {
         return <SpinnerBig label={_('entries_loading')} />;
@@ -590,6 +592,7 @@ type StateHolderProps = {
     navSourcesExpanded: boolean;
     setGlobalUnreadCount: Dispatch<SetStateAction<number>>;
     unreadItemsCount: number;
+    _: Translate;
 };
 
 type StateHolderState = {
@@ -948,7 +951,7 @@ export class StateHolder extends React.Component<
                         ) {
                             this.props.navigate('/sign/in', {
                                 state: {
-                                    error: selfoss.app._(
+                                    error: this.props._(
                                         'error_session_expired',
                                     ),
                                 },
@@ -961,7 +964,7 @@ export class StateHolder extends React.Component<
                         updateStats(false);
                         this.setHasMore(hadMore);
                         selfoss.app.showError(
-                            selfoss.app._('error_mark_items') +
+                            this.props._('error_mark_items') +
                                 ' ' +
                                 error.message,
                         );
@@ -1029,7 +1032,7 @@ export class StateHolder extends React.Component<
                         ) {
                             this.props.navigate('/sign/in', {
                                 state: {
-                                    error: selfoss.app._(
+                                    error: this.props._(
                                         'error_session_expired',
                                     ),
                                 },
@@ -1041,7 +1044,7 @@ export class StateHolder extends React.Component<
                         this.markEntryInView(id, newReadState);
                         updateStats(!newReadState);
                         selfoss.app.showError(
-                            selfoss.app._('error_mark_item') +
+                            this.props._('error_mark_item') +
                                 ' ' +
                                 error.message,
                         );
@@ -1103,7 +1106,7 @@ export class StateHolder extends React.Component<
                         ) {
                             this.props.navigate('/sign/in', {
                                 state: {
-                                    error: selfoss.app._(
+                                    error: this.props._(
                                         'error_session_expired',
                                     ),
                                 },
@@ -1115,7 +1118,7 @@ export class StateHolder extends React.Component<
                         this.starEntryInView(id, !newStarredState);
                         updateStats(!newStarredState);
                         selfoss.app.showError(
-                            selfoss.app._('error_star_item') +
+                            this.props._('error_star_item') +
                                 ' ' +
                                 error.message,
                         );
@@ -1318,6 +1321,7 @@ export function StateHolderOuter(
         unreadItemsCount,
         ref,
     } = props;
+    const _ = use(LocalizationContext);
     const location = useLocation();
     const navigate = useNavigate();
     const params = useEntriesParams();
@@ -1333,6 +1337,7 @@ export function StateHolderOuter(
             navSourcesExpanded={navSourcesExpanded}
             setGlobalUnreadCount={setGlobalUnreadCount}
             unreadItemsCount={unreadItemsCount}
+            _={_}
         />
     );
 }

@@ -22,7 +22,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { LoadingState } from '../requests/LoadingState';
 import * as sourceRequests from '../requests/sources';
 import * as icons from '../icons';
-import { LocalizationContext } from '../helpers/i18n';
+import { LocalizationContext, Translate } from '../helpers/i18n';
 import { NavSource } from '../requests/items';
 
 function handleTitleClick({
@@ -30,11 +30,13 @@ function handleTitleClick({
     sourcesState,
     setSourcesState,
     setSources,
+    _,
 }: {
     setExpanded: Dispatch<SetStateAction<boolean>>;
     sourcesState: LoadingState;
     setSourcesState: Dispatch<SetStateAction<LoadingState>>;
     setSources: Dispatch<SetStateAction<Array<NavSource>>>;
+    _: Translate;
 }): void {
     if (!selfoss.isOnline()) {
         console.log('Cannot toggle, not online.');
@@ -52,9 +54,7 @@ function handleTitleClick({
                 .catch((error) => {
                     setSourcesState(LoadingState.FAILURE);
                     selfoss.app.showError(
-                        selfoss.app._('error_loading_stats') +
-                            ' ' +
-                            error.message,
+                        _('error_loading_stats') + ' ' + error.message,
                     );
                 });
         }
@@ -121,6 +121,8 @@ export default function NavSources(props: NavSourcesProps): React.JSX.Element {
         setSources,
     } = props;
 
+    const _ = use(LocalizationContext);
+
     const reallyExpanded =
         navSourcesExpanded && sourcesState === LoadingState.SUCCESS;
 
@@ -136,8 +138,9 @@ export default function NavSources(props: NavSourcesProps): React.JSX.Element {
                 sourcesState,
                 setSourcesState,
                 setSources,
+                _,
             }),
-        [setNavSourcesExpanded, sourcesState, setSourcesState, setSources],
+        [setNavSourcesExpanded, sourcesState, setSourcesState, setSources, _],
     );
 
     const collapseNav = useCallback(
@@ -154,8 +157,6 @@ export default function NavSources(props: NavSourcesProps): React.JSX.Element {
             setNavSourcesExpanded(true);
         }
     }, [previousSourcesState, sourcesState, setNavSourcesExpanded]);
-
-    const _ = use(LocalizationContext);
 
     return (
         <>
