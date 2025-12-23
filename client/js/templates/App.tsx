@@ -211,7 +211,7 @@ type PureAppProps = {
     sources: Array<NavSource>;
     setSources: Dispatch<SetStateAction<Array<NavSource>>>;
     tags: Array<NavTag>;
-    reloadAll: () => void;
+    reloadAll: () => Promise<void>;
 };
 
 function PureApp(props: PureAppProps): React.JSX.Element {

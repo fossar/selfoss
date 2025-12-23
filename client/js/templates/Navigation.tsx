@@ -30,7 +30,7 @@ type NavigationProps = {
     sources: Array<NavSource>;
     setSources: Dispatch<SetStateAction<Array<NavSource>>>;
     tags: Array<NavTag>;
-    reloadAll: () => void;
+    reloadAll: () => Promise<void>;
 };
 
 export default function Navigation(props: NavigationProps): React.JSX.Element {

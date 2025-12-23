@@ -32,7 +32,7 @@ function handleLogOut({ setNavExpanded }) {
 }
 
 type NavToolBarProps = {
-    reloadAll: () => void;
+    reloadAll: () => Promise<void>;
     setNavExpanded: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
