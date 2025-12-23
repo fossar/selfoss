@@ -145,7 +145,9 @@ function handleClick({ event, navigate, location, expanded, id, target }) {
         navigate(makeEntriesLink(location, { id: null }), { replace: true });
     } else {
         selfoss.entriesPage.activateEntry(id);
-        navigate(makeEntriesLink(location, { id }), { replace: true });
+        navigate(makeEntriesLink(location, { id: id.toString() }), {
+            replace: true,
+        });
     }
 }
 
