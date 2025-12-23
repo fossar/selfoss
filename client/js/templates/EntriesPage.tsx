@@ -975,11 +975,9 @@ export class StateHolder extends React.Component<
         }
 
         const entry = this.state.entries.find((entry) => id === entry.id);
-        if (markRead === 'toggle') {
-            markRead = entry.unread;
-        }
+        const newReadState = markRead === 'toggle' ? entry.unread : markRead;
 
-        this.markEntryInView(id, !markRead);
+        this.markEntryInView(id, !newReadState);
 
         // update statistics in main menue and the currently active tag
         const updateStats = (markRead) => {
@@ -998,14 +996,14 @@ export class StateHolder extends React.Component<
                 [entry.source]: diff,
             });
         };
-        updateStats(markRead);
+        updateStats(newReadState);
 
         if (selfoss.db.enableOffline.value) {
-            selfoss.dbOffline.entryMark(id, !markRead);
+            selfoss.dbOffline.entryMark(id, !newReadState);
         }
 
         itemsRequests
-            .mark(id, !markRead)
+            .mark(id, !newReadState)
             .then(() => {
                 selfoss.db.setOnline();
             })
@@ -1016,7 +1014,7 @@ export class StateHolder extends React.Component<
                         selfoss.dbOffline.enqueueStatus(
                             id,
                             'unread',
-                            !markRead,
+                            !newReadState,
                         );
                     })
                     .catch((error) => {
@@ -1035,8 +1033,8 @@ export class StateHolder extends React.Component<
                         }
 
                         // rollback ui changes
-                        this.markEntryInView(id, markRead);
-                        updateStats(!markRead);
+                        this.markEntryInView(id, newReadState);
+                        updateStats(!newReadState);
                         selfoss.app.showError(
                             selfoss.app._('error_mark_item') +
                                 ' ' +
@@ -1056,12 +1054,15 @@ export class StateHolder extends React.Component<
             return;
         }
 
+        let newStarredState: boolean;
         if (markStarred === 'toggle') {
             const entry = this.state.entries.find((entry) => id === entry.id);
-            markStarred = !entry.starred;
+            newStarredState = !entry.starred;
+        } else {
+            newStarredState = markStarred;
         }
 
-        this.starEntryInView(id, markStarred);
+        this.starEntryInView(id, newStarredState);
 
         // update statistics in main menu
         const updateStats = (markStarred) => {
@@ -1069,14 +1070,14 @@ export class StateHolder extends React.Component<
                 (starred) => starred + (markStarred ? 1 : -1),
             );
         };
-        updateStats(markStarred);
+        updateStats(newStarredState);
 
         if (selfoss.db.enableOffline.value) {
-            selfoss.dbOffline.entryStar(id, markStarred);
+            selfoss.dbOffline.entryStar(id, newStarredState);
         }
 
         itemsRequests
-            .starr(id, markStarred)
+            .starr(id, newStarredState)
             .then(() => {
                 selfoss.db.setOnline();
             })
@@ -1087,7 +1088,7 @@ export class StateHolder extends React.Component<
                         selfoss.dbOffline.enqueueStatus(
                             id,
                             'starred',
-                            markStarred,
+                            newStarredState,
                         );
                     })
                     .catch((error) => {
@@ -1106,8 +1107,8 @@ export class StateHolder extends React.Component<
                         }
 
                         // rollback ui changes
-                        this.starEntryInView(id, !markStarred);
-                        updateStats(!markStarred);
+                        this.starEntryInView(id, !newStarredState);
+                        updateStats(!newStarredState);
                         selfoss.app.showError(
                             selfoss.app._('error_star_item') +
                                 ' ' +
