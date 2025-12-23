@@ -81,21 +81,15 @@ class DatabaseConnection {
     /**
      * Map data type of argument to a PDO constant
      *
-     * @param scalar $val
+     * @param scalar|null $val
      */
     private function type($val): int {
-        switch (gettype($val)) {
-            case 'NULL':
-                return PDO::PARAM_NULL;
-            case 'boolean':
-                return PDO::PARAM_BOOL;
-            case 'integer':
-                return PDO::PARAM_INT;
-            case 'resource':
-                return PDO::PARAM_LOB;
-            default:
-                return PDO::PARAM_STR;
-        }
+        return match (gettype($val)) {
+            'NULL' => PDO::PARAM_NULL,
+            'boolean' => PDO::PARAM_BOOL,
+            'integer' => PDO::PARAM_INT,
+            default => PDO::PARAM_STR,
+        };
     }
 
     /**
