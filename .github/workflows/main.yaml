@@ -31,6 +31,7 @@ jobs:
             phpstan: true
             # These should be the same no matter the PHP version.
             lint: true
+            rector: true
           - php: '8.2'
             storage: mysql
           - php: '8.2'
@@ -90,6 +91,10 @@ jobs:
       - name: Lint helper code
         if: matrix.lint
         run: nix-shell -A ci --run 'npm run check:helpers:cs'
+
+      - name: Rectorize back-end code
+        if: matrix.rector
+        run: nix-shell -A ci --run 'composer run-script rector -- --dry-run --output-format=github'
 
       - name: Run unit tests
         run: nix-shell -A ci --run 'npm run test:server'
