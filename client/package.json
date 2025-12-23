@@ -6,6 +6,7 @@
     "@fortawesome/free-regular-svg-icons": "^7.1.0",
     "@fortawesome/free-solid-svg-icons": "^7.1.0",
     "@fortawesome/react-fontawesome": "^3.1.1",
+    "@k1eu/typed-formdata": "^0.9.1",
     "@kunukn/react-collapse": "^3.0.0",
     "@parcel/service-worker": "^2.5.0",
     "@siteparts/show-hide-effects": "^1.0.0",

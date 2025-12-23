@@ -1,3 +1,4 @@
+import { TypedFormData } from '@k1eu/typed-formdata';
 import React, {
     startTransition,
     useCallback,
@@ -56,6 +57,12 @@ async function handleLogIn({
     }
 }
 
+type LoginFormData = {
+    username: string;
+    password: string;
+    enableoffline: string;
+};
+
 type LoginFormProps = {
     offlineEnabled: boolean;
 };
@@ -73,7 +80,7 @@ export default function LoginForm(props: LoginFormProps) {
         async (_previousState, formData) => {
             const username = formData.get('username');
             const password = formData.get('password');
-            const enableOffline = formData.get('enableoffline');
+            const enableOffline = formData.get('enableoffline') === 'on';
             await handleLogIn({
                 configuration,
                 navigate,
@@ -92,7 +99,9 @@ export default function LoginForm(props: LoginFormProps) {
             // Unlike `action` prop, `onSubmit` avoids clearing the form on submit.
             // https://github.com/facebook/react/issues/29034#issuecomment-2143595195
             event.preventDefault();
-            const formData = new FormData(event.currentTarget);
+            const formData = new TypedFormData<LoginFormData>(
+                event.currentTarget,
+            );
             startTransition(() => submitAction(formData));
         },
         [],
