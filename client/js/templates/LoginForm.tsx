@@ -29,7 +29,7 @@ async function handleLogIn({
     password: string;
     enableOffline: boolean;
     returnLocation: string;
-}) {
+}): Promise<void> {
     try {
         await selfoss.login({
             configuration,
@@ -67,7 +67,7 @@ type LoginFormProps = {
     offlineEnabled: boolean;
 };
 
-export default function LoginForm(props: LoginFormProps) {
+export default function LoginForm(props: LoginFormProps): React.JSX.Element {
     const { offlineEnabled } = props;
 
     const configuration = use(ConfigurationContext);

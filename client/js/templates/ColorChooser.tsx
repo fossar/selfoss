@@ -1,4 +1,4 @@
-import React, { use, useMemo } from 'react';
+import React, { MouseEvent, use, useMemo } from 'react';
 import { ClickEvent, Menu, MenuButton, MenuItem } from '@szhsin/react-menu';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { colorByBrightness } from '../helpers/color';
@@ -76,7 +76,7 @@ type ColorButtonProps = {
     color: string;
 };
 
-function ColorButton(props: ColorButtonProps) {
+function ColorButton(props: ColorButtonProps): React.JSX.Element {
     const { tag, color } = props;
 
     const style = useMemo(
@@ -96,7 +96,7 @@ function ColorButton(props: ColorButtonProps) {
     );
 }
 
-const preventDefault = (event) => {
+const preventDefault = (event: MouseEvent<HTMLDivElement>): void => {
     event.preventDefault();
     // Prevent closing navigation on mobile.
     event.stopPropagation();
@@ -107,7 +107,9 @@ type ColorChooserProps = {
     onChange: (event: ClickEvent) => void;
 };
 
-export default function ColorChooser(props: ColorChooserProps) {
+export default function ColorChooser(
+    props: ColorChooserProps,
+): React.JSX.Element {
     const { tag, onChange } = props;
 
     const style = useMemo(() => ({ backgroundColor: tag.color }), [tag.color]);

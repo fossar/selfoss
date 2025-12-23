@@ -59,7 +59,7 @@ export default class DbOffline {
             });
     }
 
-    init() {
+    init(): PromiseExtended<void> {
         if (!selfoss.db.enableOffline.value || selfoss.db.storage) {
             return;
         }
@@ -159,7 +159,7 @@ export default class DbOffline {
             });
     }
 
-    _memLastItemId() {
+    _memLastItemId(): PromiseExtended<void> {
         return selfoss.db.storage.entries
             .orderBy('id')
             .reverse()
@@ -172,7 +172,7 @@ export default class DbOffline {
             });
     }
 
-    storeEntries(entries) {
+    storeEntries(entries: readonly ResponseItem[]): PromiseExtended<void> {
         return this._tr(
             'rw',
             [selfoss.db.storage.entries, selfoss.db.storage.stamps],
@@ -188,7 +188,7 @@ export default class DbOffline {
         );
     }
 
-    GCEntries(more = false) {
+    GCEntries(more: boolean = false): PromiseExtended<void> {
         if (more) {
             // We need to garbage collect more, as the browser storage limit
             // seems to be exceeded: decrease the amount of days entries are
@@ -366,7 +366,7 @@ export default class DbOffline {
             .then((entries) => ({ entries, hasMore }));
     }
 
-    reloadOnlineStats() {
+    reloadOnlineStats(): PromiseExtended<void> {
         return this._tr('r', [selfoss.db.storage.stats], () => {
             selfoss.db.storage.stats.toArray((stats) => {
                 const newStats = {
@@ -386,7 +386,7 @@ export default class DbOffline {
         });
     }
 
-    refreshStats() {
+    refreshStats(): PromiseExtended<void> {
         return this._tr('r', [selfoss.db.storage.entries], () => {
             const offlineCounts = { newest: 0, unread: 0, starred: 0 };
 
@@ -428,7 +428,11 @@ export default class DbOffline {
         });
     }
 
-    enqueueStatus(entryId, statusName, statusValue) {
+    enqueueStatus(
+        entryId: number,
+        statusName: string,
+        statusValue: boolean,
+    ): Promise<void> {
         return this.enqueueStatuses([
             {
                 entryId,
@@ -438,7 +442,7 @@ export default class DbOffline {
         ]);
     }
 
-    sendNewStatuses() {
+    sendNewStatuses(): Promise<void> {
         selfoss.db.storage.statusq
             .toArray()
             .then((statuses) => {

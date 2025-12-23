@@ -31,7 +31,7 @@ import Lightbox from 'yet-another-react-lightbox';
 import { ResponseItem, TagColor } from '../requests/items';
 
 // TODO: do the search highlights client-side
-function reHighlight(text: string) {
+function reHighlight(text: string): (React.JSX.Element | string)[] {
     return text.split(/<span class="found">(.+?)<\/span>/).map((n, i) =>
         i % 2 == 0 ? (
             n
@@ -51,7 +51,7 @@ function setupLightbox({
     element: HTMLDivElement;
     setSlides: (slides: Array<{ src: string }>) => void;
     setSelectedPhotoIndex: (index: number) => void;
-}) {
+}): void {
     const images = element.querySelectorAll<HTMLAnchorElement>(
         'a[href$=".jpg"], a[href$=".jpeg"], a[href$=".png"], a[href$=".gif"], a[href$=".jpg:large"], a[href$=".jpeg:large"], a[href$=".png:large"], a[href$=".gif:large"]',
     );
@@ -71,11 +71,11 @@ function setupLightbox({
     );
 }
 
-function stopPropagation(event) {
+function stopPropagation(event: MouseEvent): void {
     event.stopPropagation();
 }
 
-function forceLoadImages(content) {
+function forceLoadImages(content: HTMLDivElement): void {
     content.querySelectorAll('img').forEach((img) => {
         img.setAttribute('src', img.getAttribute('data-selfoss-src'));
     });
@@ -84,7 +84,7 @@ function forceLoadImages(content) {
 // React will prevent the default action when it bubbles to our callbacks.
 // Let’s stop bubbling for links.
 // https://medium.com/peloton-engineering/onclick-wat-51331718ba9
-function fixLinkBubbling(content) {
+function fixLinkBubbling(content: HTMLDivElement): void {
     content.querySelectorAll('a').forEach((a) => {
         a.addEventListener('click', (event) => {
             event.stopPropagation();
@@ -196,7 +196,7 @@ type ShareButtonProps = {
     showLabel?: boolean;
 };
 
-function ShareButton(props: ShareButtonProps) {
+function ShareButton(props: ShareButtonProps): React.JSX.Element {
     const { label, icon, item, action, showLabel = true } = props;
 
     const shareOnClick = useCallback(
@@ -232,7 +232,7 @@ type ItemTagProps = {
     color: TagColor;
 };
 
-function ItemTag(props: ItemTagProps) {
+function ItemTag(props: ItemTagProps): React.JSX.Element {
     const { tag, color } = props;
 
     const style = useMemo(
@@ -296,7 +296,7 @@ type ItemProps = {
     setNavExpanded: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function Item(props: ItemProps) {
+export default function Item(props: ItemProps): React.JSX.Element {
     const { currentTime, item, selected, expanded, setNavExpanded } = props;
 
     const { title, author, sourcetitle } = item;

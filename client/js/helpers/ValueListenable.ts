@@ -19,7 +19,7 @@ export class ValueListenable<T> extends EventTarget {
         this.value = value;
     }
 
-    update(value: T) {
+    update(value: T): void {
         if (this.value !== value) {
             this.value = value;
 

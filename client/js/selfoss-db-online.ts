@@ -38,7 +38,7 @@ export default class DbOnline {
     public statsDirty: boolean = false;
     public firstSync: boolean = true;
 
-    _syncBegin() {
+    _syncBegin(): Promise<void> {
         if (!this.syncing.promise) {
             this.syncing.promise = new Promise((resolve, reject) => {
                 this.syncing.resolve = resolve;

@@ -23,7 +23,7 @@ type TagProps = {
     collapseNav: () => void;
 };
 
-function Tag(props: TagProps) {
+function Tag(props: TagProps): React.JSX.Element {
     const { tag, active, collapseNav } = props;
 
     const _ = use(LocalizationContext);
@@ -88,7 +88,7 @@ type NavTagsProps = {
     tags: Array<NavTag>;
 };
 
-export default function NavTags(props: NavTagsProps) {
+export default function NavTags(props: NavTagsProps): React.JSX.Element {
     const { setNavExpanded, tags } = props;
 
     const [expanded, setExpanded] = useState(true);

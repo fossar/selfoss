@@ -77,7 +77,7 @@ function reloadList({
 
     setLoadingState(LoadingState.LOADING);
 
-    const reload = () => {
+    const reload = (): Promise<void> => {
         if (abortController.signal.aborted) {
             return Promise.resolve();
         }
@@ -181,9 +181,8 @@ function reloadList({
 
 /**
  * Try to open the selected article using the preferred method.
- * @param {number} selected
  */
-function openSelectedArticle(selected) {
+function openSelectedArticle(selected: number): void {
     const link = document.querySelector<HTMLDivElement>(
         `.entry[data-entry-id="${selected}"] .entry-datetime`,
     );
@@ -209,7 +208,13 @@ function handleRefreshSource({
     setLoadingState,
     setNavExpanded,
     reload,
-}) {
+}: {
+    event: MouseEvent<HTMLButtonElement>;
+    source: number;
+    setLoadingState: Dispatch<SetStateAction<LoadingState>>;
+    setNavExpanded: Dispatch<SetStateAction<boolean>>;
+    reload: () => void;
+}): Promise<void> {
     event.preventDefault();
 
     // show loading
@@ -247,7 +252,7 @@ type EntriesPageProps = {
     unreadItemsCount: number;
 };
 
-export function EntriesPage(props: EntriesPageProps) {
+export function EntriesPage(props: EntriesPageProps): React.JSX.Element {
     const {
         entries,
         hasMore,
@@ -355,7 +360,7 @@ export function EntriesPage(props: EntriesPageProps) {
     useEffect(() => {
         const abortController = new AbortController();
 
-        const fetchParams = {
+        const fetchParams: FetchParams = {
             type: params.filter,
             tag: currentTag,
             source: currentSource,
@@ -563,7 +568,7 @@ export function EntriesPage(props: EntriesPageProps) {
     );
 }
 
-const initialState = {
+const initialState: StateHolderState = {
     entries: [],
     hasMore: false,
     selectedEntry: null,
@@ -629,7 +634,7 @@ export class StateHolder extends React.Component<
         this.throw = this.throw.bind(this);
     }
 
-    setEntries(entries) {
+    setEntries(entries: SetStateAction<ResponseItem[]>): void {
         if (typeof entries === 'function') {
             this.setState((state) => ({
                 entries: entries(state.entries),
@@ -639,7 +644,7 @@ export class StateHolder extends React.Component<
         }
     }
 
-    appendEntries(extraEntries) {
+    appendEntries(extraEntries: ResponseItem[]): void {
         this.setEntries((entries) => [...entries, ...extraEntries]);
     }
 
@@ -777,7 +782,7 @@ export class StateHolder extends React.Component<
         );
     }
 
-    refreshEntryStatuses(entryStatuses: EntryStatus[]) {
+    refreshEntryStatuses(entryStatuses: EntryStatus[]): void {
         this.state.entries.forEach((entry) => {
             const { id } = entry;
             const newStatus = entryStatuses.find(
@@ -884,7 +889,7 @@ export class StateHolder extends React.Component<
         this.setEntries(markedEntries);
 
         // update statistics in main menu
-        const updateStats = (markRead) => {
+        const updateStats = (markRead: boolean) => {
             // update all unread counters
             const unreadstats = selfoss.app.state.unreadItemsCount;
             const diff = markRead ? -1 : 1;
@@ -980,7 +985,7 @@ export class StateHolder extends React.Component<
         this.markEntryInView(id, !newReadState);
 
         // update statistics in main menue and the currently active tag
-        const updateStats = (markRead) => {
+        const updateStats = (markRead: boolean) => {
             // update all unread counters
             const unreadstats = selfoss.app.state.unreadItemsCount;
             const diff = markRead ? -1 : 1;
@@ -1065,7 +1070,7 @@ export class StateHolder extends React.Component<
         this.starEntryInView(id, newStarredState);
 
         // update statistics in main menu
-        const updateStats = (markStarred) => {
+        const updateStats = (markStarred: boolean) => {
             selfoss.app.setStarredItemsCount(
                 (starred) => starred + (markStarred ? 1 : -1),
             );
@@ -1274,7 +1279,7 @@ export class StateHolder extends React.Component<
         this.nextPrev(direction, true);
     }
 
-    render() {
+    render(): React.JSX.Element {
         return (
             <EntriesPage
                 entries={this.state.entries}
@@ -1302,7 +1307,9 @@ type StateHolderOuterProps = {
     ref: ForwardedRef<StateHolder>;
 };
 
-export function StateHolderOuter(props: StateHolderOuterProps) {
+export function StateHolderOuter(
+    props: StateHolderOuterProps,
+): React.JSX.Element {
     const {
         configuration,
         setNavExpanded,

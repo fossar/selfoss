@@ -12,7 +12,7 @@ import { LocalizationContext } from '../helpers/i18n';
 import { useForceReload } from '../helpers/uri';
 import { ConfigurationContext } from '../model/Configuration';
 
-function handleReloadAll({ reloadAll, setReloading, setNavExpanded }) {
+function handleReloadAll({ reloadAll, setReloading, setNavExpanded }): void {
     setReloading(true);
     reloadAll().finally(() => {
         setNavExpanded(false);
@@ -20,7 +20,7 @@ function handleReloadAll({ reloadAll, setReloading, setNavExpanded }) {
     });
 }
 
-function handleLogOut({ setNavExpanded }) {
+function handleLogOut({ setNavExpanded }): void {
     // only loggedin users
     if (!selfoss.hasSession() || !selfoss.isOnline()) {
         return;
@@ -36,7 +36,7 @@ type NavToolBarProps = {
     setNavExpanded: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function NavToolBar(props: NavToolBarProps) {
+export default function NavToolBar(props: NavToolBarProps): React.JSX.Element {
     const { reloadAll, setNavExpanded } = props;
 
     const [reloading, setReloading] = useState(false);

@@ -7,6 +7,7 @@ import React, {
     useEffectEvent,
     useMemo,
     useState,
+    MouseEvent,
 } from 'react';
 import {
     BrowserRouter as Router,
@@ -51,7 +52,7 @@ type GlobalMessage = {
 };
 
 function handleNavToggle(args: {
-    event: Event;
+    event: MouseEvent<HTMLButtonElement>;
     setNavExpanded: Dispatch<SetStateAction<boolean>>;
 }): void {
     const { event, setNavExpanded } = args;
@@ -167,7 +168,7 @@ type EntriesFilterProps = {
 
 // Work around for regex patterns not being supported
 // https://github.com/remix-run/react-router/issues/8254
-function EntriesFilter(props: EntriesFilterProps) {
+function EntriesFilter(props: EntriesFilterProps): React.JSX.Element {
     const {
         entriesRef,
         setNavExpanded,
@@ -262,11 +263,12 @@ function PureApp(props: PureAppProps): React.JSX.Element {
     }
 
     const menuButtonOnClick = useCallback(
-        (event) => handleNavToggle({ event, setNavExpanded }),
+        (event: MouseEvent<HTMLButtonElement>) =>
+            handleNavToggle({ event, setNavExpanded }),
         [],
     );
 
-    const entriesRef = useCallback((entriesPage) => {
+    const entriesRef = useCallback((entriesPage: EntriesPageStateful) => {
         setEntriesPage(entriesPage);
         selfoss.entriesPage = entriesPage;
 

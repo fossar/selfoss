@@ -23,7 +23,7 @@ type NavFiltersProps = {
     starredItemsOfflineCount: number;
 };
 
-export default function NavFilters(props: NavFiltersProps) {
+export default function NavFilters(props: NavFiltersProps): React.JSX.Element {
     const {
         setNavExpanded,
         offlineState,

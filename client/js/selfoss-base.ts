@@ -7,6 +7,7 @@ import { HttpError, TimeoutError } from './errors';
 import { Configuration } from './model/Configuration';
 import { LoadingState } from './requests/LoadingState';
 import { App, createApp } from './templates/App';
+import { StateHolder as EntriesPageStateful } from './templates/EntriesPage';
 import DbOnline from './selfoss-db-online';
 import DbOffline from './selfoss-db-offline';
 import Db from './selfoss-db';
@@ -29,7 +30,7 @@ class selfoss {
     /**
      * React component for entries page.
      */
-    public static entriesPage = null;
+    public static entriesPage: EntriesPageStateful | null = null;
 
     private static serviceWorkerInitialized = false;
 

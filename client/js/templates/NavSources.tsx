@@ -30,7 +30,12 @@ function handleTitleClick({
     sourcesState,
     setSourcesState,
     setSources,
-}) {
+}: {
+    setExpanded: Dispatch<SetStateAction<boolean>>;
+    sourcesState: LoadingState;
+    setSourcesState: Dispatch<SetStateAction<LoadingState>>;
+    setSources: Dispatch<SetStateAction<Array<NavSource>>>;
+}): void {
     if (!selfoss.isOnline()) {
         console.log('Cannot toggle, not online.');
         return;
@@ -64,7 +69,7 @@ type SourceProps = {
     collapseNav: () => void;
 };
 
-function Source(props: SourceProps) {
+function Source(props: SourceProps): React.JSX.Element {
     const { source, active, collapseNav } = props;
 
     const location = useLocation();
@@ -105,7 +110,7 @@ type NavSourcesProps = {
     setSources: Dispatch<SetStateAction<Array<NavSource>>>;
 };
 
-export default function NavSources(props: NavSourcesProps) {
+export default function NavSources(props: NavSourcesProps): React.JSX.Element {
     const {
         setNavExpanded,
         navSourcesExpanded,
