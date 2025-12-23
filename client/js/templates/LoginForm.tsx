@@ -89,9 +89,8 @@ export default function LoginForm(props: LoginFormProps) {
                 enableOffline,
                 returnLocation,
             });
-            return null;
         },
-        null,
+        undefined,
     );
 
     const formOnSubmit = useCallback(
