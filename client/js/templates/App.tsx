@@ -4,6 +4,7 @@ import React, {
     useCallback,
     use,
     useEffect,
+    useMemo,
     useState,
 } from 'react';
 import {
@@ -277,11 +278,12 @@ function PureApp(props: PureAppProps): React.JSX.Element {
 
     const [title, setTitle] = useState(null);
     const [globalUnreadCount, setGlobalUnreadCount] = useState(null);
-    useEffect(() => {
-        document.title =
+    const titleText = useMemo(
+        () =>
             (title ?? configuration.htmlTitle) +
-            ((globalUnreadCount ?? 0) > 0 ? ` (${globalUnreadCount})` : '');
-    }, [configuration, title, globalUnreadCount]);
+            ((globalUnreadCount ?? 0) > 0 ? ` (${globalUnreadCount})` : ''),
+        [configuration, title, globalUnreadCount],
+    );
 
     const _ = use(LocalizationContext);
 
@@ -290,6 +292,8 @@ function PureApp(props: PureAppProps): React.JSX.Element {
 
     return (
         <React.StrictMode>
+            <title>{titleText}</title>
+
             <Message message={globalMessage} />
 
             <Routes>
