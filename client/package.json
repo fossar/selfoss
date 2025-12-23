@@ -40,6 +40,7 @@
     "@types/lodash-es": "^4.17.12",
     "@types/ramda": "^0.31.0",
     "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
     "@types/react-router-dom": "^5.3.3",
     "autoprefixer": "^10.4.0",
     "eslint": "^9.0.0",
