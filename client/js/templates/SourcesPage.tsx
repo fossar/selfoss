@@ -5,6 +5,7 @@ import React, {
     useCallback,
     useContext,
     useEffect,
+    useEffectEvent,
     useState,
 } from 'react';
 import { useMemo } from 'react';
@@ -173,17 +174,17 @@ export default function SourcesPage(): React.JSX.Element {
     const location = useLocation();
     const isAdding = useMatch('/manage/sources/add');
 
-    useEffect(() => {
-        const abortController = new AbortController();
+    const reloader = useEffectEvent(
+        async (abortController: AbortController) => {
+            await loadSources({
+                abortController,
+                location,
+                navigate,
+                setSpouts,
+                setSources,
+                setLoadingState,
+            });
 
-        loadSources({
-            abortController,
-            location,
-            navigate,
-            setSpouts,
-            setSources,
-            setLoadingState,
-        }).then(() => {
             if (isAdding) {
                 const params = new URLSearchParams(location.search);
                 handleAddSource({
@@ -201,16 +202,18 @@ export default function SourcesPage(): React.JSX.Element {
                 // Clear the value from the state so it does not bug us forever.
                 navigate('/manage/sources', { replace: true });
             }
-        });
+        },
+    );
+
+    useEffect(() => {
+        const abortController = new AbortController();
+
+        reloader(abortController);
 
         return () => {
             abortController.abort();
         };
-    }, [
-        forceReload,
-        // location.search and navigate are intentionally omitted
-        // to prevent reloading when the presets are cleaned from the URL.
-    ]);
+    }, [forceReload]);
 
     const addOnClick = useCallback(
         (event: MouseEvent) =>

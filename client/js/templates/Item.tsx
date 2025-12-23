@@ -9,9 +9,9 @@ import React, {
     useMemo,
     useRef,
     useState,
+    useEffectEvent,
 } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router';
-import { usePreviousImmediate } from 'rooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
 import { FocusTrap, createFocusTrap } from 'focus-trap';
@@ -332,8 +332,6 @@ export default function Item(props: ItemProps) {
         [currentTime, item.datetime],
     );
 
-    const previouslyExpanded = usePreviousImmediate(expanded);
-
     const [slides, setSlides] = useState([]);
     const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(null);
 
@@ -341,7 +339,7 @@ export default function Item(props: ItemProps) {
     // This should match scenarios where fullScreenTrap is set.
     const usingFocusTrap = expanded && selfoss.isSmartphone();
 
-    useEffect(() => {
+    const setExpanded = useEffectEvent((expanded: boolean) => {
         // Handle entry becoming/ceasing to be expanded.
         const parent = document.querySelector<HTMLDivElement>(
             `.entry[data-entry-id="${item.id}"]`,
@@ -435,21 +433,23 @@ export default function Item(props: ItemProps) {
             }
 
             document.body.classList.remove('fullscreen-mode');
-        }
-    }, [configuration, expanded, item.content, item.id, setNavExpanded]);
 
-    useEffect(() => {
-        // Handle autoHideReadOnMobile setting.
-        if (selfoss.isSmartphone() && !expanded && previouslyExpanded) {
-            const autoHideReadOnMobile =
-                configuration.autoHideReadOnMobile && item.unread;
-            if (autoHideReadOnMobile && !item.unread) {
-                selfoss.entriesPage.setEntries((entries) =>
-                    entries.filter(({ id }) => id !== item.id),
-                );
+            // Handle autoHideReadOnMobile setting.
+            if (selfoss.isSmartphone()) {
+                const autoHideReadOnMobile =
+                    configuration.autoHideReadOnMobile && item.unread;
+                if (autoHideReadOnMobile && !item.unread) {
+                    selfoss.entriesPage.setEntries((entries) =>
+                        entries.filter(({ id }) => id !== item.id),
+                    );
+                }
             }
         }
-    }, [configuration, expanded, item.id, item.unread, previouslyExpanded]);
+    });
+
+    useEffect(() => {
+        setExpanded(expanded);
+    }, [expanded]);
 
     const entryOnClick = useCallback(
         (event: MouseEvent) =>

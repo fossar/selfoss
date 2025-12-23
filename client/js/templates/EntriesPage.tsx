@@ -8,6 +8,7 @@ import React, {
     SetStateAction,
     ForwardedRef,
     MouseEvent,
+    useEffectEvent,
 } from 'react';
 import { Link, NavigateFunction } from 'react-router';
 import { useOnline } from 'rooks';
@@ -314,32 +315,25 @@ export function EntriesPage(props: EntriesPageProps) {
         LoadingState.INITIAL,
     );
 
-    // Perform the scheduled reload.
-    useEffect(() => {
-        const append = fromId !== undefined || fromDatetime !== undefined;
-        const abortController = new AbortController();
+    const reloader = useEffectEvent(
+        async (fetchParams: FetchParams, abortController: AbortController) => {
+            const append =
+                fetchParams.fromId !== undefined ||
+                fetchParams.fromDatetime !== undefined;
 
-        reloadList({
-            // Object with parameters for GET /items and similar API calls
-            // based on the current location.
-            fetchParams: {
-                type: params.filter,
-                tag: currentTag,
-                source: currentSource,
-                extraIds: [],
-                sourcesNav: initialNavSourcesExpanded,
-                search: searchText,
-                fromDatetime,
-                fromId,
-            },
-            abortController,
-            navigate,
-            append,
-            configuration,
-            // We do not want to focus the entry on successive loads.
-            entryId: append ? undefined : initialItemId,
-            setLoadingState: append ? setMoreLoadingState : setLoadingState,
-        }).then(() => {
+            await reloadList({
+                // Object with parameters for GET /items and similar API calls
+                // based on the current location.
+                fetchParams,
+                abortController,
+                navigate,
+                append,
+                configuration,
+                // We do not want to focus the entry on successive loads.
+                entryId: append ? undefined : initialItemId,
+                setLoadingState: append ? setMoreLoadingState : setLoadingState,
+            });
+
             if (currentTag !== null && !selfoss.db.isValidTag(currentTag)) {
                 selfoss.app.showError(
                     selfoss.app._('error_unknown_tag') + ' ' + currentTag,
@@ -354,15 +348,30 @@ export function EntriesPage(props: EntriesPageProps) {
                     selfoss.app._('error_unknown_source') + ' ' + currentSource,
                 );
             }
-        });
+        },
+    );
+
+    // Perform the scheduled reload.
+    useEffect(() => {
+        const abortController = new AbortController();
+
+        const fetchParams = {
+            type: params.filter,
+            tag: currentTag,
+            source: currentSource,
+            extraIds: [],
+            sourcesNav: initialNavSourcesExpanded,
+            search: searchText,
+            fromDatetime,
+            fromId,
+        };
+
+        reloader(fetchParams, abortController);
 
         return () => {
             abortController.abort();
         };
     }, [
-        // navigate is intentionally omitted
-        // to prevent reloading when path is replaced
-        configuration,
         params.filter,
         currentTag,
         currentSource,
@@ -370,8 +379,6 @@ export function EntriesPage(props: EntriesPageProps) {
         searchText,
         fromDatetime,
         fromId,
-        initialItemId,
-        setLoadingState,
         forceReload,
     ]);
 
