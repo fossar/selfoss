@@ -49,7 +49,7 @@ export default function SourceParam(
 
     const updateSourceParam = useCallback(
         (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-            const newValue = event.target.value;
+            const newValue = event.currentTarget.value;
             setFieldValue(setDirty, setEditedSource, spoutParamName, newValue);
         },
         [setEditedSource, setDirty, spoutParamName],
@@ -57,7 +57,7 @@ export default function SourceParam(
 
     const updateSourceParamBool = useCallback(
         (event: ChangeEvent<HTMLInputElement>) => {
-            const newValue = event.target.checked ? '1' : undefined;
+            const newValue = event.currentTarget.checked ? '1' : undefined;
             setFieldValue(setDirty, setEditedSource, spoutParamName, newValue);
         },
         [setEditedSource, setDirty, spoutParamName],

@@ -126,7 +126,7 @@ function handleKeyUp(event) {
     // emulate clicking when using keyboard
     if (event.keyCode === 13) {
         // ENTER key
-        event.target.click();
+        event.currentTarget.click();
         event.preventDefault();
         event.stopPropagation();
     }

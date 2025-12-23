@@ -94,7 +94,7 @@ export default function NavSearch(props: NavSearchProps) {
     );
 
     const termOnChange = useCallback(
-        (event) => setSearchText(event.target.value),
+        (event) => setSearchText(event.currentTarget.value),
         [],
     );
 

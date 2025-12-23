@@ -48,7 +48,7 @@ export default function HashPassword(props: HashPasswordProps) {
             // Unlike `action` prop, `onSubmit` avoids clearing the form on submit.
             // https://github.com/facebook/react/issues/29034#issuecomment-2143595195
             event.preventDefault();
-            const formData = new FormData(event.target);
+            const formData = new FormData(event.currentTarget);
             startTransition(() => submitAction(formData));
         },
         [submitAction],

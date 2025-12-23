@@ -462,8 +462,8 @@ class selfoss {
     ): void {
         const awaitStateChange = (): void => {
             reg.installing.addEventListener('statechange', (event) => {
-                // https://github.com/microsoft/TypeScript/issues/40153
-                const sw = event.target as ServiceWorker;
+                // https://github.com/microsoft/TypeScript/issues/37842
+                const sw = event.currentTarget as ServiceWorker;
                 if (sw.state === 'installed') {
                     callback(reg);
                 }

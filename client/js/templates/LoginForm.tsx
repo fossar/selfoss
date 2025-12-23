@@ -92,7 +92,7 @@ export default function LoginForm(props: LoginFormProps) {
             // Unlike `action` prop, `onSubmit` avoids clearing the form on submit.
             // https://github.com/facebook/react/issues/29034#issuecomment-2143595195
             event.preventDefault();
-            const formData = new FormData(event.target as HTMLFormElement);
+            const formData = new FormData(event.currentTarget);
             startTransition(() => submitAction(formData));
         },
         [],

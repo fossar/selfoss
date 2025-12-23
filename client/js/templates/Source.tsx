@@ -255,7 +255,7 @@ function handleSpoutChange(args: {
         setSourceParamsLoading,
         setSourceParamsError,
     } = args;
-    const spoutClass = event.target.value;
+    const spoutClass = event.currentTarget.value;
     updateEditedSource({ spout: spoutClass });
 
     if (spoutClass.trim().length === 0) {
@@ -412,17 +412,17 @@ function SourceEditForm(props: SourceEditFormProps) {
     );
 
     const titleOnChange = useCallback(
-        (event) => updateEditedSource({ title: event.target.value }),
+        (event) => updateEditedSource({ title: event.currentTarget.value }),
         [updateEditedSource],
     );
 
     const tagsOnChange = useCallback(
-        (event) => updateEditedSource({ tags: event.target.value }),
+        (event) => updateEditedSource({ tags: event.currentTarget.value }),
         [updateEditedSource],
     );
 
     const filterOnChange = useCallback(
-        (event) => updateEditedSource({ filter: event.target.value }),
+        (event) => updateEditedSource({ filter: event.currentTarget.value }),
         [updateEditedSource],
     );
 
