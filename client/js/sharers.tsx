@@ -36,9 +36,10 @@ function materializeSharerIcon(sharer: Sharer): Sharer {
 
 export function useSharers(args: {
     configuration: Configuration;
+    showError: (message: string) => void;
     _: Translate;
 }): Array<EnabledSharer> {
-    const { configuration, _ } = args;
+    const { configuration, showError, _ } = args;
 
     return useMemo((): Array<EnabledSharer> => {
         const availableSharers: { [key: string]: Sharer } = {
@@ -53,11 +54,9 @@ export function useSharers(args: {
                         })
                         .catch((e) => {
                             if (e.name === 'AbortError') {
-                                selfoss.app.showError(
-                                    _('error_share_native_abort'),
-                                );
+                                showError(_('error_share_native_abort'));
                             } else {
-                                selfoss.app.showError(_('error_share_native'));
+                                showError(_('error_share_native'));
                             }
                         });
                 },
@@ -221,5 +220,5 @@ export function useSharers(args: {
         }
 
         return enabledSharers;
-    }, [configuration, _]);
+    }, [configuration, showError, _]);
 }

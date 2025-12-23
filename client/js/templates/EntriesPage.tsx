@@ -50,6 +50,7 @@ function reloadList({
     configuration,
     entryId = null,
     setLoadingState,
+    showError,
     _,
 }: {
     fetchParams: FetchParams;
@@ -60,6 +61,7 @@ function reloadList({
     configuration: Configuration;
     entryId?: number | null;
     setLoadingState: Dispatch<SetStateAction<LoadingState>>;
+    showError: (message: string) => void;
     _: Translate;
 }): Promise<void> {
     if (abortController.signal.aborted) {
@@ -167,7 +169,7 @@ function reloadList({
                 }
 
                 setLoadingState(LoadingState.FAILURE);
-                selfoss.app.showError(_('error_loading') + ' ' + error.message);
+                showError(_('error_loading') + ' ' + error.message);
             });
     };
 
@@ -250,6 +252,7 @@ type EntriesPageProps = {
     reload: () => void;
     setGlobalUnreadCount: Dispatch<SetStateAction<number>>;
     unreadItemsCount: number;
+    showError: (message: string) => void;
 };
 
 export function EntriesPage(props: EntriesPageProps): React.JSX.Element {
@@ -265,6 +268,7 @@ export function EntriesPage(props: EntriesPageProps): React.JSX.Element {
         reload,
         setGlobalUnreadCount,
         unreadItemsCount,
+        showError,
     } = props;
 
     const _ = use(LocalizationContext);
@@ -339,22 +343,19 @@ export function EntriesPage(props: EntriesPageProps): React.JSX.Element {
                 // We do not want to focus the entry on successive loads.
                 entryId: append ? undefined : initialItemId,
                 setLoadingState: append ? setMoreLoadingState : setLoadingState,
+                showError,
                 _,
             });
 
             if (currentTag !== null && !selfoss.db.isValidTag(currentTag)) {
-                selfoss.app.showError(
-                    _('error_unknown_tag') + ' ' + currentTag,
-                );
+                showError(_('error_unknown_tag') + ' ' + currentTag);
             }
 
             if (
                 currentSource !== null &&
                 !selfoss.db.isValidSource(currentSource)
             ) {
-                selfoss.app.showError(
-                    _('error_unknown_source') + ' ' + currentSource,
-                );
+                showError(_('error_unknown_source') + ' ' + currentSource);
             }
         },
     );
@@ -516,6 +517,7 @@ export function EntriesPage(props: EntriesPageProps): React.JSX.Element {
                     selected={selectedEntry == entry.id}
                     expanded={expandedEntries[entry.id] ?? false}
                     setNavExpanded={setNavExpanded}
+                    showError={showError}
                 />
             ))}
             <div id="stream-buttons">
@@ -592,6 +594,7 @@ type StateHolderProps = {
     navSourcesExpanded: boolean;
     setGlobalUnreadCount: Dispatch<SetStateAction<number>>;
     unreadItemsCount: number;
+    showError: (message: string) => void;
     _: Translate;
 };
 
@@ -963,7 +966,7 @@ export class StateHolder extends React.Component<
                         this.setEntries(oldEntries);
                         updateStats(false);
                         this.setHasMore(hadMore);
-                        selfoss.app.showError(
+                        this.props.showError(
                             this.props._('error_mark_items') +
                                 ' ' +
                                 error.message,
@@ -1043,7 +1046,7 @@ export class StateHolder extends React.Component<
                         // rollback ui changes
                         this.markEntryInView(id, newReadState);
                         updateStats(!newReadState);
-                        selfoss.app.showError(
+                        this.props.showError(
                             this.props._('error_mark_item') +
                                 ' ' +
                                 error.message,
@@ -1117,7 +1120,7 @@ export class StateHolder extends React.Component<
                         // rollback ui changes
                         this.starEntryInView(id, !newStarredState);
                         updateStats(!newStarredState);
-                        selfoss.app.showError(
+                        this.props.showError(
                             this.props._('error_star_item') +
                                 ' ' +
                                 error.message,
@@ -1296,6 +1299,7 @@ export class StateHolder extends React.Component<
                 reload={this.reload}
                 setGlobalUnreadCount={this.props.setGlobalUnreadCount}
                 unreadItemsCount={this.props.unreadItemsCount}
+                showError={this.props.showError}
             />
         );
     }
@@ -1307,6 +1311,7 @@ type StateHolderOuterProps = {
     navSourcesExpanded: boolean;
     setGlobalUnreadCount: Dispatch<SetStateAction<number>>;
     unreadItemsCount: number;
+    showError: (message: string) => void;
     ref: ForwardedRef<StateHolder>;
 };
 
@@ -1319,6 +1324,7 @@ export function StateHolderOuter(
         navSourcesExpanded,
         setGlobalUnreadCount,
         unreadItemsCount,
+        showError,
         ref,
     } = props;
     const _ = use(LocalizationContext);
@@ -1337,6 +1343,7 @@ export function StateHolderOuter(
             navSourcesExpanded={navSourcesExpanded}
             setGlobalUnreadCount={setGlobalUnreadCount}
             unreadItemsCount={unreadItemsCount}
+            showError={showError}
             _={_}
         />
     );

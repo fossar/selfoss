@@ -31,6 +31,7 @@ type NavigationProps = {
     setSources: Dispatch<SetStateAction<Array<NavSource>>>;
     tags: Array<NavTag>;
     reloadAll: () => Promise<void>;
+    showError: (message: string) => void;
 };
 
 export default function Navigation(props: NavigationProps): React.JSX.Element {
@@ -52,6 +53,7 @@ export default function Navigation(props: NavigationProps): React.JSX.Element {
         setSources,
         tags,
         reloadAll,
+        showError,
     } = props;
 
     const _ = use(LocalizationContext);
@@ -98,7 +100,11 @@ export default function Navigation(props: NavigationProps): React.JSX.Element {
                     online: !offlineState,
                 })}
             >
-                <NavTags tags={tags} setNavExpanded={setNavExpanded} />
+                <NavTags
+                    tags={tags}
+                    setNavExpanded={setNavExpanded}
+                    showError={showError}
+                />
                 <NavSources
                     setNavExpanded={setNavExpanded}
                     navSourcesExpanded={navSourcesExpanded}
@@ -107,6 +113,7 @@ export default function Navigation(props: NavigationProps): React.JSX.Element {
                     setSourcesState={setSourcesState}
                     sources={sources}
                     setSources={setSources}
+                    showError={showError}
                 />
             </div>
 

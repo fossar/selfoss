@@ -164,6 +164,7 @@ type EntriesFilterProps = {
     navSourcesExpanded: boolean;
     unreadItemsCount: number;
     setGlobalUnreadCount: Dispatch<SetStateAction<number>>;
+    showError: (message: string) => void;
 };
 
 // Work around for regex patterns not being supported
@@ -176,6 +177,7 @@ function EntriesFilter(props: EntriesFilterProps): React.JSX.Element {
         navSourcesExpanded,
         unreadItemsCount,
         setGlobalUnreadCount,
+        showError,
     } = props;
 
     const params = useEntriesParams();
@@ -192,6 +194,7 @@ function EntriesFilter(props: EntriesFilterProps): React.JSX.Element {
             navSourcesExpanded={navSourcesExpanded}
             unreadItemsCount={unreadItemsCount}
             setGlobalUnreadCount={setGlobalUnreadCount}
+            showError={showError}
         />
     );
 }
@@ -213,6 +216,7 @@ type PureAppProps = {
     setSources: Dispatch<SetStateAction<Array<NavSource>>>;
     tags: Array<NavTag>;
     reloadAll: () => Promise<void>;
+    showError: (message: string) => void;
 };
 
 function PureApp(props: PureAppProps): React.JSX.Element {
@@ -233,6 +237,7 @@ function PureApp(props: PureAppProps): React.JSX.Element {
         setSources,
         tags,
         reloadAll,
+        showError,
     } = props;
 
     const [navExpanded, setNavExpanded] = useState(false);
@@ -419,6 +424,7 @@ function PureApp(props: PureAppProps): React.JSX.Element {
                                         setSources={setSources}
                                         tags={tags}
                                         reloadAll={reloadAll}
+                                        showError={showError}
                                     />
                                 </div>
                             </Collapse>
@@ -455,12 +461,17 @@ function PureApp(props: PureAppProps): React.JSX.Element {
                                                 setGlobalUnreadCount={
                                                     setGlobalUnreadCount
                                                 }
+                                                showError={showError}
                                             />
                                         }
                                     />
                                     <Route
                                         path="/manage/sources/add?"
-                                        element={<SourcesPage />}
+                                        element={
+                                            <SourcesPage
+                                                showError={showError}
+                                            />
+                                        }
                                     />
                                     <Route path="*" element={<NotFound />} />
                                 </Routes>
@@ -572,6 +583,7 @@ export class App extends React.Component<AppProps, AppState> {
         this.setAllItemsCount = this.setAllItemsCount.bind(this);
         this.setAllItemsOfflineCount = this.setAllItemsOfflineCount.bind(this);
         this.setGlobalMessage = this.setGlobalMessage.bind(this);
+        this.showError = this.showError.bind(this);
         this.reloadAll = this.reloadAll.bind(this);
     }
 
@@ -912,6 +924,7 @@ export class App extends React.Component<AppProps, AppState> {
                         setSources={this.setSources}
                         tags={this.state.tags}
                         reloadAll={this.reloadAll}
+                        showError={this.showError}
                     />
                 </LocalizationContext>
             </ConfigurationContext>

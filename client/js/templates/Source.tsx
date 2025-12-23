@@ -64,6 +64,7 @@ function handleSave(args: {
     setSourceErrors: Dispatch<SetStateAction<{ [index: string]: string }>>;
     isNew: boolean;
     setNewIds: Dispatch<SetStateAction<Set<number>>>;
+    showError: (message: string) => void;
     _: Translate;
 }): void {
     const {
@@ -76,6 +77,7 @@ function handleSave(args: {
         setSourceErrors,
         isNew,
         setNewIds,
+        showError,
         _,
     } = args;
     event.preventDefault();
@@ -161,7 +163,7 @@ function handleSave(args: {
             }
         })
         .catch((error) => {
-            selfoss.app.showError(_('error_edit_source') + ' ' + error.message);
+            showError(_('error_edit_source') + ' ' + error.message);
         })
         .finally(() => {
             setSourceActionLoading(false);
@@ -175,6 +177,7 @@ function handleDelete(args: {
     setSources: Dispatch<SetStateAction<Array<Source>>>;
     setSourceBeingDeleted: Dispatch<SetStateAction<boolean>>;
     setDirty: Dispatch<SetStateAction<boolean>>;
+    showError: (message: string) => void;
     _: Translate;
 }): void {
     const {
@@ -183,6 +186,7 @@ function handleDelete(args: {
         setSources,
         setSourceBeingDeleted,
         setDirty,
+        showError,
         _,
     } = args;
     const answer = confirm(_('source_warn'));
@@ -220,9 +224,7 @@ function handleDelete(args: {
         })
         .catch((error) => {
             setSourceBeingDeleted(false);
-            selfoss.app.showError(
-                _('error_delete_source') + ' ' + error.message,
-            );
+            showError(_('error_delete_source') + ' ' + error.message);
         });
 }
 
@@ -376,6 +378,7 @@ type SourceEditFormProps = {
     setDirty: Dispatch<SetStateAction<boolean>>;
     isNew: boolean;
     setNewIds: Dispatch<SetStateAction<Set<number>>>;
+    showError: (message: string) => void;
 };
 
 function SourceEditForm(props: SourceEditFormProps): React.JSX.Element {
@@ -400,6 +403,7 @@ function SourceEditForm(props: SourceEditFormProps): React.JSX.Element {
         setDirty,
         isNew,
         setNewIds,
+        showError,
     } = props;
 
     const _ = useContext(LocalizationContext);
@@ -468,6 +472,7 @@ function SourceEditForm(props: SourceEditFormProps): React.JSX.Element {
                 setSourceErrors,
                 isNew,
                 setNewIds,
+                showError,
                 _,
             });
         },
@@ -481,6 +486,7 @@ function SourceEditForm(props: SourceEditFormProps): React.JSX.Element {
             setDirty,
             isNew,
             setNewIds,
+            showError,
             _,
         ],
     );
@@ -680,6 +686,7 @@ type SourceProps = {
     dirty: boolean;
     setDirtySources: Dispatch<SetStateAction<{ [id: number]: boolean }>>;
     setNewIds: Dispatch<SetStateAction<Set<number>>>;
+    showError: (message: string) => void;
 };
 
 export default function Source(props: SourceProps): React.JSX.Element {
@@ -692,6 +699,7 @@ export default function Source(props: SourceProps): React.JSX.Element {
         dirty,
         setDirtySources,
         setNewIds,
+        showError,
     } = props;
 
     const _ = useContext(LocalizationContext);
@@ -761,6 +769,7 @@ export default function Source(props: SourceProps): React.JSX.Element {
                     setSources,
                     setSourceBeingDeleted,
                     setDirty,
+                    showError,
                     _,
                 });
             } else if (value === 'browse') {
@@ -771,7 +780,16 @@ export default function Source(props: SourceProps): React.JSX.Element {
                 );
             }
         },
-        [source, sourceElem, setSources, setDirty, location, navigate, _],
+        [
+            source,
+            sourceElem,
+            setSources,
+            setDirty,
+            location,
+            navigate,
+            showError,
+            _,
+        ],
     );
 
     return (
@@ -875,6 +893,7 @@ export default function Source(props: SourceProps): React.JSX.Element {
                         isNew,
                         setNewIds,
                         sourceElem,
+                        showError,
                     }}
                     sourceError={source.error}
                     source={editedSource}

@@ -324,10 +324,12 @@ type ItemProps = {
     selected: boolean;
     expanded: boolean;
     setNavExpanded: React.Dispatch<React.SetStateAction<boolean>>;
+    showError: (message: string) => void;
 };
 
 export default function Item(props: ItemProps): React.JSX.Element {
-    const { currentTime, item, selected, expanded, setNavExpanded } = props;
+    const { currentTime, item, selected, expanded, setNavExpanded, showError } =
+        props;
 
     const _ = use(LocalizationContext);
 
@@ -539,7 +541,7 @@ export default function Item(props: ItemProps): React.JSX.Element {
 
     const canWrite = useAllowedToWrite();
 
-    const sharers = useSharers({ configuration, _ });
+    const sharers = useSharers({ configuration, showError, _ });
 
     return (
         <div

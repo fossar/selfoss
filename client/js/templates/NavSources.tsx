@@ -31,12 +31,14 @@ function handleTitleClick({
     setSourcesState,
     setSources,
     _,
+    showError,
 }: {
     setExpanded: Dispatch<SetStateAction<boolean>>;
     sourcesState: LoadingState;
     setSourcesState: Dispatch<SetStateAction<LoadingState>>;
     setSources: Dispatch<SetStateAction<Array<NavSource>>>;
     _: Translate;
+    showError: (message: string) => void;
 }): void {
     if (!selfoss.isOnline()) {
         console.log('Cannot toggle, not online.');
@@ -53,9 +55,7 @@ function handleTitleClick({
                 })
                 .catch((error) => {
                     setSourcesState(LoadingState.FAILURE);
-                    selfoss.app.showError(
-                        _('error_loading_stats') + ' ' + error.message,
-                    );
+                    showError(_('error_loading_stats') + ' ' + error.message);
                 });
         }
 
@@ -108,6 +108,7 @@ type NavSourcesProps = {
     setSourcesState: Dispatch<SetStateAction<LoadingState>>;
     sources: Array<NavSource>;
     setSources: Dispatch<SetStateAction<Array<NavSource>>>;
+    showError: (message: string) => void;
 };
 
 export default function NavSources(props: NavSourcesProps): React.JSX.Element {
@@ -119,6 +120,7 @@ export default function NavSources(props: NavSourcesProps): React.JSX.Element {
         setSourcesState,
         sources,
         setSources,
+        showError,
     } = props;
 
     const _ = use(LocalizationContext);
@@ -138,9 +140,17 @@ export default function NavSources(props: NavSourcesProps): React.JSX.Element {
                 sourcesState,
                 setSourcesState,
                 setSources,
+                showError,
                 _,
             }),
-        [setNavSourcesExpanded, sourcesState, setSourcesState, setSources, _],
+        [
+            setNavSourcesExpanded,
+            sourcesState,
+            setSourcesState,
+            setSources,
+            showError,
+            _,
+        ],
     );
 
     const collapseNav = useCallback(

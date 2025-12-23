@@ -94,6 +94,7 @@ function loadSources(args: {
     setSpouts: Dispatch<SetStateAction<{ [key: string]: Spout }>>;
     setSources: Dispatch<SetStateAction<SourceWithIcon[]>>;
     setLoadingState: Dispatch<SetStateAction<LoadingState>>;
+    showError: (message: string) => void;
     _: Translate;
 }): Promise<void> {
     const {
@@ -103,6 +104,7 @@ function loadSources(args: {
         setSpouts,
         setSources,
         setLoadingState,
+        showError,
         _,
     } = args;
     if (abortController.signal.aborted) {
@@ -154,14 +156,21 @@ function loadSources(args: {
                     return;
                 }
 
-                selfoss.app.showError(_('error_loading') + ' ' + error.message);
+                showError(_('error_loading') + ' ' + error.message);
             });
 
             setLoadingState(LoadingState.FAILURE);
         });
 }
 
-export default function SourcesPage(): React.JSX.Element {
+type SourcesPageProps = {
+    showError: (message: string) => void;
+};
+
+export default function SourcesPage(
+    props: SourcesPageProps,
+): React.JSX.Element {
+    const { showError } = props;
     const _ = useContext(LocalizationContext);
 
     const [spouts, setSpouts] = useState<{ [key: string]: Spout }>({});
@@ -185,6 +194,7 @@ export default function SourcesPage(): React.JSX.Element {
                 setSpouts,
                 setSources,
                 setLoadingState,
+                showError,
                 _,
             });
 
@@ -272,6 +282,7 @@ export default function SourcesPage(): React.JSX.Element {
                                 setSpouts,
                                 setDirtySources,
                                 setNewIds,
+                                showError,
                             }}
                         />
                     ))}

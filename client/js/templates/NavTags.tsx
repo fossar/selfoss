@@ -21,10 +21,11 @@ type TagProps = {
     tag: NavTag | null;
     active: boolean;
     collapseNav: () => void;
+    showError: (message: string) => void;
 };
 
 function Tag(props: TagProps): React.JSX.Element {
-    const { tag, active, collapseNav } = props;
+    const { tag, active, collapseNav, showError } = props;
 
     const _ = use(LocalizationContext);
     const tagName = tag !== null ? tag.tag : null;
@@ -36,12 +37,10 @@ function Tag(props: TagProps): React.JSX.Element {
                     selfoss.entriesPage?.reload();
                 })
                 .catch((error) => {
-                    selfoss.app.showError(
-                        _('error_saving_color') + ' ' + error.message,
-                    );
+                    showError(_('error_saving_color') + ' ' + error.message);
                 });
         },
-        [tagName, _],
+        [tagName, showError, _],
     );
 
     const category = tag === null ? 'all' : `tag-${tag.tag}`;
@@ -84,10 +83,11 @@ function Tag(props: TagProps): React.JSX.Element {
 type NavTagsProps = {
     setNavExpanded: React.Dispatch<React.SetStateAction<boolean>>;
     tags: Array<NavTag>;
+    showError: (message: string) => void;
 };
 
 export default function NavTags(props: NavTagsProps): React.JSX.Element {
-    const { setNavExpanded, tags } = props;
+    const { setNavExpanded, tags, showError } = props;
 
     const [expanded, setExpanded] = useState(true);
 
@@ -142,6 +142,7 @@ export default function NavTags(props: NavTagsProps): React.JSX.Element {
                         tag={null}
                         active={currentAllTags}
                         collapseNav={collapseNav}
+                        showError={showError}
                     />
                     {tags.map((tag) => (
                         <Tag
@@ -149,6 +150,7 @@ export default function NavTags(props: NavTagsProps): React.JSX.Element {
                             tag={tag}
                             active={currentTag === tag.tag}
                             collapseNav={collapseNav}
+                            showError={showError}
                         />
                     ))}
                 </ul>
