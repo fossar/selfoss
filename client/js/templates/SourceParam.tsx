@@ -1,6 +1,28 @@
-import React, { Dispatch, SetStateAction, useCallback, use } from 'react';
+import React, {
+    Dispatch,
+    SetStateAction,
+    useCallback,
+    use,
+    ChangeEvent,
+} from 'react';
 import { LocalizationContext } from '../helpers/i18n';
 import { EditedSource, SpoutParam } from './Source';
+
+function setFieldValue(
+    setDirty: Dispatch<SetStateAction<boolean>>,
+    setEditedSource: Dispatch<SetStateAction<EditedSource>>,
+    spoutParamName: string,
+    newValue: string | undefined,
+): void {
+    setDirty(true);
+    setEditedSource(({ params, ...restSource }) => ({
+        ...restSource,
+        params: {
+            ...params,
+            [spoutParamName]: newValue,
+        },
+    }));
+}
 
 type SourceParamProps = {
     spoutParamName: string;
@@ -26,27 +48,19 @@ export default function SourceParam(
     } = props;
 
     const updateSourceParam = useCallback(
-        (event) => {
-            setDirty(true);
-            setEditedSource(({ params, ...restSource }) => ({
-                ...restSource,
-                params: {
-                    ...params,
-                    [spoutParamName]: event.target.value,
-                },
-            }));
+        (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+            const newValue = event.target.value;
+            setFieldValue(setDirty, setEditedSource, spoutParamName, newValue);
         },
         [setEditedSource, setDirty, spoutParamName],
     );
 
     const updateSourceParamBool = useCallback(
-        (event) =>
-            updateSourceParam({
-                target: {
-                    value: event.target.checked ? '1' : undefined,
-                },
-            }),
-        [updateSourceParam],
+        (event: ChangeEvent<HTMLInputElement>) => {
+            const newValue = event.target.checked ? '1' : undefined;
+            setFieldValue(setDirty, setEditedSource, spoutParamName, newValue);
+        },
+        [setEditedSource, setDirty, spoutParamName],
     );
 
     let value =
