@@ -216,7 +216,7 @@ export default class DbOnline {
                     data.stats.unread > 0 &&
                     selfoss.entriesPage &&
                     (selfoss.entriesPage.state.entries.length === 0 ||
-                        selfoss.entriesPage.state.entries.loadingState ===
+                        selfoss.entriesPage.state.loadingState ===
                             LoadingState.FAILURE)
                 ) {
                     selfoss.entriesPage?.reload();
