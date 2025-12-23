@@ -17,12 +17,9 @@ class Misc {
     /**
      * Compare two values for use in sort functions.
      *
-     * @param mixed $a
-     * @param mixed $b
-     *
      * @return self::CMP_* mutual ordering
      */
-    public static function compare($a, $b) {
+    public static function compare(mixed $a, mixed $b) {
         return $a <=> $b;
     }
 
@@ -36,7 +33,7 @@ class Misc {
      *
      * @return callable(mixed, mixed): (self::CMP_*) comparator
      */
-    public static function compareBy(...$transformations) {
+    public static function compareBy(...$transformations): callable {
         if (count($transformations) > 0) {
             return function($a, $b) use ($transformations) {
                 foreach ($transformations as $transformation) {
@@ -68,11 +65,9 @@ class Misc {
     /**
      * Ensure the passed value is numeric and converts it to integer.
      *
-     * @param mixed $value
-     *
      * @throws InvalidArgumentException when argument is not a numberic value
      */
-    public static function forceId($value): int {
+    public static function forceId(mixed $value): int {
         if (is_numeric($value)) {
             return (int) $value;
         }

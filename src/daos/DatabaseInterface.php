@@ -42,10 +42,8 @@ interface DatabaseInterface {
 
     /**
      * Quote string
-     *
-     * @param mixed $value
      */
-    public function quote($value, int $type = \PDO::PARAM_STR): string;
+    public function quote(mixed $value, int $type = \PDO::PARAM_STR): string;
 
     /**
      * Begin SQL transaction

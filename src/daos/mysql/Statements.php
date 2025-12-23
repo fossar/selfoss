@@ -94,7 +94,7 @@ class Statements implements \daos\StatementsInterface {
      *
      * @return ?string full statement
      */
-    public static function intRowMatches(string $column, array $ints) {
+    public static function intRowMatches(string $column, array $ints): ?string {
         // checks types
         if (count($ints) === 0) {
             return null;

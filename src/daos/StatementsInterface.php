@@ -72,7 +72,7 @@ interface StatementsInterface {
      *
      * @return ?string full statement
      */
-    public static function intRowMatches(string $column, array $ints);
+    public static function intRowMatches(string $column, array $ints): ?string;
 
     /**
      * Return the statement required to update a datetime column to the current

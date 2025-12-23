@@ -130,7 +130,7 @@ class Index {
      *     hasMore: bool,
      * } html with items
      */
-    private function loadItems(array $params, array $tags) {
+    private function loadItems(array $params, array $tags): array {
         $options = new ItemOptions($params);
         $entries = [];
         foreach ($this->itemsDao->get($options) as $item) {

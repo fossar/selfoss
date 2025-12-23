@@ -174,10 +174,8 @@ class DatabaseConnection {
 
     /**
      * Quote string
-     *
-     * @param mixed $val
      */
-    public function quote($val, int $type = PDO::PARAM_STR): string {
+    public function quote(mixed $val, int $type = PDO::PARAM_STR): string {
         return $this->pdo->quote((string) $val, $type);
     }
 

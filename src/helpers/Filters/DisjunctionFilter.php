@@ -21,7 +21,7 @@ final class DisjunctionFilter implements Filter {
     /**
      * @param Filter<T> $filter
      */
-    public function __construct($filter) {
+    public function __construct(Filter $filter) {
         $this->filter = $filter;
     }
 

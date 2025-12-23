@@ -27,10 +27,8 @@ trait CommonSqlDatabase {
 
     /**
      * Quote string
-     *
-     * @param mixed $value
      */
-    public function quote($value, int $type = \PDO::PARAM_STR): string {
+    public function quote(mixed $value, int $type = \PDO::PARAM_STR): string {
         return $this->connection->quote($value, $type);
     }
 

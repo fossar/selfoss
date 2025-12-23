@@ -18,10 +18,7 @@ class Request {
         return @file_get_contents('php://input') ?: '';
     }
 
-    /**
-     * @return mixed
-     */
-    public function getData() {
+    public function getData(): mixed {
         $contentType = $this->getContentType();
         if (str_starts_with($contentType, 'application/json')) {
             $body = $this->getBody();

@@ -110,11 +110,9 @@ class View {
     /**
      * send error message as json string
      *
-     * @param mixed $data
-     *
      * @return never
      */
-    public function jsonError($data) {
+    public function jsonError(mixed $data) {
         header('Content-type: application/json');
 
         $error = @json_encode($data);
@@ -129,11 +127,9 @@ class View {
     /**
      * send success message as json string
      *
-     * @param mixed $data
-     *
      * @return never
      */
-    public function jsonSuccess($data) {
+    public function jsonSuccess(mixed $data) {
         header('Content-type: application/json');
 
         $message = @json_encode($data);
@@ -158,10 +154,8 @@ class View {
 
 /**
  * Create a PSR-7 response for given JSON-encodable data.
- *
- * @param mixed $data
  */
-function json_response($data): \GuzzleHttp\Psr7\Response {
+function json_response(mixed $data): \GuzzleHttp\Psr7\Response {
     $encoder = new \Violet\StreamingJsonEncoder\BufferJsonEncoder($data);
     $stream = new \Violet\StreamingJsonEncoder\JsonStream($encoder);
 

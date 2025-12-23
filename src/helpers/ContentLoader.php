@@ -83,7 +83,7 @@ class ContentLoader {
      *
      * @param mixed $source the current source
      */
-    public function fetch($source): void {
+    public function fetch(mixed $source): void {
         $lastEntry = $source['lastentry'];
 
         // at least 20 seconds wait until next update of a given source
@@ -458,7 +458,7 @@ class ContentLoader {
      * @param mixed $source source object
      * @param ?int $lastEntry timestamp of the newest item or NULL when no items were added
      */
-    protected function updateSource($source, ?int $lastEntry): void {
+    protected function updateSource(mixed $source, ?int $lastEntry): void {
         // remove previous error
         if ($source['error'] !== null) {
             $this->sourcesDao->error($source['id'], '');

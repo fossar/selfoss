@@ -171,7 +171,7 @@ class Import {
      *
      * @return true|string true on success or item title on error
      */
-    private function addSubscription(SimpleXMLElement $xml, array $tags) {
+    private function addSubscription(SimpleXMLElement $xml, array $tags): bool|string {
         // OPML Required attributes: text, xmlUrl, type
         // Optional attributes: title, htmlUrl, language, title, version
         // Selfoss namespaced attributes: spout, params

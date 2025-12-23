@@ -114,7 +114,7 @@ class Sources implements SourcesInterface {
      *
      * @author Tobias Zeising
      */
-    public function validate(string $title, string $spout, array $params) {
+    public function validate(string $title, string $spout, array $params): array|bool {
         $result = [];
 
         // title
