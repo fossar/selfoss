@@ -240,7 +240,7 @@ export default class DbOnline {
                         if (
                             unreadCount >
                             selfoss.entriesPage.state.entries.filter(
-                                ({ unread }) => unread == 1,
+                                ({ unread }) => unread,
                             ).length
                         ) {
                             selfoss.entriesPage.setHasMore(true);
