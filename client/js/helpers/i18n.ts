@@ -45,11 +45,7 @@ export function i18nFormat(
             case ',':
                 if (placeholder) {
                     if (state == 'index') {
-                        const index = buffer.trim();
-                        const intIndex = parseInt(index);
-                        placeholder.index = Number.isNaN(intIndex)
-                            ? index
-                            : intIndex;
+                        placeholder.index = buffer.trim();
                         placeholder.value = params[placeholder.index];
                         buffer = '';
                     } else if (state == 'type') {

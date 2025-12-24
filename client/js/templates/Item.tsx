@@ -636,11 +636,11 @@ export default function Item(props: ItemProps): React.JSX.Element {
                 <>
                     <span className="entry-separator">•</span>
                     <span className="entry-readtime">
-                        {_('article_reading_time', [
-                            Math.round(
+                        {_('article_reading_time', {
+                            '0': Math.round(
                                 item.wordCount / configuration.readingSpeed,
                             ),
-                        ])}
+                        })}
                     </span>
                 </>
             ) : null}

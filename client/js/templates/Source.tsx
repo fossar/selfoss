@@ -866,9 +866,9 @@ export default function Source(props: SourceProps): React.JSX.Element {
             </div>
             <div className="source-days">
                 {source.lastentry
-                    ? ` • ${_('source_last_post')} ${_('days', [
-                          daysAgo(new Date(source.lastentry * 1000)),
-                      ])}`
+                    ? ` • ${_('source_last_post')} ${_('days', {
+                          '0': daysAgo(new Date(source.lastentry * 1000)),
+                      })}`
                     : null}
             </div>
             {/* edit */}
