@@ -67,7 +67,7 @@ class Write {
         if (!isset($data['tags'])) {
             $data['tags'] = [];
         }
-        $tags = array_map('htmlspecialchars', $data['tags']);
+        $tags = array_map(htmlspecialchars(...), $data['tags']);
         $spout = $data['spout'];
         $filter = $data['filter'];
 

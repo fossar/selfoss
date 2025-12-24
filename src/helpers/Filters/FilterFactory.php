@@ -7,7 +7,6 @@ declare(strict_types=1);
 
 namespace helpers\Filters;
 
-use Closure;
 use spouts\Item;
 
 final class FilterFactory {
@@ -32,17 +31,17 @@ final class FilterFactory {
         $field = $match['field'];
 
         if ($field === '') {
-            $filter = new MapFilter(new DisjunctionFilter($filter), Closure::fromCallable([self::class, 'getTitleAndContentStrings']));
+            $filter = new MapFilter(new DisjunctionFilter($filter), self::getTitleAndContentStrings(...));
         } elseif ($field === 'title') {
-            $filter = new MapFilter($filter, Closure::fromCallable([self::class, 'getTitleString']));
+            $filter = new MapFilter($filter, self::getTitleString(...));
         } elseif ($field === 'content') {
-            $filter = new MapFilter($filter, Closure::fromCallable([self::class, 'getContentString']));
+            $filter = new MapFilter($filter, self::getContentString(...));
         } elseif ($field === 'url') {
-            $filter = new MapFilter($filter, Closure::fromCallable([self::class, 'getUrl']));
+            $filter = new MapFilter($filter, self::getUrl(...));
         } elseif ($field === 'author') {
-            $filter = new MapFilter(new DisjunctionFilter($filter), Closure::fromCallable([self::class, 'getAuthors']));
+            $filter = new MapFilter(new DisjunctionFilter($filter), self::getAuthors(...));
         } elseif ($field === 'category') {
-            $filter = new MapFilter(new DisjunctionFilter($filter), Closure::fromCallable([self::class, 'getCategories']));
+            $filter = new MapFilter(new DisjunctionFilter($filter), self::getCategories(...));
         } else {
             throw new FilterSyntaxError("Invalid filter expression {$expression}, field must be one of “title”, “content”, “url”, “author” or “category”.");
         }

@@ -58,7 +58,7 @@ class Misc {
                 return $comparison;
             };
         } else {
-            return [self::class, 'compare'];
+            return self::compare(...);
         }
     }
 
@@ -86,7 +86,7 @@ class Misc {
      */
     public static function forceIds($value): array {
         if (is_array($value)) {
-            return array_map([self::class, 'forceId'], $value);
+            return array_map(self::forceId(...), $value);
         }
 
         return [
