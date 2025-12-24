@@ -3,19 +3,10 @@ import mergeDeepLeft from 'ramda/src/mergeDeepLeft';
 import pipe from 'ramda/src/pipe';
 import { HttpError, TimeoutError } from '../errors';
 
-type Headers = {
-    [index: string]: string;
-};
-
-type FetchOptions = {
-    body?: BodyInit | null;
-    method?: 'GET' | 'POST' | 'DELETE';
-    headers?: Headers;
+type FetchOptions = RequestInit & {
     abortController?: AbortController;
     timeout?: number;
     failOnHttpErrors?: boolean;
-    signal?: AbortSignal;
-    cache?: RequestCache;
 };
 
 interface Fetch {
@@ -73,7 +64,7 @@ export const option = (name: string, value) => options({ [name]: value });
 /**
  * Override just headers in fetch.
  */
-export const headers = (value: Headers) => option('headers', value);
+export const headers = (value: HeadersInit) => option('headers', value);
 
 /**
  * Override just a single header in fetch.
