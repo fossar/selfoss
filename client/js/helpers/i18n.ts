@@ -1,5 +1,7 @@
 import React from 'react';
 
+type PluralKw = 'zero' | 'one' | 'other';
+
 /*
  * This is a naive and partial implementation for parsing the
  * local-aware formatted strings from the Fat-Free Framework.
@@ -12,23 +14,30 @@ export function i18nFormat(
 ): string {
     let formatted = '';
 
-    let curChar;
+    let curChar: string;
     let buffer = '';
 
     let state = 'out';
-    let placeholder;
-    let plural;
-    let pluralKeyword;
-    let pluralValue;
+    let placeholder:
+        | {
+              index?: string;
+              value?: number | string;
+              type?: string;
+          }
+        | undefined;
+    let plural: Partial<Record<PluralKw, string>> | undefined;
+    let pluralKeyword: PluralKw | undefined;
+    let pluralValue: string | undefined;
 
     for (let i = 0, len = translated.length; i < len; i++) {
         curChar = translated.charAt(i);
         switch (curChar) {
             case '{':
                 if (placeholder) {
-                    if (state == 'plural') {
-                        pluralKeyword = buffer.trim();
-                        if (['zero', 'one', 'other'].includes(pluralKeyword)) {
+                    if (state === 'plural') {
+                        const kw = buffer.trim();
+                        if (kw === 'zero' || kw === 'one' || kw === 'other') {
+                            pluralKeyword = kw;
                             buffer = '';
                         } else {
                             pluralKeyword = undefined;
@@ -44,20 +53,20 @@ export function i18nFormat(
             case '}':
             case ',':
                 if (placeholder) {
-                    if (state == 'index') {
+                    if (state === 'index') {
                         placeholder.index = buffer.trim();
                         placeholder.value = params[placeholder.index];
                         buffer = '';
-                    } else if (state == 'type') {
+                    } else if (state === 'type') {
                         placeholder.type = buffer.trim();
                         buffer = '';
-                        if (placeholder.type == 'plural') {
+                        if (placeholder.type === 'plural') {
                             plural = {};
                             state = 'plural';
                         }
                     }
-                    if (curChar == '}') {
-                        if (state == 'plural' && pluralKeyword) {
+                    if (curChar === '}') {
+                        if (state === 'plural' && pluralKeyword) {
                             plural[pluralKeyword] = buffer;
                             buffer = '';
                             pluralKeyword = undefined;
@@ -66,7 +75,7 @@ export function i18nFormat(
                                 pluralValue = plural.zero;
                             } else if (
                                 'one' in plural &&
-                                placeholder.value == 1
+                                placeholder.value === 1
                             ) {
                                 pluralValue = plural.one;
                             } else {
@@ -74,7 +83,10 @@ export function i18nFormat(
                             }
                             formatted =
                                 formatted +
-                                pluralValue.replace('#', placeholder.value);
+                                pluralValue.replace(
+                                    '#',
+                                    placeholder.value.toString(),
+                                );
                             plural = undefined;
                             placeholder = undefined;
                             state = 'out';
@@ -83,7 +95,7 @@ export function i18nFormat(
                             placeholder = undefined;
                             state = 'out';
                         }
-                    } else if (curChar == ',' && state == 'index') {
+                    } else if (curChar === ',' && state === 'index') {
                         state = 'type';
                     }
                 }
