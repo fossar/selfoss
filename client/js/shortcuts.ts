@@ -34,7 +34,7 @@ function ignoreWhenInteracting(
  * Set up shortcuts on document.
  */
 export default function makeShortcuts(): () => void {
-    return tinykeys(document, {
+    return tinykeys(window, {
         // 'space': next article
         Space: ignoreWhenInteracting((event: KeyboardEvent): void => {
             event.preventDefault();
