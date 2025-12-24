@@ -27,7 +27,7 @@ interface AbortableFetch {
  */
 export function rejectUnless(
     pred: (response: Response) => boolean,
-): (Response) => Response {
+): (response: Response) => Response {
     return (response: Response) => {
         if (pred(response)) {
             return response;
@@ -52,14 +52,17 @@ export function rejectIfNotOkay(response: Response): Response {
  */
 export const options =
     (newOpts: FetchOptions) =>
-    (fetch) =>
+    (fetch: Fetch) =>
     (url: string, opts: FetchOptions = {}) =>
         fetch(url, mergeDeepLeft(opts, newOpts));
 
 /**
  * Override just a single fetch option.
  */
-export const option = (name: string, value) => options({ [name]: value });
+export const option = <K extends keyof FetchOptions>(
+    name: K,
+    value: FetchOptions[K],
+) => options({ [name]: value });
 
 /**
  * Override just headers in fetch.
@@ -79,14 +82,12 @@ export const header = (name: string, value: string) =>
  * `fetch` function with method defaulting to `POST`. This function allows us to lift the wrapper
  * so that it applies on modified `fetch` functions that return an object containing `promise` field
  * instead of a single Promise like AbortableFetch.
- *
- * @sig ((...params → Promise) → (...params → Promise)) → (...params → {promise: Promise, ...}) → (...params → {promise: Promise, ...})
  */
 export const liftToPromiseField =
-    (wrapper) =>
-    (f) =>
-    (...params) => {
-        let rest;
+    (wrapper: (f: Fetch) => Fetch) =>
+    (f: AbortableFetch) =>
+    (...params: Parameters<AbortableFetch>): AbortableFetchResult => {
+        let rest: Omit<AbortableFetchResult, 'promise'>;
         const promise = wrapper((...innerParams) => {
             const { promise, ...innerRest } = f(...innerParams);
             rest = innerRest;
@@ -98,7 +99,6 @@ export const liftToPromiseField =
 
 /**
  * Wrapper for fetch that makes it cancellable using AbortController.
- * @return {controller: AbortController, promise: Promise}
  */
 export function makeAbortableFetch(fetch: Fetch): AbortableFetch {
     return (url: string, opts: FetchOptions = {}) => {
@@ -114,7 +114,6 @@ export function makeAbortableFetch(fetch: Fetch): AbortableFetch {
 
 /**
  * Wrapper for abortable fetch that adds timeout support.
- * @return
  */
 export function makeFetchWithTimeout(
     abortableFetch: AbortableFetch,
