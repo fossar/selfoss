@@ -7,7 +7,6 @@ import React, {
     Dispatch,
     SetStateAction,
     ForwardedRef,
-    MouseEvent,
     useEffectEvent,
 } from 'react';
 import { Link, NavigateFunction } from 'react-router';
@@ -213,7 +212,7 @@ function handleRefreshSource({
     reload,
     _,
 }: {
-    event: MouseEvent<HTMLButtonElement>;
+    event: React.MouseEvent<HTMLButtonElement>;
     source: number;
     setLoadingState: Dispatch<SetStateAction<LoadingState>>;
     setNavExpanded: Dispatch<SetStateAction<boolean>>;
@@ -448,7 +447,7 @@ export function EntriesPage(props: EntriesPageProps): React.JSX.Element {
     const isOnline = useOnline();
 
     const refreshOnClick = useCallback(
-        (event: MouseEvent<HTMLButtonElement>) =>
+        (event: React.MouseEvent<HTMLButtonElement>) =>
             handleRefreshSource({
                 event,
                 source: currentSource,
@@ -461,7 +460,7 @@ export function EntriesPage(props: EntriesPageProps): React.JSX.Element {
     );
 
     const moreOnClick = useCallback(
-        (event: MouseEvent<HTMLButtonElement>) => {
+        (event: React.MouseEvent<HTMLButtonElement>) => {
             event.preventDefault();
             const lastEntry = entries[entries.length - 1];
 
