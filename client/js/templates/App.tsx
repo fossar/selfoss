@@ -772,7 +772,10 @@ export class App extends React.Component<AppProps, AppState> {
     /**
      * Obtain a localized message for given key, substituting placeholders for values, when given.
      */
-    _(identifier: string, params?: { [index: string]: string }): string {
+    _(
+        identifier: string,
+        params?: { [index: string]: string | number },
+    ): string {
         const fallbackLanguage = 'en';
 
         let preferredLanguage = this.props.configuration.language;

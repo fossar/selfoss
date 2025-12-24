@@ -8,7 +8,7 @@ import React from 'react';
  */
 export function i18nFormat(
     translated: string,
-    params?: { [index: string]: string },
+    params?: { [index: string]: number | string },
 ): string {
     let formatted = '';
 
@@ -107,5 +107,5 @@ export const LocalizationContext = React.createContext(undefined);
 
 export type Translate = (
     translated: string,
-    params?: { [index: string]: string },
+    params?: { [index: string]: string | number },
 ) => string;
