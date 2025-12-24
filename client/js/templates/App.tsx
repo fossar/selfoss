@@ -36,7 +36,7 @@ import { i18nFormat, LocalizationContext, Translate } from '../helpers/i18n';
 import { Configuration, ConfigurationContext } from '../model/Configuration';
 import { LoadingState } from '../requests/LoadingState';
 import * as sourceRequests from '../requests/sources';
-import locales from '../locales';
+import locales, { LocaleKey, MessageKey, isValidLocale } from '../locales';
 import { useEntriesParams, useLocation } from '../helpers/uri';
 import { NavSource, NavTag } from '../requests/items';
 
@@ -773,30 +773,32 @@ export class App extends React.Component<AppProps, AppState> {
      * Obtain a localized message for given key, substituting placeholders for values, when given.
      */
     _(
-        identifier: string,
+        identifier: MessageKey,
         params?: { [index: string]: string | number },
     ): string {
         const fallbackLanguage = 'en';
 
-        let preferredLanguage = this.props.configuration.language;
+        let preferredLanguage: LocaleKey;
+
+        const configuredLanguage = this.props.configuration.language;
 
         // locale auto-detection
-        if (preferredLanguage === null) {
+        if (configuredLanguage === null) {
             if ('languages' in navigator) {
-                preferredLanguage = navigator.languages.find((lang) =>
-                    Object.keys(locales).includes(lang),
-                );
+                preferredLanguage =
+                    navigator.languages.find<LocaleKey>(isValidLocale);
             }
+        } else if (isValidLocale(configuredLanguage)) {
+            preferredLanguage = configuredLanguage;
         }
 
-        if (!Object.keys(locales).includes(preferredLanguage)) {
+        if (preferredLanguage === undefined) {
             preferredLanguage = fallbackLanguage;
         }
 
         let translated =
             locales[preferredLanguage][identifier] ||
-            locales[fallbackLanguage][identifier] ||
-            `#untranslated:${identifier}`;
+            locales[fallbackLanguage][identifier];
 
         if (params) {
             translated = i18nFormat(translated, params);

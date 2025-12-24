@@ -1,4 +1,5 @@
 import React from 'react';
+import { MessageKey } from '../locales';
 
 type PluralKw = 'zero' | 'one' | 'other';
 
@@ -118,6 +119,6 @@ export function i18nFormat(
 export const LocalizationContext = React.createContext(undefined);
 
 export type Translate = (
-    translated: string,
+    translated: MessageKey,
     params?: { [index: string]: string | number },
 ) => string;

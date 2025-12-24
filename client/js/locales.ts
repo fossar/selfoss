@@ -32,7 +32,7 @@ import uk from '../locale/uk.json';
 import zhCN from '../locale/zh-CN.json';
 import zhTW from '../locale/zh-TW.json';
 
-export default {
+const locales_ = {
     ca: ca,
     cs: cs,
     de: de,
@@ -65,3 +65,19 @@ export default {
     'zh-CN': zhCN,
     'zh-TW': zhTW,
 };
+
+export type MessageKey = keyof typeof en;
+
+export type LocaleKey = keyof typeof locales_;
+
+type Locale = Record<MessageKey, string>;
+
+const localeKeys = new Set(Object.keys(locales_)) as Set<LocaleKey>;
+
+const locales: Record<LocaleKey, Partial<Locale>> & { en: Locale } = locales_;
+
+export default locales;
+
+export function isValidLocale(lang: string): lang is LocaleKey {
+    return (localeKeys as Set<string>).has(lang);
+}
