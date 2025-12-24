@@ -24,9 +24,8 @@ jobs:
           - '8.4'
           - '8.3'
           - '8.2'
-          - '8.1'
         include:
-          - php: '8.1'
+          - php: '8.2'
             phpstan: true
             # These should be the same no matter the PHP version.
             lint: true

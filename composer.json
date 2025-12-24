@@ -3,7 +3,7 @@
     "description": "Multipurpose rss reader, live stream, mashup, aggregation web application",
     "type": "project",
     "require": {
-        "php": ">= 8.1.0",
+        "php": ">= 8.2.0",
         "ext-gd": "*",
         "bcosca/fatfree-core": "^3.8",
         "bramus/router": "^1.6",
@@ -54,7 +54,7 @@
     },
     "config": {
         "platform": {
-            "php": "8.1.0"
+            "php": "8.2.0"
         },
         "allow-plugins": false,
         "sort-packages": true
