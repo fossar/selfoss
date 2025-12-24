@@ -28,26 +28,7 @@ import { Direction } from '../helpers/navigation';
 import { ConfigurationContext } from '../model/Configuration';
 import { useSharers } from '../sharers';
 import Lightbox from 'yet-another-react-lightbox';
-import { TagColor } from '../requests/items';
-
-export type Item = {
-    id: number;
-    title: string;
-    strippedTitle: string;
-    link: string;
-    source: number;
-    tags: { [tag: string]: TagColor };
-    author: string;
-    sourcetitle: string;
-    datetime: Date;
-    unread: boolean;
-    starred: boolean;
-    content: string;
-    wordCount: number;
-    lengthWithoutTags: number;
-    icon: string | null;
-    thumbnail: string;
-};
+import { ResponseItem, TagColor } from '../requests/items';
 
 // TODO: do the search highlights client-side
 function reHighlight(text: string) {
@@ -208,7 +189,7 @@ type ShareAction = ({
 type ShareButtonProps = {
     label: string;
     icon: string | React.JSX.Element;
-    item: Item;
+    item: ResponseItem;
     action: ShareAction;
     showLabel?: boolean;
 };
@@ -307,7 +288,7 @@ function datetimeRelative(currentTime: Date, datetime: Date): string | null {
 
 type ItemProps = {
     currentTime: Date;
-    item: Item;
+    item: ResponseItem;
     selected: boolean;
     expanded: boolean;
     setNavExpanded: React.Dispatch<React.SetStateAction<boolean>>;

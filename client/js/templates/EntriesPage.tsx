@@ -14,10 +14,10 @@ import { Link, NavigateFunction } from 'react-router';
 import { useOnline } from 'rooks';
 import { useStateWithDeps } from 'use-state-with-deps';
 import selfoss from '../selfoss-base';
-import Item, { type Item as ItemType } from './Item';
+import Item from './Item';
 import { FilterType } from '../Filter';
 import * as itemsRequests from '../requests/items';
-import { EntryStatus } from '../requests/items';
+import { EntryStatus, ResponseItem } from '../requests/items';
 import * as sourceRequests from '../requests/sources';
 import { LoadingState } from '../requests/LoadingState';
 import { Spinner, SpinnerBig } from './Spinner';
@@ -234,7 +234,7 @@ function handleRefreshSource({
 }
 
 type EntriesPageProps = {
-    entries: Array<ItemType>;
+    entries: Array<ResponseItem>;
     hasMore: boolean;
     loadingState: LoadingState;
     setLoadingState: Dispatch<SetStateAction<LoadingState>>;
@@ -588,7 +588,7 @@ type StateHolderProps = {
 };
 
 type StateHolderState = {
-    entries: Array<ItemType>;
+    entries: Array<ResponseItem>;
     hasMore: boolean;
     /**
      * Currently selected entry.

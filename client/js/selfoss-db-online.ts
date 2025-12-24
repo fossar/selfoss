@@ -2,8 +2,12 @@ import selfoss from './selfoss-base';
 import * as itemsRequests from './requests/items';
 import { LoadingState } from './requests/LoadingState';
 import { FilterType } from './Filter';
-import { StatusUpdate, SyncParams, SyncResponse } from './requests/items';
-import { Entry } from './model/OfflineDb';
+import {
+    ResponseItem,
+    StatusUpdate,
+    SyncParams,
+    SyncResponse,
+} from './requests/items';
 
 export type FetchParams = {
     type: FilterType;
@@ -277,7 +281,7 @@ export default class DbOnline {
     getEntries(
         fetchParams: FetchParams,
         abortController: AbortController,
-    ): Promise<{ entries: Entry[]; hasMore: boolean }> {
+    ): Promise<{ entries: ResponseItem[]; hasMore: boolean }> {
         return itemsRequests
             .getItems(
                 {

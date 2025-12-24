@@ -6,9 +6,10 @@ import Dexie, {
     Transaction,
     TransactionMode,
 } from 'dexie';
-import { OfflineDb, Entry } from './model/OfflineDb';
+import { OfflineDb } from './model/OfflineDb';
 import { FilterType } from './Filter';
 import { FetchParams } from './selfoss-db-online';
+import { ResponseItem } from './requests/items';
 
 export type ItemStatus = {
     id: number;
@@ -279,7 +280,7 @@ export default class DbOffline {
 
     getEntries(
         fetchParams: FetchParams,
-    ): Promise<{ entries: Entry[]; hasMore: boolean }> {
+    ): Promise<{ entries: ResponseItem[]; hasMore: boolean }> {
         let hasMore = false;
         return selfoss.dbOffline
             ._tr('r', [selfoss.db.storage.entries], () => {

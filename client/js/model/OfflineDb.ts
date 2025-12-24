@@ -1,11 +1,5 @@
 import Dexie from 'dexie';
-
-export interface Entry {
-    id: number;
-    datetime: Date;
-    unread: boolean;
-    starred: boolean;
-}
+import { ResponseItem } from '../requests/items';
 
 export interface Status {
     id?: number; // Primary key. Optional (autoincremented).
@@ -37,7 +31,7 @@ export interface Source {
 export class OfflineDb extends Dexie {
     // Declare implicit table properties.
     // (Just to inform Typescript. Instanciated by Dexie in stores() method.)
-    entries!: Dexie.Table<Entry>;
+    entries!: Dexie.Table<ResponseItem>;
     statusq!: Dexie.Table<Status, number>;
     stamps!: Dexie.Table<Stamp>;
     stats!: Dexie.Table<Stat>;
