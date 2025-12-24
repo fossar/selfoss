@@ -136,7 +136,7 @@ class Items {
      * returns items as json string
      * json
      */
-    public function listItems(): void {
+    public function listItems(): never {
         $this->authentication->ensureCanRead();
 
         // parse params

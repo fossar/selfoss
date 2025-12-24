@@ -91,7 +91,7 @@ class Tags {
      * returns all tags
      * json
      */
-    public function listTags(): void {
+    public function listTags(): never {
         $this->authentication->ensureCanRead();
 
         $tags = $this->tagsDao->getWithUnread();

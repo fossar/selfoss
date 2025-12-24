@@ -23,7 +23,7 @@ class About {
      * Provide information about the selfoss instance.
      * json
      */
-    public function about(): void {
+    public function about(): never {
         $wallabag = !empty($this->configuration->wallabag) ? [
             'url' => $this->configuration->wallabag, // string
             'version' => $this->configuration->wallabagVersion, // int

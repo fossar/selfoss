@@ -125,7 +125,7 @@ class Sources {
      * returns all available spouts
      * json
      */
-    public function spouts(): void {
+    public function spouts(): never {
         $this->authentication->ensureIsPrivileged();
 
         $spouts = $this->spoutLoader->all();
@@ -136,7 +136,7 @@ class Sources {
      * returns all sources with unread items
      * json
      */
-    public function stats(): void {
+    public function stats(): never {
         $this->authentication->ensureCanRead();
 
         // load sources

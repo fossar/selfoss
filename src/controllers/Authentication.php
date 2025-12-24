@@ -56,7 +56,7 @@ class Authentication {
      * logout for api json access
      * json
      */
-    public function logout(): void {
+    public function logout(): never {
         $this->authenticationService->destroy();
         $this->view->jsonSuccess([
             'success' => true,
