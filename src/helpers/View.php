@@ -98,20 +98,16 @@ class View {
 
     /**
      * send error message
-     *
-     * @return never
      */
-    public function error(string $message): void {
+    public function error(string $message): never {
         header('HTTP/1.0 400 Bad Request');
         exit($message);
     }
 
     /**
      * send error message as json string
-     *
-     * @return never
      */
-    public function jsonError(mixed $data): void {
+    public function jsonError(mixed $data): never {
         header('Content-type: application/json');
 
         $error = @json_encode($data);
@@ -125,10 +121,8 @@ class View {
 
     /**
      * send success message as json string
-     *
-     * @return never
      */
-    public function jsonSuccess(mixed $data): void {
+    public function jsonSuccess(mixed $data): never {
         header('Content-type: application/json');
 
         $message = @json_encode($data);
@@ -142,10 +136,8 @@ class View {
 
     /**
      * Send a PSR-7 response.
-     *
-     * @return never
      */
-    public function sendResponse(ResponseInterface $response): void {
+    public function sendResponse(ResponseInterface $response): never {
         send($response);
         exit;
     }

@@ -63,10 +63,8 @@ class Authentication {
 
     /**
      * send 403 if not logged in
-     *
-     * @return never
      */
-    private function forbidden(): void {
+    private function forbidden(): never {
         header('HTTP/1.0 403 Forbidden');
         header('Content-type: text/plain');
         echo 'Access forbidden!';
