@@ -28,8 +28,8 @@ class Items implements \daos\ItemsInterface {
     protected static string $stmt = Statements::class;
 
     public function __construct(
-        private Logger $logger,
-        private Configuration $configuration,
+        private readonly Logger $logger,
+        private readonly Configuration $configuration,
         protected DatabaseInterface $database
     ) {
     }

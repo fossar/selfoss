@@ -13,7 +13,7 @@ use helpers\Authentication;
 /**
  * Proxy for accessing tag colors.
  */
-final class Tags implements TagsInterface {
+final readonly class Tags implements TagsInterface {
     public function __construct(
         private Authentication $authentication,
         /** Instance of backend-specific Tags class */

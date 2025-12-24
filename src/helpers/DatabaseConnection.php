@@ -18,7 +18,7 @@ final class DatabaseConnection {
     /** Whether a transaction is currently in progress */
     private bool $isInTransaction = false;
 
-    private PDO $pdo;
+    private readonly PDO $pdo;
 
     /**
      * Instantiate class
@@ -26,12 +26,12 @@ final class DatabaseConnection {
      * @param ?array<string, mixed> $options
      */
     public function __construct(
-        private Logger $logger,
+        private readonly Logger $logger,
         string $dsn,
         ?string $user = null,
         ?string $password = null,
         ?array $options = null,
-        private string $tableNamePrefix = ''
+        private readonly string $tableNamePrefix = ''
     ) {
         $this->logger->debug('Creating database connection', ['dsn' => $dsn]);
         $this->pdo = new PDO($dsn, $user, $password, $options);

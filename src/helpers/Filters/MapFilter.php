@@ -24,7 +24,7 @@ final class MapFilter implements Filter {
      * @param callable(T): InnerT $transform
      */
     public function __construct(
-        private Filter $filter,
+        private readonly Filter $filter,
         callable $transform
     ) {
         $this->transform = $transform;

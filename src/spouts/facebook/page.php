@@ -66,7 +66,7 @@ class page extends \spouts\spout {
     private array $items = [];
 
     public function __construct(
-        private WebClient $webClient
+        private readonly WebClient $webClient
     ) {
     }
 

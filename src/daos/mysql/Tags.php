@@ -19,7 +19,7 @@ class Tags implements \daos\TagsInterface {
     protected static string $stmt = Statements::class;
 
     public function __construct(
-        private Configuration $configuration,
+        private readonly Configuration $configuration,
         protected DatabaseInterface $database
     ) {
     }

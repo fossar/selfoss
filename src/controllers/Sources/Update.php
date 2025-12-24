@@ -14,7 +14,7 @@ use InvalidArgumentException;
 /**
  * Controller updating sources
  */
-final class Update {
+final readonly class Update {
     public function __construct(
         private Authentication $authentication,
         private ContentLoader $contentLoader,

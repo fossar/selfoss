@@ -14,7 +14,7 @@ namespace helpers\Filters;
  *
  * @implements Filter<array<T>>
  */
-final class DisjunctionFilter implements Filter {
+final readonly class DisjunctionFilter implements Filter {
     /**
      * @param Filter<T> $filter
      */

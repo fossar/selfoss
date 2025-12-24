@@ -23,7 +23,7 @@ use helpers\Authentication\AuthenticationService;
  *  - **Update**: Allows triggering source updates when *public update mode* is enabled.
  *  - **Privileged**: Any other operation (admin) user, full access without any limitations.
  */
-final class Authentication {
+final readonly class Authentication {
     public function __construct(
         private AuthenticationService $authenticationService
     ) {

@@ -17,16 +17,17 @@ use SimpleXMLElement;
  * @author     Michael Moore <stuporglue@gmail.com>
  * @author     Sean Rand <asanernd@gmail.com>
  */
+// TODO: Make readonly.
 final class Import {
     /** @var array<string, array{id: int, tags: string[]}> Sources that have been imported from the OPML file */
     private array $imported = [];
 
     public function __construct(
-        private Authentication $authentication,
-        private Logger $logger,
-        private \daos\Sources $sourcesDao,
-        private \daos\Tags $tagsDao,
-        private View $view
+        private readonly Authentication $authentication,
+        private readonly Logger $logger,
+        private readonly \daos\Sources $sourcesDao,
+        private readonly \daos\Tags $tagsDao,
+        private readonly View $view
     ) {
     }
 

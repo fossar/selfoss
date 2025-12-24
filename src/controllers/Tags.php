@@ -16,15 +16,16 @@ use helpers\View;
  * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
+// TODO: Make readonly.
 final class Tags {
     /** @var ?StringKeyedArray<array{backColor: string, foreColor: string}> cache of tags and associated colors */
     protected ?StringKeyedArray $tagsColors = null;
 
     public function __construct(
-        private Authentication $authentication,
-        private Request $request,
-        private \daos\Tags $tagsDao,
-        private View $view
+        private readonly Authentication $authentication,
+        private readonly Request $request,
+        private readonly \daos\Tags $tagsDao,
+        private readonly View $view
     ) {
     }
 

@@ -66,8 +66,8 @@ class reddit2 extends \spouts\spout {
     private array $items = [];
 
     public function __construct(
-        private Image $imageHelper,
-        private WebClient $webClient
+        private readonly Image $imageHelper,
+        private readonly WebClient $webClient
     ) {
     }
 

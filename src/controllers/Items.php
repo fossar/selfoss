@@ -19,7 +19,7 @@ use InvalidArgumentException;
  * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
-final class Items {
+final readonly class Items {
     public function __construct(
         private Authentication $authentication,
         private \daos\Items $itemsDao,

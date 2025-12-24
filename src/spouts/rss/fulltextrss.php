@@ -42,14 +42,14 @@ class fulltextrss extends feed {
     /** Tag for logger */
     private static string $loggerTag = 'selfoss.graby';
     private ?Graby $graby = null;
-    private Logger $logger;
+    private readonly Logger $logger;
 
     public function __construct(
-        private Configuration $configuration,
+        private readonly Configuration $configuration,
         FeedReader $feed,
         Image $imageHelper,
         Logger $logger,
-        private WebClient $webClient
+        private readonly WebClient $webClient
     ) {
         parent::__construct($feed, $imageHelper, $logger);
         $this->logger = $logger;

@@ -13,7 +13,7 @@ use DateTime;
  * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
-final class ViewHelper {
+final readonly class ViewHelper {
     public function __construct(
         private Configuration $configuration
     ) {

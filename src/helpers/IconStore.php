@@ -10,7 +10,7 @@ use Monolog\Logger;
 /**
  * Icon storage.
  */
-final class IconStore {
+final readonly class IconStore {
     public function __construct(
         private FileStorage $storage,
         private Logger $logger

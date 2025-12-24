@@ -10,7 +10,7 @@ use Monolog\Logger;
 /**
  * Thumbnail storage.
  */
-final class ThumbnailStore {
+final readonly class ThumbnailStore {
     public function __construct(
         private Logger $logger,
         private FileStorage $storage

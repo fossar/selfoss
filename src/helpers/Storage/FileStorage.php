@@ -9,7 +9,7 @@ use Monolog\Logger;
 /**
  * Simple file storage.
  */
-final class FileStorage {
+final readonly class FileStorage {
     public function __construct(
         private Logger $logger,
         /** Directory where the files will be stored */

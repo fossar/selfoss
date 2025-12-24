@@ -38,7 +38,7 @@ class youtube extends \spouts\rss\feed {
     ];
 
     public function __construct(
-        private UrlHighlight $urlHighlight,
+        private readonly UrlHighlight $urlHighlight,
         FeedReader $feed,
         Image $imageHelper,
         Logger $logger

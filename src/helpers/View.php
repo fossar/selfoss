@@ -27,7 +27,7 @@ final class View {
      * set global view vars
      */
     public function __construct(
-        private Configuration $configuration
+        private readonly Configuration $configuration
     ) {
     }
 

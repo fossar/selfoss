@@ -12,7 +12,7 @@ namespace helpers\Filters;
  *
  * @implements Filter<string>
  */
-final class RegexFilter implements Filter {
+final readonly class RegexFilter implements Filter {
     private string $regex;
 
     public function __construct(string $regex) {

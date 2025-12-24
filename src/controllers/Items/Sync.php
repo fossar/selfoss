@@ -13,7 +13,7 @@ use helpers\ViewHelper;
 /**
  * Controller for synchronizing item statuses
  */
-final class Sync {
+final readonly class Sync {
     public function __construct(
         private Authentication $authentication,
         private Configuration $configuration,

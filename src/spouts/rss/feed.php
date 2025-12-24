@@ -46,9 +46,9 @@ class feed extends \spouts\spout {
     private array $items = [];
 
     public function __construct(
-        private FeedReader $feed,
-        private Image $imageHelper,
-        private Logger $logger
+        private readonly FeedReader $feed,
+        private readonly Image $imageHelper,
+        private readonly Logger $logger
     ) {
     }
 

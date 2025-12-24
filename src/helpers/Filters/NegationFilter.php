@@ -14,7 +14,7 @@ namespace helpers\Filters;
  *
  * @implements Filter<T>
  */
-final class NegationFilter implements Filter {
+final readonly class NegationFilter implements Filter {
     /**
      * @param Filter<T> $filter
      */

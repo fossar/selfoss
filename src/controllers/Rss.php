@@ -17,7 +17,7 @@ use helpers\View;
  * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
-final class Rss {
+final readonly class Rss {
     public function __construct(
         private Authentication $authentication,
         private Configuration $configuration,

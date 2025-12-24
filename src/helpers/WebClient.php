@@ -26,9 +26,9 @@ class WebClient implements ClientInterface {
     private ?GuzzleHttp\Client $httpClient = null;
 
     public function __construct(
-        private Configuration $configuration,
-        private HttpFactory $httpFactory,
-        private Logger $logger
+        private readonly Configuration $configuration,
+        private readonly HttpFactory $httpFactory,
+        private readonly Logger $logger
     ) {
     }
 

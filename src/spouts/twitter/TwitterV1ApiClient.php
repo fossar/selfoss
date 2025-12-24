@@ -20,7 +20,7 @@ use stdClass;
 /**
  * Helpers for accessing Twitter V1 API.
  */
-final class TwitterV1ApiClient {
+final readonly class TwitterV1ApiClient {
     private const GROUPED_ENTITY_TYPES = [
         'hashtags',
         'symbols',

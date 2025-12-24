@@ -23,8 +23,8 @@ final class Session {
     private bool $started = false;
 
     public function __construct(
-        private Logger $logger,
-        private View $view
+        private readonly Logger $logger,
+        private readonly View $view
     ) {
     }
 

@@ -13,7 +13,7 @@ use Psr\Container\ContainerInterface;
 /**
  * Factory that creates `AuthenticationService` based on the configuration.
  */
-final class AuthenticationFactory {
+final readonly class AuthenticationFactory {
     public function __construct(
         private Configuration $configuration,
         private ContainerInterface $container

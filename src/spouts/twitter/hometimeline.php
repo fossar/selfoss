@@ -64,7 +64,7 @@ class hometimeline extends \spouts\spout {
     private iterable $items = [];
 
     public function __construct(
-        private TwitterV1ApiClientFactory $clientFactory
+        private readonly TwitterV1ApiClientFactory $clientFactory
     ) {
     }
 

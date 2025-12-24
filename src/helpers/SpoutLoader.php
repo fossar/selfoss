@@ -20,7 +20,7 @@ final class SpoutLoader {
     private ?array $spouts = null;
 
     public function __construct(
-        private ContainerInterface $container
+        private readonly ContainerInterface $container
     ) {
     }
 

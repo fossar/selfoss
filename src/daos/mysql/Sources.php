@@ -24,7 +24,7 @@ class Sources implements \daos\SourcesInterface {
     protected static string $stmt = Statements::class;
 
     public function __construct(
-        private Configuration $configuration,
+        private readonly Configuration $configuration,
         protected DatabaseInterface $database
     ) {
     }

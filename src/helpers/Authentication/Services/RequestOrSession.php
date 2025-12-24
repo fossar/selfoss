@@ -27,9 +27,9 @@ final class RequestOrSession implements AuthenticationService {
     private ?bool $authorized = null;
 
     public function __construct(
-        private Configuration $configuration,
-        private Logger $logger,
-        private Session $session
+        private readonly Configuration $configuration,
+        private readonly Logger $logger,
+        private readonly Session $session
     ) {
     }
 

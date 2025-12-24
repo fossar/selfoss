@@ -10,7 +10,7 @@ use helpers\View;
 /**
  * Controller for user related tasks
  */
-final class HashPassword {
+final readonly class HashPassword {
     public function __construct(
         private Authentication $authentication,
         private View $view

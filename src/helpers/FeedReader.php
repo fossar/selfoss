@@ -12,7 +12,7 @@ use SimplePie\SimplePie;
 /**
  * Helper class for obtaining feeds
  */
-final class FeedReader {
+final readonly class FeedReader {
     public function __construct(
         HttpFactory $httpFactory,
         private SimplePie $simplepie,

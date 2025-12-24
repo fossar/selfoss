@@ -14,7 +14,7 @@ use helpers\WebClient;
 /**
  * Factory for TwitterV1ApiClient.
  */
-final class TwitterV1ApiClientFactory {
+final readonly class TwitterV1ApiClientFactory {
     public function __construct(
         private WebClient $webClient
     ) {
