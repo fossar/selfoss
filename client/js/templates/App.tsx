@@ -36,7 +36,12 @@ import { i18nFormat, LocalizationContext, Translate } from '../helpers/i18n';
 import { Configuration, ConfigurationContext } from '../model/Configuration';
 import { LoadingState } from '../requests/LoadingState';
 import * as sourceRequests from '../requests/sources';
-import locales, { LocaleKey, MessageKey, isValidLocale } from '../locales';
+import locales, {
+    Locale,
+    LocaleKey,
+    MessageKey,
+    isValidLocale,
+} from '../locales';
 import { useEntriesParams, useLocation } from '../helpers/uri';
 import { NavSource, NavTag } from '../requests/items';
 
@@ -549,6 +554,9 @@ type AppState = {
 };
 
 export class App extends React.Component<AppProps, AppState> {
+    private fallbackLocale: Locale;
+    private primaryLocale: Partial<Locale>;
+
     constructor(props: AppProps) {
         super(props);
         this.state = {
@@ -585,6 +593,9 @@ export class App extends React.Component<AppProps, AppState> {
         this.setGlobalMessage = this.setGlobalMessage.bind(this);
         this.showError = this.showError.bind(this);
         this.reloadAll = this.reloadAll.bind(this);
+        [this.primaryLocale, this.fallbackLocale] = App.setupLocales(
+            props.configuration.language,
+        );
     }
 
     setTags(tags: SetStateAction<Array<NavTag>>): void {
@@ -769,18 +780,12 @@ export class App extends React.Component<AppProps, AppState> {
             });
     }
 
-    /**
-     * Obtain a localized message for given key, substituting placeholders for values, when given.
-     */
-    _(
-        identifier: MessageKey,
-        params?: { [index: string]: string | number },
-    ): string {
+    private static setupLocales(
+        configuredLanguage: string | null,
+    ): [Partial<Locale>, Locale] {
         const fallbackLanguage = 'en';
 
         let preferredLanguage: LocaleKey;
-
-        const configuredLanguage = this.props.configuration.language;
 
         // locale auto-detection
         if (configuredLanguage === null) {
@@ -796,9 +801,18 @@ export class App extends React.Component<AppProps, AppState> {
             preferredLanguage = fallbackLanguage;
         }
 
+        return [locales[preferredLanguage], locales[fallbackLanguage]];
+    }
+
+    /**
+     * Obtain a localized message for given key, substituting placeholders for values, when given.
+     */
+    _(
+        identifier: MessageKey,
+        params?: { [index: string]: string | number },
+    ): string {
         let translated =
-            locales[preferredLanguage][identifier] ||
-            locales[fallbackLanguage][identifier];
+            this.primaryLocale[identifier] || this.fallbackLocale[identifier];
 
         if (params) {
             translated = i18nFormat(translated, params);

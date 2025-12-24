@@ -70,7 +70,7 @@ export type MessageKey = keyof typeof en;
 
 export type LocaleKey = keyof typeof locales_;
 
-type Locale = Record<MessageKey, string>;
+export type Locale = Record<MessageKey, string>;
 
 const localeKeys = new Set(Object.keys(locales_)) as Set<LocaleKey>;
 
