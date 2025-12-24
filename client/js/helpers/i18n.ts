@@ -116,7 +116,9 @@ export function i18nFormat(
     return formatted;
 }
 
-export const LocalizationContext = React.createContext(undefined);
+export const LocalizationContext = React.createContext<Translate>(() => {
+    throw new Error('Missing l10n context');
+});
 
 export type Translate = (
     translated: MessageKey,
