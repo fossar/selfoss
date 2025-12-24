@@ -16,7 +16,7 @@
         "j0k3r/graby": "^2.0",
         "lordelph/icofileloader": "^3.0",
         "mibe/feedwriter": "^1.0",
-        "monolog/monolog": "^2.0",
+        "monolog/monolog": "^2.10",
         "php-http/guzzle7-adapter": "^1.0",
         "psr/container": "^2.0",
         "psr/simple-cache": "^3.0",
@@ -34,7 +34,7 @@
         "phpstan/phpstan": "^2.0",
         "phpstan/phpstan-deprecation-rules": "^2.0",
         "rector/rector": "^2.2",
-        "symfony/phpunit-bridge": "^7.0"
+        "symfony/phpunit-bridge": "^8.0"
     },
     "license": "GPL-3.0",
     "authors": [
