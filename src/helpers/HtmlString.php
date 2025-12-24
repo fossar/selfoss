@@ -7,7 +7,7 @@ namespace helpers;
 /**
  * A string wrapper representing a HTML fragment.
  */
-class HtmlString {
+final class HtmlString {
     private function __construct(
         private string $content
     ) {

@@ -17,7 +17,7 @@ use spouts\Parameter;
  * @author     Daniel Seither <post@tiwoc.de>
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
-class Sources implements SourcesInterface {
+final class Sources implements SourcesInterface {
     public function __construct(
         private Authentication $authentication,
         private SourcesInterface $backend,

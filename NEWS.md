@@ -33,6 +33,7 @@
 - Custom spouts are expected to pass `HtmlString` object to items’ title and content. ([#1368](https://github.com/fossar/selfoss/pull/1368))
 - Spouts can fetch item contents lazily by passing a function as `content` to `Item`. ([#1413](https://github.com/fossar/selfoss/pull/1413))
 - Spouts’ `name`, `description` and `params` properties now require a type hint. ([#1425](https://github.com/fossar/selfoss/pull/1425))
+- All classes other than spouts were made final. ([#1546](https://github.com/fossar/selfoss/pull/1546))
 
 ### Other changes
 - `tidy` PHP extension is now required if you want to use “Content extractor” spout. ([#1392](https://github.com/fossar/selfoss/pull/1392))

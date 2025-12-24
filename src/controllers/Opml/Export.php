@@ -18,7 +18,7 @@ use Monolog\Logger;
  * @author     Michael Moore <stuporglue@gmail.com>
  * @author     Sean Rand <asanernd@gmail.com>
  */
-class Export {
+final class Export {
     public function __construct(
         private Authentication $authentication,
         private Configuration $configuration,

@@ -15,7 +15,7 @@ use spouts\spout;
  * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
-class SpoutLoader {
+final class SpoutLoader {
     /** @var ?array<class-string<spout<mixed>>, spout<mixed>> array of available spouts */
     private ?array $spouts = null;
 

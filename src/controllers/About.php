@@ -11,7 +11,7 @@ use helpers\View;
 /**
  * Controller for instance information API
  */
-class About {
+final class About {
     public function __construct(
         private Authentication $authentication,
         private Configuration $configuration,

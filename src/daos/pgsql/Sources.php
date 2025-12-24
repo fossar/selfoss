@@ -12,7 +12,7 @@ namespace daos\pgsql;
  * @author      Michael Jackson <michael.o.jackson@gmail.com>
  * @author      Tobias Zeising <tobias.zeising@aditu.de>
  */
-class Sources extends \daos\mysql\Sources {
+final class Sources extends \daos\mysql\Sources {
     /** @var class-string SQL helper */
     protected static string $stmt = Statements::class;
 }

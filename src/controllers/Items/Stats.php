@@ -10,7 +10,7 @@ use helpers\View;
 /**
  * Controller for viewing item statistics
  */
-class Stats {
+final class Stats {
     public function __construct(
         private Authentication $authentication,
         private \daos\Items $itemsDao,

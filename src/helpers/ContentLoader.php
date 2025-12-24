@@ -16,7 +16,7 @@ use Monolog\Logger;
  * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
-class ContentLoader {
+final class ContentLoader {
     public const ICON_FORMAT = Image::FORMAT_PNG;
     public const THUMBNAIL_FORMAT = Image::FORMAT_JPEG;
 

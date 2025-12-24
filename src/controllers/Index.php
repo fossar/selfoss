@@ -18,7 +18,7 @@ use helpers\ViewHelper;
  * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
-class Index {
+final class Index {
     public function __construct(
         private Authentication $authentication,
         private \daos\Items $itemsDao,

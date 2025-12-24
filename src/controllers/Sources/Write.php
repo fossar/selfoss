@@ -17,7 +17,7 @@ use spouts\Parameter;
 /**
  * Controller for creating and editing sources
  */
-class Write {
+final class Write {
     public function __construct(
         private Authentication $authentication,
         private ContentLoader $contentLoader,

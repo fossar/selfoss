@@ -13,7 +13,7 @@ use ReflectionNamedType;
  *
  * @see https://selfoss.aditu.de/docs/administration/options/ for more information about the configuration parameters.
  */
-class Configuration {
+final class Configuration {
     /** @var string[] List of config values that should have variables interpolated. */
     public const INTERPOLATED_PROPERTIES = [
         'dbFile',

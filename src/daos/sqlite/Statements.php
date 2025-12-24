@@ -11,7 +11,7 @@ namespace daos\sqlite;
  * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Alexandre Rossi <alexandre.rossi@gmail.com>
  */
-class Statements extends \daos\mysql\Statements {
+final class Statements extends \daos\mysql\Statements {
     /**
      * Return the statement required to update a datetime column to the current
      * datetime.

@@ -23,7 +23,7 @@ use Monolog\Logger;
  * @author      Michael Jackson <michael.o.jackson@gmail.com>
  * @author      Tobias Zeising <tobias.zeising@aditu.de>
  */
-class Database implements \daos\DatabaseInterface {
+final class Database implements \daos\DatabaseInterface {
     use CommonSqlDatabase;
 
     /**

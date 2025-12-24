@@ -19,7 +19,7 @@ use Psr\Http\Message\ResponseInterface;
  * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
-class View {
+final class View {
     /** Current base url */
     private ?string $baseUrl = null;
 

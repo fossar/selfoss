@@ -17,7 +17,7 @@ use InvalidArgumentException;
  * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
-class Sources {
+final class Sources {
     public function __construct(
         private Authentication $authentication,
         private \daos\Sources $sourcesDao,

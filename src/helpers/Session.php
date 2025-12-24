@@ -19,7 +19,7 @@ use Monolog\Logger;
  *
  * This must be the only place to call `session_start()`.
  */
-class Session {
+final class Session {
     private bool $started = false;
 
     public function __construct(

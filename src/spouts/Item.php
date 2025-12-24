@@ -12,7 +12,7 @@ use helpers\HtmlString;
  *
  * @template-covariant Extra type of extra data
  */
-class Item {
+final class Item {
     /** @var HtmlString|(callable(static): HtmlString) content */
     private $content;
 

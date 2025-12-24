@@ -16,7 +16,7 @@ use helpers\Authentication;
  * @author     Harald Lapp <harald.lapp@gmail.com>
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
-class Items implements ItemsInterface {
+final class Items implements ItemsInterface {
     public function __construct(
         private Authentication $authentication,
         private ItemsInterface $backend

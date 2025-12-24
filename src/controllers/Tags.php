@@ -16,7 +16,7 @@ use helpers\View;
  * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
-class Tags {
+final class Tags {
     /** @var ?StringKeyedArray<array{backColor: string, foreColor: string}> cache of tags and associated colors */
     protected ?StringKeyedArray $tagsColors = null;
 

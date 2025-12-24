@@ -6,7 +6,7 @@ namespace helpers;
 
 use InvalidArgumentException;
 
-class Misc {
+final class Misc {
     public const ORDER_ASC = 1;
     public const ORDER_DESC = -1;
 

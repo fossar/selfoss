@@ -16,7 +16,7 @@ use Monolog\Logger;
  * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
-class Database implements \daos\DatabaseInterface {
+final class Database implements \daos\DatabaseInterface {
     use CommonSqlDatabase;
 
     /**

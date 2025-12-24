@@ -11,7 +11,7 @@ namespace helpers;
  * @license    GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
  * @author     Tobias Zeising <tobias.zeising@aditu.de>
  */
-class ImageUtils {
+final class ImageUtils {
     private const ICON_REL_WEIGHTS = [
         'apple-touch-icon-precomposed' => 3,
         'apple-touch-icon' => 2,

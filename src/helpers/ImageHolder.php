@@ -7,7 +7,7 @@ namespace helpers;
 /**
  * Class holding image data and accompanying metadata.
  */
-class ImageHolder {
+final class ImageHolder {
     /**
      * @param Image::FORMAT_JPEG|Image::FORMAT_PNG $format
      */

@@ -7,7 +7,7 @@ declare(strict_types=1);
 
 namespace helpers;
 
-class Request {
+final class Request {
     public function getContentType(): string {
         return $_SERVER['CONTENT_TYPE'] ?? '';
     }

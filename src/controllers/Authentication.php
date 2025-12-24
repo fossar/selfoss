@@ -10,7 +10,7 @@ use helpers\View;
 /**
  * Controller for user related tasks
  */
-class Authentication {
+final class Authentication {
     public function __construct(
         private AuthenticationService $authenticationService,
         private View $view

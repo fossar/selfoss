@@ -14,7 +14,7 @@ use PDOException;
  * SPDX-License-Identifier: GPL-3.0-or-later
  * Copyright (c) 2009-2019 F3::Factory/Bong Cosca
  */
-class DatabaseConnection {
+final class DatabaseConnection {
     /** Whether a transaction is currently in progress */
     private bool $isInTransaction = false;
 

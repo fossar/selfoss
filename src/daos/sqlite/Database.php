@@ -16,7 +16,7 @@ use Monolog\Logger;
  * @author      Harald Lapp (harald.lapp@gmail.com)
  * @author      Tobias Zeising <tobias.zeising@aditu.de>
  */
-class Database implements \daos\DatabaseInterface {
+final class Database implements \daos\DatabaseInterface {
     use CommonSqlDatabase;
 
     /**

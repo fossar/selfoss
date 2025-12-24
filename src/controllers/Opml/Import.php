@@ -17,7 +17,7 @@ use SimpleXMLElement;
  * @author     Michael Moore <stuporglue@gmail.com>
  * @author     Sean Rand <asanernd@gmail.com>
  */
-class Import {
+final class Import {
     /** @var array<string, array{id: int, tags: string[]}> Sources that have been imported from the OPML file */
     private array $imported = [];
 
