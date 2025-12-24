@@ -6,7 +6,7 @@ import Dexie, {
     Transaction,
     TransactionMode,
 } from 'dexie';
-import { OfflineDb } from './model/OfflineDb';
+import { OfflineDb, StatName, StatusName } from './model/OfflineDb';
 import { FilterType } from './Filter';
 import { FetchParams } from './selfoss-db-online';
 import { ResponseItem } from './requests/items';
@@ -256,9 +256,11 @@ export default class DbOffline {
         );
     }
 
-    storeStats(stats: { [key: string]: number }): Promise<void> {
+    storeStats(stats: Partial<Record<StatName, number>>): Promise<void> {
         return this._tr('rw', [selfoss.db.storage.stats], () => {
-            for (const [name, value] of Object.entries(stats)) {
+            for (const [name, value] of Object.entries(stats) as Array<
+                [StatName, number]
+            >) {
                 selfoss.db.storage.stats.put({
                     name,
                     value,
@@ -409,7 +411,7 @@ export default class DbOffline {
     }
 
     enqueueStatuses(
-        statuses: { entryId: number; name: string; value: boolean }[],
+        statuses: { entryId: number; name: StatusName; value: boolean }[],
     ): Promise<void> {
         if (statuses) {
             this.needsSync = true;
@@ -430,7 +432,7 @@ export default class DbOffline {
 
     enqueueStatus(
         entryId: number,
-        statusName: string,
+        statusName: StatusName,
         statusValue: boolean,
     ): Promise<void> {
         return this.enqueueStatuses([
@@ -447,11 +449,14 @@ export default class DbOffline {
             .toArray()
             .then((statuses) => {
                 return statuses.map((s) => {
-                    const statusUpdate = {
+                    const statusUpdate: {
+                        id: number;
+                        datetime: Date;
+                    } & Partial<Record<StatusName, boolean>> = {
                         id: s.entryId,
                         datetime: s.datetime,
+                        [s.name]: s.value,
                     };
-                    statusUpdate[s.name] = s.value;
 
                     return statusUpdate;
                 });
@@ -535,7 +540,9 @@ export default class DbOffline {
                     });
 
                     if (updateStats) {
-                        for (const [name, value] of Object.entries(statsDiff)) {
+                        for (const [name, value] of Object.entries(
+                            statsDiff,
+                        ) as Array<[StatusName, number]>) {
                             selfoss.db.storage.stats.get(name, (stat) => {
                                 selfoss.db.storage.stats.put({
                                     name,

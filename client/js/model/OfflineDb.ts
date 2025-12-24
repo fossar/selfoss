@@ -1,10 +1,12 @@
 import Dexie from 'dexie';
 import { ResponseItem } from '../requests/items';
 
+export type StatusName = 'unread' | 'starred';
+
 export interface Status {
     id?: number; // Primary key. Optional (autoincremented).
     entryId: number;
-    name: string;
+    name: StatusName;
     value: boolean;
     datetime: Date;
 }
@@ -14,8 +16,10 @@ export interface Stamp {
     datetime: Date;
 }
 
+export type StatName = 'unread' | 'starred' | 'total';
+
 export interface Stat {
-    name: string;
+    name: StatName;
     value: number;
 }
 

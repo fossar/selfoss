@@ -40,6 +40,7 @@ import { Configuration, ConfigurationContext } from '../model/Configuration';
 import { HttpError } from '../errors';
 import { useNavigate } from 'react-router';
 import { FetchParams } from '../selfoss-db-online';
+import { StatusName } from '../model/OfflineDb';
 
 function reloadList({
     fetchParams,
@@ -940,9 +941,10 @@ export class StateHolder extends React.Component<
                 selfoss
                     .handleAjaxError(error)
                     .then(() => {
+                        const statusName: StatusName = 'unread';
                         const statuses = ids.map((id) => ({
                             entryId: id,
-                            name: 'unread',
+                            name: statusName,
                             value: false,
                         }));
                         selfoss.dbOffline.enqueueStatuses(statuses);
