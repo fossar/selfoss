@@ -49,7 +49,10 @@
             "spouts\\": "src/spouts/",
             "Selfoss\\": "src/",
             "Tests\\": "tests/"
-        }
+        },
+        "files": [
+            "src/constants.php"
+        ]
     },
     "config": {
         "platform": {

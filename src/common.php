@@ -20,8 +20,6 @@ use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Cache\Psr16Cache;
 use Tracy\Debugger;
 
-require __DIR__ . '/constants.php';
-
 function boot_error(string $message): never {
     http_response_code(500);
     header('Content-Type: text/plain');
