@@ -46,7 +46,11 @@ error_reporting(E_ALL);
 $f3->set('AUTOLOAD', false);
 $f3->set('BASEDIR', BASEDIR);
 
-$configuration = new Configuration(__DIR__ . '/../config.ini', $_ENV);
+try {
+    $configuration = new Configuration(__DIR__ . '/../config.ini', $_ENV);
+} catch (Exception $e) {
+    boot_error('Invalid configuration: ' . $e->getMessage() . PHP_EOL);
+}
 
 $f3->set('DEBUG', $configuration->debug);
 $f3->set('cache', $configuration->cache);
@@ -182,7 +186,7 @@ if ($configuration->dbType === 'sqlite') {
         'password' => $configuration->dbPassword,
     ];
 } else {
-    throw new Exception('Unsupported value for db_type option: ' . $configuration->dbType);
+    boot_error('Unsupported value for db_type option: ' . $configuration->dbType . PHP_EOL);
 }
 
 $databaseConnection =
