@@ -1,0 +1,28 @@
+# Taken from .gitignore
+/assets/.parcel-cache
+/data/favicons/*.png
+/data/favicons/*.jpg
+/data/thumbnails/*.png
+/data/thumbnails/*.jpg
+/data/cache/*.spc
+/data/logs/*.log
+/data/sqlite/*.db
+/public
+docs/public/
+docs/static/processed_images/
+user.css
+user.js
+*.ini
+node_modules
+.env
+vendor/
+.php_cs.cache
+__pycache__
+
+# Regular docker ignore
+.dockerignore
+Dockerfile
+.git
+.github
+.gitignore
+*.md
