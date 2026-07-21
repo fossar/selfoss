@@ -52,7 +52,7 @@ class youtube extends \spouts\rss\feed {
     }
 
     public function getXmlUrl(array $params): string {
-        $urlOrUsername = $params['channel'];
+        $urlOrUsername = (string) $params['channel'];
         if (preg_match('(^https?://www.youtube.com/channel/([a-zA-Z0-9_-]+)$)', $urlOrUsername, $matched)) {
             $id = $matched[1];
             $feed_type = 'channel_id';
