@@ -14,6 +14,11 @@ Some sites offer a feed but do not provide any machine findable link. They might
 If a site does not provide a feed and you still want to subscribe to its changes, you might need to try a proxy like [RSS-Bridge](https://rss-bridge.github.io/rss-bridge/).
 
 
+## Why are items missing from source? {#missing-items}
+
+selfoss removes items older than [`items_lifetime`](@/docs/administration/options.md#items-lifetime) configuration option. You can increase the value or (on selfoss ≥ 2.20) set it to `0` (forever) to keep older items at the cost of increased database size.
+
+
 ## Why does selfoss keep logging me out? {#frequent-deauth}
 
 selfoss uses PHP’s built-in [session support](https://www.php.net/manual/en/intro.session.php) to remember that the user is logged in. The session identifier is stored in a [cookie](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies), which is set to expire in one month. If you are logged out sooner, make sure your web browser is not set to clear cookies on exit.
