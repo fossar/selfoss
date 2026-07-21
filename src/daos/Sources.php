@@ -151,17 +151,17 @@ final readonly class Sources implements SourcesInterface {
                 }
 
                 foreach ($validation as $validate) {
-                    if ($validate === Parameter::VALIDATION_ALPHA && !preg_match("([A-Za-z._\b]+)", $value)) {
+                    if ($validate === Parameter::VALIDATION_ALPHA && !(is_string($value) && preg_match("([A-Za-z._\b]+)", $value))) {
                         $result[$id] = 'only alphabetic characters allowed for ' . $spout->params[$id]['title'];
-                    } elseif ($validate === Parameter::VALIDATION_EMAIL && !preg_match('(^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$)', $value)) {
+                    } elseif ($validate === Parameter::VALIDATION_EMAIL && !(is_string($value) && preg_match('(^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$)', $value))) {
                         $result[$id] = $spout->params[$id]['title'] . ' is not a valid email address';
                     } elseif ($validate === Parameter::VALIDATION_NUMERIC && !is_numeric($value)) {
                         $result[$id] = 'only numeric values allowed for ' . $spout->params[$id]['title'];
                     } elseif ($validate === Parameter::VALIDATION_INT && (int) $value != $value) {
                         $result[$id] = 'only integer values allowed for ' . $spout->params[$id]['title'];
-                    } elseif ($validate === Parameter::VALIDATION_ALPHANUMERIC && !preg_match("([A-Za-z0-9._\b]+)", $value)) {
+                    } elseif ($validate === Parameter::VALIDATION_ALPHANUMERIC && !(is_string($value) && preg_match("([A-Za-z0-9._\b]+)", $value))) {
                         $result[$id] = 'only alphanumeric values allowed for ' . $spout->params[$id]['title'];
-                    } elseif ($validate === Parameter::VALIDATION_NONEMPTY && strlen(trim($value)) === 0) {
+                    } elseif ($validate === Parameter::VALIDATION_NONEMPTY && strlen(trim((string) $value)) === 0) {
                         $result[$id] = 'empty value for ' . $spout->params[$id]['title'] . ' not allowed';
                     }
                 }
