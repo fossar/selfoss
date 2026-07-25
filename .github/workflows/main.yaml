@@ -149,11 +149,12 @@ jobs:
           echo "version=$(echo selfoss-*.zip | sed -e 's/^selfoss-//' -e 's/\.zip$//')" >> "$GITHUB_OUTPUT"
 
       - name: Upload the zipball to GitHub
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ steps.zipball.outputs.file_name }}
           if-no-files-found: error
           path: ${{ steps.zipball.outputs.file_name }}
+          archive: false
 
       - name: Upload the zipball to Cloudsmith
         uses: cloudsmith-io/action@v0.6.9
