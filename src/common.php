@@ -41,7 +41,7 @@ Debugger::enable(Debugger::Production);
 
 try {
     $configuration = new Configuration(__DIR__ . '/../config.ini', $_ENV);
-} catch (Exception $e) {
+} catch (Throwable $e) {
     boot_error('Invalid configuration: ' . $e->getMessage() . PHP_EOL);
 }
 
