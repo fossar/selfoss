@@ -35,7 +35,6 @@
     "@parcel/transformer-image": "^2.0.1",
     "@parcel/transformer-sass": "^2.0.0",
     "@parcel/transformer-webmanifest": "^2.0.0",
-    "@types/history": "^4.7.11",
     "@types/html-escaper": "^3.0.2",
     "@types/lodash-es": "^4.17.12",
     "@types/ramda": "^0.31.0",

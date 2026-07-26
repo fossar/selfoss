@@ -1,5 +1,8 @@
-import { Location as LocationGeneric } from 'history';
-import { useLocation as useLocationGeneric, useMatch } from 'react-router';
+import {
+    Location as LocationGeneric,
+    useLocation as useLocationGeneric,
+    useMatch,
+} from 'react-router';
 import { FilterType } from '../Filter';
 
 export type LocationState = {
