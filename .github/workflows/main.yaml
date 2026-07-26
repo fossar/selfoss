@@ -144,7 +144,7 @@ jobs:
       - name: Build a zipball
         id: zipball
         run: |
-          nix-shell -A ci --run 'npm run dist'
+          nix-shell -A ci-dist --run 'npm run dist'
           echo "file_name=$(echo selfoss-*.zip)" >> "$GITHUB_OUTPUT"
           echo "version=$(echo selfoss-*.zip | sed -e 's/^selfoss-//' -e 's/\.zip$//')" >> "$GITHUB_OUTPUT"
 

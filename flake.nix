@@ -133,6 +133,19 @@
             ]
           );
 
+          # Minimal environment for deploy ci job
+          ci-dist = pkgs.mkShell (
+            mergeEnvs [
+              languageEnv
+
+              {
+                nativeBuildInputs = [
+                  pkgs.python3
+                ];
+              }
+            ]
+          );
+
           website = pkgs.mkShell (
             mergeEnvs [
               websiteTools
