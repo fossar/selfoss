@@ -6,6 +6,7 @@ namespace spouts\rss;
 
 use Selfoss\helpers\HtmlString;
 use SimplePie;
+use SimplePie\Enclosure;
 use spouts\Item;
 
 /**
@@ -39,13 +40,19 @@ class enclosures extends feed {
         $newContent = $content->getRaw();
 
         foreach ($enclosures as $enclosure) {
-            if ($enclosure->get_medium() === 'image') {
-                $title = htmlspecialchars(strip_tags((string) $enclosure->get_title()), ENT_QUOTES);
-                $url = htmlspecialchars_decode($enclosure->get_link() ?? '', ENT_COMPAT); // SimplePie sanitizes URLs
-                $newContent .= '<img src="' . htmlspecialchars($url, ENT_QUOTES) . '" alt="' . $title . '" title="' . $title . '" />';
-            }
+            $newContent .= match ($enclosure->get_medium()) {
+                'image' => self::formatImage($enclosure),
+                default => '',
+            };
         }
 
         return HtmlString::fromRaw($newContent);
+    }
+
+    private static function formatImage(Enclosure $enclosure): string {
+        $title = htmlspecialchars(strip_tags((string) $enclosure->get_title()), ENT_QUOTES);
+        $url = htmlspecialchars_decode($enclosure->get_link() ?? '', ENT_COMPAT); // SimplePie sanitizes URLs
+
+        return '<img src="' . htmlspecialchars($url, ENT_QUOTES) . '" alt="' . $title . '" title="' . $title . '" />';
     }
 }
