@@ -13,6 +13,7 @@ use Psr\SimpleCache\CacheInterface;
 use Selfoss\daos;
 use Selfoss\helpers;
 use Selfoss\helpers\Configuration;
+use Selfoss\helpers\Configuration\LoggerLevel;
 use Selfoss\helpers\DatabaseConnection;
 use Selfoss\helpers\WebClient;
 use Slince\Di\Container;
@@ -263,15 +264,15 @@ $container
 // init logger
 $log = $container->get(Logger::class);
 
-if ($configuration->loggerLevel === Configuration::LOGGER_LEVEL_NONE) {
+if ($configuration->loggerLevel === LoggerLevel::None) {
     $handler = new NullHandler();
 } else {
     $logger_destination = $configuration->loggerDestination;
 
     if (str_starts_with($logger_destination, 'file:')) {
-        $handler = new StreamHandler(substr($logger_destination, 5), $configuration->loggerLevel);
+        $handler = new StreamHandler(substr($logger_destination, 5), $configuration->loggerLevel->value);
     } elseif ($logger_destination === 'error_log') {
-        $handler = new ErrorLogHandler(ErrorLogHandler::OPERATING_SYSTEM, $configuration->loggerLevel);
+        $handler = new ErrorLogHandler(ErrorLogHandler::OPERATING_SYSTEM, $configuration->loggerLevel->value);
     } else {
         boot_error('The `logger_destination` option needs to be either `error_log` or a file path prefixed by `file:`.' . PHP_EOL);
     }

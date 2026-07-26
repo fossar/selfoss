@@ -14,6 +14,7 @@ use Override;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Selfoss\helpers\Configuration\LoggerLevel;
 
 /**
  * Helper class for web request
@@ -54,7 +55,7 @@ class WebClient implements ClientInterface {
         $stack = HandlerStack::create();
         $stack->push(new GuzzleTranscoder());
 
-        if ($this->configuration->loggerLevel === Configuration::LOGGER_LEVEL_DEBUG) {
+        if ($this->configuration->loggerLevel === LoggerLevel::Debug) {
             if ($this->configuration->debug === 0) {
                 $logFormat = GuzzleHttp\MessageFormatter::SHORT;
             } elseif ($this->configuration->debug === 1) {

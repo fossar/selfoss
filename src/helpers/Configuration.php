@@ -7,6 +7,7 @@ namespace Selfoss\helpers;
 use Exception;
 use ReflectionClass;
 use ReflectionNamedType;
+use Selfoss\helpers\Configuration\LoggerLevel;
 
 /**
  * Configuration container.
@@ -20,28 +21,6 @@ final class Configuration {
         'loggerDestination',
         'cache',
         'ftrssCustomDataDir',
-    ];
-
-    public const LOGGER_LEVEL_EMERGENCY = 'EMERGENCY';
-    public const LOGGER_LEVEL_ALERT = 'ALERT';
-    public const LOGGER_LEVEL_CRITICAL = 'CRITICAL';
-    public const LOGGER_LEVEL_ERROR = 'ERROR';
-    public const LOGGER_LEVEL_WARNING = 'WARNING';
-    public const LOGGER_LEVEL_NOTICE = 'NOTICE';
-    public const LOGGER_LEVEL_INFO = 'INFO';
-    public const LOGGER_LEVEL_DEBUG = 'DEBUG';
-    public const LOGGER_LEVEL_NONE = 'NONE';
-
-    private const ALLOWED_LOGGER_LEVELS = [
-        self::LOGGER_LEVEL_EMERGENCY,
-        self::LOGGER_LEVEL_ALERT,
-        self::LOGGER_LEVEL_CRITICAL,
-        self::LOGGER_LEVEL_ERROR,
-        self::LOGGER_LEVEL_WARNING,
-        self::LOGGER_LEVEL_NOTICE,
-        self::LOGGER_LEVEL_INFO,
-        self::LOGGER_LEVEL_DEBUG,
-        self::LOGGER_LEVEL_NONE,
     ];
 
     /** @var array<string, bool> Keeps track of options that have been changed. */
@@ -83,8 +62,7 @@ final class Configuration {
 
     public string $loggerDestination = 'file:%datadir%/logs/default.log';
 
-    /** @var self::LOGGER_LEVEL_* */
-    public string $loggerLevel = 'ERROR';
+    public LoggerLevel $loggerLevel = LoggerLevel::Error;
 
     public int $itemsPerpage = 50;
 
@@ -216,9 +194,10 @@ final class Configuration {
                 $value = (int) $value;
             } elseif ($propertyType === 'string') {
                 // Should already be a string.
-            } elseif ($propertyType === 'self::LOGGER_LEVEL_*') {
-                if (!in_array($value, self::ALLOWED_LOGGER_LEVELS, true)) {
-                    throw new Exception("Unsupported value “{$value}” for property “{$propertyName}”, must be one of " . implode(', ', self::ALLOWED_LOGGER_LEVELS) . '.', 1);
+            } elseif ($propertyType === LoggerLevel::class) {
+                $value = LoggerLevel::tryFrom($value);
+                if ($value === null) {
+                    throw new Exception("Unsupported value “{$value}” for property “{$propertyName}”, must be one of " . implode(', ', array_map(fn(LoggerLevel $level) => $level->value, LoggerLevel::cases())) . '.', 1);
                 }
             } else {
                 throw new Exception("Unknown type “{$propertyType}” for property “{$propertyName}”.", 1);
