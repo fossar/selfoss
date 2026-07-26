@@ -16,23 +16,6 @@ use Selfoss\helpers\HtmlString;
 use Slince\Di\Container;
 use spouts\youtube\youtube;
 
-function getResourcePath(string $url): string {
-    $fileName = str_replace([':', '/', '?', '=', '@'], '_', $url);
-
-    return __DIR__ . '/resources/YouTube/' . $fileName;
-}
-
-/**
- * @return array{url: string, fileName: string, contentType: string}
- */
-function makeRemoteFile(string $url, string $contentType, string $extension = ''): array {
-    return [
-        'url' => $url,
-        'fileName' => getResourcePath($url) . $extension,
-        'contentType' => $contentType,
-    ];
-}
-
 final class YouTubeTest extends TestCase {
     /**
      * @dataProvider dataProvider
@@ -114,7 +97,7 @@ final class YouTubeTest extends TestCase {
 
         yield [
             'urls' => [
-                makeRemoteFile('https://www.youtube.com/user/ZoggFromBetelgeuse', 'application/rss+xml', '.xml'),
+                self::makeRemoteFile('https://www.youtube.com/user/ZoggFromBetelgeuse', 'application/rss+xml', '.xml'),
             ],
             'feedTitle' => 'Zogg from Betelgeuse',
             'firstItemTitle' => HtmlString::fromPlainText('No Edge 3: The Shape of the Universe (What do we know?)'),
@@ -123,7 +106,7 @@ final class YouTubeTest extends TestCase {
 
         yield [
             'urls' => [
-                makeRemoteFile('https://www.youtube.com/channel/UCKY00CSQo1MoC27bdGd-w_g', 'application/rss+xml', '.xml'),
+                self::makeRemoteFile('https://www.youtube.com/channel/UCKY00CSQo1MoC27bdGd-w_g', 'application/rss+xml', '.xml'),
             ],
             'feedTitle' => 'Zogg from Betelgeuse',
             'firstItemTitle' => HtmlString::fromPlainText('No Edge 3: The Shape of the Universe (What do we know?)'),
@@ -132,7 +115,7 @@ final class YouTubeTest extends TestCase {
 
         yield [
             'urls' => [
-                makeRemoteFile('https://www.youtube.com/ZoggFromBetelgeuse', 'application/rss+xml', '.xml'),
+                self::makeRemoteFile('https://www.youtube.com/ZoggFromBetelgeuse', 'application/rss+xml', '.xml'),
             ],
             'feedTitle' => 'Zogg from Betelgeuse',
             'firstItemTitle' => HtmlString::fromPlainText('No Edge 3: The Shape of the Universe (What do we know?)'),
@@ -141,7 +124,7 @@ final class YouTubeTest extends TestCase {
 
         yield [
             'urls' => [
-                makeRemoteFile('ZoggFromBetelgeuse', 'application/rss+xml', '.xml'),
+                self::makeRemoteFile('ZoggFromBetelgeuse', 'application/rss+xml', '.xml'),
             ],
             'feedTitle' => 'Zogg from Betelgeuse',
             'firstItemTitle' => HtmlString::fromPlainText('No Edge 3: The Shape of the Universe (What do we know?)'),
@@ -150,7 +133,7 @@ final class YouTubeTest extends TestCase {
 
         yield [
             'urls' => [
-                makeRemoteFile('https://www.youtube.com/playlist?list=PLKhDkilF5o6_pFucn5JHd6xy7muHLK6pS', 'application/rss+xml', '.xml'),
+                self::makeRemoteFile('https://www.youtube.com/playlist?list=PLKhDkilF5o6_pFucn5JHd6xy7muHLK6pS', 'application/rss+xml', '.xml'),
             ],
             'feedTitle' => 'BeeKeeping',
             'firstItemTitle' => HtmlString::fromPlainText('Year of BeeKeeping Episode 15, Finding Queen'),
@@ -165,8 +148,8 @@ final class YouTubeTest extends TestCase {
 
         yield [
             'urls' => [
-                makeRemoteFile('https://www.youtube.com/@BreakingTaps', 'text/html', '.html'),
-                makeRemoteFile('https://www.youtube.com/feeds/videos.xml?channel_id=UC06HVrkOL33D5lLnCPjr6NQ', 'application/rss+xml', '.xml'),
+                self::makeRemoteFile('https://www.youtube.com/@BreakingTaps', 'text/html', '.html'),
+                self::makeRemoteFile('https://www.youtube.com/feeds/videos.xml?channel_id=UC06HVrkOL33D5lLnCPjr6NQ', 'application/rss+xml', '.xml'),
             ],
             'feedTitle' => 'Breaking Taps',
             'firstItemTitle' => HtmlString::fromPlainText('Slow Motion Tuning Fork'),
@@ -179,6 +162,23 @@ final class YouTubeTest extends TestCase {
                     #shorts
                     HTML
             ),
+        ];
+    }
+
+    public static function getResourcePath(string $url): string {
+        $fileName = str_replace([':', '/', '?', '=', '@'], '_', $url);
+
+        return __DIR__ . '/resources/YouTube/' . $fileName;
+    }
+
+    /**
+     * @return array{url: string, fileName: string, contentType: string}
+     */
+    public static function makeRemoteFile(string $url, string $contentType, string $extension = ''): array {
+        return [
+            'url' => $url,
+            'fileName' => self::getResourcePath($url) . $extension,
+            'contentType' => $contentType,
         ];
     }
 }
