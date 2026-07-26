@@ -29,6 +29,8 @@ foreach ($reflection->getProperties() as $property) {
         $defaultValue = '1';
     } elseif ($defaultValue === false) {
         $defaultValue = '0';
+    } elseif ($defaultValue instanceof BackedEnum) {
+        $defaultValue = $defaultValue->value;
     }
 
     $example .= $configKey . '=' . $defaultValue . PHP_EOL;
