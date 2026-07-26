@@ -171,15 +171,11 @@ final class Configuration {
 
             $nullable = false;
             $propertyType = null;
-            if (($doc = $property->getDocComment()) !== false && preg_match('(@var (?P<nullable>\??)(?P<type>[^\s]+))', $doc, $matches) === 1) {
-                $nullable = $matches['nullable'] === '?';
-                $propertyType = $matches['type'];
-            } else {
-                $type = $property->getType();
-                $nullable = $type !== null && $type->allowsNull();
-                if ($type instanceof ReflectionNamedType) {
-                    $propertyType = $type->getName();
-                }
+
+            $type = $property->getType();
+            $nullable = $type !== null && $type->allowsNull();
+            if ($type instanceof ReflectionNamedType) {
+                $propertyType = $type->getName();
             }
 
             if ($nullable && $value === '') {
