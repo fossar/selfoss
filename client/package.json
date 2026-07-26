@@ -30,7 +30,7 @@
     "yet-another-react-lightbox": "^3.5.0"
   },
   "devDependencies": {
-    "@eslint/js": "^9.0.0",
+    "@eslint/js": "^10.0.1",
     "@parcel/packager-raw-url": "^2.0.0",
     "@parcel/transformer-image": "^2.0.1",
     "@parcel/transformer-sass": "^2.0.0",
