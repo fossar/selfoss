@@ -46,6 +46,16 @@
 
         mergeEnvs = lib.foldr (lib.mergeAttrsWithFunc mergeAttribute) {};
 
+        mkShell =
+          attrs:
+
+          let
+            attrs' = attrs // {
+              nativeBuildInputs = lib.map lib.getBin attrs.nativeBuildInputs or [ ];
+            };
+          in
+          pkgs.mkShell attrs';
+
         # Create a PHP package from the selected PHP package, with some extra extensions enabled.
         php = phps.packages.${system}.${matrix.phpPackage}.withExtensions ({ enabled, all }: with all; enabled ++ [
           imagick
@@ -114,7 +124,7 @@
       {
         # Expose shell environment for development.
         devShells = {
-          default = pkgs.mkShell (
+          default = mkShell (
             mergeEnvs [
               languageEnv
               developmentSupport
@@ -124,7 +134,7 @@
             ]
           );
 
-          ci = pkgs.mkShell (
+          ci = mkShell (
             mergeEnvs [
               languageEnv
               qaTools
@@ -134,7 +144,7 @@
           );
 
           # Minimal environment for deploy ci job
-          ci-dist = pkgs.mkShell (
+          ci-dist = mkShell (
             mergeEnvs [
               languageEnv
 
@@ -146,7 +156,7 @@
             ]
           );
 
-          website = pkgs.mkShell (
+          website = mkShell (
             mergeEnvs [
               websiteTools
             ]
