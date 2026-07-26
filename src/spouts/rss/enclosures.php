@@ -50,8 +50,14 @@ class enclosures extends feed {
     }
 
     private static function formatImage(Enclosure $enclosure): string {
+        $url = $enclosure->get_link();
+
+        if ($url === null) {
+            return '';
+        }
+
         $title = htmlspecialchars(strip_tags((string) $enclosure->get_title()), ENT_QUOTES);
-        $url = htmlspecialchars_decode($enclosure->get_link() ?? '', ENT_COMPAT); // SimplePie sanitizes URLs
+        $url = htmlspecialchars_decode($url, ENT_COMPAT); // SimplePie sanitizes URLs
 
         return '<img src="' . htmlspecialchars($url, ENT_QUOTES) . '" alt="' . $title . '" title="' . $title . '" />';
     }
