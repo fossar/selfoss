@@ -10,6 +10,7 @@
 - Source filters can be negated, or limited to only title or only content. ([#1423](https://github.com/fossar/selfoss/pull/1423))
 - Sources can be filtered based on item’s author, URL or categories. ([#1423](https://github.com/fossar/selfoss/pull/1423), [#1424](https://github.com/fossar/selfoss/pull/1424))
 - Source filter expression is now validated whenever a source is modified. ([#1423](https://github.com/fossar/selfoss/pull/1423))
+- RSS with enclosures spout now links audio enclosures (e.g. podcasts). ([#1574](https://github.com/fossar/selfoss/pull/1574))
 - Garbage collection can be completely disabled by setting `items_lifetime=0`.
 - Tamil (`ta`) translation was added.
 

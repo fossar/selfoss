@@ -40,13 +40,32 @@ class enclosures extends feed {
         $newContent = $content->getRaw();
 
         foreach ($enclosures as $enclosure) {
-            $newContent .= match ($enclosure->get_medium()) {
+            $newContent .= match (self::mediaKind($enclosure)) {
                 'image' => self::formatImage($enclosure),
+                'audio' => self::formatAudio($enclosure),
                 default => '',
             };
         }
 
         return HtmlString::fromRaw($newContent);
+    }
+
+    private static function mediaKind(Enclosure $enclosure): ?string {
+        $medium = $enclosure->get_medium();
+
+        if ($medium !== null) {
+            return $medium;
+        }
+
+        $type = $enclosure->get_type();
+
+        if ($type !== null) {
+            [$medium] = explode('/', $type, 2);
+
+            return $medium;
+        }
+
+        return null;
     }
 
     private static function formatImage(Enclosure $enclosure): string {
@@ -60,5 +79,27 @@ class enclosures extends feed {
         $url = htmlspecialchars_decode($url, ENT_COMPAT); // SimplePie sanitizes URLs
 
         return '<img src="' . htmlspecialchars($url, ENT_QUOTES) . '" alt="' . $title . '" title="' . $title . '" />';
+    }
+
+    private static function formatAudio(Enclosure $enclosure): string {
+        $url = $enclosure->get_link();
+
+        if ($url === null) {
+            return '';
+        }
+
+        $title = htmlspecialchars(strip_tags((string) $enclosure->get_title()), ENT_QUOTES);
+        $url = htmlspecialchars_decode($url, ENT_COMPAT); // SimplePie sanitizes URLs
+
+        $linkLabel = 'Download';
+
+        $duration = $enclosure->get_duration(true);
+        if ($duration !== null) {
+            $linkLabel .= ' (' . $duration . ')';
+        }
+
+        $link = '<a href="' . htmlspecialchars($url, ENT_QUOTES) . '">' . $linkLabel . '</a>';
+
+        return "\n" . $link;
     }
 }
