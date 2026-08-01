@@ -36,7 +36,7 @@ jobs:
             storage: postgresql
     name: 'Check with PHP ${{ matrix.php }} and ${{ matrix.storage }} storage backend'
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
       - name: Install Nix
         uses: cachix/install-nix-action@v31
@@ -110,7 +110,7 @@ jobs:
     needs:
       - tests
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
       - name: Install Nix
         uses: cachix/install-nix-action@v31
