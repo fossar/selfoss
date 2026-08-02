@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Selfoss\helpers;
 
-use GuzzleHttp\Psr7\HttpFactory;
 use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestFactoryInterface;
+use Psr\Http\Message\UriFactoryInterface;
 use Psr\SimpleCache\CacheInterface;
 use SimplePie\SimplePie;
 
@@ -14,7 +15,8 @@ use SimplePie\SimplePie;
  */
 final readonly class FeedReader {
     public function __construct(
-        HttpFactory $httpFactory,
+        RequestFactoryInterface $requestFactory,
+        UriFactoryInterface $uriFactory,
         private SimplePie $simplepie,
         ClientInterface $webClient,
         ?CacheInterface $cache = null
@@ -28,8 +30,8 @@ final readonly class FeedReader {
 
         $this->simplepie->set_http_client(
             $webClient,
-            $httpFactory,
-            $httpFactory,
+            $requestFactory,
+            $uriFactory,
         );
 
         // @phpstan-ignore argument.type (https://github.com/simplepie/simplepie/pull/946)
