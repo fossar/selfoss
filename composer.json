@@ -13,6 +13,7 @@
         "guzzlehttp/psr7": "^2.0",
         "http-interop/response-sender": "^1.0",
         "j0k3r/graby": "^2.0",
+        "j0k3r/httplug-ssrf-plugin": "^3.0",
         "lordelph/icofileloader": "^3.0",
         "mibe/feedwriter": "^1.0",
         "monolog/monolog": "^2.10",
