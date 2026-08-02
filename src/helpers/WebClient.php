@@ -30,6 +30,7 @@ class WebClient implements ClientInterface {
         private readonly Configuration $configuration,
         private readonly RequestFactoryInterface $requestFactory,
         private readonly Logger $logger,
+        private readonly SsrfFilter $ssrfFilter,
     ) {
     }
 
@@ -53,6 +54,9 @@ class WebClient implements ClientInterface {
      */
     public function createHttpClientConfig(): array {
         $stack = HandlerStack::create();
+
+        $stack->push($this->ssrfFilter);
+
         $stack->push(new GuzzleTranscoder());
 
         if ($this->configuration->loggerLevel === LoggerLevel::Debug) {
