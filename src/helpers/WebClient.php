@@ -8,10 +8,10 @@ use Exception;
 use Fossar\GuzzleTranscoder\GuzzleTranscoder;
 use GuzzleHttp;
 use GuzzleHttp\HandlerStack;
-use GuzzleHttp\Psr7\HttpFactory;
 use Monolog\Logger;
 use Override;
 use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Selfoss\helpers\Configuration\LoggerLevel;
@@ -28,8 +28,8 @@ class WebClient implements ClientInterface {
 
     public function __construct(
         private readonly Configuration $configuration,
-        private readonly HttpFactory $httpFactory,
-        private readonly Logger $logger
+        private readonly RequestFactoryInterface $requestFactory,
+        private readonly Logger $logger,
     ) {
     }
 
@@ -118,7 +118,7 @@ class WebClient implements ClientInterface {
      * @throws Exception Unless 200 0K response is received
      */
     public function request(string $url, ?string $agentInfo = null): string {
-        $response = $this->sendRequest($this->httpFactory->createRequest('GET', $url));
+        $response = $this->sendRequest($this->requestFactory->createRequest('GET', $url));
         $data = (string) $response->getBody();
 
         if ($response->getStatusCode() !== 200) {

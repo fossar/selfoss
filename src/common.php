@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use GuzzleHttp\Psr7\HttpFactory;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\ErrorLogHandler;
 use Monolog\Handler\NullHandler;
@@ -9,6 +10,8 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestFactoryInterface;
+use Psr\Http\Message\UriFactoryInterface;
 use Psr\SimpleCache\CacheInterface;
 use Selfoss\daos;
 use Selfoss\helpers;
@@ -249,6 +252,19 @@ $container
     ->register(CacheInterface::class, Psr16Cache::class)
     ->setArgument('pool', new Slince\Di\Reference('$fileStorage'))
     ->setShared(true)
+;
+
+$container
+    ->register(HttpFactory::class)
+    ->setShared(true)
+;
+
+$container
+    ->setAlias(RequestFactoryInterface::class, HttpFactory::class)
+;
+
+$container
+    ->setAlias(UriFactoryInterface::class, HttpFactory::class)
 ;
 
 $container
