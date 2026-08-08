@@ -3735,16 +3735,16 @@
     "packages-dev": [
         {
             "name": "php-cs-fixer/shim",
-            "version": "v3.95.17",
+            "version": "v3.95.18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHP-CS-Fixer/shim.git",
-                "reference": "fe9462e0b3e59b33ee076f6eda626b474b8cf363"
+                "reference": "9b815f2ba5c581faaaec1386dcda4c16d511e6bb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHP-CS-Fixer/shim/zipball/fe9462e0b3e59b33ee076f6eda626b474b8cf363",
-                "reference": "fe9462e0b3e59b33ee076f6eda626b474b8cf363",
+                "url": "https://api.github.com/repos/PHP-CS-Fixer/shim/zipball/9b815f2ba5c581faaaec1386dcda4c16d511e6bb",
+                "reference": "9b815f2ba5c581faaaec1386dcda4c16d511e6bb",
                 "shasum": ""
             },
             "require": {
@@ -3781,9 +3781,9 @@
             "description": "A tool to automatically fix PHP code style",
             "support": {
                 "issues": "https://github.com/PHP-CS-Fixer/shim/issues",
-                "source": "https://github.com/PHP-CS-Fixer/shim/tree/v3.95.17"
+                "source": "https://github.com/PHP-CS-Fixer/shim/tree/v3.95.18"
             },
-            "time": "2026-07-24T13:55:04+00:00"
+            "time": "2026-07-30T15:46:28+00:00"
         },
         {
             "name": "php-parallel-lint/php-parallel-lint",
@@ -3848,11 +3848,11 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "2.2.7",
+            "version": "2.2.8",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/692db47b9dddb0487934e5236e77d48594aef921",
-                "reference": "692db47b9dddb0487934e5236e77d48594aef921",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/e285254e60f33c21902efef4a926ca0987c06804",
+                "reference": "e285254e60f33c21902efef4a926ca0987c06804",
                 "shasum": ""
             },
             "require": {
@@ -3908,7 +3908,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-07-29T17:39:32+00:00"
+            "time": "2026-08-04T22:21:45+00:00"
         },
         {
             "name": "phpstan/phpstan-deprecation-rules",
@@ -3963,16 +3963,16 @@
         },
         {
             "name": "rector/rector",
-            "version": "2.5.8",
+            "version": "2.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rectorphp/rector.git",
-                "reference": "861c77fd2a6d45317a401f4e0b617f947e8b6f96"
+                "reference": "b8e68f058bca43e01a2e1caa51ef022d6551ed95"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rectorphp/rector/zipball/861c77fd2a6d45317a401f4e0b617f947e8b6f96",
-                "reference": "861c77fd2a6d45317a401f4e0b617f947e8b6f96",
+                "url": "https://api.github.com/repos/rectorphp/rector/zipball/b8e68f058bca43e01a2e1caa51ef022d6551ed95",
+                "reference": "b8e68f058bca43e01a2e1caa51ef022d6551ed95",
                 "shasum": ""
             },
             "require": {
@@ -4011,7 +4011,7 @@
             ],
             "support": {
                 "issues": "https://github.com/rectorphp/rector/issues",
-                "source": "https://github.com/rectorphp/rector/tree/2.5.8"
+                "source": "https://github.com/rectorphp/rector/tree/2.6.1"
             },
             "funding": [
                 {
@@ -4019,7 +4019,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-07-27T06:19:16+00:00"
+            "time": "2026-08-03T17:30:34+00:00"
         },
         {
             "name": "symfony/phpunit-bridge",
