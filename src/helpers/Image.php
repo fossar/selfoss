@@ -110,7 +110,7 @@ final readonly class Image {
                         return [$shortcutIconUrl, $image];
                     }
                 } catch (\Throwable $e) {
-                    $this->logger->error("failed to retrieve image $url,", ['exception' => $e]);
+                    $this->logger->error("failed to retrieve shortcut icon $url,", ['exception' => $e]);
                 }
             }
         }
@@ -128,7 +128,7 @@ final readonly class Image {
                     return [$url, $image];
                 }
             } catch (\Throwable $e) {
-                $this->logger->error("failed to retrieve image $url,", ['exception' => $e]);
+                $this->logger->error("failed to retrieve favicon $url,", ['exception' => $e]);
             }
         }
 
