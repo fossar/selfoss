@@ -45,6 +45,8 @@ class SelfossServerThread(threading.Thread):
             # Configure selfoss using environment variables for convenience.
             test_env = {
                 **os.environ,
+                # Avoid picking up config.ini from repo.
+                "SELFOSS_CONFIG_DIR": data_dir,
                 "SELFOSS_DATADIR": data_dir,
                 "SELFOSS_LOGGER_DESTINATION": "error_log",
                 "SELFOSS_USERNAME": self.username,
