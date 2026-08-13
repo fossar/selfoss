@@ -115,11 +115,11 @@ final readonly class Image {
             }
         }
 
-        $urlElements = parse_url($url);
+        $urlElements = new Uri($url);
 
         // search domain/favicon.ico
-        if (isset($urlElements['scheme']) && isset($urlElements['host'])) {
-            $url = $urlElements['scheme'] . '://' . $urlElements['host'] . '/favicon.ico';
+        if ($urlElements->getScheme() !== '' && $urlElements->getAuthority() !== '') {
+            $url = (string) $urlElements->withPath('/favicon.ico')->withFragment('')->withQuery('');
             try {
                 $data = $this->webClient->request($url);
                 $image = $this->loadImage($data, self::FORMAT_PNG, $width, $height);
