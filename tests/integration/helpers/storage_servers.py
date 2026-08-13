@@ -31,7 +31,7 @@ class MySQL(Storage):
     def start(self):
         subprocess.check_call(
             [
-                "mysql_install_db",
+                "mariadb-install-db",
                 # Prevent defaulting to --user=mysql.
                 "--no-defaults",
                 f"--datadir={self.db_dir}",
@@ -41,7 +41,7 @@ class MySQL(Storage):
         # Start the server
         subprocess.check_call(
             [
-                "mysqld_safe",
+                "mariadbd-safe",
                 # Prevent trying to use /var/log for logs.
                 "--no-defaults",
                 f"--datadir={self.db_dir}",
@@ -56,7 +56,7 @@ class MySQL(Storage):
         time.sleep(2)
         subprocess.check_call(
             [
-                "mysql",
+                "mariadb",
                 "--wait",
                 f"--socket={self.socket_path}",
                 f"--execute=CREATE USER '{self.user}'@'localhost' IDENTIFIED BY '{self.password}';",
@@ -64,7 +64,7 @@ class MySQL(Storage):
         )
         subprocess.check_call(
             [
-                "mysql",
+                "mariadb",
                 "--wait",
                 f"--socket={self.socket_path}",
                 f"--execute=CREATE DATABASE {self.database};",
@@ -72,7 +72,7 @@ class MySQL(Storage):
         )
         subprocess.check_call(
             [
-                "mysql",
+                "mariadb",
                 "--wait",
                 f"--socket={self.socket_path}",
                 f"--execute=GRANT ALL PRIVILEGES ON *.* TO '{self.user}'@'localhost';",
@@ -81,7 +81,7 @@ class MySQL(Storage):
 
     def stop(self):
         subprocess.check_call(
-            ["mysqladmin", f"--socket={self.socket_path}", "shutdown"]
+            ["mariadb-admin", f"--socket={self.socket_path}", "shutdown"]
         )
         self.temp_dir.cleanup()
 
