@@ -41,7 +41,19 @@ Debugger::setSessionStorage(new Tracy\NativeSession());
 Debugger::enable(Debugger::Production);
 
 try {
-    $configuration = new Configuration(__DIR__ . '/../config.ini', $_ENV);
+    $configDir = $_ENV['SELFOSS_CONFIG_DIR'] ?? null;
+    if ($configDir !== null && !is_dir($configDir)) {
+        boot_error('The value of SELFOSS_CONFIG_DIR environment variable (' . $configDir . ') must be a directory');
+    }
+    $configDir ??= (__DIR__ . '/..');
+
+    $configPath = $_ENV['SELFOSS_CONFIG_PATH'] ?? null;
+    if ($configPath !== null && !is_file($configPath)) {
+        boot_error('The value of SELFOSS_CONFIG_PATH (' . $configPath . ') must be a file');
+    }
+    $configPath ??= $configDir . '/config.ini';
+
+    $configuration = new Configuration($configPath, $_ENV);
 } catch (Throwable $e) {
     boot_error('Invalid configuration: ' . $e->getMessage() . PHP_EOL);
 }

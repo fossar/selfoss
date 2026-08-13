@@ -33,6 +33,15 @@ db_username=secretagent
 db_password=life0fD4ng3r
 ```
 
+### Location of config files {#location}
+
+The configuration file path used will be in order:
+
+1. The value of `SELFOSS_CONFIG_PATH` environment variable, if set, otherwise
+2. `config.ini` in the directory from `SELFOSS_CONFIG_DIR` environment variable, if set, otherwise
+3. `config.ini` in the selfoss root directory
+
+If `SELFOSS_CONFIG_PATH` or `SELFOSS_CONFIG_DIR` environment variable is set, it must refer to a valid file or directory, respectively.
 
 ## Using environment variables {#env}
 

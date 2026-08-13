@@ -13,6 +13,7 @@
 - RSS with enclosures spout now links audio enclosures (e.g. podcasts). ([#1574](https://github.com/fossar/selfoss/pull/1574))
 - Garbage collection can be completely disabled by setting `items_lifetime=0`.
 - Tamil (`ta`) translation was added.
+- Configuration file path can be overridden with `SELFOSS_CONFIG_PATH` environment variable. Alternately, you can specify `SELFOSS_CONFIG_DIR` where selfoss will look for `config.ini`. ([#1603](https://github.com/fossar/selfoss/pull/1603))
 
 ### Bug fixes
 - Configuration parser was changed to *raw* method, which relaxes the requirement to quote option values containing special characters in `config.ini`. ([#1371](https://github.com/fossar/selfoss/issues/1371))
