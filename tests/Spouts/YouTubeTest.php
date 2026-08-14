@@ -37,10 +37,9 @@ final class YouTubeTest extends TestCase {
 
         $container = TestBootstrap::container();
 
-        $container
-            ->register(ClientInterface::class, $httpClient);
+        $container->set(ClientInterface::class, $httpClient);
 
-        $yt = $container->get(youtube::class);
+        $yt = $container->make(youtube::class);
 
         $params = [
             'channel' => $urls[0]['url'],

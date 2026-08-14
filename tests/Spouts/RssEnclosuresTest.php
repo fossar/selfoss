@@ -37,10 +37,9 @@ final class RssEnclosuresTest extends TestCase {
 
         $container = TestBootstrap::container();
 
-        $container
-            ->register(ClientInterface::class, $httpClient);
+        $container->set(ClientInterface::class, $httpClient);
 
-        $yt = $container->get(enclosures::class);
+        $yt = $container->make(enclosures::class);
 
         $params = [
             'url' => $urls[0]['url'],

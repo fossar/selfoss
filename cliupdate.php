@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-use Psr\Container\ContainerInterface;
+use Kama\LiteWireDI\Container;
 use Selfoss\helpers\UpdateVisitor;
 
 chdir(__DIR__);
 require __DIR__ . '/src/common.php';
 
-/** @var ContainerInterface $container */
+/** @var Container $container */
 $loader = $container->get(Selfoss\helpers\ContentLoader::class);
 $updateVisitor = new class implements UpdateVisitor {
     public function started(int $count): void {

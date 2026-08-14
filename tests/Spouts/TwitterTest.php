@@ -37,16 +37,14 @@ final class TwitterTest extends TestCase {
 
         $container = TestBootstrap::container();
 
-        $container
-            ->register(WebClient::class, function() use ($httpClientConfig): MockObject {
-                $stub = $this->createMock(WebClient::class);
-                $stub->method('createHttpClientConfig')->willReturn($httpClientConfig);
+        $container->set(WebClient::class, function() use ($httpClientConfig): MockObject {
+            $stub = $this->createMock(WebClient::class);
+            $stub->method('createHttpClientConfig')->willReturn($httpClientConfig);
 
-                return $stub;
-            })
-        ;
+            return $stub;
+        });
 
-        return $container->get($spout);
+        return $container->make($spout);
     }
 
     public function testListTimeline(): void {
