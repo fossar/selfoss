@@ -9,12 +9,11 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
-use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Client\ClientInterface;
 use Selfoss\helpers\HtmlString;
-use Slince\Di\Container;
 use spouts\rss\enclosures;
+use Tests\TestBootstrap;
 
 final class RssEnclosuresTest extends TestCase {
     /**
@@ -36,14 +35,8 @@ final class RssEnclosuresTest extends TestCase {
         $stack = HandlerStack::create($mock);
         $httpClient = new Client(['handler' => $stack]);
 
-        $container = new Container();
-        $container->setDefaults(['shared' => false]);
+        $container = TestBootstrap::container();
 
-        $container
-            ->register(Logger::class)
-            ->setArgument('name', 'selfoss')
-            ->setShared(true)
-        ;
         $container
             ->register(ClientInterface::class, $httpClient);
 

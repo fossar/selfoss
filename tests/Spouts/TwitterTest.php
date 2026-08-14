@@ -7,14 +7,13 @@ namespace Tests\Spouts;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
-use Monolog\Logger;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Selfoss\helpers\HtmlString;
 use Selfoss\helpers\WebClient;
-use Slince\Di\Container;
 use spouts\spout;
 use spouts\twitter;
+use Tests\TestBootstrap;
 
 final class TwitterTest extends TestCase {
     private function getResourceData(string $fileName): string {
@@ -36,14 +35,8 @@ final class TwitterTest extends TestCase {
             'handler' => $stack,
         ];
 
-        $container = new Container();
-        $container->setDefaults(['shared' => false]);
+        $container = TestBootstrap::container();
 
-        $container
-            ->register(Logger::class)
-            ->setArgument('name', 'selfoss')
-            ->setShared(true)
-        ;
         $container
             ->register(WebClient::class, function() use ($httpClientConfig): MockObject {
                 $stub = $this->createMock(WebClient::class);
