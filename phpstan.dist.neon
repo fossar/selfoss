@@ -9,7 +9,6 @@ parameters:
         - run.php
 
     bootstrapFiles:
-        - src/constants.php
         - vendor/bin/.phpunit/phpunit/vendor/autoload.php
 
     stubFiles:
