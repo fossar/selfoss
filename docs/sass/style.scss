@@ -1,3 +1,5 @@
+@import "../../client/styles/shared";
+
 $layout-width: 65rem;
 $content-width: 55rem;
 
@@ -42,22 +44,6 @@ code {
 img {
     border: 0;
     max-width: 100%;
-}
-
-dl {
-    display: grid;
-    grid-template-columns: max-content auto;
-    grid-gap: 0.5rem;
-}
-
-dt {
-    font-weight: bolder;
-}
-
-@supports (display: grid) {
-    dd {
-        margin-left: 0;
-    }
 }
 
 .wrapper-bright, .wrapper-dark {
@@ -317,15 +303,6 @@ li.nav-forge {
 .main td {
     font-size: 0.75rem;
     padding: 0.3125rem;
-}
-
-kbd {
-    border: 1px solid #353535;
-    border-radius: 0.25rem;
-    padding: 0.1875rem 0.3125rem;
-    margin: 0.125rem;
-    color: #353535;
-    text-decoration: none;
 }
 
 /************ footer **************/

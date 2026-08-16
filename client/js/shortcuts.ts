@@ -33,7 +33,7 @@ interface IKeybinding {
     action: KeyboardEventHandler;
 }
 
-const KEYBINDINGS: { [keycombo: string]: IKeybinding } = {
+export const KEYBINDINGS: { [keycombo: string]: IKeybinding } = {
     Space: {
         description: 'select and open next entry',
         action: () => {
@@ -178,6 +178,10 @@ const KEYBINDINGS: { [keycombo: string]: IKeybinding } = {
                 .click();
         },
     },
+    "?": {
+        description: "open shortcut help",
+        
+    }
 };
 
 function makeKeybindingsMap(): KeybindingsMap {
@@ -194,6 +198,7 @@ function makeKeybindingsMap(): KeybindingsMap {
     }
     return keybindingsMap;
 }
+
 
 /**
  * Set up shortcuts on document.
