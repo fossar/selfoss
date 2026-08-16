@@ -1,4 +1,4 @@
-import { tinykeys } from 'tinykeys';
+import { KeybindingsMap, tinykeys } from 'tinykeys';
 import selfoss from './selfoss-base';
 import { Direction } from './helpers/navigation';
 
@@ -21,146 +21,183 @@ function ignoreWhenInteracting(
 }
 
 /**
- * Set up shortcuts on document.
+ * A selfoss-side definition of all keybindings
+ * This is used to:
+ * - Limit boilerplate
+ * - Generate a tinykeys compatible KeybindingsMap (@see makeKeybindingsMap)
+ * - Generate a shortcut overview
  */
-export default function makeShortcuts(): () => void {
-    return tinykeys(window, {
-        // 'space': next article
-        Space: ignoreWhenInteracting((event: KeyboardEvent): void => {
-            event.preventDefault();
+interface IKeybinding {
+    readableName?: string;
+    description: string;
+    action: KeyboardEventHandler;
+}
+
+const KEYBINDINGS: { [keycombo: string]: IKeybinding } = {
+    Space: {
+        description: 'select and open next entry',
+        action: () => {
             selfoss.entriesPage?.jumpToNext();
-        }),
-
-        // 'n': next article
-        n: ignoreWhenInteracting((event: KeyboardEvent): void => {
-            event.preventDefault();
-            selfoss.entriesPage?.nextPrev(Direction.NEXT, false);
-        }),
-
-        // 'right cursor': next article
-        ArrowRight: ignoreWhenInteracting((event: KeyboardEvent): void => {
-            event.preventDefault();
-            selfoss.entriesPage?.entryNav(Direction.NEXT);
-        }),
-
-        // 'j': next article
-        j: ignoreWhenInteracting((event: KeyboardEvent): void => {
-            event.preventDefault();
+        },
+    },
+    j: {
+        description: 'select and open next entry',
+        action: () => {
             selfoss.entriesPage?.nextPrev(Direction.NEXT, true);
-        }),
-
-        // 'shift+space': previous article
-        'Shift+Space': ignoreWhenInteracting((event: KeyboardEvent): void => {
-            event.preventDefault();
+        },
+    },
+    n: {
+        description: 'select next entry',
+        action: () => {
+            selfoss.entriesPage?.nextPrev(Direction.NEXT, false);
+        },
+    },
+    Arrowright: {
+        readableName: '→',
+        description: 'select next entry (and open it when the current is open)',
+        action: () => {
+            selfoss.entriesPage?.entryNav(Direction.NEXT);
+        },
+    },
+    'Shift+Space': {
+        description: 'select and open previous entry',
+        action: () => {
             selfoss.entriesPage?.nextPrev(Direction.PREV, true);
-        }),
-
-        // 'p': previous article
-        p: ignoreWhenInteracting((event: KeyboardEvent): void => {
-            event.preventDefault();
+        },
+    },
+    p: {
+        description: 'select previous entry',
+        action: () => {
             selfoss.entriesPage?.nextPrev(Direction.PREV, false);
-        }),
-
-        // 'left': previous article
-        ArrowLeft: ignoreWhenInteracting((event: KeyboardEvent): void => {
-            event.preventDefault();
+        },
+    },
+    ArrowLeft: {
+        readableName: '←',
+        description:
+            'select previous entry (and open it when the current is open)',
+        action: () => {
             selfoss.entriesPage?.entryNav(Direction.PREV);
-        }),
-
-        // 'k': previous article
-        k: ignoreWhenInteracting((event: KeyboardEvent): void => {
-            event.preventDefault();
+        },
+    },
+    k: {
+        description: 'select and open previous entry',
+        action: () => {
             selfoss.entriesPage?.nextPrev(Direction.PREV, true);
-        }),
-
-        // 's': star/unstar
-        s: ignoreWhenInteracting((event: KeyboardEvent): void => {
-            event.preventDefault();
+        },
+    },
+    s: {
+        description:
+            'mark and unmark current selected entry as starred/unstarred',
+        action: () => {
             selfoss.entriesPage?.toggleSelectedStarred();
-        }),
-
-        // 'm': mark/unmark
-        m: ignoreWhenInteracting((event: KeyboardEvent): void => {
-            event.preventDefault();
+        },
+    },
+    m: {
+        description: 'mark and unmark current selected entry as read/unread',
+        action: () => {
             selfoss.entriesPage?.toggleSelectedRead();
-        }),
-
-        // 'o': open/close entry
-        o: ignoreWhenInteracting((event: KeyboardEvent): void => {
-            event.preventDefault();
-            selfoss.entriesPage?.toggleSelectedExpanded();
-        }),
-
-        // 'Shift + o': close open entries
-        'Shift+o': ignoreWhenInteracting((event: KeyboardEvent): void => {
-            event.preventDefault();
-            selfoss.entriesPage?.collapseAllEntries();
-        }),
-
-        // 'v': open target
-        v: ignoreWhenInteracting((event: KeyboardEvent): void => {
-            event.preventDefault();
-            selfoss.entriesPage?.openSelectedTarget();
-        }),
-
-        // 'Shift + v': open target and mark read
-        'Shift+v': ignoreWhenInteracting((event: KeyboardEvent): void => {
-            event.preventDefault();
-            selfoss.entriesPage?.openSelectedTargetAndMarkRead();
-        }),
-
-        // 'r': Reload the current view
-        r: ignoreWhenInteracting((event: KeyboardEvent): void => {
-            event.preventDefault();
-            selfoss.entriesPage?.reload();
-        }),
-
-        // 'Shift + r': Refresh sources
-        'Shift+r': ignoreWhenInteracting((event: KeyboardEvent): void => {
-            event.preventDefault();
-            document.querySelector<HTMLButtonElement>('#nav-refresh').click();
-        }),
-
-        // 'Control+m': mark all as read
-        'Control+m': ignoreWhenInteracting((event: KeyboardEvent): void => {
-            event.preventDefault();
+        },
+    },
+    'Control+m': {
+        description: 'mark all as read',
+        action: () => {
             document.querySelector<HTMLButtonElement>('#nav-mark').click();
-        }),
-
-        // 't': throw (mark as read & open next)
-        t: ignoreWhenInteracting((event: KeyboardEvent): void => {
-            event.preventDefault();
+        },
+    },
+    o: {
+        description: 'open / close current entry',
+        action: () => {
+            selfoss.entriesPage?.toggleSelectedExpanded();
+        },
+    },
+    'Shift+o': {
+        description: 'close all open entries',
+        action: () => {
+            selfoss.entriesPage?.collapseAllEntries();
+        },
+    },
+    v: {
+        description: 'open url of current entry in new tab/window',
+        action: () => {
+            selfoss.entriesPage?.openSelectedTarget();
+        },
+    },
+    'Shift+v': {
+        description:
+            'open url of current entry in new tab/window and mark read',
+        action: () => {
+            selfoss.entriesPage?.openSelectedTargetAndMarkRead();
+        },
+    },
+    r: {
+        description: 'reload the list',
+        action: () => {
+            selfoss.entriesPage?.reload();
+        },
+    },
+    'Shift+r': {
+        description: 'refresh sources',
+        action: () => {
+            document.querySelector<HTMLButtonElement>('#nav-refresh').click();
+        },
+    },
+    t: {
+        description: 'throw current entry to next (mark as read & open next)',
+        action: () => {
             selfoss.entriesPage?.throw(Direction.NEXT);
-        }),
-
-        // throw (mark as read & open previous)
-        'Shift+t': ignoreWhenInteracting((event: KeyboardEvent): void => {
-            event.preventDefault();
+        },
+    },
+    'Shift+t': {
+        description:
+            'throw current entry to previous (mark as read & open previous)',
+        action: () => {
             selfoss.entriesPage?.throw(Direction.PREV);
-        }),
-
-        // 'Shift+n': switch to newest items overview / menu item
-        'Shift+n': ignoreWhenInteracting((event: KeyboardEvent): void => {
-            event.preventDefault();
+        },
+    },
+    'Shift+n': {
+        description: 'open newest entries page',
+        action: () => {
             document
                 .querySelector<HTMLAnchorElement>('#nav-filter-newest')
                 .click();
-        }),
-
-        // 'Shift+u': switch to unread items overview / menu item
-        'Shift+u': ignoreWhenInteracting((event: KeyboardEvent): void => {
-            event.preventDefault();
+        },
+    },
+    'Shift+u': {
+        description: 'open unread entries page',
+        action: () => {
             document
                 .querySelector<HTMLAnchorElement>('#nav-filter-unread')
                 .click();
-        }),
-
-        // 'Shift+s': switch to starred items overview / menu item
-        'Shift+s': ignoreWhenInteracting((event: KeyboardEvent): void => {
-            event.preventDefault();
+        },
+    },
+    'Shift+s': {
+        description: 'open starred entries page',
+        action: () => {
             document
                 .querySelector<HTMLAnchorElement>('#nav-filter-starred')
                 .click();
-        }),
-    });
+        },
+    },
+};
+
+function makeKeybindingsMap(): KeybindingsMap {
+    const shortcuts = Object.entries(KEYBINDINGS);
+    const keybindingsMap: KeybindingsMap = {};
+
+    for (const [keycombo, keybind] of shortcuts) {
+        keybindingsMap[keycombo] = ignoreWhenInteracting(
+            (event: KeyboardEvent) => {
+                event.preventDefault();
+                keybind.action(event);
+            },
+        );
+    }
+    return keybindingsMap;
+}
+
+/**
+ * Set up shortcuts on document.
+ */
+export default function makeShortcuts(): () => void {
+    return tinykeys(window, makeKeybindingsMap());
 }
