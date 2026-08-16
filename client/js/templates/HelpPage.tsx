@@ -1,7 +1,7 @@
 import React from "react";
 import { KEYBINDINGS } from "../shortcuts";
 
-export default function HelpShortcuts(): React.JSX.Element {
+export default function HelpPage(): React.JSX.Element {
     const keycombos: string[] = Object.keys(KEYBINDINGS);
     return (
         <dl>

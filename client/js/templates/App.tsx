@@ -44,6 +44,7 @@ import locales, {
 } from '../locales';
 import { useEntriesParams, useLocation } from '../helpers/uri';
 import { NavSource, NavTag } from '../requests/items';
+import HelpPage from './HelpPage';
 
 type MessageAction = {
     label: string;
@@ -476,6 +477,12 @@ function PureApp(props: PureAppProps): React.JSX.Element {
                                             <SourcesPage
                                                 showError={showError}
                                             />
+                                        }
+                                    />
+                                    <Route
+                                        path="/help"
+                                        element={
+                                            <HelpPage />
                                         }
                                     />
                                     <Route path="*" element={<NotFound />} />
