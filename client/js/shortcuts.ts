@@ -96,6 +96,12 @@ export const KEYBINDINGS: { [keycombo: string]: IKeybinding } = {
             selfoss.entriesPage?.toggleSelectedRead();
         },
     },
+    'Control+m': {
+        description: 'mark all as read',
+        action: () => {
+            document.querySelector<HTMLButtonElement>('#nav-mark').click();
+        },
+    },
     o: {
         description: 'open/close entry',
         action: () => {
@@ -130,12 +136,6 @@ export const KEYBINDINGS: { [keycombo: string]: IKeybinding } = {
         description: 'Refresh sources',
         action: () => {
             document.querySelector<HTMLButtonElement>('#nav-refresh').click();
-        },
-    },
-    'Control+m': {
-        description: 'mark all as read',
-        action: () => {
-            document.querySelector<HTMLButtonElement>('#nav-mark').click();
         },
     },
     t: {
