@@ -34,44 +34,44 @@ interface IKeybinding {
  */
 export const KEYBINDINGS: { [keycombo: string]: IKeybinding } = {
     Space: {
-        description: 'next article',
+        description: 'select and open next entry',
         action: () => {
             selfoss.entriesPage?.jumpToNext();
         },
     },
     n: {
-        description: 'next article',
+        description: 'select next entry',
         action: () => {
             selfoss.entriesPage?.nextPrev(Direction.NEXT, false);
         },
     },
     Arrowright: {
-        readableName: 'right cursor',
-        description: 'next article',
+        readableName: '→',
+        description: 'select next entry (and open it when the current is open)',
         action: () => {
             selfoss.entriesPage?.entryNav(Direction.NEXT);
         },
     },
     j: {
-        description: 'next article',
+        description: 'select and open next entry',
         action: () => {
             selfoss.entriesPage?.nextPrev(Direction.NEXT, true);
         },
     },
     'Shift+Space': {
-        description: 'previous article',
+        description: 'select and open previous entry',
         action: () => {
             selfoss.entriesPage?.nextPrev(Direction.PREV, true);
         },
     },
     p: {
-        description: 'previous article',
+        description: 'select previous entry',
         action: () => {
             selfoss.entriesPage?.nextPrev(Direction.PREV, false);
         },
     },
     ArrowLeft: {
-        readableName: 'left',
+        readableName: '←',
         description:
             'select previous entry (and open it when the current is open)',
         action: () => {
@@ -85,13 +85,14 @@ export const KEYBINDINGS: { [keycombo: string]: IKeybinding } = {
         },
     },
     s: {
-        description: 'star/unstar',
+        description:
+            'mark and unmark current selected entry as starred/unstarred',
         action: () => {
             selfoss.entriesPage?.toggleSelectedStarred();
         },
     },
     m: {
-        description: 'mark/unmark',
+        description: 'mark and unmark current selected entry as read/unread',
         action: () => {
             selfoss.entriesPage?.toggleSelectedRead();
         },
@@ -103,55 +104,57 @@ export const KEYBINDINGS: { [keycombo: string]: IKeybinding } = {
         },
     },
     o: {
-        description: 'open/close entry',
+        description: 'open / close current entry',
         action: () => {
             selfoss.entriesPage?.toggleSelectedExpanded();
         },
     },
     'Shift+o': {
-        description: 'close open entries',
+        description: 'close all open entries',
         action: () => {
             selfoss.entriesPage?.collapseAllEntries();
         },
     },
     v: {
-        description: 'open target',
+        description: 'open url of current entry in new tab/window',
         action: () => {
             selfoss.entriesPage?.openSelectedTarget();
         },
     },
     'Shift+v': {
-        description: 'open target and mark read',
+        description:
+            'open url of current entry in new tab/window and mark read',
         action: () => {
             selfoss.entriesPage?.openSelectedTargetAndMarkRead();
         },
     },
     r: {
-        description: 'Reload the current view',
+        description: 'reload the list',
         action: () => {
             selfoss.entriesPage?.reload();
         },
     },
     'Shift+r': {
-        description: 'Refresh sources',
+        description: 'refresh sources',
         action: () => {
             document.querySelector<HTMLButtonElement>('#nav-refresh').click();
         },
     },
     t: {
-        description: 'throw (mark as read & open next)',
+        description: 'throw current entry to next (mark as read & open next)',
         action: () => {
             selfoss.entriesPage?.throw(Direction.NEXT);
         },
     },
     'Shift+t': {
-        description: 'throw (mark as read & open previous)',
+        description:
+            'throw current entry to previous (mark as read & open previous)',
         action: () => {
             selfoss.entriesPage?.throw(Direction.PREV);
         },
     },
     'Shift+n': {
-        description: 'switch to newest items overview / menu item',
+        description: 'open newest entries page',
         action: () => {
             document
                 .querySelector<HTMLAnchorElement>('#nav-filter-newest')
@@ -159,7 +162,7 @@ export const KEYBINDINGS: { [keycombo: string]: IKeybinding } = {
         },
     },
     'Shift+u': {
-        description: 'switch to unread items overview / menu item',
+        description: 'open unread entries page',
         action: () => {
             document
                 .querySelector<HTMLAnchorElement>('#nav-filter-unread')
@@ -167,7 +170,7 @@ export const KEYBINDINGS: { [keycombo: string]: IKeybinding } = {
         },
     },
     'Shift+s': {
-        description: 'switch to starred items overview / menu item',
+        description: 'open starred entries page',
         action: () => {
             document
                 .querySelector<HTMLAnchorElement>('#nav-filter-starred')
