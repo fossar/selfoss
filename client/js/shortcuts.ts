@@ -1,6 +1,7 @@
 import { KeybindingsMap, tinykeys } from 'tinykeys';
 import selfoss from './selfoss-base';
 import { Direction } from './helpers/navigation';
+import { RefObject } from 'react';
 
 type KeyboardEventHandler = (event: KeyboardEvent) => void;
 
@@ -177,19 +178,42 @@ export const KEYBINDINGS: { [keycombo: string]: IKeybinding } = {
                 .click();
         },
     },
+    h: {
+        description: 'show help',
+        action: () => {},
+    },
+    '[Shift]+?': {
+        description: 'show help',
+        action: () => {},
+    },
 };
 
-function makeKeybindingsMap(): KeybindingsMap {
+function makeKeybindingsMap(
+    shortcutsDialog: RefObject<HTMLDialogElement>,
+): KeybindingsMap {
     const shortcuts = Object.entries(KEYBINDINGS);
     const keybindingsMap: KeybindingsMap = {};
 
     for (const [keycombo, keybind] of shortcuts) {
-        keybindingsMap[keycombo] = ignoreWhenInteracting(
-            (event: KeyboardEvent) => {
-                event.preventDefault();
-                keybind.action(event);
-            },
-        );
+        if (['h', '[Shift]+?'].includes(keycombo)) {
+            keybindingsMap[keycombo] = ignoreWhenInteracting(
+                (event: KeyboardEvent) => {
+                    event.preventDefault();
+                    if (shortcutsDialog.current.open) {
+                        shortcutsDialog.current.close();
+                    } else {
+                        shortcutsDialog.current.showModal();
+                    }
+                },
+            );
+        } else {
+            keybindingsMap[keycombo] = ignoreWhenInteracting(
+                (event: KeyboardEvent) => {
+                    event.preventDefault();
+                    keybind.action(event);
+                },
+            );
+        }
     }
     return keybindingsMap;
 }
@@ -197,6 +221,8 @@ function makeKeybindingsMap(): KeybindingsMap {
 /**
  * Set up shortcuts on document.
  */
-export default function makeShortcuts(): () => void {
-    return tinykeys(window, makeKeybindingsMap());
+export default function makeShortcuts(
+    shortcutsDialog: RefObject<HTMLDialogElement>,
+): () => void {
+    return tinykeys(window, makeKeybindingsMap(shortcutsDialog));
 }
