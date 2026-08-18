@@ -1,6 +1,7 @@
 import { KeybindingsMap, tinykeys } from 'tinykeys';
 import selfoss from './selfoss-base';
 import { Direction } from './helpers/navigation';
+import { RefObject } from 'react';
 
 type KeyboardEventHandler = (event: KeyboardEvent) => void;
 
@@ -10,9 +11,12 @@ type KeyboardEventHandler = (event: KeyboardEvent) => void;
  */
 function ignoreWhenInteracting(
     handler: KeyboardEventHandler,
+    ignoreDialog: RefObject<HTMLDialogElement> = undefined,
 ): KeyboardEventHandler {
     return (event: KeyboardEvent): void => {
         if (selfoss.lightboxActive.value) {
+            return;
+        } else if (ignoreDialog && ignoreDialog.current.open) {
             return;
         }
 
@@ -31,6 +35,7 @@ interface IKeybinding {
  * This is used to:
  * - Limit boilerplate
  * - Generate a tinykeys compatible KeybindingsMap (@see makeKeybindingsMap)
+ * - Generate a keybindings overview for the help page (see HelpShortcuts component)
  */
 export const KEYBINDINGS: { [keycombo: string]: IKeybinding } = {
     Space: {
@@ -177,19 +182,39 @@ export const KEYBINDINGS: { [keycombo: string]: IKeybinding } = {
                 .click();
         },
     },
+    '[Shift]+?': {
+        description: 'show help',
+        action: () => {},
+    },
 };
 
-function makeKeybindingsMap(): KeybindingsMap {
+function makeKeybindingsMap(
+    shortcutsDialog: RefObject<HTMLDialogElement>,
+): KeybindingsMap {
     const shortcuts = Object.entries(KEYBINDINGS);
     const keybindingsMap: KeybindingsMap = {};
 
     for (const [keycombo, keybind] of shortcuts) {
-        keybindingsMap[keycombo] = ignoreWhenInteracting(
-            (event: KeyboardEvent) => {
-                event.preventDefault();
-                keybind.action(event);
-            },
-        );
+        if (keycombo === '[Shift]+?') {
+            keybindingsMap[keycombo] = ignoreWhenInteracting(
+                (event: KeyboardEvent) => {
+                    event.preventDefault();
+                    if (shortcutsDialog.current.open) {
+                        shortcutsDialog.current.close();
+                    } else {
+                        shortcutsDialog.current.showModal();
+                    }
+                },
+            );
+        } else {
+            keybindingsMap[keycombo] = ignoreWhenInteracting(
+                (event: KeyboardEvent) => {
+                    event.preventDefault();
+                    keybind.action(event);
+                },
+                shortcutsDialog,
+            );
+        }
     }
     return keybindingsMap;
 }
@@ -197,6 +222,8 @@ function makeKeybindingsMap(): KeybindingsMap {
 /**
  * Set up shortcuts on document.
  */
-export default function makeShortcuts(): () => void {
-    return tinykeys(window, makeKeybindingsMap());
+export default function makeShortcuts(
+    shortcutsDialog: RefObject<HTMLDialogElement>,
+): () => void {
+    return tinykeys(window, makeKeybindingsMap(shortcutsDialog));
 }
