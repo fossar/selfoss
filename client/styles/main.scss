@@ -1469,3 +1469,9 @@ img[src^='https://s.w.org/images/core/emoji'] {
 .collapse-css-transition {
     transition: height 280ms cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+/**
+ * Shared has to be on the bottom, 
+ * or the following kbd border, margin & padding rules get overwritten
+ */
+@import 'shared';
