@@ -47,6 +47,8 @@ export function filterTypeToString(type: FilterType): string {
         return 'unread';
     } else if (type == FilterType.STARRED) {
         return 'starred';
+    } else {
+        throw new Error(`Invalid filter type: “${type}”`);
     }
 }
 
@@ -70,6 +72,11 @@ export function useEntriesParams(): Params | null {
     }
 
     const { params } = match;
+
+    if (!params.filter || !params.category) {
+        return null;
+    }
+
     const filterValid = /^(newest|unread|starred)$/.test(params.filter);
     const categoryValid = /^(all|tag-.+|source-[0-9]+)$/.test(params.category);
     const idValid = params.id === undefined || /^\d+$/.test(params.id);
