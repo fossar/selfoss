@@ -8,6 +8,7 @@ import React, {
     useMemo,
     useState,
     MouseEvent,
+    useRef,
 } from 'react';
 import {
     BrowserRouter as Router,
@@ -44,6 +45,7 @@ import locales, {
 } from '../locales';
 import { useEntriesParams, useLocation } from '../helpers/uri';
 import { NavSource, NavTag } from '../requests/items';
+import HelpShortcuts from './HelpShortcuts';
 
 type MessageAction = {
     label: string;
@@ -246,6 +248,7 @@ function PureApp(props: PureAppProps): React.JSX.Element {
     } = props;
 
     const [navExpanded, setNavExpanded] = useState(false);
+    const shortcutsDialog = useRef<HTMLDialogElement>(null);
     const smartphone = useIsSmartphone();
     const offlineEnabled = useListenableValue(selfoss.db.enableOffline);
     const [entriesPage, setEntriesPage] = useState(null);
@@ -253,7 +256,7 @@ function PureApp(props: PureAppProps): React.JSX.Element {
 
     useEffect(() => {
         // init shortcut handler
-        const destroyShortcuts = makeShortcuts();
+        const destroyShortcuts = makeShortcuts(shortcutsDialog);
 
         return () => {
             destroyShortcuts();
@@ -480,6 +483,9 @@ function PureApp(props: PureAppProps): React.JSX.Element {
                                     />
                                     <Route path="*" element={<NotFound />} />
                                 </Routes>
+                                <dialog ref={shortcutsDialog}>
+                                    <HelpShortcuts />
+                                </dialog>
                             </div>
                         </CheckAuthorization>
                     }

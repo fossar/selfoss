@@ -1,0 +1,24 @@
+dl {
+    display: grid;
+    grid-template-columns: max-content auto;
+    gap: 0.5rem;
+}
+
+dt {
+    font-weight: bolder;
+}
+
+@supports (display: grid) {
+    dd {
+        margin-left: 0;
+    }
+}
+
+kbd {
+    border: 1px solid #353535;
+    border-radius: 0.25rem;
+    padding: 0.1875rem 0.3125rem;
+    margin: 0.125rem;
+    color: #353535;
+    text-decoration: none;
+}
