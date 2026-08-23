@@ -115,6 +115,7 @@
   "error_share_native_abort": "Unable to share item—either there are no share targets, or you cancelled it.",
   "error_share_native": "Unable to share item.",
   "info_url_copied": "URL copied to clipboard.",
+  "close_dialog": "Close",
   "close_entry": "Close",
   "article_actions": "Actions",
   "article_reading_time": "{0} min read"
