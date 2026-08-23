@@ -75,6 +75,20 @@ button::-moz-focus-inner {
     border: 0;
 }
 
+html:has(dialog[open]) {
+    overflow: hidden;
+}
+
+dialog {
+    position: relative;
+
+    .close {
+        position: absolute;
+        right: 10;
+        top: 10;
+    }
+}
+
 @import 'popup-menu';
 
 .visually-hidden {

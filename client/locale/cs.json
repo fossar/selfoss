@@ -112,6 +112,7 @@
   "info_url_copied": "URL zkopírována do schránky.",
   "error_share_native_abort": "Nelze sdílet položku: buď váš prohlížeč nepodporuje sdílení odkazů, nebo jste sdílení zrušili.",
   "error_share_native": "Nelze sdílet položku.",
+  "close_dialog": "Zavřít",
   "close_entry": "Zavřít",
   "article_reading_time": "{0} min čtení",
   "error_offline_storage_not_available": "Offline úložiště není dostupné. Ujistěte se, že váš prohlížeč {0}podporuje rozhraní IndexedDB{1} a, pokud používáte prohlížeč založený na Google Chrome, že nespouštíte selfoss v režimu anonymního prohlížení.",
