@@ -12,7 +12,8 @@
     phps.url = "github:fossar/nix-phps";
   };
 
-  outputs = { self, phps, ... }:
+  outputs =
+    { self, phps, ... }:
     let
       # nixpkgs is a repository with software packages and some utilities.
       # From simplicity, we inherit it from the phps flake.
@@ -27,7 +28,8 @@
       matrix.storage = "all";
     in
     # For each supported platform,
-    utils.lib.eachDefaultSystem (system:
+    utils.lib.eachDefaultSystem (
+      system:
       let
         # Get Nixpkgs packages for current platform.
         pkgs = nixpkgs.legacyPackages.${system};
@@ -35,8 +37,7 @@
         inherit (pkgs) lib;
 
         mergeAttribute =
-          l:
-          r:
+          l: r:
           if builtins.isAttrs l && builtins.isAttrs r then
             l // r
           else if builtins.isList l && builtins.isList r then
@@ -44,7 +45,7 @@
           else
             throw "Unsupported combination of types: ${builtins.typeOf l} and ${builtins.typeOf r}";
 
-        mergeEnvs = lib.foldr (lib.mergeAttrsWithFunc mergeAttribute) {};
+        mergeEnvs = lib.foldr (lib.mergeAttrsWithFunc mergeAttribute) { };
 
         mkShell =
           attrs:
@@ -57,17 +58,24 @@
           pkgs.mkShell attrs';
 
         # Create a PHP package from the selected PHP package, with some extra extensions enabled.
-        php = phps.packages.${system}.${matrix.phpPackage}.withExtensions ({ enabled, all }: with all; enabled ++ [
-          imagick
-          tidy
-        ]);
+        php = phps.packages.${system}.${matrix.phpPackage}.withExtensions (
+          { enabled, all }:
+          with all;
+          enabled
+          ++ [
+            imagick
+            tidy
+          ]
+        );
 
         # Create a Python package with some extra packages installed.
-        python = pkgs.python3.withPackages (pp: with pp; [
-          # For integration tests.
-          bcrypt
-          requests
-        ]);
+        python = pkgs.python3.withPackages (
+          pp: with pp; [
+            # For integration tests.
+            bcrypt
+            requests
+          ]
+        );
 
         # Database servers for testing.
         dbServers = {
@@ -124,43 +132,35 @@
       {
         # Expose shell environment for development.
         devShells = {
-          default = mkShell (
-            mergeEnvs [
-              languageEnv
-              developmentSupport
-              qaTools
-              websiteTools
-              dbServers.${matrix.storage}
-            ]
-          );
+          default = mkShell (mergeEnvs [
+            languageEnv
+            developmentSupport
+            qaTools
+            websiteTools
+            dbServers.${matrix.storage}
+          ]);
 
-          ci = mkShell (
-            mergeEnvs [
-              languageEnv
-              qaTools
-              websiteTools
-              dbServers.${matrix.storage}
-            ]
-          );
+          ci = mkShell (mergeEnvs [
+            languageEnv
+            qaTools
+            websiteTools
+            dbServers.${matrix.storage}
+          ]);
 
           # Minimal environment for deploy ci job
-          ci-dist = mkShell (
-            mergeEnvs [
-              languageEnv
+          ci-dist = mkShell (mergeEnvs [
+            languageEnv
 
-              {
-                nativeBuildInputs = [
-                  pkgs.python3
-                ];
-              }
-            ]
-          );
+            {
+              nativeBuildInputs = [
+                pkgs.python3
+              ];
+            }
+          ]);
 
-          website = mkShell (
-            mergeEnvs [
-              websiteTools
-            ]
-          );
+          website = mkShell (mergeEnvs [
+            websiteTools
+          ]);
         };
       }
     );
