@@ -3,7 +3,6 @@ import threading
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from .feeds.fibonacci import numbers_feed
 
-
 FIBONACCI_FEED_LENGTH = 20
 
 

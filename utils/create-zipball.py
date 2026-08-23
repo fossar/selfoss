@@ -9,7 +9,6 @@ import zipfile
 from pathlib import Path
 from typing import Callable
 
-
 DISALLOWED_FILENAME_PATTERNS = [
     re.compile(pattern)
     for pattern in [
