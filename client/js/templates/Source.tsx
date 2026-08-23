@@ -190,7 +190,7 @@ function handleDelete(args: {
         _,
     } = args;
     const answer = confirm(_('source_warn'));
-    if (answer == false) {
+    if (!answer) {
         return;
     }
 
