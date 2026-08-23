@@ -17,7 +17,7 @@
     let
       # nixpkgs is a repository with software packages and some utilities.
       # From simplicity, we inherit it from the phps flake.
-      inherit (phps.inputs) nixpkgs utils;
+      inherit (phps.inputs) nixpkgs;
 
       # Configure the development shell here (e.g. for CI).
 
@@ -26,142 +26,145 @@
 
       # We install all storage backends by default.
       matrix.storage = "all";
+
+      forAllSystems = nixpkgs.lib.genAttrs nixpkgs.lib.systems.flakeExposed;
     in
-    # For each supported platform,
-    utils.lib.eachDefaultSystem (
-      system:
-      let
-        # Get Nixpkgs packages for current platform.
-        pkgs = nixpkgs.legacyPackages.${system};
-
-        inherit (pkgs) lib;
-
-        mergeAttribute =
-          l: r:
-          if builtins.isAttrs l && builtins.isAttrs r then
-            l // r
-          else if builtins.isList l && builtins.isList r then
-            l ++ r
-          else
-            throw "Unsupported combination of types: ${builtins.typeOf l} and ${builtins.typeOf r}";
-
-        mergeEnvs = lib.foldr (lib.mergeAttrsWithFunc mergeAttribute) { };
-
-        mkShell =
-          attrs:
-
+    {
+      # Expose shell environment for development.
+      devShells =
+        # For each supported platform,
+        forAllSystems (
+          system:
           let
-            attrs' = attrs // {
-              nativeBuildInputs = lib.map lib.getBin attrs.nativeBuildInputs or [ ];
+            # Get Nixpkgs packages for current platform.
+            pkgs = nixpkgs.legacyPackages.${system};
+
+            inherit (pkgs) lib;
+
+            mergeAttribute =
+              l: r:
+              if builtins.isAttrs l && builtins.isAttrs r then
+                l // r
+              else if builtins.isList l && builtins.isList r then
+                l ++ r
+              else
+                throw "Unsupported combination of types: ${builtins.typeOf l} and ${builtins.typeOf r}";
+
+            mergeEnvs = lib.foldr (lib.mergeAttrsWithFunc mergeAttribute) { };
+
+            mkShell =
+              attrs:
+
+              let
+                attrs' = attrs // {
+                  nativeBuildInputs = lib.map lib.getBin attrs.nativeBuildInputs or [ ];
+                };
+              in
+              pkgs.mkShell attrs';
+
+            # Create a PHP package from the selected PHP package, with some extra extensions enabled.
+            php = phps.packages.${system}.${matrix.phpPackage}.withExtensions (
+              { enabled, all }:
+              with all;
+              enabled
+              ++ [
+                imagick
+                tidy
+              ]
+            );
+
+            # Create a Python package with some extra packages installed.
+            python = pkgs.python3.withPackages (
+              pp: with pp; [
+                # For integration tests.
+                bcrypt
+                requests
+              ]
+            );
+
+            # Database servers for testing.
+            dbServers = {
+              mysql = {
+                nativeBuildInputs = [ pkgs.mariadb ];
+              };
+              postgresql = {
+                nativeBuildInputs = [ pkgs.postgresql ];
+              };
+              sqlite = { };
+              all = mergeEnvs (builtins.attrValues (builtins.removeAttrs dbServers [ "all" ]));
+            };
+
+            languageEnv = {
+              nativeBuildInputs = [
+                # Composer and PHP for back-end.
+                php
+                php.packages.composer
+
+                # npm for front-end.
+                pkgs.nodejs_latest
+              ];
+
+              env = {
+                # node-gyp wants some locales, let’s make them available through an environment variable.
+                LOCALE_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
+              };
+            };
+
+            developmentSupport = {
+              nativeBuildInputs = [
+                # PHP LSP
+                pkgs.phpactor
+              ];
+            };
+
+            qaTools = {
+              nativeBuildInputs = [
+                # For building zip archive and integration tests.
+                python
+
+                # Python code linting.
+                pkgs.black
+              ];
+            };
+
+            websiteTools = {
+              nativeBuildInputs = [
+                # Website generator.
+                pkgs.zola
+              ];
             };
           in
-          pkgs.mkShell attrs';
+          {
+            default = mkShell (mergeEnvs [
+              languageEnv
+              developmentSupport
+              qaTools
+              websiteTools
+              dbServers.${matrix.storage}
+            ]);
 
-        # Create a PHP package from the selected PHP package, with some extra extensions enabled.
-        php = phps.packages.${system}.${matrix.phpPackage}.withExtensions (
-          { enabled, all }:
-          with all;
-          enabled
-          ++ [
-            imagick
-            tidy
-          ]
+            ci = mkShell (mergeEnvs [
+              languageEnv
+              qaTools
+              websiteTools
+              dbServers.${matrix.storage}
+            ]);
+
+            # Minimal environment for deploy ci job
+            ci-dist = mkShell (mergeEnvs [
+              languageEnv
+
+              {
+                nativeBuildInputs = [
+                  pkgs.python3
+                ];
+              }
+            ]);
+
+            website = mkShell (mergeEnvs [
+              websiteTools
+            ]);
+          }
         );
-
-        # Create a Python package with some extra packages installed.
-        python = pkgs.python3.withPackages (
-          pp: with pp; [
-            # For integration tests.
-            bcrypt
-            requests
-          ]
-        );
-
-        # Database servers for testing.
-        dbServers = {
-          mysql = {
-            nativeBuildInputs = [ pkgs.mariadb ];
-          };
-          postgresql = {
-            nativeBuildInputs = [ pkgs.postgresql ];
-          };
-          sqlite = { };
-          all = mergeEnvs (builtins.attrValues (builtins.removeAttrs dbServers [ "all" ]));
-        };
-
-        languageEnv = {
-          nativeBuildInputs = [
-            # Composer and PHP for back-end.
-            php
-            php.packages.composer
-
-            # npm for front-end.
-            pkgs.nodejs_latest
-          ];
-
-          env = {
-            # node-gyp wants some locales, let’s make them available through an environment variable.
-            LOCALE_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
-          };
-        };
-
-        developmentSupport = {
-          nativeBuildInputs = [
-            # PHP LSP
-            pkgs.phpactor
-          ];
-        };
-
-        qaTools = {
-          nativeBuildInputs = [
-            # For building zip archive and integration tests.
-            python
-
-            # Python code linting.
-            pkgs.black
-          ];
-        };
-
-        websiteTools = {
-          nativeBuildInputs = [
-            # Website generator.
-            pkgs.zola
-          ];
-        };
-      in
-      {
-        # Expose shell environment for development.
-        devShells = {
-          default = mkShell (mergeEnvs [
-            languageEnv
-            developmentSupport
-            qaTools
-            websiteTools
-            dbServers.${matrix.storage}
-          ]);
-
-          ci = mkShell (mergeEnvs [
-            languageEnv
-            qaTools
-            websiteTools
-            dbServers.${matrix.storage}
-          ]);
-
-          # Minimal environment for deploy ci job
-          ci-dist = mkShell (mergeEnvs [
-            languageEnv
-
-            {
-              nativeBuildInputs = [
-                pkgs.python3
-              ];
-            }
-          ]);
-
-          website = mkShell (mergeEnvs [
-            websiteTools
-          ]);
-        };
-      }
-    );
+    };
 }
