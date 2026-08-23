@@ -35,7 +35,7 @@ import { ResponseItem, TagColor } from '../requests/items';
 // TODO: do the search highlights client-side
 function reHighlight(text: string): (React.JSX.Element | string)[] {
     return text.split(/<span class="found">(.+?)<\/span>/).map((n, i) =>
-        i % 2 == 0 ? (
+        i % 2 === 0 ? (
             n
         ) : (
             <span key={i} className="found">
