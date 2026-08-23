@@ -567,9 +567,7 @@ export default function Item(props: ItemProps): React.JSX.Element {
                 aria-hidden="true"
                 onClick={preventDefaultOnSmartphone}
             >
-                {item.icon !== null &&
-                item.icon.trim().length > 0 &&
-                item.icon != '0' ? (
+                {item.icon !== null ? (
                     <img
                         src={`favicons/${item.icon}`}
                         aria-hidden="true"
