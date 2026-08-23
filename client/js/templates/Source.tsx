@@ -800,7 +800,7 @@ export default function Source(props: SourceProps): React.JSX.Element {
             ref={sourceElem}
         >
             <div className="source-icon">
-                {source.icon && source.icon != '0' ? (
+                {source.icon !== null ? (
                     <img
                         src={`favicons/${source.icon}`}
                         aria-hidden="true"
