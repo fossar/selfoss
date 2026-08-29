@@ -3734,16 +3734,16 @@
     "packages-dev": [
         {
             "name": "php-cs-fixer/shim",
-            "version": "v3.95.20",
+            "version": "v3.95.23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHP-CS-Fixer/shim.git",
-                "reference": "85ccbf0b084d0dae3dbeb2dca8e5bd4ced13c265"
+                "reference": "08339736dd8101eb432d6116ffaeaf54a150a764"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHP-CS-Fixer/shim/zipball/85ccbf0b084d0dae3dbeb2dca8e5bd4ced13c265",
-                "reference": "85ccbf0b084d0dae3dbeb2dca8e5bd4ced13c265",
+                "url": "https://api.github.com/repos/PHP-CS-Fixer/shim/zipball/08339736dd8101eb432d6116ffaeaf54a150a764",
+                "reference": "08339736dd8101eb432d6116ffaeaf54a150a764",
                 "shasum": ""
             },
             "require": {
@@ -3780,9 +3780,15 @@
             "description": "A tool to automatically fix PHP code style",
             "support": {
                 "issues": "https://github.com/PHP-CS-Fixer/shim/issues",
-                "source": "https://github.com/PHP-CS-Fixer/shim/tree/v3.95.20"
+                "source": "https://github.com/PHP-CS-Fixer/shim/tree/v3.95.23"
             },
-            "time": "2026-08-19T16:28:36+00:00"
+            "funding": [
+                {
+                    "url": "https://github.com/keradus",
+                    "type": "github"
+                }
+            ],
+            "time": "2026-08-26T19:55:22+00:00"
         },
         {
             "name": "php-parallel-lint/php-parallel-lint",
@@ -4022,16 +4028,16 @@
         },
         {
             "name": "symfony/phpunit-bridge",
-            "version": "v8.1.4",
+            "version": "v8.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/phpunit-bridge.git",
-                "reference": "98adc9c352dd0d95a1566437d54fe9ad59027f43"
+                "reference": "c1eba6a1ef7c45b20f1e87032fdfac0fae7bf49f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/98adc9c352dd0d95a1566437d54fe9ad59027f43",
-                "reference": "98adc9c352dd0d95a1566437d54fe9ad59027f43",
+                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/c1eba6a1ef7c45b20f1e87032fdfac0fae7bf49f",
+                "reference": "c1eba6a1ef7c45b20f1e87032fdfac0fae7bf49f",
                 "shasum": ""
             },
             "require": {
@@ -4083,7 +4089,7 @@
                 "testing"
             ],
             "support": {
-                "source": "https://github.com/symfony/phpunit-bridge/tree/v8.1.4"
+                "source": "https://github.com/symfony/phpunit-bridge/tree/v8.1.5"
             },
             "funding": [
                 {
@@ -4103,7 +4109,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-08-07T15:02:39+00:00"
+            "time": "2026-08-21T17:47:34+00:00"
         }
     ],
     "aliases": [],
