@@ -38,7 +38,9 @@ Database username for MySQL or PostgreSQL
 ### `db_password`
 <div class="config-option">
 
-Database password for MySQL and PostgreSQL.
+Database password for MySQL or PostgreSQL.
+
+For PostgreSQL on local server, [peer authentication](https://www.postgresql.org/docs/18/auth-peer.html) might be more secure an convenient, as it does not require a password. This is also available as [`unix_socket` authentication plugin](https://mariadb.com/docs/server/reference/plugins/authentication-plugins/authentication-plugin-unix-socket) on MariaDB.
 </div>
 
 ### `db_prefix`
