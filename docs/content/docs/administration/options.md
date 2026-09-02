@@ -26,19 +26,19 @@ address/hostname of the database server for MySQL/PostgreSQL
 ### `db_database`
 <div class="config-option">
 
-name of the database
+Name of the MySQL or PostgreSQL database
 </div>
 
 ### `db_username`
 <div class="config-option">
 
-database username
+Database username for MySQL or PostgreSQL
 </div>
 
 ### `db_password`
 <div class="config-option">
 
-database password
+Database password for MySQL and PostgreSQL.
 </div>
 
 ### `db_prefix`
