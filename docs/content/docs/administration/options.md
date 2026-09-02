@@ -41,6 +41,18 @@ Database username for MySQL or PostgreSQL
 Database password for MySQL or PostgreSQL.
 
 For PostgreSQL on local server, [peer authentication](https://www.postgresql.org/docs/18/auth-peer.html) might be more secure an convenient, as it does not require a password. This is also available as [`unix_socket` authentication plugin](https://mariadb.com/docs/server/reference/plugins/authentication-plugins/authentication-plugin-unix-socket) on MariaDB.
+
+Prefer [`db_password_file`](#db-password-file) if the configuration is readable by other users.
+</div>
+
+### `db_password_file`
+<div class="config-option">
+
+A path to a file containing database password.
+
+This allows storing the password outside of the configuration, which may be more secure if the configuration is readable by other users. It is also allows provisioning the password separately using some secrets management system.
+
+To avoid leaking the password to other services, the file should [only be accessible](https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html#23-access-control) by the user running the PHP server used by selfoss.
 </div>
 
 ### `db_prefix`
@@ -113,6 +125,12 @@ username for optional login. Just set username and password for enabling login.
 <div class="config-option">
 
 password hash for optional login. You can generate a password hash by using following page of your selfoss installation. https://your_selfoss_url.com/password
+</div>
+
+### `password_file`
+<div class="config-option">
+
+Alternative to [`password`](#password) option, a path to a file containing the password hash. This is useful for provisioning the password using a secrets management system.
 </div>
 
 ### <del>`salt`</del> (deprecated)
