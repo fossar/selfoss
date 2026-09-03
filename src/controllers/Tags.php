@@ -39,9 +39,7 @@ final class Tags {
      */
     public function tagsAddColors(array $itemTags, ?array $tags = null): StringKeyedArray {
         if ($tags === null) {
-            if ($this->tagsColors === null) {
-                $this->tagsColors = $this->getTagsWithColors($this->tagsDao->get());
-            }
+            $this->tagsColors ??= $this->getTagsWithColors($this->tagsDao->get());
         } else {
             $this->tagsColors = $this->getTagsWithColors($tags);
         }

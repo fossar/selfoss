@@ -108,9 +108,7 @@ final readonly class Export {
         foreach ($this->sourcesDao->getAll() as $source) {
             if ($source['tags']) {
                 foreach ($source['tags'] as $tag) {
-                    if (!isset($taggedSources[$tag])) {
-                        $taggedSources[$tag] = [];
-                    }
+                    $taggedSources[$tag] ??= [];
                     $taggedSources[$tag][] = $source;
                 }
             } else {

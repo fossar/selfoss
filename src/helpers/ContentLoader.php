@@ -155,9 +155,7 @@ final readonly class ContentLoader {
 
                 // test date: continue with next if item too old
                 $itemDate = $item->getDate();
-                if ($itemDate === null) {
-                    $itemDate = new \DateTimeImmutable();
-                }
+                $itemDate ??= new \DateTimeImmutable();
                 if ($minDate !== null && $itemDate < $minDate) {
                     $this->logger->debug('item "' . $titlePlainText . '" (' . $itemDate->format(\DateTime::ATOM) . ') older than ' . $this->configuration->itemsLifetime . ' days');
                     continue;

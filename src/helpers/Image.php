@@ -216,9 +216,7 @@ final readonly class Image {
                 $image = $icon->findBestForSize($width, $height);
             }
 
-            if ($image === null) {
-                $image = $icon->findBest();
-            }
+            $image ??= $icon->findBest();
 
             if ($image === null) {
                 return null;

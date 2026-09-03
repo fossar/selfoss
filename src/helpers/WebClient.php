@@ -100,9 +100,7 @@ class WebClient implements ClientInterface {
     public function getUserAgent(?array $agentInfo = null): string {
         $userAgent = 'Selfoss/' . SELFOSS_VERSION;
 
-        if ($agentInfo === null) {
-            $agentInfo = [];
-        }
+        $agentInfo ??= [];
 
         $agentInfo[] = '+https://selfoss.aditu.de';
 

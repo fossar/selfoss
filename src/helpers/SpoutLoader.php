@@ -30,9 +30,7 @@ final class SpoutLoader {
      * @return array<class-string<spout<mixed>>, spout<mixed>> available spouts
      */
     public function all(): array {
-        if ($this->spouts === null) {
-            $this->spouts = $this->readSpouts();
-        }
+        $this->spouts ??= $this->readSpouts();
 
         return $this->spouts;
     }

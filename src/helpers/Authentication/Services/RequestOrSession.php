@@ -42,9 +42,7 @@ final class RequestOrSession implements AuthenticationService {
     }
 
     public function isPrivileged(): bool {
-        if ($this->authorized === null) {
-            $this->authorized = $this->checkSession() || $this->checkRequest();
-        }
+        $this->authorized ??= $this->checkSession() || $this->checkRequest();
 
         return $this->authorized;
     }

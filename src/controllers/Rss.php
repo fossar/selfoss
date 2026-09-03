@@ -51,9 +51,7 @@ final readonly class Rss {
         $newestEntryDate = null;
         $itemsToMark = [];
         foreach ($this->itemsDao->get($options) as $item) {
-            if ($newestEntryDate === null) {
-                $newestEntryDate = $item['datetime'];
-            }
+            $newestEntryDate ??= $item['datetime'];
             $newItem = $this->feedWriter->createNewItem();
 
             // get Source Name
@@ -90,9 +88,7 @@ final readonly class Rss {
             $this->itemsDao->mark($itemsToMark);
         }
 
-        if ($newestEntryDate === null) {
-            $newestEntryDate = new \DateTime();
-        }
+        $newestEntryDate ??= new \DateTime();
         $this->feedWriter->setDate($newestEntryDate);
 
         $this->feedWriter->printFeed();

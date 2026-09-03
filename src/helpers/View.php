@@ -37,9 +37,7 @@ final class View {
      * globale server variables ($_SERVER).
      */
     public function getBaseUrl(): string {
-        if ($this->baseUrl === null) {
-            $this->baseUrl = $this->makeBaseUrl();
-        }
+        $this->baseUrl ??= $this->makeBaseUrl();
 
         return $this->baseUrl;
     }
