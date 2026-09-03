@@ -92,7 +92,7 @@ jobs:
 
       - name: Rectorize back-end code
         if: matrix.rector
-        run: nix-shell -A ci --run 'composer run-script rector -- --dry-run --output-format=github'
+        run: nix-shell -A ci --run 'composer run-script rector -- --dry-run'
 
       - name: Run unit tests
         run: nix-shell -A ci --run 'npm run test:server'
