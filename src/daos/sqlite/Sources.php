@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Selfoss\daos\sqlite;
 
+use Override;
+
 /**
  * Class for accessing persistent saved sources -- mysql
  *
@@ -15,4 +17,20 @@ namespace Selfoss\daos\sqlite;
 final class Sources extends \Selfoss\daos\mysql\Sources {
     /** @var class-string SQL helper */
     protected static string $stmt = Statements::class;
+
+    /**
+     * wrap insert statement to return id
+     *
+     * @param string $query sql statement
+     * @param array<string, mixed> $params sql params
+     *
+     * @return int id after insert
+     */
+    #[Override]
+    protected function insert(string $query, array $params): int {
+        $this->database->exec($query, $params);
+        $res = $this->database->exec('SELECT last_insert_rowid() as lastid');
+
+        return (int) $res[0]['lastid'];
+    }
 }

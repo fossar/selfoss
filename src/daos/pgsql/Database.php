@@ -276,20 +276,6 @@ final class Database implements \Selfoss\daos\DatabaseInterface {
     }
 
     /**
-     * wrap insert statement to return id
-     *
-     * @param string $query sql statement
-     * @param array<string, mixed> $params sql params
-     *
-     * @return int id after insert
-     */
-    public function insert(string $query, array $params): int {
-        $res = $this->exec("$query RETURNING id", $params);
-
-        return $res[0]['id'];
-    }
-
-    /**
      * optimize database by the database's own optimize statement
      *
      * Note that for pg, no optimization is needed because autovacuuming is

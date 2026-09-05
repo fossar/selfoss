@@ -45,13 +45,28 @@ class Sources implements \Selfoss\daos\SourcesInterface {
         }
         assert($params !== false); // For PHPStan: Exception would be thrown when the function returns false.
 
-        return $this->database->insert('INSERT INTO ' . $this->configuration->dbPrefix . 'sources (title, tags, filter, spout, params) VALUES (:title, :tags, :filter, :spout, :params)', [
+        return $this->insert('INSERT INTO ' . $this->configuration->dbPrefix . 'sources (title, tags, filter, spout, params) VALUES (:title, :tags, :filter, :spout, :params)', [
             ':title' => trim($title),
             ':tags' => static::$stmt::csvRow($tags),
             ':filter' => $filter,
             ':spout' => $spout,
             ':params' => htmlentities($params),
         ]);
+    }
+
+    /**
+     * wrap insert statement to return id
+     *
+     * @param string $query sql statement
+     * @param array<string, mixed> $params sql params
+     *
+     * @return int id after insert
+     */
+    protected function insert(string $query, array $params): int {
+        $this->database->exec($query, $params);
+        $res = $this->database->exec('SELECT LAST_INSERT_ID() as lastid');
+
+        return (int) $res[0]['lastid'];
     }
 
     /**

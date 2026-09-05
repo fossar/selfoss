@@ -348,21 +348,6 @@ final class Database implements \Selfoss\daos\DatabaseInterface {
     }
 
     /**
-     * wrap insert statement to return id
-     *
-     * @param string $query sql statement
-     * @param array<string, mixed> $params sql params
-     *
-     * @return int id after insert
-     */
-    public function insert(string $query, array $params): int {
-        $this->exec($query, $params);
-        $res = $this->exec('SELECT LAST_INSERT_ID() as lastid');
-
-        return (int) $res[0]['lastid'];
-    }
-
-    /**
      * optimize database by
      * database own optimize statement
      */

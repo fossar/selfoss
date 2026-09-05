@@ -31,16 +31,6 @@ interface DatabaseInterface {
     public function exec(string $cmd, array $args = []): array;
 
     /**
-     * wrap insert statement to return id
-     *
-     * @param string $query sql statement
-     * @param array<string, mixed> $params sql params
-     *
-     * @return int id after insert
-     */
-    public function insert(string $query, array $params): int;
-
-    /**
      * Quote string
      */
     public function quote(mixed $value, int $type = \PDO::PARAM_STR): string;
