@@ -45,7 +45,6 @@ final class Database implements \Selfoss\daos\DatabaseInterface {
         if (!in_array($this->connection->getTableNamePrefix() . 'items', $tables, true)) {
             $this->logger->debug('Creating items table');
 
-            $this->beginTransaction();
             $this->exec('
                 CREATE TABLE ' . $this->connection->getTableNamePrefix() . 'items (
                     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
@@ -78,7 +77,6 @@ final class Database implements \Selfoss\daos\DatabaseInterface {
                         SET NEW.updatetime = NOW();
                     END;
             ');
-            $this->commit();
         }
 
         $isNewestSourcesTable = false;
@@ -105,7 +103,6 @@ final class Database implements \Selfoss\daos\DatabaseInterface {
         if (!in_array($this->connection->getTableNamePrefix() . 'version', $tables, true)) {
             $this->logger->debug('Upgrading database schema to version 8 from initial state');
 
-            $this->beginTransaction();
             $this->exec('
                 CREATE TABLE ' . $this->connection->getTableNamePrefix() . 'version (
                     version INT
@@ -128,7 +125,6 @@ final class Database implements \Selfoss\daos\DatabaseInterface {
                     ALTER TABLE ' . $this->connection->getTableNamePrefix() . 'sources ADD tags TEXT;
                 ');
             }
-            $this->commit();
         }
 
         $version = $this->getSchemaVersion();
@@ -136,19 +132,16 @@ final class Database implements \Selfoss\daos\DatabaseInterface {
         if ($version < 3) {
             $this->logger->debug('Upgrading database schema to version 3');
 
-            $this->beginTransaction();
             $this->exec('
                 ALTER TABLE ' . $this->connection->getTableNamePrefix() . 'sources ADD lastupdate INT;
             ');
             $this->exec('
                 INSERT INTO ' . $this->connection->getTableNamePrefix() . 'version (version) VALUES (3);
             ');
-            $this->commit();
         }
         if ($version < 4) {
             $this->logger->debug('Upgrading database schema to version 4');
 
-            $this->beginTransaction();
             $this->exec('
                 ALTER TABLE ' . $this->connection->getTableNamePrefix() . 'items ADD updatetime DATETIME;
             ');
@@ -169,31 +162,26 @@ final class Database implements \Selfoss\daos\DatabaseInterface {
             $this->exec('
                 INSERT INTO ' . $this->connection->getTableNamePrefix() . 'version (version) VALUES (4);
             ');
-            $this->commit();
         }
         if ($version < 5) {
             $this->logger->debug('Upgrading database schema to version 5');
 
-            $this->beginTransaction();
             $this->exec('
                 ALTER TABLE ' . $this->connection->getTableNamePrefix() . 'items ADD author VARCHAR(255);
             ');
             $this->exec('
                 INSERT INTO ' . $this->connection->getTableNamePrefix() . 'version (version) VALUES (5);
             ');
-            $this->commit();
         }
         if ($version < 6) {
             $this->logger->debug('Upgrading database schema to version 6');
 
-            $this->beginTransaction();
             $this->exec('
                 ALTER TABLE ' . $this->connection->getTableNamePrefix() . 'sources ADD filter TEXT;
             ');
             $this->exec('
                 INSERT INTO ' . $this->connection->getTableNamePrefix() . 'version (version) VALUES (6);
             ');
-            $this->commit();
         }
         // Jump straight from v6 to v8 due to bug in previous version of the code
         // in \Selfoss\daos\sqlite\Database which
@@ -201,42 +189,35 @@ final class Database implements \Selfoss\daos\DatabaseInterface {
         if ($version < 8) {
             $this->logger->debug('Upgrading database schema to version 8');
 
-            $this->beginTransaction();
             $this->exec('
                 ALTER TABLE ' . $this->connection->getTableNamePrefix() . 'sources ADD lastentry INT;
             ');
             $this->exec('
                 INSERT INTO ' . $this->connection->getTableNamePrefix() . 'version (version) VALUES (8);
             ');
-            $this->commit();
         }
         if ($version < 9) {
             $this->logger->debug('Upgrading database schema to version 9');
 
-            $this->beginTransaction();
             $this->exec('
                 ALTER TABLE ' . $this->connection->getTableNamePrefix() . 'items ADD shared BOOL;
             ');
             $this->exec('
                 INSERT INTO ' . $this->connection->getTableNamePrefix() . 'version (version) VALUES (9);
             ');
-            $this->commit();
         }
         if ($version < 10) {
             $this->logger->debug('Upgrading database schema to version 10');
 
-            $this->beginTransaction();
             $this->exec('ALTER TABLE `' . $this->connection->getTableNamePrefix() . 'items` CONVERT TO CHARACTER SET utf8mb4;');
             $this->exec('ALTER TABLE `' . $this->connection->getTableNamePrefix() . 'sources` CONVERT TO CHARACTER SET utf8mb4;');
             $this->exec('ALTER TABLE `' . $this->connection->getTableNamePrefix() . 'tags` CONVERT TO CHARACTER SET utf8mb4;');
             $this->exec('ALTER TABLE `' . $this->connection->getTableNamePrefix() . 'version` CONVERT TO CHARACTER SET utf8mb4;');
             $this->exec('INSERT INTO `' . $this->connection->getTableNamePrefix() . 'version` (version) VALUES (10);');
-            $this->commit();
         }
         if ($version < 11) {
             $this->logger->debug('Upgrading database schema to version 11');
 
-            $this->beginTransaction();
             $this->exec('DROP TRIGGER insert_updatetime_trigger');
             $this->exec('DROP TRIGGER update_updatetime_trigger');
             $this->exec('ALTER TABLE ' . $this->connection->getTableNamePrefix() . 'items ADD lastseen DATETIME');
@@ -266,17 +247,14 @@ final class Database implements \Selfoss\daos\DatabaseInterface {
                     END;
             ');
             $this->exec('INSERT INTO ' . $this->connection->getTableNamePrefix() . 'version (version) VALUES (11)');
-            $this->commit();
         }
         if ($version < 12) {
             $this->logger->debug('Upgrading database schema to version 12');
 
-            $this->beginTransaction();
             $this->exec('UPDATE ' . $this->connection->getTableNamePrefix() . 'items SET updatetime = datetime WHERE updatetime IS NULL');
             $this->exec('ALTER TABLE ' . $this->connection->getTableNamePrefix() . 'items MODIFY updatetime DATETIME NOT NULL');
             $this->exec('ALTER TABLE ' . $this->connection->getTableNamePrefix() . 'items MODIFY lastseen DATETIME NOT NULL');
             $this->exec('INSERT INTO ' . $this->connection->getTableNamePrefix() . 'version (version) VALUES (12)');
-            $this->commit();
         }
         if ($version < 13) {
             $this->logger->debug('Upgrading database schema to version 13');
