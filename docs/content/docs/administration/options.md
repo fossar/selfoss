@@ -98,7 +98,12 @@ Number of days since the item has been last seen after which it can be deleted. 
 ### `base_url`
 <div class="config-option">
 
-base URL of the selfoss page; use this option if you use a ssl proxy which changes the `$_SERVER` globals, most notably the URL path in which the app is installed.
+base URL of the selfoss page. Can be absolute URL or absolute path.
+
+Use this option if you use some kind of proxy and routing does not work:
+
+- Set this option to an absolute URL if you use a ssl proxy which changes the `$_SERVER` globals, most notably the URL path in which the app is installed.
+- Set this option to an absolute path if you use a reverse proxy and want to map selfoss into a subdirectory.
 </div>
 
 ### `username`
