@@ -6,13 +6,11 @@ namespace spouts\rss;
 
 use Graby\Graby;
 use GuzzleHttp\Psr7\Uri;
-use Http\Adapter\Guzzle7\Client as GuzzleAdapter;
 use Monolog\Logger;
-use Selfoss\helpers\Configuration;
 use Selfoss\helpers\FeedReader;
+use Selfoss\helpers\GrabyFactory;
 use Selfoss\helpers\HtmlString;
 use Selfoss\helpers\Image;
-use Selfoss\helpers\WebClient;
 use SimplePie;
 use spouts\Item;
 use spouts\Parameter;
@@ -39,20 +37,15 @@ class fulltextrss extends feed {
         ],
     ];
 
-    /** Tag for logger */
-    private static string $loggerTag = 'selfoss.graby';
     private ?Graby $graby = null;
-    private readonly Logger $logger;
 
     public function __construct(
-        private readonly Configuration $configuration,
         FeedReader $feed,
         Image $imageHelper,
-        Logger $logger,
-        private readonly WebClient $webClient
+        private readonly Logger $logger,
+        private readonly GrabyFactory $grabyFactory
     ) {
         parent::__construct($feed, $imageHelper, $logger);
-        $this->logger = $logger;
     }
 
     /**
@@ -71,17 +64,7 @@ class fulltextrss extends feed {
      * @param Item<SimplePie\Item> $originalItem
      */
     public function getFullContent(string $url, Item $originalItem): HtmlString {
-        if ($this->graby === null) {
-            $this->graby = new Graby([
-                'extractor' => [
-                    'config_builder' => [
-                        'site_config' => [$this->configuration->ftrssCustomDataDir],
-                    ],
-                ],
-            ], new GuzzleAdapter($this->webClient->getHttpClient()));
-            $logger = $this->logger->withName(self::$loggerTag);
-            $this->graby->setLogger($logger);
-        }
+        $this->graby ??= $this->grabyFactory->create();
 
         $this->logger->info('Extracting content for page: ' . $url);
 
