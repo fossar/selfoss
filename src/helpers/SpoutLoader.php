@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Selfoss\helpers;
 
-use Psr\Container\ContainerInterface;
+use Kama\LiteWireDI\Container;
+use Kama\LiteWireDI\ContainerException;
 use spouts\spout;
 
 /**
@@ -20,7 +21,7 @@ final class SpoutLoader {
     private ?array $spouts = null;
 
     public function __construct(
-        private readonly ContainerInterface $container
+        private readonly Container $container
     ) {
     }
 
@@ -50,14 +51,14 @@ final class SpoutLoader {
         }
 
         try {
-            $class = $this->container->get($spout);
+            $class = $this->container->make($spout);
 
             if ($class instanceof spout) {
                 return $class;
             }
 
             return null;
-        } catch (\ReflectionException) {
+        } catch (\ReflectionException|ContainerException) {
             return null;
         }
     }

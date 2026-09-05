@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cbdc109839a79c33e7fccd94baf1595c",
+    "content-hash": "7b0d04c38d984ec70241dfa41b886829",
     "packages": [
         {
             "name": "bramus/router",
@@ -124,38 +124,30 @@
             "time": "2023-12-20T15:40:13+00:00"
         },
         {
-            "name": "dflydev/dot-access-data",
-            "version": "v3.0.3",
+            "name": "doiftrue/litewire-di",
+            "version": "1.3.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/dflydev/dflydev-dot-access-data.git",
-                "reference": "a23a2bf4f31d3518f3ecb38660c95715dfead60f"
+                "url": "https://github.com/doiftrue/litewire-di.git",
+                "reference": "8235d5b8391311782706c32b4d7870efa9430539"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dflydev/dflydev-dot-access-data/zipball/a23a2bf4f31d3518f3ecb38660c95715dfead60f",
-                "reference": "a23a2bf4f31d3518f3ecb38660c95715dfead60f",
+                "url": "https://api.github.com/repos/doiftrue/litewire-di/zipball/8235d5b8391311782706c32b4d7870efa9430539",
+                "reference": "8235d5b8391311782706c32b4d7870efa9430539",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.1 || ^8.0"
+                "php": ">=7.4"
             },
             "require-dev": {
-                "phpstan/phpstan": "^0.12.42",
-                "phpunit/phpunit": "^7.5 || ^8.5 || ^9.3",
-                "scrutinizer/ocular": "1.6.0",
-                "squizlabs/php_codesniffer": "^3.5",
-                "vimeo/psalm": "^4.0.0"
+                "phpstan/phpstan": "^2.2.5",
+                "phpunit/phpunit": "^9.6 || ^10.5 || ^11.5 || ^12.0 || ^13.2"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-main": "3.x-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
-                    "Dflydev\\DotAccessData\\": "src/"
+                    "Kama\\LiteWireDI\\": ""
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -164,39 +156,17 @@
             ],
             "authors": [
                 {
-                    "name": "Dragonfly Development Inc.",
-                    "email": "info@dflydev.com",
-                    "homepage": "http://dflydev.com"
-                },
-                {
-                    "name": "Beau Simensen",
-                    "email": "beau@dflydev.com",
-                    "homepage": "http://beausimensen.com"
-                },
-                {
-                    "name": "Carlos Frutos",
-                    "email": "carlos@kiwing.it",
-                    "homepage": "https://github.com/cfrutos"
-                },
-                {
-                    "name": "Colin O'Dell",
-                    "email": "colinodell@gmail.com",
-                    "homepage": "https://www.colinodell.com"
+                    "name": "Timur Kamaev",
+                    "email": "tnkamaev@gmail.com",
+                    "homepage": "https://wp-kama.com/"
                 }
             ],
-            "description": "Given a deep data structure, access data by dot notation.",
-            "homepage": "https://github.com/dflydev/dflydev-dot-access-data",
-            "keywords": [
-                "access",
-                "data",
-                "dot",
-                "notation"
-            ],
+            "description": "A tiny single-file PSR-11-style autowire DI container for PHP, with no dependencies.",
             "support": {
-                "issues": "https://github.com/dflydev/dflydev-dot-access-data/issues",
-                "source": "https://github.com/dflydev/dflydev-dot-access-data/tree/v3.0.3"
+                "issues": "https://github.com/doiftrue/litewire-di/issues",
+                "source": "https://github.com/doiftrue/litewire-di/tree/1.3.0"
             },
-            "time": "2024-07-08T12:26:09+00:00"
+            "time": "2026-07-15T01:22:58+00:00"
         },
         {
             "name": "fossar/guzzle-transcoder",
@@ -2379,59 +2349,6 @@
                 "source": "https://github.com/simplepie/simplepie/tree/1.9.0"
             },
             "time": "2025-09-12T06:34:27+00:00"
-        },
-        {
-            "name": "slince/di",
-            "version": "3.2.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/slince/di.git",
-                "reference": "1cc23487f9ffb459f3eb4ca68f4c3e7005a6d9ba"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/slince/di/zipball/1cc23487f9ffb459f3eb4ca68f4c3e7005a6d9ba",
-                "reference": "1cc23487f9ffb459f3eb4ca68f4c3e7005a6d9ba",
-                "shasum": ""
-            },
-            "require": {
-                "dflydev/dot-access-data": "^3.0",
-                "php": ">=7.4",
-                "psr/container": "^1.0 || ^2.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^7.5|^8.0|^9.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Slince\\Di\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Tao",
-                    "email": "taosikai@yeah.net"
-                }
-            ],
-            "description": "A flexible dependency injection container",
-            "keywords": [
-                "PSR-11",
-                "container",
-                "dependency injection",
-                "di",
-                "injection",
-                "ioc"
-            ],
-            "support": {
-                "issues": "https://github.com/slince/di/issues",
-                "source": "https://github.com/slince/di/tree/3.2.3"
-            },
-            "time": "2023-06-16T15:05:09+00:00"
         },
         {
             "name": "smalot/pdfparser",
