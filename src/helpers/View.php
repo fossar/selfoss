@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace Selfoss\helpers;
 
-use Exception;
 use function Http\Response\send;
 use function json_encode;
-use const JSON_ERROR_NONE;
-use function json_last_error;
-use function json_last_error_msg;
+use const JSON_THROW_ON_ERROR;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -108,11 +105,7 @@ final class View {
     public function jsonError(mixed $data): never {
         header('Content-type: application/json');
 
-        $error = @json_encode($data);
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new Exception(json_last_error_msg(), json_last_error());
-        }
-        assert($error !== false); // For PHPStan: Exception would be thrown when the function returns false.
+        $error = json_encode($data, JSON_THROW_ON_ERROR);
 
         $this->error($error);
     }
@@ -123,11 +116,7 @@ final class View {
     public function jsonSuccess(mixed $data): never {
         header('Content-type: application/json');
 
-        $message = @json_encode($data);
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new Exception(json_last_error_msg(), json_last_error());
-        }
-        assert($message !== false); // For PHPStan: Exception would be thrown when the function returns false.
+        $message = json_encode($data, JSON_THROW_ON_ERROR);
 
         exit($message);
     }
