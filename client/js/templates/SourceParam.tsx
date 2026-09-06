@@ -65,7 +65,7 @@ export default function SourceParam(
 
     let value =
         spoutParamName in params ? params[spoutParamName] : spoutParam.default;
-    let control = null;
+    let control;
 
     const _ = use(LocalizationContext);
 

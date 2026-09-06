@@ -306,7 +306,7 @@ export default class DbOffline {
 
                 return entries
                     .filter((entry) => {
-                        let keepEntry = false;
+                        let keepEntry;
 
                         if (fetchParams.extraIds.includes(entry.id)) {
                             return true;

@@ -1162,7 +1162,7 @@ export class StateHolder extends React.Component<
             old !== null
                 ? this.state.entries.findIndex(({ id }) => id === old)
                 : null;
-        let current = null;
+        let current;
 
         // select next/prev entry and save it to "current"
         // if we would overflow, we stay on the old one
