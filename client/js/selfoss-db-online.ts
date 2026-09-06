@@ -27,8 +27,8 @@ export default class DbOnline {
             promise: Promise<SyncResponse>;
             controller: AbortController;
         } | null;
-        resolve: () => void | null;
-        reject: () => void | null;
+        resolve: (() => void) | null;
+        reject: (() => void) | null;
     } = {
         promise: null,
         request: null,
