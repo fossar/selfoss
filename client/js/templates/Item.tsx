@@ -385,11 +385,9 @@ export default function Item(props: ItemProps): React.JSX.Element {
                 setNavExpanded((expanded) => {
                     // hide nav
                     if (expanded) {
-                        scrollTop =
-                            scrollTop -
-                            document
-                                .querySelector('#nav')
-                                .getBoundingClientRect().height;
+                        scrollTop -= document
+                            .querySelector('#nav')
+                            .getBoundingClientRect().height;
                         scrollTop = scrollTop < 0 ? 0 : scrollTop;
                         window.scrollTo({ top: scrollTop });
 

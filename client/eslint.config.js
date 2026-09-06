@@ -31,6 +31,7 @@ const config = {
         'no-array-constructor': 'error',
         camelcase: 'error',
         'no-use-before-define': 'error',
+        'operator-assignment': 'error',
 
         'react-hooks/exhaustive-deps': [
             'warn',

@@ -396,12 +396,12 @@ export default class DbOffline {
             // iterate over all the entries.
             selfoss.db.storage.entries
                 .each((entry) => {
-                    offlineCounts.newest = offlineCounts.newest + 1;
+                    offlineCounts.newest += 1;
                     if (entry.unread) {
-                        offlineCounts.unread = offlineCounts.unread + 1;
+                        offlineCounts.unread += 1;
                     }
                     if (entry.starred) {
-                        offlineCounts.starred = offlineCounts.starred + 1;
+                        offlineCounts.starred += 1;
                     }
                 })
                 .then(() => {

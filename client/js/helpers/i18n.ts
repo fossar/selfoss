@@ -52,7 +52,7 @@ export function i18nFormat(
                         }
                     }
                 } else {
-                    formatted = formatted + buffer;
+                    formatted += buffer;
                     buffer = '';
                     placeholder = {};
                     state = FmtState.Index;
@@ -89,17 +89,15 @@ export function i18nFormat(
                             } else {
                                 pluralValue = plural.other;
                             }
-                            formatted =
-                                formatted +
-                                pluralValue.replace(
-                                    '#',
-                                    placeholder.value.toString(),
-                                );
+                            formatted += pluralValue.replace(
+                                '#',
+                                placeholder.value.toString(),
+                            );
                             plural = undefined;
                             placeholder = undefined;
                             state = FmtState.Out;
                         } else {
-                            formatted = formatted + placeholder.value;
+                            formatted += placeholder.value;
                             placeholder = undefined;
                             state = FmtState.Out;
                         }
@@ -109,7 +107,7 @@ export function i18nFormat(
                 }
                 break;
             default:
-                buffer = buffer + curChar;
+                buffer += curChar;
                 break;
         }
     }
@@ -118,7 +116,7 @@ export function i18nFormat(
         return "Error formatting '" + translated + "', bug report?";
     }
 
-    formatted = formatted + buffer;
+    formatted += buffer;
 
     return formatted;
 }
