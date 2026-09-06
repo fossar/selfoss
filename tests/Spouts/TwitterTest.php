@@ -7,12 +7,12 @@ namespace Tests\Spouts;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
+use Kama\LiteWireDI\Container;
 use Monolog\Logger;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Selfoss\helpers\HtmlString;
 use Selfoss\helpers\WebClient;
-use Slince\Di\Container;
 use spouts\spout;
 use spouts\twitter;
 
@@ -37,23 +37,18 @@ final class TwitterTest extends TestCase {
         ];
 
         $container = new Container();
-        $container->setDefaults(['shared' => false]);
 
-        $container
-            ->register(Logger::class)
-            ->setArgument('name', 'selfoss')
-            ->setShared(true)
-        ;
-        $container
-            ->register(WebClient::class, function() use ($httpClientConfig): MockObject {
-                $stub = $this->createMock(WebClient::class);
-                $stub->method('createHttpClientConfig')->willReturn($httpClientConfig);
+        $container->set(Logger::class, [
+            'name' => 'selfoss',
+        ]);
+        $container->set(WebClient::class, function() use ($httpClientConfig): MockObject {
+            $stub = $this->createMock(WebClient::class);
+            $stub->method('createHttpClientConfig')->willReturn($httpClientConfig);
 
-                return $stub;
-            })
-        ;
+            return $stub;
+        });
 
-        return $container->get($spout);
+        return $container->make($spout);
     }
 
     public function testListTimeline(): void {

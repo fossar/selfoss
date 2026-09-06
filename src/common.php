@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
+use Kama\LiteWireDI\Container;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\ErrorLogHandler;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
-use Psr\Container\ContainerInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\SimpleCache\CacheInterface;
 use Selfoss\daos;
@@ -15,8 +15,9 @@ use Selfoss\helpers;
 use Selfoss\helpers\Configuration;
 use Selfoss\helpers\Configuration\LoggerLevel;
 use Selfoss\helpers\DatabaseConnection;
+use Selfoss\helpers\IconStore;
+use Selfoss\helpers\ThumbnailStore;
 use Selfoss\helpers\WebClient;
-use Slince\Di\Container;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Cache\Psr16Cache;
 use Tracy\Debugger;
@@ -66,67 +67,20 @@ if ($configuration->debug !== 0) {
 }
 
 $container = new Container();
-$container->setDefaults(['shared' => false]);
 
 // Instantiate configuration container.
-$container
-    ->register(Configuration::class, $configuration)
-    ->setShared(true)
-;
+$container->set(Configuration::class, $configuration);
 
-$container
-    ->register(Bramus\Router\Router::class)
-    ->setShared(true)
-;
-$container
-    ->register(helpers\Authentication::class)
-    ->setShared(true)
-;
-
-$container
-    ->register(
-        helpers\Authentication\AuthenticationService::class,
-        [new Slince\Di\Reference(helpers\Authentication\AuthenticationFactory::class), 'create']
-    )
-    ->setShared(true)
-;
-
-$container
-    ->register(helpers\Session::class)
-    ->setShared(true)
-;
-
-// Database bridges
-$container
-    ->register(daos\Items::class)
-    ->setShared(true)
-;
-$container
-    ->register(daos\Sources::class)
-    ->setShared(true)
-;
-$container
-    ->register(daos\Tags::class)
-    ->setShared(true)
-;
+$container->set(
+    helpers\Authentication\AuthenticationService::class,
+    static fn() => $container->make(helpers\Authentication\AuthenticationFactory::class)->create()
+);
 
 // Choose database implementation based on config
-$container
-    ->register(daos\DatabaseInterface::class, 'Selfoss\daos\\' . $configuration->dbType . '\\Database')
-    ->setShared(true)
-;
-$container
-    ->register(daos\ItemsInterface::class, 'Selfoss\daos\\' . $configuration->dbType . '\\Items')
-    ->setShared(true)
-;
-$container
-    ->register(daos\SourcesInterface::class, 'Selfoss\daos\\' . $configuration->dbType . '\\Sources')
-    ->setShared(true)
-;
-$container
-    ->register(daos\TagsInterface::class, 'Selfoss\daos\\' . $configuration->dbType . '\\Tags')
-    ->setShared(true)
-;
+$container->set(daos\DatabaseInterface::class, 'Selfoss\daos\\' . $configuration->dbType . '\\Database');
+$container->set(daos\ItemsInterface::class, 'Selfoss\daos\\' . $configuration->dbType . '\\Items');
+$container->set(daos\SourcesInterface::class, 'Selfoss\daos\\' . $configuration->dbType . '\\Sources');
+$container->set(daos\TagsInterface::class, 'Selfoss\daos\\' . $configuration->dbType . '\\Tags');
 
 if ($configuration->isChanged('dbSocket') && $configuration->isChanged('dbHost')) {
     boot_error('You cannot set both `db_socket` and `db_host` options.' . PHP_EOL);
@@ -199,79 +153,64 @@ if ($configuration->dbType === 'sqlite') {
     boot_error('Unsupported value for db_type option: ' . $configuration->dbType . PHP_EOL);
 }
 
-$databaseConnection =
-    $container
-        ->register(DatabaseConnection::class)
-        ->setArguments($dbParams)
-        ->setShared(true)
-;
+$container->set(
+    DatabaseConnection::class,
+    static function(Container $container) use ($configuration, $dbParams) {
+        $databaseConnection = $container->make(DatabaseConnection::class, $dbParams);
+        // Define regexp function for SQLite
+        if ($configuration->dbType === 'sqlite') {
+            // https://www.sqlite.org/lang_expr.html#the_like_glob_regexp_match_and_extract_operators
+            $databaseConnection->sqliteCreateFunction(
+                'regexp',
+                fn(string $pattern, string $text): bool => preg_match('/' . addcslashes($pattern, '/') . '/', $text) === 1,
+                2,
+            );
+        }
 
-// Define regexp function for SQLite
-if ($configuration->dbType === 'sqlite') {
-    $databaseConnection->addMethodCall(
-        // https://www.sqlite.org/lang_expr.html#the_like_glob_regexp_match_and_extract_operators
-        'sqliteCreateFunction',
-        [
-            'regexp',
-            fn(string $pattern, string $text): bool => preg_match('/' . addcslashes($pattern, '/') . '/', $text) === 1,
-            2,
-        ]
-    );
-}
+        return $databaseConnection;
+    }
+);
 
-$container
-    ->register('$iconStorageBackend', helpers\Storage\FileStorage::class)
-    ->setArgument('directory', $configuration->datadir . '/favicons')
-;
+$container->set(
+    IconStore::class,
+    static fn(Container $container) => $container->make(
+        IconStore::class,
+        ['storage' => $container->make(
+            helpers\Storage\FileStorage::class,
+            ['directory' => $configuration->datadir . '/favicons'],
+        )],
+    ),
+);
 
-$container
-    ->register(helpers\IconStore::class)
-    ->setArgument('storage', new Slince\Di\Reference('$iconStorageBackend'))
-    ->setShared(true)
-;
+$container->set(
+    ThumbnailStore::class,
+    static fn(Container $container) => $container->make(
+        ThumbnailStore::class,
+        ['storage' => $container->make(
+            helpers\Storage\FileStorage::class,
+            ['directory' => $configuration->datadir . '/thumbnails'],
+        )],
+    ),
+);
 
-$container
-    ->register('$thumbnailStorageBackend', helpers\Storage\FileStorage::class)
-    ->setArgument('directory', $configuration->datadir . '/thumbnails')
-;
+$container->set(Logger::class, ['name' => 'selfoss']);
 
-$container
-    ->register(helpers\ThumbnailStore::class)
-    ->setArgument('storage', new Slince\Di\Reference('$thumbnailStorageBackend'))
-    ->setShared(true)
-;
+$container->set(
+    CacheInterface::class,
+    static fn(Container $container) => $container->make(
+        Psr16Cache::class,
+        ['pool' => $container->make(
+            FilesystemAdapter::class,
+            [
+                'namespace' => 'selfoss',
+                'lifetime' => 1800,
+                'directory' => $configuration->cache,
+            ],
+        )],
+    ),
+);
 
-$container
-    ->register(Logger::class)
-    ->setArgument('name', 'selfoss')
-    ->setShared(true)
-;
-
-$container
-    ->register('$fileStorage', FilesystemAdapter::class)
-    ->setArguments([
-        'namespace' => 'selfoss',
-        'lifetime' => 1800,
-        'directory' => $configuration->cache,
-    ])
-    ->setShared(true)
-;
-
-$container
-    ->register(CacheInterface::class, Psr16Cache::class)
-    ->setArgument('pool', new Slince\Di\Reference('$fileStorage'))
-    ->setShared(true)
-;
-
-$container
-    ->register(ClientInterface::class, WebClient::class)
-    ->setShared(true)
-;
-
-$container
-    ->register(ContainerInterface::class, $container)
-    ->setShared(true)
-;
+$container->set(ClientInterface::class, WebClient::class);
 
 // init logger
 $log = $container->get(Logger::class);
@@ -295,10 +234,7 @@ if ($configuration->loggerLevel === LoggerLevel::None) {
 }
 $log->pushHandler($handler);
 
-$container
-    ->register(Psr\Log\LoggerInterface::class, $log)
-    ->setShared(true)
-;
+$container->set(Psr\Log\LoggerInterface::class, $log);
 
 // Try to log errors encountered by error handler.
 Debugger::setLogger($container->get(Tracy\Bridges\Psr\PsrToTracyLoggerAdapter::class));
