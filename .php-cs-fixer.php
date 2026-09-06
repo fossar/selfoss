@@ -31,6 +31,8 @@ $rules = [
     'phpdoc_align' => false,
     'phpdoc_no_empty_return' => false,
     'phpdoc_summary' => false,
+    // Useful for PHPStan in phtml templates.
+    'phpdoc_to_comment' => ['ignored_tags' => ['var']],
     'trailing_comma_in_multiline' => false,
     'yoda_style' => false,
     'semicolon_after_instruction' => false,
