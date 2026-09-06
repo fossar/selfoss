@@ -14,22 +14,18 @@ function splitTerm(term: string): string[] {
     }
 
     const words = term.match(/"[^"]+"|\S+/g);
-    for (let i = 0; i < words.length; i++) {
-        words[i] = words[i].replace(/"/g, '');
-    }
-    return words;
+
+    return words.map((word) => word.replace(/"/g, ''));
 }
 
 function joinTerm(words: string[]): string {
     if (!words || words.length <= 0) {
         return '';
     }
-    for (let i = 0; i < words.length; i++) {
-        if (words[i].indexOf(' ') >= 0) {
-            words[i] = '"' + words[i] + '"';
-        }
-    }
-    return words.join(' ');
+
+    return words
+        .map((word) => (word.includes(' ') ? '"' + word + '"' : word))
+        .join(' ');
 }
 
 // remove search term
