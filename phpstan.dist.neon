@@ -8,6 +8,11 @@ parameters:
         - index.php
         - run.php
 
+
+    fileExtensions:
+        - php
+        - phtml
+
     bootstrapFiles:
         - src/constants.php
         - vendor/bin/.phpunit/phpunit/vendor/autoload.php
