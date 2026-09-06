@@ -7,9 +7,9 @@ if (process.argv.length <= 2) {
 }
 
 const newVersion = process.argv[2];
-const isRelease = newVersion.match(/(\-SNAPSHOT|\-[0-9a-f]+)$/) === null;
+const isRelease = newVersion.match(/(-SNAPSHOT|-[0-9a-f]+)$/) === null;
 
-if (newVersion.search(/^\d+\.\d+(\-SNAPSHOT|\-[0-9a-f]+)?$/) === -1) {
+if (newVersion.search(/^\d+\.\d+(-SNAPSHOT|-[0-9a-f]+)?$/) === -1) {
     console.error('newVersion argument must have the format n.m or n.m-SNAPSHOT or n.m-hash (n and m are whole numbers, hash is hex number)');
     process.exit(1);
 }
@@ -24,19 +24,19 @@ const sources = [
 const replacements = [
     // rule for package.json
     {
-        from: /"ver": "\d+\.\d+(\-SNAPSHOT|\-[0-9a-f]+)?"/,
+        from: /"ver": "\d+\.\d+(-SNAPSHOT|-[0-9a-f]+)?"/,
         to: '"ver": "' + newVersion + '"'
     },
 
     // rule for README.md
     {
-        from: /# selfoss \d+\.\d+(\-SNAPSHOT|\-[0-9a-f]+)?/,
+        from: /# selfoss \d+\.\d+(-SNAPSHOT|-[0-9a-f]+)?/,
         to: "# selfoss " + newVersion
     },
 
     // rule for src/constants.php
     {
-        from: /SELFOSS_VERSION = '\d+\.\d+(\-SNAPSHOT|\-[0-9a-f]+)?'/,
+        from: /SELFOSS_VERSION = '\d+\.\d+(-SNAPSHOT|-[0-9a-f]+)?'/,
         to: "SELFOSS_VERSION = '" + newVersion + "'"
     },
 
@@ -44,7 +44,7 @@ const replacements = [
     ...(isRelease ? [
         // rule for docs/config.toml
         {
-            from: /current_stable_version = "\d+\.\d+(\-SNAPSHOT|\-[0-9a-f]+)?"/g,
+            from: /current_stable_version = "\d+\.\d+(-SNAPSHOT|-[0-9a-f]+)?"/g,
             to: `current_stable_version = "${newVersion}"`,
         }
     ] : []),
