@@ -22,7 +22,6 @@ export function i18nFormat(
 ): string {
     let formatted = '';
 
-    let curChar: string;
     let buffer = '';
 
     let state = FmtState.Out;
@@ -37,8 +36,7 @@ export function i18nFormat(
     let pluralKeyword: PluralKw | undefined;
     let pluralValue: string | undefined;
 
-    for (let i = 0, len = translated.length; i < len; i++) {
-        curChar = translated.charAt(i);
+    for (const curChar of translated) {
         switch (curChar) {
             case '{':
                 if (placeholder) {
