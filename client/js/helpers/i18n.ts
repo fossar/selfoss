@@ -3,6 +3,13 @@ import { MessageKey } from '../locales';
 
 type PluralKw = 'zero' | 'one' | 'other';
 
+enum FmtState {
+    Out,
+    Plural,
+    Index,
+    Type,
+}
+
 /*
  * This is a naive and partial implementation for parsing the
  * local-aware formatted strings from the Fat-Free Framework.
@@ -18,7 +25,7 @@ export function i18nFormat(
     let curChar: string;
     let buffer = '';
 
-    let state = 'out';
+    let state = FmtState.Out;
     let placeholder:
         | {
               index?: string;
@@ -35,7 +42,7 @@ export function i18nFormat(
         switch (curChar) {
             case '{':
                 if (placeholder) {
-                    if (state === 'plural') {
+                    if (state === FmtState.Plural) {
                         const kw = buffer.trim();
                         if (kw === 'zero' || kw === 'one' || kw === 'other') {
                             pluralKeyword = kw;
@@ -48,26 +55,26 @@ export function i18nFormat(
                     formatted = formatted + buffer;
                     buffer = '';
                     placeholder = {};
-                    state = 'index';
+                    state = FmtState.Index;
                 }
                 break;
             case '}':
             case ',':
                 if (placeholder) {
-                    if (state === 'index') {
+                    if (state === FmtState.Index) {
                         placeholder.index = buffer.trim();
                         placeholder.value = params[placeholder.index];
                         buffer = '';
-                    } else if (state === 'type') {
+                    } else if (state === FmtState.Type) {
                         placeholder.type = buffer.trim();
                         buffer = '';
                         if (placeholder.type === 'plural') {
                             plural = {};
-                            state = 'plural';
+                            state = FmtState.Plural;
                         }
                     }
                     if (curChar === '}') {
-                        if (state === 'plural' && pluralKeyword) {
+                        if (state === FmtState.Plural && pluralKeyword) {
                             plural[pluralKeyword] = buffer;
                             buffer = '';
                             pluralKeyword = undefined;
@@ -90,14 +97,14 @@ export function i18nFormat(
                                 );
                             plural = undefined;
                             placeholder = undefined;
-                            state = 'out';
+                            state = FmtState.Out;
                         } else {
                             formatted = formatted + placeholder.value;
                             placeholder = undefined;
-                            state = 'out';
+                            state = FmtState.Out;
                         }
-                    } else if (curChar === ',' && state === 'index') {
-                        state = 'type';
+                    } else if (curChar === ',' && state === FmtState.Index) {
+                        state = FmtState.Type;
                     }
                 }
                 break;
@@ -107,7 +114,7 @@ export function i18nFormat(
         }
     }
 
-    if (state != 'out') {
+    if (state !== FmtState.Out) {
         return "Error formatting '" + translated + "', bug report?";
     }
 
