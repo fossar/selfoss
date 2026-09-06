@@ -1,5 +1,3 @@
-'use strict';
-
 // Icons must be imported deeply because Parcel’s tree shaking is shaky.
 import { faDiaspora } from '@fortawesome/free-brands-svg-icons/faDiaspora';
 import { faFacebookSquare } from '@fortawesome/free-brands-svg-icons/faFacebookSquare';
