@@ -821,26 +821,6 @@ export class StateHolder extends React.Component<
         }
     }
 
-    getActiveTag(): string | null {
-        const category = this.props.params?.category;
-        if (!category) {
-            return null;
-        }
-        return category.startsWith('tag-')
-            ? category.replace(/^tag-/, '')
-            : null;
-    }
-
-    getActiveSource(): number | null {
-        const category = this.props.params?.category;
-        if (!category) {
-            return null;
-        }
-        return category.startsWith('source-')
-            ? Number.parseInt(category.replace(/^source-/, ''), 10)
-            : null;
-    }
-
     getActiveFilter(): string | null {
         return this.props.params?.filter;
     }
