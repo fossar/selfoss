@@ -1,5 +1,6 @@
 import globals from 'globals';
 import js from '@eslint/js';
+import { defineConfig } from 'eslint/config';
 import eslintConfigPrettier from 'eslint-config-prettier';
 import eslintPluginReact from 'eslint-plugin-react';
 import eslintPluginReactHooks from 'eslint-plugin-react-hooks';
@@ -42,7 +43,7 @@ const config = {
     },
 };
 
-export default tseslint.config(
+export default defineConfig(
     js.configs.recommended,
     eslintPluginReact.configs.flat.recommended,
     eslintPluginReactHooks.configs.flat.recommended,
