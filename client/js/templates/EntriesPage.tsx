@@ -291,7 +291,7 @@ export function EntriesPage(props: EntriesPageProps): React.JSX.Element {
         ? params.category.replace(/^tag-/, '')
         : null;
     const currentSource = params.category?.startsWith('source-')
-        ? parseInt(params.category.replace(/^source-/, ''), 10)
+        ? Number.parseInt(params.category.replace(/^source-/, ''), 10)
         : null;
 
     // The offsets for pagination.
@@ -837,7 +837,7 @@ export class StateHolder extends React.Component<
             return null;
         }
         return category.startsWith('source-')
-            ? parseInt(category.replace(/^source-/, ''), 10)
+            ? Number.parseInt(category.replace(/^source-/, ''), 10)
             : null;
     }
 

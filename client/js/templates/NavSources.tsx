@@ -130,7 +130,7 @@ export default function NavSources(props: NavSourcesProps): React.JSX.Element {
 
     const params = useEntriesParams();
     const currentSource = params?.category?.startsWith('source-')
-        ? parseInt(params.category.replace(/^source-/, ''), 10)
+        ? Number.parseInt(params.category.replace(/^source-/, ''), 10)
         : null;
 
     const toggleExpanded = useCallback(

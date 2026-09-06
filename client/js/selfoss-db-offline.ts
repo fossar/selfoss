@@ -113,7 +113,7 @@ export default class DbOffline {
             .then(() => {
                 const offlineDays = window.localStorage.getItem('offlineDays');
                 if (offlineDays !== null) {
-                    this.offlineDays = parseInt(offlineDays);
+                    this.offlineDays = Number.parseInt(offlineDays);
                 }
                 // The newest garbage collected entry is either what's already
                 // in the offline db or if more recent the entry older than

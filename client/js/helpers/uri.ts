@@ -90,7 +90,7 @@ export function useEntriesParams(): Params | null {
     return {
         filter: filterTypeFromString(params.filter),
         category: params.category,
-        id: params.id === undefined ? null : parseInt(params.id, 10),
+        id: params.id === undefined ? null : Number.parseInt(params.id, 10),
     };
 }
 

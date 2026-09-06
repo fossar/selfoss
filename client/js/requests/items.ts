@@ -7,7 +7,7 @@ import { SourceWithUnread } from './sources';
 function safeDate(datetimeString: string): Date {
     const date = new Date(datetimeString);
 
-    if (isNaN(date.valueOf())) {
+    if (Number.isNaN(date.valueOf())) {
         throw new Error(`Invalid date detected: “${datetimeString}”`);
     } else {
         return date;
