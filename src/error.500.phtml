@@ -52,6 +52,6 @@ use Tracy\Helpers;
     </div>
 </div>
 
-<script<?= Helpers::getNonceAttr() ?>>
+<script<?= Helpers::getNonce(attr: true) ?>>
     document.body.insertBefore(document.getElementById('tracy-error'), document.body.firstChild);
 </script>
