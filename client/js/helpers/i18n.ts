@@ -34,7 +34,6 @@ export function i18nFormat(
         | undefined;
     let plural: Partial<Record<PluralKw, string>> | undefined;
     let pluralKeyword: PluralKw | undefined;
-    let pluralValue: string | undefined;
 
     for (const curChar of translated) {
         switch (curChar) {
@@ -77,6 +76,7 @@ export function i18nFormat(
                             buffer = '';
                             pluralKeyword = undefined;
                         } else if (plural) {
+                            let pluralValue;
                             if ('zero' in plural && placeholder.value === 0) {
                                 pluralValue = plural.zero;
                             } else if (
