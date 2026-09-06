@@ -43,14 +43,14 @@ class selfoss {
     public static dbOnline: DbOnline = new DbOnline();
     public static dbOffline: DbOffline = new DbOffline();
 
-    static navigate: NavigateFunction | undefined = undefined;
-    static config: Configuration;
-    static customSharers: { [key: string]: Sharer };
+    public static navigate: NavigateFunction | undefined = undefined;
+    public static config: Configuration;
+    public static customSharers: { [key: string]: Sharer };
 
     /**
      * initialize application
      */
-    static async init(): Promise<void> {
+    public static async init(): Promise<void> {
         // Load off-line mode enabledness.
         this.db.enableOffline.update(
             window.localStorage.getItem('enableOffline') === 'true',
@@ -188,14 +188,14 @@ class selfoss {
         this.loggedin.update(false);
     }
 
-    static hasSession(): boolean {
+    public static hasSession(): boolean {
         return this.loggedin.value;
     }
 
     /**
      * Try to log in using given credentials
      */
-    static login(props: {
+    public static login(props: {
         configuration: Configuration;
         username: string;
         password: string;
@@ -278,7 +278,7 @@ class selfoss {
             });
     }
 
-    static async logout(): Promise<void> {
+    public static async logout(): Promise<void> {
         this.clearSession();
 
         this.db.clear(); // will not work after a failure, since storage is nulled
@@ -314,7 +314,7 @@ class selfoss {
     /**
      * Checks whether the current user is allowed to perform read operations.
      */
-    static isAllowedToRead(): boolean {
+    public static isAllowedToRead(): boolean {
         return (
             this.hasSession() ||
             !this.config.authEnabled ||
@@ -325,7 +325,7 @@ class selfoss {
     /**
      * Checks whether the current user is allowed to perform update-tier operations.
      */
-    static isAllowedToUpdate(): boolean {
+    public static isAllowedToUpdate(): boolean {
         return (
             this.hasSession() ||
             !this.config.authEnabled ||
@@ -336,14 +336,14 @@ class selfoss {
     /**
      * Checks whether the current user is allowed to perform write operations.
      */
-    static isAllowedToWrite(): boolean {
+    public static isAllowedToWrite(): boolean {
         return this.hasSession() || !this.config.authEnabled;
     }
 
     /**
      * Checks whether the current user is allowed to perform write operations.
      */
-    static isOnline(): boolean {
+    public static isOnline(): boolean {
         return this.db.online;
     }
 
@@ -352,7 +352,7 @@ class selfoss {
      *
      * @return true if device resolution smaller equals 1024
      */
-    static isMobile(): boolean {
+    public static isMobile(): boolean {
         // first check useragent
         if (/iPhone|iPod|iPad|Android|BlackBerry/.test(navigator.userAgent)) {
             return true;
@@ -379,7 +379,7 @@ class selfoss {
      *
      * @return true if device resolution smaller equals 1024
      */
-    static isSmartphone(): boolean {
+    public static isSmartphone(): boolean {
         if (document.body.clientWidth <= 640) {
             return true;
         }
@@ -405,7 +405,11 @@ class selfoss {
      * @param unread new unread stats
      * @param starred new starred stats
      */
-    static refreshStats(all: number, unread: number, starred: number): void {
+    public static refreshStats(
+        all: number,
+        unread: number,
+        starred: number,
+    ): void {
         this.app.setAllItemsCount(all);
         this.app.setStarredItemsCount(starred);
 
@@ -417,14 +421,14 @@ class selfoss {
      *
      * @param unread new unread stats
      */
-    static refreshUnread(unread: number): void {
+    public static refreshUnread(unread: number): void {
         this.app.setUnreadItemsCount(unread);
     }
 
     /**
      * refresh current tags.
      */
-    static reloadTags(): void {
+    public static reloadTags(): void {
         this.app.setTagsState(LoadingState.LOADING);
 
         getAllTags()
@@ -440,7 +444,7 @@ class selfoss {
             });
     }
 
-    static handleAjaxError(
+    public static handleAjaxError(
         error: Error,
         tryOffline: boolean = true,
     ): Promise<void> {

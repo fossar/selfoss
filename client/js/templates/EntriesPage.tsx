@@ -617,7 +617,7 @@ export class StateHolder extends React.Component<
     StateHolderProps,
     StateHolderState
 > {
-    constructor(props: StateHolderProps) {
+    public constructor(props: StateHolderProps) {
         super(props);
         this.state = initialState;
 
@@ -640,7 +640,7 @@ export class StateHolder extends React.Component<
         this.throw = this.throw.bind(this);
     }
 
-    setEntries(entries: SetStateAction<ResponseItem[]>): void {
+    public setEntries(entries: SetStateAction<ResponseItem[]>): void {
         if (typeof entries === 'function') {
             this.setState((state) => ({
                 entries: entries(state.entries),
@@ -650,14 +650,14 @@ export class StateHolder extends React.Component<
         }
     }
 
-    appendEntries(extraEntries: ResponseItem[]): void {
+    public appendEntries(extraEntries: ResponseItem[]): void {
         this.setEntries((entries) => [...entries, ...extraEntries]);
     }
 
     /**
      * Make the given entry currently selected one.
      */
-    setSelectedEntry(selectedEntry: SetStateAction<number>): void {
+    public setSelectedEntry(selectedEntry: SetStateAction<number>): void {
         if (typeof selectedEntry === 'function') {
             this.setState((state) => ({
                 selectedEntry: selectedEntry(state.selectedEntry),
@@ -674,7 +674,7 @@ export class StateHolder extends React.Component<
         return this.state.selectedEntry;
     }
 
-    setExpandedEntries(
+    public setExpandedEntries(
         expandedEntries: SetStateAction<{ [index: number]: boolean }>,
     ): void {
         if (typeof expandedEntries === 'function') {
@@ -686,7 +686,7 @@ export class StateHolder extends React.Component<
         }
     }
 
-    setEntryExpanded(id: number, expand: SetStateAction<boolean>): void {
+    public setEntryExpanded(id: number, expand: SetStateAction<boolean>): void {
         if (typeof expand === 'function') {
             this.setExpandedEntries((oldEntries) => ({
                 ...oldEntries,
@@ -703,7 +703,7 @@ export class StateHolder extends React.Component<
     /**
      * Collapse all expanded entries.
      */
-    collapseAllEntries(): void {
+    public collapseAllEntries(): void {
         this.setExpandedEntries({});
     }
 
@@ -729,7 +729,7 @@ export class StateHolder extends React.Component<
      * Activate entry as if it were clicked.
      * This will open it, focus it and based on the settings, mark it as read.
      */
-    activateEntry(id: number): void {
+    public activateEntry(id: number): void {
         if (this.props.configuration.autoCollapse) {
             this.collapseAllEntries();
         }
@@ -754,7 +754,7 @@ export class StateHolder extends React.Component<
      * Deactivate entry, as if it were clicked.
      * This will close it and maybe something more.
      */
-    deactivateEntry(id: number): void {
+    public deactivateEntry(id: number): void {
         this.setEntryExpanded(id, false);
     }
 
@@ -788,7 +788,7 @@ export class StateHolder extends React.Component<
         );
     }
 
-    refreshEntryStatuses(entryStatuses: EntryStatus[]): void {
+    public refreshEntryStatuses(entryStatuses: EntryStatus[]): void {
         this.state.entries.forEach((entry) => {
             const { id } = entry;
             const newStatus = entryStatuses.find(
@@ -801,7 +801,7 @@ export class StateHolder extends React.Component<
         });
     }
 
-    setHasMore(hasMore: SetStateAction<boolean>): void {
+    public setHasMore(hasMore: SetStateAction<boolean>): void {
         if (typeof hasMore === 'function') {
             this.setState((state) => ({
                 hasMore: hasMore(state.hasMore),
@@ -821,14 +821,14 @@ export class StateHolder extends React.Component<
         }
     }
 
-    getActiveFilter(): string | null {
+    public getActiveFilter(): string | null {
         return this.props.params?.filter;
     }
 
     /**
      * Mark all visible items as read
      */
-    markVisibleRead(): void {
+    public markVisibleRead(): void {
         const ids: number[] = [];
         const tagUnreadDiff: { [index: string]: number } = {};
         const sourceUnreadDiff: { [index: string]: number } = {};
@@ -959,7 +959,7 @@ export class StateHolder extends React.Component<
     /**
      * Requests for an entry to be marked read/unread in the model.
      */
-    markEntryRead(id: number, markRead: boolean | 'toggle'): void {
+    public markEntryRead(id: number, markRead: boolean | 'toggle'): void {
         // only loggedin users
         if (!selfoss.isAllowedToWrite()) {
             console.log('User not allowed to mark an entry (un)read.');
@@ -1039,7 +1039,7 @@ export class StateHolder extends React.Component<
     /**
      * Requests for an entry to be marked (un)starred in the model.
      */
-    markEntryStarred(id: number, markStarred: boolean | 'toggle'): void {
+    public markEntryStarred(id: number, markStarred: boolean | 'toggle'): void {
         // only loggedin users
         if (!selfoss.isAllowedToWrite()) {
             console.log('User not allowed to (un)star an entry.');
@@ -1110,7 +1110,7 @@ export class StateHolder extends React.Component<
             });
     }
 
-    reload(): void {
+    public reload(): void {
         /**
          * HACK: A counter that is increased every time reload action (r key) is triggered.
          */
@@ -1126,7 +1126,7 @@ export class StateHolder extends React.Component<
     /**
      * get next/prev item
      */
-    nextPrev(direction: Direction, open: boolean = true): void {
+    public nextPrev(direction: Direction, open: boolean = true): void {
         if (direction != Direction.NEXT && direction != Direction.PREV) {
             throw new Error('direction must be one of Direction.{PREV,NEXT}');
         }
@@ -1201,7 +1201,7 @@ export class StateHolder extends React.Component<
     /**
      * entry navigation (next/prev) with keys
      */
-    entryNav(direction: Direction): void {
+    public entryNav(direction: Direction): void {
         if (direction != Direction.NEXT && direction != Direction.PREV) {
             throw new Error('direction must be one of Direction.{PREV,NEXT}');
         }
@@ -1210,7 +1210,7 @@ export class StateHolder extends React.Component<
         this.nextPrev(direction, open);
     }
 
-    jumpToNext(): void {
+    public jumpToNext(): void {
         const selected = this.getSelectedEntry();
         if (selected !== null && !this.isEntryExpanded(selected)) {
             this.activateEntry(selected);
@@ -1219,7 +1219,7 @@ export class StateHolder extends React.Component<
         }
     }
 
-    toggleSelectedStarred(): void {
+    public toggleSelectedStarred(): void {
         const selected = this.getSelectedEntry();
 
         if (selected !== null) {
@@ -1227,7 +1227,7 @@ export class StateHolder extends React.Component<
         }
     }
 
-    toggleSelectedRead(): void {
+    public toggleSelectedRead(): void {
         const selected = this.getSelectedEntry();
 
         if (selected !== null) {
@@ -1235,11 +1235,11 @@ export class StateHolder extends React.Component<
         }
     }
 
-    toggleSelectedExpanded(): void {
+    public toggleSelectedExpanded(): void {
         this.toggleEntryExpanded(this.getSelectedEntry());
     }
 
-    openSelectedTarget(): void {
+    public openSelectedTarget(): void {
         const selected = this.getSelectedEntry();
 
         if (selected !== null) {
@@ -1247,7 +1247,7 @@ export class StateHolder extends React.Component<
         }
     }
 
-    openSelectedTargetAndMarkRead(): void {
+    public openSelectedTargetAndMarkRead(): void {
         const selected = this.getSelectedEntry();
 
         if (selected !== null) {
@@ -1256,7 +1256,7 @@ export class StateHolder extends React.Component<
         }
     }
 
-    throw(direction: Direction): void {
+    public throw(direction: Direction): void {
         const selected = this.getSelectedEntry();
 
         if (selected !== null) {
@@ -1266,7 +1266,7 @@ export class StateHolder extends React.Component<
         this.nextPrev(direction, true);
     }
 
-    render(): React.JSX.Element {
+    public render(): React.JSX.Element {
         return (
             <EntriesPage
                 entries={this.state.entries}

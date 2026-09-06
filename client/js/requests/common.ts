@@ -5,7 +5,7 @@ import { Configuration } from '../model/Configuration';
 export class PasswordHashingError extends Error {
     public name: string;
 
-    constructor(message: string) {
+    public constructor(message: string) {
         super(message);
         this.name = 'PasswordHashingError';
     }

@@ -35,14 +35,14 @@ export interface Source {
 export class OfflineDb extends Dexie {
     // Declare implicit table properties.
     // (Just to inform Typescript. Instanciated by Dexie in stores() method.)
-    entries!: Dexie.Table<ResponseItem>;
-    statusq!: Dexie.Table<Status, number>;
-    stamps!: Dexie.Table<Stamp>;
-    stats!: Dexie.Table<Stat>;
-    tags!: Dexie.Table<Tag>;
-    sources!: Dexie.Table<Source>;
+    public entries!: Dexie.Table<ResponseItem>;
+    public statusq!: Dexie.Table<Status, number>;
+    public stamps!: Dexie.Table<Stamp>;
+    public stats!: Dexie.Table<Stat>;
+    public tags!: Dexie.Table<Tag>;
+    public sources!: Dexie.Table<Source>;
 
-    constructor() {
+    public constructor() {
         super('selfoss');
         this.version(1).stores({
             entries: '&id,*datetime,[datetime+id]',

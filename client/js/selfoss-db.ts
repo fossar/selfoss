@@ -31,7 +31,7 @@ export default class Db {
 
     public lastSync: number | null = null;
 
-    setOnline(): void {
+    public setOnline(): void {
         if (!this.online) {
             this.online = true;
             this.sync();
@@ -40,11 +40,11 @@ export default class Db {
         }
     }
 
-    tryOnline(): Promise<void> {
+    public tryOnline(): Promise<void> {
         return this.sync(true);
     }
 
-    setOffline(): Promise<void> {
+    public setOffline(): Promise<void> {
         if (this.storage && !this.broken) {
             selfoss.dbOnline._syncDone(false);
             this.online = false;
@@ -57,7 +57,7 @@ export default class Db {
         }
     }
 
-    clear(): Promise<void> {
+    public clear(): Promise<void> {
         if (this.storage) {
             window.localStorage.removeItem('offlineDays');
             const clearing = this.storage.delete();
@@ -69,14 +69,14 @@ export default class Db {
         }
     }
 
-    isValidTag(name: string): boolean {
+    public isValidTag(name: string): boolean {
         return (
             selfoss.app.state.tags.length === 0 ||
             selfoss.app.state.tags.find((tag) => tag.tag === name) !== undefined
         );
     }
 
-    isValidSource(id: number): boolean {
+    public isValidSource(id: number): boolean {
         return (
             selfoss.app.state.sources.length === 0 ||
             selfoss.app.state.sources.find((source) => source.id === id) !==
@@ -84,7 +84,7 @@ export default class Db {
         );
     }
 
-    sync(force = false): Promise<void> {
+    public sync(force = false): Promise<void> {
         const lastUpdateIsOld =
             this.lastUpdate === null ||
             this.lastSync === null ||

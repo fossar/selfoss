@@ -557,7 +557,7 @@ export class App extends React.Component<AppProps, AppState> {
     private fallbackLocale: Locale;
     private primaryLocale: Partial<Locale>;
 
-    constructor(props: AppProps) {
+    public constructor(props: AppProps) {
         super(props);
         this.state = {
             tags: [],
@@ -598,7 +598,7 @@ export class App extends React.Component<AppProps, AppState> {
         );
     }
 
-    setTags(tags: SetStateAction<Array<NavTag>>): void {
+    public setTags(tags: SetStateAction<Array<NavTag>>): void {
         if (typeof tags === 'function') {
             this.setState((state) => ({
                 tags: tags(state.tags),
@@ -608,7 +608,7 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    setTagsState(tagsState: SetStateAction<LoadingState>): void {
+    public setTagsState(tagsState: SetStateAction<LoadingState>): void {
         if (typeof tagsState === 'function') {
             this.setState((state) => ({
                 tagsState: tagsState(state.tagsState),
@@ -618,7 +618,7 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    setSources(sources: SetStateAction<Array<NavSource>>): void {
+    public setSources(sources: SetStateAction<Array<NavSource>>): void {
         if (typeof sources === 'function') {
             this.setState((state) => ({
                 sources: sources(state.sources),
@@ -628,7 +628,7 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    setSourcesState(sourcesState: SetStateAction<LoadingState>): void {
+    public setSourcesState(sourcesState: SetStateAction<LoadingState>): void {
         if (typeof sourcesState === 'function') {
             this.setState((state) => ({
                 sourcesState: sourcesState(state.sourcesState),
@@ -638,7 +638,7 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    setOfflineState(offlineState: SetStateAction<boolean>): void {
+    public setOfflineState(offlineState: SetStateAction<boolean>): void {
         if (typeof offlineState === 'function') {
             this.setState((state) => ({
                 offlineState: offlineState(state.offlineState),
@@ -662,7 +662,7 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    setUnreadItemsCount(unreadItemsCount: SetStateAction<number>): void {
+    public setUnreadItemsCount(unreadItemsCount: SetStateAction<number>): void {
         if (typeof unreadItemsCount === 'function') {
             this.setState((state) => ({
                 unreadItemsCount: unreadItemsCount(state.unreadItemsCount),
@@ -686,7 +686,9 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    setStarredItemsCount(starredItemsCount: SetStateAction<number>): void {
+    public setStarredItemsCount(
+        starredItemsCount: SetStateAction<number>,
+    ): void {
         if (typeof starredItemsCount === 'function') {
             this.setState((state) => ({
                 starredItemsCount: starredItemsCount(state.starredItemsCount),
@@ -710,7 +712,7 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    setAllItemsCount(allItemsCount: SetStateAction<number>): void {
+    public setAllItemsCount(allItemsCount: SetStateAction<number>): void {
         if (typeof allItemsCount === 'function') {
             this.setState((state) => ({
                 allItemsCount: allItemsCount(state.allItemsCount),
@@ -734,7 +736,7 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    setGlobalMessage(
+    public setGlobalMessage(
         globalMessage: SetStateAction<GlobalMessage | null>,
     ): void {
         if (typeof globalMessage === 'function') {
@@ -809,7 +811,7 @@ export class App extends React.Component<AppProps, AppState> {
     /**
      * Obtain a localized message for given key, substituting placeholders for values, when given.
      */
-    _(
+    public _(
         identifier: MessageKey,
         params?: { [index: string]: string | number },
     ): string {
@@ -826,14 +828,14 @@ export class App extends React.Component<AppProps, AppState> {
     /**
      * Show error message in the message bar in the UI.
      */
-    showError(message: string): void {
+    public showError(message: string): void {
         this.showMessage(message, [], true);
     }
 
     /**
      * Show message in the message bar in the UI.
      */
-    showMessage(
+    public showMessage(
         message: string,
         actions: Array<MessageAction> = [],
         isError: boolean = false,
@@ -841,7 +843,7 @@ export class App extends React.Component<AppProps, AppState> {
         this.setGlobalMessage({ message, actions, isError });
     }
 
-    notifyNewVersion(cb: () => void): void {
+    public notifyNewVersion(cb: () => void): void {
         if (!cb) {
             cb = () => {
                 window.location.reload();
@@ -856,7 +858,7 @@ export class App extends React.Component<AppProps, AppState> {
         ]);
     }
 
-    refreshTagSourceUnread(
+    public refreshTagSourceUnread(
         tagCounts: { [index: string]: number },
         sourceCounts: { [index: number]: number },
         diff: boolean = true,
@@ -902,7 +904,7 @@ export class App extends React.Component<AppProps, AppState> {
         );
     }
 
-    refreshOfflineCounts(offlineCounts: {
+    public refreshOfflineCounts(offlineCounts: {
         [index in 'unread' | 'starred' | 'newest']: number | 'keep';
     }): void {
         for (const [kind, newCount] of Object.entries(offlineCounts)) {
@@ -920,7 +922,7 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    render(): React.JSX.Element {
+    public render(): React.JSX.Element {
         return (
             <ConfigurationContext value={this.props.configuration}>
                 <LocalizationContext value={this._}>

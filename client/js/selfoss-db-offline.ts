@@ -59,7 +59,7 @@ export default class DbOffline {
             });
     }
 
-    init(): PromiseExtended<void> {
+    public init(): PromiseExtended<void> {
         if (!selfoss.db.enableOffline.value || selfoss.db.storage) {
             return;
         }
@@ -172,7 +172,9 @@ export default class DbOffline {
             });
     }
 
-    storeEntries(entries: readonly ResponseItem[]): PromiseExtended<void> {
+    public storeEntries(
+        entries: readonly ResponseItem[],
+    ): PromiseExtended<void> {
         return this._tr(
             'rw',
             [selfoss.db.storage.entries, selfoss.db.storage.stamps],
@@ -256,7 +258,7 @@ export default class DbOffline {
         );
     }
 
-    storeStats(stats: Partial<Record<StatName, number>>): Promise<void> {
+    public storeStats(stats: Partial<Record<StatName, number>>): Promise<void> {
         return this._tr('rw', [selfoss.db.storage.stats], () => {
             for (const [name, value] of Object.entries(stats) as Array<
                 [StatName, number]
@@ -269,7 +271,7 @@ export default class DbOffline {
         });
     }
 
-    storeLastUpdate(lastUpdate: Date): Promise<void> {
+    public storeLastUpdate(lastUpdate: Date): Promise<void> {
         return this._tr('rw', [selfoss.db.storage.stamps], () => {
             if (lastUpdate) {
                 selfoss.db.storage.stamps.put({
@@ -280,7 +282,7 @@ export default class DbOffline {
         });
     }
 
-    getEntries(
+    public getEntries(
         fetchParams: FetchParams,
     ): Promise<{ entries: ResponseItem[]; hasMore: boolean }> {
         let hasMore = false;
@@ -388,7 +390,7 @@ export default class DbOffline {
         });
     }
 
-    refreshStats(): PromiseExtended<void> {
+    public refreshStats(): PromiseExtended<void> {
         return this._tr('r', [selfoss.db.storage.entries], () => {
             const offlineCounts = { newest: 0, unread: 0, starred: 0 };
 
@@ -410,7 +412,7 @@ export default class DbOffline {
         });
     }
 
-    enqueueStatuses(
+    public enqueueStatuses(
         statuses: { entryId: number; name: StatusName; value: boolean }[],
     ): Promise<void> {
         if (statuses) {
@@ -430,7 +432,7 @@ export default class DbOffline {
         });
     }
 
-    enqueueStatus(
+    public enqueueStatus(
         entryId: number,
         statusName: StatusName,
         statusValue: boolean,
@@ -444,7 +446,7 @@ export default class DbOffline {
         ]);
     }
 
-    sendNewStatuses(): Promise<void> {
+    public sendNewStatuses(): Promise<void> {
         selfoss.db.storage.statusq
             .toArray()
             .then((statuses) => {
@@ -481,7 +483,7 @@ export default class DbOffline {
      * The server report cannot distinguish which of the status fields was changed
      * so both will be considered changed.
      */
-    storeEntryStatuses(
+    public storeEntryStatuses(
         itemStatuses: ItemStatus[],
         dequeue: boolean = false,
         updateStats: boolean = true,
@@ -556,7 +558,7 @@ export default class DbOffline {
             .then(this.refreshStats);
     }
 
-    entriesMark(itemIds: number[], unread: boolean): Promise<void> {
+    public entriesMark(itemIds: number[], unread: boolean): Promise<void> {
         selfoss.dbOnline.statsDirty = true;
         const newStatuses = itemIds.map((itemId) => {
             return { id: itemId, unread };
@@ -564,11 +566,11 @@ export default class DbOffline {
         return this.storeEntryStatuses(newStatuses);
     }
 
-    entryMark(itemId: number, unread: boolean): Promise<void> {
+    public entryMark(itemId: number, unread: boolean): Promise<void> {
         return this.entriesMark([itemId], unread);
     }
 
-    entryStar(itemId: number, starred: boolean): Promise<void> {
+    public entryStar(itemId: number, starred: boolean): Promise<void> {
         return this.storeEntryStatuses([
             {
                 id: itemId,

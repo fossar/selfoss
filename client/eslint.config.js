@@ -40,6 +40,8 @@ const config = {
             },
         ],
 
+        '@typescript-eslint/explicit-member-accessibility': 'error',
+
         'unicode-bom': 'error',
     },
 };

@@ -38,7 +38,7 @@ export default class DbOnline {
     public statsDirty: boolean = false;
     public firstSync: boolean = true;
 
-    _syncBegin(): Promise<void> {
+    public _syncBegin(): Promise<void> {
         if (!this.syncing.promise) {
             this.syncing.promise = new Promise((resolve, reject) => {
                 this.syncing.resolve = resolve;
@@ -73,7 +73,7 @@ export default class DbOnline {
         return this.syncing.promise;
     }
 
-    _syncDone(success: boolean = true): void {
+    public _syncDone(success: boolean = true): void {
         if (this.syncing.promise) {
             if (success) {
                 this.syncing.resolve();
@@ -90,7 +90,7 @@ export default class DbOnline {
     /**
      * sync server status.
      */
-    sync(
+    public sync(
         updatedStatuses: Array<StatusUpdate> | undefined = undefined,
         chained: boolean = false,
     ): Promise<void> {
@@ -278,7 +278,7 @@ export default class DbOnline {
     /**
      * refresh current items.
      */
-    getEntries(
+    public getEntries(
         fetchParams: FetchParams,
         abortController: AbortController,
     ): Promise<{ entries: ResponseItem[]; hasMore: boolean }> {
