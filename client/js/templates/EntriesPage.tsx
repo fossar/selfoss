@@ -670,7 +670,7 @@ export class StateHolder extends React.Component<
     /**
      * Get the currently selected entry.
      */
-    getSelectedEntry(): number {
+    private getSelectedEntry(): number {
         return this.state.selectedEntry;
     }
 
@@ -710,14 +710,14 @@ export class StateHolder extends React.Component<
     /**
      * Is entry with given id expanded?
      */
-    isEntryExpanded(id: number): boolean {
+    private isEntryExpanded(id: number): boolean {
         return this.state.expandedEntries[id] ?? false;
     }
 
     /**
      * Toggle expanded state of entry with given id.
      */
-    toggleEntryExpanded(id: number): void {
+    private toggleEntryExpanded(id: number): void {
         if (!id) {
             return;
         }
@@ -758,7 +758,7 @@ export class StateHolder extends React.Component<
         this.setEntryExpanded(id, false);
     }
 
-    starEntryInView(id: number, starred: boolean): void {
+    private starEntryInView(id: number, starred: boolean): void {
         this.setEntries((entries) =>
             entries.map((entry) => {
                 if (entry.id === id) {
@@ -773,7 +773,7 @@ export class StateHolder extends React.Component<
         );
     }
 
-    markEntryInView(id: number, unread: boolean): void {
+    private markEntryInView(id: number, unread: boolean): void {
         this.setEntries((entries) =>
             entries.map((entry) => {
                 if (entry.id === id) {
@@ -811,7 +811,7 @@ export class StateHolder extends React.Component<
         }
     }
 
-    setLoadingState(loadingState: SetStateAction<LoadingState>): void {
+    private setLoadingState(loadingState: SetStateAction<LoadingState>): void {
         if (typeof loadingState === 'function') {
             this.setState((state) => ({
                 loadingState: loadingState(state.loadingState),

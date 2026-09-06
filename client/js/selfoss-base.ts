@@ -99,7 +99,7 @@ class selfoss {
         }
     }
 
-    static async initMain(configuration: Configuration): Promise<void> {
+    private static async initMain(configuration: Configuration): Promise<void> {
         this.config = configuration;
 
         if (this.db.enableOffline.value) {
@@ -150,7 +150,7 @@ class selfoss {
     /**
      * Create basic DOM structure of the page.
      */
-    static attachApp(configuration: Configuration): void {
+    private static attachApp(configuration: Configuration): void {
         document.getElementById('js-loading-message')?.remove();
 
         const mainUi = document.createElement('div');
@@ -178,12 +178,12 @@ class selfoss {
 
     public static loggedin = new ValueListenable(false);
 
-    static setSession(): void {
+    private static setSession(): void {
         window.localStorage.setItem('onlineSession', 'true');
         this.loggedin.update(true);
     }
 
-    static clearSession(): void {
+    private static clearSession(): void {
         window.localStorage.removeItem('onlineSession');
         this.loggedin.update(false);
     }
@@ -252,7 +252,7 @@ class selfoss {
         });
     }
 
-    static setupServiceWorker(): void {
+    private static setupServiceWorker(): void {
         if (!('serviceWorker' in navigator) || this.serviceWorkerInitialized) {
             return;
         }
@@ -367,7 +367,7 @@ class selfoss {
      *
      * @return true if device resolution smaller equals 1024
      */
-    static isTablet(): boolean {
+    private static isTablet(): boolean {
         if (document.body.clientWidth <= 1024) {
             return true;
         }
@@ -457,7 +457,7 @@ class selfoss {
         }
     }
 
-    static listenWaitingSW(
+    private static listenWaitingSW(
         reg: ServiceWorkerRegistration,
         callback: (reg: ServiceWorkerRegistration) => void,
     ): void {

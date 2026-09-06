@@ -32,7 +32,7 @@ export default class DbOffline {
     public olderEntriesOnline: boolean = false;
     public needsSync: boolean;
 
-    _tr<U>(
+    private _tr<U>(
         mode: TransactionMode,
         tables: Table[],
         scope: (trans: Transaction) => PromiseLike<U> | U,
@@ -159,7 +159,7 @@ export default class DbOffline {
             });
     }
 
-    _memLastItemId(): PromiseExtended<void> {
+    private _memLastItemId(): PromiseExtended<void> {
         return selfoss.db.storage.entries
             .orderBy('id')
             .reverse()
@@ -188,7 +188,7 @@ export default class DbOffline {
         );
     }
 
-    GCEntries(more: boolean = false): PromiseExtended<void> {
+    private GCEntries(more: boolean = false): PromiseExtended<void> {
         if (more) {
             // We need to garbage collect more, as the browser storage limit
             // seems to be exceeded: decrease the amount of days entries are
@@ -368,7 +368,7 @@ export default class DbOffline {
             .then((entries) => ({ entries, hasMore }));
     }
 
-    reloadOnlineStats(): PromiseExtended<void> {
+    private reloadOnlineStats(): PromiseExtended<void> {
         return this._tr('r', [selfoss.db.storage.stats], () => {
             selfoss.db.storage.stats.toArray((stats) => {
                 const newStats = {

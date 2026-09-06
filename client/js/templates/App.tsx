@@ -648,7 +648,9 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    setNavSourcesExpanded(navSourcesExpanded: SetStateAction<boolean>): void {
+    private setNavSourcesExpanded(
+        navSourcesExpanded: SetStateAction<boolean>,
+    ): void {
         if (typeof navSourcesExpanded === 'function') {
             this.setState((state) => ({
                 navSourcesExpanded: navSourcesExpanded(
@@ -670,7 +672,7 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    setUnreadItemsOfflineCount(
+    private setUnreadItemsOfflineCount(
         unreadItemsOfflineCount: SetStateAction<number>,
     ): void {
         if (typeof unreadItemsOfflineCount === 'function') {
@@ -694,7 +696,7 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    setStarredItemsOfflineCount(
+    private setStarredItemsOfflineCount(
         starredItemsOfflineCount: SetStateAction<number>,
     ): void {
         if (typeof starredItemsOfflineCount === 'function') {
@@ -718,7 +720,7 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    setAllItemsOfflineCount(
+    private setAllItemsOfflineCount(
         allItemsOfflineCount: SetStateAction<number>,
     ): void {
         if (typeof allItemsOfflineCount === 'function') {
@@ -747,7 +749,7 @@ export class App extends React.Component<AppProps, AppState> {
     /**
      * Triggers fetching news from all sources.
      */
-    reloadAll(): Promise<void> {
+    private reloadAll(): Promise<void> {
         if (!selfoss.isOnline()) {
             return Promise.resolve();
         }
