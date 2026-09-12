@@ -14,7 +14,6 @@ parameters:
         - phtml
 
     bootstrapFiles:
-        - src/constants.php
         - vendor/bin/.phpunit/phpunit/vendor/autoload.php
 
     stubFiles:
