@@ -14,6 +14,7 @@
 - Garbage collection can be completely disabled by setting `items_lifetime=0`.
 - Tamil (`ta`) translation was added.
 - Configuration file path can be overridden with `SELFOSS_CONFIG_PATH` environment variable. Alternately, you can specify `SELFOSS_CONFIG_DIR` where selfoss will look for `config.ini`. ([#1603](https://github.com/fossar/selfoss/pull/1603))
+- Password hash and database password can be now loaded from a file specified by `password_file` and `db_password_file` option, respectively. ([#1624](https://github.com/fossar/selfoss/pull/1624))
 
 ### Bug fixes
 - Configuration parser was changed to *raw* method, which relaxes the requirement to quote option values containing special characters in `config.ini`. ([#1371](https://github.com/fossar/selfoss/issues/1371))
