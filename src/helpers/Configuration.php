@@ -52,6 +52,8 @@ final class Configuration {
 
     public string $dbUsername = 'root';
 
+    private string $dbPasswordFile = '';
+
     public string $dbPassword = '';
 
     public ?int $dbPort = null;
@@ -71,6 +73,8 @@ final class Configuration {
     public string $baseUrl = '';
 
     public string $username = '';
+
+    private string $passwordFile = '';
 
     public string $password = '';
 
@@ -199,8 +203,7 @@ final class Configuration {
                 throw new Exception("Unknown type “{$propertyType}” for property “{$propertyName}”.", 1);
             }
 
-            $this->{$propertyName} = $value;
-            $this->modifiedOptions[$propertyName] = true;
+            $this->setValue($propertyName, $value);
         }
 
         // Interpolate variables in the config values.
@@ -208,6 +211,26 @@ final class Configuration {
         foreach (self::INTERPOLATED_PROPERTIES as $property) {
             $value = $this->{$property};
             $this->{$property} = str_replace('%datadir%', $datadir, $value);
+        }
+
+        $this->loadFromPath('password', 'password');
+        $this->loadFromPath('dbPassword', 'db_password');
+    }
+
+    private function setValue(string $propertyName, mixed $value): void {
+        $this->{$propertyName} = $value;
+        $this->modifiedOptions[$propertyName] = true;
+    }
+
+    private function loadFromPath(string $propertyName, string $option): void {
+        if ($this->isChanged($propertyName . 'File')) {
+            if ($this->isChanged($propertyName)) {
+                throw new Exception("You cannot set both `$option` and `{$option}_file` options.");
+            }
+            $value = @file_get_contents($this->{$propertyName . 'File'});
+            if ($value !== false) {
+                $this->setValue($propertyName, rtrim($value, "\r\n"));
+            }
         }
     }
 
