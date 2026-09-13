@@ -107,7 +107,7 @@ export function i18nFormat(
         }
     }
 
-    if (state != 'out') {
+    if (state !== 'out') {
         return "Error formatting '" + translated + "', bug report?";
     }
 

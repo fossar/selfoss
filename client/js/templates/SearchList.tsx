@@ -7,7 +7,7 @@ import { makeEntriesLink } from '../helpers/uri';
 import * as icons from '../icons';
 
 function splitTerm(term: string): string[] {
-    if (term == '') {
+    if (term === '') {
         return [];
     } else if (term.match(/^\/.+\/$/)) {
         return [term];

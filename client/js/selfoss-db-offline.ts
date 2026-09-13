@@ -325,13 +325,13 @@ export default class DbOffline {
                             if (ascOrder) {
                                 keepEntry &&=
                                     entry.datetime > fromDatetime ||
-                                    (entry.datetime.getTime() ==
+                                    (entry.datetime.getTime() ===
                                         fromDatetime.getTime() &&
                                         entry.id > fromId);
                             } else {
                                 keepEntry &&=
                                     entry.datetime < fromDatetime ||
-                                    (entry.datetime.getTime() ==
+                                    (entry.datetime.getTime() ===
                                         fromDatetime.getTime() &&
                                         entry.id < fromId);
                             }

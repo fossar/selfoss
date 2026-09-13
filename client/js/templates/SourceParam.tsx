@@ -73,6 +73,7 @@ export default function SourceParam(
         let checked;
 
         if (spoutParam.type === 'checkbox') {
+            // eslint-disable-next-line eqeqeq -- Unclear if the type is correct since this is not used by any spout.
             checked = value == '1';
             // Value always has to be 1 since HTML sends [name]=[value] when a checkbox is checked
             // and omits the field altogether from HTTP request when not checked.
