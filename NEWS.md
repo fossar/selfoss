@@ -29,6 +29,7 @@
 - Fix sharing to Wallabag 2. ([#1465](https://github.com/fossar/selfoss/pull/1465))
 - Fix DB migration with SQLite that has double-quote string literals disabled (like on FreeBSD). ([#1489](https://github.com/fossar/selfoss/pull/1489))
 - Look for favicon on correct address when feed URI has a port number. ([#1603](https://github.com/fossar/selfoss/pull/1603))
+- **Security:** Reject unsupported configuration types. ([#1638](https://github.com/fossar/selfoss/pull/1638))
 
 ### Customization changes
 - Custom spouts must explicitly pass `null` to `Item::__construct()` when they do not need the `extraData` argument. ([#1415](https://github.com/fossar/selfoss/pull/1415))
