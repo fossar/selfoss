@@ -30,6 +30,8 @@ use Tracy\Debugger;
 require __DIR__ . '/constants.php';
 
 function boot_error(string $message): never {
+    // Logger is not available yet, so at least log to PHP’s error log.
+    error_log('selfoss boot error: ' . trim($message));
     http_response_code(500);
     header('Content-Type: text/plain');
     echo $message;
