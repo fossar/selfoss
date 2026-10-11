@@ -76,7 +76,7 @@ final readonly class Index {
 
         $lastUpdate = $this->itemsDao->lastUpdate();
         $result = [
-            'lastUpdate' => $lastUpdate !== null ? $lastUpdate->format(\DateTime::ATOM) : null,
+            'lastUpdate' => $lastUpdate?->format(\DateTime::ATOM),
             'hasMore' => $items['hasMore'],
             'entries' => $items['entries'],
             'all' => $statsAll,
