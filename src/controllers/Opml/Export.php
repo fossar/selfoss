@@ -42,7 +42,7 @@ final readonly class Export {
         // retrieve the feed url of the source
         $params = json_decode(html_entity_decode($source['params']), true);
         $feed = $this->spoutLoader->get($source['spout']);
-        $feedUrl = $feed !== null ? $feed->getXmlUrl($params) : null;
+        $feedUrl = $feed?->getXmlUrl($params);
 
         // if the spout doesn't return a feed url, the source isn't an RSS feed
         if ($feedUrl !== null) {

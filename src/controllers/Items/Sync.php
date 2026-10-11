@@ -48,7 +48,7 @@ final readonly class Sync {
         $lastUpdate = $this->itemsDao->lastUpdate();
 
         $sync = [
-            'lastUpdate' => $lastUpdate !== null ? $lastUpdate->format(\DateTime::ATOM) : null,
+            'lastUpdate' => $lastUpdate?->format(\DateTime::ATOM),
         ];
 
         if (array_key_exists('itemsSinceId', $params)) {
