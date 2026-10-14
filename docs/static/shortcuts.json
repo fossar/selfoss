@@ -1,0 +1,90 @@
+[
+    {
+        "key": "space",
+        "description": "select and open next entry"
+    },
+    {
+        "key": "j",
+        "description": "select and open next entry"
+    },
+    {
+        "key": "n",
+        "description": "select next entry"
+    },
+    {
+        "key": "→",
+        "description": "select next entry (and open it when the current is open)"
+    },
+    {
+        "key": "space",
+        "shift": true,
+        "description": "select and open previous entry"
+    },
+    {
+        "key": "k",
+        "description": "select and open previous entry"
+    },
+    {
+        "key": "p",
+        "description": "select previous entry"
+    },
+    {
+        "key": "←",
+        "description": "select previous entry (and open it when the current is open)"
+    },
+    {
+        "key": "s",
+        "description": "mark and unmark current selected entry as starred/unstarred"
+    },
+    {
+        "key": "m",
+        "description": "mark and unmark current selected entry as read/unread"
+    },
+    {
+        "key": "t",
+        "description": "throw current item (mark as read and open next)"
+    },
+    {
+        "key": "t",
+        "shift": true,
+        "description": "throw current item (mark as read and open previous)"
+    },
+    {
+        "key": "v",
+        "description": "open url of current entry in new tab/window"
+    },
+    {
+        "key": "v",
+        "shift": true,
+        "description": "open url of current entry in new tab/window and mark read"
+    },
+    {
+        "key": "m",
+        "ctrl": true,
+        "description": "mark all as read"
+    },
+    {
+        "key": "o",
+        "description": "open / close current item"
+    },
+    {
+        "key": "o",
+        "shift": true,
+        "description": "close all open items"
+    },
+    {
+        "key": "n",
+        "shift": true,
+        "description": "open newest items page"
+    },
+    {
+        "key": "u",
+        "shift": true,
+        "description": "open unread items page"
+    },
+    {
+        "key": "s",
+        "shift": true,
+        "description": "open starred items page"
+    }
+]

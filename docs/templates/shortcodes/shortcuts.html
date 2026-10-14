@@ -1,0 +1,7 @@
+{% set shortcuts = load_data(path=path) %}
+<dl>
+  {% for shortcut in shortcuts %}
+    <dt>{% if shortcut.ctrl %}<kbd>ctrl</kbd> + {% endif %}{% if shortcut.shift %}<kbd>shift</kbd> + {% endif %}<kbd>{{ shortcut.key }}</kbd></dt>
+    <dd>{{ shortcut.description }}</dd>
+  {% endfor %}
+</dl>
