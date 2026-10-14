@@ -325,7 +325,7 @@ class Items implements \Selfoss\daos\ItemsInterface {
 
         // get items from database
         $select = 'SELECT
-            items.id, datetime, items.title AS title, content, unread, starred, source, thumbnail, icon, uid, link, updatetime, author, sources.title as sourcetitle, sources.tags as tags
+            items.id, datetime, items.title AS title, content, unread, starred, source, thumbnail, NULLIF(icon, \'\') as icon, uid, link, updatetime, author, sources.title as sourcetitle, sources.tags as tags
             FROM ' . $this->configuration->dbPrefix . 'items AS items, ' . $this->configuration->dbPrefix . 'sources AS sources
             WHERE items.source=sources.id AND';
         $order_sql = 'ORDER BY items.datetime ' . $order . ', items.id ' . $order;

@@ -190,7 +190,7 @@ function handleDelete(args: {
         _,
     } = args;
     const answer = confirm(_('source_warn'));
-    if (answer == false) {
+    if (!answer) {
         return;
     }
 
@@ -800,7 +800,7 @@ export default function Source(props: SourceProps): React.JSX.Element {
             ref={sourceElem}
         >
             <div className="source-icon">
-                {source.icon && source.icon != '0' ? (
+                {source.icon !== null ? (
                     <img
                         src={`favicons/${source.icon}`}
                         aria-hidden="true"

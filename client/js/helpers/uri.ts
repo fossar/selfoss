@@ -26,11 +26,11 @@ export function useLocation(): Location {
  * Converts URL segment to FilterType value.
  */
 export function filterTypeFromString(type: string): FilterType {
-    if (type == 'newest') {
+    if (type === 'newest') {
         return FilterType.NEWEST;
-    } else if (type == 'unread') {
+    } else if (type === 'unread') {
         return FilterType.UNREAD;
-    } else if (type == 'starred') {
+    } else if (type === 'starred') {
         return FilterType.STARRED;
     } else {
         throw new Error(`Invalid filter type: “${type}”`);
@@ -41,11 +41,11 @@ export function filterTypeFromString(type: string): FilterType {
  * Converts FilterType value to string usable in URL.
  */
 export function filterTypeToString(type: FilterType): string {
-    if (type == FilterType.NEWEST) {
+    if (type === FilterType.NEWEST) {
         return 'newest';
-    } else if (type == FilterType.UNREAD) {
+    } else if (type === FilterType.UNREAD) {
         return 'unread';
-    } else if (type == FilterType.STARRED) {
+    } else if (type === FilterType.STARRED) {
         return 'starred';
     } else {
         throw new Error(`Invalid filter type: “${type}”`);
