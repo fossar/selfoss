@@ -37,7 +37,7 @@ final class Database implements \Selfoss\daos\DatabaseInterface {
         $result = @$this->exec('SHOW TABLES');
         $tables = [];
         foreach ($result as $table) {
-            foreach ($table as $key => $value) {
+            foreach ($table as $value) {
                 $tables[] = $value;
             }
         }

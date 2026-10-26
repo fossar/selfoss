@@ -146,7 +146,7 @@ class feed extends \spouts\spout {
         // else fallback to the favicon of the associated web page
         $htmlUrl = $this->getHtmlUrl();
         if ($htmlUrl && ($iconData = $this->imageHelper->fetchFavicon($htmlUrl, true)) !== null) {
-            [$faviconUrl, $iconBlob] = $iconData;
+            [$faviconUrl] = $iconData;
             $this->logger->debug('icon: using feed homepage favicon: ' . $faviconUrl);
 
             return $faviconUrl;
@@ -155,7 +155,7 @@ class feed extends \spouts\spout {
         // else fallback to the favicon of the feed effective domain
         $feedUrl = $this->feed->getFeedUrl();
         if ($feedUrl && ($iconData = $this->imageHelper->fetchFavicon($feedUrl, true)) !== null) {
-            [$faviconUrl, $iconBlob] = $iconData;
+            [$faviconUrl] = $iconData;
             $this->logger->debug('icon: using feed homepage favicon: ' . $faviconUrl);
 
             return $faviconUrl;

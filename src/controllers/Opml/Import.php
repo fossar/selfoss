@@ -57,7 +57,6 @@ final class Import {
                 throw new \Exception('Missing SimpleXML PHP extension. Please install/enable it as described on https://www.php.net/manual/en/simplexml.installation.php');
             }
 
-            $subs = false;
             $previousUseErrors = libxml_use_internal_errors(true);
             try {
                 $subs = simplexml_load_file($opml['tmp_name']);

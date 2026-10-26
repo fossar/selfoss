@@ -88,7 +88,6 @@ class enclosures extends feed {
             return '';
         }
 
-        $title = htmlspecialchars(strip_tags((string) $enclosure->get_title()), ENT_QUOTES);
         $url = htmlspecialchars_decode($url, ENT_COMPAT); // SimplePie sanitizes URLs
 
         $linkLabel = 'Download';

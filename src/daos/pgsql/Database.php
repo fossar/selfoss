@@ -45,7 +45,7 @@ final class Database implements \Selfoss\daos\DatabaseInterface {
         $result = @$this->exec("SELECT table_name FROM information_schema.tables WHERE table_schema='public'");
         $tables = [];
         foreach ($result as $table) {
-            foreach ($table as $key => $value) {
+            foreach ($table as $value) {
                 $tables[] = $value;
             }
         }

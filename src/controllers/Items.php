@@ -37,7 +37,6 @@ final readonly class Items {
     public function mark(?string $itemId = null): void {
         $this->authentication->ensureIsPrivileged();
 
-        $ids = null;
         if ($itemId !== null) {
             $ids = [$itemId];
         } else {

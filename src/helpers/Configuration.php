@@ -169,7 +169,6 @@ final class Configuration {
 
             $value = trim($value);
 
-            $nullable = false;
             $propertyType = null;
 
             $type = $property->getType();
