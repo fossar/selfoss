@@ -114,7 +114,7 @@ final readonly class Sync {
                 $this->view->jsonError(['updatedStatuses' => 'not an array']);
             }
 
-            foreach ($updatedStatuses as $index => $status) {
+            foreach ($updatedStatuses as $index => &$status) {
                 if (!is_array($status)) {
                     $this->view->jsonError(["updatedStatuses[$index]" => 'not an array']);
                 }
