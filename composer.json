@@ -47,7 +47,11 @@
     "autoload": {
         "psr-4": {
             "spouts\\": "src/spouts/",
-            "Selfoss\\": "src/",
+            "Selfoss\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
             "Tests\\": "tests/"
         }
     },
