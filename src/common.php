@@ -10,13 +10,15 @@ use Monolog\Handler\ErrorLogHandler;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
-use PDO;
 use Psr;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\SimpleCache\CacheInterface;
 use Selfoss\helpers\Configuration;
 use Selfoss\helpers\Configuration\LoggerLevel;
+use Selfoss\helpers\Database\PdoMysqlFactory;
+use Selfoss\helpers\Database\PdoPgsqlFactory;
+use Selfoss\helpers\Database\PdoSqliteFactory;
 use Selfoss\helpers\DatabaseConnection;
 use Selfoss\helpers\WebClient;
 use Slince;
@@ -154,9 +156,7 @@ if ($configuration->dbType === 'sqlite') {
 
     // https://www.php.net/manual/en/ref.pdo-sqlite.connection.php
     $dsn = 'sqlite:' . $db_file;
-    $dbParams = [
-        'dsn' => $dsn,
-    ];
+    $pdoFactory = new PdoSqliteFactory($dsn);
 } elseif ($configuration->dbType === 'mysql') {
     if (!extension_loaded('pdo_mysql')) {
         boot_error('Using MySQL database requires pdo_mysql PHP extension. Please make sure you have it installed and enabled.');
@@ -175,13 +175,11 @@ if ($configuration->dbType === 'sqlite') {
         $dsn = "mysql:host=$host; dbname=$database";
     }
 
-    $dbParams = [
-        'dsn' => $dsn,
-        'user' => $configuration->dbUsername,
-        'password' => $configuration->dbPassword,
-        'options' => [PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8mb4;'],
-        'tableNamePrefix' => $configuration->dbPrefix,
-    ];
+    $pdoFactory = new PdoMysqlFactory(
+        dsn: $dsn,
+        user: $configuration->dbUsername,
+        password: $configuration->dbPassword,
+    );
 } elseif ($configuration->dbType === 'pgsql') {
     if (!extension_loaded('pdo_pgsql')) {
         boot_error('Using PostgreSQL database requires pdo_pgsql PHP extension. Please make sure you have it installed and enabled.');
@@ -198,11 +196,11 @@ if ($configuration->dbType === 'sqlite') {
         $dsn = "pgsql:host=$host; dbname=$database";
     }
 
-    $dbParams = [
-        'dsn' => $dsn,
-        'user' => $configuration->dbUsername,
-        'password' => $configuration->dbPassword,
-    ];
+    $pdoFactory = new PdoPgsqlFactory(
+        dsn: $dsn,
+        user: $configuration->dbUsername,
+        password: $configuration->dbPassword,
+    );
 } else {
     boot_error('Unsupported value for db_type option: ' . $configuration->dbType . PHP_EOL);
 }
@@ -210,22 +208,13 @@ if ($configuration->dbType === 'sqlite') {
 $databaseConnection =
     $container
         ->register(DatabaseConnection::class)
-        ->setArguments($dbParams)
+        ->setArguments([
+            'pdoFactory' => $pdoFactory,
+            'dsn' => $dsn,
+            'tableNamePrefix' => $configuration->dbPrefix,
+        ])
         ->setShared(true)
 ;
-
-// Define regexp function for SQLite
-if ($configuration->dbType === 'sqlite') {
-    $databaseConnection->addMethodCall(
-        // https://www.sqlite.org/lang_expr.html#the_like_glob_regexp_match_and_extract_operators
-        'sqliteCreateFunction',
-        [
-            'regexp',
-            fn(string $pattern, string $text): bool => preg_match('/' . addcslashes($pattern, '/') . '/', $text) === 1,
-            2,
-        ]
-    );
-}
 
 $container
     ->register('$iconStorageBackend', helpers\Storage\FileStorage::class)

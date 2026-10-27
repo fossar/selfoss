@@ -7,6 +7,7 @@ namespace Selfoss\helpers;
 use Monolog\Logger;
 use PDO;
 use PDOException;
+use Selfoss\helpers\Database\PdoFactory;
 
 /**
  * Simple wrapper around PDO taken from F3.
@@ -22,19 +23,15 @@ final class DatabaseConnection {
 
     /**
      * Instantiate class
-     *
-     * @param ?array<string, mixed> $options
      */
     public function __construct(
         private readonly Logger $logger,
         string $dsn,
-        ?string $user = null,
-        ?string $password = null,
-        ?array $options = null,
+        PdoFactory $pdoFactory,
         private readonly string $tableNamePrefix = ''
     ) {
         $this->logger->debug('Creating database connection', ['dsn' => $dsn]);
-        $this->pdo = new PDO($dsn, $user, $password, $options);
+        $this->pdo = $pdoFactory->create();
         $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 
@@ -165,19 +162,5 @@ final class DatabaseConnection {
      */
     public function quote(mixed $val, int $type = PDO::PARAM_STR): string {
         return $this->pdo->quote((string) $val, $type);
-    }
-
-    public function sqliteCreateFunction(
-        string $function_name,
-        callable $callback,
-        int $num_args = -1,
-        int $flags = 0
-    ): bool {
-        return $this->pdo->sqliteCreateFunction(
-            $function_name,
-            $callback,
-            $num_args,
-            $flags
-        );
     }
 }
