@@ -7,7 +7,7 @@ declare(strict_types=1);
 
 namespace Selfoss\helpers\Authentication;
 
-use Psr\Container\ContainerInterface;
+use Kama\LiteWireDI\Container;
 use Selfoss\helpers\Configuration;
 
 /**
@@ -16,7 +16,7 @@ use Selfoss\helpers\Configuration;
 final readonly class AuthenticationFactory {
     public function __construct(
         private Configuration $configuration,
-        private ContainerInterface $container
+        private Container $container
     ) {
     }
 
