@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Selfoss\helpers\Database;
 
 use PDO;
+use Pdo\Sqlite;
 
 final readonly class PdoSqliteFactory implements PdoFactory {
     public function __construct(
@@ -13,6 +14,19 @@ final readonly class PdoSqliteFactory implements PdoFactory {
     }
 
     public function create(): PDO {
+        if (class_exists(Sqlite::class)) {
+            $pdo = new Sqlite($this->dsn);
+
+            // https://www.sqlite.org/lang_expr.html#the_like_glob_regexp_match_and_extract_operators
+            $pdo->createFunction(
+                'regexp',
+                [self::class, 'regexp'],
+                2,
+            );
+
+            return $pdo;
+        }
+
         $pdo = new PDO($this->dsn);
 
         // https://www.sqlite.org/lang_expr.html#the_like_glob_regexp_match_and_extract_operators
