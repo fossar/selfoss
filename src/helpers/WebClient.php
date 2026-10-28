@@ -85,8 +85,9 @@ class WebClient implements ClientInterface {
                 // Guzzle will not send Accept-Encoding by default.
                 // https://github.com/guzzle/guzzle/pull/3215
                 // Delegate choosing compression method to curl.
-                \CURLOPT_ENCODING => '',
+                \CURLOPT_ACCEPT_ENCODING => '',
             ],
+            'version' => '2',
         ];
     }
 
