@@ -86,6 +86,10 @@ class WebClient implements ClientInterface {
                 // https://github.com/guzzle/guzzle/pull/3215
                 // Delegate choosing compression method to curl.
                 \CURLOPT_ACCEPT_ENCODING => '',
+                // Guzzle defaults to \CURL_HTTP_VERSION_1_1,
+                // which breaks servers that require HTTP 2.
+                // Delegate choosing protocol to curl.
+                \CURLOPT_HTTP_VERSION => \CURL_HTTP_VERSION_NONE,
             ],
             'version' => '2',
         ];
