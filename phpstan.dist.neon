@@ -26,5 +26,15 @@ parameters:
         SpoutParameterInfo: 'array{title: string, type: spouts\Parameter::TYPE_*, default: string, required: bool, validation: array<spouts\Parameter::VALIDATION_*>, values?: array<string, string>}'
         SpoutParameters: 'array<string, SpoutParameterInfo>'
 
+    ignoreErrors:
+        -
+            message: '#^Method Selfoss\\helpers\\Database\\PdoSqliteFactory\:\:create\(\) should return PDO but returns Pdo\\Sqlite\.$#'
+            identifier: return.type
+            count: 1
+            path: src/helpers/Database/PdoSqliteFactory.php
+            # Only reported on PHP < 8.4
+            reportUnmatched: false
+
+
 includes:
     - vendor/phpstan/phpstan-deprecation-rules/rules.neon
