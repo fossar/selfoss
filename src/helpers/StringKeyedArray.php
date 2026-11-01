@@ -46,8 +46,7 @@ final class StringKeyedArray implements ArrayAccess, IteratorAggregate, JsonSeri
      *
      * @return T
      */
-    #[\ReturnTypeWillChange]
-    public function &offsetGet($offset) {
+    public function &offsetGet($offset): mixed {
         if (!$this->offsetExists($offset)) {
             throw new OutOfBoundsException("Undefined array key “{$offset}”");
         }
@@ -81,11 +80,7 @@ final class StringKeyedArray implements ArrayAccess, IteratorAggregate, JsonSeri
         })();
     }
 
-    /**
-     * @return mixed
-     */
-    #[\ReturnTypeWillChange]
-    public function jsonSerialize() {
+    public function jsonSerialize(): \stdClass {
         // Objects can only have strings for keys.
         return (object) $this->data;
     }
