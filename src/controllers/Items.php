@@ -58,7 +58,10 @@ final readonly class Items {
             $this->view->error('invalid id');
         }
 
-        $this->itemsDao->mark($ids);
+        // The DAO needs a non-empty list: "IN ()" is invalid SQL on MySQL and PostgreSQL.
+        if (count($ids) > 0) {
+            $this->itemsDao->mark($ids);
+        }
 
         $return = [
             'success' => true,
