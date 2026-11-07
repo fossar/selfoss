@@ -33,6 +33,7 @@
 - Look for favicon on correct address when feed URI has a port number. ([#1603](https://github.com/fossar/selfoss/pull/1603))
 - **Security:** Reject unsupported configuration types. ([#1638](https://github.com/fossar/selfoss/pull/1638))
 - Support HTTP 2 only sites. ([#1661](https://github.com/fossar/selfoss/pull/1661))
+- Fix error 500 when marking an empty list of items as read with MySQL or PostgreSQL. ([#1667](https://github.com/fossar/selfoss/pull/1667))
 
 ### Customization changes
 - Custom spouts must explicitly pass `null` to `Item::__construct()` when they do not need the `extraData` argument. ([#1415](https://github.com/fossar/selfoss/pull/1415))
