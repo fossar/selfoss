@@ -26,6 +26,8 @@ const config = {
     files: ['**/*.ts', '**/*.tsx', '**/*.js'],
 
     rules: {
+        eqeqeq: 'error',
+
         'no-eval': 'error',
         'no-array-constructor': 'error',
         camelcase: 'error',
