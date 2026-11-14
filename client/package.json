@@ -27,7 +27,7 @@
     "tinykeys": "^4.0.1",
     "unreset-css": "^1.0.1",
     "use-state-with-deps": "^1.1.1",
-    "yet-another-react-lightbox": "^3.5.0"
+    "yet-another-react-lightbox": "^3.33.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.0.0",
@@ -45,15 +45,15 @@
     "eslint-config-prettier": "^10.0.0",
     "eslint-plugin-react": "^7.20.6",
     "eslint-plugin-react-hooks": "^7.0.0",
-    "globals": "^17.13.0",
+    "globals": "^17.14.0",
     "parcel": "^2.0.0",
     "postcss": "^8.5.32",
-    "prettier": "^3.9.10",
+    "prettier": "^3.10.0",
     "process": "^0.11.10",
     "stylelint": "^17.16.0",
     "stylelint-config-standard-scss": "^17.0.0",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.72.1"
+    "typescript-eslint": "^8.72.2"
   },
   "scripts": {
     "fix": "npm run fix:js && npm run fix:styles",
