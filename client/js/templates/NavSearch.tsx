@@ -60,10 +60,10 @@ function handleFieldKeyUp({
     searchRemoveButton: RefObject<HTMLButtonElement>;
 }): void {
     // keypress enter in search inputfield
-    if (event.which == 13) {
+    if (event.which === 13) {
         searchButton.current.click();
     }
-    if (event.keyCode == 27) {
+    if (event.keyCode === 27) {
         searchRemoveButton.current.click();
     }
 }
@@ -85,7 +85,7 @@ function handleRemove({
 
     setActive(false);
 
-    if (oldTerm == '') {
+    if (oldTerm === '') {
         searchField.current.blur();
         return;
     }

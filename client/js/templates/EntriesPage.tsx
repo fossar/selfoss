@@ -514,7 +514,7 @@ export function EntriesPage(props: EntriesPageProps): React.JSX.Element {
                     key={entry.id}
                     item={entry}
                     currentTime={currentTime}
-                    selected={selectedEntry == entry.id}
+                    selected={selectedEntry === entry.id}
                     expanded={expandedEntries[entry.id] ?? false}
                     setNavExpanded={setNavExpanded}
                     showError={showError}
@@ -557,7 +557,7 @@ export function EntriesPage(props: EntriesPageProps): React.JSX.Element {
                         <span>{_('markread')}</span>
                     </button>
                 ) : null}
-                {loadingState == LoadingState.FAILURE ? (
+                {loadingState === LoadingState.FAILURE ? (
                     <button
                         className="stream-button stream-error"
                         aria-live="assertive"
@@ -792,7 +792,7 @@ export class StateHolder extends React.Component<
         this.state.entries.forEach((entry) => {
             const { id } = entry;
             const newStatus = entryStatuses.find(
-                (entryStatus) => entryStatus.id == id,
+                (entryStatus) => entryStatus.id === id,
             );
             if (newStatus) {
                 this.starEntryInView(id, newStatus.starred);
@@ -1147,12 +1147,12 @@ export class StateHolder extends React.Component<
      * get next/prev item
      */
     nextPrev(direction: Direction, open: boolean = true): void {
-        if (direction != Direction.NEXT && direction != Direction.PREV) {
+        if (direction !== Direction.NEXT && direction !== Direction.PREV) {
             throw new Error('direction must be one of Direction.{PREV,NEXT}');
         }
 
         // when there are no entries
-        if (this.state.entries.length == 0) {
+        if (this.state.entries.length === 0) {
             return;
         }
 
@@ -1166,7 +1166,7 @@ export class StateHolder extends React.Component<
 
         // select next/prev entry and save it to "current"
         // if we would overflow, we stay on the old one
-        if (direction == Direction.NEXT) {
+        if (direction === Direction.NEXT) {
             if (old === null) {
                 current = this.state.entries[0].id;
             } else {
@@ -1222,7 +1222,7 @@ export class StateHolder extends React.Component<
      * entry navigation (next/prev) with keys
      */
     entryNav(direction: Direction): void {
-        if (direction != Direction.NEXT && direction != Direction.PREV) {
+        if (direction !== Direction.NEXT && direction !== Direction.PREV) {
             throw new Error('direction must be one of Direction.{PREV,NEXT}');
         }
 

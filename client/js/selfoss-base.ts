@@ -140,7 +140,7 @@ class selfoss {
 
         if (configuration.authEnabled) {
             this.loggedin.update(
-                window.localStorage.getItem('onlineSession') == 'true',
+                window.localStorage.getItem('onlineSession') === 'true',
             );
         }
 
@@ -450,7 +450,7 @@ class selfoss {
 
         const httpCode = 'response' in error ? error.response.status : 0;
 
-        if (tryOffline && httpCode != 403) {
+        if (tryOffline && httpCode !== 403) {
             return this.db.setOffline();
         } else {
             return Promise.reject(error);
