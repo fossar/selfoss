@@ -50,7 +50,7 @@
     "postcss": "^8.5.33",
     "prettier": "^3.10.1",
     "process": "^0.11.10",
-    "stylelint": "^17.16.0",
+    "stylelint": "^18.0.0",
     "stylelint-config-standard-scss": "^17.0.0",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.73.0"
